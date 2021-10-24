@@ -1,0 +1,47 @@
+.wt_language__banner
+	padding $margin3 0
+	background $black
+	color $parchment
+	text-align center
+
+	h1
+		headerType($parchment)
+		margin-bottom $margin1
+	
+	h2
+		subheadType($parchment)
+		margin-bottom $margin2
+
+	&--metadata
+		width 100%
+		max-width 600px
+		margin 0 auto
+		
+		li
+			width 33%
+			display inline-block
+			vertical-align top
+			margin-bottom $margin1
+			
+			strong
+				bodyTypeBold($parchment)
+			
+			span
+				bodyType($parchment)
+				
+				a
+					bodyTypeLink($parchment)
+
+@media all and (max-width:$mobile)
+	.wt_language__banner
+		padding $margin2 0
+		
+		h1
+			headerTypeMobile($parchment)
+		
+		h2
+			subheadTypeMobile($parchment)
+			
+		&--metadata
+			li
+				width 48%

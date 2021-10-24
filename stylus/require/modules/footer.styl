@@ -1,0 +1,50 @@
+.wt_footer
+	padding $margin2 0 $margin4
+	background $black
+	color $parchment
+	text-align center
+	
+	&__logo
+		img
+			height 32px
+			width auto
+			margin-bottom $margin1
+
+	&__menu
+		margin-bottom $margin1
+		
+		li
+			display inline-block
+			margin 0 7.5px
+
+			a
+				interactiveType($parchment)
+	
+	&__contact
+		bodyType($parchment)
+		
+		strong
+			display block
+			bodyTypeBold($parchment)
+			margin-bottom $margin0
+		
+		&--information
+			margin $margin0 0 $margin1
+		
+		&--legal
+			legalType($parchment)
+			
+			a
+				text-transform uppercase
+				font-weight 600
+				color $parchment
+				text-decoration none
+
+@media all and (max-width:$mobile)
+	.wt_footer
+		padding-bottom $margin2
+		
+		&__menu
+			li
+				display block
+				margin-bottom $margin0

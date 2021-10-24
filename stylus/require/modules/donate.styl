@@ -1,0 +1,45 @@
+.wt_donate
+	width 90%
+	max-width 890px
+	margin auto auto 32px auto
+	
+	h1
+		headerType($black)
+		text-align center
+
+	.wt_testimonial
+		margin-top $margin2
+		margin-bottom 32px
+	
+	aside
+		width 49%
+		display inline-block
+		vertical-align top
+		
+		h1
+			text-align left
+		
+		h2
+			headerType($black)
+
+		&:first-of-type
+			text-align left !important
+			
+			h1
+				padding 28px 0 0 28px
+
+		&:last-of-type
+			text-align right
+
+@media all and (max-width:$mobile)
+	.wt_donate
+		h1
+			headerTypeMobile()
+			
+		aside
+			width 100%
+			display block
+			
+			h1
+				padding 0 !important
+				text-align center

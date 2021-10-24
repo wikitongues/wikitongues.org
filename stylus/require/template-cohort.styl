@@ -1,0 +1,23 @@
+body
+	&.page-template-template-cohort
+		.wt_testimonial
+			display flex
+			align-items center
+			
+			&:nth-of-type(even)
+				flex-direction row-reverse
+				
+				.wt_testimonial__image
+					margin-right 0
+					margin-left 5%
+
+@media all and (max-width:$mobile)
+	body
+		&.page-template-template-cohort
+			.wt_testimonial
+				display block
+				width 90%
+				
+				&__image
+					margin-right auto !important
+					margin-left auto !important

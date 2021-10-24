@@ -1,0 +1,68 @@
+/* Typography */
+
+@font-face
+	font-family: 'Graphik Web'
+	src: url('../fonts/Graphik-Semibold-Web.woff2') format('woff2'),
+   url('../fonts/Graphik-Semibold-Web.woff') format('woff')
+	font-weight: 600
+	font-style: normal
+	font-stretch: normal
+
+@font-face
+	font-family: 'Graphik Web'
+	src: url('../fonts/Graphik-Regular-Web.woff2') format('woff2'),
+   url('../fonts/Graphik-Regular-Web.woff') format('woff')
+	font-weight: 400
+	font-style: normal
+	font-stretch: normal
+
+@font-face
+	font-family: 'Schnyder Wide M Web'
+	src: url('../fonts/SchnyderWideM-Light-Web.woff2') format('woff2'),
+   url('../fonts/SchnyderWideM-Light-Web.woff') format('woff')
+	font-weight: 300
+	font-style: normal
+	font-stretch: normal
+
+html
+	font-size 62.5%
+
+/* Positioning */
+
+.clear // for "clearing" floated elements
+	clear both
+
+.wt_innerwrap // container for absolute-position child elements
+	display block
+	position relative
+	width 100%
+	height 100% 
+
+.wt_aligncenter // for vertically centering content within an element
+	align(50%,50%,-50%,-50%)
+
+/* Elements */
+body
+	padding-top 65px
+	background $parchment
+
+	&.logged-in
+		padding-top 97px
+		
+		.wt_header
+			top 32px
+	
+	&[data-ui="no-scroll"]
+		overflow hidden
+
+.wt_overlay // class for popup windows, hidden by default
+	display none
+	
+	&.wt_visible // visibility class for displaying popup windows
+		display block
+		position fixed
+		top 0
+		left 0
+		width 100%
+		height 100vh
+		z-index 9999999 !important

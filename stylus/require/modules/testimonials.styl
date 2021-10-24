@@ -1,0 +1,42 @@
+.wt_testimonial
+	width 100%
+	max-width 890px
+	margin $margin1 auto 0
+	
+	&__image
+		width 25%
+		display inline-block
+		vertical-align middle
+		border-radius 100% 
+		margin-right 5%
+		
+	&__text
+		width 69%
+		display inline-block
+		vertical-align middle
+		
+		h2
+			subheadType($black)
+			margin-bottom $margin0
+		
+		p
+			bodyType($black)
+
+@media all and (max-width:$mobile)
+	.wt_testimonial
+		&__image
+			display block
+			width 66.6%
+			margin 0 auto $margin1
+			
+		&__text
+			display block
+			width 100%
+			display block
+			
+			h2
+				subheadTypeMobile($black)
+				text-align center
+			
+			p
+				text-align center

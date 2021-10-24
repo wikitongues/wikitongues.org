@@ -1,0 +1,42 @@
+.wt_metrics
+	padding $margin4 0
+
+	h2
+		width 100%
+		max-width 768px
+		margin auto
+		text-align center
+		subheadType($black)
+
+	&__icons
+		margin-top $margin4
+		text-align center
+		
+		li
+			display inline-block
+			margin 0 $margin3
+			
+			img
+				height 150px
+				width auto
+				margin-bottom $margin1
+				filter grayscale(1)
+			
+			p
+				text-align center
+				bodyTypeBold($black)
+
+@media all and (max-width:$mobile)
+	.wt_metrics
+		padding $margin1
+		
+		h2
+			subheadTypeMobile()
+			text-align left
+		
+		&__icons
+			margin-top $margin1
+			
+			ul
+				li
+					margin $margin1 auto

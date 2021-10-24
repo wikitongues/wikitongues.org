@@ -1,0 +1,73 @@
+.wt_section
+	display flex
+	margin-bottom $margin1
+	padding $margin1 0
+	background $black
+	color $parchment
+
+	&__image
+		width 45%
+		padding-bottom 50%
+		backgroundImage()
+	
+	&__text
+		position relative
+		width 55%
+		box-sizing border-box
+		
+		&>div
+			width 100%
+			max-width 550px
+			text-align left
+			
+			h1
+				headerType($parchment)
+			
+			h2
+				width 100%
+				max-width 400px
+				subheadType($pachment)
+				margin $margin1 0
+			
+			.wt_action
+				&__primary
+					display block
+					text-align center
+					button(100%,$parchment)
+					color $black !important
+					margin-bottom $margin1
+					interactiveType($black)
+					max-width 400px
+				
+				&__secondary
+					interactiveType($parchment)
+			
+	&:nth-of-type(even)
+		flex-direction row-reverse
+	
+	&:last-of-type
+		margin-bottom 0
+
+@media all and (max-width:$mobile)
+	.wt_section
+		display block
+		padding-top 0
+		margin-bottom 0
+		
+		aside
+			width 100%
+			float none
+			
+			&>div
+				position relative
+				top initial
+				left initial
+				transform none
+				padding $margin1
+				box-sizing border-box
+				
+				h1
+					headerTypeMobile()
+					
+				h2
+					subheadTypeMobile()

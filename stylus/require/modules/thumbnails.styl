@@ -1,0 +1,187 @@
+.wt_thumbnails
+	margin $margin1 auto
+	text-align center
+	
+	&__title
+		text-align center
+				
+		h1
+			margin $margin3 auto $margin1 
+			headerType($black)
+		
+		h2
+			width 90%
+			max-width 900px
+			margin auto
+			subheadType($black)
+	
+	&__cta
+		width 90%
+		max-width 550px
+		margin-top $margin2 !important
+		interactiveType($parchment)
+	
+	&__video
+		display inline-block
+		vertical-align top
+		width 47%
+		margin 2% 1% 0
+		border-radius 3px
+		background $black
+		color $parchment
+		overflow hidden
+		border 1px solid $black
+		box-sizing border-box
+		
+		&--image
+			width 100%
+			height auto
+		
+		&--metadata
+			margin-top -2px
+			box-sizing border-box
+			padding $margin1 0
+			
+			li
+				margin-bottom $margin0
+				
+				&:last-of-type
+					margin-bottom 0
+					
+				strong
+					display block
+					bodyTypeBold($parchment)
+				
+				span
+					bodyType($parchment)
+					
+				a
+					bodyTypeLink($parchment)
+	
+	&__lexicon
+		display inline-block
+		width 30%
+		margin 2% 1% 0
+		background $black
+		color $parchment
+		box-sizing border-box
+		padding $margin1 0
+		border-radius 3px
+		
+		&--metadata
+			margin-top -2px
+			box-sizing border-box
+			padding $margin1 0
+			
+			li
+				margin-bottom $margin0
+				
+				&:last-of-type
+					margin-bottom 0
+					
+				strong
+					display block
+					bodyTypeBold($parchment)
+				
+				span
+					display block
+					bodyType($parchment)
+					
+				a
+					bodyTypeLink($parchment)
+	
+	&__download
+		display inline-block
+		width 30%
+		margin 2% 1% 0
+		background $black
+		color $parchment
+		box-sizing border-box
+		border-radius 3px
+		overflow hidden
+		text-align center
+		
+		&--image
+			width 100%
+			height auto
+		
+		&--metadata
+			margin-top -2px
+			box-sizing border-box
+			padding $margin1
+			
+			li
+				margin-bottom $margin0
+				
+				&:last-of-type
+					margin-bottom 0
+					
+				strong
+					display block
+					bodyTypeBold($parchment)
+				
+				span
+					display block
+					bodyType($parchment)
+					
+		a
+			text-decoration none !important
+	
+	&__language
+		display inline-block
+		vertical-align top
+		width 30%
+		margin 2% 1% 0
+		border-radius 3px
+		background $black
+		color $parchment
+		overflow hidden
+		border 1px solid $black
+		box-sizing border-box
+		
+		&--image
+			width 100%
+			height auto
+		
+		&--metadata
+			margin-top -2px
+			box-sizing border-box
+			padding $margin1 0
+			
+			li
+				margin-bottom $margin0
+				
+				&:last-of-type
+					margin-bottom 0
+					
+				strong
+					display block
+					bodyTypeBold($parchment)
+				
+				span
+					bodyType($parchment)
+					
+				a
+					bodyTypeLink($parchment)
+
+	&__error
+		subheadType($black)
+
+@media all and (max-width:$mobile)
+	.wt_thumbnails
+		&__title
+			h1
+				margin-top $margin2
+				headerTypeMobile($black)
+			
+			h2
+				subheadTypeMobile($black)
+		
+		&__video,
+		&__lexicon,
+		&__download
+			width 90%
+			margin 0 auto $margin0
+		
+		&__cta
+			margin-top $margin0 !important

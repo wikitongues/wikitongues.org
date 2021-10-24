@@ -1,0 +1,99 @@
+.wt_search
+	background $blackTransparent
+	
+	#wt_closeoverlay
+		position absolute
+		top $margin1
+		right $margin1
+		z-index 10000000000 !important
+
+	&__form
+		position absolute
+		left 0
+		top 0
+		width 100%
+		height 40%
+
+		.wt_aligncenter
+			width 100%
+			text-align center
+			
+			h2
+				subheadType($parchment)
+				margin-bottom $margin1
+
+			#languages_search
+				width 100%
+				background none
+				border-top none
+				border-left none
+				border-right none
+				border-bottom 0
+				padding $margin0
+				text-align center
+				copyType($black)
+				background $parchment
+
+				&:focus
+					outline none
+				
+				&::placeholder
+					copyType($black)
+
+			#searchform
+				width 90%
+				max-width 600px
+				margin auto
+
+			#searchsubmit
+				button(100%,$blue)
+				border-top-left-radius 0
+				border-top-right-radius 0
+				interactiveType($parchment)
+	
+	&__results
+		position absolute
+		left 0
+		bottom 0
+		width 100%
+		height 60%
+		text-align center
+		bodyType($parchment)
+		overflow-y scroll
+		
+		&--title
+			subheadType($parchment)
+			margin-bottom $margin1
+			
+		&--list
+			columns 3
+			
+		&--item
+			margin-bottom $margin0
+			break-inside avoid
+			
+			a
+				text-decoration none
+				
+				strong
+					display block
+					bodyTypeBold($parchment)
+				
+				span
+					bodyType($parchment)
+				
+				&:hover
+					text-decoration underline
+					color $parchment
+		
+		&--none
+			strong
+				display block
+				margin $margin1 auto $margin0
+				bodyTypeBold($parchment)
+
+@media all and (max-width:$mobile)
+	.wt_search
+		&__results
+			&--list
+				columns 1
