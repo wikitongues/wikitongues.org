@@ -98,6 +98,25 @@
             "maxlength": ""
         },
         {
+            "key": "field_6186eedd9d046",
+            "label": "ISO code",
+            "name": "iso_code",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_614b92c01b337",
             "label": "Glottocode",
             "name": "glottocode",
@@ -254,5 +273,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632511231
+    "modified": 1636232941
 }
