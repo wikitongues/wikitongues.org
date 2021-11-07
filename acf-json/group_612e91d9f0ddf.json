@@ -104,9 +104,9 @@
         },
         {
             "key": "field_612e8dd13750a",
-            "label": "Donate Form Embed",
-            "name": "donate_form_embed",
-            "type": "text",
+            "label": "Donate Link",
+            "name": "donate_link",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -116,10 +116,23 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "placeholder": ""
+        },
+        {
+            "key": "field_61873161f7a46",
+            "label": "P2P Link",
+            "name": "p2p_link",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -139,5 +152,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632848312
+    "modified": 1636249965
 }

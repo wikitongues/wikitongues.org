@@ -1,36 +1,51 @@
 .wt_donate
 	width 90%
 	max-width 890px
-	margin auto auto 32px auto
+	margin auto auto $margin2 auto
+	text-align center
 	
 	h1
 		headerType($black)
-		text-align center
-
-	.wt_testimonial
-		margin-top $margin2
-		margin-bottom 32px
 	
-	aside
-		width 49%
-		display inline-block
-		vertical-align top
+	&__call
+		subheadType($black)
+		width 100%
+		max-width 668px
+		margin $margin2 auto $margin1
+	
+	.wt_testimonial
+		margin $margin2 0
+		text-align left
 		
-		h1
-			text-align left
+		&__image
+			width 20%
 		
-		h2
-			headerType($black)
-
-		&:first-of-type
-			text-align left !important
+		&__text	
+			h2
+				bodyTypeBold($black)
+	
+	.wt_action
+		&__primary
+			display block
+			text-align center
+			button(100%,$blue)
+			max-width 400px
+			margin 0 auto $margin1
+			interactiveType($parchment)
+			transition .2s opacity ease-in-out
 			
-			h1
-				padding 28px 0 0 28px
-
-		&:last-of-type
-			text-align right
-
+			&:hover
+				opacity .9
+		
+		&__secondary
+			interactiveType($black)
+			
+			span:first-of-type
+				margin-right 5px
+			
+			&:hover
+				interactiveType($blue)
+	
 @media all and (max-width:$mobile)
 	.wt_donate
 		h1
