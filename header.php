@@ -77,6 +77,9 @@
 
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
+	<!-- Font Awesome connection -->
+	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
+
 	<!-- Fundraise Up connection -->
 	<script>(function(w,d,s,n,a){if(!w[n]){var l='call,catch,on,once,set,then,track'
 	.split(','),i,o=function(n){return'function'==typeof n?o.l.push([arguments])&&o
@@ -117,7 +120,11 @@
 
 			<!-- donate button -->
 			<div class="wt_header__nav--donate">
-				<?php the_field('donate_button_embed', 'options'); ?>
+				<a href="<?php 
+					the_field('donate_button_embed', 'options'); ?>">
+					<span><i class="fas fa-heart"></i></span>
+					<span>Donate</span>
+				</a>
 			</div>
 		</nav>
 

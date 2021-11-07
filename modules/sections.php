@@ -16,9 +16,12 @@
 			   class="wt_action__primary">
 				<?php echo $section_call_to_action['cta_text']; ?>   	
 			</a>
-			<a href="<?php echo $section_secondary_action['cta_link']; ?>" 
+			<a href="<?php echo $section_secondary_action['cta_link']; ?>"
 			   class="wt_action__secondary">
-				<?php echo $section_secondary_action['cta_text']; ?>   	
+				<span><i class="fad fa-arrow-circle-right"></i></span>
+				<span>
+					<?php echo $section_secondary_action['cta_text']; ?>
+				</span> 	
 			</a>
 		</div>
 	</aside>

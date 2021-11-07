@@ -4,6 +4,7 @@
 	$nations_of_origin = get_field('nations_of_origin');
 	$writing_systems = get_field('writing_systems');
 	$linguistic_genealogy = get_field('linguistic_genealogy');
+	$iso_code = get_field('iso_code');
 	$glottocode = get_field('glottocode');
 	$olac_url = get_field('olac_url');
 	$wikipedia_url = get_field('wikipedia_url');
@@ -30,7 +31,13 @@
 		</li>
 		<li>
 			<strong>Language Codes</strong><br>
-			<span>Glottocode: <?php echo $glottocode; ?></span>
+			<?php if ( $iso_code ): ?>
+				<span>ISO 639-3: <?php echo $iso_code; ?></span><br>
+			<?php endif; ?>
+			
+			<?php if ( $glottocode ): ?>
+				<span>Glottocode: <?php echo $glottocode; ?></span>
+			<?php endif; ?>
 		</li>
 		<li>
 			<strong>Reference Links</strong><br>
