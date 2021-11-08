@@ -862,7 +862,7 @@ body[data-ui="no-scroll"] {
   margin: 0 auto;
 }
 .wt_actions__contribute p {
-  margin-top: 30px;
+  margin: 30px;
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -873,7 +873,7 @@ body[data-ui="no-scroll"] {
 }
 .wt_actions__contribute--link {
   display: inline-block;
-  margin: 10px;
+  margin: 0 10px;
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
@@ -928,6 +928,15 @@ body[data-ui="no-scroll"] {
   top: 30px;
   right: 30px;
   z-index: 10000000000 !important;
+  background: 0;
+  border: 0;
+  color: #fffcef;
+  transition: 0.2s opacity ease-in-out;
+  font-size: 3rem;
+}
+.wt_search #wt_closeoverlay:hover {
+  cursor: pointer;
+  opacity: 0.9;
 }
 .wt_search__form {
   position: absolute;
@@ -1516,17 +1525,33 @@ body.post-type-archive-team .wt_team__member {
 body.post-type-archive-team .wt_team__member--image {
   width: 100%;
   padding-bottom: 100%;
+  margin-bottom: 15px;
   background-size: cover;
   background-position: center center;
+  border: 2px solid #101010;
+  box-sizing: border-box;
 }
 body.post-type-archive-team .wt_team__member--noimage {
   width: 100%;
   padding-bottom: 100%;
-  background: #3814a5;
+  margin-bottom: 15px;
+  background: #101010;
+  border: 2px solid #101010;
+  box-sizing: border-box;
 }
-body.post-type-archive-team .wt_team__member--name strong {
+body.post-type-archive-team .wt_team__member--info h2 {
   display: block;
-  margin-top: 15px;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+}
+body.post-type-archive-team .wt_team__member--info p {
+  display: block;
+  margin-top: 7.5px;
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
@@ -1535,14 +1560,20 @@ body.post-type-archive-team .wt_team__member--name strong {
   color: #101010;
   line-height: 1.5;
 }
-body.post-type-archive-team .wt_team__member--name p {
-  font-family: 'Graphik Web';
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.25rem;
-  color: #101010;
-  line-height: 1.5;
+body.post-type-archive-team .wt_team__member--info ul {
+  margin-top: 20px;
+}
+body.post-type-archive-team .wt_team__member--info ul li {
+  display: inline-block;
+  margin-right: 30px;
+}
+body.post-type-archive-team .wt_team__member--info ul li a {
+  color: #3814a5;
+  font-size: 1.75rem;
+  transition: 0.2s opacity ease-in-out;
+}
+body.post-type-archive-team .wt_team__member--info ul li a:hover {
+  opacity: 0.9;
 }
 body.post-type-archive-team .wt_footer {
   padding-top: 90px;
@@ -1559,8 +1590,27 @@ body.post-type-archive-team .wt_footer {
     margin: 0 0.5% 15px !important;
     text-align: center;
   }
-  body.post-type-archive-team .wt_team__member strong {
-    margin-top: 5px;
+  body.post-type-archive-team .wt_team__member--info h2 {
+    font-family: 'Graphik Web';
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    font-size: 1.25rem;
+    color: #101010;
+    line-height: 1.5;
+  }
+  body.post-type-archive-team .wt_team__member--info p {
+    margin: 5px;
+    font-family: 'Graphik Web';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    font-size: 1.25rem;
+    color: #101010;
+    line-height: 1.5;
+  }
+  body.post-type-archive-team .wt_team__member--info ul li {
+    margin: 0 7.5px;
   }
   body.post-type-archive-team .wt_footer {
     padding-top: 60px;

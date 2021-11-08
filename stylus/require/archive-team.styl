@@ -30,22 +30,44 @@ body
 				&--image
 					width 100%
 					padding-bottom 100%
+					margin-bottom $margin0
 					background-size cover
 					background-position center center
+					border 2px solid $black
+					box-sizing border-box
 				
 				&--noimage
 					width 100%
 					padding-bottom 100%
-					background $blue
+					margin-bottom $margin0
+					background $black
+					border 2px solid $black
+					box-sizing border-box
 				
-				&--name
-					strong
+				&--info
+					h2
 						display block
-						margin-top $margin0
-						bodyTypeBold($black)
+						subheadType($black)
 					
-					p
-						bodyType($black)
+					p						
+						display block
+						margin-top 7.5px
+						bodyTypeBold($black)
+						
+					ul
+						margin-top 20px
+						
+						li
+							display inline-block
+							margin-right $margin1
+							
+							a							
+								color $blue
+								font-size 1.75rem
+								transition .2s opacity ease-in-out
+								
+								&:hover
+									opacity .9
 		
 		.wt_footer
 			padding-top $margin3
@@ -65,8 +87,17 @@ body
 					margin 0 0.5% 15px !important
 					text-align center
 					
-					strong
-						margin-top 5px
+					&--info
+						h2
+							bodyTypeBold($black)
+						
+						p
+							margin 5px
+							bodyType($black)
+							
+						ul
+							li
+								margin 0 7.5px
 			
 			.wt_footer
 				padding-top $margin2
