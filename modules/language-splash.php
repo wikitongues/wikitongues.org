@@ -19,15 +19,27 @@
 	<ul class="wt_language__banner--metadata">
 		<li>
 			<strong>Countries of Origin</strong><br>
-			<span><?php echo $nations_of_origin; ?></span>
+			<?php if ( $countries_of_origin ): ?>
+				<span><?php echo $nations_of_origin; ?></span>
+			<?php else: ?>
+				<span>Not listed</span>
+			<?php endif; ?>
 		</li>
 		<li>
 			<strong>Writing Systems</strong><br>
-			<span><?php echo $writing_systems; ?></span>
+			<?php if ( $writing_systems ): ?>
+				<span><?php echo $writing_systems; ?></span>
+			<?php else: ?>
+				<span>Not listed</span>
+			<?php endif; ?>
 		</li>
 		<li>
 			<strong>Linguistic Genealogy</strong><br>
-			<span><?php echo $linguistic_genealogy; ?></span>
+			<?php if ( $linguistic_genealogy ): ?>
+				<span><?php echo $linguistic_genealogy; ?></span>
+			<?php else: ?>
+				<span>Not listed</span>
+			<?php endif; ?>
 		</li>
 		<li>
 			<strong>Language Codes</strong><br>
@@ -38,15 +50,32 @@
 			<?php if ( $glottocode ): ?>
 				<span>Glottocode: <?php echo $glottocode; ?></span>
 			<?php endif; ?>
+
+			<?php if ( !$glottocode && !$iso_code ):?>
+				<span>Not listed</span>
+			<?php endif; ?>
 		</li>
 		<li>
 			<strong>Reference Links</strong><br>
+			<?php if ( $olac_url ): ?>
 			<span>
 				<a href="<?php echo $olac_url; ?>" target="_blank">Open Language Archives</a>
-			</span><br>
+			</span>
+			<?php endif; ?>
+
+			<?php if ( $olac_url && $wikipedia_url ): ?>
+				<br>
+			<?php endif; ?>
+
+			<?php if ( $wikipedia_url ): ?>
 			<span>
 				<a href="<?php echo $wikipedia_url; ?>" target="_blank">Wikipedia</a>
 			</span>
+			<?php endif; ?>
+
+			<?php if ( !$olac_url && !$wikipedia_url ): ?>
+				<span>Not listed</span>
+			<?php endif; ?>
 		</li>
 	</ul>
 </div>

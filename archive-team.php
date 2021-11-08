@@ -14,7 +14,7 @@ $team = get_field('board_and_staff', 'options');
 
 if ( $team ) {
 	// governing board title
-	$team_title = 'Board and Staff';
+	$team_title = 'Directors and Staff';
 	$team_wrapper = 'board-and-staff'; // unique ID for wrapper
 
 	include( locate_template('modules/team.php') );
@@ -26,7 +26,7 @@ $team = get_field('advisory_board', 'options');
 
 if ( $team ) {
 	// advisory board title
-	$team_title = 'Advisors';
+	$team_title = 'Volunteer Advisors';
 	$team_wrapper = 'advisors';
 
 	include( locate_template('modules/team.php') );

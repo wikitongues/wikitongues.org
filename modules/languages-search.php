@@ -2,7 +2,9 @@
 <?php error_reporting(E_ERROR | E_PARSE); ?>
 
 <div id="wt_search" class="wt_search wt_overlay<?php if (isset($_GET['languages_search'])): ?> wt_visible<?php endif; ?>">
-	<button id="wt_closeoverlay">Close Window</button>
+	<button id="wt_closeoverlay">
+		<i class="fad fa-times-circle"></i>
+	</button>
 	<div class="wt_search__form">
 		<div class="wt_innerwrap">
 			<div class="wt_aligncenter">
