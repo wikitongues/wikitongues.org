@@ -30,7 +30,7 @@
             "key": "field_612e97089ba6f",
             "label": "Banner Header",
             "name": "banner_header",
-            "type": "text",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -41,9 +41,9 @@
             },
             "default_value": "",
             "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "maxlength": "",
+            "rows": "",
+            "new_lines": "br"
         },
         {
             "key": "field_614a381b0ee00",
@@ -82,5 +82,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632253988
+    "modified": 1636479682
 }
