@@ -163,6 +163,11 @@ body[data-ui="no-scroll"] {
     float: right;
     white-space: nowrap;
     overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .wt_header__nav::-webkit-scrollbar {
+    display: none;
   }
 }
 .wt_footer {
@@ -361,17 +366,32 @@ body[data-ui="no-scroll"] {
 }
 @media all and (max-width: 768px) {
   .wt_metrics {
-    padding: 30px;
+    padding: 30px 0;
   }
   .wt_metrics h2 {
+    padding: 0 30px;
     font-size: 2rem;
     text-align: left;
   }
   .wt_metrics__icons {
     margin-top: 30px;
   }
+  .wt_metrics__icons ul {
+    padding-left: 30px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    -ms-overflow-style: display none;
+    scrollbar-width: display none;
+  }
+  .wt_metrics__icons ul::-webkit-scrollbar {
+    display: none;
+  }
   .wt_metrics__icons ul li {
-    margin: 30px auto;
+    display: inline-block;
+    margin: 0 30px 30px 0;
+  }
+  .wt_metrics__icons ul li img {
+    height: 100px;
   }
 }
 .wt_section {
@@ -519,6 +539,9 @@ body[data-ui="no-scroll"] {
   .wt_section aside>div h2 {
     font-size: 2rem;
   }
+  .wt_section__image:before {
+    width: 100%;
+  }
 }
 .wt_partners {
   margin: 120px;
@@ -603,6 +626,7 @@ body[data-ui="no-scroll"] {
   width: 20%;
 }
 .wt_donate .wt_testimonial__text h2 {
+  position: relative;
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
@@ -610,6 +634,19 @@ body[data-ui="no-scroll"] {
   font-size: 1.25rem;
   color: #101010;
   line-height: 1.5;
+}
+.wt_donate .wt_testimonial__text h2:before {
+  content: "“";
+  position: absolute;
+  top: -20px;
+  left: -25px;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
 }
 .wt_donate .wt_action__primary {
   display: block;
@@ -679,6 +716,9 @@ body[data-ui="no-scroll"] {
     padding: 0 !important;
     text-align: center;
   }
+  .wt_donate .wt_testimonial h2:before {
+    display: none;
+  }
 }
 .wt_testimonial {
   width: 100%;
@@ -698,6 +738,7 @@ body[data-ui="no-scroll"] {
   vertical-align: middle;
 }
 .wt_testimonial__text h2 {
+  position: relative;
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
   font-style: normal;
@@ -706,6 +747,19 @@ body[data-ui="no-scroll"] {
   color: #101010;
   line-height: 1.15;
   margin-bottom: 15px;
+}
+.wt_testimonial__text h2:before {
+  content: "“";
+  position: absolute;
+  top: -20px;
+  left: -25px;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
 }
 .wt_testimonial__text p {
   font-family: 'Graphik Web';
@@ -730,6 +784,9 @@ body[data-ui="no-scroll"] {
   .wt_testimonial__text h2 {
     font-size: 2rem;
     text-align: center;
+  }
+  .wt_testimonial__text h2:before {
+    display: none;
   }
   .wt_testimonial__text p {
     text-align: center;

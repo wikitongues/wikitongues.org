@@ -16,8 +16,16 @@
 		vertical-align middle
 		
 		h2
+			position relative
 			subheadType($black)
 			margin-bottom $margin0
+			
+			&:before
+				content "“"
+				position absolute
+				top -20px
+				left -25px
+				headerType($black)
 		
 		p
 			bodyType($black)
@@ -37,6 +45,9 @@
 			h2
 				subheadTypeMobile($black)
 				text-align center
+				
+				&:before
+					display none
 			
 			p
 				text-align center

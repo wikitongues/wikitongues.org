@@ -28,9 +28,10 @@
 
 @media all and (max-width:$mobile)
 	.wt_metrics
-		padding $margin1
+		padding $margin1 0
 		
 		h2
+			padding 0 $margin1
 			subheadTypeMobile()
 			text-align left
 		
@@ -38,5 +39,18 @@
 			margin-top $margin1
 			
 			ul
+				padding-left $margin1
+				white-space nowrap
+				overflow-x scroll
+				-ms-overflow-style display none
+				scrollbar-width display none
+				
+				&::-webkit-scrollbar
+					display none
+				
 				li
-					margin $margin1 auto
+					display inline-block
+					margin 0 $margin1 $margin1 0
+					
+					img
+						height 100px

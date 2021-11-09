@@ -22,7 +22,15 @@
 		
 		&__text	
 			h2
+				position relative
 				bodyTypeBold($black)
+				
+				&:before
+					content "“"
+					position absolute
+					top -20px
+					left -25px
+					headerType($black)
 	
 	.wt_action
 		&__primary
@@ -58,3 +66,7 @@
 			h1
 				padding 0 !important
 				text-align center
+		
+		.wt_testimonial
+			h2:before
+				display none
