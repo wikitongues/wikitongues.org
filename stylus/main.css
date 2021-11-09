@@ -554,7 +554,7 @@ body[data-ui="no-scroll"] {
   font-size: 5rem;
   color: #101010;
   text-transform: uppercase;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   text-align: center;
 }
 .wt_partners__icons ul {
@@ -562,7 +562,7 @@ body[data-ui="no-scroll"] {
 }
 .wt_partners__icons ul li {
   display: inline-block;
-  width: 27%;
+  width: 20%;
   margin: auto 3%;
 }
 .wt_partners__icons ul li img {
