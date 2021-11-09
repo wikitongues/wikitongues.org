@@ -1431,6 +1431,9 @@ body[data-ui="no-scroll"] {
 .wt_thumbnails__download--metadata li:last-of-type {
   margin-bottom: 0;
 }
+.wt_thumbnails__download--metadata li:last-of-type span {
+  text-decoration: underline;
+}
 .wt_thumbnails__download--metadata li strong {
   display: block;
   font-family: 'Graphik Web';

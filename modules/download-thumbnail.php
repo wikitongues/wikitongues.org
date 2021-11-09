@@ -24,6 +24,9 @@
 				</span>
 				<?php endif; ?>
 			</li>
+			<li>
+				<span>Download</span>
+			</li>
 		</ul>
 	</a>
 </div>

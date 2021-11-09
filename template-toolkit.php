@@ -15,7 +15,7 @@ $thumbnail = get_field('toolkit_versions'); // new variable
 
 // toolkits header
 echo '<div class="wt_thumbnails__title">' .
-	 '<h1>Toolkit Versions</h1>' .
+	 '<h1>Download Options</h1>' .
 	 '</div>'; // need to make this modular
 
 // if videos exist
