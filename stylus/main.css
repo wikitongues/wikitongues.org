@@ -821,6 +821,7 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   line-height: 1.15;
   text-align: left;
+  margin-right: 1%;
 }
 .wt_newsletter__form {
   width: 50%;
