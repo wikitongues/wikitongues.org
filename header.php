@@ -94,7 +94,10 @@
 </head>
 <body <?php body_class(); ?><?php if (isset($_GET['languages_search'])): ?>data-ui="no-scroll"<?php endif; ?>>
 <?php wp_body_open(); ?>
-
+	<!-- bug report banner -->
+	<header class="wt_header__bugs">
+		This website is in early launch. If you experience issues, please <a href="https://airtable.com/shrtbu15QZnAbXXi9">report them here</a>. Your feedback helps us improve!
+	</header>
 	<!-- global header -->
 	<header class="wt_header" role="banner">
 
