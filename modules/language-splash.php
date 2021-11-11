@@ -19,7 +19,7 @@
 	<ul class="wt_language__banner--metadata">
 		<li>
 			<strong>Countries of Origin</strong><br>
-			<?php if ( $countries_of_origin ): ?>
+			<?php if ( $nations_of_origin ): ?>
 				<span><?php echo $nations_of_origin; ?></span>
 			<?php else: ?>
 				<span>Not listed</span>
