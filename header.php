@@ -19,10 +19,21 @@
 	<!-- SEO title -->
 	<title><?php
 		if ( $seo_title ) { 
+			// use title from SEO CRM, if available
 			echo $seo_title;
-		} else { //if post_type is page
+
+		} else if ( is_archive() ) {
+			// grab archived post type 
+			$archive_post_type = get_queried_object();
+
+			// title page based on archived post type
+			echo 'Wikitongues | ' . $archive_post_type->labels->name;
+
+		} else {
+			// use the default page title
 			echo 'Wikitongues' . ' | ' . get_the_title();
-		} // elseif archive, single post, etc ?>		
+
+		} ?>		
 	</title>
 
 	<!-- SEO description -->
