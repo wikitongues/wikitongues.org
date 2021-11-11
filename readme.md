@@ -12,4 +12,5 @@
 * SEO and sharing, including title bug (content)
 * search results pagination (code)
 * persistant search (code)
+* archive pages for videos, lexicons, etc.
 * full submission flow (lexicons, ext resources) (content+code)
