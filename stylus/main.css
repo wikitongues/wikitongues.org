@@ -939,6 +939,10 @@ body[data-ui="no-scroll"] {
   letter-spacing: 0.02rem;
   transition: 0.1s color ease-in-out;
   margin: 0 auto;
+  transition: 0.2s opacity ease-in-out;
+}
+.wt_actions__search:hover {
+  opacity: 0.9;
 }
 .wt_actions__contribute p {
   margin: 30px;
@@ -1723,6 +1727,10 @@ body.single-languages .wt_thumbnails__cta {
   color: #fffcef;
   text-decoration: none;
   cursor: pointer;
+  transition: 0.2s opacity ease-in-out;
+}
+body.single-languages .wt_thumbnails__cta:hover {
+  opacity: 0.9;
 }
 body.single-projects .wt_project__content {
   width: 90%;
