@@ -5,6 +5,9 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	<!-- favicon -->
+	<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+
 	<!-- Custom metadata variables -->
 	<?php 
 		$global              = $wp;
