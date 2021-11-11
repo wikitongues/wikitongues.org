@@ -9,7 +9,7 @@
 
 * build out project pages (content) and add them to home (code)
 * fellowship page (code)
-* SEO and sharing (content)
+* SEO and sharing, including title bug (content)
 * search results pagination (code)
 * persistant search (code)
 * full submission flow (lexicons, ext resources) (content+code)
