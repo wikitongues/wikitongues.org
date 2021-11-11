@@ -7,3 +7,11 @@
 # in-line php lines up with html (if statements)
 
 # line-breaks between php and in-line html
+
+# immediate to-do's
+
+* project pages added to home
+* persistant search
+* full submission flow (lexicons, ext resources)
+* fellowship page
+* SEO and sharing

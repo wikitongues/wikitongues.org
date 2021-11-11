@@ -192,7 +192,7 @@ body[data-ui="no-scroll"] {
   }
 }
 .wt_footer {
-  padding: 60px 0 120px;
+  padding: 120px 0;
   background: #101010;
   color: #fffcef;
   text-align: center;
@@ -615,7 +615,7 @@ body[data-ui="no-scroll"] {
 .wt_donate {
   width: 90%;
   max-width: 890px;
-  margin: auto auto 60px auto;
+  margin: auto auto 120px auto;
   text-align: center;
 }
 .wt_donate h1 {
@@ -744,29 +744,29 @@ body[data-ui="no-scroll"] {
 .wt_testimonial {
   width: 100%;
   max-width: 890px;
-  margin: 30px auto 0;
+  margin: 90px auto 0;
 }
 .wt_testimonial__image {
   width: 25%;
   display: inline-block;
   vertical-align: middle;
   border-radius: 100%;
-  margin-right: 5%;
+  margin-right: 7%;
 }
 .wt_testimonial__text {
-  width: 69%;
+  width: 67%;
   display: inline-block;
   vertical-align: middle;
 }
 .wt_testimonial__text h2 {
   position: relative;
-  font-family: 'Schnyder Wide M Web';
-  font-weight: 300;
+  font-family: 'Graphik Web';
+  font-weight: 600;
   font-style: normal;
   font-stretch: normal;
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   color: #101010;
-  line-height: 1.15;
+  line-height: 1.5;
   margin-bottom: 15px;
 }
 .wt_testimonial__text h2:before {
@@ -1357,6 +1357,7 @@ body[data-ui="no-scroll"] {
   line-height: 1.5;
 }
 .wt_thumbnails__video--metadata li span {
+  display: block;
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -1824,7 +1825,7 @@ body.page-template-template-cohort .wt_testimonial:nth-of-type(even) .wt_testimo
   }
 }
 body.page-template-template-revitalization .wt_testimonial {
-  margin: 60px auto;
+  margin: 90px auto;
 }
 body.page-template-template-revitalization .wt_donate {
   margin-top: 120px;
