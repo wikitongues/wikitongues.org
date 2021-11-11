@@ -260,11 +260,15 @@ body[data-ui="no-scroll"] {
 }
 @media all and (max-width: 768px) {
   .wt_footer {
-    padding-bottom: 60px;
+    padding-top: 60px;
   }
   .wt_footer__menu li {
     display: block;
     margin-bottom: 15px;
+  }
+  .wt_footer__contact--legal {
+    width: 70%;
+    margin: auto;
   }
 }
 .wt_banner {
@@ -560,8 +564,16 @@ body[data-ui="no-scroll"] {
   .wt_section aside>div h2 {
     font-size: 2rem;
   }
+  .wt_section__image {
+    padding-bottom: 75%;
+    border-top: 15px #101010 solid;
+    border-bottom: 15px #101010 solid;
+  }
   .wt_section__image:before {
-    width: 100%;
+    display: none;
+  }
+  .wt_section__text h2 {
+    margin: 30px auto 35px !important;
   }
 }
 .wt_partners {
@@ -643,32 +655,6 @@ body[data-ui="no-scroll"] {
   margin: 60px 0;
   text-align: left;
 }
-.wt_donate .wt_testimonial__image {
-  width: 20%;
-}
-.wt_donate .wt_testimonial__text h2 {
-  position: relative;
-  font-family: 'Graphik Web';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.25rem;
-  color: #101010;
-  line-height: 1.5;
-}
-.wt_donate .wt_testimonial__text h2:before {
-  content: "“";
-  position: absolute;
-  top: -20px;
-  left: -25px;
-  font-family: 'Schnyder Wide M Web';
-  font-weight: 300;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 5rem;
-  color: #101010;
-  text-transform: uppercase;
-}
 .wt_donate .wt_action__primary {
   display: block;
   text-align: center;
@@ -726,6 +712,9 @@ body[data-ui="no-scroll"] {
   transition: 0.1s color ease-in-out;
 }
 @media all and (max-width: 768px) {
+  .wt_donate {
+    margin-bottom: 60px;
+  }
   .wt_donate h1 {
     font-size: 3rem;
   }
@@ -736,9 +725,6 @@ body[data-ui="no-scroll"] {
   .wt_donate aside h1 {
     padding: 0 !important;
     text-align: center;
-  }
-  .wt_donate .wt_testimonial h2:before {
-    display: none;
   }
 }
 .wt_testimonial {
@@ -803,7 +789,6 @@ body[data-ui="no-scroll"] {
     display: block;
   }
   .wt_testimonial__text h2 {
-    font-size: 2rem;
     text-align: center;
   }
   .wt_testimonial__text h2:before {
@@ -1570,14 +1555,14 @@ body.post-type-archive-languages .wt_metrics__icons {
   margin-top: 0 !important;
 }
 body.post-type-archive-languages .wt_donate {
-  margin-top: 120px !important;
+  margin-top: 120px;
 }
 @media all and (max-width: 768px) {
   body.post-type-archive-languages .wt_metrics {
-    display: none;
+    padding-top: 60px;
   }
-  body.post-type-archive-languages .wt_actions {
-    margin-top: 60px;
+  body.post-type-archive-languages .wt_donate {
+    padding-top: 60px;
   }
 }
 body.post-type-archive-team .wt_team {
@@ -1837,4 +1822,9 @@ body.page-template-template-revitalization .wt_testimonial {
 }
 body.page-template-template-revitalization .wt_donate {
   margin-top: 120px;
+}
+@media all and (max-width: 768px) {
+  body.page-template-template-revitalization .wt_donate {
+    margin-top: 60px;
+  }
 }

@@ -16,21 +16,6 @@
 	.wt_testimonial
 		margin $margin2 0
 		text-align left
-		
-		&__image
-			width 20%
-		
-		&__text	
-			h2
-				position relative
-				bodyTypeBold($black)
-				
-				&:before
-					content "“"
-					position absolute
-					top -20px
-					left -25px
-					headerType($black)
 	
 	.wt_action
 		&__primary
@@ -56,6 +41,8 @@
 	
 @media all and (max-width:$mobile)
 	.wt_donate
+		margin-bottom $margin2
+		
 		h1
 			headerTypeMobile()
 			
@@ -66,7 +53,3 @@
 			h1
 				padding 0 !important
 				text-align center
-		
-		.wt_testimonial
-			h2:before
-				display none
