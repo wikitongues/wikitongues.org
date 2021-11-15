@@ -1484,6 +1484,9 @@ body[data-ui="no-scroll"] {
   box-sizing: border-box;
   transition: 0.2s background ease-in-out;
 }
+.wt_thumbnails__language a {
+  text-decoration: none !important;
+}
 .wt_thumbnails__language:hover {
   opacity: 0.9;
 }
