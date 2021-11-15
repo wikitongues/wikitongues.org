@@ -2,7 +2,8 @@
 	$language_thumbnail = get_the_post_thumbnail_url();
 	$standard_name = get_field('standard_name');
 	$alternate_names = get_field('alternate_names');
-	$nations_of_origin = get_field('nations_of_origin');
+	$nations_of_origin = get_field('nations_of_origin'); // not sure if this is the metadata we want to tease
+	
 	// $writing_systems = get_field('writing_systems');
 	// $linguistic_genealogy = get_field('linguistic_genealogy');
 	// $glottocode = get_field('glottocode');
@@ -26,12 +27,5 @@
 			<span><?php echo $alternate_names; ?></span>
 			<?php endif; ?>
 		</li>
-
-		<?php if ( $nations_of_origin ): ?>
-		<li>
-			<strong>Nations of Origin</strong>
-			<span><?php echo $nations_of_origin; ?></span>
-		</li>
-		<?php endif; ?>
 	</ul>
 </div>

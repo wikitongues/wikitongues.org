@@ -1550,6 +1550,14 @@ body[data-ui="no-scroll"] {
     width: 90%;
     margin: 0 auto 15px;
   }
+  .wt_thumbnails__language {
+    width: 48%;
+    margin: 0.75%;
+  }
+  .wt_thumbnails__language--metadata {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   .wt_thumbnails__cta {
     margin-top: 15px !important;
   }
