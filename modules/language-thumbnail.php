@@ -11,21 +11,23 @@
 	// $wikipedia_url = get_field('wikipedia_url');
 ?>
 <div class="wt_thumbnails__language">
-	<?php if ( $language_thumbnail ): ?>
-	<img class="wt_thumbnails__video--image"
-		 src="<?php echo $language_thumbnail; ?>" 
-		 alt="language image thumbnail">
-	<?php endif; ?>
-	
-	<ul class="wt_thumbnails__language--metadata">
-		<li>
-			<?php if ( $standard_name ) : ?>
-			<strong><?php echo $standard_name; ?></strong>
-			<?php endif; ?>
-			
-			<?php if ( $alternate_names ) : ?>
-			<span><?php echo $alternate_names; ?></span>
-			<?php endif; ?>
-		</li>
-	</ul>
+	<a href="<?php the_permalink(); ?>">
+		<?php if ( $language_thumbnail ): ?>
+		<img class="wt_thumbnails__video--image"
+			 src="<?php echo $language_thumbnail; ?>" 
+			 alt="language image thumbnail">
+		<?php endif; ?>
+		
+		<ul class="wt_thumbnails__language--metadata">
+			<li>
+				<?php if ( $standard_name ) : ?>
+				<strong><?php echo $standard_name; ?></strong>
+				<?php endif; ?>
+				
+				<?php if ( $alternate_names ) : ?>
+				<span><?php echo $alternate_names; ?></span>
+				<?php endif; ?>
+			</li>
+		</ul>
+	</a>
 </div>
