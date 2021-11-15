@@ -1477,11 +1477,15 @@ body[data-ui="no-scroll"] {
   width: 30%;
   margin: 2% 1% 0;
   border-radius: 3px;
-  background: #101010;
+  background: #3814a5;
   color: #fffcef;
   overflow: hidden;
-  border: 1px solid #101010;
+  box-shadow: 1px 1px 3px #808080;
   box-sizing: border-box;
+  transition: 0.2s background ease-in-out;
+}
+.wt_thumbnails__language:hover {
+  opacity: 0.9;
 }
 .wt_thumbnails__language--image {
   width: 100%;

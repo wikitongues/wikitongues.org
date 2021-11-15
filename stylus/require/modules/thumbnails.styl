@@ -137,12 +137,16 @@
 		width 30%
 		margin 2% 1% 0
 		border-radius 3px
-		background $black
+		background $blue
 		color $parchment
 		overflow hidden
-		border 1px solid $black
+		box-shadow 1px 1px 3px grey
 		box-sizing border-box
+		transition .2s background ease-in-out
 		
+		&:hover
+			opacity .9
+
 		&--image
 			width 100%
 			height auto
