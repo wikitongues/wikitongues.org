@@ -225,7 +225,8 @@ function create_post_type_languages()
         'has_archive' => true,
         'supports' => array(
             'title',
-            'thumbnail'
+            'thumbnail',
+            'excerpt'
         ),
         'can_export' => true,
         'taxonomies' => array(

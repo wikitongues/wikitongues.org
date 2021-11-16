@@ -24,8 +24,8 @@
 				<strong><?php echo $standard_name; ?></strong>
 				<?php endif; ?>
 				
-				<?php if ( $alternate_names ) : ?>
-				<span><?php echo $alternate_names; ?></span>
+				<?php if ( has_excerpt() ) : ?>
+				<span><?php the_excerpt(); ?></span>
 				<?php endif; ?>
 			</li>
 		</ul>
