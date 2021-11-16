@@ -1334,6 +1334,7 @@ body[data-ui="no-scroll"] {
   margin-top: -2px;
   box-sizing: border-box;
   padding: 30px 15px;
+  border: 1px solid #3814a5;
 }
 .wt_thumbnails__video--metadata li {
   margin-bottom: 15px;
