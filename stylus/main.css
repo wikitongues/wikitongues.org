@@ -1314,13 +1314,13 @@ body[data-ui="no-scroll"] {
 .wt_thumbnails__video {
   display: inline-block;
   vertical-align: top;
-  width: 47%;
-  margin: 2% 1% 0;
   border-radius: 3px;
-  background: #101010;
+  background: #3814a5;
+  width: 30%;
+  margin: 2% 1% 0;
   color: #fffcef;
   overflow: hidden;
-  border: 1px solid #101010;
+  box-shadow: 1px 1px 3px #808080;
   box-sizing: border-box;
 }
 .wt_thumbnails__video--image {
@@ -1372,11 +1372,12 @@ body[data-ui="no-scroll"] {
   display: inline-block;
   width: 30%;
   margin: 2% 1% 0;
-  background: #101010;
+  background: #3814a5;
   color: #fffcef;
   box-sizing: border-box;
   padding: 30px 0;
   border-radius: 3px;
+  box-shadow: 1px 1px 3px #808080;
 }
 .wt_thumbnails__lexicon--metadata {
   margin-top: -2px;
@@ -1423,12 +1424,17 @@ body[data-ui="no-scroll"] {
   display: inline-block;
   width: 30%;
   margin: 2% 1% 0;
-  background: #101010;
+  background: #3814a5;
   color: #fffcef;
   box-sizing: border-box;
   border-radius: 3px;
   overflow: hidden;
   text-align: center;
+  box-shadow: 1px 1px 3px #808080;
+  transition: 0.2s opacity ease-in-out;
+}
+.wt_thumbnails__download:hover {
+  opacity: 0.9;
 }
 .wt_thumbnails__download--image {
   width: 100%;

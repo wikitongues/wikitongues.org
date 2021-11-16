@@ -24,13 +24,13 @@
 	&__video
 		display inline-block
 		vertical-align top
-		width 47%
-		margin 2% 1% 0
 		border-radius 3px
-		background $black
+		background $blue
+		width 30%
+		margin 2% 1% 0
 		color $parchment
 		overflow hidden
-		border 1px solid $black
+		box-shadow 1px 1px 3px grey
 		box-sizing border-box
 		
 		&--image
@@ -63,11 +63,12 @@
 		display inline-block
 		width 30%
 		margin 2% 1% 0
-		background $black
+		background $blue
 		color $parchment
 		box-sizing border-box
 		padding $margin1 0
 		border-radius 3px
+		box-shadow 1px 1px 3px grey
 		
 		&--metadata
 			margin-top -2px
@@ -95,12 +96,17 @@
 		display inline-block
 		width 30%
 		margin 2% 1% 0
-		background $black
+		background $blue
 		color $parchment
 		box-sizing border-box
 		border-radius 3px
 		overflow hidden
 		text-align center
+		box-shadow 1px 1px 3px grey
+		transition .2s opacity ease-in-out
+
+		&:hover
+			opacity .9
 		
 		&--image
 			width 100%
