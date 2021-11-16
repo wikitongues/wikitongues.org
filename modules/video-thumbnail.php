@@ -43,15 +43,19 @@
 			<?php
 				if ( $public_status == 'Public' ) {
 					if ( $youtube_link ) {
-						echo '<a href="' . $youtube_link . '">' .
+						echo '<span>'.
+							 '<a href="' . $youtube_link . '">' .
 							 'YouTube' .
-							 '</a>';
+							 '</a>'.
+							 '</span>';
 					}
 
 					if ( $wikimedia_commons_link ) {
-						echo '<a href="' . $wikimedia_commons_link . '">' .
+						echo '<span>'.
+							 '<a href="' . $wikimedia_commons_link . '">' .
 							 'Wikimedia Commons' .
-							 '</a>';
+							 '</a>'.
+							 '</span>';
 					}
 				} elseif ( $public_status == 'Private' ) {
 					echo '<span>' .
