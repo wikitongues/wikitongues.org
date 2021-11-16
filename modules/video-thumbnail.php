@@ -55,7 +55,7 @@
 						 '</span>';
 				} else {
 					echo '<span>' .
-						 'This video is still being processed' .
+						 'This materials are still being processed' .
 						 '</span>';
 				}
 			?>

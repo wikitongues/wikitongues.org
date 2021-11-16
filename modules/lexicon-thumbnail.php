@@ -52,7 +52,9 @@
 				}
 
 				if ( !$external_link && !$dropbox_link ) {
-					echo 'This lexicon is still being processed.';
+					echo '<span>'.
+						 'These materials are still being processed.'.
+						 '</span>';
 				}
 			?>
 		</li>
