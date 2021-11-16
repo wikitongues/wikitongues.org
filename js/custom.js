@@ -49,7 +49,7 @@ $(window).on('load', function(){
 	languageSearch();
 });
 
-// run after JS functions
+// run after JS loads
 $(document).ready(function(){
 	// wait 1 second after JS has loaded
 	setTimeout(function(){
@@ -57,4 +57,13 @@ $(document).ready(function(){
 			revealElement($('#wt_header__nav--menu'));
 		}, 1000
 	);	
+});
+
+// masonry
+$(window).load(function(){
+	$('.wt_thumbnails').masonry({
+	  // options
+	  itemSelector: '.wt_masonry',
+	  horizontalOrder: true
+	});
 });

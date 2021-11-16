@@ -8,7 +8,7 @@
 	$video_license = get_field('video_license');
 	preg_match('#\((.*?)\)#', $video_thumbnail, $video_image);
 ?>
-<div class="wt_thumbnails__video">
+<div class="wt_thumbnails__video wt_masonry">
 	<?php if ( $video_thumbnail ): ?>
 	<img class="wt_thumbnails__video--image"
 		 src="<?php echo $video_image[1]; ?>" 

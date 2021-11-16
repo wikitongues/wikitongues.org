@@ -10,7 +10,7 @@
 	// $olac_url = get_field('olac_url');
 	// $wikipedia_url = get_field('wikipedia_url');
 ?>
-<div class="wt_thumbnails__language">
+<div class="wt_thumbnails__language wt_masonry">
 	<a href="<?php the_permalink(); ?>">
 		<?php if ( $language_thumbnail ): ?>
 		<img class="wt_thumbnails__video--image"

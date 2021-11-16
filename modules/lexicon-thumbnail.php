@@ -5,7 +5,7 @@
 	$external_link = get_field('external_link');
 	$dropbox_link = get_field('dropbox_link');
 ?>
-<div class="wt_thumbnails__lexicon">
+<div class="wt_thumbnails__lexicon wt_masonry">
 	<ul class="wt_thumbnails__lexicon--metadata">
 		<li>
 			<strong><?php echo $lexicon_title; ?></strong>
