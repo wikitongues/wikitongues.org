@@ -1,4 +1,5 @@
 <div class="wt_thumbnails">
+	<div class="wt_thumbnails__wrapper">
 	<?php
 	// run through thumbnail loop
 	foreach ( $thumbnail as $post ) {
@@ -31,6 +32,7 @@
 		}
 	} wp_reset_postdata();
 	?> <!-- to do: paginate all content sections -->
+	</div>
 
 	<?php if ( $thumbnail_cta_text ): ?>
 	<a class="wt_thumbnails__cta" href="<?php echo $thumbnail_cta_link; ?>">

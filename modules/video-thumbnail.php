@@ -13,6 +13,10 @@
 	<img class="wt_thumbnails__video--image"
 		 src="<?php echo $video_image[1]; ?>" 
 		 alt="video still image">
+	<?php else: ?>
+	<img class="wt_thumbnails__video--image"
+		 src="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/video__no-thumbnail.jpg" 
+		 alt="video still image">
 	<?php endif; ?>
 	
 	<ul class="wt_thumbnails__video--metadata">

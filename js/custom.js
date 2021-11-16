@@ -58,12 +58,3 @@ $(document).ready(function(){
 		}, 1000
 	);	
 });
-
-// masonry
-$(window).load(function(){
-	$('.wt_thumbnails').masonry({
-	  // options
-	  itemSelector: '.wt_masonry',
-	  horizontalOrder: true
-	});
-});
