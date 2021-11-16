@@ -13,13 +13,20 @@ body
 				h2
 					subheadType($black)
 					margin-bottom $margin1
+					padding-top $margin0
+
+					&:first-of-type
+						padding-top 0
 					
 				p
 					bodyType($black)
-					margin-bottom $margin1
+					margin-bottom $margin0
 					
 					a
 						bodyTypeLink($blue)
+
+					strong
+						bodyTypeBold($black)
 						
 				img
 					display block

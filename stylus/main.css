@@ -1769,6 +1769,10 @@ body.single-projects .wt_project__content h2 {
   color: #101010;
   line-height: 1.15;
   margin-bottom: 30px;
+  padding-top: 15px;
+}
+body.single-projects .wt_project__content h2:first-of-type {
+  padding-top: 0;
 }
 body.single-projects .wt_project__content p {
   font-family: 'Graphik Web';
@@ -1778,7 +1782,7 @@ body.single-projects .wt_project__content p {
   font-size: 1.25rem;
   color: #101010;
   line-height: 1.5;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 body.single-projects .wt_project__content p a {
   font-family: 'Graphik Web';
@@ -1789,6 +1793,15 @@ body.single-projects .wt_project__content p a {
   color: #3814a5;
   line-height: 1.5;
   text-decoration: underline;
+}
+body.single-projects .wt_project__content p strong {
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
 }
 body.single-projects .wt_project__content img {
   display: block;
