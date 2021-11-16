@@ -55,7 +55,7 @@
 						 '</span>';
 				} else {
 					echo '<span>' .
-						 'This materials are still being processed' .
+						 'These materials are still being processed.' .
 						 '</span>';
 				}
 			?>
