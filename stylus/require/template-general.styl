@@ -1,0 +1,85 @@
+body
+	&.page-template-template-general
+		.wt_project
+			&__content
+				width 90%
+				max-width 600px
+				margin $margin4 auto $margin2
+				
+				h1
+					headerType($black)
+					margin-bottom $margin1
+				
+				h2
+					subheadType($black)
+					margin-bottom $margin0
+					padding-top $margin0
+					line-height 1.25 !important // line-height unresolved
+
+					&:first-of-type
+						padding-top 0
+					
+				p
+					bodyType($black)
+					margin-bottom $margin0
+					
+					a
+						bodyTypeLink($blue)
+
+					strong
+						bodyTypeBold($black)
+						
+				img
+					display block
+					max-width 100%
+					height auto
+					margin auto
+				
+				&>div
+					margin auto !important
+					text-align center
+					background $black
+					
+					img
+						width 100%
+						height auto
+					
+					.wp-caption-text
+						margin-top $margin0
+						padding-bottom $margin0
+						bodyTypeBold($parchment)
+
+		.wt_action
+			text-align center
+			
+			&__primary
+				display block
+				text-align center
+				button(95%,$blue)
+				max-width 400px
+				margin 0 auto $margin1
+				interactiveType($parchment)
+				transition .2s opacity ease-in-out
+				
+				&:hover
+					opacity .9
+			
+			&__secondary
+				interactiveType($black)
+				
+				span:first-of-type
+					margin-right 5px
+				
+				&:hover
+					interactiveType($blue)
+
+@media all and (max-width:$mobile)
+	body
+		&.single-projects
+			.wt_project
+				&__content
+					h1
+						headerTypeMobile()
+					
+					h2
+						subheadTypeMobile()
