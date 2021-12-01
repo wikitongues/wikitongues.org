@@ -3,31 +3,44 @@ body
 		.wt_project
 			&__content
 				width 90%
-				max-width 600px
+				max-width 750px
 				margin $margin4 auto $margin2
 				
 				h1
 					headerType($black)
 					margin-bottom $margin1
+					font-size 7rem
+					text-align center
 				
 				h2
 					subheadType($black)
-					margin-bottom $margin0
-					padding-top $margin0
+					font-size 3.5rem
+					margin $margin2 auto
 					line-height 1.25 !important // line-height unresolved
-
-					&:first-of-type
-						padding-top 0
+					text-align center
 					
 				p
+					max-width 600px
 					bodyType($black)
-					margin-bottom $margin0
+					font-size 1.75rem
+					margin 0 auto $margin1
 					
 					a
 						bodyTypeLink($blue)
+						font-size 1.75rem
 
 					strong
 						bodyTypeBold($black)
+				
+				ul
+					max-width 600px
+					margin 0 auto $margin1
+					bodyType($black)
+					font-size 1.75rem
+					list-style disc
+					
+					li
+						margin-left $margin2
 						
 				img
 					display block

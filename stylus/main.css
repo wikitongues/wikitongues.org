@@ -1872,7 +1872,7 @@ body.page-template-template-revitalization .wt_donate {
 }
 body.page-template-template-general .wt_project__content {
   width: 90%;
-  max-width: 600px;
+  max-width: 750px;
   margin: 120px auto 60px;
 }
 body.page-template-template-general .wt_project__content h1 {
@@ -1884,6 +1884,8 @@ body.page-template-template-general .wt_project__content h1 {
   color: #101010;
   text-transform: uppercase;
   margin-bottom: 30px;
+  font-size: 7rem;
+  text-align: center;
 }
 body.page-template-template-general .wt_project__content h2 {
   font-family: 'Schnyder Wide M Web';
@@ -1893,14 +1895,13 @@ body.page-template-template-general .wt_project__content h2 {
   font-size: 2.5rem;
   color: #101010;
   line-height: 1.15;
-  margin-bottom: 15px;
-  padding-top: 15px;
+  font-size: 3.5rem;
+  margin: 60px auto;
   line-height: 1.25 !important;
-}
-body.page-template-template-general .wt_project__content h2:first-of-type {
-  padding-top: 0;
+  text-align: center;
 }
 body.page-template-template-general .wt_project__content p {
+  max-width: 600px;
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -1908,7 +1909,8 @@ body.page-template-template-general .wt_project__content p {
   font-size: 1.25rem;
   color: #101010;
   line-height: 1.5;
-  margin-bottom: 15px;
+  font-size: 1.75rem;
+  margin: 0 auto 30px;
 }
 body.page-template-template-general .wt_project__content p a {
   font-family: 'Graphik Web';
@@ -1919,6 +1921,7 @@ body.page-template-template-general .wt_project__content p a {
   color: #3814a5;
   line-height: 1.5;
   text-decoration: underline;
+  font-size: 1.75rem;
 }
 body.page-template-template-general .wt_project__content p strong {
   font-family: 'Graphik Web';
@@ -1928,6 +1931,22 @@ body.page-template-template-general .wt_project__content p strong {
   font-size: 1.25rem;
   color: #101010;
   line-height: 1.5;
+}
+body.page-template-template-general .wt_project__content ul {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+  font-size: 1.75rem;
+  list-style: disc;
+}
+body.page-template-template-general .wt_project__content ul li {
+  margin-left: 60px;
 }
 body.page-template-template-general .wt_project__content img {
   display: block;
