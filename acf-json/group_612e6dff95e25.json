@@ -61,8 +61,8 @@
         },
         {
             "key": "field_612e6f9c446b0",
-            "label": "Sharing Descriptoin",
-            "name": "sharing_descriptoin",
+            "label": "Sharing Description",
+            "name": "sharing_description",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -148,5 +148,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1633022077
+    "show_in_rest": 0,
+    "modified": 1638397631
 }
