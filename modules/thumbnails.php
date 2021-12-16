@@ -16,7 +16,8 @@
 			include( locate_template('modules/lexicon-thumbnail.php') );
 
 		} elseif ( $post->post_type == 'external_resources') {
-			// nothing yet
+			// grab external resource thumbnail template
+			include( locate_template('modules/resource-thumbnail.php') );
 			
 		} elseif ( is_page_template('template-toolkit.php') ) {
 			// grab download thumbnail template

@@ -76,6 +76,14 @@ if ( $thumbnail ) {
 
 // external resources
 $thumbnail = get_field('external_resources');
+$thumbnail_cta_text = 'Suggest a resource';
+$thumbnail_cta_link = 'https://airtable.com/shrLJ3Yk5YeoCizJx';
+
+// video thumbnails header
+echo '<div class="wt_thumbnails__title">' .
+	 '<h1>Other Resources</h1>' .
+	 '<h2>These external resources are not maintained or archived by Wikitongues, but they may be useful to ' . $standard_name . ' research or revitalization projects.</h2>' .
+	 '</div>'; // need to make this modular
 
 if ( $thumbnail ) {
 	include( locate_template('modules/thumbnails.php') );
