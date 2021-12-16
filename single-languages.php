@@ -88,6 +88,9 @@ echo '<div class="wt_thumbnails__title">' .
 if ( $thumbnail ) {
 	include( locate_template('modules/thumbnails.php') );
 
+} else {
+	// show the "no resources" message
+	include( locate_template('modules/no-resources.php') );
 }
 
 // footer

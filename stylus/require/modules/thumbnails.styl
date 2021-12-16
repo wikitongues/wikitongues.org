@@ -63,7 +63,8 @@
 				a
 					bodyTypeLink($parchment)
 	
-	&__lexicon
+	&__lexicon,
+	&__resource
 		display inline-block
 		width 30%
 		margin 2% 1% 0
@@ -73,6 +74,15 @@
 		padding $margin1 0
 		border-radius 3px
 		box-shadow 1px 1px 3px grey
+		transition .2s opacity ease-in-out
+		vertical-align top
+		
+		&:hover
+			opacity .9
+			cursor pointer
+		
+		&>a
+			text-decoration none
 		
 		&--metadata
 			margin-top -2px
@@ -95,6 +105,9 @@
 					
 				a
 					bodyTypeLink($parchment)
+				
+				p
+					bodyType($parchment)
 	
 	&__download
 		display inline-block
@@ -200,6 +213,7 @@
 		
 		&__video,
 		&__lexicon,
+		&__resource,
 		&__download
 			width 90%
 			margin 0 auto $margin0

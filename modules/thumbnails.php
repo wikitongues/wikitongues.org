@@ -15,10 +15,13 @@
 			// grab lexicon thumbnail template
 			include( locate_template('modules/lexicon-thumbnail.php') );
 
-		} elseif ( $post->post_type == 'external_resources') {
-			// grab external resource thumbnail template
-			include( locate_template('modules/resource-thumbnail.php') );
-			
+		} elseif ( $post->post_type == 'resources') {
+			// if resource is published
+			if ( $post->post_status == 'publish' ) {
+				// grab external resource thumbnail template
+				include( locate_template('modules/resource-thumbnail.php') );
+
+			}			
 		} elseif ( is_page_template('template-toolkit.php') ) {
 			// grab download thumbnail template
 			include( locate_template('modules/download-thumbnail.php') );

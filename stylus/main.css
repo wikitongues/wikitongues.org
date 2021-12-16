@@ -1372,7 +1372,8 @@ body[data-ui="no-scroll"] {
   line-height: 1.5;
   text-decoration: underline;
 }
-.wt_thumbnails__lexicon {
+.wt_thumbnails__lexicon,
+.wt_thumbnails__resource {
   display: inline-block;
   width: 30%;
   margin: 2% 1% 0;
@@ -1382,19 +1383,34 @@ body[data-ui="no-scroll"] {
   padding: 30px 0;
   border-radius: 3px;
   box-shadow: 1px 1px 3px #808080;
+  transition: 0.2s opacity ease-in-out;
+  vertical-align: top;
 }
-.wt_thumbnails__lexicon--metadata {
+.wt_thumbnails__lexicon:hover,
+.wt_thumbnails__resource:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+.wt_thumbnails__lexicon>a,
+.wt_thumbnails__resource>a {
+  text-decoration: none;
+}
+.wt_thumbnails__lexicon--metadata,
+.wt_thumbnails__resource--metadata {
   margin-top: -2px;
   box-sizing: border-box;
   padding: 30px 15px;
 }
-.wt_thumbnails__lexicon--metadata li {
+.wt_thumbnails__lexicon--metadata li,
+.wt_thumbnails__resource--metadata li {
   margin-bottom: 15px;
 }
-.wt_thumbnails__lexicon--metadata li:last-of-type {
+.wt_thumbnails__lexicon--metadata li:last-of-type,
+.wt_thumbnails__resource--metadata li:last-of-type {
   margin-bottom: 0;
 }
-.wt_thumbnails__lexicon--metadata li strong {
+.wt_thumbnails__lexicon--metadata li strong,
+.wt_thumbnails__resource--metadata li strong {
   display: block;
   font-family: 'Graphik Web';
   font-weight: 600;
@@ -1404,7 +1420,8 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   line-height: 1.5;
 }
-.wt_thumbnails__lexicon--metadata li span {
+.wt_thumbnails__lexicon--metadata li span,
+.wt_thumbnails__resource--metadata li span {
   display: block;
   font-family: 'Graphik Web';
   font-weight: 400;
@@ -1414,7 +1431,8 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   line-height: 1.5;
 }
-.wt_thumbnails__lexicon--metadata li a {
+.wt_thumbnails__lexicon--metadata li a,
+.wt_thumbnails__resource--metadata li a {
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -1423,6 +1441,16 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   line-height: 1.5;
   text-decoration: underline;
+}
+.wt_thumbnails__lexicon--metadata li p,
+.wt_thumbnails__resource--metadata li p {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #fffcef;
+  line-height: 1.5;
 }
 .wt_thumbnails__download {
   display: inline-block;
@@ -1563,6 +1591,7 @@ body[data-ui="no-scroll"] {
   }
   .wt_thumbnails__video,
   .wt_thumbnails__lexicon,
+  .wt_thumbnails__resource,
   .wt_thumbnails__download {
     width: 90%;
     margin: 0 auto 15px;
