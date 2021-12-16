@@ -251,7 +251,7 @@
             ],
             "taxonomy": "",
             "allow_null": 0,
-            "multiple": 0,
+            "multiple": 1,
             "return_format": "object",
             "ui": 1
         }
@@ -273,5 +273,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1636232941
+    "show_in_rest": 0,
+    "modified": 1639692611
 }
