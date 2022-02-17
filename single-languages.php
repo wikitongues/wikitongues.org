@@ -32,7 +32,7 @@ if ( $thumbnail ) {
 $lexicon_source = get_field('lexicon_source');
 $lexicon_target = get_field('lexicon_target');
 $thumbnail_cta_text = 'Add a lexicon'; // could be made an option field
-$thumbnail_cta_link = 'https://airtable.com/shrYPADYkHF9umAhm';
+$thumbnail_cta_link = 'https://airtable.com/shrGm31ZXQxoZIA9D';
 
 // lexicon thumbnails header
 echo '<div class="wt_thumbnails__title">' .
