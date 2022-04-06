@@ -1608,6 +1608,83 @@ body[data-ui="no-scroll"] {
     margin-top: 15px !important;
   }
 }
+.wt_grantee__thumbnail {
+  display: inline-block;
+  width: 29%;
+  margin: 0 1% 2% 1%;
+  vertical-align: top;
+}
+.wt_grantee__thumbnail--image {
+  width: 100%;
+  border: 2px solid #101010;
+  margin-bottom: 7.5px;
+}
+.wt_grantee__thumbnail--text {
+  text-align: left;
+}
+.wt_grantee__thumbnail--text h2 {
+  display: block;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+  margin: 7.5px 0;
+}
+.wt_grantee__thumbnail--text p {
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+.wt_grantee__thumbnail a {
+  text-decoration: none;
+  transition: 0.2s opacity ease-in-out;
+}
+.wt_grantee__thumbnail a:hover {
+  opacity: 0.9;
+}
+@media all and (max-width: 768px) {
+  .wt_grantee__thumbnail {
+    width: 47.5% !important;
+    margin: 0 1% 15px !important;
+    text-align: center;
+  }
+  .wt_grantee__thumbnail--image {
+    margin-bottom: 0;
+  }
+  .wt_grantee__thumbnail--text {
+    text-align: center;
+  }
+  .wt_grantee__thumbnail--text h2 {
+    margin: 15px 0 0 0;
+    font-family: 'Graphik Web';
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    font-size: 1.25rem;
+    color: #101010;
+    line-height: 1.5;
+  }
+  .wt_grantee__thumbnail--text p {
+    margin: 5px;
+    font-family: 'Graphik Web';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    font-size: 1.25rem;
+    color: #101010;
+    line-height: 1.5;
+  }
+  .wt_grantee__thumbnail--text ul li {
+    margin: 0 7.5px;
+  }
+}
 body.post-type-archive-languages .wt_metrics__icons {
   margin-top: 0 !important;
 }
@@ -1867,18 +1944,25 @@ body.single-projects .wt_project__content>div .wp-caption-text {
     font-size: 2rem;
   }
 }
-body.page-template-template-cohort .wt_testimonial {
-  display: flex;
-  align-items: center;
+body.page-template-template-cohort {
+  text-align: center;
 }
-body.page-template-template-cohort .wt_testimonial:nth-of-type(even) {
-  flex-direction: row-reverse;
-}
-body.page-template-template-cohort .wt_testimonial:nth-of-type(even) .wt_testimonial__image {
-  margin-right: 0;
-  margin-left: 5%;
+body.page-template-template-cohort>h1 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
+  margin: 90px 0 30px;
+  text-align: center;
 }
 @media all and (max-width: 768px) {
+  body.page-template-template-cohort>h1 {
+    margin-top: 60px !important;
+    font-size: 3rem;
+  }
   body.page-template-template-cohort .wt_testimonial {
     display: block;
     width: 90%;

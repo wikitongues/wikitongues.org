@@ -1,19 +1,19 @@
 body
 	&.page-template-template-cohort
-		.wt_testimonial
-			display flex
-			align-items center
-			
-			&:nth-of-type(even)
-				flex-direction row-reverse
-				
-				.wt_testimonial__image
-					margin-right 0
-					margin-left 5%
+		text-align center
+
+		&>h1
+			headerType($black)
+			margin $margin3 0 $margin1
+			text-align center
 
 @media all and (max-width:$mobile)
 	body
 		&.page-template-template-cohort
+			&>h1
+				margin-top $margin2 !important
+				headerTypeMobile($black)
+
 			.wt_testimonial
 				display block
 				width 90%

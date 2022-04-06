@@ -1,0 +1,54 @@
+.wt_grantee
+	&__thumbnail
+		display inline-block
+		width 29%
+		margin 0 1% 2% 1%
+		vertical-align top
+		
+		&--image
+			width 100%
+			border 2px solid $black
+			margin-bottom 7.5px
+		
+		&--text
+			text-align left
+			
+			h2
+				display block
+				subheadType($black)
+				margin 7.5px 0
+			
+			p
+				bodyTypeBold($black)
+			
+		a
+			text-decoration none
+			transition .2s opacity ease-in-out
+			
+			&:hover
+				opacity .9
+
+@media all and (max-width:$mobile)
+	.wt_grantee
+		&__thumbnail				
+			width 47.5% !important
+			margin 0 1% 15px !important
+			text-align center
+			
+			&--image
+				margin-bottom 0
+			
+			&--text
+				text-align center
+				
+				h2
+					margin 15px 0 0 0
+					bodyTypeBold($black)
+				
+				p
+					margin 5px
+					bodyType($black)
+					
+				ul
+					li
+						margin 0 7.5px
