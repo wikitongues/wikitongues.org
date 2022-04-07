@@ -1944,6 +1944,44 @@ body.single-projects .wt_project__content>div .wp-caption-text {
     font-size: 2rem;
   }
 }
+.wt_grantee__main {
+  width: 90%;
+  margin: 90px auto;
+  max-width: 768px;
+}
+.wt_grantee__main--title {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
+}
+.wt_grantee__main--subheader {
+  margin: 30px auto;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+}
+.wt_grantee__main--content {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+.wt_grantee__main--content p {
+  width: 100%;
+  max-width: 600px;
+  margin: 15px auto 15px 0;
+}
 body.page-template-template-cohort {
   text-align: center;
 }
