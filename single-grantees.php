@@ -22,7 +22,7 @@ include( locate_template('modules/banner.php') );
 		<?php the_field('grantee_pitch'); ?>
 	</h2>
 	<article class="wt_grantee__main--content">
-		<?php the_field('grantee_description'); ?>
+		<?php the_field('grantee_project'); ?>
 	</article>
 </main> 
 
@@ -35,6 +35,8 @@ include( locate_template('modules/banner.php') );
 			array(
 				'post_type'=>'grantees',
 				'post__not_in' => array( $current_grantee ),
+				'meta_key' => 'grantee_role',
+				'meta_value' => 'Project leader',
 				'posts_per_page' => 15
 			) 
 		);

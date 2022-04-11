@@ -1616,8 +1616,14 @@ body[data-ui="no-scroll"] {
 }
 .wt_grantee__thumbnail--image {
   width: 100%;
+  padding-bottom: 100%;
+  background-size: cover;
+  background-position: center center;
   border: 2px solid #101010;
   margin-bottom: 7.5px;
+}
+.wt_grantee__thumbnail--image.empty {
+  background: #101010;
 }
 .wt_grantee__thumbnail--text {
   text-align: left;

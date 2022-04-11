@@ -14,6 +14,8 @@ include( locate_template('modules/banner.php') );
 $grantees = new WP_Query( 
 	array(
 		'post_type'=>'grantees',
+		'meta_key' => 'grantee_role',
+		'meta_value' => 'Project leader',
 		'posts_per_page' => 15
 	) 
 );
