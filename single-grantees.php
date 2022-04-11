@@ -10,9 +10,14 @@ $banner_copy = get_field('banner_copy');
 
 include( locate_template('modules/banner.php') );
 
-// the_field('grantee_language');
-// the_field('grantee_location');
- ?>
+// main content variables
+$grantee_language = get_field('grantee_language');
+$grantee_location = get_field('grantee_location');
+$grantee_pitch = get_field('grantee_pitch');
+$grantee_project = get_field('grantee_project');
+$grantee_bio = get_field('grantee_bio');
+$grantee_collaborators = get_field('grantee_collaborators');
+?>
 
 <main class="wt_grantee__main">
 	<h1 class="wt_grantee__main--title">
@@ -22,7 +27,20 @@ include( locate_template('modules/banner.php') );
 		<?php the_field('grantee_pitch'); ?>
 	</h2>
 	<article class="wt_grantee__main--content">
-		<?php the_field('grantee_project'); ?>
+	<?php 
+		echo $grantee_project .
+			 '<p><strong>Grantee\'s Background</strong></p>' .
+			 $grantee_bio;
+
+		if ( $grantee_collaborators ) {
+			echo '<p><strong>Project Collaborators</strong></p>';
+
+			foreach ( $grantee_collaborators as $post ) {
+				setup_postdata( $post );
+
+				include( locate_template('modules/collaborator-thumbnail.php') );
+			} wp_reset_postdata();
+		} ?>
 	</article>
 </main> 
 

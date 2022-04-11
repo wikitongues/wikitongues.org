@@ -1,4 +1,6 @@
-<?php $signature = get_field('footer_logo','options'); ?>
+<?php 
+$signature = get_field('footer_logo','options'); 
+?>
 <div class="wt_banner">
 	<aside class="wt_banner__image"
 		   style="background-image:url(<?php echo $banner_image['url']; ?>);"

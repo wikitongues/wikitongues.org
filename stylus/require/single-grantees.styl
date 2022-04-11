@@ -17,6 +17,31 @@
 			p
 				width 100%
 				margin $margin0 auto $margin0 0
+				
+				strong
+					display block
+					padding-top $margin0
+					bodyTypeBold($black)
+	
+	&__collaborator
+		margin-bottom $margin0
+		
+		&--image
+			display inline-block
+			width 30%
+			padding-bottom 30%
+			backgroundImage()
+			border 2px solid $black
+			margin 5px $margin0 7.5px 0
+			vertical-align top
+
+			&.empty
+				background $black
+		
+		&--text
+			display inline-block
+			width 66%
+			vertical-align top
 	
 	&__navigation
 		width 90%
@@ -47,3 +72,13 @@
 		
 		&__main
 			margin $margin2 auto
+		
+		&__collaborator
+			&--image
+				width 100%
+				padding-bottom 100%
+				margin-bottom $margin0
+				
+			&--text
+				width 100%
+				margin-bottom $margin1

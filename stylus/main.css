@@ -1987,6 +1987,38 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   width: 100%;
   margin: 15px auto 15px 0;
 }
+.wt_grantee__main--content p strong {
+  display: block;
+  padding-top: 15px;
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+.wt_grantee__collaborator {
+  margin-bottom: 15px;
+}
+.wt_grantee__collaborator--image {
+  display: inline-block;
+  width: 30%;
+  padding-bottom: 30%;
+  background-size: cover;
+  background-position: center center;
+  border: 2px solid #101010;
+  margin: 5px 15px 7.5px 0;
+  vertical-align: top;
+}
+.wt_grantee__collaborator--image.empty {
+  background: #101010;
+}
+.wt_grantee__collaborator--text {
+  display: inline-block;
+  width: 66%;
+  vertical-align: top;
+}
 .wt_grantee__navigation {
   width: 90%;
   margin: 90px auto;
@@ -2027,6 +2059,15 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   }
   .wt_grantee__main {
     margin: 60px auto;
+  }
+  .wt_grantee__collaborator--image {
+    width: 100%;
+    padding-bottom: 100%;
+    margin-bottom: 15px;
+  }
+  .wt_grantee__collaborator--text {
+    width: 100%;
+    margin-bottom: 30px;
   }
 }
 body.page-template-template-cohort {
