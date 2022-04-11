@@ -1610,8 +1610,8 @@ body[data-ui="no-scroll"] {
 }
 .wt_grantee__thumbnail {
   display: inline-block;
-  width: 29%;
-  margin: 0 1% 2% 1%;
+  width: 19%;
+  margin: 0 0.5% 2% 0.5%;
   vertical-align: top;
 }
 .wt_grantee__thumbnail--image {
@@ -1624,18 +1624,18 @@ body[data-ui="no-scroll"] {
 }
 .wt_grantee__thumbnail--text h2 {
   display: block;
-  font-family: 'Schnyder Wide M Web';
-  font-weight: 300;
+  margin: 0;
+  font-family: 'Graphik Web';
+  font-weight: 600;
   font-style: normal;
   font-stretch: normal;
-  font-size: 2.5rem;
+  font-size: 1.25rem;
   color: #101010;
-  line-height: 1.15;
-  margin: 7.5px 0;
+  line-height: 1.5;
 }
 .wt_grantee__thumbnail--text p {
   font-family: 'Graphik Web';
-  font-weight: 600;
+  font-weight: 400;
   font-style: normal;
   font-stretch: normal;
   font-size: 1.25rem;
@@ -2010,33 +2010,27 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   color: #101010;
   line-height: 1.15;
 }
-.wt_grantee__thumbnail {
-  width: 19%;
-  margin: 0 0.5% 2% 0.5%;
-}
-.wt_grantee__thumbnail--text h2 {
-  margin: 0;
-  font-family: 'Graphik Web';
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.25rem;
-  color: #101010;
-  line-height: 1.5;
-}
-.wt_grantee__thumbnail--text p {
-  font-family: 'Graphik Web';
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.25rem;
-  color: #101010;
-  line-height: 1.5;
+@media all and (max-width: 768px) {
+  .wt_grantee__main--title,
+  .wt_grantee__navigation--title {
+    font-size: 3rem;
+  }
+  .wt_grantee__main--subheader,
+  .wt_grantee__navigation--subheader {
+    font-size: 2rem;
+  }
+  .wt_grantee__main {
+    margin: 60px auto;
+  }
 }
 body.page-template-template-cohort {
   text-align: center;
 }
-body.page-template-template-cohort>h1 {
+body.page-template-template-cohort .wt_wrapper {
+  width: 95%;
+  margin: 90px auto;
+}
+body.page-template-template-cohort .wt_wrapper>h1 {
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
   font-style: normal;
@@ -2044,19 +2038,19 @@ body.page-template-template-cohort>h1 {
   font-size: 5rem;
   color: #101010;
   text-transform: uppercase;
-  margin: 90px 0 30px;
+  margin: 0 0 30px;
   text-align: center;
 }
 @media all and (max-width: 768px) {
-  body.page-template-template-cohort>h1 {
+  body.page-template-template-cohort .wt_wrapper>h1 {
     margin-top: 60px !important;
     font-size: 3rem;
   }
-  body.page-template-template-cohort .wt_testimonial {
+  body.page-template-template-cohort .wt_wrapper .wt_testimonial {
     display: block;
     width: 90%;
   }
-  body.page-template-template-cohort .wt_testimonial__image {
+  body.page-template-template-cohort .wt_wrapper .wt_testimonial__image {
     margin-right: auto !important;
     margin-left: auto !important;
   }

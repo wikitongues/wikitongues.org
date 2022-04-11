@@ -34,15 +34,16 @@
 			max-width 600px
 			margin 0 auto $margin1
 			subheadType($black)
-		
-	&__thumbnail
-		width 19%
-		margin 0 .5% 2% .5%
-		
-		&--text
-			h2
-				margin 0
-				bodyTypeBold($black)
+
+@media all and (max-width:$mobile)
+	.wt_grantee
+		&__main,
+		&__navigation
+			&--title
+				headerTypeMobile()
 			
-			p
-				bodyType($black)
+			&--subheader
+				subheadTypeMobile()
+		
+		&__main
+			margin $margin2 auto
