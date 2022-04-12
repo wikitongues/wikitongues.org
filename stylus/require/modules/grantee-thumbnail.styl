@@ -13,6 +13,7 @@
 			backgroundImage()
 			border 2px solid $black
 			margin-bottom 7.5px
+			transition .2s opacity ease-in-out
 
 			&.empty
 				background $black
@@ -33,10 +34,10 @@
 			
 		a
 			text-decoration none
-			transition .2s opacity ease-in-out
 			
 			&:hover
-				opacity .9
+				.wt_grantee__thumbnail--image
+					opacity .9
 
 @media all and (max-width:$mobile)
 	.wt_grantee

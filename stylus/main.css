@@ -1621,6 +1621,7 @@ body[data-ui="no-scroll"] {
   background-position: center center;
   border: 2px solid #101010;
   margin-bottom: 7.5px;
+  transition: 0.2s opacity ease-in-out;
 }
 .wt_grantee__thumbnail--image.empty {
   background: #101010;
@@ -1650,9 +1651,8 @@ body[data-ui="no-scroll"] {
 }
 .wt_grantee__thumbnail a {
   text-decoration: none;
-  transition: 0.2s opacity ease-in-out;
 }
-.wt_grantee__thumbnail a:hover {
+.wt_grantee__thumbnail a:hover .wt_grantee__thumbnail--image {
   opacity: 0.9;
 }
 @media all and (max-width: 768px) {
@@ -1998,11 +1998,37 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   color: #101010;
   line-height: 1.5;
 }
+.wt_grantee__main--links li {
+  margin-bottom: 15px;
+}
+.wt_grantee__main--links li a {
+  text-decoration: none;
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #3814a5;
+  line-height: 1.5;
+}
+.wt_grantee__main--links li a span {
+  display: inline-block;
+}
+.wt_grantee__main--links li a span i {
+  vertical-align: middle;
+  font-size: 17.5px;
+}
+.wt_grantee__main--links li a span:last-of-type {
+  margin-left: 5px;
+}
+.wt_grantee__main--links li a:hover span:last-of-type {
+  text-decoration: underline;
+}
 .wt_grantee__collaborator {
   margin-bottom: 15px;
 }
 .wt_grantee__collaborator--image {
-  display: inline-block;
+  float: left;
   width: 30%;
   padding-bottom: 30%;
   background-size: cover;
@@ -2015,8 +2041,8 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   background: #101010;
 }
 .wt_grantee__collaborator--text {
-  display: inline-block;
-  width: 66%;
+  display: block;
+  width: 100%;
   vertical-align: top;
 }
 .wt_grantee__navigation {

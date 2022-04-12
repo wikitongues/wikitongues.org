@@ -11,6 +11,8 @@ $banner_copy = get_field('banner_copy');
 include( locate_template('modules/banner.php') );
 
 // main content variables
+$grantee_first_name = get_field('first_name');
+$grantee_last_name = get_field('last_name');
 $grantee_language = get_field('grantee_language');
 $grantee_location = get_field('grantee_location');
 $grantee_pitch = get_field('grantee_pitch');
@@ -29,18 +31,40 @@ $grantee_collaborators = get_field('grantee_collaborators');
 	<article class="wt_grantee__main--content">
 	<?php 
 		echo $grantee_project .
-			 '<p><strong>Grantee\'s Background</strong></p>' .
+			 '<p><strong>' .
+			 $grantee_first_name . 
+			 '\'s Background</strong></p>' .
 			 $grantee_bio;
 
 		if ( $grantee_collaborators ) {
-			echo '<p><strong>Project Collaborators</strong></p>';
+			echo '<p><strong>' .
+				 $grantee_first_name .
+				 '\'s Collaborators</strong></p>';
 
 			foreach ( $grantee_collaborators as $post ) {
 				setup_postdata( $post );
 
 				include( locate_template('modules/collaborator-thumbnail.php') );
 			} wp_reset_postdata();
-		} ?>
+		} 
+
+		if ( have_rows('grantee_links') ) {
+			echo '<p><strong>Learn More</strong></p>'.
+				 '<ul class="wt_grantee__main--links">';
+
+			while ( have_rows('grantee_links') ){
+				the_row();
+
+				$link_type = get_sub_field('link_type');
+				$link_name = get_sub_field('link_name');
+				$link_url = get_sub_field('link_url');
+
+				include( locate_template('modules/grantee_link.php') );
+			}
+
+			echo '</main>';
+		}
+		?>
 	</article>
 </main> 
 
@@ -69,3 +93,5 @@ $grantee_collaborators = get_field('grantee_collaborators');
 		wp_reset_postdata();
 	?>
 </section>
+
+<?php get_footer(); ?>

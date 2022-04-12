@@ -95,6 +95,7 @@
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
 	<!-- Font Awesome connection -->
+	<!-- <script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script> -->
 	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
 
 	<!-- Fundraise Up connection -->

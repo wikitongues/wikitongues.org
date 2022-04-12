@@ -22,12 +22,35 @@
 					display block
 					padding-top $margin0
 					bodyTypeBold($black)
+		
+		&--links
+			li
+				margin-bottom $margin0
+				
+				a
+					text-decoration none
+					bodyTypeBold($blue)
+					
+					span
+						display inline-block
+										
+						i
+							vertical-align middle
+							font-size 17.5px
+						
+						&:last-of-type
+							margin-left 5px
+					
+					&:hover
+						span
+							&:last-of-type
+								text-decoration underline
 	
 	&__collaborator
 		margin-bottom $margin0
 		
 		&--image
-			display inline-block
+			float left
 			width 30%
 			padding-bottom 30%
 			backgroundImage()
@@ -39,8 +62,8 @@
 				background $black
 		
 		&--text
-			display inline-block
-			width 66%
+			display block
+			width 100%
 			vertical-align top
 	
 	&__navigation

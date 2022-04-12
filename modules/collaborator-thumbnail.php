@@ -8,4 +8,5 @@
 	<section class="wt_grantee__collaborator--text">
 		<?php the_field('grantee_bio'); ?>
 	</section>
+	<div class="clear"></div>
 </article>
