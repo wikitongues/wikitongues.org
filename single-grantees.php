@@ -25,16 +25,23 @@ $grantee_collaborators = get_field('grantee_collaborators');
 	<h1 class="wt_grantee__main--title">
 		<?php the_title(); ?>
 	</h1>
-	<h2 class="wt_grantee__main--subheader">
-		<?php the_field('grantee_pitch'); ?>
-	</h2>
+	<?php if ( $grantee_pitch ): ?>
+		<h2 class="wt_grantee__main--subheader">
+			<?php echo $grantee_pitch; ?>
+		</h2>
+	<?php endif; ?>
 	<article class="wt_grantee__main--content">
 	<?php 
-		echo $grantee_project .
-			 '<p><strong>' .
-			 $grantee_first_name . 
-			 '\'s Background</strong></p>' .
-			 $grantee_bio;
+		if ( $grantee_project ) {
+			echo $grantee_project;
+		}
+
+		if ( $grantee_bio ) {
+			echo '<p><strong>' .
+				 $grantee_first_name . 
+				 '\'s Background</strong></p>' .
+				 $grantee_bio;
+		}
 
 		if ( $grantee_collaborators ) {
 			echo '<p><strong>' .
