@@ -155,7 +155,9 @@
                         "youtube": "YouTube",
                         "facebook": "Facebook",
                         "twitter": "Twitter",
+                        "linkedin": "LinkedIn",
                         "instagram": "Instagram",
+                        "github": "GitHub",
                         "tiktok": "TikTok",
                         "link": "Link"
                     },
@@ -223,5 +225,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1649780500
+    "modified": 1649788985
 }
