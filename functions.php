@@ -86,6 +86,7 @@ add_action('init', 'create_post_type_videos');
 add_action('init', 'create_post_type_lexicons'); 
 add_action('init', 'create_post_type_resources');
 add_action('init', 'create_post_type_projects');
+add_action('init', 'create_post_type_grantees');
 
 // Team
 function create_post_type_team()
@@ -377,6 +378,45 @@ function create_post_type_projects()
         'public' => true,
         'hierarchical' => true,
         'menu_icon' => 'dashicons-admin-tools',
+        'has_archive' => true,
+        'supports' => array(
+            'title',
+            'editor',
+            'excerpt',
+            'thumbnail'
+        ),
+        'can_export' => true,
+        'taxonomies' => array(
+            'post_tag',
+            'category'
+        )
+    ));
+}
+
+// Projects
+function create_post_type_grantees()
+{
+    register_taxonomy_for_object_type('category', 'grantees'); 
+    register_taxonomy_for_object_type('post_tag', 'grantees');
+    register_post_type('grantees',
+        array(
+        'labels' => array(
+            'name' => __('Grantees', 'grantees'), 
+            'singular_name' => __('Grantee', 'grantees'),
+            'add_new' => __('Add New', 'grantees'),
+            'add_new_item' => __('Add New Grantee', 'grantees'),
+            'edit' => __('Edit', 'grantees'),
+            'edit_item' => __('Edit Grantee', 'grantees'),
+            'new_item' => __('New Grantee', 'grantees'),
+            'view' => __('View Grantee', 'grantees'),
+            'view_item' => __('View Grantee', 'grantees'),
+            'search_items' => __('Search Grantees', 'grantees'),
+            'not_found' => __('No Grantees found', 'grantees'),
+            'not_found_in_trash' => __('No Grantees found in Trash', 'grantees')
+        ),
+        'public' => true,
+        'hierarchical' => true,
+        'menu_icon' => 'dashicons-money-alt',
         'has_archive' => true,
         'supports' => array(
             'title',

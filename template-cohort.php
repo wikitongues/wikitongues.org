@@ -10,21 +10,30 @@ $banner_copy = get_field('banner_copy');
 
 include( locate_template('modules/banner.php') );
 
-// signup cta
-include( locate_template('modules/cohort-actions.php') );
-
 // testimonials
-$testimonials = get_field('testimonials');
+$grantees = new WP_Query( 
+	array(
+		'post_type'=>'grantees',
+		'meta_key' => 'grantee_role',
+		'meta_value' => 'Project leader',
+		'posts_per_page' => 15
+	) 
+);
 
-foreach( $testimonials as $post ) {
-	setup_postdata( $post );
+echo '<main class="wt_wrapper">';
 
-	$testimonial_photo = $post['testimonial_photo'];
-	$testimonial_copy = $post['testimonial_copy'];
-	$testimonial_byline = $post['testimonial_byline'];
+if( $grantees->have_posts() ){
+	echo '<h1>Meet the 2022 Cohort</h1>';
+	
+	while( $grantees->have_posts() ){
+		$grantees->the_post();
 
-	include( locate_template('modules/testimonials.php') );
-} wp_reset_postdata();
+		include( locate_template('modules/grantee-thumbnail.php') );
+	}
+}
+wp_reset_postdata();
+
+echo '</main>';
 
 // footer
 get_footer();

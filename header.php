@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+	<!-- Google Analytics Script -->
+	<?php the_field('analytics_header_script', 'options'); ?>
+
 	<!-- Language and browser view meta tags -->
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -92,6 +95,7 @@
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
 	<!-- Font Awesome connection -->
+	<!-- <script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script> -->
 	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
 
 	<!-- Fundraise Up connection -->
@@ -107,11 +111,15 @@
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?><?php if (isset($_GET['languages_search'])): ?>data-ui="no-scroll"<?php endif; ?>>
+
+<!-- WP Body Open -->
 <?php wp_body_open(); ?>
+
 	<!-- bug report banner -->
 	<header class="wt_header__bugs">
 		This website is in early launch. If you experience issues, please <a href="https://airtable.com/shrtbu15QZnAbXXi9">report them here</a>. Your feedback helps us improve!
 	</header>
+
 	<!-- global header -->
 	<header class="wt_header" role="banner">
 
