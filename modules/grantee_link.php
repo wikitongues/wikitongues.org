@@ -7,6 +7,8 @@
 				<i class="fa-brands fa-facebook-square"></i>
 			<?php elseif ( $link_type === 'twitter' ): ?>
 				<i class="fa-brands fa-twitter-square"></i>
+			<?php elseif ( $link_type === 'linkedin' ): ?>
+				<i class="fa-brands fa-linkedin"></i>
 			<?php elseif ( $link_type === 'instagram' ): ?>
 				<i class="fa-brands fa-instagram"></i>
 			<?php elseif ( $link_type === 'tiktok' ): ?>
