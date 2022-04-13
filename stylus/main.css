@@ -1999,6 +1999,9 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   color: #101010;
   line-height: 1.5;
 }
+.wt_grantee__main--content p i {
+  font-style: italic;
+}
 .wt_grantee__main--links li {
   margin-bottom: 15px;
 }
