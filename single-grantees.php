@@ -25,16 +25,23 @@ $grantee_collaborators = get_field('grantee_collaborators');
 	<h1 class="wt_grantee__main--title">
 		<?php the_title(); ?>
 	</h1>
-	<h2 class="wt_grantee__main--subheader">
-		<?php the_field('grantee_pitch'); ?>
-	</h2>
+	<?php if ( $grantee_pitch ): ?>
+		<h2 class="wt_grantee__main--subheader">
+			<?php echo $grantee_pitch; ?>
+		</h2>
+	<?php endif; ?>
 	<article class="wt_grantee__main--content">
 	<?php 
-		echo $grantee_project .
-			 '<p><strong>' .
-			 $grantee_first_name . 
-			 '\'s Background</strong></p>' .
-			 $grantee_bio;
+		if ( $grantee_project ) {
+			echo $grantee_project;
+		}
+
+		if ( $grantee_bio ) {
+			echo '<p><strong>' .
+				 $grantee_first_name . 
+				 '\'s Background</strong></p>' .
+				 $grantee_bio;
+		}
 
 		if ( $grantee_collaborators ) {
 			echo '<p><strong>' .
@@ -69,8 +76,8 @@ $grantee_collaborators = get_field('grantee_collaborators');
 </main> 
 
 <section class="wt_grantee__navigation">
-	<h1 class="wt_grantee__navigation--title">Other Grantees</h1>
-	<h2 class="wt_grantee__navigation--subheader"> Lorem, ipsum dolor sit amet consectetur, adipisicing elit. Quis eius pariatur, praesentium, dicta veritatis illum.</h2>
+	<h1 class="wt_grantee__navigation--title">Other Projects</h1>
+	<h2 class="wt_grantee__navigation--subheader">Wikitongues gives annual grants, training, and in-kind support to new mother-tongue projects. Meet the rest of the Language Revitalization Accelerator's 2022 cohort.</h2>
 	<?php // testimonials
 		$current_grantee = get_the_ID();
 		$grantees = new WP_Query( 

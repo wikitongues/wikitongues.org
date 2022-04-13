@@ -303,6 +303,7 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   text-transform: uppercase;
   margin-bottom: 30px;
+  white-space: nowrap;
 }
 .wt_banner__text>div h2 {
   font-family: 'Schnyder Wide M Web';
@@ -1997,6 +1998,9 @@ body.single-projects .wt_project__content>div .wp-caption-text {
   font-size: 1.25rem;
   color: #101010;
   line-height: 1.5;
+}
+.wt_grantee__main--content p i {
+  font-style: italic;
 }
 .wt_grantee__main--links li {
   margin-bottom: 15px;
