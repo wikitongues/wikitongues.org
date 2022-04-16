@@ -23,7 +23,7 @@ $grantee_collaborators = get_field('grantee_collaborators');
 
 <main class="wt_grantee__main">
 	<h1 class="wt_grantee__main--title">
-		<?php the_title(); ?>
+		Meet <?php echo $grantee_first_name; ?>
 	</h1>
 	<?php if ( $grantee_pitch ): ?>
 		<h2 class="wt_grantee__main--subheader">
