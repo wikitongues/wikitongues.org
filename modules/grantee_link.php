@@ -11,6 +11,8 @@
 				<i class="fa-brands fa-linkedin"></i>
 			<?php elseif ( $link_type === 'instagram' ): ?>
 				<i class="fa-brands fa-instagram"></i>
+			<?php elseif ( $link_type === 'github' ): ?>
+				<i class="fa-brands fa-github-square"></i>
 			<?php elseif ( $link_type === 'tiktok' ): ?>
 				<i class="fa-brands fa-tiktok"></i>
 			<?php else: ?>
