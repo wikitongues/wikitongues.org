@@ -9,10 +9,15 @@
 		<section class="wt_grantee__thumbnail--text">
 			<h2><?php the_title(); ?></h2>
 			<p>
+				<?php $grantee_language = get_field('grantee_language'); ?>
 				<span>
-					<?php the_field('grantee_language'); ?>
+					<?php echo $grantee_language; ?>
 				</span>
-				<span> language</span>
+				<?php if( strpos($grantee_language,' and ') ): ?>
+					<span>languages</span>
+				<?php else: ?>
+					<span> language</span>
+				<?php endif; ?>
 			</p>
 			<p><?php the_field('grantee_location'); ?></p>
 		</section>
