@@ -1,4 +1,6 @@
 <?php
+require_once('includes/class-wt-rest-posts-controller.php');
+
 // enqueue stylesheets
 add_action( 'wp_enqueue_scripts', 'wt_enqueue_styles' );
 
@@ -235,7 +237,8 @@ function create_post_type_languages()
             'post_tag',
             'category'
         ),
-        'show_in_rest' => true
+        'show_in_rest' => true,
+        'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
@@ -275,7 +278,8 @@ function create_post_type_videos()
             'post_tag',
             'category'
         ),
-        'show_in_rest' => true
+        'show_in_rest' => true,
+        'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
@@ -354,7 +358,8 @@ function create_post_type_resources()
             'post_tag',
             'category'
         ),
-        'show_in_rest' => true
+        'show_in_rest' => true,
+        'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
