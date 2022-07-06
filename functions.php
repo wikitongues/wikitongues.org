@@ -88,6 +88,9 @@ add_action('init', 'create_post_type_resources');
 add_action('init', 'create_post_type_projects');
 add_action('init', 'create_post_type_grantees');
 
+add_post_type_support( 'team', 'thumbnail' );
+add_post_type_support( 'videos', 'thumbnail' );
+
 // Team
 function create_post_type_team()
 {
