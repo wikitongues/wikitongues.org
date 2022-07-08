@@ -121,7 +121,8 @@ function create_post_type_team()
         'taxonomies' => array(
             'post_tag',
             'category'
-        )
+        ),
+        'show_in_rest' => true
     ));
 }
 
@@ -234,7 +235,8 @@ function create_post_type_languages()
         'taxonomies' => array(
             'post_tag',
             'category'
-        )
+        ),
+        'show_in_rest' => true
     ));
 }
 
@@ -273,7 +275,8 @@ function create_post_type_videos()
         'taxonomies' => array(
             'post_tag',
             'category'
-        )
+        ),
+        'show_in_rest' => true
     ));
 }
 
@@ -351,7 +354,8 @@ function create_post_type_resources()
         'taxonomies' => array(
             'post_tag',
             'category'
-        )
+        ),
+        'show_in_rest' => true
     ));
 }
 
