@@ -1,23 +1,23 @@
 <?php
 	$profile_picture = get_field('profile_picture');
-	$prof_pic = get_field('prof_image');
+	$profile_pic_media = get_field('profile_pic_url');
 	$leadership_title = get_field('leadership_title');
 	$linkedin = get_field('linkedin');
 	$twitter = get_field('twitter');
 	$website = get_field('website');
 	$email = get_field('email');
-	preg_match('#https?:\/\/\S+\.[^()]+(?:\([^)]*\))*#', $profile_picture, $profile_image); 
+	preg_match('#https?:\/\/\S+\.[^()]+(?:\([^)]*\))*#', $profile_picture, $parsed_profile_pic_url); 
 ?>
 
 <div class="wt_team__member">
-	<?php if ( $prof_pic ): ?>
+	<?php if ( $profile_pic_media ): ?>
 		<div class="wt_team__member--image"
-		 style="background-image:url(<?php echo $prof_pic; ?>);"
+		 style="background-image:url(<?php echo $profile_pic_media; ?>);"
 		 role="img"
 		 aria-label="Headshot of <?php the_title(); ?>"></div>
-	<?php elseif( $profile_image && !$prof_pic): ?>
+	<?php elseif( $parsed_profile_pic_url && !$profile_pic_media): ?>
 	<div class="wt_team__member--image"
-		 style="background-image:url(<?php echo $profile_image[0]; ?>);"
+		 style="background-image:url(<?php echo $parsed_profile_pic_url[0]; ?>);"
 		 role="img"
 		 aria-label="Headshot of <?php the_title(); ?>"></div>
 		 <?php else: ?>

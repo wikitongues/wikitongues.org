@@ -88,9 +88,6 @@ add_action('init', 'create_post_type_resources');
 add_action('init', 'create_post_type_projects');
 add_action('init', 'create_post_type_grantees');
 
-add_post_type_support( 'team', 'thumbnail' );
-add_post_type_support( 'videos', 'thumbnail' );
-
 // Team
 function create_post_type_team()
 {
@@ -117,14 +114,14 @@ function create_post_type_team()
         'menu_icon' => 'dashicons-megaphone',
         'has_archive' => true,
         'supports' => array(
-            'title'
+            'title',
+            'thumbnail'
         ),
         'can_export' => true,
         'taxonomies' => array(
             'post_tag',
             'category'
-        ),
-        'show_in_rest' => true
+        )
     ));
 }
 
@@ -237,8 +234,7 @@ function create_post_type_languages()
         'taxonomies' => array(
             'post_tag',
             'category'
-        ),
-        'show_in_rest' => true
+        )
     ));
 }
 
@@ -277,8 +273,7 @@ function create_post_type_videos()
         'taxonomies' => array(
             'post_tag',
             'category'
-        ),
-        'show_in_rest' => true
+        )
     ));
 }
 
@@ -356,8 +351,7 @@ function create_post_type_resources()
         'taxonomies' => array(
             'post_tag',
             'category'
-        ),
-        'show_in_rest' => true
+        )
     ));
 }
 
