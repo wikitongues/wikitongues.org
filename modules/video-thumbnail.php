@@ -1,23 +1,30 @@
 <?php
 	$video_thumbnail = get_field('video_thumbnail');
+	$video_thumbnail_media = get_field('video_thumbnail_url');
 	$video_title = get_field('video_title');
 	$featured_languages = get_field('featured_languages');
 	$youtube_link = get_field('youtube_link');
 	$wikimedia_commons_link = get_field('wikimedia_commons_link');
 	$public_status = get_field('public_status');
 	$video_license = get_field('video_license');
-	preg_match('#\((.*?)\)#', $video_thumbnail, $video_image);
+	preg_match('#https?:\/\/\S+\.[^()]+(?:\([^)]*\))*#', $video_thumbnail, $parsed_video_thumbnail_url);
 ?>
 <div class="wt_thumbnails__video wt_masonry">
-	<?php if ( $video_thumbnail ): ?>
+	<?php if ( $video_thumbnail_media ): ?>
 	<img class="wt_thumbnails__video--image"
-		 src="<?php echo $video_image[1]; ?>" 
+		 src="<?php echo $video_thumbnail_media; ?>" 
 		 alt="video still image">
-	<?php else: ?>
+	<?php elseif( $parsed_video_thumbnail_url && !$video_thumbnail_media): ?>
+	<img class="wt_thumbnails__video--image"
+		src="<?php echo $parsed_video_thumbnail_url[0]; ?>" 
+		 alt="video still image">
+		<?php else: ?>
 	<img class="wt_thumbnails__video--image"
 		 src="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/video__no-thumbnail.jpg" 
 		 alt="video still image">
 	<?php endif; ?>
+
+
 	
 	<ul class="wt_thumbnails__video--metadata">
 		<li>

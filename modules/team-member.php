@@ -1,22 +1,31 @@
 <?php
 	$profile_picture = get_field('profile_picture');
+	$profile_pic_media = get_field('profile_pic_url');
 	$leadership_title = get_field('leadership_title');
 	$linkedin = get_field('linkedin');
 	$twitter = get_field('twitter');
 	$website = get_field('website');
 	$email = get_field('email');
-	preg_match('#\((.*?)\)#', $profile_picture, $profile_image); 
+	preg_match('#https?:\/\/\S+\.[^()]+(?:\([^)]*\))*#', $profile_picture, $parsed_profile_pic_url); 
 ?>
 
 <div class="wt_team__member">
-	<?php if ( $profile_picture ): ?>
-	<div class="wt_team__member--image"
-		 style="background-image:url(<?php echo $profile_image[1]; ?>);"
+	<?php if ( $profile_pic_media ): ?>
+		<div class="wt_team__member--image"
+		 style="background-image:url(<?php echo $profile_pic_media; ?>);"
 		 role="img"
 		 aria-label="Headshot of <?php the_title(); ?>"></div>
-	<?php else: ?>
+	<?php elseif( $parsed_profile_pic_url && !$profile_pic_media): ?>
+	<div class="wt_team__member--image"
+		 style="background-image:url(<?php echo $parsed_profile_pic_url[0]; ?>);"
+		 role="img"
+		 aria-label="Headshot of <?php the_title(); ?>"></div>
+		 <?php else: ?>
 	<div class="wt_team__member--noimage"></div>
 	<?php endif; ?>
+
+
+	
 	<div class="wt_team__member--info">
 		<h2>
 			<?php the_title(); ?>

@@ -114,7 +114,8 @@ function create_post_type_team()
         'menu_icon' => 'dashicons-megaphone',
         'has_archive' => true,
         'supports' => array(
-            'title'
+            'title',
+            'thumbnail'
         ),
         'can_export' => true,
         'taxonomies' => array(

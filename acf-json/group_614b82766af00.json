@@ -1,8 +1,7 @@
 {
     "key": "group_614b82766af00",
     "title": "Videos: Single",
-    "fields": [
-        {
+    "fields": [{
             "key": "field_614b827b7f23c",
             "label": "Video Title",
             "name": "video_title",
@@ -201,16 +200,38 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_62b217dadf844",
+            "label": "Video image url",
+            "name": "video_thumbnail_url",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         }
     ],
     "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "videos"
-            }
-        ]
+        [{
+            "param": "post_type",
+            "operator": "==",
+            "value": "videos"
+        }]
     ],
     "menu_order": 0,
     "position": "normal",
@@ -220,5 +241,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632509081
+    "show_in_rest": 0,
+    "modified": 1657299647
 }
