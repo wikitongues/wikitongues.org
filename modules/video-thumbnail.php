@@ -50,7 +50,7 @@
 			<strong>Access</strong>
 			<?php
 				if ( $public_status == 'Public' ) {
-					if ( $youtube_link ) {
+					if ( $youtube_link && $youtube_link != "No ID") {
 						echo '<span>'.
 							 '<a href="' . $youtube_link . '">' .
 							 'YouTube' .
