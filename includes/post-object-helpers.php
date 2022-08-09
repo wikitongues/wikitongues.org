@@ -1,23 +1,26 @@
 <?php
 function handle_post_object($request)
 {
-    // Decode request body as associative array
-    $body = json_decode($request->get_body(), true);
+    $fields = $request->get_body_params()['meta'];
+    $post_id = $request['id'];
 
-    $post_id = $body['id'];
+    if (!$fields) {
+      return true;
+    }
 
-    foreach ($body as $field => $value) {
-        $field_obj = acf_maybe_get_field($field, false, false);
+    foreach ($fields as $raw_field_name => $value) {
+        $field_name = preg_replace('#^_WT_TMP_#', '', $raw_field_name);
+        $field_obj = acf_maybe_get_field($field_name, false, false);
 
         if (is_array($field_obj) && $field_obj['type'] == 'post_object') {
-            set_post_object_field($post_id, $field, $value, $field_obj['post_type']);
+            set_post_object_field($post_id, $field_name, $value, $field_obj['post_type']);
         }
     }
 
     return true;
 }
 
-function set_post_object_field($post_id, $field, $value, $target_post_type)
+function set_post_object_field($post_id, $field_name, $value, $target_post_type)
 {
     // Update post object field
     // Airtable API sends value as array
@@ -31,5 +34,5 @@ function set_post_object_field($post_id, $field, $value, $target_post_type)
         }
     }
     // Set field to array of post ID's
-    update_field($field, $ids, $post_id);
+    update_field($field_name, $ids, $post_id);
 }
