@@ -319,7 +319,8 @@ function create_post_type_lexicons()
         'taxonomies' => array(
             'post_tag',
             'category'
-        )
+        ),
+        'show_in_rest' => true
     ));
 }
 
