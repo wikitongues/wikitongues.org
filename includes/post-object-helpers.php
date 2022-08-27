@@ -26,9 +26,12 @@ function set_post_object_field($post_id, $field_name, $value, $target_post_type)
     // Airtable API sends value as array
     $titles = is_array($value) ? $value : explode(',', $value);
     $ids = array();
-    foreach ($titles as $title) {
+    foreach ($titles as $raw_title) {
+        // Trim &nbsp; and other whitespace
+        $title = str_replace(chr(194) . chr(160), '', $raw_title);
+        $title = trim($title);
         // Find post ID assigned by Wordpress given the post title
-        $post = get_page_by_title(trim($title), OBJECT, $target_post_type);
+        $post = get_page_by_title($title, OBJECT, $target_post_type);
         if ($post != null) {
             array_push($ids, $post->ID);
         }
