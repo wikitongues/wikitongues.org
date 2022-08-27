@@ -320,7 +320,8 @@ function create_post_type_lexicons()
             'post_tag',
             'category'
         ),
-        'show_in_rest' => true
+        'show_in_rest' => true,
+        'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
