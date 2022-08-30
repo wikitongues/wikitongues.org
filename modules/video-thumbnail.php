@@ -7,6 +7,7 @@
 	$wikimedia_commons_link = get_field('wikimedia_commons_link');
 	$public_status = get_field('public_status');
 	$video_license = get_field('video_license');
+	$dropbox_link = get_field('dropbox_link');
 	preg_match('#https?:\/\/\S+\.[^()]+(?:\([^)]*\))*#', $video_thumbnail, $parsed_video_thumbnail_url);
 ?>
 <div class="wt_thumbnails__video wt_masonry">
@@ -49,12 +50,19 @@
 			<strong>Access</strong>
 			<?php
 				if ( $public_status == 'Public' ) {
-					if ( $youtube_link ) {
+					if ( $youtube_link && $youtube_link != "No ID") {
 						echo '<span>'.
 							 '<a href="' . $youtube_link . '">' .
 							 'YouTube' .
 							 '</a>'.
 							 '</span>';
+					} 
+					if ( $dropbox_link ) {
+						echo '<span>' .
+						'<a href="' . $dropbox_link . '">' .
+						'Dropbox' .
+						'</a>' .
+						'</span>';
 					}
 
 					if ( $wikimedia_commons_link ) {
