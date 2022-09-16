@@ -1,6 +1,6 @@
 <?php
 	$profile_picture = get_field('profile_picture');
-	$profile_pic_media = get_field('profile_pic_url');
+	$profile_pic_id = get_field('profile_pic_v2');
 	$leadership_title = get_field('leadership_title');
 	$linkedin = get_field('linkedin');
 	$twitter = get_field('twitter');
@@ -10,12 +10,12 @@
 ?>
 
 <div class="wt_team__member">
-	<?php if ( $profile_pic_media ): ?>
+	<?php if ( $profile_pic_id ): ?>
 		<div class="wt_team__member--image"
-		 style="background-image:url(<?php echo $profile_pic_media; ?>);"
+		 style="background-image:url(<?php echo wp_get_attachment_url($profile_pic_id); ?>);"
 		 role="img"
 		 aria-label="Headshot of <?php the_title(); ?>"></div>
-	<?php elseif( $parsed_profile_pic_url && !$profile_pic_media): ?>
+	<?php elseif( $parsed_profile_pic_url && !$profile_pic_id): ?>
 	<div class="wt_team__member--image"
 		 style="background-image:url(<?php echo $parsed_profile_pic_url[0]; ?>);"
 		 role="img"
