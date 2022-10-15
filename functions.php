@@ -471,10 +471,7 @@ function create_post_type_reports()
         'menu_icon' => 'dashicons-clipboard',
         'has_archive' => true,
         'supports' => array(
-            'title',
-            'editor',
-            'excerpt',
-            'thumbnail'
+            'title'
         ),
         'can_export' => true,
         'taxonomies' => array(
