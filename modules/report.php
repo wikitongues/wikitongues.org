@@ -17,12 +17,12 @@
 			</li>
 			<li>
 				<strong>Projected Runway</strong><br/>
-				<em>Runway with expected income</em><br/>
+				<em>Bank balance and expected income minus expenses</em><br/>
 				<span><?php the_field('projected_runway'); ?></span>
 			</li>
 			<li>
 				<strong>Fundraising Target</strong><br/>
-				<em>Amount needed to support next year's programs</em><br/>
+				<em>Amount needed to fully fund next year's programs</em><br/>
 				<span><?php the_field('fundraising_progress'); ?></span>
 			</li>
 			<li>
