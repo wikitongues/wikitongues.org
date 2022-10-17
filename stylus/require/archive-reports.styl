@@ -1,0 +1,38 @@
+body
+	&.post-type-archive-reports
+		.wt_reports
+			&__main
+				width 90%
+				margin $margin3 auto
+				max-width 600px
+				
+				&--title
+					headerType($black)
+				
+				&--subheader
+					subheadType($black)
+					margin $margin1 0 $margin0
+						
+				&--content
+					bodyType($black)
+					
+					li
+						margin-bottom $margin0
+						line-height 2rem
+					
+					strong
+						bodyTypeBold($black)
+					
+					em
+						font-style italic
+
+@media all and (max-width:$mobile)
+	body
+		&.post-type-archive-reports
+			.wt_reports
+				&__main
+					&--title
+						headerTypeMobile($black)
+					
+					&--subheader
+						subheadTypeMobile($black)

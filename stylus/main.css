@@ -303,7 +303,6 @@ body[data-ui="no-scroll"] {
   color: #fffcef;
   text-transform: uppercase;
   margin-bottom: 30px;
-  white-space: nowrap;
 }
 .wt_banner__text>div h2 {
   font-family: 'Schnyder Wide M Web';
@@ -1827,6 +1826,63 @@ body.post-type-archive-team .wt_footer {
   }
   body.post-type-archive-team .wt_footer {
     padding-top: 60px;
+  }
+}
+body.post-type-archive-reports .wt_reports__main {
+  width: 90%;
+  margin: 90px auto;
+  max-width: 600px;
+}
+body.post-type-archive-reports .wt_reports__main--title {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
+}
+body.post-type-archive-reports .wt_reports__main--subheader {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+  margin: 30px 0 15px;
+}
+body.post-type-archive-reports .wt_reports__main--content {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+body.post-type-archive-reports .wt_reports__main--content li {
+  margin-bottom: 15px;
+  line-height: 2rem;
+}
+body.post-type-archive-reports .wt_reports__main--content strong {
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+body.post-type-archive-reports .wt_reports__main--content em {
+  font-style: italic;
+}
+@media all and (max-width: 768px) {
+  body.post-type-archive-reports .wt_reports__main--title {
+    font-size: 3rem;
+  }
+  body.post-type-archive-reports .wt_reports__main--subheader {
+    font-size: 2rem;
   }
 }
 body.single-languages {
