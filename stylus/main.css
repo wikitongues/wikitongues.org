@@ -2364,10 +2364,12 @@ body.page-template-template-general .wt_action__secondary:hover {
   transition: 0.1s color ease-in-out;
 }
 @media all and (max-width: 768px) {
-  body.single-projects .wt_project__content h1 {
+  body.single-projects .wt_project__content h1,
+  body.page-template-template-general .wt_project__content h1 {
     font-size: 3rem;
   }
-  body.single-projects .wt_project__content h2 {
+  body.single-projects .wt_project__content h2,
+  body.page-template-template-general .wt_project__content h2 {
     font-size: 2rem;
   }
 }
