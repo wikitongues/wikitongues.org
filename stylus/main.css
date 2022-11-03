@@ -2199,12 +2199,12 @@ body.page-template-template-revitalization .wt_donate {
     margin-top: 60px;
   }
 }
-body.page-template-template-general .wt_project__content {
+body.page-template-template-accelerator .wt_project__content {
   width: 90%;
   max-width: 750px;
-  margin: 120px auto 60px;
+  margin: 60px auto 60px;
 }
-body.page-template-template-general .wt_project__content h1 {
+body.page-template-template-accelerator .wt_project__content h1 {
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
   font-style: normal;
@@ -2216,7 +2216,7 @@ body.page-template-template-general .wt_project__content h1 {
   font-size: 7rem;
   text-align: center;
 }
-body.page-template-template-general .wt_project__content h2 {
+body.page-template-template-accelerator .wt_project__content h2 {
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
   font-style: normal;
@@ -2229,7 +2229,7 @@ body.page-template-template-general .wt_project__content h2 {
   line-height: 1.25 !important;
   text-align: center;
 }
-body.page-template-template-general .wt_project__content p {
+body.page-template-template-accelerator .wt_project__content p {
   max-width: 600px;
   font-family: 'Graphik Web';
   font-weight: 400;
@@ -2241,7 +2241,7 @@ body.page-template-template-general .wt_project__content p {
   font-size: 1.75rem;
   margin: 0 auto 30px;
 }
-body.page-template-template-general .wt_project__content p a {
+body.page-template-template-accelerator .wt_project__content p a {
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -2252,7 +2252,7 @@ body.page-template-template-general .wt_project__content p a {
   text-decoration: underline;
   font-size: 1.75rem;
 }
-body.page-template-template-general .wt_project__content p strong {
+body.page-template-template-accelerator .wt_project__content p strong {
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
@@ -2262,7 +2262,7 @@ body.page-template-template-general .wt_project__content p strong {
   line-height: 1.5;
   font-size: 1.75rem;
 }
-body.page-template-template-general .wt_project__content ul {
+body.page-template-template-accelerator .wt_project__content ul {
   max-width: 600px;
   margin: 0 auto 30px;
   font-family: 'Graphik Web';
@@ -2275,25 +2275,25 @@ body.page-template-template-general .wt_project__content ul {
   font-size: 1.75rem;
   list-style: disc;
 }
-body.page-template-template-general .wt_project__content ul li {
+body.page-template-template-accelerator .wt_project__content ul li {
   margin-left: 60px;
 }
-body.page-template-template-general .wt_project__content img {
+body.page-template-template-accelerator .wt_project__content img {
   display: block;
   max-width: 100%;
   height: auto;
   margin: auto;
 }
-body.page-template-template-general .wt_project__content>div {
+body.page-template-template-accelerator .wt_project__content>div {
   margin: auto !important;
   text-align: center;
   background: #101010;
 }
-body.page-template-template-general .wt_project__content>div img {
+body.page-template-template-accelerator .wt_project__content>div img {
   width: 100%;
   height: auto;
 }
-body.page-template-template-general .wt_project__content>div .wp-caption-text {
+body.page-template-template-accelerator .wt_project__content>div .wp-caption-text {
   margin-top: 15px;
   padding-bottom: 15px;
   font-family: 'Graphik Web';
@@ -2304,10 +2304,30 @@ body.page-template-template-general .wt_project__content>div .wp-caption-text {
   color: #fffcef;
   line-height: 1.5;
 }
-body.page-template-template-general .wt_action {
+body.page-template-template-accelerator .wt_action {
   text-align: center;
 }
-body.page-template-template-general .wt_action__primary {
+body.page-template-template-accelerator .wt_action__header h1 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
+  margin-top: 60px;
+}
+body.page-template-template-accelerator .wt_action__header h2 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+  margin: 30px auto;
+}
+body.page-template-template-accelerator .wt_action__primary {
   display: block;
   text-align: center;
   width: 95%;
@@ -2333,10 +2353,10 @@ body.page-template-template-general .wt_action__primary {
   transition: 0.1s color ease-in-out;
   transition: 0.2s opacity ease-in-out;
 }
-body.page-template-template-general .wt_action__primary:hover {
+body.page-template-template-accelerator .wt_action__primary:hover {
   opacity: 0.9;
 }
-body.page-template-template-general .wt_action__secondary {
+body.page-template-template-accelerator .wt_action__secondary {
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
@@ -2348,10 +2368,10 @@ body.page-template-template-general .wt_action__secondary {
   letter-spacing: 0.02rem;
   transition: 0.1s color ease-in-out;
 }
-body.page-template-template-general .wt_action__secondary span:first-of-type {
+body.page-template-template-accelerator .wt_action__secondary span:first-of-type {
   margin-right: 5px;
 }
-body.page-template-template-general .wt_action__secondary:hover {
+body.page-template-template-accelerator .wt_action__secondary:hover {
   font-family: 'Graphik Web';
   font-weight: 600;
   font-style: normal;
