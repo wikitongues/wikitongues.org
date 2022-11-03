@@ -29,7 +29,7 @@ $secondary_action_text = get_field('secondary_action_text');
 	<a href="<?php echo $secondary_action_link; ?>"
 	   class="wt_action__secondary">
 		<span><i class="fad fa-arrow-circle-right"></i></span>
-		<span>Or <?php echo $secondary_action_text; ?></span>
+		<span><?php if (!is_page_template('template-accelerator.php')): ?>Or <?php endif; ?><?php echo $secondary_action_text; ?></span>
 	</a>
 	<?php endif; ?> 
 </div>
