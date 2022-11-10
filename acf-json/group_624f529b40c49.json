@@ -6,6 +6,7 @@
             "key": "field_6255a107efe66",
             "label": "First Name",
             "name": "first_name",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -25,6 +26,7 @@
             "key": "field_6255a10defe67",
             "label": "Last Name",
             "name": "last_name",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -44,6 +46,7 @@
             "key": "field_624f52dac3dc0",
             "label": "Grantee Pitch",
             "name": "grantee_pitch",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -63,6 +66,7 @@
             "key": "field_624f5331e928e",
             "label": "Grantee Project",
             "name": "grantee_project",
+            "aria-label": "",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -82,6 +86,7 @@
             "key": "field_62546d83dc64a",
             "label": "Grantee Bio",
             "name": "grantee_bio",
+            "aria-label": "",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -101,6 +106,7 @@
             "key": "field_6254722f8d19b",
             "label": "Grantee Collaborators",
             "name": "grantee_collaborators",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -123,6 +129,7 @@
             "key": "field_6255a5e8506b4",
             "label": "Grantee Links",
             "name": "grantee_links",
+            "aria-label": "",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -136,12 +143,13 @@
             "min": 0,
             "max": 0,
             "layout": "row",
-            "button_label": "",
+            "button_label": "Add Row",
             "sub_fields": [
                 {
                     "key": "field_6255a5f0506b5",
                     "label": "Link Type",
                     "name": "link_type",
+                    "aria-label": "",
                     "type": "select",
                     "instructions": "",
                     "required": 0,
@@ -167,12 +175,14 @@
                     "ui": 0,
                     "return_format": "value",
                     "ajax": 0,
-                    "placeholder": ""
+                    "placeholder": "",
+                    "parent_repeater": "field_6255a5e8506b4"
                 },
                 {
                     "key": "field_6255a636506b7",
                     "label": "Link Name",
                     "name": "link_name",
+                    "aria-label": "",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -186,12 +196,14 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": ""
+                    "maxlength": "",
+                    "parent_repeater": "field_6255a5e8506b4"
                 },
                 {
                     "key": "field_6255a628506b6",
                     "label": "Link URL",
                     "name": "link_url",
+                    "aria-label": "",
                     "type": "url",
                     "instructions": "",
                     "required": 0,
@@ -202,9 +214,30 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "placeholder": ""
+                    "placeholder": "",
+                    "parent_repeater": "field_6255a5e8506b4"
                 }
-            ]
+            ],
+            "rows_per_page": 20
+        },
+        {
+            "key": "field_636d35600b10a",
+            "label": "Grantee Location",
+            "name": "grantee_location",
+            "aria-label": "",
+            "type": "google_map",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "center_lat": "",
+            "center_lng": "",
+            "zoom": "",
+            "height": ""
         }
     ],
     "location": [
@@ -225,5 +258,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1649788985
+    "modified": 1668101493
 }
