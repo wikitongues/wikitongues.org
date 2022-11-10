@@ -79,6 +79,13 @@ function html5wp_pagination()
     ));
 }
 
+// Add Google Maps
+function my_acf_google_map_api( $api ){
+    $api['key'] = 'AIzaSyBLLj4cU0Q9fvHECR-OizyBuMvEt7jHua8';
+    return $api;
+}
+add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
+
 // add custom post types
 add_action('init', 'create_post_type_team');
 add_action('init', 'create_post_type_donors');
