@@ -6,8 +6,9 @@
             "key": "field_634b277ff3c29",
             "label": "Bank Balance",
             "name": "bank_balance",
-            "type": "text",
-            "instructions": "",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -16,17 +17,42 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "min": "",
+            "max": "",
             "placeholder": "",
-            "prepend": "",
+            "step": "",
+            "prepend": "$",
+            "append": ""
+        },
+        {
+            "key": "field_63740a392b184",
+            "label": "Previous Bank Balance",
+            "name": "previous_bank_balance",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "$",
             "append": ""
         },
         {
             "key": "field_634b2aa7f3c2a",
             "label": "Runway",
             "name": "runway",
-            "type": "text",
-            "instructions": "",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "In months",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -35,8 +61,32 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "min": "",
+            "max": "",
             "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_63740a472b185",
+            "label": "Previous Runway",
+            "name": "previous_runway",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "In months",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
             "prepend": "",
             "append": ""
         },
@@ -44,8 +94,9 @@
             "key": "field_634b2ac2f3c2b",
             "label": "Projected Runway",
             "name": "projected_runway",
-            "type": "text",
-            "instructions": "",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "In months",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -54,8 +105,32 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "min": "",
+            "max": "",
             "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_63740a512b186",
+            "label": "Previous Projected Runway",
+            "name": "previous_projected_runway",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "In months",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
             "prepend": "",
             "append": ""
         },
@@ -63,8 +138,9 @@
             "key": "field_634b2ac9f3c2c",
             "label": "Fundraising Progress",
             "name": "fundraising_progress",
-            "type": "text",
-            "instructions": "",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -73,16 +149,19 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "min": "",
+            "max": "",
             "placeholder": "",
-            "prepend": "",
+            "step": "",
+            "prepend": "$",
             "append": ""
         },
         {
             "key": "field_634b2aeef3c2d",
             "label": "Downloads",
             "name": "downloads",
-            "type": "group",
+            "aria-label": "",
+            "type": "repeater",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -91,13 +170,20 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "row",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_634b2af8f3c2e",
-                    "label": "Financial Statement",
-                    "name": "financial_statement",
-                    "type": "file",
+                    "key": "field_637406ecf3540",
+                    "label": "Download Name",
+                    "name": "download_name",
+                    "aria-label": "",
+                    "type": "text",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -106,16 +192,18 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "url",
-                    "library": "all",
-                    "min_size": "",
-                    "max_size": "",
-                    "mime_types": ""
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_634b2aeef3c2d"
                 },
                 {
-                    "key": "field_634b2b07f3c2f",
-                    "label": "Budget Projection",
-                    "name": "budget_projection",
+                    "key": "field_637406f4f3541",
+                    "label": "Download File",
+                    "name": "download_file",
+                    "aria-label": "",
                     "type": "file",
                     "instructions": "",
                     "required": 0,
@@ -129,7 +217,8 @@
                     "library": "all",
                     "min_size": "",
                     "max_size": "",
-                    "mime_types": ""
+                    "mime_types": "",
+                    "parent_repeater": "field_634b2aeef3c2d"
                 }
             ]
         },
@@ -137,6 +226,7 @@
             "key": "field_634b2b43f3c30",
             "label": "Project Updates",
             "name": "project_updates",
+            "aria-label": "",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -158,6 +248,7 @@
                     "key": "field_634b2b51f3c31",
                     "label": "Project Name",
                     "name": "project_name",
+                    "aria-label": "",
                     "type": "text",
                     "instructions": "",
                     "required": 0,
@@ -178,6 +269,7 @@
                     "key": "field_634b2b56f3c32",
                     "label": "Project Update",
                     "name": "project_update",
+                    "aria-label": "",
                     "type": "textarea",
                     "instructions": "",
                     "required": 0,
@@ -195,6 +287,26 @@
                     "parent_repeater": "field_634b2b43f3c30"
                 }
             ]
+        },
+        {
+            "key": "field_63740a6d2b187",
+            "label": "Revision Notes",
+            "name": "revision_notes",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "rows": ""
         }
     ],
     "location": [
@@ -215,5 +327,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1665870730
+    "modified": 1668556295
 }
