@@ -1852,6 +1852,17 @@ body.post-type-archive-reports .wt_reports__main--subheader {
   line-height: 1.15;
   margin: 30px 0 15px;
 }
+body.post-type-archive-reports .wt_reports__main--notes {
+  margin-top: 15px;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+  opacity: 0.65;
+}
 body.post-type-archive-reports .wt_reports__main--content {
   font-family: 'Graphik Web';
   font-weight: 400;
