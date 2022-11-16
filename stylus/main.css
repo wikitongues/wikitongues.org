@@ -1888,6 +1888,16 @@ body.post-type-archive-reports .wt_reports__main--content strong {
 body.post-type-archive-reports .wt_reports__main--content em {
   font-style: italic;
 }
+body.post-type-archive-reports .wt_reports__main--content a {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #3814a5;
+  line-height: 1.5;
+  text-decoration: underline;
+}
 @media all and (max-width: 768px) {
   body.post-type-archive-reports .wt_reports__main--title {
     font-size: 3rem;

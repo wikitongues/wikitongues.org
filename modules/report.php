@@ -5,6 +5,8 @@ $runway = get_field('runway');
 $previous_runway = get_field('previous_runway');
 $projected_runway = get_field('projected_runway');
 $previous_projected_runway = get_field('previous_projected_runway');
+$active_donors = get_field('active_donors');
+$previous_active_donors = get_field('previous_active_donors');
 $fundraising_progress = get_field('fundraising_progress');
 $revision_notes = get_field('revision_notes');
 ?>
@@ -61,10 +63,26 @@ $revision_notes = get_field('revision_notes');
 					<?php if( ($projected_runway-$previous_projected_runway)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
 					<?php else: ?>
-						<span>(<i class="fa-solid fa-up"></i>)</span>
+						<span>(<i class="fa-solid fa-down"></i>)</span>
 					<?php endif; ?>
 				<?php endif; ?>
 			</li>
+
+			<?php if( $active_donors ): ?>
+			<li>
+				<strong>Active Donors</strong><br/>
+				<em>People who donate monthly and or who have given within the last 12 months</em><br/>
+				<span><?php echo $active_donors; ?></span>
+				<?php if( $previous_active_donors ): ?>
+					<?php if( $active_donors>$previous_active_donors ): ?>
+						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php else: ?>
+						<span>(<i class="fa-solid fa-down"></i>)</span>
+					<?php endif; ?>
+				<?php endif; ?>
+			</li>
+			<?php endif; ?> 
+
 			<li>
 				<strong>Fundraising Target</strong><br/>
 				<em>Amount needed to fully fund next year's programs</em><br/>
