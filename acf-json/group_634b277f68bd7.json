@@ -283,7 +283,7 @@
                     "maxlength": "",
                     "rows": "",
                     "placeholder": "",
-                    "new_lines": "",
+                    "new_lines": "br",
                     "parent_repeater": "field_634b2b43f3c30"
                 }
             ]
@@ -327,5 +327,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1668556295
+    "modified": 1668559545
 }
