@@ -8,17 +8,28 @@
 		margin auto
 		
 		.wt_donate
-			display none !important // disables default donate block at page bottom
+			&__progress
+				width 100%
+						
+			&__section
+				float left
+				
+				&:first-of-type
+					width 37%
+				
+				&:last-of-type
+					width 58%
+					margin-left 5%
 			
 			&__header
 				headerType($black)
 				text-align center
-				margin-top $margin2
+				margin $margin2 0 $margin0
 				
 			&__form
 				width 100%
 				max-width 378px
-				margin $margin1 auto $margin0
+				margin 0 auto $margin0
 			
 			&__address
 				text-align center
@@ -31,22 +42,57 @@
 			
 			&__content
 				subheadType($black)
-				margin $margin1 auto
+				margin $margin2 auto 0
 			
 			&__casestudies
-				li
-					display inline-block
-					vertical-align top
-					width 175px
-					margin $margin0
+				text-align center
+				
+				&>h1
+					margin-top $margin2
+					headerType($black)
 					
-					a
-						text-decoration none
+				&>h2
+					margin $margin0 auto $margin1
+					subheadType($black)
 					
-					.wt_grantee__thumbnail
-						&--image
-							border-radius 100%
+				ul
+					li
+						display inline-block
+						vertical-align top
+						width 175px
+						margin $margin0
 						
-						&--text
-							text-align center
+						a
+							text-decoration none
+						
+						.wt_grantee__thumbnail
+							&--image
+								border-radius 100%
+							
+							&--text
+								text-align center
+
+@media all and (max-width:$mobile)
+	.page-template-template-donate
+		.wt_wrapper
+			.wt_donate
+				&__section
+					float none
+					width 100%
+				
+				&__header
+					headerTypeMobile($black)
+				
+				&__content
+					subheadTypeMobile($black)
+				
+				&__casestudies
+					&>h1
+						headerTypeMobile($black)
 					
+					&>h2
+						subheadTypeMobile($black)
+					
+					ul
+						li
+							width 145px	

@@ -24,8 +24,11 @@ include( locate_template('modules/donate-content.php') );
 
 // case studies
 if( $case_studies ){
-	
-	echo '<ul class="wt_donate__casestudies">';
+
+	echo '<div class="wt_donate__casestudies">'.
+		 '<h1>Case Studies</h1>'.
+		 '<h2>Learn about projects we\'ve supported</h2>'.
+		 '<ul>';
 
 	foreach( $case_studies as $post ){
 		setup_postdata( $post );
