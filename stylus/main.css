@@ -2414,3 +2414,76 @@ body.page-template-template-accelerator .wt_action__secondary:hover {
     font-size: 2rem;
   }
 }
+.page-template-template-donate .wt_header__bugs {
+  display: none;
+}
+.page-template-template-donate .wt_wrapper {
+  width: 90%;
+  max-width: 1024px;
+  margin: auto;
+}
+.page-template-template-donate .wt_wrapper .wt_donate {
+  display: none !important;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__header {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 5rem;
+  color: #101010;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 60px;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__form {
+  width: 100%;
+  max-width: 378px;
+  margin: 30px auto 15px;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__address {
+  text-align: center;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__address strong {
+  font-family: 'Graphik Web';
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__address span {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.25rem;
+  color: #101010;
+  line-height: 1.5;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__content {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 2.5rem;
+  color: #101010;
+  line-height: 1.15;
+  margin: 30px auto;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__casestudies li {
+  display: inline-block;
+  vertical-align: top;
+  width: 175px;
+  margin: 15px;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__casestudies li a {
+  text-decoration: none;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__casestudies li .wt_grantee__thumbnail--image {
+  border-radius: 100%;
+}
+.page-template-template-donate .wt_wrapper .wt_donate__casestudies li .wt_grantee__thumbnail--text {
+  text-align: center;
+}

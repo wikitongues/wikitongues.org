@@ -1,0 +1,52 @@
+.page-template-template-donate
+	.wt_header__bugs
+		display none
+		
+	.wt_wrapper
+		width 90%
+		max-width 1024px
+		margin auto
+		
+		.wt_donate
+			display none !important // disables default donate block at page bottom
+			
+			&__header
+				headerType($black)
+				text-align center
+				margin-top $margin2
+				
+			&__form
+				width 100%
+				max-width 378px
+				margin $margin1 auto $margin0
+			
+			&__address
+				text-align center
+				
+				strong
+					bodyTypeBold($black)
+				
+				span
+					bodyType($black)
+			
+			&__content
+				subheadType($black)
+				margin $margin1 auto
+			
+			&__casestudies
+				li
+					display inline-block
+					vertical-align top
+					width 175px
+					margin $margin0
+					
+					a
+						text-decoration none
+					
+					.wt_grantee__thumbnail
+						&--image
+							border-radius 100%
+						
+						&--text
+							text-align center
+					

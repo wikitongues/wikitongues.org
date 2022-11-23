@@ -1,6 +1,6 @@
 <?php
 
-if ( !is_archive() ){
+if ( !is_archive() && !is_page_template('template-donate.php') ){
 	$donate_header = get_field('donate_header');
 	$testimonial_photo = get_field('testimonial_photo');
 	$testimonial_copy = get_field('testimonial_copy');
