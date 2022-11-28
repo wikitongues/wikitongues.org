@@ -1,31 +1,11 @@
 {
-    "key": "group_6377eeeba994d",
-    "title": "Template: Donate",
+    "key": "group_63853f55d5f58",
+    "title": "Donate: Donate",
     "fields": [
         {
-            "key": "field_637d3433bd32a",
-            "label": "Donate Page Header",
-            "name": "donate_page_header",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": "br"
-        },
-        {
-            "key": "field_63851ebcfa4a0",
-            "label": "Donate Subheader",
-            "name": "donate_subheader",
+            "key": "field_63853f55e5837",
+            "label": "Donate Header",
+            "name": "donate_header",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -37,15 +17,60 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": ""
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_6377eeec78923",
-            "label": "Donate Form Embed",
-            "name": "donate_form_embed",
+            "key": "field_63853f55e584d",
+            "label": "Testimonial Photo",
+            "name": "testimonial_photo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_63853f55e5870",
+            "label": "Testimonial Copy",
+            "name": "testimonial_copy",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_63853f55e5877",
+            "label": "Testimonial Byline",
+            "name": "testimonial_byline",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -57,15 +82,15 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": ""
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_637d34947abaa",
-            "label": "Donate Address",
-            "name": "donate_address",
+            "key": "field_63853f55e587d",
+            "label": "Donate Call",
+            "name": "donate_call",
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
@@ -77,17 +102,17 @@
                 "id": ""
             },
             "default_value": "",
+            "placeholder": "",
             "maxlength": "",
             "rows": "",
-            "placeholder": "",
             "new_lines": "br"
         },
         {
-            "key": "field_637d3444bd32b",
-            "label": "Donate Content",
-            "name": "donate_content",
+            "key": "field_63853f55e5883",
+            "label": "Donate Link",
+            "name": "donate_link",
             "aria-label": "",
-            "type": "textarea",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -97,17 +122,14 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": "br"
+            "placeholder": ""
         },
         {
-            "key": "field_6377eefc78924",
-            "label": "Case Studies",
-            "name": "case_studies",
+            "key": "field_63853f55e5888",
+            "label": "P2P Link",
+            "name": "p2p_link",
             "aria-label": "",
-            "type": "post_object",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -116,27 +138,21 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "grantees"
-            ],
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 1,
-            "allow_null": 0,
-            "ui": 1
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
         [
             {
-                "param": "post_template",
+                "param": "page_template",
                 "operator": "==",
                 "value": "template-donate.php"
             }
         ]
     ],
     "menu_order": 0,
-    "position": "normal",
+    "position": "acf_after_title",
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
@@ -144,5 +160,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1669676844
+    "modified": 1669676916
 }
