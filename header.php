@@ -115,10 +115,16 @@
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
 
-	<!-- bug report banner -->
+	<!-- bug report banner: disabled
 	<header class="wt_header__bugs">
 		This website is in early launch. If you experience issues, please <a href="https://airtable.com/shrtbu15QZnAbXXi9">report them here</a>. Your feedback helps us improve!
+	</header> -->
+
+	<?php if( !is_page_template('template-donate.php') ): ?>
+	<header class="wt_header__alert">
+		<a href="<?php bloginfo('url'); ?>/donate">Now through December 31st: donations matched up to $3,000! Please consider <span style="text-decoration:underline;">making a gift</span> today</a>.
 	</header>
+	<?php endif; ?>
 
 	<!-- global header -->
 	<header class="wt_header" role="banner">
