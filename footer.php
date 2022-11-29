@@ -42,6 +42,8 @@
 			Wikitongues is a 501(3)(c) non-profit organization based on Lenape land in Brooklyn, NY, USA.<br />Thanks to <a href="https://www.greengeeks.com/affiliates/track.php?affiliate=wikitongues" target="_blank">GreenGeeks</a>, this website's carbon footprint is offset by wind credits.
 		</p>
 	</div>
+
+	<?php include( locate_template('modules/donate-popup.php') ); ?>
 	
 	<?php wp_footer(); ?>
 </footer>
