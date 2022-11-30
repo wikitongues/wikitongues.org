@@ -42,7 +42,7 @@ body {
   background: #fffcef;
 }
 body.logged-in {
-  padding-top: 97px;
+  padding-top: 135.75px;
 }
 body.logged-in .wt_header {
   top: 70.75px;
@@ -2441,6 +2441,12 @@ body.page-template-template-accelerator .wt_action__secondary:hover {
 }
 .page-template-template-donate {
   padding-top: 65px;
+}
+.page-template-template-donate.logged-in {
+  padding-top: 97px;
+}
+.page-template-template-donate.logged-in .wt_header {
+  top: 32px;
 }
 .page-template-template-donate .wt_header {
   top: 0;
