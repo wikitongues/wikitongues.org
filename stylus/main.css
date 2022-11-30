@@ -38,11 +38,11 @@ html {
   transform: translate(-50%, -50%);
 }
 body {
-  padding-top: 65px;
+  padding-top: 103.75px;
   background: #fffcef;
 }
 body.logged-in {
-  padding-top: 97px;
+  padding-top: 135.75px;
 }
 body.logged-in .wt_header {
   top: 70.75px;
@@ -2438,6 +2438,15 @@ body.page-template-template-accelerator .wt_action__secondary:hover {
   body.page-template-template-general .wt_project__content h2 {
     font-size: 2rem;
   }
+}
+.page-template-template-donate {
+  padding-top: 65px;
+}
+.page-template-template-donate.logged-in {
+  padding-top: 97px;
+}
+.page-template-template-donate.logged-in .wt_header {
+  top: 32px;
 }
 .page-template-template-donate .wt_header {
   top: 0;
