@@ -43,6 +43,26 @@
             "append": ""
         },
         {
+            "key": "field_638fd3de84f3c",
+            "label": "Donate Progress",
+            "name": "donate_progress",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6377eeec78923",
             "label": "Donate Form Embed",
             "name": "donate_form_embed",
@@ -144,5 +164,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1669676844
+    "modified": 1670370296
 }
