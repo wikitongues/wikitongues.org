@@ -9,7 +9,7 @@
 	</section>
 
 	<section class="wt_donate__progress">
-		<a href="#XCUDAJSK" style="display: none"></a>
+		<?php echo $donate_progress; ?>
 	</section>
 
 	<section class="wt_donate__donate">
