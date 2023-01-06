@@ -1923,6 +1923,16 @@ body.post-type-archive-reports .wt_reports__main--content a {
   line-height: 1.5;
   text-decoration: underline;
 }
+body.post-type-archive-reports .wt_reports__main--updates li ul {
+  list-style: disc;
+  padding-left: 15px;
+}
+body.post-type-archive-reports .wt_reports__main--updates li ul li:first-of-type {
+  margin-top: 15px;
+}
+body.post-type-archive-reports .wt_reports__main--updates li ul li:last-of-type {
+  margin-bottom: 30px;
+}
 @media all and (max-width: 768px) {
   body.post-type-archive-reports .wt_reports__main--title {
     font-size: 3rem;
