@@ -310,11 +310,11 @@
                     "parent_repeater": "field_634b2b43f3c30"
                 },
                 {
-                    "key": "field_634b2b56f3c32",
+                    "key": "field_63b87889dbc40",
                     "label": "Project Update",
                     "name": "project_update",
                     "aria-label": "",
-                    "type": "textarea",
+                    "type": "repeater",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -323,11 +323,35 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "maxlength": "",
-                    "rows": "",
-                    "placeholder": "",
-                    "new_lines": "br",
+                    "layout": "block",
+                    "min": 0,
+                    "max": 0,
+                    "collapsed": "",
+                    "button_label": "Add Row",
+                    "rows_per_page": 20,
+                    "sub_fields": [
+                        {
+                            "key": "field_63b87896dbc41",
+                            "label": "Project Update Text",
+                            "name": "project_update_text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": "",
+                            "placeholder": "",
+                            "new_lines": "",
+                            "parent_repeater": "field_63b87889dbc40"
+                        }
+                    ],
                     "parent_repeater": "field_634b2b43f3c30"
                 }
             ]
@@ -371,5 +395,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1668641222
+    "modified": 1673034008
 }

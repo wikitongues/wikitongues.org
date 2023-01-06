@@ -107,11 +107,21 @@ $revision_notes = get_field('revision_notes');
 
 		<?php if( have_rows('project_updates') ): ?>
 		<h2 class="wt_reports__main--subheader">Project Updates</h2>
-		<ul>
+		<ul class="wt_reports__main--updates">
 			<?php while( have_rows('project_updates') ): the_row(); ?>
 			<li>
 				<strong><?php the_sub_field('project_name'); ?></strong><br/>
-				<span><?php the_sub_field('project_update'); ?></span> 
+				<?php if( have_rows('project_update') ): ?>
+				<ul>
+					<?php while( have_rows('project_update') ): the_row(); ?>
+					<li>
+						<span>
+							<?php the_sub_field('project_update_text'); ?>
+						</span>
+					</li>
+					<?php endwhile; ?>
+				</ul>
+				<?php endif; ?>
 			</li>
 			<?php endwhile; ?>
 		</ul>

@@ -122,7 +122,7 @@
 
 	<?php if( !is_page_template('template-donate.php') ): ?>
 	<header class="wt_header__alert">
-		<a href="<?php bloginfo('url'); ?>/donate">Now through December 31st: donations matched up to $3,000! Please consider <span style="text-decoration:underline;">making a gift</span> today</a>.
+		<a href="<?php bloginfo('url'); ?>/donate">Now through December 31st: donations matched 2X up to $6,500! Please consider <span style="text-decoration:underline;">making a gift</span> today</a>.
 	</header>
 	<?php endif; ?>
 

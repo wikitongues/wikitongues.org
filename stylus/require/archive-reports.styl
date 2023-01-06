@@ -33,6 +33,20 @@ body
 					
 					a
 						bodyTypeLink($blue)
+				
+				&--updates
+					li						
+						ul
+							list-style disc
+							padding-left $margin0
+					
+							li
+								&:first-of-type
+									margin-top $margin0
+								
+								&:last-of-type
+									margin-bottom $margin1
+
 
 @media all and (max-width:$mobile)
 	body
