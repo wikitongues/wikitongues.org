@@ -38,14 +38,14 @@ html {
   transform: translate(-50%, -50%);
 }
 body {
-  padding-top: 103.75px;
+  padding-top: 65px;
   background: #fffcef;
 }
 body.logged-in {
-  padding-top: 135.75px;
+  padding-top: 97px;
 }
 body.logged-in .wt_header {
-  top: 70.75px;
+  top: 32px;
 }
 body.logged-in .wt_header__alert {
   top: 32px;
@@ -68,7 +68,7 @@ body[data-ui="no-scroll"] {
 .wt_header {
   position: fixed;
   z-index: 10;
-  top: 38.75px;
+  top: 0;
   left: 0;
   width: 100%;
   height: 65px;
@@ -2448,18 +2448,6 @@ body.page-template-template-accelerator .wt_action__secondary:hover {
   body.page-template-template-general .wt_project__content h2 {
     font-size: 2rem;
   }
-}
-.page-template-template-donate {
-  padding-top: 65px;
-}
-.page-template-template-donate.logged-in {
-  padding-top: 97px;
-}
-.page-template-template-donate.logged-in .wt_header {
-  top: 32px;
-}
-.page-template-template-donate .wt_header {
-  top: 0;
 }
 .page-template-template-donate .wt_banner {
   height: 75vh;
