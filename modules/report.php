@@ -7,7 +7,7 @@ $projected_runway = get_field('projected_runway');
 $previous_projected_runway = get_field('previous_projected_runway');
 $active_donors = get_field('active_donors');
 $previous_active_donors = get_field('previous_active_donors');
-$fundraising_progress = get_field('fundraising_progress');
+$fundraising_target = get_field('fundraising_target');
 $revision_notes = get_field('revision_notes');
 ?>
 
@@ -26,13 +26,15 @@ $revision_notes = get_field('revision_notes');
 		<h2 class="wt_reports__main--subheader">Financials</h2>
 		<ul>
 			<li>
-				<strong>Bank balance</strong><br/>
+				<strong>Cash balance</strong><br/>
 				<em>As of the report date</em><br/>
 				<span>$<?php echo number_format($bank_balance); ?></span>
 				<?php if( $previous_bank_balance): ?>
 					<?php if ( ($bank_balance-$previous_bank_balance)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
-					<?php else: ?>
+					<?php elseif ( ($bank_balance-$previous_bank_balance)===0 ): ?>
+						<span>( - )</span>
+					<?php else: ?>	
 						<span>(<i class="fa-solid fa-down"></i>)</span>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -47,6 +49,8 @@ $revision_notes = get_field('revision_notes');
 				<?php if( $previous_runway ): ?>
 					<?php if( ($runway-$previous_runway)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php elseif ( ($runway-$previous_runway)===0 ): ?>
+						<span>( - )</span>
 					<?php else:?> 
 						<span>(<i class="fa-solid fa-down"></i>)</span>
 					<?php endif; ?>
@@ -62,6 +66,8 @@ $revision_notes = get_field('revision_notes');
 				<?php if( $previous_projected_runway ): ?>
 					<?php if( ($projected_runway-$previous_projected_runway)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php elseif ( ($projected_runway-$previous_projected_runway)===0 ): ?>
+						<span>( - )</span>
 					<?php else: ?>
 						<span>(<i class="fa-solid fa-down"></i>)</span>
 					<?php endif; ?>
@@ -76,6 +82,8 @@ $revision_notes = get_field('revision_notes');
 				<?php if( $previous_active_donors ): ?>
 					<?php if( $active_donors>$previous_active_donors ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php elseif ( ($active_donors-$previous_active_donors)===0 ): ?>
+						<span>( - )</span>
 					<?php else: ?>
 						<span>(<i class="fa-solid fa-down"></i>)</span>
 					<?php endif; ?>
@@ -86,7 +94,7 @@ $revision_notes = get_field('revision_notes');
 			<li>
 				<strong>Fundraising Target</strong><br/>
 				<em>Amount needed to fully fund next year's programs</em><br/>
-				<span>$<?php echo number_format($fundraising_progress); ?></span>
+				<span>$<?php echo number_format($fundraising_target); ?></span>
 			</li>
 			<li>
 				<strong>Downloads</strong><br />

@@ -180,8 +180,8 @@
         },
         {
             "key": "field_634b2ac9f3c2c",
-            "label": "Fundraising Progress",
-            "name": "fundraising_progress",
+            "label": "Fundraising Target",
+            "name": "fundraising_target",
             "aria-label": "",
             "type": "number",
             "instructions": "Rounded to the nearest dollar",
@@ -310,11 +310,11 @@
                     "parent_repeater": "field_634b2b43f3c30"
                 },
                 {
-                    "key": "field_63b87889dbc40",
+                    "key": "field_634b2b56f3c32",
                     "label": "Project Update",
                     "name": "project_update",
                     "aria-label": "",
-                    "type": "repeater",
+                    "type": "textarea",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -323,35 +323,11 @@
                         "class": "",
                         "id": ""
                     },
-                    "layout": "block",
-                    "min": 0,
-                    "max": 0,
-                    "collapsed": "",
-                    "button_label": "Add Row",
-                    "rows_per_page": 20,
-                    "sub_fields": [
-                        {
-                            "key": "field_63b87896dbc41",
-                            "label": "Project Update Text",
-                            "name": "project_update_text",
-                            "aria-label": "",
-                            "type": "textarea",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "maxlength": "",
-                            "rows": "",
-                            "placeholder": "",
-                            "new_lines": "",
-                            "parent_repeater": "field_63b87889dbc40"
-                        }
-                    ],
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": "",
+                    "placeholder": "",
+                    "new_lines": "br",
                     "parent_repeater": "field_634b2b43f3c30"
                 }
             ]
@@ -395,5 +371,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1673034008
+    "modified": 1673296976
 }
