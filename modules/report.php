@@ -8,6 +8,14 @@ $previous_projected_runway = get_field('previous_projected_runway');
 $active_donors = get_field('active_donors');
 $previous_active_donors = get_field('previous_active_donors');
 $fundraising_target = get_field('fundraising_target');
+$active_users = get_field('active_users');
+$previous_active_users = get_field('previous_active_users');
+$newsletter_subscribers = get_field('newsletter_subscribers');
+$previous_newsletter_subscribers = get_field('previous_newsletter_subscribers');
+$youtube_subscribers = get_field('youtube_subscribers');
+$previous_youtube_subscribers = get_field('previous_youtube_subscribers');
+$engaged_activists = get_field('engaged_activists');
+$previous_engaged_activists = get_field('previous_engaged_activists');
 $revision_notes = get_field('revision_notes');
 ?>
 
@@ -110,6 +118,39 @@ $revision_notes = get_field('revision_notes');
 				} else {
 					echo '<em>This month\'s financial statements are not yet available.</em>';
 				} ?>
+			</li>
+		</ul>
+
+		<h2 class="wt_reports__main--subheader">Community</h2>
+		<!-- add active users, engaged activists next cycle -->
+		<ul>
+			<li>	
+				<strong>Newsletter Subscribers</strong><br/>
+				<em>As of the report date</em><br/>
+				<span><?php echo number_format($newsletter_subscribers); ?></span>
+				<?php if( $previous_newsletter_subscribers): ?>
+					<?php if ( ($newsletter_subscribers-$previous_newsletter_subscribers)>0 ): ?>
+						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php elseif ( ($newsletter_subscribers-$previous_newsletter_subscribers)===0 ): ?>
+						<span>( - )</span>
+					<?php else: ?>	
+						<span>(<i class="fa-solid fa-down"></i>)</span>
+					<?php endif; ?>
+				<?php endif; ?>
+			</li>
+			<li>	
+				<strong>YouTube Subscribers</strong><br/>
+				<em>As of the report date</em><br/>
+				<span><?php echo number_format($youtube_subscribers); ?></span>
+				<?php if( $previous_youtube_subscribers): ?>
+					<?php if ( ($youtube_subscribers-$previous_youtube_subscribers)>0 ): ?>
+						<span>(<i class="fa-solid fa-up"></i>)</span>
+					<?php elseif ( ($youtube_subscribers-$previous_youtube_subscribers)===0 ): ?>
+						<span>( - )</span>
+					<?php else: ?>	
+						<span>(<i class="fa-solid fa-down"></i>)</span>
+					<?php endif; ?>
+				<?php endif; ?>
 			</li>
 		</ul>
 
