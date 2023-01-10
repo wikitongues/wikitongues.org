@@ -127,7 +127,13 @@ $revision_notes = get_field('revision_notes');
 			<li>	
 				<strong>Newsletter Subscribers</strong><br/>
 				<em>As of the report date</em><br/>
-				<span><?php echo number_format($newsletter_subscribers); ?></span>
+				<span>
+				<?php if( $newsletter_subscribers>0) {
+					echo number_format($newsletter_subscribers);
+				} else {
+					echo 'Data for this month is not available.';
+				}?>	
+				</span>
 				<?php if( $previous_newsletter_subscribers): ?>
 					<?php if ( ($newsletter_subscribers-$previous_newsletter_subscribers)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
@@ -141,7 +147,12 @@ $revision_notes = get_field('revision_notes');
 			<li>	
 				<strong>YouTube Subscribers</strong><br/>
 				<em>As of the report date</em><br/>
-				<span><?php echo number_format($youtube_subscribers); ?></span>
+				<span>
+				<?php if ( $youtube_subscribers>0 ) {
+					echo number_format($youtube_subscribers);
+				} else {
+					echo 'Data for this month is not available.';
+				} ?></span>
 				<?php if( $previous_youtube_subscribers): ?>
 					<?php if ( ($youtube_subscribers-$previous_youtube_subscribers)>0 ): ?>
 						<span>(<i class="fa-solid fa-up"></i>)</span>
