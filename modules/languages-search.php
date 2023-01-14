@@ -30,28 +30,66 @@
 
 		if ($languages_search) {
 			echo '<h2 class="wt_search__results--title">Showing results for \'' . $languages_search . '\'</h2>'; 
-
 		} 
 
 		if (!empty($languages_search)) {
-			$args['meta_query'] = array(
-				array(
-					'key' => 'wt_id',
-					'value' => $languages_search,
-					'compare' => 'LIKE'
-				),
-				array(
-					'key' => 'standard_name',
-					'value' => $languages_search,
-					'compare' => 'LIKE'
-				),
-				array(
-					'key' => 'alternate_names',
-					'value' => $languages_search,
-					'compare' => 'LIKE'
-				),
-				'relation' => 'OR'
-			);
+			$iso_code_regex = '#^w?[a-z]{3}$#';  // Also accounts for 4-letter Wikitongues-assigned codes
+			$glottocode_regex = '#^[[:alnum:]]{4}\d{4}$#';
+			preg_match($iso_code_regex, $languages_search, $iso_match);
+			preg_match($glottocode_regex, $languages_search, $glottocode_match);
+
+			if ($iso_match) {
+				$args['meta_query'] = array(
+					array(
+						'key' => 'iso_code',
+						'value' => $languages_search,
+						'compare' => '='
+					),
+					array(
+						'key' => 'standard_name',
+						'value' => $languages_search,
+						'compare' => '='
+					),
+					'relation' => 'OR'
+				);
+			} else if ($glottocode_match) {
+				$args['meta_query'] = array(
+					array(
+						'key' => 'glottocode',
+						'value' => $languages_search,
+						'compare' => '='
+					)
+				);
+			} else {
+				$args['meta_query'] = array(
+					array(
+						'key' => 'standard_name',
+						'value' => $languages_search,
+						'compare' => 'LIKE'
+					),
+					array(
+						'key' => 'alternate_names',
+						'value' => $languages_search,
+						'compare' => 'LIKE'
+					),
+					array(
+						'key' => 'nations_of_origin',
+						'value' => $languages_search,
+						'compare' => 'LIKE'
+					),
+					array(
+						'key' => 'writing_systems',
+						'value' => $languages_search,
+						'compare' => 'LIKE'
+					),
+					array(
+						'key' => 'linguistic_genealogy',
+						'value' => $languages_search,
+						'compare' => '='
+					),
+					'relation' => 'OR'
+				);
+			}
 		}
 
 		// Get current page and append to custom query parameters array
