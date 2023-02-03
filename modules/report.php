@@ -48,7 +48,7 @@ $revision_notes = get_field('revision_notes');
 				<?php endif; ?>
 			</li>
 			<li>
-				<strong>Hard Runway</strong><br/>
+				<strong>Actual Runway</strong><br/>
 				<em>Bank balance minus expenses</em><br/>
 				<span><?php echo $runway; ?></span>
 				<span>
@@ -113,7 +113,7 @@ $revision_notes = get_field('revision_notes');
 
 						echo '<a href="'.get_sub_field('download_file').'">'.
 							 get_sub_field('download_name').
-							 '</a>';
+							 '</a><br/>';
 					}
 				} else {
 					echo '<em>This month\'s financial statements are not yet available.</em>';
