@@ -35,7 +35,7 @@
 			<?php echo $leadership_title; ?>
 		</p>
 
-		<?php if ( $linkedin || $twitter || $website ): ?>
+		<?php if ( $linkedin || $twitter || $website || $email ): ?>
 		<ul>
 			<?php if ( $linkedin ): ?>
 			<li>
