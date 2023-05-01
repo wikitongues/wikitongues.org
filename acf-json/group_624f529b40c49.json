@@ -144,6 +144,7 @@
             "max": 0,
             "layout": "row",
             "button_label": "Add Row",
+            "rows_per_page": 20,
             "sub_fields": [
                 {
                     "key": "field_6255a5f0506b5",
@@ -217,27 +218,7 @@
                     "placeholder": "",
                     "parent_repeater": "field_6255a5e8506b4"
                 }
-            ],
-            "rows_per_page": 20
-        },
-        {
-            "key": "field_636d35600b10a",
-            "label": "Grantee Location",
-            "name": "grantee_location",
-            "aria-label": "",
-            "type": "google_map",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "center_lat": "",
-            "center_lng": "",
-            "zoom": "",
-            "height": ""
+            ]
         }
     ],
     "location": [
@@ -258,5 +239,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1668101493
+    "modified": 1682968573
 }
