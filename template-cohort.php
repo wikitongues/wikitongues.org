@@ -16,14 +16,14 @@ $grantees = new WP_Query(
 		'post_type'=>'grantees',
 		'meta_key' => 'grantee_role',
 		'meta_value' => 'Project leader',
-		'posts_per_page' => 15
+		'posts_per_page' => 50
 	) 
 );
 
 echo '<main class="wt_wrapper">';
 
 if( $grantees->have_posts() ){
-	echo '<h1>Meet the 2022 Cohort</h1>';
+	echo '<h1>Meet the 2022 and 2023 Cohorts</h1>';
 	
 	while( $grantees->have_posts() ){
 		$grantees->the_post();
