@@ -36,7 +36,7 @@ function my_filter_head() {
    remove_action('wp_head', '_admin_bar_bump_cb');
 } 
 
-// initiate options page
+// initiate options page - consider deprecating this
 if( function_exists('acf_add_options_page') ) {   
     acf_add_options_page();
 }
@@ -79,23 +79,26 @@ function html5wp_pagination()
     ));
 }
 
-// Add Google Maps
-function my_acf_google_map_api( $api ){
-    $api['key'] = 'AIzaSyBLLj4cU0Q9fvHECR-OizyBuMvEt7jHua8';
-    return $api;
-}
-add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
+// Add Google Maps - consider deprecating
+// function my_acf_google_map_api( $api ){
+//     $api['key'] = 'AIzaSyBLLj4cU0Q9fvHECR-OizyBuMvEt7jHua8';
+//     return $api;
+// }
+// add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
-// add custom post types
-add_action('init', 'create_post_type_team');
-add_action('init', 'create_post_type_donors');
-add_action('init', 'create_post_type_partners');
+// add custom post types for language archive
 add_action('init', 'create_post_type_languages'); 
 add_action('init', 'create_post_type_videos');
 add_action('init', 'create_post_type_lexicons'); 
-add_action('init', 'create_post_type_resources');
-add_action('init', 'create_post_type_projects');
-add_action('init', 'create_post_type_grantees');
+add_action('init', 'create_post_type_resources'); // indexing misc.
+// revitalization project
+// translation/interpretation
+// language learning options
+
+// add custom post types for wikitongues team and alumni
+add_action('init', 'create_post_type_grantees'); // change to awardee/fellows
+add_action('init', 'create_post_type_team');
+add_action('init', 'create_post_type_partners');
 add_action('init', 'create_post_type_reports');
 
 // Team
@@ -133,45 +136,6 @@ function create_post_type_team()
             'category'
         ),
         'show_in_rest' => true
-    ));
-}
-
-// Donors
-function create_post_type_donors()
-{
-    register_taxonomy_for_object_type('category', 'donors'); 
-    register_taxonomy_for_object_type('post_tag', 'donors');
-    register_post_type('donors',
-        array(
-        'labels' => array(
-            'name' => __('Donors', 'donor'), 
-            'singular_name' => __('Donor', 'donor'),
-            'add_new' => __('Add New', 'donor'),
-            'add_new_item' => __('Add New Donor', 'donor'),
-            'edit' => __('Edit', 'donor'),
-            'edit_item' => __('Edit Donor', 'donor'),
-            'new_item' => __('New Donor', 'donor'),
-            'view' => __('View Donor', 'donor'),
-            'view_item' => __('View Donor', 'donor'),
-            'search_items' => __('Search Donors', 'donor'),
-            'not_found' => __('No Donors found', 'donor'),
-            'not_found_in_trash' => __('No Donors found in Trash', 'donor')
-        ),
-        'public' => true,
-        'hierarchical' => true,
-        'menu_icon' => 'dashicons-awards',
-        'has_archive' => true,
-        'supports' => array(
-            'title'
-            // 'editor',
-            // 'excerpt',
-            // 'thumbnail'
-        ),
-        'can_export' => true,
-        'taxonomies' => array(
-            'post_tag',
-            'category'
-        )
     ));
 }
 
@@ -374,46 +338,8 @@ function create_post_type_resources()
     ));
 }
 
-// Projects
-function create_post_type_projects()
-{
-    register_taxonomy_for_object_type('category', 'projects'); 
-    register_taxonomy_for_object_type('post_tag', 'projects');
-    register_post_type('projects',
-        array(
-        'labels' => array(
-            'name' => __('Projects', 'projects'), 
-            'singular_name' => __('Project', 'projects'),
-            'add_new' => __('Add New', 'projects'),
-            'add_new_item' => __('Add New Project', 'projects'),
-            'edit' => __('Edit', 'projects'),
-            'edit_item' => __('Edit Project', 'projects'),
-            'new_item' => __('New Project', 'projects'),
-            'view' => __('View Project', 'projects'),
-            'view_item' => __('View Project', 'projects'),
-            'search_items' => __('Search Projects', 'projects'),
-            'not_found' => __('No Projects found', 'projects'),
-            'not_found_in_trash' => __('No Projects found in Trash', 'projects')
-        ),
-        'public' => true,
-        'hierarchical' => true,
-        'menu_icon' => 'dashicons-admin-tools',
-        'has_archive' => true,
-        'supports' => array(
-            'title',
-            'editor',
-            'excerpt',
-            'thumbnail'
-        ),
-        'can_export' => true,
-        'taxonomies' => array(
-            'post_tag',
-            'category'
-        )
-    ));
-}
 
-// Projects
+// Grantees
 function create_post_type_grantees()
 {
     register_taxonomy_for_object_type('category', 'grantees'); 
@@ -452,7 +378,7 @@ function create_post_type_grantees()
     ));
 }
 
-// Projects
+// Reports
 function create_post_type_reports()
 {
     register_taxonomy_for_object_type('category', 'reports'); 

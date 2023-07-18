@@ -94,7 +94,7 @@
 
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
-	<!-- Font Awesome connection -->
+	<!-- Font Awesome connection for UI/UX icons and small graphic elements -->
 	<!-- <script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script> -->
 	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
 
@@ -110,51 +110,17 @@
 	<!-- WP head tag -->
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?><?php if (isset($_GET['languages_search'])): ?>data-ui="no-scroll"<?php endif; ?>>
+<body <?php body_class(); ?>>
 
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
 
-	<!-- bug report banner: disabled
-	<header class="wt_header__bugs">
-		This website is in early launch. If you experience issues, please <a href="https://airtable.com/shrtbu15QZnAbXXi9">report them here</a>. Your feedback helps us improve!
-	</header> -->
-
-	<!-- class="wt_header__alert" for banners -->
+	<!-- alert/message banner -->
 	
-	<!-- global header -->
+	<!-- header -->
 	<header class="wt_header" role="banner">
-
-		<!-- wikitongues logo --> 
-		<div class="wt_header__logo">
-			<a href="<?php bloginfo('url'); ?>">
-				<img src="<?php the_field('header_logo', 'options'); ?>"
-				     alt="Wikitongues Logo">
-			</a>
-		</div>
-
-		<!-- navigation -->
-		<nav class="wt_header__nav">
-			<!-- main menu -->
-			<?php wp_nav_menu(
-					array( 
-						'theme_location' => 'main-menu',
-						'container' => '',
-						'menu_id' => 'wt_header__nav--menu',
-						'menu_class' => 'wt_header__nav--menu'
-					)
-				  ); ?>
-
-			<!-- donate button -->
-			<div class="wt_header__nav--donate">
-				<a href="<?php 
-					the_field('donate_button_embed', 'options'); ?>">
-					<span><i class="fas fa-heart"></i></span>
-					<span>Donate</span>
-				</a>
-			</div>
-		</nav>
-
-		<!-- clear element -->
-		<div class="clear"></div>
+		<!-- logo -->
+		<!-- search bar -->
+		<!-- navigation with drop-down selection -->
+		<!-- donate button -->
 	</header>
