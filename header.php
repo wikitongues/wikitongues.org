@@ -122,5 +122,6 @@
 		<!-- logo -->
 		<!-- search bar -->
 		<!-- navigation with drop-down selection -->
+		<!-- if not home page, sub-navigation -->
 		<!-- donate button -->
 	</header>

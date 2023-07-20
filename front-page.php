@@ -7,11 +7,11 @@ get_header(); // do pseudo code
 
 // thumbnail carousel
 
-// content block
+// content block - wide
 
 // testimonial carousel
 
-// content block
+// content block - wide
 
 // thumbnail carousel
 
