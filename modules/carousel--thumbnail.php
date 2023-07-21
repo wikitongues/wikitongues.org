@@ -1,0 +1,1 @@
+<h1>thumbnail carousel module</h1>

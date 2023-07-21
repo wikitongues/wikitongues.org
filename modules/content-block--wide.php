@@ -1,0 +1,1 @@
+<h1>content block - wide module</h1>
