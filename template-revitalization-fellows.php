@@ -4,9 +4,10 @@
 get_header();
 
 // banner
+include( get_template('banner.php');
 
-// loop through awardees
-	// content blocks - thirds
+// content blocks - thirds
+include( get_template('content-block--thirds') );
 
 // footer
 get_footer();
