@@ -4,8 +4,10 @@
 get_header();
 
 // banner
+include( get_template('banner.php') );
 
-// content blocks - thirds (toolkit downloads)
+// foreach available toolkit download, display 1/3 content blocks
+include( get_template('content-block--thirds') );
 
 // content block - wide (fellowship/accelerator prompt)
 
