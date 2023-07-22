@@ -4,10 +4,10 @@
 get_header();
 
 // banner
-include( get_template('banner.php');
+include( get_template('modules/banner.php');
 
-// content blocks - thirds
-include( get_template('content-block--thirds') );
+// foreach fellow post type, include 1/3 content blocks
+include( get_template('modules/content-block--thirds') );
 
 // footer
 get_footer();
