@@ -6,7 +6,7 @@ get_header();
 // banner
 include( get_template('banner.php') );
 
-// content block - thirds
+// foreach linked page, display 1/3 content block
 include( get_template('content-block--thirds') );
 
 // footer
