@@ -22,3 +22,4 @@
 * mobile/responsive css
 * soft launch
 * build about and team pages
+* build template for url redirects
