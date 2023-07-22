@@ -20,3 +20,5 @@
 * write html/php markup
 * desktop css
 * mobile/responsive css
+* soft launch
+* build about and team pages
