@@ -3,9 +3,8 @@
 // header
 get_header();
 
-// if video is not private
-
-// video embed
+// video
+include( get_template('videos-single--embed.php') );
 
 // left column - video metadata
 
