@@ -19,7 +19,7 @@ include( get_template('carousel-testimonial.php') );
 include( get_template('content-block--wide.php') );
 
 // thumbnail carousel - archive
-include( get_template('thumbnail-carousel.php') );
+include( get_template('thumbnail--carousel.php') );
 
 // footer
 get_footer();
