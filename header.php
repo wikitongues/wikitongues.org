@@ -116,6 +116,7 @@
 <?php wp_body_open(); ?>
 
 	<!-- alert/message banner -->
+	<?php include( get_template('module/banner--alert.php') ); ?>
 	
 	<!-- header -->
 	<header class="wt_header" role="banner">

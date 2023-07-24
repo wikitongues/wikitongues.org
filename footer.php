@@ -1,3 +1,5 @@
+<!-- content vars on "options" ACF field -->
+
 <footer class="wt_footer">
 	<!-- newsletter signup -->
 
