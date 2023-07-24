@@ -4,13 +4,13 @@
 get_header();
 
 // banner
-include( get_template('banner--fellows-single.php') );
+include( get_template('modules/banner--fellows-single.php') );
 
-// content wrap
-	// fellow header and contact information
-	// standard content loop
+// content
+include( get_template('modules/fellows-single--metadata') );
+include ( get_template('modules/main-content.php' );
 
 // loop through other fellows
-	// thumbnail carousel
+include( get_template('modules/carousal--thumbnail.php') );
 
 get_footer();
