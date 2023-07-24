@@ -7,7 +7,7 @@ get_header();
 include( get_template('modules/banner--language-single.php') );
 
 // left column language metada
-include( get_template('modules/meta-languages-single.php') );
+include( get_template('modules/meta--languages-single.php') );
 
 // videos loop (content blocks - thirds)
 include( get_template('modules/content-block--thirds.php') );
