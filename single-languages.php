@@ -4,6 +4,7 @@
 get_header();
 
 // language single banner
+include( get_template('module/banner--language-single.php') );
 
 // left column language metada
 
