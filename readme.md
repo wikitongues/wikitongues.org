@@ -4,6 +4,8 @@
 * secondary/plug-in functions are stored in /includes
 * recurring UI elements are stored as unique php files in /modules
 * css is broken down into separate files that correspond to php files
+* php files named by wp page/template type or module/element type with -- modifiers
+* ACF organized into groups by corresponding post type or page template, with post type or page template name as prefix 
 
 # php style guidelines
 
