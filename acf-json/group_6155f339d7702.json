@@ -1,11 +1,12 @@
 {
     "key": "group_6155f339d7702",
-    "title": "Redirect: Location",
+    "title": "Template: Redirect",
     "fields": [
         {
             "key": "field_6155f33f30005",
             "label": "Redirect to Page",
             "name": "redirect_to_page",
+            "aria-label": "",
             "type": "page_link",
             "instructions": "",
             "required": 0,
@@ -25,6 +26,7 @@
             "key": "field_6155f35730006",
             "label": "Redirect to Post",
             "name": "redirect_to_post",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -45,6 +47,7 @@
             "key": "field_6155f5a29b392",
             "label": "Custom Redirect",
             "name": "custom_redirect",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -63,7 +66,7 @@
             {
                 "param": "page_template",
                 "operator": "==",
-                "value": "modules\/template-redirect.php"
+                "value": "default"
             }
         ]
     ],
@@ -81,5 +84,6 @@
     ],
     "active": true,
     "description": "",
-    "modified": 1633023404
+    "show_in_rest": 0,
+    "modified": 1690319648
 }

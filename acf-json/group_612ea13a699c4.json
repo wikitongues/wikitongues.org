@@ -1,11 +1,12 @@
 {
     "key": "group_612ea13a699c4",
-    "title": "Global: Logos",
+    "title": "Global: Options",
     "fields": [
         {
             "key": "field_612ea14199e47",
             "label": "Header Logo",
             "name": "header_logo",
+            "aria-label": "",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -30,6 +31,7 @@
             "key": "field_612fed546a5fa",
             "label": "Footer Logo",
             "name": "footer_logo",
+            "aria-label": "",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -54,6 +56,7 @@
             "key": "field_612fed646a5fb",
             "label": "Favicon",
             "name": "favicon",
+            "aria-label": "",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -73,6 +76,26 @@
             "max_height": "",
             "max_size": "",
             "mime_types": ""
+        },
+        {
+            "key": "field_612e8e0e3750d",
+            "label": "Newsletter Signup Embed",
+            "name": "newsletter_signup_embed",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -92,5 +115,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632764208
+    "show_in_rest": 0,
+    "modified": 1690319959
 }
