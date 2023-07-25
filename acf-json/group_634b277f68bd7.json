@@ -1,6 +1,6 @@
 {
     "key": "group_634b277f68bd7",
-    "title": "Reports: Single",
+    "title": "Post type: Reports",
     "fields": [
         {
             "key": "field_634b277ff3c29",
@@ -570,5 +570,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1673375463
+    "modified": 1690319295
 }

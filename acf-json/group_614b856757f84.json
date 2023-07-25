@@ -1,11 +1,12 @@
 {
     "key": "group_614b856757f84",
-    "title": "Lexicons: Single",
+    "title": "Post type: Lexicons",
     "fields": [
         {
             "key": "field_614b856c8c353",
             "label": "Source Languages",
             "name": "source_languages",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -28,6 +29,7 @@
             "key": "field_614b857b8c354",
             "label": "Target Languages",
             "name": "target_languages",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -50,6 +52,7 @@
             "key": "field_614b85928c355",
             "label": "Dropbox Link",
             "name": "dropbox_link",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -66,6 +69,7 @@
             "key": "field_614b85958c356",
             "label": "External Link",
             "name": "external_link",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -96,5 +100,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1632514399
+    "show_in_rest": 0,
+    "modified": 1690319077
 }
