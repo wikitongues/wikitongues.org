@@ -96,7 +96,7 @@ add_action('init', 'create_post_type_resources'); // indexing misc.
 // language learning options
 
 // add custom post types for wikitongues team and alumni
-add_action('init', 'create_post_type_grantees'); // change to awardee/fellows
+add_action('init', 'create_post_type_fellows'); // change to awardee/fellows
 add_action('init', 'create_post_type_team');
 add_action('init', 'create_post_type_partners');
 add_action('init', 'create_post_type_reports');
@@ -339,26 +339,26 @@ function create_post_type_resources()
 }
 
 
-// Grantees
-function create_post_type_grantees()
+// Fellows
+function create_post_type_fellows()
 {
-    register_taxonomy_for_object_type('category', 'grantees'); 
-    register_taxonomy_for_object_type('post_tag', 'grantees');
-    register_post_type('grantees',
+    register_taxonomy_for_object_type('category', 'fellows'); 
+    register_taxonomy_for_object_type('post_tag', 'fellows');
+    register_post_type('fellows',
         array(
         'labels' => array(
-            'name' => __('Grantees', 'grantees'), 
-            'singular_name' => __('Grantee', 'grantees'),
-            'add_new' => __('Add New', 'grantees'),
-            'add_new_item' => __('Add New Grantee', 'grantees'),
-            'edit' => __('Edit', 'grantees'),
-            'edit_item' => __('Edit Grantee', 'grantees'),
-            'new_item' => __('New Grantee', 'grantees'),
-            'view' => __('View Grantee', 'grantees'),
-            'view_item' => __('View Grantee', 'grantees'),
-            'search_items' => __('Search Grantees', 'grantees'),
-            'not_found' => __('No Grantees found', 'grantees'),
-            'not_found_in_trash' => __('No Grantees found in Trash', 'grantees')
+            'name' => __('Fellows', 'fellows'), 
+            'singular_name' => __('Fellow', 'fellows'),
+            'add_new' => __('Add New', 'fellows'),
+            'add_new_item' => __('Add New Fellow', 'fellows'),
+            'edit' => __('Edit', 'fellows'),
+            'edit_item' => __('Edit Fellow', 'fellows'),
+            'new_item' => __('New Fellow', 'fellows'),
+            'view' => __('View Fellow', 'fellows'),
+            'view_item' => __('View Fellow', 'fellows'),
+            'search_items' => __('Search Fellows', 'fellows'),
+            'not_found' => __('No Fellows found', 'fellows'),
+            'not_found_in_trash' => __('No Fellows found in Trash', 'fellows')
         ),
         'public' => true,
         'hierarchical' => true,
