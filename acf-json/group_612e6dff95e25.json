@@ -23,6 +23,46 @@
             "new_lines": ""
         },
         {
+            "key": "field_625481eaa77d1",
+            "label": "Analytics Header Script",
+            "name": "analytics_header_script",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_612ea30b25ed4",
+            "label": "Donate Button Embed",
+            "name": "donate_button_embed",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_612e6e4a446ae",
             "label": "SEO Keywords",
             "name": "seo_keywords",
@@ -141,14 +181,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "post"
-            }
-        ],
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "post"
+                "value": "fellows"
             }
         ]
     ],
@@ -161,5 +194,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319860
+    "modified": 1690408430
 }
