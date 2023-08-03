@@ -9,7 +9,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- favicon -->
-	<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+	<?php $favicon = get_field('favicon', 'options'); ?>
+	<?php if ( $favicon ): ?>
+		<link href="<?php echo $favicon['url']; ?>" rel="shortcut icon">
+	<?php else: ?>
+		<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+	<?php endif; ?>
 
 	<!-- Custom metadata variables -->
 	<?php 
@@ -116,13 +121,55 @@
 <?php wp_body_open(); ?>
 
 	<!-- alert/message banner -->
-	<?php include( get_template('module/banner--alert.php') ); ?>
+	<?php include( 'modules/banner--alert.php' ); ?>
 	
 	<!-- header -->
 	<header class="wt_header" role="banner">
-		<!-- logo -->
+		<!-- header logo -->
+		<div class="wt_header__logo">
+		<?php $header_logo = get_field('header_logo', 'options'); ?>
+		<?php if ( $header_logo ): ?>
+			<img src="<?php echo $header_logo['url']; ?>" 
+				 alt="<?php echo $header_logo['alt']; ?>">
+		<?php endif; ?>
+		</div>
+
 		<!-- search bar -->
-		<!-- navigation with drop-down selection -->
-		<!-- if not home page, sub-navigation -->
-		<!-- donate button -->
+		<div class="wt_header__searchbar">
+			<?php get_search_form(); ?>
+		</div>
+
+		<!-- navigation -->
+		<?php 
+
+		// global var? define somewher else?
+		$template_slug = get_page_template_slug();
+
+		wp_nav_menu(
+			array( 
+				'theme_location' => 'main-menu',
+				'container' => '',
+				'menu_id' => 'wt_header__nav--menu',
+				'menu_class' => 'wt_header__nav--menu'
+			)
+		); 
+
+		if ( strpos($template_slug, 'revitalization') !== false ) { 
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'revitalization-menu',
+					'container' => '',
+					'menu_id' => 'wt_header__nav--menu',
+					'menu_class' => 'wt_header__nav--menu'
+				)
+			); 
+
+		} elseif ( 
+			strpos($template_slug, 'archive') !== false || 
+			is_singular('languages') || 
+			is_singular('videos') 
+		) {
+			// include custom navigation
+		} ?>
+
 	</header>

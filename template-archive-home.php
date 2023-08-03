@@ -1,4 +1,4 @@
-<?php /* Template: Archive Home */
+<?php /* Template name: Archive Home */
 
 // header
 get_header();

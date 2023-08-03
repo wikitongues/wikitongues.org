@@ -4,22 +4,22 @@
 get_header(); // do pseudo code
 
 // banner
-include( get_template('banner.php') );
+include( 'modules/banner.php' );
 
 // thumbnail carousel - revitalization projects
-include( get_template('carousel-thumbnail.php') );
+include( 'modules/carousel--thumbnail.php' );
 
 // language revitalization
-include( get_template('content-block--wide.php') );
+include( 'modules/content-block--wide.php' );
 
 // testimonial carousel
-include( get_template('carousel-testimonial.php') );
+include( 'modules/carousel--testimonial.php' );
 
 // language archive
-include( get_template('content-block--wide.php') );
+include( 'modules/content-block--wide.php' );
 
 // thumbnail carousel - archive
-include( get_template('thumbnail--carousel.php') );
+include( 'modules/carousel--thumbnail.php' );
 
 // footer
 get_footer();

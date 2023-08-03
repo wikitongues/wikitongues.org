@@ -11,7 +11,7 @@
 
 * we use { } for continguous php and :/else:/endif; for PHP broken up by html
 * https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
-* in-line php lines up with html (if statements)
+* in-line php lines up with parent html (if statements)
 * line-breaks between php and in-line html
 
 # to-do
@@ -25,3 +25,7 @@
 * soft launch
 * build about and team pages
 * build template for url redirects
+* later - simplify if statement syntax ( a ? b : c); e.g.
+`wp_nav_menu( array(
+	'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
+) );`

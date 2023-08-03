@@ -30,30 +30,30 @@ function wt_enqueue_js() {
 }
   
 // remove header bump from core css output
-add_action('get_header', 'my_filter_head');
+// add_action('get_header', 'my_filter_head');
 
-function my_filter_head() {
-   remove_action('wp_head', '_admin_bar_bump_cb');
-} 
+// function my_filter_head() {
+//    remove_action('wp_head', '_admin_bar_bump_cb');
+// } 
 
 // initiate options page - consider deprecating this
 if( function_exists('acf_add_options_page') ) {   
     acf_add_options_page();
 }
 
-// add secondary menu
-function vj_secondary_menu() {
-  register_nav_menu('secondary-menu',__( 'Secondary Menu' ));
+// add revitalization menu
+function wt_revitalization_menu() {
+  register_nav_menu('revitalization-menu',__( 'Revitalization Menu' ));
 }
 
-add_action( 'init', 'vj_secondary_menu' );
+add_action( 'init', 'wt_revitalization_menu' );
 
 // add footer menu
-function vj_footer_menu() {
+function wt_footer_menu() {
   register_nav_menu('footer-menu',__( 'Footer Menu' ));
 }
 
-add_action( 'init', 'vj_footer_menu' );
+add_action( 'init', 'wt_footer_menu' );
 
 // Register custom query vars -https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
 
