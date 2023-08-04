@@ -29,3 +29,4 @@
 `wp_nav_menu( array(
 	'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
 ) );`
+* add alert banner and display only if user hasn't visited the site in a week

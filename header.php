@@ -121,17 +121,18 @@
 <?php wp_body_open(); ?>
 
 	<!-- alert/message banner -->
-	<?php include( 'modules/banner--alert.php' ); ?>
+	<?php // include( 'modules/banner--alert.php' ); ?>
 	
 	<!-- header -->
 	<header class="wt_header" role="banner">
 		<!-- header logo -->
 		<div class="wt_header__logo">
-		<?php $header_logo = get_field('header_logo', 'options'); ?>
-		<?php if ( $header_logo ): ?>
-			<img src="<?php echo $header_logo['url']; ?>" 
-				 alt="<?php echo $header_logo['alt']; ?>">
-		<?php endif; ?>
+			<a href="<?php bloginfo('url'); ?>">
+			<?php $header_logo = get_field('header_logo', 'options'); ?>
+			<?php if ( $header_logo ): ?>
+				<img src="<?php echo $header_logo['url']; ?>" alt="<?php echo $header_logo['alt']; ?>">
+			<?php endif; ?>
+			</a>
 		</div>
 
 		<!-- search bar -->
@@ -148,9 +149,8 @@
 		wp_nav_menu(
 			array( 
 				'theme_location' => 'main-menu',
-				'container' => '',
-				'menu_id' => 'wt_header__nav--menu',
-				'menu_class' => 'wt_header__nav--menu'
+				'container' => 'nav',
+				'container_class' => 'wt_header__nav'
 			)
 		); 
 
@@ -158,9 +158,8 @@
 			wp_nav_menu(
 				array( 
 					'theme_location' => 'revitalization-menu',
-					'container' => '',
-					'menu_id' => 'wt_header__nav--menu',
-					'menu_class' => 'wt_header__nav--menu'
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav--secondary'
 				)
 			); 
 
@@ -169,7 +168,7 @@
 			is_singular('languages') || 
 			is_singular('videos') 
 		) {
-			// include custom navigation
+			include( 'modules/navigation--archive.php');
 		} ?>
 
 	</header>
