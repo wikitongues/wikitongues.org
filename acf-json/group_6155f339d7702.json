@@ -66,7 +66,7 @@
             {
                 "param": "page_template",
                 "operator": "==",
-                "value": "default"
+                "value": "template-redirect.php"
             }
         ]
     ],
@@ -85,5 +85,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319648
+    "modified": 1691341732
 }
