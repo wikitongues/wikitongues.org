@@ -168,7 +168,13 @@
 			is_singular('languages') || 
 			is_singular('videos') 
 		) {
-			include( 'modules/navigation--archive.php');
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'archive-menu',
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav--secondary'
+				)
+			); 
 		} ?>
 
 	</header>

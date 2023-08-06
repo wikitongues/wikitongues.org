@@ -41,6 +41,14 @@ if( function_exists('acf_add_options_page') ) {
     acf_add_options_page();
 }
 
+// add archive menu
+function wt_archive_menu() {
+  register_nav_menu('archive-menu',__( 'Archive Menu' ));
+}
+
+add_action( 'init', 'wt_archive_menu' );
+
+
 // add revitalization menu
 function wt_revitalization_menu() {
   register_nav_menu('revitalization-menu',__( 'Revitalization Menu' ));
