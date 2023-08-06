@@ -1,7 +1,7 @@
 <!-- to add later: buttons with carousel js -->
 <?php if ( $post_type ): ?>
 	<ul>
-	<?php foreach ( $post_type as $post ): setup_postdata( $post ); ?>
+	<?php foreach ( $thumbnail_carousel_posts as $post ): setup_postdata( $post ); ?>
 		<li>
 			<h1>post</h1>
 		</li>
