@@ -352,6 +352,40 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_64cfef01cef63": {
+                    "key": "layout_64cfef01cef63",
+                    "name": "testimonial",
+                    "label": "Testimonial",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_64cfef16cef65",
+                            "label": "Testimonial Source",
+                            "name": "testimonial_source",
+                            "aria-label": "",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "fellows"
+                            ],
+                            "post_status": "",
+                            "taxonomy": "",
+                            "return_format": "object",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",
@@ -377,5 +411,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691348618
+    "modified": 1691348819
 }

@@ -19,21 +19,16 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 
 			$post_type == get_sub_field('thumbnail_carousel_posts');
 
-			include( 'modules/carousel--thumbnail.php' );
-
-			echo "hello? carousel";
+			include( 'modules/carousel--thumbnail.php' );	
 
 		} elseif ( get_row_layout() == 'content_block' ) {
 
 			include( 'modules/content-block--wide.php' );
-
-			echo "hello? content block";
-
+	
 		} elseif ( get_row_layout() == 'testimonial' ) {
 
 			include( 'modules/carousel--testimonial.php' );
 
-			echo "hello? testimonial";
 		}
 	}
 }
