@@ -115,7 +115,7 @@
 	<!-- WP head tag -->
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
 
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
@@ -177,4 +177,4 @@
 			); 
 		} ?>
 
-	</header>
+	</header><!-- end header -->
