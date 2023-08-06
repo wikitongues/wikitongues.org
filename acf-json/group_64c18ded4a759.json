@@ -178,7 +178,7 @@
                     "key": "layout_64c18f8d8ce71",
                     "name": "thumbnail_carousel",
                     "label": "Thumbnail carousel",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_64c18f2450613",
@@ -210,7 +210,7 @@
                     "key": "layout_64c1900750616",
                     "name": "content_block",
                     "label": "Content block",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_64c190125061b",
@@ -377,5 +377,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690408674
+    "modified": 1691348618
 }

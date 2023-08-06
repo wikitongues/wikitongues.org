@@ -4,10 +4,10 @@
 get_header();
 
 // banner
-include( get_template('modules/banner.php') );
+include( 'modules/banner.php' );
 
 // foreach available toolkit download, display 1/3 content blocks
-include( get_template('modules/content-block--thirds') );
+include( 'modules/content-block--thirds' );
 
 // footer
 get_footer();

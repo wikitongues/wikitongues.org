@@ -16,5 +16,18 @@ $banner_CTA_placeholder = $front_page_banner['banner_CTA_placeholder'];
 		<p class="wt_text--body">
 			<?php echo $banner_copy; ?>
 		</p>
+		<?php if ( $banner_CTA ): ?>
+			<a href="<?php echo $banner_CTA['banner_cta_link']; ?>">
+				<?php echo $banner_cta['banner_cta_text']; ?>
+			</a>
+		<?php elseif ( $banner_CTA_placeholder ): ?>
+			<p class="wt_text--body">
+				<strong>
+					<?php echo $banner_CTA_placeholder; ?>
+				</strong>
+			</p>
+		<?php else: ?>
+			<!-- there is no CTA or helper text to display -->
+		<?php endif; ?>
 	</div>
 </div>

@@ -4,10 +4,10 @@
 get_header();
 
 // search bar
-include( get_template('searchbar--wide.php') );
+include( 'searchbar--wide.php' );
 
 // search results (one-column thumbnail loop)
-include( get_template('search-results.php') );
+include( 'search-results.php' );
 
 // content blocks - thirds (add in later version, how to filter?)
 
