@@ -1,9 +1,9 @@
 {
-    "key": "group_64c1980b69597",
+    "key": "group_64c1980b69597__trashed",
     "title": "Template: Revitalization Home (copy)",
     "fields": [
         {
-            "key": "field_64c1980b77822",
+            "key": "field_64c1980b77822__trashed",
             "label": "Revitalization Home banner",
             "name": "revitalization_home_banner",
             "aria-label": "",
@@ -160,7 +160,7 @@
             ]
         },
         {
-            "key": "field_64c1980b77834",
+            "key": "field_64c1980b77834__trashed",
             "label": "Content blocks",
             "name": "content_blocks",
             "aria-label": "",
@@ -198,8 +198,8 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": true,
+    "active": false,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690408971
+    "modified": 1691343137
 }
