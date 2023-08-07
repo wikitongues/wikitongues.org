@@ -44,8 +44,8 @@
         },
         {
             "key": "field_624f52dac3dc0",
-            "label": "Grantee Pitch",
-            "name": "grantee_pitch",
+            "label": "Fellow Pitch",
+            "name": "fellow_pitch",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -57,15 +57,15 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
         },
         {
             "key": "field_624f5331e928e",
-            "label": "Grantee Project",
-            "name": "grantee_project",
+            "label": "Fellow Project",
+            "name": "fellow_project",
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
@@ -77,15 +77,15 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
             "maxlength": "",
             "rows": "",
+            "placeholder": "",
             "new_lines": "wpautop"
         },
         {
             "key": "field_62546d83dc64a",
-            "label": "Grantee Bio",
-            "name": "grantee_bio",
+            "label": "Fellow Bio",
+            "name": "fellow_bio",
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
@@ -97,15 +97,15 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
             "maxlength": "",
             "rows": "",
+            "placeholder": "",
             "new_lines": ""
         },
         {
             "key": "field_6254722f8d19b",
-            "label": "Grantee Collaborators",
-            "name": "grantee_collaborators",
+            "label": "Fellow Collaborators",
+            "name": "fellow_collaborators",
             "aria-label": "",
             "type": "post_object",
             "instructions": "",
@@ -116,19 +116,18 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "grantees"
-            ],
+            "post_type": "",
+            "post_status": "",
             "taxonomy": "",
-            "allow_null": 1,
-            "multiple": 1,
             "return_format": "object",
+            "multiple": 1,
+            "allow_null": 1,
             "ui": 1
         },
         {
             "key": "field_6255a5e8506b4",
-            "label": "Grantee Links",
-            "name": "grantee_links",
+            "label": "Fellow Links",
+            "name": "fellow_links",
             "aria-label": "",
             "type": "repeater",
             "instructions": "",
@@ -139,11 +138,13 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "",
+            "layout": "row",
+            "pagination": 0,
             "min": 0,
             "max": 0,
-            "layout": "row",
+            "collapsed": "",
             "button_label": "Add Row",
+            "rows_per_page": 20,
             "sub_fields": [
                 {
                     "key": "field_6255a5f0506b5",
@@ -217,15 +218,14 @@
                     "placeholder": "",
                     "parent_repeater": "field_6255a5e8506b4"
                 }
-            ],
-            "rows_per_page": 20
+            ]
         },
         {
             "key": "field_636d35600b10a",
-            "label": "Grantee Location",
-            "name": "grantee_location",
+            "label": "Fellow Location",
+            "name": "fellow_location",
             "aria-label": "",
-            "type": "google_map",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -234,10 +234,56 @@
                 "class": "",
                 "id": ""
             },
-            "center_lat": "",
-            "center_lng": "",
-            "zoom": "",
-            "height": ""
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_64d15928dc20f",
+            "label": "Fellow Testimonial",
+            "name": "fellow_testimonial",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "rows": ""
+        },
+        {
+            "key": "field_64d159b3dee63",
+            "label": "Fellow Image",
+            "name": "fellow_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
         }
     ],
     "location": [
@@ -245,7 +291,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "grantees"
+                "value": "fellows"
             }
         ]
     ],
@@ -258,5 +304,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690318865
+    "modified": 1691441645
 }

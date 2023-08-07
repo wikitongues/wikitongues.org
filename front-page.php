@@ -17,8 +17,6 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 
 		if ( get_row_layout() == 'thumbnail_carousel' ) {
 
-			$thumbnail_carousel_posts = get_sub_field('thumbnail_carousel_posts');
-
 			include( 'modules/carousel--thumbnail.php' );	
 
 		} elseif ( get_row_layout() == 'content_block' ) {

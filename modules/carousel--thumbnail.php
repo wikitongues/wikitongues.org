@@ -15,7 +15,7 @@
 
 				echo '<img class="wt_thumbnail__image" src="' . 
 					 $thumbnail_image['url'] .
-					 'alt="' .
+					 '" alt="' .
 					 $thumbnail_image['alt'] .
 					 '">';
 
@@ -40,13 +40,13 @@
 
 				if ( $thumbnail_cta_text ) {
 
-					echo '<a href="' . the_permalink() . '">' .
+					echo '<a href="' . get_the_permalink() . '">' .
 						 $thumbnail_cta_text . 
 						 '</a>'; // add arrow
 
 				} else {
 
-					echo '<a href="' . the_permalink() . '">' .
+					echo '<a href="' . get_the_permalink() . '">' .
 						 'Read more</a>'; // add arrow
 
 				}
