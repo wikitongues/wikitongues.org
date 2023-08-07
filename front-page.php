@@ -17,7 +17,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 
 		if ( get_row_layout() == 'thumbnail_carousel' ) {
 
-			$post_type == get_sub_field('thumbnail_carousel_posts');
+			$thumbnail_carousel_posts = get_sub_field('thumbnail_carousel_posts');
 
 			include( 'modules/carousel--thumbnail.php' );	
 
