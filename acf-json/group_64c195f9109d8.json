@@ -88,7 +88,7 @@
                     "label": "Banner CTA",
                     "name": "banner_cta",
                     "aria-label": "",
-                    "type": "group",
+                    "type": "link",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -97,45 +97,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "layout": "block",
-                    "sub_fields": [
-                        {
-                            "key": "field_64c19622c7a5e",
-                            "label": "Banner CTA link",
-                            "name": "banner_cta_link",
-                            "aria-label": "",
-                            "type": "link",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "return_format": "array"
-                        },
-                        {
-                            "key": "field_64c19622c7a5f",
-                            "label": "Banner CTA text",
-                            "name": "banner_cta_text",
-                            "aria-label": "",
-                            "type": "text",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "default_value": "",
-                            "maxlength": "",
-                            "placeholder": "",
-                            "prepend": "",
-                            "append": ""
-                        }
-                    ]
+                    "return_format": "array"
                 },
                 {
                     "key": "field_64c19622c7a60",
@@ -201,5 +163,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690408952
+    "modified": 1691524187
 }
