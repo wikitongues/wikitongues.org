@@ -142,7 +142,114 @@
             "collapsed": "",
             "button_label": "Add Row",
             "rows_per_page": 20,
-            "sub_fields": []
+            "sub_fields": [
+                {
+                    "key": "field_64d29cd5e9905",
+                    "label": "Content Block Image",
+                    "name": "content_block_image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "medium",
+                    "parent_repeater": "field_64c197923b54b"
+                },
+                {
+                    "key": "field_64d29ef4e9906",
+                    "label": "",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_64c197923b54b"
+                },
+                {
+                    "key": "field_64d29f00e9907",
+                    "label": "Content Block Header",
+                    "name": "content_block_header",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_64c197923b54b"
+                },
+                {
+                    "key": "field_64d29f12e9908",
+                    "label": "Content Block Copy",
+                    "name": "content_block_copy",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "rows": "",
+                    "placeholder": "",
+                    "new_lines": "",
+                    "parent_repeater": "field_64c197923b54b"
+                },
+                {
+                    "key": "field_64d29f23e9909",
+                    "label": "Content Block CTA",
+                    "name": "content_block_cta",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_64c197923b54b"
+                }
+            ]
         }
     ],
     "location": [
@@ -163,5 +270,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691524187
+    "modified": 1691525044
 }
