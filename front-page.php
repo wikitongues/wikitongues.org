@@ -8,7 +8,8 @@ $front_page_banner = get_field('front_page_banner');
 $banner_image = $front_page_banner['banner_image'];
 $banner_header = $front_page_banner['banner_header'];
 $banner_copy = $front_page_banner['banner_copy'];
-$banner_CTA;
+$banner_cta = $front_page_banner['banner_cta'];
+$banner_cta_placeholder = $front_page_banner['banner_cta_placeholder']; 
 
 include( 'modules/banner.php' );
 
