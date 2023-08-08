@@ -3,11 +3,8 @@
 // header
 get_header();
 
-// search bar
-include( 'searchbar--wide.php' );
-
-// search results (one-column thumbnail loop)
-include( 'search-results.php' );
+// search bar -> redirects to search.php
+include( 'banner--searchbar.php' );
 
 // content blocks - thirds (add in later version, how to filter?)
 
