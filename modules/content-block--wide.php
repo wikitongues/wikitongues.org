@@ -14,8 +14,8 @@ $content_block_cta = get_sub_field('content_block_cta');
 		<p>
 			<?php echo $content_block_copy; ?>
 		</p>
-		<a href="<?php echo $content_block_cta['content_block_cta_link']; ?>">
-			<?php echo $content_block_cta['content_block_cta_text']; ?>
+		<a href="<?php echo $content_block_cta['url']; ?>">
+			<?php echo $content_block_cta['title']; ?>
 		</a>
 	</aside>
 </section>
