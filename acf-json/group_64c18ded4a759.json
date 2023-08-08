@@ -68,7 +68,7 @@
                     "label": "Banner copy",
                     "name": "banner_copy",
                     "aria-label": "",
-                    "type": "text",
+                    "type": "textarea",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -78,10 +78,10 @@
                         "id": ""
                     },
                     "default_value": "",
+                    "new_lines": "",
                     "maxlength": "",
                     "placeholder": "",
-                    "prepend": "",
-                    "append": ""
+                    "rows": ""
                 },
                 {
                     "key": "field_64c18ea6cc5f9",
@@ -393,5 +393,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691443193
+    "modified": 1691519277
 }
