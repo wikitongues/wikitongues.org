@@ -13,7 +13,7 @@ include( 'modules/meta--videos-single.php' );
 include( 'modules/main-content--videos-single.php' );
 
 // related videos (thumbnail carousel)
-include( 'modules/carousel--thumbnail.php' );
+// include( 'modules/carousel--thumbnail.php' );
 
 // footer
 get_footer();

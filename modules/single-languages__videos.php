@@ -1,4 +1,4 @@
-<div id="wt_single-languages__videos" class="single-languages__content">
+<div id="wt_single-languages__videos" class="single-languages__contents">
 	<p>
 		<strong>Videos</strong>
 	</p>
