@@ -1,5 +1,7 @@
 <section class="wt_content-block--thirds">
+<?php if ( $content_block_image ): ?>
 	<aside class="wt_content-block--thirds__image" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);"></aside>
+<?php endif; ?>
 	<aside class="wt_content-block--thirds__copy">
 		<h1>
 			<?php echo $content_block_header; ?>

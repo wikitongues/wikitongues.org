@@ -18,7 +18,7 @@ include( 'modules/meta--languages-single.php' );
 include( 'modules/languages-single__videos.php' );
 
 // dictionaries (content blocks - thirds)
-include( 'modules/content-block--thirds.php' );
+include( 'modules/languages-single__lexicons.php' );
 
 // language indexing resources (content blocks - thirds)
 // include( 'modules/content-block--thirds.php' );
