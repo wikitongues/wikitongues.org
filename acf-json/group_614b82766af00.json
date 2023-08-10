@@ -23,6 +23,26 @@
             "maxlength": ""
         },
         {
+            "key": "field_64d5380b2387e",
+            "label": "Video Custom Title",
+            "name": "video_custom_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_614b828c7f23d",
             "label": "Video Thumbnail",
             "name": "video_thumbnail",
@@ -232,5 +252,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319365
+    "modified": 1691695126
 }
