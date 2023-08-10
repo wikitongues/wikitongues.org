@@ -174,7 +174,9 @@
 					'container' => 'nav',
 					'container_class' => 'wt_header__nav--secondary'
 				)
-			); 
+			);
+
+			// if single language or single video, display the language
 		} ?>
 
 	</header><!-- end header -->
