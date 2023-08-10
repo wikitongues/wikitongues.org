@@ -3,6 +3,26 @@
     "title": "Post type: Lexicons",
     "fields": [
         {
+            "key": "field_64d53be685623",
+            "label": "Lexicon Custom Title",
+            "name": "lexicon_custom_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_614b856c8c353",
             "label": "Source Languages",
             "name": "source_languages",
@@ -101,5 +121,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319077
+    "modified": 1691696114
 }
