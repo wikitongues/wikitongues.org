@@ -4,9 +4,11 @@
 get_header();
 
 $videos = get_field('speakers_recorded');
+$videos_count = count($videos);
 $lexicon_source = get_field('lexicon_source');
 $lexicon_target = get_field('lexicon_target');
 $lexicons = array_merge($lexicon_source, $lexicon_target);
+$lexicons_count = count($lexicons);
 
 // language single banner
 include( 'modules/banner--language-single.php' );

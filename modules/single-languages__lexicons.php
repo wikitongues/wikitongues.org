@@ -1,4 +1,4 @@
-<div class="single-languages__videos">
+<div id="single-languages__lexicons" class="single-languages__content">
 	<p>
 		<strong>Dictionaries, phrase books, and other lexicons</strong>
 	</p>
@@ -11,13 +11,44 @@
 			setup_postdata( $post );
 
 			// define variables
-			$video_title = get_field('video_title');
+			$lexicon_title = get_field('lexicon_custom_title');
+			$source_languages = get_field('source_languages');
+			$target_languages = get_field('target_languages');
 			$video_custom_title = get_field('video_custom_title');
-			if ( $video_custom_title ) {
-				$content_block_header = $video_custom_title;
-			} else {
-				$content_block_header = $video_title;
+			$language_names = array();
+			$language_names = array(); 
+
+			if ( $source_languages->have_posts() ) {
+
+				while ( $source_languages->have_posts( ) ) {
+					
+					the_post();
+
+					array_push( $language_names );
+				}
 			}
+
+			if ( $target_languages->have_posts() ) {
+
+				while ( $target_languages->have_posts( ) ) {
+					
+					the_post();
+
+					array_push( $language_names );
+				}
+			}
+
+			if ( $lexicon_title ) {
+
+				$content_block_header = $lexicon_title;
+				$content_block_copy = printArray( $language_names );
+
+			} else {
+
+				$content_block_header = printArray( $language_names );
+				$content_block_copy = null;
+			}
+
 			$content_block_cta = get_the_permalink();
 
 			// include content block template
