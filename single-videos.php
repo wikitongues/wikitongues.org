@@ -4,9 +4,10 @@
 get_header();
 
 $youtube_id = get_field( 'youtube_id' );
-$dropbox_link = get_field('dropbox_link');
-$wikimedia_commons_link = get_field('wikimedia_commons_link');
-$public_status = get_field('public_status');
+$dropbox_link = get_field( 'dropbox_link' );
+$wikimedia_commons_link = get_field( 'wikimedia_commons_link' );
+$public_status = get_field( 'public_status' );
+$featured_languages = get_field( 'featured_languages' );
 
 // video
 include( 'modules/videos-single--embed.php' );
