@@ -160,6 +160,23 @@
             "maxlength": ""
         },
         {
+            "key": "field_64d66661cc881",
+            "label": "YouTube ID",
+            "name": "youtube_id",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
             "key": "field_614b830e7f243",
             "label": "YouTube Link",
             "name": "youtube_link",
@@ -252,5 +269,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691695126
+    "modified": 1691772527
 }
