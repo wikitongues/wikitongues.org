@@ -1,0 +1,38 @@
+.wt_header
+	z-index 100
+	display flex
+	flex-direction row
+	align-items center
+	position fixed
+	top 0
+	left 0
+	width 100%
+	height 80px
+	padding 20px
+	box-sizing border-box
+	
+	&__logo
+		flex-grow initial
+				
+		img
+			height 50px
+			width auto
+	
+	&__searchbar
+		flex-grow initial
+					
+	nav
+		flex-grow 3
+		text-align right
+		
+		&>ul
+			li
+				display inline-block
+				position relative
+		
+		.sub-menu
+			position absolute
+			background $white
+			
+			li
+				display block

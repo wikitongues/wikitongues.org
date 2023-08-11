@@ -1,27 +1,95 @@
-/*@require "require/vars"
-@require "require/global"
-@require "require/modules/header"
-@require "require/modules/footer"
-@require "require/modules/banner"
-@require "require/modules/metrics"
-@require "require/modules/sections"
-@require "require/modules/partners"
-@require "require/modules/donate"
-@require "require/modules/testimonials"
-@require "require/modules/newsletter"
-@require "require/modules/actions"
-@require "require/modules/languages-search"
-@require "require/modules/language-banner"
-@require "require/modules/banner-short"
-@require "require/modules/thumbnails"
-@require "require/modules/grantee-thumbnail"
-@require "require/archive-languages"
-@require "require/archive-team"
-@require "require/archive-reports"
-@require "require/single-languages"
-@require "require/single-projects"
-@require "require/single-grantees"
-@require "require/template-cohort"
-@require "require/template-revitalization"
-@require "require/template-general"
-@require "require/template-donate"*/
+.wt_header {
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.wt_header__logo {
+  flex-grow: initial;
+}
+.wt_header__logo img {
+  height: 50px;
+  width: auto;
+}
+.wt_header__searchbar {
+  flex-grow: initial;
+}
+.wt_header nav {
+  flex-grow: 3;
+  text-align: right;
+}
+.wt_header nav>ul li {
+  display: inline-block;
+  position: relative;
+}
+.wt_header nav .sub-menu {
+  position: absolute;
+  background: #fff;
+}
+.wt_header nav .sub-menu li {
+  display: block;
+}
+.wt_banner {
+  position: relative;
+  width: 100%;
+  height: calc(100vh / 3 * 2);
+}
+.wt_banner__copy {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: calc(100% / 3);
+}
+.wt_carousel--thumbnails {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  overflow-x: scroll;
+}
+.wt_carousel--thumbnails .wt_thumbnail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.wt_carousel--thumbnails .wt_thumbnail__image {
+  max-width: 300px;
+  height: auto;
+}
+.wt_carousel--thumbnails .wt_thumbnail__copy {
+  display: inline-block;
+}
+.wt_newsletter {
+  background: #9581c2;
+}
+.wt_footer {
+  background: #101010;
+}
+.wt_footer__section:first-of-type {
+  display: flex;
+  flex-direction: row;
+}
+.wt_footer__section:last-of-type {
+  text-align: center;
+}
+.wt_footer__nav {
+  flex-grow: 3;
+}
+.wt_footer__nav >ul {
+  display: flex;
+  flex-direction: row;
+}
+.wt_footer__meta {
+  flex-grow: initial;
+}
+.wt_footer__logo img {
+  max-width: 150px;
+}
