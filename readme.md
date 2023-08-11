@@ -31,3 +31,4 @@
 ) );`
 * add alert banner and display only if user hasn't visited the site in a week
 * consider consolidating "link" ACF fields
+* build captions post type and download options
