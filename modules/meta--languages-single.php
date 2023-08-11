@@ -1,4 +1,4 @@
-<div class="wt_meta--languages-single">
+<div class="wt_meta">
 	<p>
 		<strong>
 			<?php the_field('standard_name'); ?> resources

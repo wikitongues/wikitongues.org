@@ -1,22 +1,35 @@
-<h1>videos embed</h1>
-<!-- 
+<!-- define height in js for responsive iframe -->
 
-// if video is not private
+<?php if ( $public_status === 'Public' ): ?>
 
-	// if video file exists
+	<div class="wt_single-videos__video">
 
-		// video embed
+	<?php if ( $youtube_id ): ?>
 
-	// if video file does not exist
+		<iframe width="100%" src="https://www.youtube.com/embed/<?php echo $youtube_id; ?> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-		// thumbnail embed
+	<?php elseif ( $dropbox_link ): ?>
 
-	// else
+		<iframe width="100%" src="<?php echo $dropbox_link; ?> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-		// output blank element with html note
+	<?php else: ?>
 
-// else
+		<p class="wt_text--bold">Sorry, there was an error loading video.</p>
 
-	statement that video is private. design?
+	<?php endif; ?>
 
--->
+	</div><!-- __video wrap -->
+
+<?php elseif ( $public_status === 'Processing' ): ?>
+
+	<div class="wt_single-videos__no-video">		
+		<p class="wt_text--bold">We're still processing this video. Please check back soon for the file.</p><!-- future protocol: ensure live by a certain date -->
+	</div>
+
+<?php elseif ( $public_status === 'Private' ): ?>
+
+	<div class="wt_single-videos__no-video">		
+		<p class="wt_text--bold">The creator of this video has chosen to make this video private.</p>
+	</div>
+
+<?php endif; ?>

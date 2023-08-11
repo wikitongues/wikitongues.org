@@ -3,6 +3,11 @@
 // header
 get_header();
 
+$youtube_id = get_field( 'youtube_id' );
+$dropbox_link = get_field('dropbox_link');
+$wikimedia_commons_link = get_field('wikimedia_commons_link');
+$public_status = get_field('public_status');
+
 // video
 include( 'modules/videos-single--embed.php' );
 
