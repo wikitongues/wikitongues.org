@@ -1,3 +1,6 @@
+body {
+  background: #fffcef;
+}
 .wt_header {
   z-index: 100;
   display: flex;
@@ -40,6 +43,8 @@
   position: relative;
   width: 100%;
   height: calc(100vh / 3 * 2);
+  background-position: center;
+  background-size: cover;
 }
 .wt_banner__copy {
   position: absolute;
