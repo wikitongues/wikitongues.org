@@ -241,8 +241,8 @@
                         },
                         {
                             "key": "field_64c190615061f",
-                            "label": "Content block CTA",
-                            "name": "content_block_cta",
+                            "label": "Content block CTA link",
+                            "name": "content_block_cta_link",
                             "aria-label": "",
                             "type": "link",
                             "instructions": "",
@@ -253,7 +253,23 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "return_format": "array"
+                            "return_format": "url"
+                        },
+                        {
+                            "key": "field_64d79da7ad50c",
+                            "label": "Content block CTA text",
+                            "name": "content_block_cta_text",
+                            "aria-label": "",
+                            "type": "link",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "url"
                         }
                     ],
                     "min": "",
@@ -317,5 +333,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691525088
+    "modified": 1691852214
 }
