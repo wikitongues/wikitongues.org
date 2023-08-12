@@ -33,3 +33,4 @@
 * consider consolidating "link" ACF fields
 * build captions post type and download options
 * add "primary language" field to video post types
+* make testimonial carousel a true carousel
