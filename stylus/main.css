@@ -67,6 +67,31 @@
 .wt_carousel--thumbnails .wt_thumbnail__copy {
   display: inline-block;
 }
+.wt_content-block--wide {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  margin: auto;
+}
+.wt_content-block--wide__image {
+  width: 55%;
+}
+.wt_content-block--wide__copy {
+  width: 45%;
+}
+.wt_carousel--testimonials {
+  display: flex;
+  flex-direction: row;
+}
+.wt_carousel--testimonials .wt_testimonial {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.wt_carousel--testimonials .wt_testimonial__image {
+  max-width: 200px;
+  border-radius: 100%;
+}
 .wt_newsletter {
   background: #9581c2;
 }

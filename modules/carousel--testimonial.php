@@ -13,7 +13,7 @@
 		$testimonial_location = get_field('testimonial_location');
 		?>
 		<li class="wt_testimonial">
-			<img class="wt_testimoinal__image" src="<?php $thumbnail_image['url']; ?>" alt="<?php $thumbnail_image['alt']; ?>">
+			<img class="wt_testimonial__image" src="<?php echo $testimonial_image['url']; ?>" alt="<?php echo $testimonial_image['alt']; ?>">
 
 			<div class="wt_testimonial__copy">
 				<p>
@@ -28,9 +28,3 @@
 	<?php endforeach; wp_reset_postdata(); ?>
 	</ul>
 <?php endif ?>
-
-<!-- 
-	foreach loop, $post type variable set outside template
-		include thumbnail template (all post types will have a 'thumbnail title' field set in the CMS, with a the_title fallback) -->
-<!-- testimonial "read more" for later version" -->
-<!-- attach testimonial content to fellow post object -->
