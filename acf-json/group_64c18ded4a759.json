@@ -260,7 +260,7 @@
                             "label": "Content block CTA text",
                             "name": "content_block_cta_text",
                             "aria-label": "",
-                            "type": "link",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -269,7 +269,11 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "return_format": "url"
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -333,5 +337,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691852214
+    "modified": 1691852304
 }
