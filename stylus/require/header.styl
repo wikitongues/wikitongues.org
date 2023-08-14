@@ -1,5 +1,12 @@
 body
+	padding-top 138px
 	background $parchment
+	
+	&.home
+		padding-top 0 none !important
+		
+		.wt_header
+			background none !important
 	
 .wt_header
 	z-index 100
@@ -13,6 +20,7 @@ body
 	height 80px
 	padding 20px
 	box-sizing border-box
+	background $parchment
 	
 	&__logo
 		flex-grow initial
@@ -23,19 +31,35 @@ body
 	
 	&__searchbar
 		flex-grow initial
+	
+	&--secondary
+		z-index 99
+		position fixed
+		top 80px
+		left 0
+		width 100%
+		padding 20px
+		background $white
+		border-top 2px solid $blue
 					
-	nav
-		flex-grow 3
-		text-align right
+.wt_header__nav
+	flex-grow 3
+	text-align right
+	
+	&>ul
+		li
+			display inline-block
+			position relative
+	
+	.sub-menu
+		position absolute
+		background $white
 		
-		&>ul
-			li
-				display inline-block
-				position relative
+		li
+			display block
+	
+	&--secondary
+		text-align center
 		
-		.sub-menu
-			position absolute
-			background $white
-			
-			li
-				display block
+		li
+			display inline-block

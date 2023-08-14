@@ -25,7 +25,7 @@ if ( $query->have_posts() ) {
 		$content_block_header = $first_name . ' ' . $last_name;
 		$content_block_copy = '<strong>' . $fellow_language . '</strong><br /><span>' . $fellow_location . '</span>';
 		$content_block_cta_link = get_the_permalink();
-		$content_block_cta_text; // define field
+		$content_block_cta_text = 'Read more';
 
 		include( 'modules/content-block--thirds.php' );
 	}

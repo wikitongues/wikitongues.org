@@ -154,29 +154,34 @@
 			)
 		); 
 
-		if ( strpos($template_slug, 'revitalization') !== false ) { 
-			wp_nav_menu(
-				array( 
-					'theme_location' => 'revitalization-menu',
-					'container' => 'nav',
-					'container_class' => 'wt_header__nav--secondary'
-				)
-			); 
-
-		} elseif ( 
-			strpos($template_slug, 'archive') !== false || 
-			is_singular('languages') || 
-			is_singular('videos') 
-		) {
-			wp_nav_menu(
-				array( 
-					'theme_location' => 'archive-menu',
-					'container' => 'nav',
-					'container_class' => 'wt_header__nav--secondary'
-				)
-			);
-
-			// if single language or single video, display the language
-		} ?>
-
+		?>
 	</header><!-- end header -->
+
+	<?php if ( !is_front_page() ): ?>
+	<header class="wt_header--secondary">
+		<?php 
+			if ( strpos($template_slug, 'revitalization') !== false ) { 
+				wp_nav_menu(
+					array( 
+						'theme_location' => 'revitalization-menu',
+						'container' => 'nav',
+						'container_class' => 'wt_header__nav--secondary'
+					)
+				); 
+
+			} elseif ( 
+				strpos($template_slug, 'archive') !== false || 
+				is_singular('languages') || 
+				is_singular('videos') 
+			) {
+				wp_nav_menu(
+					array( 
+						'theme_location' => 'archive-menu',
+						'container' => 'nav',
+						'container_class' => 'wt_header__nav--secondary'
+					)
+				);
+			} // if single language or single video, display the language
+		?>	
+	</header>
+	<?php endif; ?>
