@@ -19,10 +19,10 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
 			<a href="<?php echo $banner_cta['url']; ?>">
 				<?php echo $banner_cta['title']; ?>
 			</a>
-		<?php elseif ( $banner_CTA_placeholder ): ?>
+		<?php elseif ( $banner_cta_placeholder ): ?>
 			<p class="wt_text--body">
 				<strong>
-					<?php echo $banner_CTA_placeholder; ?>
+					<?php echo $banner_cta_placeholder; ?>
 				</strong>
 			</p>
 		<?php else: ?>

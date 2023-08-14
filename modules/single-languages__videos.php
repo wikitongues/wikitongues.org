@@ -22,7 +22,7 @@
 			$content_block_cta = get_the_permalink();
 
 			// include content block template
-			include( 'modules/content-block--thirds.php' );
+			include( 'content-block--thirds.php' );
 
 		} wp_reset_postdata(); 
 		?>

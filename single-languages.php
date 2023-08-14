@@ -5,22 +5,22 @@ get_header();
 
 $videos = get_field('speakers_recorded');
 $videos_count = count($videos);
-$lexicon_source = get_field('lexicon_source');
-$lexicon_target = get_field('lexicon_target');
-$lexicons = array_merge($lexicon_source, $lexicon_target);
-$lexicons_count = count($lexicons);
+// $lexicon_source = get_field('lexicon_source');
+// $lexicon_target = get_field('lexicon_target');
+// $lexicons = array_merge($lexicon_source, $lexicon_target);
+// $lexicons_count = count($lexicons);
 
 // language single banner
-include( 'modules/banner--language-single.php' );
+include( 'modules/banner--languages-single.php' );
 
 // left column language metada
 include( 'modules/meta--languages-single.php' );
 
 // videos loop (content blocks - thirds)
-include( 'modules/languages-single__videos.php' );
+include( 'modules/single-languages__videos.php' );
 
 // dictionaries (content blocks - thirds)
-include( 'modules/languages-single__lexicons.php' );
+// include( 'modules/languages-single__lexicons.php' );
 
 // language indexing resources (content blocks - thirds)
 // include( 'modules/content-block--thirds.php' );
