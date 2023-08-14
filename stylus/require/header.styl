@@ -6,7 +6,7 @@ body
 		padding-top 0 !important
 	
 .wt_header
-	z-index 100
+	z-index 2
 	display flex
 	flex-direction row
 	align-items center
@@ -19,33 +19,49 @@ body
 	box-sizing border-box
 	background $parchment
 	
-	&.transparent
+	&.transparent-background
 		background none !important
-
-		&>nav>ul>li
-			background $white !important
 	
 	&__logo
 		flex-grow initial
+		
+		&--light
+			display none
+			
+			&.transparent-background
+				display block !important
+		
+		&--dark
+			display block
+			
+			&.transparent-background
+				display none !important
 				
 		img
 			height 50px
 			width auto
 	
 	&__searchbar
+		position relative
 		flex-grow initial
 		margin-left 15px
+		
+		i
+			position absolute
+			top 50%
+			left 7.5px
+			transform translateY(-50%)
 		
 		input
 			&[type="search"]
 				border 0
-				padding 5px 10px
+				padding 5px 10px 5px 27.5px
 				
 			&[type="submit"]
 				display none
 	
 	&--secondary
-		z-index 99
+		z-index 2
 		position fixed
 		top 80px
 		left 0
@@ -58,14 +74,26 @@ body
 		flex-grow 3
 		text-align right
 		
+		&.transparent-background
+			&>ul>li
+				background $parchment
+				
+				&>a
+					color $blue
+		
 		&>ul>li
-			display inline-block
 			position relative
 			margin-left 15px
-			padding 10px 15px
-			background $blue
+			button--small($blue, $parchment)
 			
+			
+			&>a // button--small is designed for a elements not li
+				text-decoration none
+				color $parchment
+
 			&:hover
+				cursor pointer
+										
 				.sub-menu
 					display block
 		
@@ -78,11 +106,15 @@ body
 			padding 5px 0
 			background $white
 			text-align center
-			border-top 2px solid $blue
+			border-top 8px solid $blue
 			
 			li
 				display block
 				margin 10px 0
+				
+				a
+					color $blue
+					text-decoration none
 		
 		&--secondary
 			text-align center

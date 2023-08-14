@@ -100,7 +100,6 @@
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
 	<!-- Font Awesome connection for UI/UX icons and small graphic elements -->
-	<!-- <script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script> -->
 	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
 
 	<!-- Fundraise Up connection -->
@@ -124,19 +123,18 @@
 	<?php // include( 'modules/banner--alert.php' ); ?>
 	
 	<!-- header -->
-	<header class="wt_header <?php if ( is_front_page() ): ?>transparent<?php endif; ?>" role="banner">
+	<header class="wt_header <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" role="banner">
 		<!-- header logo -->
 		<div class="wt_header__logo">
 			<a href="<?php bloginfo('url'); ?>">
-			<?php $header_logo = get_field('header_logo', 'options'); ?>
-			<?php if ( $header_logo ): ?>
-				<img src="<?php echo $header_logo['url']; ?>" alt="<?php echo $header_logo['alt']; ?>">
-			<?php endif; ?>
+				<img class="wt_header__logo--light <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_light', 'options'); ?>" alt="Wikitongues logo: light color scheme">
+				<img class="wt_header__logo--dark <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_dark', 'options'); ?>" alt="Wikitongues logo: dark color scheme">
 			</a>
 		</div>
 
 		<!-- search bar -->
 		<div class="wt_header__searchbar">
+			<i class="fa-light fa-magnifying-glass"></i>
 			<?php get_search_form(); ?>
 		</div>
 
@@ -146,13 +144,23 @@
 		// global var? define somewher else?
 		$template_slug = get_page_template_slug();
 
-		wp_nav_menu(
-			array( 
-				'theme_location' => 'main-menu',
-				'container' => 'nav',
-				'container_class' => 'wt_header__nav'
-			)
-		); 
+		if ( is_front_page() ) {
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'main-menu',
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav transparent-background'
+				)
+			);
+		} else {
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'main-menu',
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav'
+				)
+			);
+		}
 
 		?>
 	</header><!-- end header -->
