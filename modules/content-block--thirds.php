@@ -11,8 +11,8 @@
 			<?php echo $content_block_copy; ?>
 		</p>
 		<?php endif; ?>
-		<a href="<?php echo $content_block_cta['url']; ?>">
-			<?php echo $content_block_cta['title']; ?>
+		<a href="<?php echo $content_block_cta_link; ?>">
+			<?php echo $content_block_cta_text; ?>
 		</a>
 	</aside>
 </section>

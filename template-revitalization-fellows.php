@@ -9,7 +9,7 @@ $page_banner = get_field('revitalization_fellows_banner');
 include( 'modules/banner.php' );
 
 // foreach linked page, display 1/3 content block
-$query = new WP_Query( 'post_type' => 'fellows' );
+$query = new WP_Query( array( 'post_type' => 'fellows' ) );
 
 if ( $query->have_posts() ) {
 
@@ -24,9 +24,10 @@ if ( $query->have_posts() ) {
 		$content_block_image = get_field('fellow_image');
 		$content_block_header = $first_name . ' ' . $last_name;
 		$content_block_copy = '<strong>' . $fellow_language . '</strong><br /><span>' . $fellow_location . '</span>';
-		$content_block_cta = get_field('content_block_cta');
-		
-		include( 'modules/content-block--thirds' );
+		$content_block_cta_link = get_the_permalink();
+		$content_block_cta_text; // define field
+
+		include( 'modules/content-block--thirds.php' );
 	}
 
 	wp_reset_postdata();

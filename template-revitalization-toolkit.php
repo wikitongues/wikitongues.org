@@ -20,7 +20,7 @@ if ( have_rows( 'content_blocks' ) ) {
 		$content_block_copy = get_sub_field('content_block_copy');
 		$content_block_cta = get_sub_field('content_block_cta');
 		
-		include( 'modules/content-block--thirds' );
+		include( 'modules/content-block--thirds.php' );
 	}
 }
 
