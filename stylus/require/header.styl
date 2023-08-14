@@ -3,10 +3,7 @@ body
 	background $parchment
 	
 	&.home
-		padding-top 0 none !important
-		
-		.wt_header
-			background none !important
+		padding-top 0 !important
 	
 .wt_header
 	z-index 100
@@ -22,6 +19,12 @@ body
 	box-sizing border-box
 	background $parchment
 	
+	&.transparent
+		background none !important
+
+		&>nav>ul>li
+			background $white !important
+	
 	&__logo
 		flex-grow initial
 				
@@ -31,6 +34,15 @@ body
 	
 	&__searchbar
 		flex-grow initial
+		margin-left 15px
+		
+		input
+			&[type="search"]
+				border 0
+				padding 5px 10px
+				
+			&[type="submit"]
+				display none
 	
 	&--secondary
 		z-index 99
@@ -42,24 +54,38 @@ body
 		background $white
 		border-top 2px solid $blue
 					
-.wt_header__nav
-	flex-grow 3
-	text-align right
-	
-	&>ul
-		li
+	&__nav
+		flex-grow 3
+		text-align right
+		
+		&>ul>li
 			display inline-block
 			position relative
-	
-	.sub-menu
-		position absolute
-		background $white
+			margin-left 15px
+			padding 10px 15px
+			background $blue
+			
+			&:hover
+				.sub-menu
+					display block
 		
-		li
-			display block
-	
-	&--secondary
-		text-align center
+		.sub-menu
+			display none
+			position absolute
+			top 100%
+			left 0
+			width 100%
+			padding 5px 0
+			background $white
+			text-align center
+			border-top 2px solid $blue
+			
+			li
+				display block
+				margin 10px 0
 		
-		li
-			display inline-block
+		&--secondary
+			text-align center
+			
+			li
+				display inline-block

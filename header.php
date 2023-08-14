@@ -124,7 +124,7 @@
 	<?php // include( 'modules/banner--alert.php' ); ?>
 	
 	<!-- header -->
-	<header class="wt_header" role="banner">
+	<header class="wt_header <?php if ( is_front_page() ): ?>transparent<?php endif; ?>" role="banner">
 		<!-- header logo -->
 		<div class="wt_header__logo">
 			<a href="<?php bloginfo('url'); ?>">
