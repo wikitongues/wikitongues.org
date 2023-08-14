@@ -83,7 +83,8 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614b82d37f23f",
@@ -164,7 +165,7 @@
             "label": "YouTube ID",
             "name": "youtube_id",
             "aria-label": "",
-            "type": "url",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -174,7 +175,10 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": ""
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_614b830e7f243",
@@ -269,5 +273,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691772527
+    "modified": 1691982491
 }

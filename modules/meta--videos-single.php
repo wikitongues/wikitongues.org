@@ -54,7 +54,7 @@
 				<span><?php the_field( 'egids_status' ); ?></span>
 			</p>
 		</li>
-	<?php enforeach; wp_reset_postdata(); ?> 
+	<?php endforeach; wp_reset_postdata(); ?> 
 	</ul>
 	
 </div>

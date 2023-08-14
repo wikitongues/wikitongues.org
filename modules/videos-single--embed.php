@@ -10,7 +10,8 @@
 
 	<?php elseif ( $dropbox_link ): ?>
 
-		<iframe width="100%" src="<?php echo $dropbox_link; ?> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		<!-- need to make sure the right link is generated -->
+		<iframe width="100%" src="<?php echo $dropbox_link; ?>?raw=1" frameborder="0" allowfullscreen></iframe>
 
 	<?php else: ?>
 
