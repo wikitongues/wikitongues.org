@@ -6,7 +6,7 @@ get_header();
 // banner
 $page_banner = get_field('front_page_banner');
 
-include( 'modules/banner.php' );
+include( 'modules/banner--main.php' );
 
 // initiate flexible content loop
 if ( have_rows( 'front_page_content_layout' ) ) {

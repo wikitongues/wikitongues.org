@@ -4,15 +4,15 @@
 	flex-direction row
 	align-items center
 	width 95%
-	margin auto
+	margin 6rem auto
 	
 	&:before
 		content ''
 		z-index -1
 		position absolute
-		top 10px
-		left 10px
-		width 100%
+		top 2.5%
+		left .75%
+		width 99.25%
 		height 100%
 		background $blue
 	
@@ -24,3 +24,15 @@
 	
 	&__copy
 		width 45%
+		box-sizing border-box
+		padding 6rem
+		
+		h1
+			text--header($parchment)
+			
+		p
+			margin 3rem 0
+			text--body($parchment)
+			
+		a
+			button--large($parchment, $blue)

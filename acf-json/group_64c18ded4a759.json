@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "row",
             "sub_fields": [
                 {
                     "key": "field_64c18e22cc5f7",
@@ -162,7 +162,8 @@
                             "return_format": "object",
                             "multiple": 1,
                             "allow_null": 1,
-                            "ui": 1
+                            "ui": 1,
+                            "bidirectional_target": []
                         }
                     ],
                     "min": "",
@@ -307,7 +308,8 @@
                             "return_format": "object",
                             "multiple": 1,
                             "allow_null": 0,
-                            "ui": 1
+                            "ui": 1,
+                            "bidirectional_target": []
                         }
                     ],
                     "min": "",
@@ -337,5 +339,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691852304
+    "modified": 1692124762
 }

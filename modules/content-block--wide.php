@@ -9,14 +9,15 @@ $content_block_cta_text = get_sub_field('content_block_cta_text');
 <section class="wt_content-block--wide">
 	<aside class="wt_content-block--wide__image" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);"></aside>
 	<aside class="wt_content-block--wide__copy">
-		<h1 class="wt_text--header">
+		<h1>
 			<?php echo $content_block_header; ?>
 		</h1>
-		<p class="wt_text--body">
+		<p>
 			<?php echo $content_block_copy; ?>
 		</p>
-		<a class="wt_button--large" href="<?php echo $content_block_cta_link; ?>">
+		<a href="<?php echo $content_block_cta_link; ?>">
 			<?php echo $content_block_cta_text; ?>
+			<i class="fa-regular fa-arrow-right-long"></i>
 		</a>
 	</aside>
 </section>

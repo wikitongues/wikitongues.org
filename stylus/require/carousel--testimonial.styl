@@ -1,14 +1,37 @@
 .wt_carousel--testimonials
-	display flex
-	flex-direction row
+	p
+		width 100%
+		margin-bottom 1.5rem
+		text-align center
+		
+		strong
+			text--strong($black)
 
-	.wt_testimonial
+	ul
 		display flex
 		flex-direction row
-		align-items center
+		margin-bottom 6rem
 
-		&__image
-			max-width 200px
-			border-radius 100%
+		.wt_testimonial
+			display flex
+			flex-direction row
+			margin 0 auto
+			align-items center
 
-
+			&__image
+				max-width 200px
+				border-radius 100%
+				margin-right 3rem
+			
+			&__copy
+				p
+					margin-bottom 1.5rem
+					width 580px
+					text--body($black)
+					text-align left
+					
+					span:last-of-type
+						font-style italic
+					
+				a
+					button--small($blue,$parchment)

@@ -1,8 +1,17 @@
 .wt_newsletter
+	padding 6rem 0
 	background $purple
+	text-align center
+	
+	form
+		&>div
+			display flex
+			justify-content center
 
 .wt_footer
+	padding 6rem
 	background $black
+	text--body($parchment)
 	
 	&__section
 		&:first-of-type
@@ -18,6 +27,17 @@
 		>ul
 			display flex
 			flex-direction row
+			
+			li					
+				a
+					text--body($parchment)
+					text-decoration none
+			
+			&>li
+				margin-right 3rem
+				
+				&>a
+					font-weight 700 !important
 		
 	&__meta
 		flex-grow initial
