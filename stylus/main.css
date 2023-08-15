@@ -395,6 +395,7 @@ body.home {
 }
 .wt_footer__nav {
   flex-grow: 3;
+  text-transform: uppercase;
 }
 .wt_footer__nav >ul {
   display: flex;
@@ -414,11 +415,24 @@ body.home {
   margin-right: 3rem;
 }
 .wt_footer__nav >ul>li>a {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
+}
+.wt_footer__nav .sub-menu {
+  margin-top: 1.5rem;
 }
 .wt_footer__meta {
   flex-grow: initial;
+  text-align: right;
 }
 .wt_footer__logo img {
   max-width: 150px;
+}
+.wt_footer__address {
+  margin: 1.5rem 0;
+}
+.wt_footer__land-acknowledgement {
+  margin: 3rem 0 1.5rem;
+}
+.wt_footer__copyright {
+  font-weight: 700 !important;
 }
