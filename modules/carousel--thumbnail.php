@@ -42,12 +42,12 @@
 
 					echo '<a href="' . get_the_permalink() . '">' .
 						 $thumbnail_cta_text . 
-						 '</a>'; // add arrow
+						 '<i class="fa-regular fa-arrow-right-long"></i></a>'; // add arrow
 
 				} else {
 
 					echo '<a href="' . get_the_permalink() . '">' .
-						 'Read more</a>'; // add arrow
+						 'Read more<i class="fa-regular fa-arrow-right-long"></i></a>'; // add arrow
 
 				}
 

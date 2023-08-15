@@ -6,7 +6,7 @@ get_header();
 // banner
 $page_banner = get_field('revitalization_fellows_banner');
 
-include( 'modules/banner.php' );
+include( 'modules/banner--main.php' );
 
 // foreach linked page, display 1/3 content block
 $query = new WP_Query( array( 'post_type' => 'fellows' ) );

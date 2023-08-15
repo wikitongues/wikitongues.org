@@ -6,7 +6,7 @@ get_header();
 // banner
 $page_banner = get_field('revitalization_home_banner');
 
-include( 'modules/banner.php' );
+include( 'modules/banner--main.php' );
 
 // foreach linked page, display 1/3 content block
 if ( have_rows( 'content_blocks' ) ) {

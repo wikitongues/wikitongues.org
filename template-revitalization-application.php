@@ -8,7 +8,7 @@ get_header();
 // banner
 $page_banner = get_field('revitalization_application_banner');
 
-include( 'modules/banner.php' );
+include( 'modules/banner--main.php' );
 
 // if applications are open, display button
 // include( 'modules/button--wide.php' );
