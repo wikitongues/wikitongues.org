@@ -44,8 +44,8 @@
         },
         {
             "key": "field_614b828c7f23d",
-            "label": "Video Thumbnail",
-            "name": "video_thumbnail",
+            "label": "Video Thumbnail DEPR",
+            "name": "video_thumbnail_depr",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -57,10 +57,35 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
+        },
+        {
+            "key": "field_64dbeb41a60bc",
+            "label": "Video Thumbnail",
+            "name": "video_thumbnail",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
         },
         {
             "key": "field_614b82927f23e",
@@ -273,5 +298,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691982491
+    "modified": 1692134234
 }
