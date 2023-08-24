@@ -2,14 +2,14 @@ body
 	max-width 1440px
 	margin auto
 	box-shadow 0 0 100px rgba(0,0,0,.05)
-	padding-top 138px
+	padding-top 100px
 	background $parchment
 	
 	&.home
 		padding-top 0 !important
 	
 .wt_header
-	z-index 2
+	z-index 3
 	display flex
 	flex-direction row
 	align-items center
@@ -69,12 +69,12 @@ body
 	&--secondary
 		z-index 2
 		position fixed
-		top 80px
+		top 60px
 		left 0
 		width 100%
 		padding 20px
 		background $white
-		border-top 2px solid $blue
+		border-top 6px solid $blue
 					
 	&__nav
 		flex-grow 3
@@ -84,6 +84,7 @@ body
 		&.transparent-background
 			&>ul>li
 				background $parchment
+				border none !important
 				
 				&>a
 					color $blue
@@ -93,6 +94,12 @@ body
 			margin-left 1.25rem
 			button--small($blue, $parchment)
 			
+			&.current_page_item,
+			&.current_page_parent
+				background $white !important
+				
+				&>a
+					color $blue !important
 			
 			&>a // button--small is designed for a elements not li
 				text-decoration none
@@ -100,6 +107,10 @@ body
 
 			&:hover
 				cursor pointer
+				background $white !important
+				
+				&>a
+					color $blue !important
 										
 				.sub-menu
 					display block
@@ -110,10 +121,15 @@ body
 			top 100%
 			left 0
 			width 100%
-			padding 5px 0
+			padding 5px
 			background $white
 			text-align center
-			border-top 8px solid $blue
+			border-top 1px solid $blue
+			box-shadow 0 0 100px rgba(0,0,0,.05)
+			// border-top 8px solid $blue
+			// border-right 1px solid $blue
+			// border-bottom 1px solid $blue
+			// border-left 1px solid $blue
 			
 			li
 				display block
@@ -128,3 +144,22 @@ body
 			
 			li
 				display inline-block
+				margin 0 0 0 3rem
+				
+				&:first-of-type
+					a
+						color $black
+						
+						&:hover
+							cursor default
+					
+					&:after
+						content ''
+						margin-left 3rem
+						border-right 1px #dcdcdc solid
+				
+				a
+					text--body($blue)
+					font-size 1.28rem !important
+					text-decoration none
+					text-transform uppercase
