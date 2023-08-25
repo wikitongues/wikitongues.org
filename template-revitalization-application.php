@@ -8,6 +8,7 @@ get_header();
 // banner
 $page_banner = get_field('revitalization_application_banner');
 
+// bug - banner displays twice, hiding with css
 include( 'modules/banner--main.php' );
 
 // if applications are open, display button

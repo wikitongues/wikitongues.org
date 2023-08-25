@@ -13,6 +13,7 @@
 		<?php endif; ?>
 		<a href="<?php echo $content_block_cta_link; ?>">
 			<?php echo $content_block_cta_text; ?>
+			<i class="fa-regular fa-arrow-right-long"></i>
 		</a>
 	</aside>
 </section>

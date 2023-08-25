@@ -1,5 +1,30 @@
+// background to purple once explore filters are added
 .wt_banner--searchbar
 	width 100%
 	padding 120px
-	background $purple
 	border-bottom 1px solid $parchment
+	
+	form
+		display flex
+		margin auto
+		width 90%
+		max-width 800px
+		
+		label
+			display block
+			width 70%
+		
+		input
+			border none
+			
+			&[type="search"]
+				width 97%
+				box-sizing border-box
+				margin-right 3%
+				border-bottom 2px solid $black
+				button--large($parchment,$black)
+				
+			&[type="submit"]
+				width 30%
+				button--large($blue,$parchment)
+		

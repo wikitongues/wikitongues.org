@@ -13,6 +13,8 @@ $query = new WP_Query( array( 'post_type' => 'fellows' ) );
 
 if ( $query->have_posts() ) {
 
+	echo '<main class="wt_content-block--thirds__wrapper">';
+
 	while ( $query->have_posts() ) {
 
 		$query->the_post();
@@ -29,6 +31,8 @@ if ( $query->have_posts() ) {
 
 		include( 'modules/content-block--thirds.php' );
 	}
+
+	echo '</main>';
 
 	wp_reset_postdata();
 }
