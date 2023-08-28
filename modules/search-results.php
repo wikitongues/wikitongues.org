@@ -1,20 +1,19 @@
-<!-- default for loop, customize later -->
-<?php if ( have_posts() ) : ?>
-<header class="header">
-<h1 class="entry-title" itemprop="name"><?php printf( esc_html__( 'Search Results for: %s', 'blankslate' ), get_search_query() ); ?></h1>
-</header>
-<?php while ( have_posts() ) : the_post(); ?>
-<?php get_template_part( 'entry' ); ?>
-<?php endwhile; ?>
-<?php get_template_part( 'nav', 'below' ); ?>
-<?php else : ?>
-<article id="post-0" class="post no-results not-found">
-<header class="header">
-<h1 class="entry-title" itemprop="name"><?php esc_html_e( 'Nothing Found', 'blankslate' ); ?></h1>
-</header>
-<div class="entry-content" itemprop="mainContentOfPage">
-<p><?php esc_html_e( 'Sorry, nothing matched your search. Please try again.', 'blankslate' ); ?></p>
-<?php get_search_form(); ?>
-</div>
-</article>
+<!-- possible to sort results by language first, then video? -->
+<main class="wt_search-results">
+<?php if ( have_posts() ): ?>
+	<header class="wt_search-results__title">
+		<span>Showing results for '<?php echo get_search_query(); ?>'</span>
+	</header>	
+	<section class="wt_search-results__results">
+	<?php while ( have_posts() ): the_post(); ?>
+		<article class="wt_search-results__thumbnail">
+			<?php include('search-results__thumbnail.php'); ?>
+		</article>
+	<?php endwhile; else: ?>
+		<article>
+			<span>No results for <?php echo get_search_query(); ?></span><!-- down the line: "did you mean?" or recommend something -->
+		</article>
+	</section>
 <?php endif; ?>
+</main>
+

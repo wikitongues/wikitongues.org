@@ -23,8 +23,17 @@
 				margin-right 3%
 				border-bottom 2px solid $black
 				button--large($parchment,$black)
+				text-transform initial !important
+				transition background .2s ease-in-out
+				
+				&:focus
+					outline none !important
+					background $white
 				
 			&[type="submit"]
 				width 30%
 				button--large($blue,$parchment)
+				
+				&:hover
+					cursor pointer
 		

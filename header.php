@@ -178,7 +178,8 @@
 				} elseif ( 
 					strpos($template_slug, 'archive') !== false || 
 					is_singular('languages') || 
-					is_singular('videos') 
+					is_singular('videos') ||
+					is_search() 
 				) {
 					wp_nav_menu(
 						array( 

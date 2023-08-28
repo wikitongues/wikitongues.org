@@ -1,1 +1,0 @@
-<h1>thumbnail module</h1>
