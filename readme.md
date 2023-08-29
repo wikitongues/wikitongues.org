@@ -34,3 +34,4 @@
 * build captions post type and download options
 * add "primary language" field to video post types
 * make testimonial carousel a true carousel
+* search results: sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes

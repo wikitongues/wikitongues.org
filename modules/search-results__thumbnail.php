@@ -34,6 +34,7 @@ if ( $thumbnail_image ) {
 } else {
 
 	echo '<div class="wt_search-results__thumbnail--no-image"></div>'; 
+
 } ?>
 
 <div class="wt_search-results__thumbnail--copy">
@@ -45,7 +46,20 @@ if ( $thumbnail_image ) {
 
 	} else {
 
-		echo '<p>' . the_title() . '</p>';
+		if ( $post_type === 'languages' ) {
+			
+			echo '<p><strong>' . get_field( 'standard_name' ) . ' language</strong></br>'.
+				 '<span>Also known as ' . get_field( 'alternate_names' ) . '</span></p>';
+
+		} elseif ( $post_type === 'videos' ) {
+			
+			echo '<p><strong>' . get_field( 'video_title' ) . '</strong></br>'.
+				 '<span>Language video</span></p>';
+
+		} else { // add conditions for lexicons and misc resources
+			
+			echo '<p><strong>' . get_the_title() . '</strong></p>';
+		}
 
 	}
 
