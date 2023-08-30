@@ -1,3 +1,21 @@
+body
+	&.search-results
+		.wt_header
+			&__nav
+				&>ul>li
+					&:first-of-type
+						background $white !important
+				
+						&>a
+							color $blue !important
+						
+						&:hover
+							&:before
+								display none !important
+								
+							.sub-menu
+								display none !important
+
 .wt_search-results
 	&__title
 		width 90%

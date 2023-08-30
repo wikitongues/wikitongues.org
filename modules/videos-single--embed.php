@@ -6,8 +6,8 @@
 
 	<?php if ( $youtube_id ): ?>
 
-		<iframe width="100%" src="https://www.youtube.com/embed/<?php echo $youtube_id; ?> title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
+		<iframe width="100%" src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		
 	<?php elseif ( $dropbox_link ): ?>
 
 		<!-- need to make sure the right link is generated -->

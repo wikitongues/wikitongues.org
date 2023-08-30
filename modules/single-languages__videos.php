@@ -1,33 +1,37 @@
-<div id="wt_single-languages__videos" class="single-languages__contents">
-	<p>
-		<strong>Videos</strong>
-	</p>
-	<?php if ( $videos ): ?>
-		<ul>
-		<?php 
-		// loop through available videos
-		foreach( $videos as $post ) {
-			// foreach video, setup posts data
-			setup_postdata( $post );
+<main class="wt_single-languages__content">
+	<div id="wt_single-languages__videos" class="wt_single-languages__contents">
+		<p>
+			<strong>Videos</strong>
+		</p>
+		<?php if ( $videos ): ?>
+			<ul>
+			<?php 
+			// loop through available videos
+			foreach( $videos as $post ) {
+				// foreach video, setup posts data
+				setup_postdata( $post );
 
-			// define variables
-			$content_block_image = get_sub_field('video_thumbnail');
-			$video_title = get_field('video_title');
-			$video_custom_title = get_field('video_custom_title');
-			if ( $video_custom_title ) {
-				$content_block_header = $video_custom_title;
-			} else {
-				$content_block_header = $video_title;
-			}
-			$content_block_cta = get_the_permalink();
+				// define variables
+				$content_block_image = get_field('video_thumbnail');
+				$video_title = get_field('video_title');
+				$video_custom_title = get_field('video_custom_title');
+				if ( $video_custom_title ) {
+					$content_block_header = $video_custom_title;
+				} else {
+					$content_block_header = $video_title;
+				}
+				$content_block_cta_link = get_the_permalink();
+				$content_block_cta_text = 'Watch';
 
-			// include content block template
-			include( 'content-block--thirds.php' );
+				// include content block template
+				include( 'content-block--thirds.php' );
 
-		} wp_reset_postdata(); 
-		?>
-		</ul>
-	<?php else: ?>
-		<p>There are no videos to display yet. Submit one <a href="<?php bloginfo('url'); ?>/submit-a-video">here</a>.</p>
-	<?php endif; ?>
-</div>
+			} wp_reset_postdata(); 
+			?>
+			</ul>
+		<?php else: ?>
+			<p>There are no videos to display yet. Submit one <a href="<?php bloginfo('url'); ?>/submit-a-video">here</a>.</p>
+		<?php endif; ?>
+	</div>
+</main><!-- move to end of last module after lexicons, etc -->
+<div class="clear"></div>

@@ -1,4 +1,4 @@
-<div class="wt_meta">	
+<div class="wt_meta--">	
 	<div class="wt_meta__video-downloads">
 		<p>
 			<strong class="wt_text--uppercase">Video file downloads</strong>
@@ -20,6 +20,12 @@
 
 			}
 
+			if ( !$dropbox_link && !$wikimedia_commons_link ) {
+
+				echo 'File downloads are currently unavailable for this video.';
+				
+			}
+
 			// later version: captions
 		} elseif ( $public_status === 'Processing' ) {
 
@@ -36,23 +42,43 @@
 	<ul class="wt_meta__featured-languages">
 	<?php foreach( $featured_languages as $post ): setup_postdata( $post ); ?>
 		<li>
-			<strong class="wt_text--uppercase">About <?php the_field( 'standard_name' ); ?></strong>
-			<p>
-				<strong>Countries of origin</strong><br/>
-				<span><?php the_field( 'countries_of_origin' ); ?></span>
-			</p>
-			<p>
-				<strong>Linguistic genealogy</strong><br/>
-				<span><?php the_field( 'linguistic_genealogy' ); ?></span>
-			</p>
-			<p>
-				<strong>Writing system</strong><br/>
-				<span><?php the_field( 'writing_system' ); ?></span>
-			</p>
-			<p>
-				<strong>EGIDS status</strong><br/>
-				<span><?php the_field( 'egids_status' ); ?></span>
-			</p>
+			<?php
+			$standard_name = get_field('standard_name');
+			$alternate_names = get_field('alternate_names');
+			$nations_of_origin = get_field('nations_of_origin');
+			$writing_systems = get_field('writing_systems');
+			$linguistic_genealogy = get_field('linguistic_genealogy'); 
+			?>
+			<strong class="wt_text--uppercase">About <?php echo $standard_name; ?></strong>
+			<ul>
+			<?php if ( $nations_of_origin ): ?>
+				<li>
+					<p>Countries of origin</p>
+					<p class="wt_text--label">
+						<?php echo $nations_of_origin; ?>
+					</p>
+				</li>
+			<?php endif; ?>
+
+			<?php if ( $writing_systems ): ?>
+				<li>
+					<p>Writing systems</p>
+					<p class="wt_text--label">
+						<?php echo $writing_systems; ?>
+					</p>
+				</li>
+			<?php endif ;?>
+
+			<?php if ( $linguistic_genealogy ): ?>
+				<li>
+					<p>Linguistic genealogy</p>
+					<p class="wt_text--label">
+						<?php echo $linguistic_genealogy; ?>
+					</p>
+				</li>
+			<?php endif; ?>
+			<!-- EGIDS status? -->
+			</ul>
 		</li>
 	<?php endforeach; wp_reset_postdata(); ?> 
 	</ul>
