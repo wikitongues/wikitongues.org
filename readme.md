@@ -35,3 +35,6 @@
 * add "primary language" field to video post types
 * make testimonial carousel a true carousel
 * search results: sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes
+* clean up template/modules hierarchy on video single and language single
+* think about primary v secondary languages as part of "featured languages" video single
+* figure out navigation path from single videos back to the language in question
