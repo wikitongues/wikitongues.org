@@ -1,21 +1,31 @@
-.wt_meta--languages-single
+.wt_meta--videos-single
 	width calc(100%/4)
 	float left
-	padding-left 6rem
 	
 	strong
 		text--strong($black)
+		text-transform uppercase
 	
 	p
 		margin-bottom 1.5rem
-		text-transform uppercase
+		// text-transform uppercase
+		text--body($black)
 		
 		strong
 			text--strong($black)
 	
 	ul
+		margin-top 1.5rem
+		
+		&.wt_meta__featured-languages
+			margin-top 3rem
+		
 		li
 			margin-bottom 1.5rem
+			
+			p
+				&:first-of-type
+					text--strong($black)
 	
 	a
 		text-decoration none

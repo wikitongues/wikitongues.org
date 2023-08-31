@@ -1,3 +1,4 @@
+<main class="wt_single-videos__content">
 <!-- define height in js for responsive iframe -->
 
 <?php if ( $public_status === 'Public' ): ?>
