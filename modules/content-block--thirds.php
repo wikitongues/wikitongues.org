@@ -1,6 +1,8 @@
 <section class="wt_content-block--thirds">
 <?php if ( $content_block_image ): ?>
-	<aside class="wt_content-block--thirds__image" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);"></aside>
+	<aside class="wt_content-block--thirds__image" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);" data-test="<?php echo $content_block_image; ?>"></aside>
+<?php else: ?>
+	<aside class="wt_content-block--thirds__image blank" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);"></aside>
 <?php endif; ?>
 	<aside class="wt_content-block--thirds__copy">
 		<h1>

@@ -1,28 +1,64 @@
-.wt_carousel--thumbnails
-	display flex
-	flex-direction row
-	justify-content left
-	width 95%
-	margin auto
-	overflow-x scroll
+.wt_carousel
+	&__wrapper
+		position relative
+		
+	&__left-scroll
+		display none
+		position absolute
+		top 50%
+		left 1.85rem
+		transform translateY(-50%)
+		border-radius 100%
+		width 40px
+		height 40px
+		background $blue
+		color $white
+		border 1px solid $parchment
+		font-size 1.6rem
+		cursor pointer
 	
-	.wt_thumbnail
+	&__right-scroll
+		position absolute
+		top 50%
+		right 1.85rem
+		transform translateY(-50%)
+		border-radius 100%
+		width 40px
+		height 40px
+		background $blue
+		color $white
+		border 1px solid $parchment
+		font-size 1.6rem
+		cursor pointer
+
+	&--thumbnails
 		display flex
 		flex-direction row
-		align-items center
-				
-		&__image
-			max-width auto
-			max-height 170px
+		justify-content left
+		width 95%
+		margin auto
+		overflow-x hidden
 		
-		&__copy
-			display inline-block
-			padding-left 3rem
-			text--strong($black)
+		.wt_thumbnail
+			display flex
+			flex-direction row
+			align-items center
+					
+			&__image
+				width auto
+				max-height 170px
 			
-			p
-				width 25rem
-				margin-bottom 1.5rem
-			
-			a
-				button--small($blue,$parchment)
+			&__copy
+				display inline-block
+				padding-left 3rem
+				text--strong($black)
+				
+				p
+					width 25rem
+					margin-bottom 1.5rem
+				
+				a
+					button--small($blue,$parchment)
+					
+					i
+						margin-left 0.5rem

@@ -27,6 +27,21 @@
 		background-size cover
 		background-repeat no-repeat
 		
+		&.blank
+			position relative
+			background $purple
+			
+			&:before
+				content 'Thumbnail unavailable'
+				position absolute
+				top 50%
+				left 50%
+				transform translate(-50%,-50%)
+				width 90%
+				text-align center
+				text--body($parchment)
+				font-size 1.6rem
+		
 	&__copy
 		padding 3rem 3rem 3rem 4rem
 		text--body($parchment)
@@ -43,3 +58,6 @@
 		
 		a
 			button--small($parchment,$blue)
+			
+			i
+				margin-left 0.5rem

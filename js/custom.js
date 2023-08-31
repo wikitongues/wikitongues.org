@@ -21,10 +21,38 @@ function changeHeaderClass() {
 	});
 }
 
+function carouselScroll() {
+	// clean up scroll animation to go by thirds
+	$('.wt_carousel__right-scroll').click(function() {
+		event.preventDefault();
+
+		$(this).hide();
+		$('.wt_carousel__left-scroll').show();
+
+		$(this).parents('section').find('ul').animate({
+			scrollLeft: "+=1000px"
+			}, "slow");
+	});
+
+	$('.wt_carousel__left-scroll').click(function() {
+		event.preventDefault();
+
+		$(this).hide();
+		$('.wt_carousel__right-scroll').show();
+		
+		$(this).parents('section').find('ul').animate({
+			scrollLeft: "-=1000px"
+			}, "slow");
+	});
+}
+
 // run all general UX/UI functions
 $(window).on('load', function(){
 
 	if($('body').hasClass('home')){
 		changeHeaderClass(); 
 	}
+
+	carouselScroll();
+
 });

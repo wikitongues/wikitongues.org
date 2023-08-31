@@ -1,7 +1,13 @@
 <?php $post_type = get_sub_field('thumbnail_carousel_posts'); ?>
 
-<!-- to add later: buttons with carousel js -->
 <?php if ( $post_type ): ?>
+<section class="wt_carousel__wrapper"><!-- fix naming conventions -->
+	<button class="wt_carousel__left-scroll">
+		<i class="fa-regular fa-arrow-left-long"></i>
+	</button>
+	<button class="wt_carousel__right-scroll">
+		<i class="fa-regular fa-arrow-right-long"></i>
+	</button>
 	<ul class="wt_carousel--thumbnails">
 	<?php foreach ( $post_type as $post ): setup_postdata( $post ); ?>
 	<?php 
@@ -21,7 +27,7 @@
 
 			} else {
 
-				the_post_thumbnail( 'large' );
+				the_post_thumbnail( 'large', array('class'=>'wt_thumbnail__image') );
 
 			} ?>
 
@@ -56,6 +62,7 @@
 		</li>
 	<?php endforeach; wp_reset_postdata(); ?>
 	</ul>
+</section>
 <?php endif ?>
 
 <!-- 
