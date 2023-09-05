@@ -187,8 +187,16 @@
 							'container' => 'nav',
 							'container_class' => 'wt_header__nav--secondary'
 						)
+					); // if single language or single video, display the language
+				} elseif ( strpos($template_slug, 'about') !== false ) {
+					wp_nav_menu(
+						array( 
+							'theme_location' => 'about-menu',
+							'container' => 'nav',
+							'container_class' => 'wt_header__nav--secondary'
+						)
 					);
-				} // if single language or single video, display the language
+				}
 			?>	
 		</section>
 		<?php endif; ?>

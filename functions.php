@@ -56,6 +56,13 @@ function wt_revitalization_menu() {
 
 add_action( 'init', 'wt_revitalization_menu' );
 
+// add about menu
+function wt_about_menu() {
+  register_nav_menu('about-menu',__( 'About Menu' ));
+}
+
+add_action( 'init', 'wt_about_menu' );
+
 // add footer menu
 function wt_footer_menu() {
   register_nav_menu('footer-menu',__( 'Footer Menu' ));
