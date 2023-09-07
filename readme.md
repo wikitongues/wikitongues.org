@@ -39,3 +39,4 @@
 * think about primary v secondary languages as part of "featured languages" video single
 * figure out navigation path from single videos back to the language in question
 * add: historical interns, other secondary team data
+* partner single page with information about partnership
