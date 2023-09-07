@@ -1,11 +1,11 @@
 {
     "key": "group_64f9fb7b7925c",
-    "title": "Template: Board",
+    "title": "Template: Board and Advisors",
     "fields": [
         {
             "key": "field_64fa0f71b6c06",
-            "label": "Board Banner",
-            "name": "board_banner",
+            "label": "Team Banner",
+            "name": "team_banner",
             "aria-label": "",
             "type": "group",
             "instructions": "",
@@ -62,7 +62,7 @@
         },
         {
             "key": "field_64f9fb7b74d94",
-            "label": "Board Members",
+            "label": "Board Members or Advisors",
             "name": "board_members",
             "aria-label": "",
             "type": "post_object",
@@ -105,5 +105,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694109612
+    "modified": 1694113392
 }
