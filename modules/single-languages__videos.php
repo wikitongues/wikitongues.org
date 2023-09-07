@@ -24,7 +24,7 @@
 				$content_block_cta_text = 'Watch';
 
 				// include content block template
-				include( 'content-block--thirds.php' );
+				include( 'content-block--grid.php' );
 
 			} wp_reset_postdata(); 
 			?>

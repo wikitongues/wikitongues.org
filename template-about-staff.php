@@ -32,34 +32,33 @@ foreach( $staff_members as $post ) {
 
 } wp_reset_postdata();
 
-get_footer();
-
-
 // define volunteer+intern team member posts to display acf
 
 // cycle through selected posts
 $interns_and_volunteers = get_field('interns_and_volunteers');
 
-// cycle through selected posts
-foreach( $board_members as $post ) {
-	// setup post data for each post
-	setup_postdata( $post );
+if ( $interns_and_volunteers ) {
 
-	// variables - would be cool to add a 
-	$profile_picture = get_field('profile_picture');
-	$name = get_the_title();
-	$title = get_field('leadership_title');
-	$location = get_field('contributor_location');
-	$linkedin = get_field('linkedin');
-	$website = get_field('website');
-	$twitter = get_field('twitter');
-	$email = get_field('email');
+	// cycle through selected posts
+	foreach( $interns_and_volunteers as $post ) {
+		// setup post data for each post
+		setup_postdata( $post );
 
-	// show board member module
-	include( 'modules/team-member--thirds.php' );
+		// variables - would be cool to add a 
+		$profile_picture = get_field('profile_picture');
+		$name = get_the_title();
+		$title = get_field('leadership_title');
+		$location = get_field('contributor_location');
+		$linkedin = get_field('linkedin');
+		$website = get_field('website');
+		$twitter = get_field('twitter');
+		$email = get_field('email');
 
-} wp_reset_postdata();
+		// show board member module
+		include( 'modules/team-member--grid.php' );
 
-get_footer();
+	} wp_reset_postdata();
+
+}
 
 get_footer();

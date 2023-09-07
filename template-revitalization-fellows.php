@@ -29,7 +29,7 @@ if ( $query->have_posts() ) {
 		$content_block_cta_link = get_the_permalink();
 		$content_block_cta_text = 'Read more';
 
-		include( 'modules/content-block--thirds.php' );
+		include( 'modules/content-block--grid.php' );
 	}
 
 	echo '</main>';
