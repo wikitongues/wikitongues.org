@@ -16,23 +16,15 @@ foreach( $partners as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
 
-	$profile_picture = get_field('profile_picture');
+	$partner_logo = get_field('partner_logo');
 	$name = get_the_title();
-	$title = get_field('leadership_title');
-	$bio = get_field('bio');
-	$location = get_field('contributor_location');
-	$linkedin = get_field('linkedin');
+	$partner_bio = get_field('partner_bio');
 	$website = get_field('website');
-	$twitter = get_field('twitter');
 	$email = get_field('email');
-	$personal_languages = get_field('languages');
 
 	// show board member module
-	include( 'modules/team-member--wide.php' );
+	include( 'modules/team-member--partner.php' );
 
 } wp_reset_postdata();
-
-get_footer();
-
 
 get_footer();
