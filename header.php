@@ -166,7 +166,10 @@
 		if ( !is_front_page() ): ?>
 		<section class="wt_header--secondary">
 			<?php 
-				if ( strpos($template_slug, 'revitalization') !== false ) { 
+				if ( 
+					strpos($template_slug, 'revitalization') !== false ||
+					is_singular('fellows')
+				) { 
 					wp_nav_menu(
 						array( 
 							'theme_location' => 'revitalization-menu',

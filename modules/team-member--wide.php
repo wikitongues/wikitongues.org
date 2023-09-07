@@ -46,8 +46,7 @@
 			</li>
 		<?php endif; ?>
 
-
-		<?php if ( $website ): ?>
+		<?php if ( $twitter ): ?>
 			<li>
 				<a href="<?php echo $twitter; ?>">
 					<i class="fa-brands fa-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>

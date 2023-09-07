@@ -122,6 +122,31 @@
             ]
         },
         {
+            "key": "field_64d159b3dee63",
+            "label": "Fellow Headshot",
+            "name": "fellow_headshot",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
             "key": "field_6255a107efe66",
             "label": "First Name",
             "name": "first_name",
@@ -162,9 +187,55 @@
             "maxlength": ""
         },
         {
-            "key": "field_624f52dac3dc0",
-            "label": "Fellow Pitch",
-            "name": "fellow_pitch",
+            "key": "field_64fa340b16063",
+            "label": "Fellow language",
+            "name": "fellow_language",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "languages"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "object",
+            "multiple": 0,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_64d2a87f7c878",
+            "label": "Fellow language preferred name",
+            "name": "fellow_language_preferred_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "If different from language's standardized name",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_636d35600b10a",
+            "label": "Fellow Location",
+            "name": "fellow_location",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -180,26 +251,6 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
-        },
-        {
-            "key": "field_624f5331e928e",
-            "label": "Fellow Project",
-            "name": "fellow_project",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": "wpautop"
         },
         {
             "key": "field_62546d83dc64a",
@@ -220,6 +271,26 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_64d15928dc20f",
+            "label": "Fellow Testimonial",
+            "name": "fellow_testimonial",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "rows": ""
         },
         {
             "key": "field_6254722f8d19b",
@@ -245,11 +316,11 @@
             "bidirectional_target": []
         },
         {
-            "key": "field_6255a5e8506b4",
-            "label": "Fellow Links",
-            "name": "fellow_links",
+            "key": "field_64fa3459f7945",
+            "label": "YouTube",
+            "name": "youtube",
             "aria-label": "",
-            "type": "repeater",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -258,92 +329,13 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "row",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_6255a5f0506b5",
-                    "label": "Link Type",
-                    "name": "link_type",
-                    "aria-label": "",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "youtube": "YouTube",
-                        "facebook": "Facebook",
-                        "twitter": "Twitter",
-                        "linkedin": "LinkedIn",
-                        "instagram": "Instagram",
-                        "github": "GitHub",
-                        "tiktok": "TikTok",
-                        "link": "Link"
-                    },
-                    "default_value": false,
-                    "allow_null": 0,
-                    "multiple": 0,
-                    "ui": 0,
-                    "return_format": "value",
-                    "ajax": 0,
-                    "placeholder": "",
-                    "parent_repeater": "field_6255a5e8506b4"
-                },
-                {
-                    "key": "field_6255a636506b7",
-                    "label": "Link Name",
-                    "name": "link_name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": "",
-                    "parent_repeater": "field_6255a5e8506b4"
-                },
-                {
-                    "key": "field_6255a628506b6",
-                    "label": "Link URL",
-                    "name": "link_url",
-                    "aria-label": "",
-                    "type": "url",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "parent_repeater": "field_6255a5e8506b4"
-                }
-            ]
+            "default_value": "",
+            "placeholder": ""
         },
         {
-            "key": "field_636d35600b10a",
-            "label": "Fellow Location",
-            "name": "fellow_location",
+            "key": "field_64fa3464f7946",
+            "label": "Twitter",
+            "name": "twitter",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -361,11 +353,11 @@
             "append": ""
         },
         {
-            "key": "field_64d15928dc20f",
-            "label": "Fellow Testimonial",
-            "name": "fellow_testimonial",
+            "key": "field_64fa3471f7947",
+            "label": "Website",
+            "name": "website",
             "aria-label": "",
-            "type": "textarea",
+            "type": "url",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -375,42 +367,14 @@
                 "id": ""
             },
             "default_value": "",
-            "new_lines": "",
-            "maxlength": "",
-            "placeholder": "",
-            "rows": ""
+            "placeholder": ""
         },
         {
-            "key": "field_64d159b3dee63",
-            "label": "Fellow Image",
-            "name": "fellow_image",
+            "key": "field_64fa3479f7948",
+            "label": "Email",
+            "name": "email",
             "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_64d2a87f7c878",
-            "label": "Fellow language",
-            "name": "fellow_language",
-            "aria-label": "",
-            "type": "text",
+            "type": "email",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -420,10 +384,26 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
             "placeholder": "",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_64fa3480f7949",
+            "label": "Facebook",
+            "name": "facebook",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -444,5 +424,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694118634
+    "modified": 1694119092
 }
