@@ -165,10 +165,10 @@
 		
 		if ( !is_front_page() ): ?>
 		<section class="wt_header--secondary">
-			<?php 
+			<?php
 				if ( 
 					strpos($template_slug, 'revitalization') !== false ||
-					is_singular('fellows')
+					is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
 				) { 
 					wp_nav_menu(
 						array( 

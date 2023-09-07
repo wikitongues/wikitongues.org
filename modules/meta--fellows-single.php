@@ -3,7 +3,7 @@
 		<strong><?php echo $fellow_name; ?> is a member of the Wikitongues Language Revitalization Fellowship's <?php echo $fellow_year; ?> cohort.</strong>
 	</p>
 
-	<!-- contact? ask permission -->
+	<!-- ask permission for an explicit contact section with email-->
 	
 	<p>
 		<strong>Follow <?php echo $first_name; ?></strong><br/>
@@ -36,7 +36,7 @@
 		<?php if ( $youtube ): ?>
 			<li>
 				<a href="<?php echo $youtube; ?>">
-					<i class="fa-brands fa-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>
+					<i class="fa-brands fa-youtube"></i>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -48,6 +48,7 @@
 				</a>
 			</li>
 		<?php endif; ?>
+		<!-- "other" link field with custom slot for favicon? -->
 		</ul>
 	</p>
 </section>
