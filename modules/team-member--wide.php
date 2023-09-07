@@ -1,19 +1,14 @@
 <article class="wt_team-member--wide">
 	<!-- team member image -->
-	<aside role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
+	<aside class="wt_team-member--wide__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
 	
 	<!-- team member meta -->
-	<aside>
+	<aside class="wt_team-member--wide__meta">
 		<!-- team member name and title -->
 		<strong>
 			<span><?php echo $name; ?></span><br/>
 			<span><?php echo $title; ?></span>
 		</strong>
-
-		<!-- team member bio -->
-		<p>
-			<?php echo $bio; ?>
-		</p>
 
 		<!-- contact information -->
 		<ul>
@@ -21,6 +16,14 @@
 			<li>
 				<a href="<?php echo $website; ?>">
 					<i class="fa-regular fa-link"></i>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ( $email ): ?>
+			<li>
+				<a href="mailto:<?php echo $email; ?>">
+					<i class="fa-sharp fa-solid fa-envelope"></i>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -41,14 +44,11 @@
 				</a>
 			</li>
 		<?php endif; ?>
-
-		<?php if ( $email ): ?>
-			<li>
-				<a href="<?php echo $email; ?>">
-					<i class="fa-sharp fa-solid fa-envelope"></i>
-				</a>
-			</li>
-		<?php endif; ?>
 		</ul>
+
+		<!-- team member bio -->
+		<p>
+			<?php echo $bio; ?>
+		</p>
 	</aside>
 </article>

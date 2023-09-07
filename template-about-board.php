@@ -4,6 +4,8 @@
 get_header();
 
 // team banner
+$team_banner = get_field('board_banner');
+
 include( 'modules/banner--team.php' );
 
 // define team member posts to display
