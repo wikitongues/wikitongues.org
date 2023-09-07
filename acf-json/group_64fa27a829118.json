@@ -92,7 +92,7 @@
             {
                 "param": "page_template",
                 "operator": "==",
-                "value": "template-about-staff.php"
+                "value": "template-about-partners.php"
             }
         ]
     ],
@@ -105,5 +105,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694115777
+    "modified": 1694116510
 }
