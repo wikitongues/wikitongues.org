@@ -11,17 +11,17 @@
 
 		<!-- contact information -->
 		<ul>
-		<?php if ( $website ): ?>
+		<?php if ( $partner_website ): ?>
 			<li>
-				<a href="<?php echo $website; ?>">
+				<a href="<?php echo $partner_website; ?>">
 					<i class="fa-regular fa-link"></i>
 				</a>
 			</li>
 		<?php endif; ?>
 
-		<?php if ( $email ): ?>
+		<?php if ( $partner_email ): ?>
 			<li>
-				<a href="mailto:<?php echo $email; ?>">
+				<a href="mailto:<?php echo $partner_email; ?>">
 					<i class="fa-sharp fa-solid fa-envelope"></i>
 				</a>
 			</li>

@@ -19,8 +19,8 @@ foreach( $partners as $post ) {
 	$partner_logo = get_field('partner_logo');
 	$name = get_the_title();
 	$partner_bio = get_field('partner_bio');
-	$website = get_field('website');
-	$email = get_field('email');
+	$partner_website = get_field('partner_website');
+	$partner_email = get_field('partner_email');
 
 	// show board member module
 	include( 'modules/team-member--partner.php' );
