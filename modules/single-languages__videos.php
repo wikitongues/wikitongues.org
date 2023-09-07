@@ -30,7 +30,7 @@
 			?>
 			</ul>
 		<?php else: ?>
-			<p>There are no videos to display yet. Submit one <a href="<?php bloginfo('url'); ?>/submit-a-video">here</a>.</p>
+			<p>There are no videos to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a video</a>.</p>
 		<?php endif; ?>
 	</div>
 </main><!-- move to end of last module after lexicons, etc -->
