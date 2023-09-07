@@ -4,13 +4,25 @@
 get_header();
 
 // banner
-include( 'modules/banner--fellows-single.php' );
+$page_banner = get_field('fellow_banner');
 
-// content - consider consolidating?
+include( 'modules/banner--main.php' );
+
+// fellow meta
+$fellow_year;
+$fellow_website;
+$fellow_email;
+$fellow_twitter;
+$fellow_instagram;
+$fellow_facebook;
+$fellow_linkedin;
+
 include( 'modules/meta--fellows-single' );
+
+// fellow narrative/content
 include( 'modules/main-content.php' );
 
 // loop through other fellows
-include( 'modules/carousal--thumbnail.php' );
+// include( 'modules/carousal--thumbnail.php' );
 
 get_footer();
