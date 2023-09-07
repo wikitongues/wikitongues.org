@@ -45,6 +45,25 @@
             "placeholder": ""
         },
         {
+            "key": "field_64fa2bfb31578",
+            "label": "Partner Email",
+            "name": "partner_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_64fa298dc3fb0",
             "label": "Partner Bio",
             "name": "partner_bio",
@@ -83,5 +102,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694116318
+    "modified": 1694116869
 }
