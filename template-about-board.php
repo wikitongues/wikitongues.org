@@ -14,6 +14,15 @@ foreach( $board_members as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
 
+	$profile_picture = get_field('profile_picture');
+	$name = get_the_title();
+	$bio;
+	$location;
+	$linkedin;
+	$website;
+	$twitter;
+	$email;
+
 	// show board member module
 	include( 'modules/team-member--wide.php' );
 
