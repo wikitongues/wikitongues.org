@@ -16,12 +16,12 @@ foreach( $board_members as $post ) {
 
 	$profile_picture = get_field('profile_picture');
 	$name = get_the_title();
-	$bio;
-	$location;
-	$linkedin;
-	$website;
-	$twitter;
-	$email;
+	$bio = get_field('bio');
+	$location = get_field('contributor_location');
+	$linkedin = get_field('linkedin');
+	$website = get_field('website');
+	$twitter = get_field('twitter');
+	$email = get_field('email');
 
 	// show board member module
 	include( 'modules/team-member--wide.php' );
