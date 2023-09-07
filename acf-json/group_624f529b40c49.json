@@ -167,6 +167,26 @@
             "maxlength": ""
         },
         {
+            "key": "field_64fa4744ab1c9",
+            "label": "Fellow year",
+            "name": "fellow_year",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6255a10defe67",
             "label": "Last Name",
             "name": "last_name",
@@ -424,5 +444,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694119092
+    "modified": 1694123861
 }
