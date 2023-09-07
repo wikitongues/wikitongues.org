@@ -16,6 +16,7 @@ foreach( $board_members as $post ) {
 
 	$profile_picture = get_field('profile_picture');
 	$name = get_the_title();
+	$title = get_field('leadership_title');
 	$bio = get_field('bio');
 	$location = get_field('contributor_location');
 	$linkedin = get_field('linkedin');

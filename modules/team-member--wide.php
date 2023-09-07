@@ -4,9 +4,10 @@
 	
 	<!-- team member meta -->
 	<aside>
-		<!-- team member name -->
+		<!-- team member name and title -->
 		<strong>
-			<?php echo $name; ?>
+			<span><?php echo $name; ?></span><br/>
+			<span><?php echo $title; ?></span>
 		</strong>
 
 		<!-- team member bio -->
