@@ -46,6 +46,16 @@
 		<?php endif; ?>
 		</ul>
 
+		<!-- personal languages -->
+		<ul>
+			<li>Languages:</li>
+			<?php foreach( $personal_languages as $post ): setup_postdata( $post ); ?>
+				<li>
+					<?php the_field('standard_name'); ?>
+				</li>
+			<?php endforeach; wp_reset_postdata(); ?>
+		</ul>
+
 		<!-- team member bio -->
 		<p>
 			<?php echo $bio; ?>

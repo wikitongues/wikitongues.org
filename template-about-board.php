@@ -25,6 +25,7 @@ foreach( $board_members as $post ) {
 	$website = get_field('website');
 	$twitter = get_field('twitter');
 	$email = get_field('email');
+	$personal_languages = get_field('languages');
 
 	// show board member module
 	include( 'modules/team-member--wide.php' );
