@@ -1,10 +1,10 @@
-<?php /* Template name: Board */ 
+<?php /* Template name: Board and Advisors */ 
 
 // header
 get_header();
 
 // team banner
-$team_banner = get_field('board_banner');
+$team_banner = get_field('team_banner');
 
 include( 'modules/banner--team.php' );
 
