@@ -1175,14 +1175,13 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   color: #3814a5;
   text-decoration: none;
 }
-.wt_team-member--thirds {
+.wt_team-member--grid {
   display: inline-block;
-  align-items: top;
   margin: 0 0 6rem 3.3333333%;
   width: 20.8333333%;
   vertical-align: top;
 }
-.wt_team-member--thirds__img {
+.wt_team-member--grid__img {
   display: block;
   width: 100%;
   height: 200px;
@@ -1190,11 +1189,12 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.wt_team-member--thirds__meta {
+.wt_team-member--grid__meta {
   display: block;
   width: 100%;
+  margin-top: 1.5rem;
 }
-.wt_team-member--thirds__meta strong {
+.wt_team-member--grid__meta strong {
   font-family: 'Graphik Web';
   font-weight: 700;
   font-style: normal;
@@ -1203,10 +1203,10 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   line-height: 1.3;
   color: #101010;
 }
-.wt_team-member--thirds__meta strong span:first-of-type {
+.wt_team-member--grid__meta strong span:first-of-type {
   text-transform: uppercase;
 }
-.wt_team-member--thirds__meta p {
+.wt_team-member--grid__meta p {
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -1215,10 +1215,10 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   line-height: 1.3;
   color: #101010;
 }
-.wt_team-member--thirds__meta ul {
+.wt_team-member--grid__meta ul {
   margin: 1.5rem 0;
 }
-.wt_team-member--thirds__meta ul li {
+.wt_team-member--grid__meta ul li {
   display: inline-block;
   margin-right: 1.5rem;
   font-family: 'Graphik Web';
@@ -1229,10 +1229,10 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   line-height: 1.3;
   color: #101010;
 }
-.wt_team-member--thirds__meta ul li:last-of-type {
+.wt_team-member--grid__meta ul li:last-of-type {
   margin-right: 0;
 }
-.wt_team-member--thirds__meta ul li a {
+.wt_team-member--grid__meta ul li a {
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;

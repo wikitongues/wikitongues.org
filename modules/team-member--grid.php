@@ -1,9 +1,9 @@
-<article class="wt_team-member--thirds">
+<article class="wt_team-member--grid">
 	<!-- team member image -->
-	<aside class="wt_team-member--thirds__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
+	<aside class="wt_team-member--grid__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
 	
 	<!-- team member meta -->
-	<aside class="wt_team-member--thirds__meta">
+	<aside class="wt_team-member--grid__meta">
 		<!-- team member name and title -->
 		<strong>
 			<span><?php echo $name; ?></span><br/>
