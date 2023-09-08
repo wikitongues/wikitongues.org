@@ -46,6 +46,24 @@ function carouselScroll() {
 	});
 }
 
+function mobileTrigger() {
+	var $mobileNavOpen = $('#mobile-nav-open'),
+		$mobileNavClose = $('#mobile-nav-close'),
+		$mobileNav = $('.wt_header__nav--mobile');
+
+	$mobileNavOpen.on('click', function(){
+		$(this).hide();
+		$mobileNav.addClass('expand');
+		$mobileNavClose.show();
+
+		$mobileNavClose.on('click', function(){
+			$(this).hide();
+			$mobileNav.removeClass('expand');
+			$mobileNavOpen.show();
+		});
+	});
+}
+
 // run all general UX/UI functions
 $(window).on('load', function(){
 
@@ -54,5 +72,7 @@ $(window).on('load', function(){
 	}
 
 	carouselScroll();
+
+	mobileTrigger();
 
 });

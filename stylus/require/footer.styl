@@ -89,3 +89,36 @@
 
 	&__copyright
 		font-weight 700 !important
+
+@media all and (max-width:$smallScreen)
+	.wt_footer
+		&__section:first-of-type
+			display block
+			
+		&__nav
+			width 100%
+			text-align center
+			
+			&>ul
+				justify-content center
+		
+		&__meta
+			margin 6rem auto
+			width 100%
+			text-align center
+
+@media all and (max-width:$mobile)
+	.wt_newsletter
+		padding 6rem 3rem
+				
+		form
+			&>div
+				display block
+			
+			input
+				&[type="email"]
+					width 100%
+					text-align center
+
+				&[type="submit"]
+					width 100%

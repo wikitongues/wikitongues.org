@@ -1,5 +1,7 @@
 // responsive breakpoints
-$mobile = 768px
+$smallScreen = 1024px
+$tablet = 899px
+$mobile = 768px // consider different number
 
 // margins
 $margin0 = 15px
@@ -25,6 +27,10 @@ $yellow = #ffff00
 // typography
 html
 	font-size 62.5%
+	
+@media all and (max-width:$mobile)
+	html
+		font-size 51.398%
 
 text--header(a)
 	font-family 'Schnyder Wide M Web'
@@ -32,7 +38,7 @@ text--header(a)
 	font-style normal
 	font-stretch normal
 	font-size 6.08rem
-	color a	
+	color a
 	
 text--body(a)
 	font-family 'Graphik Web'

@@ -45,8 +45,14 @@
 			align-items center
 					
 			&__image
-				width auto
-				max-height 170px
+				width 300px
+				height 170px
+				background-size cover
+				background-position center
+				background-repeat no-repeat
+				
+				&.blank
+					background $purple
 			
 			&__copy
 				display inline-block
@@ -62,3 +68,28 @@
 					
 					i
 						margin-left 0.5rem
+
+@media all and (max-width:$mobile)
+	.wt_carousel
+		&--thumbnails
+			display block
+			width 100%
+			padding 0 3rem
+			
+			.wt_thumbnail
+				margin-bottom 3rem
+				
+				&:last-of-type
+					margin-bottom 0
+				
+				&__image
+					width 25%
+					height initial
+					padding-bottom 25%
+				
+				&__copy
+					width 75%
+		
+		&__left-scroll,
+		&__right-scroll
+			display none

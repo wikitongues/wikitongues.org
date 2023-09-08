@@ -75,7 +75,7 @@ body
 		top 60px
 		left 0
 		width 100%
-		padding 20px
+		padding 20px 3rem
 		background $white
 		border-top 6px solid $blue
 					
@@ -84,6 +84,9 @@ body
 		flex-grow 3
 		text-align right
 		font-size 0
+		
+		&--mobile
+			display none
 		
 		&.transparent-background
 			&>ul>li
@@ -156,6 +159,9 @@ body
 					color $blue
 					text-decoration none
 		
+		&__mobile-buttons
+			display none
+		
 		&--secondary
 			z-index 2
 			text-align center
@@ -181,3 +187,84 @@ body
 					font-size 1.28rem !important
 					text-decoration none
 					text-transform uppercase
+
+@media all and (max-width:$smallScreen)
+	.wt_header		
+		&__searchbar
+			display none
+			
+@media all and (max-width:$mobile)						
+	.wt_header
+		&__nav
+			display	none
+			
+			&--mobile
+				display block
+				z-index 5
+				position fixed
+				top 0
+				right -100%
+				width 100%
+				height 100vh
+				overflow-y scroll
+				box-sizing border-box
+				padding 6rem
+				background $whiteTransparent
+				transition .2s right ease-in-out
+				
+				&.expand
+					right 0
+				
+				&>ul
+					&>li
+						margin-bottom 3rem
+						
+						&>a
+							text--strong($blue)
+							text-decoration none
+							
+						ul
+							margin-top 1.5rem
+						
+							li
+								margin-bottom 1.5rem
+								
+								a
+									text--body($blue)
+									text-decoration none
+		
+		&__mobile-buttons
+			display block
+			flex-grow 3
+			text-align right
+			
+			button
+				background none
+				border none
+				text--strong($black)
+				
+				&:focus
+					outline none
+				
+				&:last-of-type
+					display none
+					z-index 7
+					position fixed
+					top 3rem
+					right 3rem
+		
+		&--secondary
+			white-space nowrap
+			overflow-x scroll
+			
+			li
+				&:first-of-type
+					margin-left 0rem
+					
+				&:last-of-type
+					margin-right 3rem
+		
+		&.transparent-background
+			.wt_header__mobile-buttons
+					button:first-of-type
+						text--strong($parchment)

@@ -26,7 +26,8 @@
 			&__copy
 				p
 					margin-bottom 1.5rem
-					width 580px
+					width 90%
+					max-width 580px
 					text--body($black)
 					text-align left
 					
@@ -38,3 +39,28 @@
 					
 					i
 						margin-left 0.5rem
+
+@media all and (max-width:$mobile)
+	.wt_carousel--testimonials
+		ul
+			.wt_testimonial
+				display block
+				
+				&__image
+					display block
+					margin auto
+				
+				&__copy
+					p
+						margin 3rem auto
+						
+						span:last-of-type
+							display block
+							width 100%
+							margin-top 1.5rem
+							text-align center
+					
+					a
+						display block
+						margin auto
+						width 110px

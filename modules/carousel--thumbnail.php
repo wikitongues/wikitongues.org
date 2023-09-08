@@ -19,15 +19,26 @@
 		<?php 
 			if ( $thumbnail_image ) {
 
-				echo '<img class="wt_thumbnail__image" src="' . 
+				echo '<div class="wt_thumbnail__image" role="img"'.
+					 'style="background-image:url(' . 
 					 $thumbnail_image['url'] .
-					 '" alt="' .
+					 ');" alt="' .
 					 $thumbnail_image['alt'] .
-					 '">';
+					 '"></div>';
+
+			} elseif ( has_post_thumbnail() ) {
+
+				// the_post_thumbnail( 'large', array('class'=>'wt_thumbnail__image') );
+				echo '<div class="wt_thumbnail__image" role="img"'.
+					 'style="background-image:url(' . 
+					 get_the_post_thumbnail_url() .
+					 ');" alt="' .
+					 $thumbnail_image['alt'] .
+					 '"></div>';
 
 			} else {
 
-				the_post_thumbnail( 'large', array('class'=>'wt_thumbnail__image') );
+				echo '<div class="wt_thumbnail__image blank" role="img"></div>';
 
 			} ?>
 

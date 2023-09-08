@@ -22,6 +22,7 @@
 		height 100%
 		background-size cover
 		background-repeat no-repeat
+		background-position center
 	
 	&__copy
 		width 45%
@@ -40,3 +41,29 @@
 			
 			i
 				margin-left 0.5rem
+
+@media all and (max-width:$smallScreen)
+	.wt_content-block--wide
+		&__image
+			width 50%
+		
+		&__copy
+			width 50%
+
+@media all and (max-width:$tablet)
+	.wt_content-block--wide
+		display block
+		margin 3rem auto
+		height initial
+		
+		&:before
+			display none
+		
+		&__image
+			width 100%
+			padding-bottom 50%
+
+		&__copy
+			width 100%
+			background $blue
+			padding 5rem 6rem 6rem
