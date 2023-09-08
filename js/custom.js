@@ -49,9 +49,11 @@ function carouselScroll() {
 function mobileTrigger() {
 	var $mobileNavOpen = $('#mobile-nav-open'),
 		$mobileNavClose = $('#mobile-nav-close'),
-		$mobileNav = $('.wt_header__nav--mobile');
+		$mobileNav = $('.wt_header__nav--mobile'),
+		$body = $('body');
 
 	$mobileNavOpen.on('click', function(){
+		$body.addClass('no-scroll');
 		$(this).hide();
 		$mobileNav.addClass('expand');
 		$mobileNavClose.show();
@@ -60,6 +62,7 @@ function mobileTrigger() {
 			$(this).hide();
 			$mobileNav.removeClass('expand');
 			$mobileNavOpen.show();
+			$body.removeClass('no-scroll');
 		});
 	});
 }
@@ -74,5 +77,4 @@ $(window).on('load', function(){
 	carouselScroll();
 
 	mobileTrigger();
-
 });

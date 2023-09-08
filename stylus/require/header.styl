@@ -159,9 +159,6 @@ body
 					color $blue
 					text-decoration none
 		
-		&__mobile-buttons
-			display none
-		
 		&--secondary
 			z-index 2
 			text-align center
@@ -187,13 +184,38 @@ body
 					font-size 1.28rem !important
 					text-decoration none
 					text-transform uppercase
+	
+	&__mobile-buttons
+			display none
 
 @media all and (max-width:$smallScreen)
 	.wt_header		
 		&__searchbar
 			display none
+
+@media all and (max-width:$tablet)
+	.wt_header
+		&__nav
+			&--secondary
+				white-space nowrap
+				overflow-x scroll
+				-ms-overflow-style none
+				scrollbar-width none
+				
+				&::-webkit-scrollbar
+					display none
+				
+				li
+					&:first-of-type
+						margin-left 0rem
+						
+					&:last-of-type
+						margin-right 3rem
 			
-@media all and (max-width:$mobile)						
+@media all and (max-width:$mobile)
+	body
+		padding-top 119.63px
+								
 	.wt_header
 		&__nav
 			display	none
@@ -211,6 +233,11 @@ body
 				padding 6rem
 				background $whiteTransparent
 				transition .2s right ease-in-out
+				-ms-overflow-style none
+				scrollbar-width none
+				
+				&::-webkit-scrollbar
+					display none
 				
 				&.expand
 					right 0
@@ -243,6 +270,9 @@ body
 				border none
 				text--strong($black)
 				
+				&:hover
+					cursor pointer
+				
 				&:focus
 					outline none
 				
@@ -252,17 +282,6 @@ body
 					position fixed
 					top 3rem
 					right 3rem
-		
-		&--secondary
-			white-space nowrap
-			overflow-x scroll
-			
-			li
-				&:first-of-type
-					margin-left 0rem
-					
-				&:last-of-type
-					margin-right 3rem
 		
 		&.transparent-background
 			.wt_header__mobile-buttons

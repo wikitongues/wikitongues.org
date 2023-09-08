@@ -11,6 +11,8 @@ include( 'modules/banner--main.php' );
 // foreach linked page, display 1/3 content block
 if ( have_rows( 'content_blocks' ) ) {
 
+	echo '<main class="wt_content-block--thirds__wrapper">';
+
 	while ( have_rows( 'content_blocks' ) ) {
 
 		the_row();
@@ -24,6 +26,8 @@ if ( have_rows( 'content_blocks' ) ) {
 		
 		include( 'modules/content-block--grid.php' );
 	}
+
+	echo '</main>';
 }
 
 // footer
