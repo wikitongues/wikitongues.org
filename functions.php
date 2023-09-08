@@ -82,6 +82,13 @@ function wt_footer_menu() {
 
 add_action( 'init', 'wt_footer_menu' );
 
+// add mobile menu
+function wt_mobile_menu() {
+  register_nav_menu('mobile-menu',__( 'Mobile Menu' ));
+}
+
+add_action( 'init', 'wt_mobile_menu' );
+
 // Register custom query vars -https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
 
 function wt_register_query_vars($vars)
