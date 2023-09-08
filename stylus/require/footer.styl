@@ -23,11 +23,18 @@
 			border 0
 			
 			&[type="email"]
+				width 300px
 				button--large($parchment, $black)
+				
+				&:focus
+					outline none
 			
 			&[type="submit"]
 				button--large($blue, $parchment)
 				padding-right 4rem // clunky override to position iframe arrow
+				
+				&:hover
+					cursor pointer
 
 .wt_footer
 	padding 6rem
