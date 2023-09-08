@@ -7,6 +7,27 @@
 		&>div
 			display flex
 			justify-content center
+			
+		.clear
+			position relative
+			
+			i
+				position absolute
+				top 50%
+				transform translateY(-50%)
+				right 1.5rem
+				color $parchment
+				font-size 1.6rem
+		
+		input
+			border 0
+			
+			&[type="email"]
+				button--large($parchment, $black)
+			
+			&[type="submit"]
+				button--large($blue, $parchment)
+				padding-right 4rem // clunky override to position iframe arrow
 
 .wt_footer
 	padding 6rem

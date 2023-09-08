@@ -29,6 +29,18 @@ function wt_enqueue_js() {
     wp_enqueue_script('wt_js');
 }
   
+// change default search form text
+function html5_search_form( $form ) { 
+     $form = '<section class="search"><form role="search" method="get" id="search-form" action="' . home_url( '/' ) . '" >
+    <label class="screen-reader-text" for="s">' . __('',  'domain') . '</label>
+     <input type="search" value="' . get_search_query() . '" name="s" id="s" placeholder="Find a language" />
+     <input type="submit" id="searchsubmit" value="'. esc_attr__('Search', 'domain') .'" />
+     </form></section>';
+     return $form;
+}
+
+add_filter( 'get_search_form', 'html5_search_form' );
+
 // remove header bump from core css output
 // add_action('get_header', 'my_filter_head');
 
