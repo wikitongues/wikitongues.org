@@ -43,72 +43,73 @@ function html5_search_form( $form ) {
 
 add_filter( 'get_search_form', 'html5_search_form' );
 
-// can probably delete after Scott is done
-
-/**
- * Extend WordPress search to include custom fields
- *
- * https://adambalee.com
- */
-
-/**
- * Join posts and postmeta tables
- *
- * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
- */
-function cf_search_join( $join ) {
-    global $wpdb;
-
-    if ( is_search() ) {    
-        $join .=' LEFT JOIN '.$wpdb->postmeta. ' ON '. $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
-    }
-
-    return $join;
-}
-add_filter('posts_join', 'cf_search_join' );
-
-// /**
-//  * Modify the search query with posts_where
-//  *
-//  * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
-//  */
-function cf_search_where( $where ) {
-    global $pagenow, $wpdb;
-
-    if ( is_search() ) {
-        $where = preg_replace(
-            "/\(\s*".$wpdb->posts.".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-            "(".$wpdb->posts.".post_title LIKE $1) OR (".$wpdb->postmeta.".meta_value LIKE $1)", $where );
-    }
-
-    return $where;
-}
-add_filter( 'posts_where', 'cf_search_where' );
-
-// /**
-//  * Prevent duplicates
-//  *
-//  * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_distinct
-//  */
-function cf_search_distinct( $where ) {
-    global $wpdb;
-
-    if ( is_search() ) {
-        return "DISTINCT";
-    }
-
-    return $where;
-}
-add_filter( 'posts_distinct', 'cf_search_distinct' );
-
-// end can probably delete after scott is done
-
-function searchfilter($query) {
- 
-    if ($query->is_search && !is_admin() ) {
+function searchfilter($query)
+{
+    if ($query->is_search && !is_admin()) {
         // only display results from these post types
+        $query->set('post_type', 'languages');
+        $languages_search = get_query_var('s');
+
+        if (!empty($languages_search)) {
+            $iso_code_regex = '#^w?[a-z]{3}$#';  // Also accounts for 4-letter Wikitongues-assigned codes
+            $glottocode_regex = '#^[[:alnum:]]{4}\d{4}$#';
+            preg_match($iso_code_regex, $languages_search, $iso_match);
+            preg_match($glottocode_regex, $languages_search, $glottocode_match);
+
+            if ($iso_match) {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'iso_code',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key' => 'standard_name',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    'relation' => 'OR'
+                ));
+            } else if ($glottocode_match) {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'glottocode',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    )
+                ));
+            } else {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'standard_name',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'alternate_names',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'nations_of_origin',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'writing_systems',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'linguistic_genealogy',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    'relation' => 'OR'
+                ));
+            }
+        }
         // $query->set('post_type',array('languages','videos', 'lexicons', 'resources'));
-        $query->set('post_type',array('languages'));
 
         // for languages post type, search by X fields
 
@@ -132,15 +133,11 @@ function searchfilter($query) {
             // post_title
 
         // for resrouces post type search by Q fields
-
-            // post_title
-
     }
- 
-return $query;
+    return $query;
 }
  
-add_filter('pre_get_posts','searchfilter');
+add_filter('pre_get_posts', 'searchfilter');
 
 // remove header bump from core css output
 add_action('get_header', 'my_filter_head');
@@ -202,13 +199,6 @@ function html5wp_pagination()
         'total' => $wp_query->max_num_pages
     ));
 }
-
-// Add Google Maps - consider deprecating
-// function my_acf_google_map_api( $api ){
-//     $api['key'] = 'AIzaSyBLLj4cU0Q9fvHECR-OizyBuMvEt7jHua8';
-//     return $api;
-// }
-// add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
 // add custom post types for language archive
 add_action('init', 'create_post_type_languages'); 
