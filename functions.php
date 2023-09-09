@@ -1,4 +1,6 @@
 <?php
+/* CONSIDER BREAKING INTO MULTIPLE FUNCTIONS FILES */
+
 require_once('includes/class-wt-rest-posts-controller.php');
 
 // enqueue stylesheets
@@ -28,7 +30,96 @@ function wt_enqueue_js() {
 
     wp_enqueue_script('wt_js');
 }
-  
+
+// change default search form text
+function html5_search_form( $form ) { 
+     $form = '<section class="search"><form role="search" method="get" id="search-form" action="' . home_url( '/' ) . '" >
+    <label class="screen-reader-text" for="s">' . __('',  'domain') . '</label>
+     <input type="search" value="' . get_search_query() . '" name="s" id="s" placeholder="Find a language" />
+     <input type="submit" id="searchsubmit" value="'. esc_attr__('Search', 'domain') .'" />
+     </form></section>';
+     return $form;
+}
+
+add_filter( 'get_search_form', 'html5_search_form' );
+
+/**
+ * Extend WordPress search to include custom fields
+ *
+ * https://adambalee.com
+ */
+
+/**
+ * Join posts and postmeta tables
+ *
+ * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_join
+ */
+function cf_search_join( $join ) {
+    global $wpdb;
+
+    if ( is_search() ) {    
+        $join .=' LEFT JOIN '.$wpdb->postmeta. ' ON '. $wpdb->posts . '.ID = ' . $wpdb->postmeta . '.post_id ';
+    }
+
+    return $join;
+}
+add_filter('posts_join', 'cf_search_join' );
+
+// /**
+//  * Modify the search query with posts_where
+//  *
+//  * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_where
+//  */
+function cf_search_where( $where ) {
+    global $pagenow, $wpdb;
+
+    if ( is_search() ) {
+        $where = preg_replace(
+            "/\(\s*".$wpdb->posts.".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+            "(".$wpdb->posts.".post_title LIKE $1) OR (".$wpdb->postmeta.".meta_value LIKE $1)", $where );
+    }
+
+    return $where;
+}
+add_filter( 'posts_where', 'cf_search_where' );
+
+// /**
+//  * Prevent duplicates
+//  *
+//  * http://codex.wordpress.org/Plugin_API/Filter_Reference/posts_distinct
+//  */
+function cf_search_distinct( $where ) {
+    global $wpdb;
+
+    if ( is_search() ) {
+        return "DISTINCT";
+    }
+
+    return $where;
+}
+add_filter( 'posts_distinct', 'cf_search_distinct' );
+
+function searchfilter($query) {
+ 
+    if ($query->is_search && !is_admin() ) {
+        // only display results from these post types
+        $query->set('post_type',array('languages','videos', 'lexicons', 'resources'));
+
+        // for languages post type, search by X fields
+
+        // for videos post type, search by Y fields
+
+        // for lexicons post type, search by Z fields
+
+        // for resrouces post type search by Q fields
+
+    }
+ 
+return $query;
+}
+ 
+add_filter('pre_get_posts','searchfilter');
+
 // remove header bump from core css output
 // add_action('get_header', 'my_filter_head');
 
@@ -70,16 +161,12 @@ function wt_footer_menu() {
 
 add_action( 'init', 'wt_footer_menu' );
 
-// Register custom query vars -https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
-
-function wt_register_query_vars($vars)
-{
-    $vars[] = 'site_search';
-    $vars[] = 'videos_search';
-    $vars[] = 'languages_search';
-    return $vars;
+// add mobile menu
+function wt_mobile_menu() {
+  register_nav_menu('mobile-menu',__( 'Mobile Menu' ));
 }
-add_filter('query_vars', 'wt_register_query_vars');
+
+add_action( 'init', 'wt_mobile_menu' );
 
 // Pagination for paged posts, Page 1, Page 2, Page 3, with Next and Previous Links, No plugin
 function html5wp_pagination()

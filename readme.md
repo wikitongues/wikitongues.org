@@ -40,3 +40,5 @@
 * figure out navigation path from single videos back to the language in question
 * add: historical interns, other secondary team data
 * add: "about" drop down to header (footer only for launch)
+=======
+* partner single page with information about partnership

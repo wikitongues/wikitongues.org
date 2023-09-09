@@ -1,5 +1,7 @@
 // responsive breakpoints
-$mobile = 768px
+$smallScreen = 1024px
+$tablet = 899px
+$mobile = 768px // consider different number
 
 // margins
 $margin0 = 15px
@@ -16,6 +18,7 @@ $parchmentTransparent = rgba(255,252,239,.97)
 $black = #101010
 $blackTransparent = rgba(16, 16, 16,.97)
 $grey = #dcdcdc
+$dark_grey = #979797
 $red = #e52600
 $blue = #3814A5
 $purple = #9581c2
@@ -24,6 +27,10 @@ $yellow = #ffff00
 // typography
 html
 	font-size 62.5%
+	
+@media all and (max-width:$mobile)
+	html
+		font-size 51.398%
 
 text--header(a)
 	font-family 'Schnyder Wide M Web'
@@ -31,7 +38,7 @@ text--header(a)
 	font-style normal
 	font-stretch normal
 	font-size 6.08rem
-	color a	
+	color a
 	
 text--body(a)
 	font-family 'Graphik Web'
@@ -82,3 +89,6 @@ button--small(a,b)
 // misc
 .clear
 	clear both
+
+.no-scroll
+	overflow hidden

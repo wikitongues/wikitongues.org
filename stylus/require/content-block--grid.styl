@@ -2,8 +2,8 @@
 	display inline-block
 	position relative
 	vertical-align top
-	margin 0 3% 6% 0 
-	width 31%
+	margin 0 3.139% 6% 0 
+	width 31.013%
 	
 	&:nth-of-type(3n)
 		margin-right 0
@@ -18,8 +18,11 @@
 		height 100%
 		background $blue
 	
-	&__wrapper
+	// should this be on a separate page?
+	&__wrapper 
 		margin-bottom 6rem
+		padding 0 3rem 0
+		box-sizing border-box
 	
 	&__image
 		width 100%
@@ -61,3 +64,31 @@
 			
 			i
 				margin-left 0.5rem
+
+@media all and (max-width:$smallScreen)
+	.wt_content-block--thirds
+		width 46.8%
+		margin-right 4.7%
+		
+		&:nth-of-type(3n)
+			margin-right 4.7%
+		
+		&:nth-of-type(even)
+			margin-right 0
+
+@media all and (max-width:$mobile)
+	.wt_content-block--thirds
+		width 100%
+		margin-right 0
+		margin-bottom 3rem
+		
+		&:before
+			display none
+		
+		&:nth-of-type(3n)
+			margin-right 0
+			
+		&__copy
+			padding-top 4rem
+			padding-bottom 4.5rem
+			background $blue

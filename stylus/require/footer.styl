@@ -7,6 +7,34 @@
 		&>div
 			display flex
 			justify-content center
+			
+		.clear
+			position relative
+			
+			i
+				position absolute
+				top 50%
+				transform translateY(-50%)
+				right 1.5rem
+				color $parchment
+				font-size 1.6rem
+		
+		input
+			border 0
+			
+			&[type="email"]
+				width 300px
+				button--large($parchment, $black)
+				
+				&:focus
+					outline none
+			
+			&[type="submit"]
+				button--large($blue, $parchment)
+				padding-right 4rem // clunky override to position iframe arrow
+				
+				&:hover
+					cursor pointer
 
 .wt_footer
 	padding 6rem
@@ -61,3 +89,36 @@
 
 	&__copyright
 		font-weight 700 !important
+
+@media all and (max-width:$smallScreen)
+	.wt_footer
+		&__section:first-of-type
+			display block
+			
+		&__nav
+			width 100%
+			text-align center
+			
+			&>ul
+				justify-content center
+		
+		&__meta
+			margin 6rem auto
+			width 100%
+			text-align center
+
+@media all and (max-width:$mobile)
+	.wt_newsletter
+		padding 6rem 3rem
+				
+		form
+			&>div
+				display block
+			
+			input
+				&[type="email"]
+					width 100%
+					text-align center
+
+				&[type="submit"]
+					width 100%

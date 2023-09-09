@@ -29,6 +29,9 @@ body
 		transform translateY(-50%)
 		width 45rem
 		
+		&--mobile
+			display none
+		
 		.wt_text
 			&--header
 				text--header($parchment)
@@ -46,3 +49,36 @@ body
 			i
 				margin-left 0.5rem
 				font-size 1.6rem
+	
+@media all and (max-width:$mobile)
+	.wt_banner
+		height 15vh !important
+		margin-bottom 0
+		
+		&__copy
+			display none
+			
+			&--mobile
+				display block
+				margin-bottom 3rem
+				box-sizing border-box
+				padding 3rem
+				background $purple
+				
+				.wt_text
+					&--header
+						text--header($parchment)
+				
+					&--body
+						margin 3rem 0
+						text--body($parchment)
+						
+						strong
+							text--strong($parchment)
+						
+				.wt_button--large
+					button--large($white,$purple)
+					
+					i
+						margin-left 0.5rem
+						font-size 1.6rem

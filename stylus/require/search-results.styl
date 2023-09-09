@@ -30,3 +30,32 @@ body
 		width 90%
 		max-width calc(100%/3*2)
 		margin 0 auto 6rem
+		
+	&__none
+		margin-bottom 12rem
+		text-align center
+		
+		span
+			width 100%
+			text-align center
+			text--body($black)
+			
+			a
+				text--body($blue)
+
+@media all and (max-width:$mobile)
+	.wt_search-results
+		&__results
+			max-width none
+			
+		&__thumbnail
+			&--image,
+			&--no-image
+				width 30% !important
+				height initial !important
+				padding-bottom 30% !important
+			
+			&--copy
+				width 70% !important
+				box-sizing border-box !important
+				padding 0 3rem !important

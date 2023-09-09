@@ -23,7 +23,7 @@ if ( have_rows( 'content_blocks' ) ) {
 		$content_block_cta_link = get_sub_field('content_block_cta');
 		$content_block_cta_text = 'Download';
 		
-		include( 'modules/content-block--thirds.php' );
+		include( 'modules/content-block--grid.php' );
 	}
 
 	echo '</main>';

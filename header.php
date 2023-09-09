@@ -6,7 +6,7 @@
 
 	<!-- Language and browser view meta tags -->
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- favicon -->
 	<?php $favicon = get_field('favicon', 'options'); ?>
@@ -162,11 +162,33 @@
 			);
 		}
 
+		// mobile menu
+		wp_nav_menu(
+			array( 
+				'theme_location' => 'mobile-menu',
+				'container' => 'nav',
+				'container_class' => 'wt_header__nav--mobile'
+			)
+		);
+		?>
+
+		<aside class="wt_header__mobile-buttons">
+			<button id="mobile-nav-open">
+				<i class="fa-regular fa-bars"></i>
+			</button>
+			<button id="mobile-nav-close">
+				<i class="fa-regular fa-x"></i>
+			</button>
+		</aside>
+
 		
-		if ( !is_front_page() ): ?>
+		<?php if ( !is_front_page() ): ?>
 		<section class="wt_header--secondary">
-			<?php 
-				if ( strpos($template_slug, 'revitalization') !== false ) { 
+			<?php
+				if ( 
+					strpos($template_slug, 'revitalization') !== false ||
+					is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
+				) { 
 					wp_nav_menu(
 						array( 
 							'theme_location' => 'revitalization-menu',

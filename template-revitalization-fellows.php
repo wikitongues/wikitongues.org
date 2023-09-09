@@ -19,17 +19,25 @@ if ( $query->have_posts() ) {
 
 		$query->the_post();
 
+		// grab fellow-specific metadata
 		$first_name = get_field('first_name');
 		$last_name = get_field('last_name');
 		$fellow_language = get_field('fellow_language');
+		$fellow_language_preferred_name = get_field('fellow_language_preferred_name');
 		$fellow_location = get_field('fellow_location');
+
+		// set content block module variables to fellow-specific metada
 		$content_block_image = get_field('fellow_image');
 		$content_block_header = $first_name . ' ' . $last_name;
-		$content_block_copy = '<strong>' . $fellow_language . '</strong><br /><span>' . $fellow_location . '</span>';
+		if ( $fellow_language_preferred_name ) {
+			$content_block_copy = '<strong>' . $fellow_language_preferred_name. '</strong><br /><span>' . $fellow_location . '</span>';
+		} else {
+			$content_block_copy = '<strong>' . $fellow_language->standard_name . '</strong><br /><span>' . $fellow_location . '</span>';
+		}
 		$content_block_cta_link = get_the_permalink();
 		$content_block_cta_text = 'Read more';
 
-		include( 'modules/content-block--thirds.php' );
+		include( 'modules/content-block--grid.php' );
 	}
 
 	echo '</main>';
