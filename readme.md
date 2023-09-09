@@ -16,29 +16,27 @@
 
 # to-do
 
-* write out pseudo code for all php files, including modules
-* connect all relevant php files with includes
-* revise/creat ACF fields and populate with data
-* write html/php markup
-* desktop css
-* mobile/responsive css
-* soft launch
-* build about and team pages
-* build template for url redirects
-* later - simplify if statement syntax ( a ? b : c); e.g.
-`wp_nav_menu( array(
-	'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
-) );`
-* add alert banner and display only if user hasn't visited the site in a week
-* consider consolidating "link" ACF fields
-* build captions post type and download options
-* add "primary language" field to video post types
-* make testimonial carousel a true carousel
-* search results: sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes
-* clean up template/modules hierarchy on video single and language single
-* think about primary v secondary languages as part of "featured languages" video single
-* figure out navigation path from single videos back to the language in question
-* add: historical interns, other secondary team data
-* add: "about" drop down to header (footer only for launch)
-* partner single page with information about partnership
-* inlcude more clarify for external resources
+* code structure and styles
+	* later - simplify if statement syntax ( a ? b : c); e.g.
+	`wp_nav_menu( array(
+		'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
+	) );`
+	* clean up template/modules hierarchy on video single and language single
+* global
+	* add alert banner and display only if user hasn't visited the site in a week
+	* build captions post type
+	* build single page template for partners post type
+	* add: "about" drop down to header (footer only for launch)
+* home
+	* make testimonial carousel a true carousel
+* search results
+	* sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes
+* team member post type
+	* add: historical interns, other secondary team data
+* languages single
+	* inlcude more clarity for external resources
+* video single
+	* toggle metadata view for for more than 1 language
+	* toggle all metadata view on mobile
+	* once captions post type is live, add download feature
+	* figure out navigation path from single videos back to the language in question
