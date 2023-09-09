@@ -197,7 +197,8 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614a2f8a3b684",
@@ -220,7 +221,8 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614a2fa33b685",
@@ -243,7 +245,8 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614ca7b224ef4",
@@ -262,11 +265,14 @@
             "post_type": [
                 "resources"
             ],
+            "post_status": "",
             "taxonomy": "",
-            "allow_null": 0,
-            "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "multiple": 1,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_64d679ec11f17",
@@ -307,5 +313,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1691777529
+    "modified": 1694290153
 }

@@ -15,7 +15,7 @@
 				$content_block_header = get_the_title();
 				$content_block_copy = null;
 				$content_block_cta_link = get_the_permalink();
-				$content_block_cta_text = 'View';				
+				$content_block_cta_text = 'View';
 
 				// include content block template
 				include( 'content-block--grid.php' );

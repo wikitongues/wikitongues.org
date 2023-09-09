@@ -27,7 +27,7 @@
 		</li>
 		<!-- resources -->
 		<li>	
-			<a href="#wt_single-languages__lexicons">
+			<a href="#wt_single-languages__resources">
 			<?php if ( $external_resources_count > 0 ): ?>
 				<strong>External Resources (<?php echo $external_resources_count; ?>)</strong><br />
 			<?php else: ?>
