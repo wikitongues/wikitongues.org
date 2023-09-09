@@ -10,56 +10,64 @@
 			// foreach video, setup posts data
 			setup_postdata( $post );
 
-			// define variables
+			// define hard variables
 			$lexicon_default_title = get_the_title();
 			$lexicon_custom_title = get_field('lexicon_custom_title');
 			$source_languages = get_field('source_languages');
 			$target_languages = get_field('target_languages');
-			$source_languages_names = array();
+			$source_language_name = $source_languages->standard_name;
 			$target_languages_names = array();
+			$dropbox_link = get_field('dropbox_link');
+			$external_link = get_field('external_link');
+			$content_block_cta_text = 'View lexicon';
 
-			foreach ( $source_languages as $post ) {
-				setup_postdata( $post );
+			// define conditional variables
 
-				$source_language_name = get_field('standard_name');
-
-				array_push($source_languages_names,$source_language_name);
-			} wp_reset_postdata();
-
+			// grab language names from target languages
 			foreach ( $target_languages as $post ) {
 				setup_postdata( $post );
 
 				$target_language_name = get_field('standard_name');
 
+				// store language names in an array
 				array_push($target_languages_names,$target_language_name);
+
 			} wp_reset_postdata();
  
-			// loop
+			// lexicon has a custom title
 			if ( $lexicon_custom_title ) {
 
+				// display custom title
 				$content_block_header = $lexicon_custom_title;
-
-				if ( $source_languages && $target_languages ) {
-
-					$content_block_copy = implode(',',$source_languages_names) . ' to ' . implode(', ',$target_languages_names); 
-
-				} elseif ( $source_languages && !$target_languages ) {
-
-					$content_block_copy = implode(',',$source_languages_names);
-
-				} else {
-					
-					$content_block_copy;
-
-				}
 				
 			} else {
 
+				// display default title
 				$content_block_header = $lexicon_default_title;
-				$content_block_copy = null;
+
 			}
 
-			$content_block_cta = get_the_permalink();
+			// if source languages and target languages exist
+			if ( $source_languages && $target_languages ) {
+
+				// display both
+				$content_block_copy = $source_language_name . ' to ' . implode(', ',$target_languages_names); 
+
+			// if only source languages are available
+			} elseif ( $source_languages && !$target_languages ) {
+
+				// display those
+				$content_block_copy = $source_language_name . ' document';
+
+			// if source and target languages are both empthy
+			} else {
+				
+				// variable is null
+				$content_block_copy = null;
+
+			}
+
+			$content_block_cta_link; 
 
 			// include content block template
 			include( 'content-block--grid.php' );
@@ -68,6 +76,6 @@
 		?>
 		</ul>
 	<?php else: ?>
-		<p>There are no lexicons to display yet. Submit one <a href="<?php bloginfo('url'); ?>/submit-a-video">here</a>.</p>
+		<p>There are no lexicons to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a lexicon</a>.</p>
 	<?php endif; ?>
 </div>
