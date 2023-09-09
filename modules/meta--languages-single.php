@@ -12,9 +12,10 @@
 			<a href="<?php bloginfo('url'); ?>/submit-a-video">
 				<span>Submit a video</span>
 			</a>
-<!-- 		</li>	
+		</li>
+		<li>	
 			<a href="#wt_single-languages__lexicons">
-			<?php if ( $lexicon_count > 0 ): ?>
+			<?php if ( $lexicons_count > 0 ): ?>
 				<strong>Dictionaries, phrase books, and lexicons (<?php echo $lexicons_count; ?>)</strong><br />
 			<?php else: ?>
 				<strong>Dictionaries, phrase books, and lexicons (0)</strong><br />
@@ -23,6 +24,6 @@
 			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">
 				<span>Submit a lexicon</span>
 			</a>
-		</li> -->
+		</li>
 	</ul>
 </div>

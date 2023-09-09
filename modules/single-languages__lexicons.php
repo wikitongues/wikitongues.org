@@ -14,45 +14,36 @@
 			$lexicon_title = get_field('lexicon_custom_title');
 			$source_languages = get_field('source_languages');
 			$target_languages = get_field('target_languages');
-			$video_custom_title = get_field('video_custom_title');
-			$language_names = array();
-			$language_names = array(); 
 
-			if ( $source_languages->have_posts() ) {
-
-				while ( $source_languages->have_posts( ) ) {
-					
-					the_post();
-
-					array_push( $language_names );
-				}
-			}
-
-			if ( $target_languages->have_posts() ) {
-
-				while ( $target_languages->have_posts( ) ) {
-					
-					the_post();
-
-					array_push( $language_names );
-				}
-			}
-
+			// loop
 			if ( $lexicon_title ) {
 
 				$content_block_header = $lexicon_title;
-				$content_block_copy = printArray( $language_names );
 
+				if ( $source_languages && $target_languages ) {
+
+					$content_block_copy;
+
+				} elseif ( $source_languages && !$target_languages ) {
+
+					$content_block_copy;
+
+				} else {
+					
+					$content_block_copy;
+
+				}
+				
 			} else {
 
-				$content_block_header = printArray( $language_names );
+				$content_block_header = 'hello';
 				$content_block_copy = null;
 			}
 
 			$content_block_cta = get_the_permalink();
 
 			// include content block template
-			include( 'modules/content-block--grid.php' );
+			include( 'content-block--grid.php' );
 
 		} wp_reset_postdata(); 
 		?>
