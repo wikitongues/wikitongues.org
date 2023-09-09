@@ -140,11 +140,11 @@ return $query;
 add_filter('pre_get_posts','searchfilter');
 
 // remove header bump from core css output
-// add_action('get_header', 'my_filter_head');
+add_action('get_header', 'my_filter_head');
 
-// function my_filter_head() {
-//    remove_action('wp_head', '_admin_bar_bump_cb');
-// } 
+function my_filter_head() {
+   remove_action('wp_head', '_admin_bar_bump_cb');
+} 
 
 // initiate options page - consider deprecating this
 if( function_exists('acf_add_options_page') ) {   

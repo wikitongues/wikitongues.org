@@ -25,5 +25,18 @@
 				<span>Submit a lexicon</span>
 			</a>
 		</li>
+		<!-- resources -->
+		<li>	
+			<a href="#wt_single-languages__lexicons">
+			<?php if ( $external_resources_count > 0 ): ?>
+				<strong>External Resources (<?php echo $external_resources_count; ?>)</strong><br />
+			<?php else: ?>
+				<strong>External Resources (0)</strong><br />
+			<?php endif; ?>
+			</a>
+			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">
+				<span>Recommend a resource</span>
+			</a>
+		</li>
 	</ul>
 </div>

@@ -9,6 +9,8 @@ $lexicon_source = get_field('lexicon_source');
 $lexicon_target = get_field('lexicon_target');
 $lexicons = array_merge($lexicon_source, $lexicon_target);
 $lexicons_count = count($lexicons);
+$external_resources = get_field('external_resources');
+$external_resources_count = count($external_resources);
 
 // language single banner
 include( 'modules/banner--languages-single.php' );
@@ -23,7 +25,7 @@ include( 'modules/single-languages__videos.php' );
 include( 'modules/single-languages__lexicons.php' );
 
 // language indexing resources (content blocks - grid)
-// include( 'modules/content-block--grid.php' );
+include( 'modules/single-languages__resources.php' );
 
 // other posts (revitalization projects, translation/etc, learning options) - add in later version
 
