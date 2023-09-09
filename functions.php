@@ -43,6 +43,8 @@ function html5_search_form( $form ) {
 
 add_filter( 'get_search_form', 'html5_search_form' );
 
+// can probably delete after Scott is done
+
 /**
  * Extend WordPress search to include custom fields
  *
@@ -99,6 +101,8 @@ function cf_search_distinct( $where ) {
 }
 add_filter( 'posts_distinct', 'cf_search_distinct' );
 
+// end can probably delete after scott is done
+
 function searchfilter($query) {
  
     if ($query->is_search && !is_admin() ) {
@@ -107,11 +111,26 @@ function searchfilter($query) {
 
         // for languages post type, search by X fields
 
+            // post_title
+            // standard_name
+            // alternate_names
+            // nations_of_origin
+            // linguistic_genealogy
+            // anything else included in Scott's code from January
+
         // for videos post type, search by Y fields
+
+            // video_title
+            // featured_languages
+            // consider for later version: new fields that pull standard_name and alternate_names from featured_languages
 
         // for lexicons post type, search by Z fields
 
+            // post_title
+
         // for resrouces post type search by Q fields
+
+            // post_title
 
     }
  

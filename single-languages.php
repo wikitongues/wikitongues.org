@@ -23,7 +23,7 @@ include( 'modules/single-languages__videos.php' );
 include( 'modules/single-languages__lexicons.php' );
 
 // language indexing resources (content blocks - grid)
-include( 'modules/content-block--grid.php' );
+// include( 'modules/content-block--grid.php' );
 
 // other posts (revitalization projects, translation/etc, learning options) - add in later version
 

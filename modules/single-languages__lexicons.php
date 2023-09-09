@@ -11,22 +11,41 @@
 			setup_postdata( $post );
 
 			// define variables
-			$lexicon_title = get_field('lexicon_custom_title');
+			$lexicon_default_title = get_the_title();
+			$lexicon_custom_title = get_field('lexicon_custom_title');
 			$source_languages = get_field('source_languages');
 			$target_languages = get_field('target_languages');
+			$source_languages_names = array();
+			$target_languages_names = array();
 
+			foreach ( $source_languages as $post ) {
+				setup_postdata( $post );
+
+				$source_language_name = get_field('standard_name');
+
+				array_push($source_languages_names,$source_language_name);
+			} wp_reset_postdata();
+
+			foreach ( $target_languages as $post ) {
+				setup_postdata( $post );
+
+				$target_language_name = get_field('standard_name');
+
+				array_push($target_languages_names,$target_language_name);
+			} wp_reset_postdata();
+ 
 			// loop
-			if ( $lexicon_title ) {
+			if ( $lexicon_custom_title ) {
 
-				$content_block_header = $lexicon_title;
+				$content_block_header = $lexicon_custom_title;
 
 				if ( $source_languages && $target_languages ) {
 
-					$content_block_copy;
+					$content_block_copy = implode(',',$source_languages_names) . ' to ' . implode(', ',$target_languages_names); 
 
 				} elseif ( $source_languages && !$target_languages ) {
 
-					$content_block_copy;
+					$content_block_copy = implode(',',$source_languages_names);
 
 				} else {
 					
@@ -36,7 +55,7 @@
 				
 			} else {
 
-				$content_block_header = 'hello';
+				$content_block_header = $lexicon_default_title;
 				$content_block_copy = null;
 			}
 
