@@ -3,7 +3,7 @@
 
 <?php if ( $public_status === 'Public' ): ?>
 
-	<div class="wt_single-videos__video">
+	<div class="wt_single-videos__video <?php if ( $youtube_id ): ?>has-iframe<?php endif; ?>">
 
 	<?php if ( $youtube_id ): ?>
 
@@ -11,8 +11,8 @@
 		
 	<?php elseif ( $dropbox_link ): ?>
 
-		<!-- need to make sure the right link is generated -->
-		<iframe width="100%" src="<?php echo $dropbox_link; ?>?raw=1" frameborder="0" allowfullscreen></iframe>
+		<!-- Dropbox links need more work to be embedded -->
+		<img src="<?php echo $video_thumbnail['url']; ?>" alt="<?php echo $video_thumbnail['alt']; ?>">
 
 	<?php else: ?>
 

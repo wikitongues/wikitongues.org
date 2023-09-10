@@ -8,6 +8,7 @@ $dropbox_link = get_field( 'dropbox_link' );
 $wikimedia_commons_link = get_field( 'wikimedia_commons_link' );
 $public_status = get_field( 'public_status' );
 $featured_languages = get_field( 'featured_languages' );
+$video_thumbnail = get_field('video_thumbnail');
 
 // video
 include( 'modules/videos-single--embed.php' );
