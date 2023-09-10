@@ -40,3 +40,4 @@
 	* toggle all metadata view on mobile
 	* once captions post type is live, add download feature
 	* figure out navigation path from single videos back to the language in question
+	* figure out embeds for Dropbox files (not on YouTube)
