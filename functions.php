@@ -47,7 +47,7 @@ function searchfilter($query)
 {
     if ($query->is_search && !is_admin()) {
         // only display results from these post types
-        $query->set('post_type', 'languages');
+        $query->set('post_type', array('languages', 'videos'));
         $query->set('order', 'ASC');
         $languages_search = get_query_var('s');
 
@@ -108,6 +108,11 @@ function searchfilter($query)
                         'key' => 'linguistic_genealogy',
                         'value' => $languages_search,
                         'compare' => '='
+                    ),
+                    array(
+                        'key' => 'video_title',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
                     ),
                     'relation' => 'OR'
                 ));
