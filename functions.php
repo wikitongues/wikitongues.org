@@ -48,7 +48,11 @@ function searchfilter($query)
     if ($query->is_search && !is_admin()) {
         // only display results from these post types
         $query->set('post_type', 'languages');
+        $query->set('order', 'ASC');
         $languages_search = get_query_var('s');
+
+        // clear the default search query
+        $query->set('s', '');
 
         if (!empty($languages_search)) {
             $iso_code_regex = '#^w?[a-z]{3}$#';  // Also accounts for 4-letter Wikitongues-assigned codes
