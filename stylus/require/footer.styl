@@ -20,7 +20,7 @@
 				font-size 1.6rem
 		
 		input
-			border 0
+			border-width 0 !important
 			border-radius 0 !important
 			-webkit-appearance none !important
 			-webkit-border-radius 0 !important
@@ -91,7 +91,7 @@
 		margin 3rem 0 1.5rem
 		
 		a
-			text--body($parchment)
+			color $parchment
 
 	&__copyright
 		font-weight 700 !important
@@ -128,3 +128,14 @@
 
 				&[type="submit"]
 					width 100%
+	
+	.wt_footer__nav
+		&>ul
+			display block
+
+			&>li
+				margin-top 3rem
+				margin-right 0rem
+				
+				&:first-of-type
+					margin-top 0
