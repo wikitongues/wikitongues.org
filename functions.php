@@ -107,15 +107,18 @@ function searchfilter($query) {
  
     if ($query->is_search && !is_admin() ) {
         // only display results from these post types
-        $query->set('post_type',array('languages','videos', 'lexicons', 'resources'));
+        // $query->set('post_type',array('languages','videos', 'lexicons', 'resources'));
+        $query->set('post_type',array('languages'));
 
         // for languages post type, search by X fields
 
-            // post_title
-            // standard_name
-            // alternate_names
-            // nations_of_origin
-            // linguistic_genealogy
+            // post_title - identical
+            // iso_code - identical
+            // glottocode - identical
+            // standard_name - like
+            // alternate_names - like
+            // nations_of_origin - like
+            // linguistic_genealogy - identical
             // anything else included in Scott's code from January
 
         // for videos post type, search by Y fields

@@ -16,3 +16,4 @@
 <?php endif; ?>
 </main>
 
+<?php html5wp_pagination(); ?>
