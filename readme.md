@@ -28,6 +28,7 @@
 	* build single page template for partners post type
 	* add: "about" drop down to header (footer only for launch)
 * home
+	* make homepage banner a carousel
 	* make testimonial carousel a true carousel
 * search results
 	* sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes

@@ -9,7 +9,7 @@
 	<ul>
 		<?php foreach ( $post_type as $post ): setup_postdata( $post ); ?>
 		<?php 
-			$testimonial_image = get_field('fellow_image');
+			$testimonial_image = get_field('fellow_headshot');
 			$testimonial_copy = get_field('fellow_testimonial');
 			$first_name = get_field('first_name');
 			$last_name = get_field('last_name');
