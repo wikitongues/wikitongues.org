@@ -21,7 +21,9 @@
 		
 		input
 			border 0
-			border-radius 0
+			border-radius 0 !important
+			-webkit-appearance none !important
+			-webkit-border-radius 0 !important
 			
 			&[type="email"]
 				width 300px
@@ -120,9 +122,6 @@
 				display block
 			
 			input
-			  -webkit-appearance none
-			  -webkit-border-radius 0
-
 				&[type="email"]
 					width 100%
 					text-align center

@@ -16,7 +16,9 @@
 		
 		input
 			border 0
-			border-radius 0
+			border-radius 0 !important
+			-webkit-appearance none !important
+			-webkit-border-radius 0	!important
 			
 			&[type="search"]
 				width 97%
@@ -41,8 +43,3 @@
 @media all and (max-width:$mobile)
 	.wt_banner--searchbar
 		padding 12rem 3rem
-		
-		form
-			input
-				-webkit-appearance none
-				-webkit-border-radius 0	
