@@ -796,8 +796,8 @@ body.home .wt_banner {
 .wt_carousel--testimonials ul .wt_testimonial__copy p span:last-of-type {
   display: block;
   width: 100%;
-  margin-top: 1.5rem;
-  text-align: center;
+  margin-top: 1.5rem 1.5rem 3rem 0;
+  text-align: left;
   font-style: italic;
 }
 .wt_carousel--testimonials ul .wt_testimonial__copy a {
