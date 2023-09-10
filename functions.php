@@ -35,7 +35,7 @@ function wt_enqueue_js() {
 function html5_search_form( $form ) { 
      $form = '<section class="search"><form role="search" method="get" id="search-form" action="' . home_url( '/' ) . '" >
     <label class="screen-reader-text" for="s">' . __('',  'domain') . '</label>
-     <input type="search" value="' . get_search_query() . '" name="s" id="s" placeholder="Find a language" />
+     <input type="search" value="' . $_GET['s'] . '" name="s" id="s" placeholder="Find a language" />
      <input type="submit" id="searchsubmit" value="'. esc_attr__('Search', 'domain') .'" />
      </form></section>';
      return $form;
