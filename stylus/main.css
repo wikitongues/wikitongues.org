@@ -491,7 +491,7 @@ body.home .wt_banner {
   width: 70%;
 }
 .wt_banner--searchbar form input {
-  border: none;
+  border: 0;
   border-radius: 0;
 }
 .wt_banner--searchbar form input[type="search"] {
@@ -1943,6 +1943,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   font-size: 1.6rem;
 }
 .wt_newsletter form input {
+  border: 0;
   border-radius: 0;
 }
 .wt_newsletter form input[type="email"] {
