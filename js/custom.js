@@ -30,8 +30,12 @@ function carouselScroll() {
 		$('.wt_carousel__left-scroll').show();
 
 		$(this).parents('section').find('ul').animate({
-			scrollLeft: "+=1000px"
+			scrollLeft: "+=1500px"
 			}, "slow");
+
+		$(window).resize(function(){
+			var $scrollWidth = $('.wt_carousel__right-scroll').parents('section').find('ul').width();
+		})
 	});
 
 	$('.wt_carousel__left-scroll').click(function() {
@@ -41,8 +45,12 @@ function carouselScroll() {
 		$('.wt_carousel__right-scroll').show();
 		
 		$(this).parents('section').find('ul').animate({
-			scrollLeft: "-=1000px"
+			scrollLeft: "-=1500px"
 			}, "slow");
+
+		$(window).resize(function(){
+			var $scrollWidth = $('.wt_carousel__left-scroll').parents('section').find('ul').width();
+		})
 	});
 }
 
