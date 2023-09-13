@@ -12,7 +12,7 @@
 				setup_postdata( $post );
 
 				// define variables
-				$content_block_image = get_field('video_thumbnail');
+				$content_block_image = get_field('video_thumbnail_v2');
 				$video_title = get_field('video_title');
 				$video_custom_title = get_field('video_custom_title');
 				if ( $video_custom_title ) {

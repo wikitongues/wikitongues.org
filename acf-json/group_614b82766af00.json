@@ -65,7 +65,7 @@
         {
             "key": "field_64dbeb41a60bc",
             "label": "Video Thumbnail",
-            "name": "video_thumbnail",
+            "name": "video_thumbnail_v2",
             "aria-label": "",
             "type": "image",
             "instructions": "",
@@ -298,5 +298,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1692134234
+    "modified": 1694625417
 }
