@@ -19,8 +19,20 @@ body {
   padding-top: 122.63px;
   background: #fffcef;
 }
+body.logged-in {
+  padding-top: 154.63px !important;
+}
+body.logged-in .wt_header {
+  top: 32px !important;
+}
 body.home {
   padding-top: 0 !important;
+}
+body.home.logged-in {
+  padding-top: 32px !important;
+}
+body.home.logged-in .wt_header {
+  top: 32px !important;
 }
 .wt_header {
   z-index: 10;
