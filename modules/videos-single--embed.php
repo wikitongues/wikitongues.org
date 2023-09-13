@@ -9,14 +9,14 @@
 
 		<iframe width="100%" src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 		
-	<?php elseif ( $dropbox_link ): ?>
+	<?php elseif ( $dropbox_link || $video_thumbnail ): ?>
 
 		<!-- Dropbox links need more work to be embedded -->
 		<img src="<?php echo $video_thumbnail['url']; ?>" alt="<?php echo $video_thumbnail['alt']; ?>">
 
 	<?php else: ?>
 
-		<p class="wt_text--bold">Sorry, there was an error loading video.</p>
+		<p>Sorry, there was an error loading the video file. We're probably still processing it, so please check back soon.</p>
 
 	<?php endif; ?>
 
