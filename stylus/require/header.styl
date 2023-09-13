@@ -26,6 +26,10 @@ body
 	
 	&.transparent-background
 		background none !important
+		
+		.wt_header__searchbar
+			input[type="search"]
+				background $parchment
 	
 	&__logo
 		flex-grow initial
@@ -62,6 +66,7 @@ body
 			&[type="search"]
 				border 0
 				padding 5px 10px 5px 27.5px
+				background $white
 				
 				&:focus
 					outline none

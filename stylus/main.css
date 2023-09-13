@@ -41,6 +41,9 @@ body.home {
 .wt_header.transparent-background {
   background: none !important;
 }
+.wt_header.transparent-background .wt_header__searchbar input[type="search"] {
+  background: #fffcef;
+}
 .wt_header__logo {
   flex-grow: initial;
 }
@@ -75,6 +78,7 @@ body.home {
 .wt_header__searchbar input[type="search"] {
   border: 0;
   padding: 5px 10px 5px 27.5px;
+  background: #fff;
 }
 .wt_header__searchbar input[type="search"]:focus {
   outline: none;
