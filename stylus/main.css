@@ -1517,6 +1517,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 }
 .wt_meta--videos-single a {
   text-decoration: none;
+  color: #3814a5;
 }
 .wt_meta--videos-single a strong {
   font-family: 'Graphik Web';
@@ -1526,6 +1527,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   font-size: 1.6rem;
   line-height: 1.3;
   color: #3814a5;
+text
 }
 .wt_meta--videos-single a span {
   font-family: 'Graphik Web';

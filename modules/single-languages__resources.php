@@ -1,4 +1,4 @@
-	<div id="wt_single-languages__lexicons" class="wt_single-languages__contents">
+	<div id="wt_single-languages__resources" class="wt_single-languages__contents">
 		<p>
 			<strong>External resources</strong>
 		</p>
@@ -11,11 +11,19 @@
 				setup_postdata( $post );
 
 				// define hard variables
+				$resource_post_title = get_the_title();
+				$resource_custom_title = get_field('resource_title');
 				$content_block_image = null;
-				$content_block_header = get_the_title();
 				$content_block_copy = null;
-				$content_block_cta_link = get_the_permalink();
+				$content_block_cta_link = get_field('resource_url');
 				$content_block_cta_text = 'View';
+
+				// define conditional variables
+				if ( $resource_custom_title ) {
+					$content_block_header = $resource_custom_title;
+				} else {
+					$content_block_header = get_the_title();
+				}
 
 				// include content block template
 				include( 'content-block--grid.php' );

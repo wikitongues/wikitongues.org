@@ -44,13 +44,14 @@
 		<?php foreach( $featured_languages as $post ): setup_postdata( $post ); ?>
 			<li>
 				<?php
+				$language_url = get_the_permalink();
 				$standard_name = get_field('standard_name');
 				$alternate_names = get_field('alternate_names');
 				$nations_of_origin = get_field('nations_of_origin');
 				$writing_systems = get_field('writing_systems');
 				$linguistic_genealogy = get_field('linguistic_genealogy'); 
 				?>
-				<strong class="wt_text--uppercase">About <?php echo $standard_name; ?></strong>
+				<strong class="wt_text--uppercase">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
 				<ul>
 				<?php if ( $nations_of_origin ): ?>
 					<li>
