@@ -4,7 +4,7 @@
 	</p>
 
 	<!-- ask permission for an explicit contact section with email-->
-	
+	<?php if ( $website || $linkedin || $tiktok || $youtube || $instagram || $facebook || $twitter ): ?>
 	<p>
 		<strong>Follow <?php echo $first_name; ?></strong><br/>
 		<!-- contact information -->
@@ -13,30 +13,6 @@
 			<li>
 				<a href="<?php echo $website; ?>">
 					<i class="fa-regular fa-link"></i>
-				</a>
-			</li>
-		<?php endif; ?>
-
-		<?php if ( $linkedin ): ?>
-			<li>
-				<a href="<?php echo $linkedin; ?>">
-					<i class="fa-brands fa-linkedin-in"></i>
-				</a>
-			</li>
-		<?php endif; ?>
-
-		<?php if ( $twitter ): ?>
-			<li>
-				<a href="<?php echo $twitter; ?>">
-					<i class="fa-brands fa-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>
-				</a>
-			</li>
-		<?php endif; ?>
-
-		<?php if ( $youtube ): ?>
-			<li>
-				<a href="<?php echo $youtube; ?>">
-					<i class="fa-brands fa-youtube"></i>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -57,6 +33,22 @@
 			</li>
 		<?php endif; ?>
 
+		<?php if ( $youtube ): ?>
+			<li>
+				<a href="<?php echo $youtube; ?>">
+					<i class="fa-brands fa-youtube"></i>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ( $instagram ): ?>
+			<li>
+				<a href="<?php echo $linkedin; ?>">
+					<i class="fa-brands fa-instagram"></i>
+				</a>
+			</li>
+		<?php endif; ?>
+
 		<?php if ( $facebook ): ?>
 			<li>
 				<a href="<?php echo $facebook; ?>">
@@ -64,12 +56,22 @@
 				</a>
 			</li>
 		<?php endif; ?>
+
+		<?php if ( $twitter ): ?>
+			<li>
+				<a href="<?php echo $twitter; ?>">
+					<i class="fa-brands fa-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>
+				</a>
+			</li>
+		<?php endif; ?>
 		<!-- "other" link field with custom slot for favicon? -->
 		</ul>
 	</p>
+	<?php endif; ?>
+	
 	<?php if ( have_rows('custom_links') ): ?>
 	<p>
-		<strong>More Links</strong><br/>
+		<strong>Links</strong><br/>
 		<ul>
 		<?php while ( have_rows('custom_links') ): the_row(); ?>
 			<li>

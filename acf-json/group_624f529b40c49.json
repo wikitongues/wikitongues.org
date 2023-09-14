@@ -477,6 +477,23 @@
             "placeholder": ""
         },
         {
+            "key": "field_65035559bc138",
+            "label": "Instagram",
+            "name": "instagram",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
             "key": "field_65026258fda44",
             "label": "Custom Links",
             "name": "custom_links",
@@ -558,5 +575,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694655839
+    "modified": 1694717285
 }
