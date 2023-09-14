@@ -3,7 +3,7 @@
 		<strong><?php echo $fellow_name; ?> is a member of the Wikitongues Language Revitalization Fellowship's <?php echo $fellow_year; ?> cohort.</strong>
 	</p>
 
-	<!-- ask permission for an explicit contact section with email-->
+	<!-- social media / contact - ask permission for an explicit contact section with email-->
 	<?php if ( $website || $linkedin || $tiktok || $youtube || $instagram || $facebook || $twitter ): ?>
 	<p>
 		<strong>Follow <?php echo $first_name; ?></strong><br/>
@@ -69,6 +69,7 @@
 	</p>
 	<?php endif; ?>
 	
+	<!-- links other than the fellow's personal social media or website -->
 	<?php if ( have_rows('custom_links') ): ?>
 	<p>
 		<strong>Links</strong><br/>
