@@ -41,6 +41,22 @@
 			</li>
 		<?php endif; ?>
 
+		<?php if ( $linkedin ): ?>
+			<li>
+				<a href="<?php echo $linkedin; ?>">
+					<i class="fa-brands fa-linkedin"></i>
+				</a>
+			</li>
+		<?php endif; ?>
+
+		<?php if ( $tiktok ): ?>
+			<li>
+				<a href="<?php echo $tiktok; ?>">
+					<i class="fa-brands fa-tiktok"></i>
+				</a>
+			</li>
+		<?php endif; ?>
+
 		<?php if ( $facebook ): ?>
 			<li>
 				<a href="<?php echo $facebook; ?>">
@@ -51,4 +67,18 @@
 		<!-- "other" link field with custom slot for favicon? -->
 		</ul>
 	</p>
+	<?php if ( have_rows('custom_links') ): ?>
+	<p>
+		<strong>More Links</strong><br/>
+		<ul>
+		<?php while ( have_rows('custom_links') ): the_row(); ?>
+			<li>
+				<a href="<?php the_sub_field('link_url'); ?>">
+					<?php the_sub_field('link_name'); ?>
+				</a>
+			</li>		
+		<?php endwhile; ?>
+		</ul>
+	</p>
+	<?php endif; ?>
 </section>

@@ -21,6 +21,8 @@ $twitter = get_field('twitter');
 $instagram = get_field('instagram');
 $facebook = get_field('facebook');
 $linkedin = get_field('linkedin');
+$youtube = get_field('youtube');
+$tiktok = get_field('tiktok');
 
 include( 'modules/meta--fellows-single.php' );
 
