@@ -8,7 +8,7 @@
 			<p>
 			<?php if ( $public_status === 'Public' ) {
 
-				if ( $dropbox_link && !== 'none' ) {
+				if ( $dropbox_link && $dropbox_link !== 'none' ) { 
 
 					echo '<a href="'. $dropbox_link . '" target="_blank">
 						Dropbox (.mp4)</a>';
