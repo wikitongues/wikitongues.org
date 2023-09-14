@@ -1,11 +1,11 @@
 <section class="wt_fellow__meta">
-	<p>
+	<article>
 		<strong><?php echo $fellow_name; ?> is a member of the Wikitongues Language Revitalization Fellowship's <?php echo $fellow_year; ?> cohort.</strong>
-	</p>
+	</article>
 
 	<!-- social media / contact - ask permission for an explicit contact section with email-->
 	<?php if ( $website || $linkedin || $tiktok || $youtube || $instagram || $facebook || $twitter ): ?>
-	<p>
+	<article class="wt_fellow__meta--social">
 		<strong>Follow <?php echo $first_name; ?></strong><br/>
 		<!-- contact information -->
 		<ul>
@@ -66,12 +66,12 @@
 		<?php endif; ?>
 		<!-- "other" link field with custom slot for favicon? -->
 		</ul>
-	</p>
+	</article>
 	<?php endif; ?>
 	
 	<!-- links other than the fellow's personal social media or website -->
 	<?php if ( have_rows('custom_links') ): ?>
-	<p>
+	<article class="wt_fellow__meta--links">
 		<strong>Links</strong><br/>
 		<ul>
 		<?php while ( have_rows('custom_links') ): the_row(); ?>
@@ -82,6 +82,6 @@
 			</li>		
 		<?php endwhile; ?>
 		</ul>
-	</p>
+	</article>
 	<?php endif; ?>
 </section>

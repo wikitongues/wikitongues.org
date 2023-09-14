@@ -3,13 +3,15 @@
 	max-width 600px
 	margin 0 auto 3rem
 		
-	p
+	article
 		margin-bottom 1.5rem
 		
 		strong
 			text--strong($black)
 	
-	ul			
+	ul	
+		margin-top .5rem
+				
 		li
 			display inline-block
 			margin-right 1.5rem
@@ -21,3 +23,7 @@
 			a
 				text--body($blue)
 				text-decoration none
+	
+	&--links
+		ul li
+			display block !important

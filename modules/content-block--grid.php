@@ -1,8 +1,10 @@
 <section class="wt_content-block--thirds">
 <?php if ( $content_block_image ): ?>
 	<aside class="wt_content-block--thirds__image" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);" data-test="<?php echo $content_block_image; ?>"></aside>
-<?php else: ?>
+<?php elseif ( !$content_block_image && $post->post_type !== 'lexicons' && $post->post_type !== 'resources' ): ?>
 	<aside class="wt_content-block--thirds__image blank" role="img" aria-label="<?php echo $content_block_image['alt']; ?>" style="background-image:url(<?php echo $content_block_image['url']; ?>);"></aside>
+<?php else: ?>
+	<!-- show nothing -->
 <?php endif; ?>
 	<aside class="wt_content-block--thirds__copy">
 		<h1>

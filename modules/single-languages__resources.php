@@ -16,7 +16,7 @@
 				$content_block_image = null;
 				$content_block_copy = null;
 				$content_block_cta_link = get_field('resource_url');
-				$content_block_cta_text = 'View';
+				$content_block_cta_text = 'View Resource';
 
 				// define conditional variables
 				if ( $resource_custom_title ) {
