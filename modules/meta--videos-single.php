@@ -21,6 +21,12 @@
 
 				}
 
+				if ( $dropbox_link !== 'none' && !$wikimedia_commons_link ) {
+
+					echo 'File downloads are currently unavailable for this video.';
+					
+				}
+
 				if ( !$dropbox_link && !$wikimedia_commons_link ) {
 
 					echo 'File downloads are currently unavailable for this video.';
