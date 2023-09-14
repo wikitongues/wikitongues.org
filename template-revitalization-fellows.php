@@ -12,6 +12,9 @@ include( 'modules/banner--main.php' );
 $query = new WP_Query( 
 	array( 
 		'post_type' => 'fellows',
+		'meta_key' => 'fellow_year',
+		'orderby' => 'meta_value',
+		'order' => 'DESC',
 		'posts_per_page' => 50
 	) 
 );
