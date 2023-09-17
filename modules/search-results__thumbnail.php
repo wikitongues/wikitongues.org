@@ -1,6 +1,6 @@
 <?php 
 $thumbnail_title = get_field('thumbnail_title');
-$thumbnail_image = get_field('thumbnail_image');
+$thumbnail_image = get_field('video_thumbnail_v2');
 $post_type = get_post_type();
 
 if ( $post_type === 'languages' ) {
@@ -20,9 +20,9 @@ if ( $post_type === 'languages' ) {
 if ( $thumbnail_image ) {
 
 	echo '<div role="img" class="wt_search-results__thumbnail--image" style="background-image:url('. 
-		 $thumbnail_image['url'] .
+		 wp_get_attachment_url($thumbnail_image) .
 		 '") aria-label="' .
-		 $thumbnail_image['alt'] .
+		 get_post_meta($thumbnail_image, '_wp_attachment_image_alt', TRUE) .
 		 '"></div>';
 
 } elseif ( has_post_thumbnail() ) { 

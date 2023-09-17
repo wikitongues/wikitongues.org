@@ -12,7 +12,7 @@
 	<?php elseif ( $dropbox_link || $video_thumbnail ): ?>
 
 		<!-- Dropbox links need more work to be embedded -->
-		<img src="<?php echo $video_thumbnail['url']; ?>" alt="<?php echo $video_thumbnail['alt']; ?>">
+		<?php echo wp_get_attachment_image($video_thumbnail, $size='small'); ?>
 
 	<?php else: ?>
 
