@@ -46,15 +46,15 @@ add_filter( 'get_search_form', 'html5_search_form' );
 function searchfilter($query)
 {
     if ($query->is_search && !is_admin()) {
-        // only display results from these post types
-        $query->set('post_type', array('languages', 'videos'));
-        $query->set('order', 'ASC');
         $languages_search = get_query_var('s');
+        if (empty($query->query_vars['post_type']) && !empty($languages_search)) {
+            // only display results from these post types
+            $query->set('post_type', array('languages', 'videos'));
+            $query->set('order', 'ASC');
 
-        // clear the default search query
-        $query->set('s', '');
+            // clear the default search query
+            $query->set('s', '');
 
-        if (!empty($languages_search)) {
             $iso_code_regex = '#^w?[a-z]{3}$#';  // Also accounts for 4-letter Wikitongues-assigned codes
             $glottocode_regex = '#^[[:alnum:]]{4}\d{4}$#';
             preg_match($iso_code_regex, $languages_search, $iso_match);
