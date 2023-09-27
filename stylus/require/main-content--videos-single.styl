@@ -1,0 +1,33 @@
+.wt_videos__main
+	float left
+	width calc(100%/4*3)
+	
+	h1
+		margin 0 auto 3rem
+		width 100%
+		max-width 600px
+		text--header($black)
+	
+	p
+		margin 0 auto 3rem
+		width 100%
+		max-width 600px
+		text--body($black)
+		
+		strong
+			text--strong($black)
+			
+		a
+			text--body($blue)
+
+@media all and (max-width:$smallScreen)
+	.wt_videos__main
+		padding-left 6rem
+
+@media all and (max-width:$mobile)
+	.wt_videos__main
+		margin-top 3rem
+		width 100%
+		padding-top 3rem
+		padding-left 0 
+		border-top 1px solid $grey

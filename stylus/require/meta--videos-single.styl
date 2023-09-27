@@ -1,0 +1,59 @@
+.wt_meta--videos-single
+	width calc(100%/4)
+	float left
+	
+	strong
+		text--strong($black)
+		text-transform uppercase
+	
+	p
+		margin-bottom 1.5rem
+		// text-transform uppercase
+		text--body($black)
+		
+		strong
+			text--strong($black)
+	
+	ul
+		margin-top 1.5rem
+		
+		&.wt_meta__featured-languages
+			margin-top 3rem
+		
+		li
+			margin-bottom 1.5rem
+			
+			p
+				&:first-of-type
+					text--strong($black)
+	
+	a
+		text-decoration none
+		color $blue
+		
+		strong
+			text--strong($blue)
+			text
+			
+		span
+			text--body($blue)
+		
+		&:hover
+			text-decoration underline
+
+@media all and (max-width:$mobile)
+	.wt_meta
+		&--videos-single
+			float none
+			width 100%
+		
+		&__featured-languages
+			li
+				&:last-of-type
+					margin-bottom 0
+					
+				ul
+					li
+						display inline-block
+						vertical-align top
+						width 49%

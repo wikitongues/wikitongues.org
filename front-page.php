@@ -3,37 +3,35 @@
 // header
 get_header();
 
-// homepage banner
-$banner_image = get_field('banner_image');
-$banner_header = get_field('banner_header');
-$banner_copy = get_field('banner_copy');
+// banner
+$page_banner = get_field('front_page_banner');
 
-include( locate_template('modules/banner.php') );
+include( 'modules/banner--main.php' );
 
-// mission statement + metrics
-$metrics_subhead = get_field('mission_statement');
+// initiate flexible content loop
+if ( have_rows( 'front_page_content_layout' ) ) {
 
-include( locate_template('modules/metrics.php') );
+	// loop through flexible content field for layout options
+	while ( have_rows( 'front_page_content_layout') ) {
 
-// primary content blocks
-if ( have_rows('section') ) {
-	while ( have_rows('section') ) {
+		// the layout object
 		the_row();
 
-		$section_image = get_sub_field('section_image');
-		$section_header = get_sub_field('section_header');
-		$section_copy = get_sub_field('section_copy');
-		$section_call_to_action = get_sub_field('section_call_to_action');
-		$section_secondary_action = get_sub_field('section_secondary_action'); 
+		if ( get_row_layout() == 'thumbnail_carousel' ) {
 
-		include( locate_template('modules/sections.php') );
+			include( 'modules/carousel--thumbnail.php' );	
+
+		} elseif ( get_row_layout() == 'content_block' ) {
+
+			include( 'modules/content-block--wide.php' );
+	
+		} elseif ( get_row_layout() == 'testimonial' ) {
+
+			include( 'modules/carousel--testimonial.php' );
+
+		}
 	}
 }
-
-// featured partner logos
-$partners_header = get_field('partners_header');
-
-include( locate_template('modules/partners.php') );
 
 // footer
 get_footer();

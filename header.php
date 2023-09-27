@@ -6,10 +6,15 @@
 
 	<!-- Language and browser view meta tags -->
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- favicon -->
-	<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+	<?php $favicon = get_field('favicon', 'options'); ?>
+	<?php if ( $favicon ): ?>
+		<link href="<?php echo $favicon['url']; ?>" rel="shortcut icon">
+	<?php else: ?>
+		<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+	<?php endif; ?>
 
 	<!-- Custom metadata variables -->
 	<?php 
@@ -94,8 +99,7 @@
 
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
-	<!-- Font Awesome connection -->
-	<!-- <script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script> -->
+	<!-- Font Awesome connection for UI/UX icons and small graphic elements -->
 	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
 
 	<!-- Fundraise Up connection -->
@@ -110,51 +114,112 @@
 	<!-- WP head tag -->
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?><?php if (isset($_GET['languages_search'])): ?>data-ui="no-scroll"<?php endif; ?>>
+<body <?php body_class(); ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
 
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
 
-	<!-- bug report banner: disabled
-	<header class="wt_header__bugs">
-		This website is in early launch. If you experience issues, please <a href="https://airtable.com/shrtbu15QZnAbXXi9">report them here</a>. Your feedback helps us improve!
-	</header> -->
-
-	<!-- class="wt_header__alert" for banners -->
+	<!-- alert/message banner -->
+	<?php // include( 'modules/banner--alert.php' ); ?>
 	
-	<!-- global header -->
-	<header class="wt_header" role="banner">
-
-		<!-- wikitongues logo --> 
+	<!-- header -->
+	<header class="wt_header <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" role="banner">
+		<!-- header logo -->
 		<div class="wt_header__logo">
 			<a href="<?php bloginfo('url'); ?>">
-				<img src="<?php the_field('header_logo', 'options'); ?>"
-				     alt="Wikitongues Logo">
+				<img class="wt_header__logo--light <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_light', 'options'); ?>" alt="Wikitongues logo: light color scheme">
+				<img class="wt_header__logo--dark <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_dark', 'options'); ?>" alt="Wikitongues logo: dark color scheme">
 			</a>
 		</div>
 
+		<!-- search bar -->
+		<div class="wt_header__searchbar">
+			<i class="fa-light fa-magnifying-glass"></i>
+			<?php get_search_form(); ?>
+		</div>
+
 		<!-- navigation -->
-		<nav class="wt_header__nav">
-			<!-- main menu -->
-			<?php wp_nav_menu(
-					array( 
-						'theme_location' => 'main-menu',
-						'container' => '',
-						'menu_id' => 'wt_header__nav--menu',
-						'menu_class' => 'wt_header__nav--menu'
-					)
-				  ); ?>
+		<?php 
 
-			<!-- donate button -->
-			<div class="wt_header__nav--donate">
-				<a href="<?php 
-					the_field('donate_button_embed', 'options'); ?>">
-					<span><i class="fas fa-heart"></i></span>
-					<span>Donate</span>
-				</a>
-			</div>
-		</nav>
+		// global var? define somewher else?
+		$template_slug = get_page_template_slug();
 
-		<!-- clear element -->
-		<div class="clear"></div>
-	</header>
+		if ( is_front_page() ) {
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'main-menu',
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav transparent-background'
+				)
+			);
+		} else {
+			wp_nav_menu(
+				array( 
+					'theme_location' => 'main-menu',
+					'container' => 'nav',
+					'container_class' => 'wt_header__nav'
+				)
+			);
+		}
+
+		// mobile menu
+		wp_nav_menu(
+			array( 
+				'theme_location' => 'mobile-menu',
+				'container' => 'nav',
+				'container_class' => 'wt_header__nav--mobile'
+			)
+		);
+		?>
+
+		<aside class="wt_header__mobile-buttons">
+			<button id="mobile-nav-open">
+				<i class="fa-regular fa-bars"></i>
+			</button>
+			<button id="mobile-nav-close">
+				<i class="fa-regular fa-x"></i>
+			</button>
+		</aside>
+
+		
+		<?php if ( !is_front_page() ): ?>
+		<section class="wt_header--secondary">
+			<?php
+				if ( 
+					strpos($template_slug, 'revitalization') !== false ||
+					is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
+				) { 
+					wp_nav_menu(
+						array( 
+							'theme_location' => 'revitalization-menu',
+							'container' => 'nav',
+							'container_class' => 'wt_header__nav--secondary'
+						)
+					); 
+
+				} elseif ( 
+					strpos($template_slug, 'archive') !== false || 
+					is_singular('languages') || 
+					is_singular('videos') ||
+					is_search() 
+				) {
+					wp_nav_menu(
+						array( 
+							'theme_location' => 'archive-menu',
+							'container' => 'nav',
+							'container_class' => 'wt_header__nav--secondary'
+						)
+					); // if single language or single video, display the language
+				} elseif ( strpos($template_slug, 'about') !== false ) {
+					wp_nav_menu(
+						array( 
+							'theme_location' => 'about-menu',
+							'container' => 'nav',
+							'container_class' => 'wt_header__nav--secondary'
+						)
+					);
+				}
+			?>	
+		</section>
+		<?php endif; ?>
+	</header><!-- end header -->

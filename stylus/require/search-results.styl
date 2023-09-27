@@ -1,0 +1,74 @@
+body
+	&.search-results
+		.wt_header
+			&__nav
+				&>ul>li
+					&:first-of-type
+						background $white !important
+				
+						&>a
+							color $blue !important
+						
+						&:hover
+							&:before
+								display none !important
+								
+							.sub-menu
+								display none !important
+
+.wt_search-results
+	&__title
+		width 90%
+		margin 0 auto 3rem
+		padding-bottom 3rem
+		border-bottom 1px solid $grey
+		text-align center
+		text--strong($black)
+		text-transform uppercase
+	
+	&__results
+		width 90%
+		max-width calc(100%/3*2)
+		margin 0 auto 6rem
+		
+	&__none
+		margin-bottom 12rem
+		text-align center
+		
+		span
+			width 100%
+			text-align center
+			text--body($black)
+			
+			a
+				text--body($blue)
+	
+	&__pagination
+		margin-bottom 6rem
+		text-align center
+		
+		span
+			margin-right 3rem
+			text--strong($black)
+
+		a
+			margin-right 3rem
+			text--strong($blue)
+			text-decoration none
+
+@media all and (max-width:$mobile)
+	.wt_search-results
+		&__results
+			max-width none
+			
+		&__thumbnail
+			&--image,
+			&--no-image
+				width 30% !important
+				height initial !important
+				padding-bottom 30% !important
+			
+			&--copy
+				width 70% !important
+				box-sizing border-box !important
+				padding 0 3rem !important

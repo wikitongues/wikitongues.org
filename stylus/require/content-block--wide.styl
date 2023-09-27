@@ -1,0 +1,69 @@
+.wt_content-block--wide
+	position relative
+	display flex
+	margin 6rem auto
+	width 95%
+	height 500px
+	flex-direction row
+	align-items center
+	
+	&:before
+		content ''
+		z-index -1
+		position absolute
+		top 2.5%
+		left .75%
+		width 99.25%
+		height 100%
+		background $blue
+	
+	&__image
+		width 55%
+		height 100%
+		background-size cover
+		background-repeat no-repeat
+		background-position center
+	
+	&__copy
+		width 45%
+		box-sizing border-box
+		padding 6rem
+		
+		h1
+			text--header($parchment)
+			
+		p
+			margin 3rem 0
+			text--body($parchment)
+			
+		a
+			button--large($parchment, $blue)
+			
+			i
+				margin-left 0.5rem
+
+@media all and (max-width:$smallScreen)
+	.wt_content-block--wide
+		&__image
+			width 50%
+		
+		&__copy
+			width 50%
+
+@media all and (max-width:$tablet)
+	.wt_content-block--wide
+		display block
+		margin 3rem auto
+		height initial
+		
+		&:before
+			display none
+		
+		&__image
+			width 100%
+			padding-bottom 50%
+
+		&__copy
+			width 100%
+			background $blue
+			padding 5rem 6rem 6rem

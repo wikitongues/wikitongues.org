@@ -1,11 +1,12 @@
 {
     "key": "group_614a2f1facd00",
-    "title": "Language: Single",
+    "title": "Post type: Languages",
     "fields": [
         {
             "key": "field_614a2f253b67e",
             "label": "Standard Name",
             "name": "standard_name",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -25,6 +26,7 @@
             "key": "field_614a2f463b67f",
             "label": "Alternate Names",
             "name": "alternate_names",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -44,6 +46,7 @@
             "key": "field_614a2f513b680",
             "label": "Nations of Origin",
             "name": "nations_of_origin",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -63,6 +66,7 @@
             "key": "field_614b90d5d2667",
             "label": "Writing Systems",
             "name": "writing_systems",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -82,6 +86,7 @@
             "key": "field_614a2f573b681",
             "label": "Linguistic Genealogy",
             "name": "linguistic_genealogy",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -101,6 +106,7 @@
             "key": "field_6186eedd9d046",
             "label": "ISO code",
             "name": "iso_code",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -120,6 +126,7 @@
             "key": "field_614b92c01b337",
             "label": "Glottocode",
             "name": "glottocode",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -139,6 +146,7 @@
             "key": "field_614b950f2014d",
             "label": "OLAC URL",
             "name": "olac_url",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -155,6 +163,7 @@
             "key": "field_614a2f693b682",
             "label": "Wikipedia URL",
             "name": "wikipedia_url",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -171,6 +180,7 @@
             "key": "field_614a2f743b683",
             "label": "Speakers Recorded",
             "name": "speakers_recorded",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -187,12 +197,14 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614a2f8a3b684",
             "label": "Lexicon Source",
             "name": "lexicon_source",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -209,12 +221,14 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614a2fa33b685",
             "label": "Lexicon Target",
             "name": "lexicon_target",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -231,12 +245,14 @@
             "allow_null": 0,
             "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_614ca7b224ef4",
             "label": "External Resources",
             "name": "external_resources",
+            "aria-label": "",
             "type": "post_object",
             "instructions": "",
             "required": 0,
@@ -249,11 +265,34 @@
             "post_type": [
                 "resources"
             ],
+            "post_status": "",
             "taxonomy": "",
-            "allow_null": 0,
-            "multiple": 1,
             "return_format": "object",
-            "ui": 1
+            "multiple": 1,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_64d679ec11f17",
+            "label": "EGIDS status",
+            "name": "egids_status",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -274,5 +313,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1639692611
+    "modified": 1694290153
 }

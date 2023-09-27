@@ -1,4 +1,6 @@
 <?php
+/* CONSIDER BREAKING INTO MULTIPLE FUNCTIONS FILES */
+
 require_once('includes/class-wt-rest-posts-controller.php');
 
 // enqueue stylesheets
@@ -28,7 +30,124 @@ function wt_enqueue_js() {
 
     wp_enqueue_script('wt_js');
 }
-  
+
+// change default search form text
+function html5_search_form( $form ) { 
+     $form = '<section class="search"><form role="search" method="get" id="search-form" action="' . home_url( '/' ) . '" >
+    <label class="screen-reader-text" for="s">' . __('',  'domain') . '</label>
+     <input type="search" value="' . $_GET['s'] . '" name="s" id="s" placeholder="Find a language" />
+     <input type="submit" id="searchsubmit" value="'. esc_attr__('Search', 'domain') .'" />
+     </form></section>';
+     return $form;
+}
+
+add_filter( 'get_search_form', 'html5_search_form' );
+
+function searchfilter($query)
+{
+    if ($query->is_search && !is_admin()) {
+        $languages_search = get_query_var('s');
+        if (empty($query->query_vars['post_type']) && !empty($languages_search)) {
+            // only display results from these post types
+            $query->set('post_type', array('languages', 'videos'));
+            $query->set('order', 'ASC');
+
+            // clear the default search query
+            $query->set('s', '');
+
+            $iso_code_regex = '#^w?[a-z]{3}$#';  // Also accounts for 4-letter Wikitongues-assigned codes
+            $glottocode_regex = '#^[[:alnum:]]{4}\d{4}$#';
+            preg_match($iso_code_regex, $languages_search, $iso_match);
+            preg_match($glottocode_regex, $languages_search, $glottocode_match);
+
+            if ($iso_match) {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'iso_code',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key' => 'standard_name',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    'relation' => 'OR'
+                ));
+            } else if ($glottocode_match) {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'glottocode',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    )
+                ));
+            } else {
+                $query->set('meta_query', array(
+                    array(
+                        'key' => 'standard_name',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'alternate_names',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'nations_of_origin',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'writing_systems',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    array(
+                        'key' => 'linguistic_genealogy',
+                        'value' => $languages_search,
+                        'compare' => '='
+                    ),
+                    array(
+                        'key' => 'video_title',
+                        'value' => $languages_search,
+                        'compare' => 'LIKE'
+                    ),
+                    'relation' => 'OR'
+                ));
+            }
+        }
+        // $query->set('post_type',array('languages','videos', 'lexicons', 'resources'));
+
+        // for languages post type, search by X fields
+
+            // post_title - identical
+            // iso_code - identical
+            // glottocode - identical
+            // standard_name - like
+            // alternate_names - like
+            // nations_of_origin - like
+            // linguistic_genealogy - identical
+            // anything else included in Scott's code from January
+
+        // for videos post type, search by Y fields
+
+            // video_title
+            // featured_languages
+            // consider for later version: new fields that pull standard_name and alternate_names from featured_languages
+
+        // for lexicons post type, search by Z fields
+
+            // post_title
+
+        // for resrouces post type search by Q fields
+    }
+    return $query;
+}
+ 
+add_filter('pre_get_posts', 'searchfilter');
+
 // remove header bump from core css output
 add_action('get_header', 'my_filter_head');
 
@@ -36,35 +155,46 @@ function my_filter_head() {
    remove_action('wp_head', '_admin_bar_bump_cb');
 } 
 
-// initiate options page
+// initiate options page - consider deprecating this
 if( function_exists('acf_add_options_page') ) {   
     acf_add_options_page();
 }
 
-// add secondary menu
-function vj_secondary_menu() {
-  register_nav_menu('secondary-menu',__( 'Secondary Menu' ));
+// add archive menu
+function wt_archive_menu() {
+  register_nav_menu('archive-menu',__( 'Archive Menu' ));
 }
 
-add_action( 'init', 'vj_secondary_menu' );
+add_action( 'init', 'wt_archive_menu' );
+
+
+// add revitalization menu
+function wt_revitalization_menu() {
+  register_nav_menu('revitalization-menu',__( 'Revitalization Menu' ));
+}
+
+add_action( 'init', 'wt_revitalization_menu' );
+
+// add about menu
+function wt_about_menu() {
+  register_nav_menu('about-menu',__( 'About Menu' ));
+}
+
+add_action( 'init', 'wt_about_menu' );
 
 // add footer menu
-function vj_footer_menu() {
+function wt_footer_menu() {
   register_nav_menu('footer-menu',__( 'Footer Menu' ));
 }
 
-add_action( 'init', 'vj_footer_menu' );
+add_action( 'init', 'wt_footer_menu' );
 
-// Register custom query vars -https://codex.wordpress.org/Plugin_API/Filter_Reference/query_vars
-
-function wt_register_query_vars($vars)
-{
-    $vars[] = 'site_search';
-    $vars[] = 'videos_search';
-    $vars[] = 'languages_search';
-    return $vars;
+// add mobile menu
+function wt_mobile_menu() {
+  register_nav_menu('mobile-menu',__( 'Mobile Menu' ));
 }
-add_filter('query_vars', 'wt_register_query_vars');
+
+add_action( 'init', 'wt_mobile_menu' );
 
 // Pagination for paged posts, Page 1, Page 2, Page 3, with Next and Previous Links, No plugin
 function html5wp_pagination()
@@ -79,23 +209,19 @@ function html5wp_pagination()
     ));
 }
 
-// Add Google Maps
-function my_acf_google_map_api( $api ){
-    $api['key'] = 'AIzaSyBLLj4cU0Q9fvHECR-OizyBuMvEt7jHua8';
-    return $api;
-}
-add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
-
-// add custom post types
-add_action('init', 'create_post_type_team');
-add_action('init', 'create_post_type_donors');
-add_action('init', 'create_post_type_partners');
+// add custom post types for language archive
 add_action('init', 'create_post_type_languages'); 
 add_action('init', 'create_post_type_videos');
 add_action('init', 'create_post_type_lexicons'); 
-add_action('init', 'create_post_type_resources');
-add_action('init', 'create_post_type_projects');
-add_action('init', 'create_post_type_grantees');
+add_action('init', 'create_post_type_resources'); // indexing misc.
+// revitalization project
+// translation/interpretation
+// language learning options
+
+// add custom post types for wikitongues team and alumni
+add_action('init', 'create_post_type_fellows'); // change to awardee/fellows
+add_action('init', 'create_post_type_team');
+add_action('init', 'create_post_type_partners');
 add_action('init', 'create_post_type_reports');
 
 // Team
@@ -133,45 +259,6 @@ function create_post_type_team()
             'category'
         ),
         'show_in_rest' => true
-    ));
-}
-
-// Donors
-function create_post_type_donors()
-{
-    register_taxonomy_for_object_type('category', 'donors'); 
-    register_taxonomy_for_object_type('post_tag', 'donors');
-    register_post_type('donors',
-        array(
-        'labels' => array(
-            'name' => __('Donors', 'donor'), 
-            'singular_name' => __('Donor', 'donor'),
-            'add_new' => __('Add New', 'donor'),
-            'add_new_item' => __('Add New Donor', 'donor'),
-            'edit' => __('Edit', 'donor'),
-            'edit_item' => __('Edit Donor', 'donor'),
-            'new_item' => __('New Donor', 'donor'),
-            'view' => __('View Donor', 'donor'),
-            'view_item' => __('View Donor', 'donor'),
-            'search_items' => __('Search Donors', 'donor'),
-            'not_found' => __('No Donors found', 'donor'),
-            'not_found_in_trash' => __('No Donors found in Trash', 'donor')
-        ),
-        'public' => true,
-        'hierarchical' => true,
-        'menu_icon' => 'dashicons-awards',
-        'has_archive' => true,
-        'supports' => array(
-            'title'
-            // 'editor',
-            // 'excerpt',
-            // 'thumbnail'
-        ),
-        'can_export' => true,
-        'taxonomies' => array(
-            'post_tag',
-            'category'
-        )
     ));
 }
 
@@ -374,65 +461,27 @@ function create_post_type_resources()
     ));
 }
 
-// Projects
-function create_post_type_projects()
-{
-    register_taxonomy_for_object_type('category', 'projects'); 
-    register_taxonomy_for_object_type('post_tag', 'projects');
-    register_post_type('projects',
-        array(
-        'labels' => array(
-            'name' => __('Projects', 'projects'), 
-            'singular_name' => __('Project', 'projects'),
-            'add_new' => __('Add New', 'projects'),
-            'add_new_item' => __('Add New Project', 'projects'),
-            'edit' => __('Edit', 'projects'),
-            'edit_item' => __('Edit Project', 'projects'),
-            'new_item' => __('New Project', 'projects'),
-            'view' => __('View Project', 'projects'),
-            'view_item' => __('View Project', 'projects'),
-            'search_items' => __('Search Projects', 'projects'),
-            'not_found' => __('No Projects found', 'projects'),
-            'not_found_in_trash' => __('No Projects found in Trash', 'projects')
-        ),
-        'public' => true,
-        'hierarchical' => true,
-        'menu_icon' => 'dashicons-admin-tools',
-        'has_archive' => true,
-        'supports' => array(
-            'title',
-            'editor',
-            'excerpt',
-            'thumbnail'
-        ),
-        'can_export' => true,
-        'taxonomies' => array(
-            'post_tag',
-            'category'
-        )
-    ));
-}
 
-// Projects
-function create_post_type_grantees()
+// Fellows
+function create_post_type_fellows()
 {
-    register_taxonomy_for_object_type('category', 'grantees'); 
-    register_taxonomy_for_object_type('post_tag', 'grantees');
-    register_post_type('grantees',
+    register_taxonomy_for_object_type('category', 'fellows'); 
+    register_taxonomy_for_object_type('post_tag', 'fellows');
+    register_post_type('fellows',
         array(
         'labels' => array(
-            'name' => __('Grantees', 'grantees'), 
-            'singular_name' => __('Grantee', 'grantees'),
-            'add_new' => __('Add New', 'grantees'),
-            'add_new_item' => __('Add New Grantee', 'grantees'),
-            'edit' => __('Edit', 'grantees'),
-            'edit_item' => __('Edit Grantee', 'grantees'),
-            'new_item' => __('New Grantee', 'grantees'),
-            'view' => __('View Grantee', 'grantees'),
-            'view_item' => __('View Grantee', 'grantees'),
-            'search_items' => __('Search Grantees', 'grantees'),
-            'not_found' => __('No Grantees found', 'grantees'),
-            'not_found_in_trash' => __('No Grantees found in Trash', 'grantees')
+            'name' => __('Fellows', 'fellows'), 
+            'singular_name' => __('Fellow', 'fellows'),
+            'add_new' => __('Add New', 'fellows'),
+            'add_new_item' => __('Add New Fellow', 'fellows'),
+            'edit' => __('Edit', 'fellows'),
+            'edit_item' => __('Edit Fellow', 'fellows'),
+            'new_item' => __('New Fellow', 'fellows'),
+            'view' => __('View Fellow', 'fellows'),
+            'view_item' => __('View Fellow', 'fellows'),
+            'search_items' => __('Search Fellows', 'fellows'),
+            'not_found' => __('No Fellows found', 'fellows'),
+            'not_found_in_trash' => __('No Fellows found in Trash', 'fellows')
         ),
         'public' => true,
         'hierarchical' => true,
@@ -452,7 +501,7 @@ function create_post_type_grantees()
     ));
 }
 
-// Projects
+// Reports
 function create_post_type_reports()
 {
     register_taxonomy_for_object_type('category', 'reports'); 

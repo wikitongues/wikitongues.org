@@ -1,60 +1,88 @@
 $ = jQuery;
 
-// reveal select elements on js load
-function revealElement(a) {
-	var $hiddenElement = a;
+function changeHeaderClass() {
+	var $header = $('.wt_header'),
+		$logoLight = $('.wt_header__logo--light'),
+		$logoDark = $('.wt_header__logo--dark'),
+		$navContainer = $('.wt_header__nav');
 
-	$hiddenElement.addClass('visible'); 
-}
-
-// close popups
-function closeOverlay(a,b) {
-	var $body = $('body'),
-		$targetWindow = a,
-		$closeButton = $('#wt_closeoverlay');
-
-	// close popup using esc key
-	$(document).on('keyup', function(e) {
-	  if (e.which == 27) {
-	  	$body.removeAttr('data-ui','no-scroll');
-	  	$targetWindow.removeClass('wt_visible');
-	  }
-	});
-
-	// close popup using button
-	$closeButton.click(function(){
-		$body.removeAttr('data-ui','no-scroll');
-		$targetWindow.removeClass('wt_visible');
+	$(window).scroll(function(){
+		if($(this).scrollTop()>50){
+			$header.removeClass('transparent-background');
+			$logoLight.removeClass('transparent-background');
+			$logoDark.removeClass('transparent-background');
+			$navContainer.removeClass('transparent-background');
+		} else {
+			$header.addClass('transparent-background');
+			$logoLight.addClass('transparent-background');
+			$logoDark.addClass('transparent-background');
+			$navContainer.addClass('transparent-background');
+		}
 	});
 }
 
-// language search popup
-function languageSearch() {
-	var $body = $('body'),
-		$search = $('#wt_actions__search'),
-		$results = $('#wt_search');
+function carouselScroll() {
+	// clean up scroll animation to go by thirds
+	$('.wt_carousel__right-scroll').click(function() {
+		event.preventDefault();
 
-	// when user clicks 'search' button, show search window
-	$search.click(function(){
-		$body.attr('data-ui','no-scroll');
-		$results.addClass('wt_visible');
+		$(this).hide();
+		$('.wt_carousel__left-scroll').show();
+
+		$(this).parents('section').find('ul').animate({
+			scrollLeft: "+=1500px"
+			}, "slow");
+
+		$(window).resize(function(){
+			var $scrollWidth = $('.wt_carousel__right-scroll').parents('section').find('ul').width();
+		})
 	});
 
-	// when user clicks 'esc' or clicks button, close window
-	closeOverlay($results);
+	$('.wt_carousel__left-scroll').click(function() {
+		event.preventDefault();
+
+		$(this).hide();
+		$('.wt_carousel__right-scroll').show();
+		
+		$(this).parents('section').find('ul').animate({
+			scrollLeft: "-=1500px"
+			}, "slow");
+
+		$(window).resize(function(){
+			var $scrollWidth = $('.wt_carousel__left-scroll').parents('section').find('ul').width();
+		})
+	});
+}
+
+function mobileTrigger() {
+	var $mobileNavOpen = $('#mobile-nav-open'),
+		$mobileNavClose = $('#mobile-nav-close'),
+		$mobileNav = $('.wt_header__nav--mobile'),
+		$body = $('body');
+
+	$mobileNavOpen.on('click', function(){
+		$body.addClass('no-scroll');
+		$(this).hide();
+		$mobileNav.addClass('expand');
+		$mobileNavClose.show();
+
+		$mobileNavClose.on('click', function(){
+			$(this).hide();
+			$mobileNav.removeClass('expand');
+			$mobileNavOpen.show();
+			$body.removeClass('no-scroll');
+		});
+	});
 }
 
 // run all general UX/UI functions
 $(window).on('load', function(){
-	languageSearch();
-});
 
-// run after JS loads
-$(document).ready(function(){
-	// wait 1 second after JS has loaded
-	setTimeout(function(){
-			// reveal menu items after JS load
-			revealElement($('#wt_header__nav--menu'));
-		}, 1000
-	);	
+	if($('body').hasClass('home')){
+		changeHeaderClass(); 
+	}
+
+	carouselScroll();
+
+	mobileTrigger();
 });

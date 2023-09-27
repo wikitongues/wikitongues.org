@@ -7,4 +7,5 @@ Template:     blankslate
 Version:      1.0.0
 */
 
+@import url('fonts/fonts.css');
 @import url('stylus/main.css');
