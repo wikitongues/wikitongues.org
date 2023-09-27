@@ -23,7 +23,7 @@
             "maxlength": ""
         },
         {
-            "key": "field_64d5380b2387e",
+            "key": "field_6513950346ea4",
             "label": "Video Custom Title",
             "name": "video_custom_title",
             "aria-label": "",
@@ -43,27 +43,7 @@
             "append": ""
         },
         {
-            "key": "field_614b828c7f23d",
-            "label": "Video Thumbnail DEPR",
-            "name": "video_thumbnail_depr",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_64dbeb41a60bc",
+            "key": "field_631ccef347e51",
             "label": "Video Thumbnail",
             "name": "video_thumbnail_v2",
             "aria-label": "",
@@ -76,7 +56,8 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "array",
+            "return_format": "id",
+            "preview_size": "medium",
             "library": "all",
             "min_width": "",
             "min_height": "",
@@ -84,8 +65,7 @@
             "max_width": "",
             "max_height": "",
             "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
+            "mime_types": ""
         },
         {
             "key": "field_614b82927f23e",
@@ -186,26 +166,6 @@
             "maxlength": ""
         },
         {
-            "key": "field_64d66661cc881",
-            "label": "YouTube ID",
-            "name": "youtube_id",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_614b830e7f243",
             "label": "YouTube Link",
             "name": "youtube_link",
@@ -297,6 +257,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": 0,
-    "modified": 1694625417
+    "show_in_rest": 1,
+    "modified": 1695783928
 }
