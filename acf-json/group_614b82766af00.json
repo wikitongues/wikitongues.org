@@ -166,6 +166,26 @@
             "maxlength": ""
         },
         {
+            "key": "field_6513a151454de",
+            "label": "YouTube ID",
+            "name": "youtube_id",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_614b830e7f243",
             "label": "YouTube Link",
             "name": "youtube_link",
@@ -258,5 +278,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1695783928
+    "modified": 1695785309
 }
