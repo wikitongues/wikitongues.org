@@ -1,0 +1,141 @@
+.wt_newsletter
+	padding 6rem 0
+	background $purple
+	text-align center
+	
+	form
+		&>div
+			display flex
+			justify-content center
+			
+		.clear
+			position relative
+			
+			i
+				position absolute
+				top 50%
+				transform translateY(-50%)
+				right 1.5rem
+				color $parchment
+				font-size 1.6rem
+		
+		input
+			border-width 0 !important
+			border-radius 0 !important
+			-webkit-appearance none !important
+			-webkit-border-radius 0 !important
+			
+			&[type="email"]
+				width 300px
+				button--large($parchment, $black)
+				
+				&:focus
+					outline none
+			
+			&[type="submit"]
+				button--large($blue, $parchment)
+				padding-right 4rem // clunky override to position iframe arrow
+				
+				&:hover
+					cursor pointer
+
+.wt_footer
+	padding 6rem
+	background $black
+	text--body($parchment)
+	font-size 1.28rem !important
+	
+	&__section
+		&:first-of-type
+			display flex
+			flex-direction row
+		
+		&:last-of-type
+			text-align center
+
+	&__nav
+		flex-grow 3
+		text-transform uppercase
+		
+		>ul
+			display flex
+			flex-direction row
+			
+			li					
+				a
+					text--body($parchment)
+					text-decoration none
+					font-size 1.28rem !important
+			
+			&>li
+				margin-right 3rem
+				
+				&>a
+					font-weight 600 !important
+		
+		.sub-menu
+			margin-top 1.5rem
+		
+	&__meta
+		flex-grow initial
+		text-align right
+		
+	&__logo
+		img
+			max-width 150px
+	
+	&__address
+		margin 1.5rem 0
+		
+	&__land-acknowledgement
+		margin 3rem 0 1.5rem
+		
+		a
+			color $parchment
+
+	&__copyright
+		font-weight 700 !important
+
+@media all and (max-width:$smallScreen)
+	.wt_footer
+		&__section:first-of-type
+			display block
+			
+		&__nav
+			width 100%
+			text-align center
+			
+			&>ul
+				justify-content center
+		
+		&__meta
+			margin 6rem auto
+			width 100%
+			text-align center
+
+@media all and (max-width:$mobile)
+	.wt_newsletter
+		padding 6rem 3rem
+				
+		form
+			&>div
+				display block
+			
+			input
+				&[type="email"]
+					width 100%
+					text-align center
+
+				&[type="submit"]
+					width 100%
+	
+	.wt_footer__nav
+		&>ul
+			display block
+
+			&>li
+				margin-top 3rem
+				margin-right 0rem
+				
+				&:first-of-type
+					margin-top 0

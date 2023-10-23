@@ -1,0 +1,47 @@
+// background to purple once explore filters are added
+.wt_banner--searchbar
+	width 100%
+	padding 120px
+	border-bottom 1px solid $parchment
+	
+	form
+		display flex
+		margin auto
+		width 90%
+		max-width 800px
+		
+		label
+			display block
+			width 70%
+		
+		input
+			border-top-width 0 !important
+			border-right-width 0 !important
+			border-left-width 0 !important
+			border-radius 0 !important
+			-webkit-appearance none !important
+			-webkit-border-radius 0	!important
+			
+			&[type="search"]
+				width 97%
+				box-sizing border-box
+				margin-right 3%
+				border-bottom 2px solid $black
+				button--large($parchment,$black)
+				text-transform initial !important
+				transition background .2s ease-in-out
+				
+				&:focus
+					outline none !important
+					background $white
+				
+			&[type="submit"]
+				width 30%
+				button--large($blue,$parchment)
+				
+				&:hover
+					cursor pointer
+					
+@media all and (max-width:$mobile)
+	.wt_banner--searchbar
+		padding 12rem 3rem

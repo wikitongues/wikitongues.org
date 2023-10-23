@@ -1,0 +1,620 @@
+{
+    "dup_type": "lite",
+    "created": "2023-10-10 23:11:58",
+    "version_dup": "1.5.6",
+    "version_wp": "6.3.1",
+    "version_db": "10.5.22",
+    "version_php": "7.4.33",
+    "version_os": "Linux",
+    "blogname": "Wikitongues",
+    "exportOnlyDB": 0,
+    "secure_on": 0,
+    "secure_pass": "$2a$08$AFs72MCMTM6sFBjR7AbiYurg2Exs1KJ8oJxDL.aHu5VUNuFHEoYOC",
+    "dbhost": null,
+    "dbname": null,
+    "dbuser": null,
+    "cpnl_host": null,
+    "cpnl_user": null,
+    "cpnl_pass": null,
+    "cpnl_enable": null,
+    "wp_tableprefix": "wp_",
+    "mu_mode": 0,
+    "mu_generation": 0,
+    "mu_siteadmins": [
+        "admin"
+    ],
+    "subsites": [
+        {
+            "id": 1,
+            "domain": "wikitongues.org",
+            "path": "\/",
+            "blogname": "Wikitongues",
+            "blog_prefix": "wp_",
+            "filteredTables": [],
+            "adminUsers": [
+                {
+                    "ID": "1",
+                    "user_login": "wt_admin",
+                    "id": "1"
+                }
+            ],
+            "fullHomeUrl": "https:\/\/wikitongues.org",
+            "fullSiteUrl": "https:\/\/wikitongues.org",
+            "uploadPath": "wp-content\/uploads",
+            "fullUploadPath": "\/home\/wikitong\/public_html\/wp-content\/uploads",
+            "fullUploadSafePath": "\/home\/wikitong\/public_html\/wp-content\/uploads",
+            "fullUploadUrl": "https:\/\/wikitongues.org\/wp-content\/uploads",
+            "filteredPaths": []
+        }
+    ],
+    "main_site_id": 1,
+    "mu_is_filtered": false,
+    "license_limit": 0,
+    "license_type": 0,
+    "dbInfo": {
+        "buildMode": "MYSQLDUMP",
+        "charSetList": [
+            "utf8mb4",
+            "utf8"
+        ],
+        "collationList": [
+            "utf8_general_ci",
+            "utf8mb4_unicode_520_ci"
+        ],
+        "engineList": [
+            "InnoDB",
+            "MyISAM"
+        ],
+        "isTablesUpperCase": 0,
+        "isNameUpperCase": 0,
+        "name": "wikitong_db",
+        "tablesBaseCount": 17,
+        "tablesFinalCount": 17,
+        "muFilteredTableCount": 0,
+        "tablesRowCount": 833434,
+        "tablesSizeOnDisk": 177187345,
+        "tablesList": {
+            "wp_commentmeta": {
+                "inaccurateRows": 0,
+                "insertedRows": 0,
+                "size": 49152
+            },
+            "wp_comments": {
+                "inaccurateRows": 0,
+                "insertedRows": 0,
+                "size": 98304
+            },
+            "wp_duplicator_packages": {
+                "inaccurateRows": 1,
+                "insertedRows": 1,
+                "size": 32768
+            },
+            "wp_links": {
+                "inaccurateRows": 0,
+                "insertedRows": 0,
+                "size": 32768
+            },
+            "wp_options": {
+                "inaccurateRows": 275,
+                "insertedRows": 275,
+                "size": 196608
+            },
+            "wp_pmxe_exports": {
+                "inaccurateRows": 1,
+                "insertedRows": 1,
+                "size": 66348
+            },
+            "wp_pmxe_google_cats": {
+                "inaccurateRows": 5371,
+                "insertedRows": 5371,
+                "size": 332816
+            },
+            "wp_pmxe_posts": {
+                "inaccurateRows": 53,
+                "insertedRows": 53,
+                "size": 3797
+            },
+            "wp_pmxe_templates": {
+                "inaccurateRows": 0,
+                "insertedRows": 0,
+                "size": 1024
+            },
+            "wp_postmeta": {
+                "inaccurateRows": 813094,
+                "insertedRows": 902583,
+                "size": 168656896
+            },
+            "wp_posts": {
+                "inaccurateRows": 14455,
+                "insertedRows": 13958,
+                "size": 7421952
+            },
+            "wp_termmeta": {
+                "inaccurateRows": 0,
+                "insertedRows": 0,
+                "size": 49152
+            },
+            "wp_terms": {
+                "inaccurateRows": 6,
+                "insertedRows": 7,
+                "size": 49152
+            },
+            "wp_term_relationships": {
+                "inaccurateRows": 97,
+                "insertedRows": 102,
+                "size": 32768
+            },
+            "wp_term_taxonomy": {
+                "inaccurateRows": 7,
+                "insertedRows": 7,
+                "size": 49152
+            },
+            "wp_usermeta": {
+                "inaccurateRows": 72,
+                "insertedRows": 72,
+                "size": 49152
+            },
+            "wp_users": {
+                "inaccurateRows": 2,
+                "insertedRows": 2,
+                "size": 65536
+            }
+        },
+        "lowerCaseTableNames": 0,
+        "dbEngine": "MariaDB",
+        "version": "10.5.22",
+        "versionComment": "MariaDB Server",
+        "viewCount": 0,
+        "procCount": 0,
+        "funcCount": 0,
+        "triggerList": []
+    },
+    "packInfo": {
+        "packageId": 12,
+        "packageName": "20211024_wikitongues",
+        "packageHash": "e0d420a-10231158",
+        "secondaryHash": "dfc2097-10231158"
+    },
+    "fileInfo": {
+        "dirCount": 2027,
+        "fileCount": 15360,
+        "size": 291012536
+    },
+    "wpInfo": {
+        "version": "6.3.1",
+        "is_multisite": false,
+        "network_id": 1,
+        "targetRoot": "\/home\/wikitong\/public_html",
+        "targetPaths": [
+            "\/home\/wikitong\/public_html"
+        ],
+        "adminUsers": [
+            {
+                "ID": "1",
+                "user_login": "wt_admin",
+                "id": "1"
+            }
+        ],
+        "configs": {
+            "defines": {
+                "ABSPATH": {
+                    "value": "\/home\/wikitong\/public_html\/",
+                    "inWpConfig": true
+                },
+                "DB_CHARSET": {
+                    "value": "utf8",
+                    "inWpConfig": true
+                },
+                "DB_COLLATE": {
+                    "value": "",
+                    "inWpConfig": true
+                },
+                "AUTH_KEY": {
+                    "value": "$?p:s]ZW6SO8+)C 6L%D7fa^00|%5Tg>59S+gh.Vswapn(XJ->&59Z=<2o !YN4K",
+                    "inWpConfig": true
+                },
+                "SECURE_AUTH_KEY": {
+                    "value": "H|P+Qi4;xbA09WU5>-YWN+KNFPB74=r4D`LP 26XQv&;InX.h{y+a? z._ki(Qg2",
+                    "inWpConfig": true
+                },
+                "LOGGED_IN_KEY": {
+                    "value": "e6MN?NsK+6+xr?;~eKQ,gmg.>D[~d]d;-s&?-[ztH[?[SCBMDF[8* DO<Z!-f53|",
+                    "inWpConfig": true
+                },
+                "NONCE_KEY": {
+                    "value": "Ft#2MK(=9*#|R[8Hb|!?9Li&`%X7Ynl%:W=5cX4[qo1BU)$:=c#zby|UQwh1sCmT",
+                    "inWpConfig": true
+                },
+                "AUTH_SALT": {
+                    "value": "75Uu>.BN.Er`vptXnX|C[=,|H}Ok5r23-A09:(;o,Xv(B[|xhDDf=D\/&RM[dUDmx",
+                    "inWpConfig": true
+                },
+                "SECURE_AUTH_SALT": {
+                    "value": "%:HG&JHF(vQ6I`Q`^L1N$Sqg!>85&5-xmE}(V-zvj*=!}E<*FJ:<3L5Aj1Lh,i5~",
+                    "inWpConfig": true
+                },
+                "LOGGED_IN_SALT": {
+                    "value": "+RQ]U\/(. #\/,*q$=%y+D;f,H4zXtwxXSxG0Cp R`q~Z6WktUF;c;7U`sXcI>}@3h",
+                    "inWpConfig": true
+                },
+                "NONCE_SALT": {
+                    "value": "p+-1%aNi)lRKd:`gU~HO)y[c^LwYgj1|)$lLcWnU4dGwu7D.dqi)6#jke[&*k(+=",
+                    "inWpConfig": true
+                },
+                "WP_CONTENT_DIR": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content",
+                    "inWpConfig": false
+                },
+                "WP_CONTENT_URL": {
+                    "value": "https:\/\/wikitongues.org\/wp-content",
+                    "inWpConfig": false
+                },
+                "WP_PLUGIN_DIR": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "WP_PLUGIN_URL": {
+                    "value": "https:\/\/wikitongues.org\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "PLUGINDIR": {
+                    "value": "wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "AUTOSAVE_INTERVAL": {
+                    "value": 60,
+                    "inWpConfig": false
+                },
+                "WP_POST_REVISIONS": {
+                    "value": true,
+                    "inWpConfig": false
+                },
+                "COOKIE_DOMAIN": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "MULTISITE": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "SCRIPT_DEBUG": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG_LOG": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_DEBUG_DISPLAY": {
+                    "value": true,
+                    "inWpConfig": false
+                },
+                "WP_MEMORY_LIMIT": {
+                    "value": "40M",
+                    "inWpConfig": false
+                },
+                "WP_MAX_MEMORY_LIMIT": {
+                    "value": "256M",
+                    "inWpConfig": false
+                },
+                "WP_CACHE": {
+                    "value": false,
+                    "inWpConfig": false
+                },
+                "WP_LANG_DIR": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content\/languages",
+                    "inWpConfig": false
+                },
+                "WP_CRON_LOCK_TIMEOUT": {
+                    "value": 60,
+                    "inWpConfig": false
+                },
+                "COOKIEPATH": {
+                    "value": "\/",
+                    "inWpConfig": false
+                },
+                "SITECOOKIEPATH": {
+                    "value": "\/",
+                    "inWpConfig": false
+                },
+                "ADMIN_COOKIE_PATH": {
+                    "value": "\/wp-admin",
+                    "inWpConfig": false
+                },
+                "PLUGINS_COOKIE_PATH": {
+                    "value": "\/wp-content\/plugins",
+                    "inWpConfig": false
+                },
+                "TEMPLATEPATH": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content\/themes\/blankslate",
+                    "inWpConfig": false
+                },
+                "STYLESHEETPATH": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content\/themes\/blankslate-child",
+                    "inWpConfig": false
+                },
+                "EMPTY_TRASH_DAYS": {
+                    "value": 30,
+                    "inWpConfig": false
+                },
+                "FORCE_SSL_ADMIN": {
+                    "value": true,
+                    "inWpConfig": false
+                },
+                "WPMU_PLUGIN_DIR": {
+                    "value": "\/home\/wikitong\/public_html\/wp-content\/mu-plugins",
+                    "inWpConfig": false
+                },
+                "WPMU_PLUGIN_URL": {
+                    "value": "https:\/\/wikitongues.org\/wp-content\/mu-plugins",
+                    "inWpConfig": false
+                },
+                "MUPLUGINDIR": {
+                    "value": "wp-content\/mu-plugins",
+                    "inWpConfig": false
+                }
+            },
+            "realValues": {
+                "siteUrl": "https:\/\/wikitongues.org",
+                "homeUrl": "https:\/\/wikitongues.org",
+                "loginUrl": "https:\/\/wikitongues.org\/backdoor\/",
+                "contentUrl": "https:\/\/wikitongues.org\/wp-content",
+                "uploadBaseUrl": "https:\/\/wikitongues.org\/wp-content\/uploads",
+                "pluginsUrl": "https:\/\/wikitongues.org\/wp-content\/plugins",
+                "mupluginsUrl": "https:\/\/wikitongues.org\/wp-content\/mu-plugins",
+                "themesUrl": "https:\/\/wikitongues.org\/wp-content\/themes",
+                "originalPaths": {
+                    "home": "\/home\/wikitong\/public_html",
+                    "abs": "\/home\/wikitong\/public_html",
+                    "wpconfig": "\/home\/wikitong\/public_html",
+                    "wpcontent": "\/home\/wikitong\/public_html\/wp-content",
+                    "uploads": "\/home\/wikitong\/public_html\/wp-content\/uploads",
+                    "plugins": "\/home\/wikitong\/public_html\/wp-content\/plugins",
+                    "muplugins": "\/home\/wikitong\/public_html\/wp-content\/mu-plugins",
+                    "themes": "\/home\/wikitong\/public_html\/wp-content\/themes"
+                },
+                "archivePaths": {
+                    "home": "\/home\/wikitong\/public_html",
+                    "abs": "\/home\/wikitong\/public_html",
+                    "wpconfig": "\/home\/wikitong\/public_html",
+                    "wpcontent": "\/home\/wikitong\/public_html\/wp-content",
+                    "uploads": "\/home\/wikitong\/public_html\/wp-content\/uploads",
+                    "plugins": "\/home\/wikitong\/public_html\/wp-content\/plugins",
+                    "muplugins": "\/home\/wikitong\/public_html\/wp-content\/mu-plugins",
+                    "themes": "\/home\/wikitong\/public_html\/wp-content\/themes"
+                }
+            }
+        },
+        "plugins": {
+            "advanced-custom-fields-pro\/acf.php": {
+                "slug": "advanced-custom-fields-pro\/acf.php",
+                "name": "Advanced Custom Fields PRO",
+                "version": "6.2.1.1",
+                "pluginURI": "https:\/\/www.advancedcustomfields.com",
+                "author": "WP Engine",
+                "authorURI": "https:\/\/wpengine.com\/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=plugin_directory&utm_content=advanced_custom_fields",
+                "description": "Customize WordPress with powerful, professional and intuitive fields.",
+                "title": "Advanced Custom Fields PRO",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "airtable-updater-master\/airtable-updater.php": {
+                "slug": "airtable-updater-master\/airtable-updater.php",
+                "name": "Airtable Site Updater",
+                "version": "1.0.2",
+                "pluginURI": "wikitongues.org",
+                "author": "Wikitongues",
+                "authorURI": "wikitongues.org",
+                "description": "Updates the Wikitongues website from Airtable views.",
+                "title": "Airtable Site Updater",
+                "networkActive": false,
+                "active": false,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "akismet\/akismet.php": {
+                "slug": "akismet\/akismet.php",
+                "name": "Akismet Anti-spam: Spam Protection",
+                "version": "5.3",
+                "pluginURI": "https:\/\/akismet.com\/",
+                "author": "Automattic - Anti-spam Team",
+                "authorURI": "https:\/\/automattic.com\/wordpress-plugins\/",
+                "description": "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam<\/strong>. Akismet Anti-spam keeps your site protected even while you sleep. To get started: activate the Akismet plugin and then go to your Akismet Settings page to set up your API key.",
+                "title": "Akismet Anti-spam: Spam Protection",
+                "networkActive": false,
+                "active": false,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "classic-editor\/classic-editor.php": {
+                "slug": "classic-editor\/classic-editor.php",
+                "name": "Classic Editor",
+                "version": "1.6.3",
+                "pluginURI": "https:\/\/wordpress.org\/plugins\/classic-editor\/",
+                "author": "WordPress Contributors",
+                "authorURI": "https:\/\/github.com\/WordPress\/classic-editor\/",
+                "description": "Enables the WordPress classic editor and the old-style Edit Post screen with TinyMCE, Meta Boxes, etc. Supports the older plugins that extend this screen.",
+                "title": "Classic Editor",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "coming-soon\/coming-soon.php": {
+                "slug": "coming-soon\/coming-soon.php",
+                "name": "Coming Soon Page, Maintenance Mode, Landing Pages & WordPress Website Builder by SeedProd",
+                "version": "6.15.15.3",
+                "pluginURI": "https:\/\/www.seedprod.com\/lite-upgrade\/?utm_source=WordPress&utm_campaign=liteplugin&utm_medium=plugin-uri-link",
+                "author": "SeedProd",
+                "authorURI": "https:\/\/www.seedprod.com\/lite-upgrade\/?utm_source=WordPress&utm_campaign=liteplugin&utm_medium=author-uri-link",
+                "description": "The Easiest WordPress Drag & Drop Page Builder that allows you to build your webiste, create Landing Pages, Coming Soon Pages, Maintenance Mode Pages and more.",
+                "title": "Coming Soon Page, Maintenance Mode, Landing Pages & WordPress Website Builder by SeedProd",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "duplicator\/duplicator.php": {
+                "slug": "duplicator\/duplicator.php",
+                "name": "Duplicator",
+                "version": "1.5.6",
+                "pluginURI": "https:\/\/duplicator.com\/",
+                "author": "Duplicator",
+                "authorURI": "https:\/\/duplicator.com\/",
+                "description": "Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.",
+                "title": "Duplicator",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "Basic-Auth-master\/basic-auth.php": {
+                "slug": "Basic-Auth-master\/basic-auth.php",
+                "name": "JSON Basic Authentication",
+                "version": "0.1",
+                "pluginURI": "https:\/\/github.com\/WP-API\/Basic-Auth",
+                "author": "WordPress API Team",
+                "authorURI": "https:\/\/github.com\/WP-API",
+                "description": "Basic Authentication handler for the JSON API, used for development and debugging purposes",
+                "title": "JSON Basic Authentication",
+                "networkActive": false,
+                "active": false,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "integromat-connector\/index.php": {
+                "slug": "integromat-connector\/index.php",
+                "name": "Make Connector",
+                "version": "1.5.8",
+                "pluginURI": "",
+                "author": "Celonis s.r.o.",
+                "authorURI": "https:\/\/www.make.com\/en?utm_source=wordpress&utm_medium=partner&utm_campaign=wordpress-partner-make",
+                "description": "Safely connect your site to make.com, work with custom meta fields through the REST API.",
+                "title": "Make Connector",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wp-all-export\/wp-all-export.php": {
+                "slug": "wp-all-export\/wp-all-export.php",
+                "name": "WP All Export",
+                "version": "1.3.9",
+                "pluginURI": "http:\/\/www.wpallimport.com\/upgrade-to-wp-all-export-pro\/?utm_source=export-plugin-free&utm_medium=wp-plugins-page&utm_campaign=upgrade-to-pro",
+                "author": "Soflyy",
+                "authorURI": "",
+                "description": "Export any post type to a CSV or XML file. Edit the exported data, and then re-import it later using WP All Import.",
+                "title": "WP All Export",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wp-bulk-delete\/wp-bulk-delete.php": {
+                "slug": "wp-bulk-delete\/wp-bulk-delete.php",
+                "name": "WP Bulk Delete",
+                "version": "1.2.5",
+                "pluginURI": "http:\/\/xylusthemes.com\/plugins\/wp-bulk-delete\/",
+                "author": "Xylus Themes",
+                "authorURI": "http:\/\/xylusthemes.com",
+                "description": "Bulk delete and cleanup anything like posts, comments, users, meta fields, taxonomy terms. with powerful filter options.",
+                "title": "WP Bulk Delete",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            },
+            "wps-hide-login\/wps-hide-login.php": {
+                "slug": "wps-hide-login\/wps-hide-login.php",
+                "name": "WPS Hide Login",
+                "version": "1.9.9",
+                "pluginURI": "",
+                "author": "WPServeur, NicolasKulka, wpformation",
+                "authorURI": "https:\/\/wpserveur.net",
+                "description": "Protect your website by changing the login URL and preventing access to wp-login.php page and wp-admin directory while not logged-in",
+                "title": "WPS Hide Login",
+                "networkActive": false,
+                "active": true,
+                "mustUse": false,
+                "dropIns": false
+            }
+        },
+        "themes": {
+            "blankslate-child": {
+                "slug": "blankslate-child",
+                "themeName": "Wikitongues",
+                "version": "1.0.0",
+                "themeURI": "",
+                "parentTheme": "blankslate",
+                "template": "blankslate",
+                "stylesheet": "blankslate-child",
+                "description": "Wikitongues theme designed based on brand guidelines by Haye Anderson, John Geany, Katrina Lee, and Elizabeth Kenney and built based on code from the BlankSlate Theme.",
+                "author": "Daniel B\u00f6gre Udell (@bogreudell)",
+                "authorURI": "https:\/\/bogreudell.com",
+                "tags": [],
+                "isAllowed": true,
+                "isActive": true,
+                "defaultTheme": false
+            },
+            "blankslate": {
+                "slug": "blankslate",
+                "themeName": "BlankSlate",
+                "version": "2023",
+                "themeURI": "https:\/\/github.com\/tidythemes\/blankslate",
+                "parentTheme": false,
+                "template": "blankslate",
+                "stylesheet": "blankslate",
+                "description": "Donations: https:\/\/calmestghost.com\/donate. BlankSlate is the definitive WordPress boilerplate starter theme. We've carefully constructed the most clean and minimalist theme possible for designers and developers to use as a base to build websites for clients or to build completely custom themes from scratch. Clean, simple, unstyled, semi-minified, unformatted, and valid code, SEO-friendly, jQuery-enabled, no programmer comments, standardized and as white label as possible, and most importantly, the CSS is reset for cross-browser-compatability and no intrusive visual CSS styles have been added whatsoever. A perfect skeleton theme. For support and suggestions, go to: https:\/\/github.com\/tidythemes\/blankslate\/issues. Thank you.",
+                "author": "TidyThemes",
+                "authorURI": "https:\/\/github.com\/tidythemes",
+                "tags": [
+                    "accessibility-ready",
+                    "one-column",
+                    "two-columns",
+                    "custom-menu",
+                    "featured-images",
+                    "microformats",
+                    "sticky-post",
+                    "threaded-comments",
+                    "translation-ready"
+                ],
+                "isAllowed": true,
+                "isActive": false,
+                "defaultTheme": false
+            }
+        }
+    },
+    "defaultStorageId": -1,
+    "components": [
+        "package_component_db",
+        "package_component_core",
+        "package_component_plugins",
+        "package_component_themes",
+        "package_component_uploads",
+        "package_component_other"
+    ],
+    "opts_delete": "[\"duplicator_ui_view_state\",\"duplicator_package_active\",\"duplicator_settings\",\"duplicator_is_pro_enable_notice_dismissed\"]",
+    "brand": {
+        "name": "Duplicator",
+        "isDefault": true,
+        "logo": "<i class=\"fa fa-bolt fa-sm\"><\/i> Duplicator",
+        "enabled": false,
+        "style": []
+    },
+    "overwriteInstallerParams": {
+        "blogname": {
+            "value": "Wikitongues"
+        }
+    },
+    "installer_base_name": "installer.php.bak",
+    "installer_backup_name": "20211024_wikitongues_e0d420a529917e6e7066_20231010231158_installer-backup.php",
+    "package_name": "20211024_wikitongues_e0d420a529917e6e7066_20231010231158_archive.zip",
+    "package_hash": "e0d420a-10231158",
+    "package_notes": ""
+}

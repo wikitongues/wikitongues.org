@@ -1,0 +1,37 @@
+.wt_meta--languages-single
+	width calc(100%/4)
+	float left
+	padding-left 6rem
+	
+	strong
+		text--strong($black)
+	
+	p
+		margin-bottom 1.5rem
+		text-transform uppercase
+		
+		strong
+			text--strong($black)
+	
+	ul
+		li
+			margin-bottom 1.5rem
+	
+	a
+		text-decoration none
+		
+		strong
+			text--strong($blue)
+			
+		span
+			text--body($blue)
+		
+		&:hover
+			text-decoration underline
+
+@media all and (max-width:$mobile)
+	.wt_meta--languages-single
+		float none
+		margin-bottom 6rem
+		width 100%
+		padding 0 3rem
