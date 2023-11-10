@@ -23,10 +23,17 @@
                     "label": "Banner image",
                     "name": "banner_image",
                     "aria-label": "",
-                    "type": "image",
+                    "type": "gallery",
                     "instructions": "",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_64c18e86cc5f8",
+                                "operator": "!=empty"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -34,6 +41,8 @@
                     },
                     "return_format": "array",
                     "library": "all",
+                    "min": "",
+                    "max": "",
                     "min_width": "",
                     "min_height": "",
                     "min_size": "",
@@ -41,7 +50,8 @@
                     "max_height": "",
                     "max_size": "",
                     "mime_types": "",
-                    "preview_size": "medium"
+                    "insert": "append",
+                    "preview_size": "thumbnail"
                 },
                 {
                     "key": "field_64c18e86cc5f8",
@@ -339,5 +349,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1692124762
+    "modified": 1699626269
 }

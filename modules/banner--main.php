@@ -1,12 +1,20 @@
 <?php
 // universal banner variables; $banner_image is defined per template/page
-$banner_image = $page_banner['banner_image'];
+if(is_front_page()){
+	$banner_images = $page_banner['banner_image'];
+	$random_image_index = array_rand($banner_images);
+	$banner_image = $banner_images[$random_image_index]; 
+}
+else{
+	$banner_image = $page_banner['banner_image'];
+}
 $banner_header = $page_banner['banner_header'];
 $banner_copy = $page_banner['banner_copy'];
 $banner_cta = $page_banner['banner_cta'];
-$banner_cta_placeholder = $page_banner['banner_cta_placeholder']; 
+$banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
 ?>
 
+<!-- testing -->
 <div class="wt_banner" role="img" aria-label="<?php echo $banner_image['alt']; ?>" style="background-image:url(<?php echo $banner_image['url']; ?>);">
 	<div class="wt_banner__copy">
 		<h1 class="wt_text--header .SchnyderWideM-Light-Web">
