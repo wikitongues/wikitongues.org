@@ -25,17 +25,20 @@ body.logged-in {
 body.logged-in .wt_header {
   top: 32px !important;
 }
-body.home,
-body.page-template-template-giving-campaign {
+body.home {
   padding-top: 0 !important;
 }
-body.home.logged-in,
-body.page-template-template-giving-campaign.logged-in {
+body.home.logged-in {
   padding-top: 32px !important;
 }
-body.home.logged-in .wt_header,
-body.page-template-template-giving-campaign.logged-in .wt_header {
+body.home.logged-in .wt_header {
   top: 32px !important;
+}
+body.page-template-template-giving-campaign {
+  padding-top: 59.63px !important;
+}
+body.page-template-template-giving-campaign.logged-in {
+  padding-top: 91.63px !important;
 }
 .wt_header {
   z-index: 10;
