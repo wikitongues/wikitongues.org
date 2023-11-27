@@ -1,11 +1,11 @@
 {
-    "key": "group_64d2a5328715d",
-    "title": "Template: Revitalization Fellows",
+    "key": "group_65610190d8adc",
+    "title": "Template: Giving Campaign",
     "fields": [
         {
-            "key": "field_64d2a5328d9c0",
-            "label": "Revitalization Fellows banner",
-            "name": "revitalization_fellows_banner",
+            "key": "field_656109a310d3f",
+            "label": "Giving Campaign Banner",
+            "name": "giving_campaign_banner",
             "aria-label": "",
             "type": "group",
             "instructions": "",
@@ -19,7 +19,7 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_64d2a5328f8b5",
+                    "key": "field_656109a310d40",
                     "label": "Banner image",
                     "name": "banner_image",
                     "aria-label": "",
@@ -44,7 +44,7 @@
                     "preview_size": "medium"
                 },
                 {
-                    "key": "field_64d2a5328f8c5",
+                    "key": "field_656109a310d41",
                     "label": "Banner header",
                     "name": "banner_header",
                     "aria-label": "",
@@ -64,7 +64,7 @@
                     "new_lines": "br"
                 },
                 {
-                    "key": "field_64d2a5328f8d0",
+                    "key": "field_656109a310d42",
                     "label": "Banner copy",
                     "name": "banner_copy",
                     "aria-label": "",
@@ -84,7 +84,7 @@
                     "new_lines": ""
                 },
                 {
-                    "key": "field_64d2a5328f8e7",
+                    "key": "field_656109a310d43",
                     "label": "Banner CTA",
                     "name": "banner_cta",
                     "aria-label": "",
@@ -100,7 +100,7 @@
                     "return_format": "array"
                 },
                 {
-                    "key": "field_64d2a5328f91e",
+                    "key": "field_656109a310d44",
                     "label": "Banner CTA placeholder",
                     "name": "banner_cta_placeholder",
                     "aria-label": "",
@@ -120,6 +120,43 @@
                     "append": ""
                 }
             ]
+        },
+        {
+            "key": "field_65610191861fc",
+            "label": "Progress Bar",
+            "name": "progress_bar",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6561019f861fd",
+            "label": "Donation Link",
+            "name": "donation_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -127,7 +164,7 @@
             {
                 "param": "page_template",
                 "operator": "==",
-                "value": "template-revitalization-fellows.php"
+                "value": "template-giving-campaign.php"
             }
         ]
     ],
@@ -140,5 +177,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1700858292
+    "modified": 1700858320
 }

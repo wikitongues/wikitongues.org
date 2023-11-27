@@ -182,7 +182,7 @@
 		</aside>
 
 		
-		<?php if ( !is_front_page() ): ?>
+		<?php if ( !is_front_page() && !is_page_template('template-giving-campaign.php') ): ?>
 		<section class="wt_header--secondary">
 			<?php
 				if ( 
