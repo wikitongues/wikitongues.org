@@ -139,6 +139,7 @@
 		</div>
 
 		<!-- navigation -->
+		<!-- test -->
 		<?php 
 
 		// global var? define somewher else?

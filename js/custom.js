@@ -113,3 +113,114 @@ window.addEventListener("load", function () {
   carouselScroll();
   mobileTrigger();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const navItems = document.querySelectorAll(".menu-item-has-children");
+  const nav = document.querySelector(".wt_header__nav");
+  const menu = document.querySelector("#menu-main-menu");
+  const darkBackground = document.createElement("div");
+  darkBackground.id = "dark";
+  darkBackground.style.display = "none";
+  darkBackground.style.content = "";
+  darkBackground.style.position = "fixed";
+  darkBackground.style.zIndex = "-1";
+  darkBackground.style.top = "0";
+  darkBackground.style.left = "0";
+  darkBackground.style.width = "100%";
+  darkBackground.style.height = "100vh";
+  darkBackground.style.background = "rgba(0, 0, 0, 0.4)";
+
+  function hideAllSubMenus() {
+    const subMenus = document.querySelectorAll(".sub-menu");
+    subMenus.forEach((menu) => {
+      if (menu.parentElement.hasAttribute("id")) {
+        menu.style.display = "none";
+      }
+    });
+  }
+
+  function fadeIn(element) {
+    element.style.opacity = 0;
+    element.style.transition = "opacity 0.2s ease";
+
+    let opacity = 0;
+    const intervalTime = 10;
+    const targetOpacity = 1;
+    const increment = 0.05;
+
+    const interval = setInterval(() => {
+      if (opacity >= targetOpacity) {
+        clearInterval(interval);
+      } else {
+        opacity += increment;
+        element.style.opacity = opacity;
+      }
+    }, intervalTime);
+  }
+
+  function addDarkOverlay() {
+    darkBackground.style.display = "block";
+    nav.appendChild(darkBackground);
+    fadeIn(darkBackground);
+  }
+
+  function fadeOut(element) {
+    element.style.transition = "opacity 0.2s ease";
+
+    const intervalTime = 10;
+    const decrement = 0.05;
+
+    const interval = setInterval(() => {
+      if (element.style.opacity <= 0) {
+        clearInterval(interval);
+        element.style.display = "none";
+      } else {
+        element.style.opacity -= decrement;
+      }
+    }, intervalTime);
+  }
+
+  function removeDarkOverlay() {
+    const dark = document.querySelector("#dark");
+    if (dark) {
+      fadeOut(dark);
+    }
+  }
+
+  navItems.forEach((item) => {
+    if (item.parentElement.id == "menu-main-menu") {
+      const subMenu = item.querySelector(".sub-menu");
+      const currItem =
+        item.classList.contains("current_page_parent") ||
+        item.classList.contains("current_page_item");
+      if (currItem) {
+        item.addEventListener("mouseover", () => {
+          darkBackground.style.display = "none";
+          hideAllSubMenus();
+        });
+      } else if (subMenu) {
+        menu.addEventListener("mouseenter", () => {
+          addDarkOverlay();
+        });
+        item.addEventListener("mouseover", () => {
+          hideAllSubMenus();
+          subMenu.style.display = "block";
+          darkBackground.style.display = "block";
+        });
+        item.addEventListener("mouseout", () => {
+          hideAllSubMenus();
+        });
+        menu.addEventListener("mouseleave", () => {
+          removeDarkOverlay();
+          hideAllSubMenus();
+        });
+      }
+    }
+  });
+
+  const donate = document.querySelector(".menu-item-type-custom");
+  donate.addEventListener("mouseenter", () => {
+    darkBackground.style.display = "block";
+    hideAllSubMenus();
+  });
+});

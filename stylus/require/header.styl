@@ -105,7 +105,7 @@ body
 					
 	&__nav
 		z-index inherit
-		flex-grow 3
+		margin-left auto
 		text-align right
 		font-size 0
 		
@@ -131,13 +131,6 @@ body
 				
 				&>a
 					color $blue !important
-				
-				&:hover
-					&:before
-						display none !important
-						
-					.sub-menu
-						display none !important
 			
 			&>a // button--small is designed for a elements not li
 				text-decoration none
@@ -147,32 +140,21 @@ body
 				cursor pointer
 				background $white !important
 				
-				&:before
-					content ''
-					z-index -1
-					position fixed
-					top 0
-					left 0
-					width 100%
-					height 100vh
-					background rgba(0,0,0,.4)
-				
 				&>a
 					color $blue !important
-										
-				.sub-menu
-					display block
 		
 		.sub-menu
 			display none
 			position absolute
-			top 49px
+			top 38px
 			left 0
 			width 100%
 			padding 5px
 			background $white
 			text-align center
-			border-top 6px solid $blue
+			border-width 6px 0.5px 0.5px 0.5px 
+			border-color $blue
+			border-style solid 
 			box-shadow 0 0 100px rgba(0,0,0,.05)
 				
 			li
