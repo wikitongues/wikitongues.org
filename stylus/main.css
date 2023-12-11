@@ -2094,6 +2094,15 @@ text
 .wt_footer__copyright {
   font-weight: 700 !important;
 }
+.wt_footer__candid {
+  display: inline-block;
+  width: 90px;
+  margin-top: 2rem;
+}
+.wt_footer__candid img {
+  width: 100%;
+  height: auto;
+}
 @media all and (max-width: 1024px) {
   .wt_footer__section:first-of-type {
     display: block;
