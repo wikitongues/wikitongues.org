@@ -1,3 +1,23 @@
+<?php
+session_start();
+
+if (isset($_SESSION['last_visit_time'])) {
+    $currentTime = time();
+    $lastVisitTime = $_SESSION['last_visit_time'];
+
+    $timeDifference = $currentTime - $lastVisitTime;
+
+	$daysSinceLastVisit = $timeDifference;
+    //$daysSinceLastVisit = floor($timeDifference / (60 * 60 * 24));
+
+    //echo "It's been $daysSinceLastVisit days since your last visit.";
+
+	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;  //this is seconds since last visit for testing purposes 
+}
+
+$_SESSION['last_visit_time'] = time();
+?>
+
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -120,7 +140,12 @@
 <?php wp_body_open(); ?>
 
 	<!-- alert/message banner -->
-	<?php // include( 'modules/banner--alert.php' ); ?>
+	<?php 
+	//For testing purposes: have to reload page at least 10 seconds after last visit for the alert to appear 
+		if($_SESSION['days_since_last_visit']>10){ 
+			include( 'modules/banner--alert.php' ); 
+		}
+	?>
 	
 	<!-- header -->
 	<header class="wt_header <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" role="banner">
