@@ -223,4 +223,109 @@ document.addEventListener("DOMContentLoaded", function () {
     darkBackground.style.display = "block";
     hideAllSubMenus();
   });
+
+  let body = document.querySelector(".page");
+  let home = document.querySelector(".home");
+  let wpadminbar = document.querySelector("#wpadminbar");
+  let bannerSearchBar = document.querySelector(".wt_banner--searchbar");
+
+  let header = document.querySelector(".wt_header");
+  let alertContainer = document.querySelector(".banner_alert_container");
+  let alertHeight = alertContainer ? alertContainer.offsetHeight : 0;
+
+  if (body && !home && alertContainer) {
+    alertContainer.style.position = "absolute";
+    alertContainer.style.top = 0;
+  }
+
+  let banner = document.querySelector(".wt_banner");
+
+  if (body && !home && banner && alertContainer && !wpadminbar) {
+    banner.style.paddingTop =
+      parseInt(
+        window.getComputedStyle(banner).getPropertyValue("padding-top"),
+        10
+      ) +
+      alertContainer.offsetHeight +
+      "px";
+  }
+  if (body && !home && banner && alertContainer && wpadminbar) {
+    banner.style.paddingTop =
+      parseInt(
+        window.getComputedStyle(banner).getPropertyValue("padding-top"),
+        10
+      ) +
+      wpadminbar.offsetHeight +
+      alertContainer.offsetHeight +
+      "px";
+  }
+
+  if(body && !home && bannerSearchBar && alertContainer && !wpadminbar){
+    bannerSearchBar.style.paddingTop =
+      parseInt(
+        window
+          .getComputedStyle(bannerSearchBar)
+          .getPropertyValue("padding-top"),
+        10
+      ) +
+      alertContainer.offsetHeight +
+      "px";
+  }
+  if (body && !home && bannerSearchBar && alertContainer && wpadminbar) {
+    bannerSearchBar.style.paddingTop =
+      parseInt(
+        window
+          .getComputedStyle(bannerSearchBar)
+          .getPropertyValue("padding-top"),
+        10
+      ) +
+      wpadminbar.offsetHeight +
+      alertContainer.offsetHeight +
+      "px";
+  }
+
+  let start = 0;
+
+  function displayBannerAlert() {
+    if(alertContainer){
+      header.style.marginTop = alertContainer.offsetHeight + "px";
+      start = start +1;
+    }
+  }
+
+  function adjustHeaderMargin() {
+    if (alertContainer && alertContainer.style.display!="none" ) {
+      let scrollPos = window.scrollY || window.pageYOffset;
+      let bannerTop = alertContainer.getBoundingClientRect().top + scrollPos;
+      let bannerVisibleHeight = Math.max(
+        0,
+        alertHeight + bannerTop - scrollPos
+      );
+
+      let margin = bannerVisibleHeight - bannerTop;
+
+      if(start===1){
+        window.scrollTo(0, 0);
+      }
+      else{
+        header.style.transition = "margin-top 0.2s";
+        header.style.marginTop = margin >= 0 ? margin + "px" : "0";
+      }
+
+      start = start + 1;
+    }
+  }
+
+  window.addEventListener("scroll", adjustHeaderMargin);
+
+  displayBannerAlert();
+
+  let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+
+  if(bannerAlertCloseButton){
+    bannerAlertCloseButton.addEventListener("click", function() {
+      alertContainer.style.display = "none";
+      header.style.marginTop = "0px";
+    });
+  }
 });
