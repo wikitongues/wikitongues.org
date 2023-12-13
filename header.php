@@ -7,12 +7,9 @@ if (isset($_SESSION['last_visit_time'])) {
 
     $timeDifference = $currentTime - $lastVisitTime;
 
-	$daysSinceLastVisit = $timeDifference;
-    //$daysSinceLastVisit = floor($timeDifference / (60 * 60 * 24));
+    $daysSinceLastVisit = floor($timeDifference / (60 * 60 * 24));
 
-    //echo "It's been $daysSinceLastVisit days since your last visit.";
-
-	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;  //this is seconds since last visit for testing purposes 
+	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit; 
 }
 
 $_SESSION['last_visit_time'] = time();
@@ -141,8 +138,7 @@ $_SESSION['last_visit_time'] = time();
 
 	<!-- alert/message banner -->
 	<?php 
-	//For testing purposes: have to reload page at least 10 seconds after last visit for the alert to appear 
-		if($_SESSION['days_since_last_visit']>10){ 
+		if($_SESSION['days_since_last_visit']>14){ 
 			include( 'modules/banner--alert.php' ); 
 		}
 	?>
