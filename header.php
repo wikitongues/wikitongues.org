@@ -142,9 +142,10 @@ $_SESSION['last_visit_time'] = time();
 	<!-- alert/message banner -->
 	<?php 
 	//For testing purposes: have to reload page at least 10 seconds after last visit for the alert to appear 
-		if($_SESSION['days_since_last_visit']>10){ 
-			include( 'modules/banner--alert.php' ); 
-		}
+	if ( $_SESSION['days_since_last_visit']>10 ) { 
+		// include( 'modules/banner--alert.php' ); 
+	}
+	include( 'modules/banner--alert.php' );
 	?>
 	
 	<!-- header -->
