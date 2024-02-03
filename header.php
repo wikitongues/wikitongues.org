@@ -1,18 +1,19 @@
 <?php
+// define session variable for displaying alert banner
 session_start();
 
 if (isset($_SESSION['last_visit_time'])) {
     $currentTime = time();
     $lastVisitTime = $_SESSION['last_visit_time'];
-
     $timeDifference = $currentTime - $lastVisitTime;
+    $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
+    // for testing, turns $daysSinceLastVisit to seconds:
+    // $daysSinceLastVisit = $timeDifference;
 
-	$daysSinceLastVisit = $timeDifference;
-    //$daysSinceLastVisit = floor($timeDifference / (60 * 60 * 24));
+	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;
 
-    //echo "It's been $daysSinceLastVisit days since your last visit.";
-
-	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;  //this is seconds since last visit for testing purposes 
+    // for testing:
+    // echo "It's been $daysSinceLastVisit days since your last visit.";
 }
 
 $_SESSION['last_visit_time'] = time();
@@ -141,11 +142,10 @@ $_SESSION['last_visit_time'] = time();
 
 	<!-- alert/message banner -->
 	<?php 
-	//For testing purposes: have to reload page at least 10 seconds after last visit for the alert to appear 
-	if ( $_SESSION['days_since_last_visit']>10 ) { 
-		// include( 'modules/banner--alert.php' ); 
+	// load alert banner if user hasn't visited the site in 7 days
+	if ( $_SESSION['days_since_last_visit']>7 ) { 
+		include( 'modules/banner--alert.php' ); 
 	}
-	include( 'modules/banner--alert.php' );
 	?>
 	
 	<!-- header -->
