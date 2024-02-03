@@ -6,9 +6,10 @@ if (isset($_SESSION['last_visit_time'])) {
     $currentTime = time();
     $lastVisitTime = $_SESSION['last_visit_time'];
     $timeDifference = $currentTime - $lastVisitTime;
-    $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
-    // for testing, turns $daysSinceLastVisit to seconds:
-    // $daysSinceLastVisit = $timeDifference;
+    // unable to verify that days counter is working
+    // $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
+    // set $daysSinceLastVisit to seconds:
+    $daysSinceLastVisit = $timeDifference;
 
 	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;
 

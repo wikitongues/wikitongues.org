@@ -323,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
 
   if(bannerAlertCloseButton){
+    console.log('button exists');
     bannerAlertCloseButton.addEventListener("click", function() {
       alertContainer.style.display = "none";
       header.style.marginTop = "0px";
