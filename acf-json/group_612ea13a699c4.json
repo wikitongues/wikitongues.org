@@ -202,6 +202,31 @@
             "append": ""
         },
         {
+            "key": "field_65bd4f8664b53",
+            "label": "Banner Alert Status",
+            "name": "banner_alert_status",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "active": "Active",
+                "inactive": "Inactive"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "layout": "vertical",
+            "save_other_choice": 0
+        },
+        {
             "key": "field_6574f4c7fcea2",
             "label": "Banner Alert Text",
             "name": "banner_alert_text",
@@ -277,5 +302,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1702163709
+    "modified": 1706905548
 }
