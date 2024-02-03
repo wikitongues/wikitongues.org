@@ -1,39 +1,40 @@
-.wt_banner_alert
-	display flex
-	width 100%
-	height auto
-	text--body($parchment)
-	font-size 1.28rem !important
-	font-weight 700 !important
-	text-transform uppercase !important
-	align-items center
-
+/* 
+ * I would like to consolidate .banner_alert_container
+ * with the nested .wt_banner-alert class below, but whenever 
+ * I change it, the styling breaks and I don't know why. 
+ */
+ 
 .banner_alert_container 
+	position relative
 	display flex
 	justify-content center
-	padding .5rem
-	background-color $blue
-	border #dcdcdc80
-	// border-style solid
-	// border-width 0.5px
 	width 100%
 	height auto
+	padding $margin0
+	background-color $blue
 
-#banner_alert_button
-	padding 10px
-	margin 10px
-	width auto
-	button--small($parchment,$blue)
-	border none 
-	white-space nowrap
-
-#banner_alert_button_link
-	text-decoration none
-
-#banner_alert_close_button
-	position absolute
-	right 8px
-	font-size 24px
-	padding 10px
-	margin-top 5px
-	cursor pointer
+.wt_banner-alert
+	&__text
+		display flex
+		align-items center
+		width 100%
+		height auto
+		text--body($parchment)
+		font-size 1.28rem !important
+		font-weight 700 !important
+		text-transform uppercase !important
+	
+	&__button
+		margin-left $margin0
+		button--small($parchment,$blue)
+	
+		&--link
+			text-decoration none
+		
+		&--close
+			position absolute
+			right 8px
+			font-size 24px
+			padding 10px
+			margin-top 5px
+			cursor pointer

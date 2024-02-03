@@ -2178,8 +2178,18 @@ text
     margin-bottom: 4.5rem;
   }
 }
-.wt_banner_alert {
+.banner_alert_container {
+  position: relative;
   display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  background-color: #3814a5;
+}
+.wt_banner-alert__text {
+  display: flex;
+  align-items: center;
   width: 100%;
   height: auto;
   font-family: 'Graphik Web';
@@ -2192,21 +2202,9 @@ text
   font-size: 1.28rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  align-items: center;
 }
-.banner_alert_container {
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-  background-color: #3814a5;
-  border: rgba(220,220,220,0.502);
-  width: 100%;
-  height: auto;
-}
-#banner_alert_button {
-  padding: 10px;
-  margin: 10px;
-  width: auto;
+.wt_banner-alert__button {
+  margin-left: 15px;
   display: inline-block;
   padding: 1.25rem 1.5rem;
   background: #fffcef;
@@ -2219,13 +2217,11 @@ text
   text-transform: uppercase;
   text-decoration: none;
   color: #3814a5;
-  border: none;
-  white-space: nowrap;
 }
-#banner_alert_button_link {
+.wt_banner-alert__button--link {
   text-decoration: none;
 }
-#banner_alert_close_button {
+.wt_banner-alert__button--close {
   position: absolute;
   right: 8px;
   font-size: 24px;
