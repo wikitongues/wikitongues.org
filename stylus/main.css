@@ -145,6 +145,7 @@ body.page-template-template-giving-campaign.logged-in {
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
 }
 .wt_header__nav>ul>li.current_page_item,
 .wt_header__nav>ul>li.current_page_parent {
@@ -412,6 +413,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #3814a5;
+  text-wrap: nowrap;
 }
 .wt_banner__copy .wt_button--large i {
   margin-left: 0.5rem;
@@ -482,6 +484,7 @@ body.home .wt_banner {
     text-transform: uppercase;
     text-decoration: none;
     color: #9581c2;
+    text-wrap: nowrap;
   }
   .wt_banner__copy--mobile .wt_button--large i {
     margin-left: 0.5rem;
@@ -528,6 +531,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #101010;
+  text-wrap: nowrap;
   text-transform: initial !important;
   transition: background 0.2s ease-in-out;
 }
@@ -549,6 +553,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
 }
 .wt_banner--searchbar form input[type="submit"]:hover {
   cursor: pointer;
@@ -645,6 +650,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
 }
 .wt_carousel--thumbnails .wt_thumbnail__copy a i {
   margin-left: 0.5rem;
@@ -736,6 +742,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #3814a5;
+  text-wrap: nowrap;
 }
 .wt_content-block--wide__copy a i {
   margin-left: 0.5rem;
@@ -830,6 +837,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
 }
 .wt_carousel--testimonials ul .wt_testimonial__copy a i {
   margin-left: 0.5rem;
@@ -952,6 +960,7 @@ body.home .wt_banner {
   text-transform: uppercase;
   text-decoration: none;
   color: #3814a5;
+  text-wrap: nowrap;
 }
 .wt_content-block--thirds__copy a i {
   margin-left: 0.5rem;
@@ -1215,6 +1224,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
 }
 .wt_search-results__thumbnail--copy a i {
   margin-left: 0.5rem;
@@ -2006,6 +2016,7 @@ text
   text-transform: uppercase;
   text-decoration: none;
   color: #101010;
+  text-wrap: nowrap;
 }
 .wt_newsletter form input[type="email"]:focus {
   outline: none;
@@ -2023,6 +2034,7 @@ text
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
   padding-right: 4rem;
 }
 .wt_newsletter form input[type="submit"]:hover {
@@ -2162,6 +2174,7 @@ text
   text-transform: uppercase;
   text-decoration: none;
   color: #fffcef;
+  text-wrap: nowrap;
   text-align: center;
 }
 @media all and (max-width: 768px) {
@@ -2184,6 +2197,7 @@ text
   justify-content: center;
   width: 100%;
   height: auto;
+  max-width: 1800px;
   padding: 15px;
   background-color: #3814a5;
 }
@@ -2217,6 +2231,7 @@ text
   text-transform: uppercase;
   text-decoration: none;
   color: #3814a5;
+  text-wrap: nowrap;
 }
 .wt_banner-alert__button--link {
   display: flex;

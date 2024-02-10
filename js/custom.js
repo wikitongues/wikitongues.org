@@ -224,7 +224,9 @@ document.addEventListener("DOMContentLoaded", function () {
     hideAllSubMenus();
   });
 
-  let body = document.querySelector(".page");
+  // i have a strong impression that this could be simplified ~~~~DU Feb '24
+
+  let body = document.querySelector("body");
   let home = document.querySelector(".home");
   let wpadminbar = document.querySelector("#wpadminbar");
   let bannerSearchBar = document.querySelector(".wt_banner--searchbar");
@@ -323,7 +325,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let bannerAlertCloseButton = document.querySelector(".wt_banner-alert__button--close");
 
   if(bannerAlertCloseButton){
-    console.log('button exists');
     bannerAlertCloseButton.addEventListener("click", function() {
       alertContainer.style.display = "none";
       header.style.marginTop = "0px";
