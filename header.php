@@ -7,9 +7,9 @@ if (isset($_SESSION['last_visit_time'])) {
     $lastVisitTime = $_SESSION['last_visit_time'];
     $timeDifference = $currentTime - $lastVisitTime;
     // unable to verify that days counter is working
-    // $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
+    $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
     // set $daysSinceLastVisit to seconds:
-    $daysSinceLastVisit = $timeDifference;
+    // $daysSinceLastVisit = $timeDifference;
 
 	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;
 
@@ -143,8 +143,8 @@ $_SESSION['last_visit_time'] = time();
 
 	<!-- alert/message banner -->
 	<?php 
-	// load alert banner if user hasn't visited the site in 7 days
-	if ( $_SESSION['days_since_last_visit']>7 ) { 
+	// load alert banner if user hasn't visited the site in 1 day
+	if ( $_SESSION['days_since_last_visit']>1 ) { 
 		include( 'modules/banner--alert.php' ); 
 	}
 	?>
