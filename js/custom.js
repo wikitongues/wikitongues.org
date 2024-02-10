@@ -319,8 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", adjustHeaderMargin);
 
   displayBannerAlert();
-
-  let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+  // old ID - let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+  let bannerAlertCloseButton = document.querySelector(".wt_banner-alert__button--close");
 
   if(bannerAlertCloseButton){
     console.log('button exists');
