@@ -201,6 +201,72 @@
             "append": ""
         },
         {
+            "key": "field_65c80b681513e",
+            "label": "Baseline Fundraising Target",
+            "name": "baseline_fundraising_target",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "$",
+            "append": ""
+        },
+        {
+            "key": "field_65c80b741513f",
+            "label": "Ideal Fundraising Target",
+            "name": "ideal_fundraising_target",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "$",
+            "append": ""
+        },
+        {
+            "key": "field_65c80b9215141",
+            "label": "Fundraising Progress",
+            "name": "fundraising_progress",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Rounded to the nearest dollar",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "$",
+            "append": ""
+        },
+        {
             "key": "field_634b2aeef3c2d",
             "label": "Downloads",
             "name": "downloads",
@@ -504,6 +570,7 @@
                     "collapsed": "",
                     "button_label": "Add Row",
                     "rows_per_page": 20,
+                    "parent_repeater": "field_634b2b43f3c30",
                     "sub_fields": [
                         {
                             "key": "field_63bdae35bb14d",
@@ -526,8 +593,7 @@
                             "new_lines": "",
                             "parent_repeater": "field_634b2b56f3c32"
                         }
-                    ],
-                    "parent_repeater": "field_634b2b43f3c30"
+                    ]
                 }
             ]
         },
@@ -570,5 +636,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319295
+    "modified": 1707609839
 }

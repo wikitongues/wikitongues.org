@@ -11,9 +11,14 @@ get_header();
 // loop
 if ( have_posts() ) {
 	while ( have_posts() ) {
+
 		the_post(); 
 
-		// include modules report - merge from master
+		$post_date = get_the_date('Y');
+
+		if ( $post_date > 2023 ) {
+			include ( 'modules/single-reports__preview.php' );
+		}
 	}
 }
 
