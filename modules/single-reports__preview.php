@@ -10,58 +10,82 @@ $previous_projected_runway = get_field('previous_projected_runway');
 $baseline_fundraising_target = get_field('baseline_fundraising_target');
 $ideal_fundraising_target = get_field('ideal_fundraising_target');
 $fundraising_progress = get_field('fundraising_progress');
-$downloads = get_field('downloads');
-
 ?>
 
-<article class="single_reports__report">
+<article class="single_reports__report main-content">
 	<h1>
 		<?php echo the_title(); ?>
 	</h1>
 
 	<?php if ( $bank_balance ): ?>
-	<p>	<!-- how to add commas etc? -->
-		<?php echo '$'.$bank_balance; ?>
+	<p>
+		<strong>Bank Balance</strong><br>
+		<?php echo '$'.number_format($bank_balance,0); ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $runway ): ?>
 	<p>
-		<?php echo $runway; ?>
+		<strong>Actual Runway</strong><br>
+		<?php echo $runway.' months'; ?>
+	</p>
+	<?php endif; ?>
+
+	<?php if ( $projected_runway ): ?>
+	<p>
+		<strong>Projected Runway</strong><br>
+		<?php echo $projected_runway.' months'; ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $baseline_fundraising_target ): ?>
 	<p>
-		<?php echo '$'.$baseline_fundraising_target; ?>
+		<strong>Baseline Fundraising Target</strong></br>
+		<?php echo '$'.number_format($baseline_fundraising_target,0); ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $ideal_fundraising_target ): ?>
 	<p>
-		<?php echo '$'.$ideal_fundraising_target; ?>
+		<strong>Ideal Fundraising Target</strong></br>
+		<?php echo '$'.number_format($ideal_fundraising_target,0); ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $fundraising_progress ): ?>
 	<p>
-		<?php echo '$'.$fundraising_progress; ?>
+		<strong>Fundraising Progress</strong></br>
+		<?php echo '$'.number_format($fundraising_progress,0); ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $fundraising_progress ): ?>
 	<p>
+		<strong>Fundraising Progress to Baseline Goal</strong></br>
 		<?php echo round((($fundraising_progress/$baseline_fundraising_target)*100)).'%'; ?>
 	</p>
 	<?php endif; ?>
 
 	<?php if ( $fundraising_progress ): ?>
 	<p>
+		<strong>Fundraising Progress to Ideal Goal</strong></br>
 		<?php echo round((($fundraising_progress/$ideal_fundraising_target)*100)).'%'; ?>
 	</p>
 	<?php endif; ?>
 
+	<?php if ( have_rows('downloads') ): ?>
+	<p>
+		<strong>File Downloads</strong>
+	</p>
+	<ul>
+		<?php while( have_rows('downloads') ): the_row(); ?>
+		<li>
+			<a target="_blank" href="<?php echo get_sub_field('download_file'); ?>">
+				<?php echo get_sub_field('download_name'); ?>
+			</a>
+		</li>
+		<?php endwhile; ?>
+	</ul>
+	<?php endif; ?>
 	<!-- add downloads -->
-
-
 </article>

@@ -1000,6 +1000,10 @@ body.home .wt_banner {
   width: 90%;
   max-width: 1200px;
 }
+.main-content h1 {
+  margin: auto;
+  max-width: 600px;
+}
 .main-content p,
 .main-content article {
   margin: 0 auto 3rem;
@@ -2253,4 +2257,22 @@ text
   background: none;
   border: none;
   color: #fffcef;
+}
+.single_reports__report {
+  margin: 0rem auto 6rem;
+}
+.single_reports__report h1 {
+  margin: 3rem auto;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+}
+@media all and (max-width: 768px) {
+  .single_reports__report {
+    padding: 0 3rem;
+    box-sizing: border-box;
+  }
 }
