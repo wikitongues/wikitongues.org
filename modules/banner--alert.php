@@ -1,13 +1,11 @@
 <?php
 // variables
-$banner_alert_status = get_field( 'banner_alert_status', 'options' );
 $banner_alert_text = get_field( 'banner_alert_text', 'options' );
 $banner_alert_button_link = get_field( 'banner_alert_button_link', 'options' );
 $banner_alert_button_text = get_field( 'banner_alert_button_text', 'options' ); 
 ?>
 
-<?php if ( $banner_alert_status === 'active' ): ?>
-<div class="banner_alert_container">
+<div class="wt_banner-alert__container">
     <!-- this element needs to be worked into the stylesheet. no in-line code -->
     <div id="inner" style="display:flex; ">
         <div class="wt_banner-alert__text">
@@ -24,8 +22,7 @@ $banner_alert_button_text = get_field( 'banner_alert_button_text', 'options' );
         </button>
     </div>
     <!-- this should probably be a button -->
-    <button class="wt_banner-alert__button--close">
+<!--     <button class="wt_banner-alert__button--close">
         <i class="fa-thin fa-xmark"></i>
-    </button>
+    </button> -->
 </div>
-<?php endif; ?>

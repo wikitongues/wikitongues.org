@@ -19,11 +19,26 @@ body {
   padding-top: 122.63px;
   background: #fffcef;
 }
+body[data-alert="true"] {
+  padding-top: 194.63px;
+}
+body[data-alert="true"] .wt_header {
+  top: 72px !important;
+}
 body.logged-in {
   padding-top: 154.63px !important;
 }
 body.logged-in .wt_header {
   top: 32px !important;
+}
+body.logged-in[data-alert="true"] {
+  padding-top: 226.63px !important;
+}
+body.logged-in[data-alert="true"] .wt_banner-alert__container {
+  top: 32px !important;
+}
+body.logged-in[data-alert="true"] .wt_header {
+  top: 104px !important;
 }
 body.home {
   padding-top: 0 !important;
@@ -35,10 +50,13 @@ body.home.logged-in .wt_header {
   top: 32px !important;
 }
 body.page-template-template-giving-campaign {
-  padding-top: 59.63px !important;
+  padding-top: 131.63px !important;
 }
 body.page-template-template-giving-campaign.logged-in {
   padding-top: 91.63px !important;
+}
+body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
+  padding-top: 163.63px !important;
 }
 .wt_header {
   z-index: 10;
@@ -2195,8 +2213,10 @@ text
     margin-bottom: 4.5rem;
   }
 }
-.banner_alert_container {
-  position: relative;
+.wt_banner-alert__container {
+  z-index: 10;
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: center;
   width: 100%;
