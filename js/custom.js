@@ -224,7 +224,9 @@ document.addEventListener("DOMContentLoaded", function () {
     hideAllSubMenus();
   });
 
-  let body = document.querySelector(".page");
+  // i have a strong impression that this could be simplified ~~~~DU Feb '24
+
+  let body = document.querySelector("body");
   let home = document.querySelector(".home");
   let wpadminbar = document.querySelector("#wpadminbar");
   let bannerSearchBar = document.querySelector(".wt_banner--searchbar");
@@ -319,8 +321,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", adjustHeaderMargin);
 
   displayBannerAlert();
-
-  let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+  // old ID - let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+  let bannerAlertCloseButton = document.querySelector(".wt_banner-alert__button--close");
 
   if(bannerAlertCloseButton){
     bannerAlertCloseButton.addEventListener("click", function() {

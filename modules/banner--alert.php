@@ -13,15 +13,19 @@ $banner_alert_button_text = get_field( 'banner_alert_button_text', 'options' );
         <div class="wt_banner-alert__text">
             <?php echo $banner_alert_text; ?>
         </div>
+        <!-- not sure this needs to be a button -->
         <button class="wt_banner-alert__button" >
             <a class="wt_banner-alert__button--link" 
                href="<?php echo $banner_alert_button_link; ?>" 
-               target="_blank" ><?php echo $banner_alert_button_text; ?></a>
-            <i class="fa-regular fa-arrow-right-long"></i>
+               target="_blank" >
+               <?php echo $banner_alert_button_text; ?> 
+               <i class="fa-regular fa-arrow-right-long"></i>
+            </a>
         </button>
     </div>
-    <div class="wt_banner-alert__button--close">
+    <!-- this should probably be a button -->
+    <button class="wt_banner-alert__button--close">
         <i class="fa-thin fa-xmark"></i>
-    </div>
+    </button>
 </div>
 <?php endif; ?>
