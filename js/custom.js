@@ -226,108 +226,108 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // i have a strong impression that this could be simplified ~~~~DU Feb '24
 
-  let body = document.querySelector("body");
-  let home = document.querySelector(".home");
-  let wpadminbar = document.querySelector("#wpadminbar");
-  let bannerSearchBar = document.querySelector(".wt_banner--searchbar");
+  // let body = document.querySelector("body");
+  // let home = document.querySelector(".home");
+  // let wpadminbar = document.querySelector("#wpadminbar");
+  // let bannerSearchBar = document.querySelector(".wt_banner--searchbar");
 
-  let header = document.querySelector(".wt_header");
-  let alertContainer = document.querySelector(".banner_alert_container");
-  let alertHeight = alertContainer ? alertContainer.offsetHeight : 0;
+  // let header = document.querySelector(".wt_header");
+  // let alertContainer = document.querySelector(".banner_alert_container");
+  // let alertHeight = alertContainer ? alertContainer.offsetHeight : 0;
 
-  if (body && !home && alertContainer) {
-    alertContainer.style.position = "absolute";
-    alertContainer.style.top = 0;
-  }
+  // if (body && !home && alertContainer) {
+  //   alertContainer.style.position = "absolute";
+  //   alertContainer.style.top = 0;
+  // }
 
-  let banner = document.querySelector(".wt_banner");
+  // let banner = document.querySelector(".wt_banner");
 
-  if (body && !home && banner && alertContainer && !wpadminbar) {
-    banner.style.paddingTop =
-      parseInt(
-        window.getComputedStyle(banner).getPropertyValue("padding-top"),
-        10
-      ) +
-      alertContainer.offsetHeight +
-      "px";
-  }
-  if (body && !home && banner && alertContainer && wpadminbar) {
-    banner.style.paddingTop =
-      parseInt(
-        window.getComputedStyle(banner).getPropertyValue("padding-top"),
-        10
-      ) +
-      wpadminbar.offsetHeight +
-      alertContainer.offsetHeight +
-      "px";
-  }
+  // if (body && !home && banner && alertContainer && !wpadminbar) {
+  //   banner.style.paddingTop =
+  //     parseInt(
+  //       window.getComputedStyle(banner).getPropertyValue("padding-top"),
+  //       10
+  //     ) +
+  //     alertContainer.offsetHeight +
+  //     "px";
+  // }
+  // if (body && !home && banner && alertContainer && wpadminbar) {
+  //   banner.style.paddingTop =
+  //     parseInt(
+  //       window.getComputedStyle(banner).getPropertyValue("padding-top"),
+  //       10
+  //     ) +
+  //     wpadminbar.offsetHeight +
+  //     alertContainer.offsetHeight +
+  //     "px";
+  // }
 
-  if(body && !home && bannerSearchBar && alertContainer && !wpadminbar){
-    bannerSearchBar.style.paddingTop =
-      parseInt(
-        window
-          .getComputedStyle(bannerSearchBar)
-          .getPropertyValue("padding-top"),
-        10
-      ) +
-      alertContainer.offsetHeight +
-      "px";
-  }
-  if (body && !home && bannerSearchBar && alertContainer && wpadminbar) {
-    bannerSearchBar.style.paddingTop =
-      parseInt(
-        window
-          .getComputedStyle(bannerSearchBar)
-          .getPropertyValue("padding-top"),
-        10
-      ) +
-      wpadminbar.offsetHeight +
-      alertContainer.offsetHeight +
-      "px";
-  }
+  // if(body && !home && bannerSearchBar && alertContainer && !wpadminbar){
+  //   bannerSearchBar.style.paddingTop =
+  //     parseInt(
+  //       window
+  //         .getComputedStyle(bannerSearchBar)
+  //         .getPropertyValue("padding-top"),
+  //       10
+  //     ) +
+  //     alertContainer.offsetHeight +
+  //     "px";
+  // }
+  // if (body && !home && bannerSearchBar && alertContainer && wpadminbar) {
+  //   bannerSearchBar.style.paddingTop =
+  //     parseInt(
+  //       window
+  //         .getComputedStyle(bannerSearchBar)
+  //         .getPropertyValue("padding-top"),
+  //       10
+  //     ) +
+  //     wpadminbar.offsetHeight +
+  //     alertContainer.offsetHeight +
+  //     "px";
+  // }
 
-  let start = 0;
+  // let start = 0;
 
-  function displayBannerAlert() {
-    if(alertContainer){
-      header.style.marginTop = alertContainer.offsetHeight + "px";
-      start = start +1;
-    }
-  }
+  // function displayBannerAlert() {
+  //   if(alertContainer){
+  //     header.style.marginTop = alertContainer.offsetHeight + "px";
+  //     start = start +1;
+  //   }
+  // }
 
-  function adjustHeaderMargin() {
-    if (alertContainer && alertContainer.style.display!="none" ) {
-      let scrollPos = window.scrollY || window.pageYOffset;
-      let bannerTop = alertContainer.getBoundingClientRect().top + scrollPos;
-      let bannerVisibleHeight = Math.max(
-        0,
-        alertHeight + bannerTop - scrollPos
-      );
+  // function adjustHeaderMargin() {
+  //   if (alertContainer && alertContainer.style.display!="none" ) {
+  //     let scrollPos = window.scrollY || window.pageYOffset;
+  //     let bannerTop = alertContainer.getBoundingClientRect().top + scrollPos;
+  //     let bannerVisibleHeight = Math.max(
+  //       0,
+  //       alertHeight + bannerTop - scrollPos
+  //     );
 
-      let margin = bannerVisibleHeight - bannerTop;
+  //     let margin = bannerVisibleHeight - bannerTop;
 
-      if(start===1){
-        window.scrollTo(0, 0);
-      }
-      else{
-        header.style.transition = "margin-top 0.2s";
-        header.style.marginTop = margin >= 0 ? margin + "px" : "0";
-      }
+  //     if(start===1){
+  //       window.scrollTo(0, 0);
+  //     }
+  //     else{
+  //       header.style.transition = "margin-top 0.2s";
+  //       header.style.marginTop = margin >= 0 ? margin + "px" : "0";
+  //     }
 
-      start = start + 1;
-    }
-  }
+  //     start = start + 1;
+  //   }
+  // }
 
-  window.addEventListener("scroll", adjustHeaderMargin);
+  // window.addEventListener("scroll", adjustHeaderMargin);
 
-  displayBannerAlert();
-  // old ID - let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
-  let bannerAlertCloseButton = document.querySelector(".wt_banner-alert__button--close");
+  // displayBannerAlert();
+  // // old ID - let bannerAlertCloseButton = document.querySelector("#banner_alert_close_button");
+  // let bannerAlertCloseButton = document.querySelector(".wt_banner-alert__button--close");
 
-  if(bannerAlertCloseButton){
-    bannerAlertCloseButton.addEventListener("click", function() {
-      alertContainer.style.display = "none";
-      header.style.marginTop = "0px";
-    });
-  }
+  // if(bannerAlertCloseButton){
+  //   bannerAlertCloseButton.addEventListener("click", function() {
+  //     alertContainer.style.display = "none";
+  //     header.style.marginTop = "0px";
+  //   });
+  // }
 });

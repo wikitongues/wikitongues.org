@@ -5,11 +5,26 @@ body
 	padding-top 122.63px
 	background $parchment
 	
+	&[data-alert="true"]
+		padding-top 194.63px
+		
+		.wt_header
+			top 72px !important
+	
 	&.logged-in
 		padding-top 154.63px !important
 		
 		.wt_header
 			top 32px !important
+		
+		&[data-alert="true"]
+			padding-top 226.63px !important
+			
+			.wt_banner-alert__container
+				top 32px !important
+
+			.wt_header
+				top 104px !important
 	
 	// consider moving these to page-specific style templates
 	&.home
@@ -22,10 +37,13 @@ body
 				top 32px !important
 				
 	&.page-template-template-giving-campaign
-		padding-top 59.63px !important
+		padding-top 131.63px !important
 		
 		&.logged-in
 			padding-top 91.63px !important
+			
+			&[data-alert="true"]
+				padding-top 163.63px !important
 	
 .wt_header
 	z-index 10

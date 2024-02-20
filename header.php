@@ -1,23 +1,23 @@
 <?php
-// define session variable for displaying alert banner
-session_start();
+// // define session variable for displaying alert banner
+// session_start();
 
-if (isset($_SESSION['last_visit_time'])) {
-    $currentTime = time();
-    $lastVisitTime = $_SESSION['last_visit_time'];
-    $timeDifference = $currentTime - $lastVisitTime;
-    // unable to verify that days counter is working
-    // $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
-    // set $daysSinceLastVisit to seconds:
-    $daysSinceLastVisit = $timeDifference;
+// if (isset($_SESSION['last_visit_time'])) {
+//     $currentTime = time();
+//     $lastVisitTime = $_SESSION['last_visit_time'];
+//     $timeDifference = $currentTime - $lastVisitTime;
+//     // unable to verify that days counter is working
+//     // $daysSinceLastVisit = floor( $timeDifference / (60 * 60 * 24) );
+//     // set $daysSinceLastVisit to seconds:
+//     $daysSinceLastVisit = $timeDifference;
 
-	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;
+// 	$_SESSION['days_since_last_visit'] = $daysSinceLastVisit;
 
-    // for testing:
-    // echo "It's been $daysSinceLastVisit days since your last visit.";
-}
+//     // for testing:
+//     // echo "It's been $daysSinceLastVisit days since your last visit.";
+// }
 
-$_SESSION['last_visit_time'] = time();
+// $_SESSION['last_visit_time'] = time();
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +136,8 @@ $_SESSION['last_visit_time'] = time();
 	<!-- WP head tag -->
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
+<?php $banner_alert_status = get_field( 'banner_alert_status', 'options' ); ?>
+<body <?php body_class(); ?> <?php if ( $banner_alert_status === 'active' ): ?>data-alert="true"<?php endif; ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
 
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
@@ -146,8 +147,13 @@ $_SESSION['last_visit_time'] = time();
 	// load alert banner if user hasn't visited the site in 1 day
 	// day counter var isn't working, counting in seconds ~~~~DU Feb '24
 	//if ( $_SESSION['days_since_last_visit']>86400 ) { 
-		include( 'modules/banner--alert.php' ); 
+		// include( 'modules/banner--alert.php' ); 
 	//}
+
+	if ( $banner_alert_status === 'active' ) {
+		include( 'modules/banner--alert.php' );
+	}
+
 	?>
 	
 	<!-- header -->
