@@ -145,9 +145,9 @@ $_SESSION['last_visit_time'] = time();
 	<?php 
 	// load alert banner if user hasn't visited the site in 1 day
 	// day counter var isn't working, counting in seconds ~~~~DU Feb '24
-	if ( $_SESSION['days_since_last_visit']>86400 ) { 
+	//if ( $_SESSION['days_since_last_visit']>86400 ) { 
 		include( 'modules/banner--alert.php' ); 
-	}
+	//}
 	?>
 	
 	<!-- header -->
