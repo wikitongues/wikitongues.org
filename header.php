@@ -24,7 +24,7 @@
 <html <?php language_attributes(); ?>>
 <head>
 	<!-- Google Analytics Script -->
-	<?php the_field('analytics_header_script', 'options'); ?>
+	<?php echo get_field('analytics_header_script', 'options'); ?>
 
 	<!-- Language and browser view meta tags -->
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
