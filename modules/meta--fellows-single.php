@@ -76,8 +76,8 @@
 		<ul>
 		<?php while ( have_rows('custom_links') ): the_row(); ?>
 			<li>
-				<a href="<?php the_sub_field('link_url'); ?>">
-					<?php the_sub_field('link_name'); ?>
+				<a href="<?php echo get_sub_field('link_url'); ?>">
+					<?php echo get_sub_field('link_name'); ?>
 				</a>
 			</li>		
 		<?php endwhile; ?>

@@ -1,5 +1,5 @@
 <section class="wt_newsletter">
-	<?php the_field('newsletter_signup_embed', 'options'); ?>
+	<?php echo get_field('newsletter_signup_embed', 'options'); ?>
 </section>
 
 <footer class="wt_footer">
