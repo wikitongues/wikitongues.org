@@ -10,7 +10,7 @@
 
 		<iframe width="100%" src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-	<?php elseif ( $youtube_link && $youtube_link !== 'No ID' ): ?>
+	<?php elseif ( $youtube_link && $youtube_link['url'] !== 'No ID' ): ?>
 
 		<?php $youtube_id = substr(strrchr($youtube_link, "/"), 1); ?>
 
