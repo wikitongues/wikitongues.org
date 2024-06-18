@@ -6,6 +6,7 @@ get_header();
 $youtube_id = get_field( 'youtube_id' );
 $youtube_link = get_field( 'youtube_link' );
 $dropbox_link = get_field( 'dropbox_link' );
+$dropbox_link_raw = str_replace("dl=0", "raw=1", $dropbox_link);
 $wikimedia_commons_link = get_field( 'wikimedia_commons_link' );
 $public_status = get_field( 'public_status' );
 $featured_languages = get_field( 'featured_languages' );
