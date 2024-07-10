@@ -167,10 +167,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</a>
 		</div>
 
-		<!-- search bar -->
-		<div class="wt_header__searchbar">
-			<i class="fa-light fa-magnifying-glass"></i>
-			<?php get_search_form(); ?>
+		<div id="react-typeahead-root">
+			[react_typeahead]
 		</div>
 
 		<!-- navigation -->

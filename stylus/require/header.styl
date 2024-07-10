@@ -86,31 +86,73 @@ body
 		img
 			height 40px
 			width auto
-	
-	&__searchbar
-		position relative
-		flex-grow initial
-		margin-left 15px
-		border 1px solid $grey
-		
-		i
-			position absolute
-			top 50%
-			left 7.5px
-			transform translateY(-50%)
-		
-		input
-			&[type="search"]
-				border 0
-				padding 5px 10px 5px 27.5px
-				background $white
+
+	#react-typeahead-root
+		float left
+		display inline-block
+		margin-left 2rem
+
+		.typeahead-container
+			position initial
+			width initial
+			max-width initial
+			margin initial
+			font-family 'Graphik Web'
+			font-size 1.28rem
+
+			input
+				border none
+				width 330px
+				background rgba(255, 252, 239,1)
+				padding 11px
+				border-radius 8px
+				font-family inherit
+				font-size inherit
+				transition-property background, width
+				transition-duration 0.6s
+				transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 				
+				&::placeholder
+					color $parchment
+					color $blue	
+					font-family 'Graphik Web'
+					font-style italic
+					font-size 1.28rem		
+				
+				&:active,
 				&:focus
-					outline none
+					width 400px
+					color $blue	
+					background $parchment
+					transition-property background, width
+					transition-duration 0.6s
+					transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
+					
+					&::placeholder
+						color $blue
 				
-			&[type="submit"]
-				display none
-	
+			.typeahead-list
+				width 400px
+				background $parchment
+				font-family inherit
+				font-size inherit
+				border none
+				border-radius 8px
+				margin-top 4px
+
+				span
+					line-height 2rem
+				
+					&.label
+						position relative
+						display inline-block
+						color $blue
+						font-family inherit
+						font-size inherit
+
+					.highlight
+						background lighten($purple,60%)
+
 	&--secondary
 		z-index 2
 		position fixed
