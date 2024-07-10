@@ -99,28 +99,72 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   height: 40px;
   width: auto;
 }
-.wt_header__searchbar {
+.wt_header #react-typeahead-root {
+  float: left;
+  display: inline-block;
+  margin-left: 2rem;
+}
+.wt_header #react-typeahead-root .typeahead-container {
+  position: initial;
+  width: initial;
+  max-width: initial;
+  margin: initial;
+  font-family: 'Graphik Web';
+  font-size: 1.28rem;
+}
+.wt_header #react-typeahead-root .typeahead-container input {
+  border: none;
+  width: 330px;
+  background: #fffcef;
+  padding: 11px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: inherit;
+  transition-property: background, width;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wt_header #react-typeahead-root .typeahead-container input::placeholder {
+  color: #fffcef;
+  color: #3814a5;
+  font-family: 'Graphik Web';
+  font-style: italic;
+  font-size: 1.28rem;
+}
+.wt_header #react-typeahead-root .typeahead-container input:active,
+.wt_header #react-typeahead-root .typeahead-container input:focus {
+  width: 400px;
+  color: #3814a5;
+  background: #fffcef;
+  transition-property: background, width;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wt_header #react-typeahead-root .typeahead-container input:active::placeholder,
+.wt_header #react-typeahead-root .typeahead-container input:focus::placeholder {
+  color: #3814a5;
+}
+.wt_header #react-typeahead-root .typeahead-container .typeahead-list {
+  width: 400px;
+  background: #fffcef;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+.wt_header #react-typeahead-root .typeahead-container .typeahead-list span {
+  line-height: 2rem;
+}
+.wt_header #react-typeahead-root .typeahead-container .typeahead-list span.label {
   position: relative;
-  flex-grow: initial;
-  margin-left: 15px;
-  border: 1px solid #dcdcdc;
+  display: inline-block;
+  color: #3814a5;
+  font-family: inherit;
+  font-size: inherit;
 }
-.wt_header__searchbar i {
-  position: absolute;
-  top: 50%;
-  left: 7.5px;
-  transform: translateY(-50%);
-}
-.wt_header__searchbar input[type="search"] {
-  border: 0;
-  padding: 5px 10px 5px 27.5px;
-  background: #fff;
-}
-.wt_header__searchbar input[type="search"]:focus {
-  outline: none;
-}
-.wt_header__searchbar input[type="submit"] {
-  display: none;
+.wt_header #react-typeahead-root .typeahead-container .typeahead-list span .highlight {
+  background: #d5cde7;
 }
 .wt_header--secondary {
   z-index: 2;
