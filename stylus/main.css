@@ -73,9 +73,15 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   padding: 0 1.5rem;
   box-sizing: border-box;
   background: #fffcef;
+  transition-property: background;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 .wt_header.transparent-background {
-  background: none !important;
+  background: none;
+  transition-property: background;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 .wt_header.transparent-background .wt_header__searchbar input[type="search"] {
   background: #fffcef;
@@ -197,7 +203,7 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   margin-left: 1.25rem;
   display: inline-block;
   padding: 1.25rem 1.5rem;
-  background: #3814a5;
+  background: transparent;
   border: 1px solid #3814a5;
   font-family: 'Graphik Web';
   font-weight: 400;
@@ -206,8 +212,13 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   font-size: 1.28rem;
   text-transform: uppercase;
   text-decoration: none;
-  color: #fffcef;
+  color: #3814a5;
   text-wrap: nowrap;
+  border: none;
+  border-radius: 8px;
+  text-transform: initial;
+  padding: 0;
+  display: inline-block;
 }
 .wt_header__nav>ul>li.current_page_item,
 .wt_header__nav>ul>li.current_page_parent {
@@ -219,11 +230,12 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
 }
 .wt_header__nav>ul>li>a {
   text-decoration: none;
-  color: #fffcef;
+  color: inherit;
+  padding: 1.25rem;
+  display: inline-block;
 }
 .wt_header__nav>ul>li:hover {
   cursor: pointer;
-  background: #fff !important;
 }
 .wt_header__nav>ul>li:hover>a {
   color: #3814a5 !important;
@@ -234,21 +246,25 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   top: 38px;
   left: 0;
   width: 100%;
-  padding: 5px;
-  background: #fff;
-  text-align: center;
-  border-width: 6px 0.5px 0.5px 0.5px;
-  border-color: #3814a5;
-  border-style: solid;
+  padding: 8px 0;
+  background: #fffcef;
+  text-align: left;
   box-shadow: 0 0 100px rgba(0,0,0,0.05);
+  border-radius: 8px;
 }
 .wt_header__nav .sub-menu li {
   display: block;
-  margin: 10px 0;
+  margin: 0;
 }
 .wt_header__nav .sub-menu li a {
   color: #3814a5;
+  padding: 8px 1.25rem;
   text-decoration: none;
+  display: inline-block;
+  width: 100%;
+}
+.wt_header__nav .sub-menu li a:hover {
+  background: #eee;
 }
 .wt_header__nav--secondary {
   z-index: 2;
