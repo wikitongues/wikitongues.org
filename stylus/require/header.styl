@@ -60,9 +60,15 @@ body
 	padding 0 1.5rem
 	box-sizing border-box
 	background $parchment
+	transition-property background
+	transition-duration 0.3s
+	transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 	
 	&.transparent-background
-		background none !important
+		background none
+		transition-property background
+		transition-duration 0.3s
+		transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 		
 		.wt_header__searchbar
 			input[type="search"]
@@ -183,7 +189,12 @@ body
 		&>ul>li
 			position relative
 			margin-left 1.25rem
-			button--small($blue, $parchment)								
+			button--small(transparent, $blue)
+			border none
+			border-radius 8px
+			text-transform initial
+			padding 0
+			display inline-block
 			
 			&.current_page_item,
 			&.current_page_parent
@@ -194,11 +205,13 @@ body
 			
 			&>a // button--small is designed for a elements not li
 				text-decoration none
-				color $parchment
+				color inherit
+				padding 1.25rem
+				display inline-block
 
 			&:hover
 				cursor pointer
-				background $white !important
+				// background $white !important
 				
 				&>a
 					color $blue !important
@@ -209,21 +222,28 @@ body
 			top 38px
 			left 0
 			width 100%
-			padding 5px
-			background $white
-			text-align center
-			border-width 6px 0.5px 0.5px 0.5px 
-			border-color $blue
-			border-style solid 
+			padding 8px 0
+			background $parchment
+			text-align left
+			// border-width 6px 0.5px 0.5px 0.5px 
+			// border-color $blue
+			// border-style solid 
 			box-shadow 0 0 100px rgba(0,0,0,.05)
+			border-radius 8px
 				
 			li
 				display block
-				margin 10px 0
+				margin 0
 				
 				a
 					color $blue
+					padding 8px 1.25rem
 					text-decoration none
+					display inline-block
+					width 100%
+
+					&:hover
+						background #eee
 		
 		&--secondary
 			z-index 2
