@@ -1,21 +1,26 @@
-function changeHeaderClass() {
-  var header = document.querySelector(".wt_header");
-  var logoLight = document.querySelector(".wt_header__logo--light");
-  var logoDark = document.querySelector(".wt_header__logo--dark");
-  var navContainer = document.querySelector(".wt_header__nav");
+function manageNav() {
+  const header = document.querySelector(".wt_header");
+  const logoLight = document.querySelector(".wt_header__logo--light");
+  const logoDark = document.querySelector(".wt_header__logo--dark");
+  const navContainer = document.querySelector(".wt_header__nav");
+  const elements = [header, logoLight, logoDark, navContainer]
 
-  window.addEventListener("scroll", function () {
-    if (window.pageYOffset > 50) {
-      header.classList.remove("transparent-background");
-      logoLight.classList.remove("transparent-background");
-      logoDark.classList.remove("transparent-background");
-      navContainer.classList.remove("transparent-background");
-    } else {
-      header.classList.add("transparent-background");
-      logoLight.classList.add("transparent-background");
-      logoDark.classList.add("transparent-background");
-      navContainer.classList.add("transparent-background");
+  function toggleNavTransparency(method) {
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList[method]("transparent-background");
     }
+  }
+  if (window.scrollY < 50) {
+    toggleNavTransparency("add")
+  } else {
+    toggleNavTransparency("remove")
+  }
+  
+}
+
+function changeHeaderClass() {  
+  window.addEventListener("scroll", function () {
+    manageNav()
   });
 }
 
@@ -109,6 +114,7 @@ function mobileTrigger() {
 window.addEventListener("load", function () {
   if (document.body.classList.contains("home")) {
     changeHeaderClass();
+    manageNav()
   }
   carouselScroll();
   mobileTrigger();
