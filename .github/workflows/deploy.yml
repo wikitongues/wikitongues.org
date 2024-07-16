@@ -3,7 +3,7 @@ name: Deploy to GreenGeeks
 on: 
   push: 
     branches: 
-      - main
+      - master
 
 jobs: 
   deploy: 
@@ -12,7 +12,7 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Deploy to GreenGeeks
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
