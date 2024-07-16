@@ -13,29 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install dependencies
-      #   run: npm install
-      #   working-directory: ./ 
-
-      # - name: Build project
-      #   run: npm run build
-      #   working-directory: ./
-
-      # - name: Deploy to GreenGeeks
-      #   env: 
-      #     FTP_HOST: ${{ secrets.FTP_HOST }}
-      #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-      #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      #   runs: |
-      #     lftp -e "
-      #     mirror --reverse --delete --verbose ./ ./;
-      #     quit
-      #     " -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
-      - name: Copy files via SSH
-        uses: appleboy/scp-action@v0.1.0
+      - name: Deploy to GreenGeeks
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./*"
-          target: "/wp-content/themes/blankslate-child"
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /wp-content/themes/blankslate-child/
