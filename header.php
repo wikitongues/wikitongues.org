@@ -132,13 +132,12 @@
 	t.parentNode.insertBefore(j,t);o.s=Date.now();o.v=4;o.h=w.location.href;o.l=[];
 	for(i=0;i<7;i++)o[l[i]]=o(l[i]);w[n]=o}
 	})(window,document,'script','FundraiseUp','ABDBDJGE');</script>
-
+	<script>console.log("Wikitongues")</script>
 	<!-- WP head tag -->
 	<?php wp_head(); ?>
 </head>
 <?php $banner_alert_status = get_field( 'banner_alert_status', 'options' ); ?>
 <body <?php body_class(); ?> <?php if ( $banner_alert_status === 'active' ): ?>data-alert="true"<?php endif; ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
-
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
 
