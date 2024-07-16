@@ -3,7 +3,7 @@ name: Deploy to GreenGeeks
 on: 
   push: 
     branches: 
-      - master
+      - main
 
 jobs: 
   deploy: 
@@ -12,12 +12,12 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Copy files via SSH
-        uses: appleboy/scp-action@v0.1.0
+        
+      - name: Deploy to GreenGeeks
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./*"
-          target: "/wp-content/themes/blankslate-child"
+          ftp-server: ${{ secrets.FTP_HOST }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./wp-content/themes/theme
+          server-dir: /path/to/your/site/wp-content/themes/theme
