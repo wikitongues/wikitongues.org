@@ -13,24 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install dependencies
-      #   run: npm install
-      #   working-directory: ./ 
-
-      # - name: Build project
-      #   run: npm run build
-      #   working-directory: ./
-
-      # - name: Deploy to GreenGeeks
-      #   env: 
-      #     FTP_HOST: ${{ secrets.FTP_HOST }}
-      #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-      #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      #   runs: |
-      #     lftp -e "
-      #     mirror --reverse --delete --verbose ./ ./;
-      #     quit
-      #     " -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
       - name: Copy files via SSH
         uses: appleboy/scp-action@v0.1.0
         with:
