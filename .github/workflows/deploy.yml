@@ -19,5 +19,5 @@ jobs:
           ftp-server: ${{ secrets.FTP_HOST }}
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./wp-content/themes/theme
-          server-dir: /path/to/your/site/wp-content/themes/theme
+          local-dir: ./
+          server-dir: /wp-content/themes/blankslate-child
