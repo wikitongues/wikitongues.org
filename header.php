@@ -137,6 +137,9 @@
 </head>
 <?php $banner_alert_status = get_field( 'banner_alert_status', 'options' ); ?>
 <body <?php body_class(); ?> <?php if ( $banner_alert_status === 'active' ): ?>data-alert="true"<?php endif; ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M6VGJW4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- WP Body Open -->
 <?php wp_body_open(); ?>
 

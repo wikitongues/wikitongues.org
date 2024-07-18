@@ -14,6 +14,10 @@
 * in-line php lines up with previous html element (if statements)
 * line-breaks between php and in-line html
 
+# Deployment
+* This repository will automatically deploy changes to production when successfully merging to the `main` branch.
+* `main` can only be edited by pull-requests from other branches.
+
 # to-do
 
 ## code structure and styles
