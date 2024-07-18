@@ -21,6 +21,7 @@ if ( have_rows( 'content_blocks' ) ) {
 		$content_block_header = get_sub_field('content_block_header');
 		$content_block_copy = get_sub_field('content_block_copy');
 		$content_block_cta_link = get_sub_field('content_block_cta');
+		$content_block_class = get_sub_field('content_block_class');
 		$content_block_cta_text = 'Download';
 		
 		include( 'modules/content-block--grid.php' );

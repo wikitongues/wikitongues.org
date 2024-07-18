@@ -231,6 +231,27 @@
                     "max_size": "",
                     "mime_types": "",
                     "parent_repeater": "field_64d2a31f8af4a"
+                },
+                {
+                    "key": "field_66993694eb611",
+                    "label": "Content Block Class",
+                    "name": "content_block_class",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_64d2a31f8af4a"
                 }
             ]
         }
@@ -253,5 +274,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1695784126
+    "modified": 1721317228
 }
