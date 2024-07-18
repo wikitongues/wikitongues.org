@@ -20,7 +20,7 @@
 			<?php echo $content_block_copy; ?>
 		</p>
 		<?php endif; ?>
-		<a href="<?php echo $content_block_cta_link; ?>">
+		<a href="<?php echo $content_block_cta_link; ?>" class="<?php echo $content_block_class; ?>">
 			<?php echo $content_block_cta_text; ?>
 			<i class="fa-regular fa-arrow-right-long"></i>
 		</a>
