@@ -196,6 +196,24 @@ function wt_mobile_menu() {
 
 add_action( 'init', 'wt_mobile_menu' );
 
+function get_environment() {
+    if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+        return 'localhost';
+    } elseif (strpos($_SERVER['HTTP_HOST'], 'staging') !== false) {
+        return 'staging';
+    } else {
+        return '';
+    }
+}
+
+function modify_page_title() {
+    $environment = get_environment();
+    if ($environment) {
+        echo "<script>document.title = '" . ucfirst($environment) . " | ' + document.title;</script>";
+    }
+}
+add_action('wp_head', 'modify_page_title');
+
 // Pagination for paged posts, Page 1, Page 2, Page 3, with Next and Previous Links, No plugin
 function html5wp_pagination()
 {

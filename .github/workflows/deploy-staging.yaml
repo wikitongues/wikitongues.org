@@ -1,12 +1,12 @@
-name: Deploy to GreenGeeks
+name: Deploy to Staging
 
 on:
   push:
     branches:
-      - main
+      - staging
 
 env:
-  REMOTE_DIR: ./public_html/wp-content/themes/blankslate-child
+  REMOTE_DIR: ./public_html/staging.wikitongues.org/wp-content/themes/blankslate-child
 
 jobs:
   deploy:
