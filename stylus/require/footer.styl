@@ -3,6 +3,10 @@
 	background $purple
 	text-align center
 	
+	h2
+		text--header($black)
+		margin-bottom 3rem
+
 	form
 		&>div
 			display flex
@@ -40,18 +44,39 @@
 					cursor pointer
 
 .wt_footer
-	padding 6rem
+	padding 2rem 4rem
 	background $black
 	text--body($parchment)
 	font-size 1.28rem !important
+	display inline-block
+	width 100%
 	
+	&__logo
+		width 100%
+		display inline-block	
+		margin-bottom 8px
+		border-bottom 1px dotted $blue
+		
+		a
+			display inline-block
+			float right 
+		
+		img
+			max-width 250px
+
 	&__section
-		&:first-of-type
+		float left
+		display flex
+		width 100%
+		justify-content center
+
+		&#content
 			display flex
 			flex-direction row
 		
-		&:last-of-type
+		&#colophon
 			text-align center
+			margin 2rem 0 3rem 0
 
 	&__nav
 		flex-grow 3
@@ -65,41 +90,52 @@
 				a
 					text--body($parchment)
 					text-decoration none
-					font-size 1.28rem !important
+					text-transform initial
 			
 			&>li
 				margin-right 3rem
 				
 				&>a
-					font-weight 600 !important
-		
+					font-weight bold
+
 		.sub-menu
-			margin-top 1.5rem
+			margin-top .5rem
+
+			a
+				font-size 1em
+				padding 0.2rem 0
+				display inline-block
 		
 	&__meta
 		flex-grow initial
 		text-align right
-		
-	&__logo
-		img
-			max-width 150px
-	
+
+		section
+			display inline-block
+			clear both
+			float left
+			
+			div
+				float left
+
+				&:first-of-type
+					margin-right 16px		
+
 	&__address
-		margin 1.5rem 0
+		margin 0 0 1.5rem 0
 		
 	&__land-acknowledgement
-		margin 3rem 0 1.5rem
-		
 		a
 			color $parchment
 
 	&__copyright
-		font-weight 700 !important
+		font-weight 700
+		margin-top 8px
+		display inline-block
 	
 	&__candid
 		display inline-block
-		width 90px
-		margin-top 2rem
+		width 100px
 		
 		img
 			width 100%
@@ -112,7 +148,7 @@
 			
 		&__nav
 			width 100%
-			text-align center
+			// text-align center
 			
 			&>ul
 				justify-content center
@@ -120,7 +156,7 @@
 		&__meta
 			margin 6rem auto
 			width 100%
-			text-align center
+			// text-align center
 
 @media all and (max-width:$mobile)
 	.wt_newsletter
@@ -138,13 +174,28 @@
 				&[type="submit"]
 					width 100%
 	
-	.wt_footer__nav
-		&>ul
-			display block
+	.wt_footer
+		&__logo
+			display flex
+			justify-content center
+			margin 1.5rem 0
+		&__section
+			&#content
+				flex-direction column
+		
+		&__nav
+			&>ul
+				display block
+				font-size 1.2em
 
-			&>li
-				margin-top 3rem
-				margin-right 0rem
-				
-				&:first-of-type
-					margin-top 0
+				&>li
+					margin-top 2rem
+					margin-right 0rem
+					
+					&:first-of-type
+						margin-top 0
+		
+		&__meta
+			margin 2rem auto 0
+			display flex
+			justify-content center
