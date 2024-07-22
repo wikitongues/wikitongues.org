@@ -1,0 +1,55 @@
+.react-typeahead-container
+  float left
+  display inline-block
+  margin-left 2rem
+
+  .typeahead-form
+    position initial
+    width initial
+    max-width initial
+    margin initial
+    font-family 'Graphik Web'
+    font-size 1.28rem
+
+    input
+      background  $parchment
+      border-radius 8px
+      font-family inherit
+      font-size inherit
+      transition-property background, width
+      transition-duration 0.6s
+      transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
+      
+      &::placeholder
+        color $parchment
+        color $blue	
+        font-family 'Graphik Web'
+        font-style italic
+        font-size inherit
+      
+      &:active,
+      &:focus
+        color $blue	
+        
+        &::placeholder
+          color $blue
+      
+    .typeahead-list
+      background $parchment
+      font-family inherit
+      font-size inherit
+      border none
+      margin-top 4px
+
+      span
+        line-height 2rem
+      
+        &.label
+          position relative
+          display inline-block
+          color $blue
+          font-family inherit
+          font-size inherit
+
+        .highlight
+          background lighten($purple,60%)
