@@ -140,7 +140,7 @@ function setActiveLinks() {
       // Add active class to the archive nav item
       let archiveNavItem = document.querySelector('nav li');
       if (archiveNavItem) {
-          archiveNavItem.classList.add('current_page_parent');
+          archiveNavItem.classList.add('current_page_item');
       }
   }
 }
@@ -151,8 +151,7 @@ function toggleDarkOverlay() {
   darkBackground.id = "dark";
   nav.appendChild(darkBackground);
 
-  const navItems = document.querySelectorAll(".menu-item");
-
+  const navItems = document.querySelectorAll(".wt_header__nav .menu-item");
   function showDarkOverlay() {
     darkBackground.classList.add("visible");
   }
@@ -163,7 +162,7 @@ function toggleDarkOverlay() {
 
   navItems.forEach((item) => {
     item.addEventListener("mouseenter", function() {
-      if (!item.classList.contains("current_page_parent")) {
+      if (!item.classList.contains("current_page_item")) {
         showDarkOverlay();
       }
     });

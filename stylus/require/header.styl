@@ -112,6 +112,8 @@ body
 			.typeahead-list
 				width 400px	
 				border-radius 8px
+				outline 2px solid #3814a5
+				z-index 3
 
 	@media all and (max-width:$smallScreen)
 		#typeahead-nav.react-typeahead-container
@@ -172,6 +174,8 @@ body
 			
 			&.current_page_item,
 			&.current_page_parent
+				pointer-events none
+				
 				> a
 					font-weight bold
 					cursor default
