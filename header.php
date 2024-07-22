@@ -167,12 +167,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			</a>
 		</div>
 
-		<div id="react-typeahead-root">
-			[react_typeahead]
+		<div id="typeahead-nav" class="react-typeahead-container">
+			[react_typeahead id="typeahead-nav" custom_class="nav-style" data_source="wordpress"]
 		</div>
-
-		<!-- navigation -->
-		<!-- test -->
 		<?php 
 
 		// global var? define somewher else?
