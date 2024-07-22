@@ -16,12 +16,18 @@
 
 # Deployment
 
-* This repository will automatically deploy changes to production when successfully merging to the `main` branch.
-* `main` can only be edited by pull-requests from other branches.
+* This project has both a staging environment (https://staging.wikitongues.org) and a production environment (https://wikitongues.org).
+* Changes to the `staging` branch automatically get deployed to the staging environment, and changes to the `main` branch automatically get deployed to the production environment.
+* Development should happen on feature branches started from the `staging` branch and tested locally. 
+* Once ready to merge, they should be merged into `staging`, and then thoroughly tested on the `staging` environment. 
+* Only after adequate testing on the `staging` environment should the staging branch be merged into `main`.
+* Direct code pushing to `main` is forbidden.
 
-# running stylus
+# Running Stylus
 
-`stylus -w stylus`
+This project uses Stylus for CSS. 
+Stylus needs to be compiled into CSS before it is usable in HTML. 
+To run the compiler, run `stylus -w stylus` in the terminal.
 
 # to-do
 
