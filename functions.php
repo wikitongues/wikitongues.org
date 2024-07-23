@@ -244,7 +244,7 @@ function custom_search_callback($request) {
     $args = array(
         'post_type' => 'languages',
         'post_status' => 'publish',
-        'posts_per_page' => 10,
+        'posts_per_page' => 100,
         'meta_query' => $meta_query
     );
 

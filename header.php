@@ -166,10 +166,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				<img class="wt_header__logo--dark <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_dark', 'options'); ?>" alt="Wikitongues logo: dark color scheme">
 			</a>
 		</div>
-
-		<div id="typeahead-nav" class="react-typeahead-container">
-			[react_typeahead id="typeahead-nav" custom_class="nav-style" data_source="wordpress"]
-		</div>
+		<?php echo do_shortcode('[react_typeahead id="typeahead_nav" custom_class="nav-style" data_source="airtable"]'); ?>
 		<?php 
 
 		// global var? define somewher else?
