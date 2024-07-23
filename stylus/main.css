@@ -162,27 +162,27 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   height: 40px;
   width: auto;
 }
-.wt_header #typeahead-nav .typeahead-form input {
+.wt_header #typeahead_nav .typeahead-form input {
   border: none;
   width: 330px;
   padding: 11px;
 }
-.wt_header #typeahead-nav .typeahead-form input:active,
-.wt_header #typeahead-nav .typeahead-form input:focus {
+.wt_header #typeahead_nav .typeahead-form input:active,
+.wt_header #typeahead_nav .typeahead-form input:focus {
   width: 400px;
   background: #fffcef;
   transition-property: background, width;
   transition-duration: 0.6s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
-.wt_header #typeahead-nav .typeahead-form .typeahead-list {
+.wt_header #typeahead_nav .typeahead-form .typeahead-list {
   width: 400px;
   border-radius: 8px;
   outline: 2px solid #3814a5;
   z-index: 3;
 }
 @media all and (max-width: 1024px) {
-  .wt_header #typeahead-nav.react-typeahead-container {
+  .wt_header #typeahead_nav.react-typeahead-container {
     display: none !important;
   }
 }
@@ -484,6 +484,7 @@ body.home .wt_banner {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.3);
+  background: linear-gradient(90deg, rgba(1,1,1,0) 0%, rgba(1,1,1,0.3) 80%);
 }
 .wt_banner__copy {
   position: absolute;
@@ -622,26 +623,26 @@ body.home .wt_banner {
   align-items: center;
   padding: 4rem 0;
 }
-.wt_banner--searchbar #typeahead-archive .typeahead-form {
+.wt_banner--searchbar #typeahead_archive .typeahead-form {
   width: 50vw;
 }
-.wt_banner--searchbar #typeahead-archive .typeahead-form.loaded {
+.wt_banner--searchbar #typeahead_archive .typeahead-form.loaded {
   display: inline-block;
 }
-.wt_banner--searchbar #typeahead-archive .typeahead-form input {
+.wt_banner--searchbar #typeahead_archive .typeahead-form input {
   width: inherit;
   border: none;
   padding: 2.5rem;
   font-size: 2rem;
 }
-.wt_banner--searchbar #typeahead-archive .typeahead-form .typeahead-list {
+.wt_banner--searchbar #typeahead_archive .typeahead-form .typeahead-list {
   position: initial;
   max-height: 60vh;
   border-radius: 0;
   border-top: 2px solid #3814a5;
   padding-top: 4px;
 }
-.wt_banner--searchbar #typeahead-archive .typeahead-form .typeahead-list .typeahead-item {
+.wt_banner--searchbar #typeahead_archive .typeahead-form .typeahead-list .typeahead-item {
   border-radius: 8px;
   padding: 12px;
   font-size: 1.2em;
@@ -650,13 +651,13 @@ body.search-results .wt_banner--searchbar {
   min-height: initial;
 }
 @media all and (max-width: 768px) {
-  .wt_banner--searchbar #typeahead-archive {
+  .wt_banner--searchbar #typeahead_archive {
     margin-left: 0;
   }
-  .wt_banner--searchbar #typeahead-archive .typeahead-form {
+  .wt_banner--searchbar #typeahead_archive .typeahead-form {
     width: 90vw;
   }
-  .wt_banner--searchbar #typeahead-archive .typeahead-form .typeahead-list {
+  .wt_banner--searchbar #typeahead_archive .typeahead-form .typeahead-list {
     max-height: initial;
   }
 }

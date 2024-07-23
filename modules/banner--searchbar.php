@@ -1,5 +1,3 @@
 <div class="wt_banner--searchbar">
-	<div id="typeahead-archive" class="react-typeahead-container">
-		[react_typeahead custom_class="body-style"]
-	</div>
+	<?php echo do_shortcode('[react_typeahead id="typeahead_archive" custom_class="body-style" data_source="airtable"]'); ?>
 </div>
