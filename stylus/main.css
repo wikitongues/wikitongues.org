@@ -360,7 +360,7 @@ body.home .wt_banner {
   position: relative;
   width: 100%;
   height: calc(100vh / 5 * 2);
-  margin-bottom: 6rem;
+  margin-bottom: 4rem;
   padding-top: 80px;
   box-sizing: content-box;
   background-position: center;
@@ -392,6 +392,7 @@ body.home .wt_banner {
   font-stretch: normal;
   font-size: 6.08rem;
   color: #fffcef;
+  line-height: initial;
 }
 .wt_banner__copy .wt_text--body {
   margin: 3rem 0;
@@ -462,6 +463,7 @@ body.home .wt_banner {
     font-stretch: normal;
     font-size: 6.08rem;
     color: #fffcef;
+    line-height: initial;
   }
   .wt_banner__copy--mobile .wt_text--body {
     margin: 3rem 0;
@@ -573,7 +575,20 @@ body.home .wt_banner {
 }
 .wt_carousel__wrapper {
   position: relative;
-  margin: 6rem 0;
+  margin-bottom: 6rem;
+}
+.wt_carousel__wrapper h1 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 3.04rem;
+  color: #101010;
+  line-height: initial;
+  margin: 1em 2.5vw;
+}
+.wt_carousel__container {
+  position: relative;
 }
 .wt_carousel__left-scroll {
   display: none;
@@ -608,7 +623,7 @@ body.home .wt_banner {
   display: flex;
   flex-direction: row;
   justify-content: left;
-  width: 95%;
+  width: 98%;
   margin: auto;
   overflow-x: hidden;
 }
@@ -725,6 +740,7 @@ body.home .wt_banner {
   font-stretch: normal;
   font-size: 6.08rem;
   color: #fffcef;
+  line-height: initial;
 }
 .wt_content-block--wide__copy p {
   margin: 3rem 0;
@@ -1325,6 +1341,7 @@ body .wt_single-languages__contents#wt_single-languages__resources .wt_content-b
   font-stretch: normal;
   font-size: 6.08rem;
   color: #fffcef;
+  line-height: initial;
 }
 .wt_banner--languages__meta strong {
   font-family: 'Graphik Web';
@@ -1586,6 +1603,7 @@ text
   font-stretch: normal;
   font-size: 6.08rem;
   color: #101010;
+  line-height: initial;
 }
 .wt_videos__main p {
   margin: 0 auto 3rem;
@@ -1644,6 +1662,7 @@ text
   font-stretch: normal;
   font-size: 6.08rem;
   color: #fffcef;
+  line-height: initial;
   margin-bottom: 3rem;
 }
 .wt_banner--team p {
@@ -1983,6 +2002,16 @@ text
   padding: 6rem 0;
   background: #9581c2;
   text-align: center;
+}
+.wt_newsletter h2 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+  line-height: initial;
+  margin-bottom: 3rem;
 }
 .wt_newsletter form>div {
   display: flex;

@@ -19,17 +19,25 @@ function wt_enqueue_styles() {
     );
 }
 
-// enqueue custom js with jquery dependency
-add_action( 'wp_enqueue_scripts', 'wt_enqueue_js' );
+add_action( 'wp_enqueue_scripts', 'wt_enqueue_custom_scripts' );
 
-function wt_enqueue_js() {
-    wp_register_script(
-        'wt_js',
-        get_stylesheet_directory_uri() . '/js/custom.js', 
-        array('jquery'), true);
+function wt_enqueue_custom_scripts() {
+    // Enqueue custom.js
+    wp_register_script( 'wt_custom_js', get_stylesheet_directory_uri() . '/js/custom.js',
+        array('jquery'),
+        null,
+        true 
+    );
+    wp_enqueue_script('wt_custom_js');
 
-    wp_enqueue_script('wt_js');
+    wp_register_script( 'wt_carousel_js', get_stylesheet_directory_uri() . '/js/carousel.js',
+        array('jquery'),
+        null,
+        true
+    );
+    wp_enqueue_script('wt_carousel_js');
 }
+
 
 // change default search form text
 function html5_search_form( $form ) { 

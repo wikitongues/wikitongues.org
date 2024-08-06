@@ -16,10 +16,11 @@
 			$testimonial_name = $first_name . " " . $last_name;
 			$testimonial_location = get_field('fellow_location');
 			$testimonial_link_back = get_field('testimonial_link_back');
+			echo '<script>console.log('.json_encode($post).')</script>';
 			?>
 			<li class="wt_testimonial">
 				<img class="wt_testimonial__image" src="<?php echo $testimonial_image['url']; ?>" alt="<?php echo $testimonial_image['alt']; ?>">
-
+				<span><?php echo $testimonial_image; ?></span>
 				<div class="wt_testimonial__copy">
 					<p>
 						<span><?php echo $testimonial_copy; ?></span>

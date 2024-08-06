@@ -14,6 +14,24 @@
 * in-line php lines up with previous html element (if statements)
 * line-breaks between php and in-line html
 
+# Deployment
+* This repository will automatically deploy changes to production when successfully merging to the `main` branch.
+* `main` can only be edited by pull-requests from other branches.
+
+# Running your db locally
+From `MAMP/Library/bin` run `./mysql -u root -p` to start a msql terminal.
+local pw: root
+
+Example Commands:
+
+* SHOW_DATABASES; <!-- Return databases -->
+* USE wikitongues_db; <!-- Set database -->
+* SHOW TABLES; <!-- Return database tables -->
+* DESCRIBE wp_posts; <!-- Return table columns -->
+* SELECT * FROM wp_posts WHERE post_type = 'languages'; <!-- Return matching values -->
+* SELECT DISTINCT post_type FROM wp_posts; <!-- Return unique values -->
+* Ctrl D <!-- End session -->
+
 # to-do
 
 ## code structure and styles
