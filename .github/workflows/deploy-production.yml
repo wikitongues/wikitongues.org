@@ -3,7 +3,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - main
+      - production
 
 env:
   REMOTE_DIR: ./public_html/wp-content/themes/blankslate-child
