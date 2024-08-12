@@ -18,10 +18,10 @@
 
 * We follow Continuous Integration principles. 
 * We work with 4 primary environments: feature, Integration, Staging, and Production (branch name: Main)
-    * Feature: an independent, feature-scoped environment for developing new features.
-		* Integration: a pre-deployment environment to manage feature integration and catch merge conflicts independently from deployment.
-		* Staging: a deployed environment to safely test integrations on a live server without touching Production.
-		* Production: the public-facing environment on the live URL.
+	* Feature: an independent, feature-scoped environment for developing new features.
+	* Integration: a pre-deployment environment to manage feature integration and catch merge conflicts independently from deployment.
+	* Staging: a deployed environment to safely test integrations on a live server without touching Production.
+	* Production: the public-facing environment on the live URL.
 * Feature development is done in a feature branch. (Be sure to push feature branches to Github so others might test and review them)
 * Once features are ready for integration, the first step is to merge the feature branch to `integration` locally
 
