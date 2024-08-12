@@ -60,9 +60,15 @@ body
 	padding 0 1.5rem
 	box-sizing border-box
 	background $parchment
+	transition-property background
+	transition-duration 0.3s
+	transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 	
 	&.transparent-background
-		background none !important
+		background none
+		transition-property background
+		transition-duration 0.3s
+		transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 		
 		.wt_header__searchbar
 			input[type="search"]
@@ -87,30 +93,32 @@ body
 			height 40px
 			width auto
 	
-	&__searchbar
-		position relative
-		flex-grow initial
-		margin-left 15px
-		border 1px solid $grey
-		
-		i
-			position absolute
-			top 50%
-			left 7.5px
-			transform translateY(-50%)
-		
-		input
-			&[type="search"]
-				border 0
-				padding 5px 10px 5px 27.5px
-				background $white
-				
-				&:focus
-					outline none
-				
-			&[type="submit"]
-				display none
 	
+	#typeahead_nav
+		.typeahead-form 
+			input
+				border none
+				width 330px
+				padding 11px
+
+				&:active,
+				&:focus
+					width 400px	
+					background $parchment
+					transition-property background, width
+					transition-duration 0.6s
+					transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
+			
+			.typeahead-list
+				width 400px	
+				border-radius 8px
+				outline 2px solid #3814a5
+				z-index 3
+
+	@media all and (max-width:$smallScreen)
+		#typeahead_nav.react-typeahead-container
+			display none !important
+
 	&--secondary
 		z-index 2
 		position fixed
@@ -126,7 +134,23 @@ body
 		margin-left auto
 		text-align right
 		font-size 0
-		
+
+		#dark
+			position fixed
+			top 0
+			left 0
+			width 100%
+			height 100vh
+			background rgba(0, 0, 0, 0.25)
+			opacity 0
+			visibility hidden
+			transition opacity 0.2s ease, visibility 0.2s ease
+			z-index 1
+			
+			&.visible
+				opacity 1
+				visibility visible
+
 		&--mobile
 			display none
 		
@@ -141,25 +165,38 @@ body
 		&>ul>li
 			position relative
 			margin-left 1.25rem
-			button--small($blue, $parchment)								
+			button--small($parchment, $blue)
+			border none
+			border-radius 8px
+			text-transform initial
+			padding 0
+			z-index 0
 			
 			&.current_page_item,
 			&.current_page_parent
-				background $white !important
+				pointer-events none
 				
-				&>a
-					color $blue !important
+				> a
+					font-weight bold
+					cursor default
 			
 			&>a // button--small is designed for a elements not li
 				text-decoration none
-				color $parchment
+				color inherit
+				padding 1.25rem
+				display inline-block
 
 			&:hover
 				cursor pointer
-				background $white !important
+				z-index 2
 				
-				&>a
-					color $blue !important
+			&.menu-item-has-children
+				&:hover 
+					&:not(.current_page_parent)
+						> .sub-menu
+							display block
+							&.show
+								display block
 		
 		.sub-menu
 			display none
@@ -167,21 +204,34 @@ body
 			top 38px
 			left 0
 			width 100%
-			padding 5px
-			background $white
-			text-align center
-			border-width 6px 0.5px 0.5px 0.5px 
-			border-color $blue
-			border-style solid 
+			padding 8px 0
+			text-align left
 			box-shadow 0 0 100px rgba(0,0,0,.05)
+			transition display 0.2s ease
 				
 			li
 				display block
-				margin 10px 0
+				margin 0
+				background $parchment
+				overflow hidden
+
+				&:first-of-type
+					padding-top 8px
+					border-radius 8px 8px 0 0
+
+				&:last-of-type
+					padding-bottom 8px
+					border-radius 0 0 8px 8px
 				
 				a
 					color $blue
+					padding 1.25rem
 					text-decoration none
+					display inline-block
+					width 100%
+
+					&:hover
+						background #eee
 		
 		&--secondary
 			z-index 2

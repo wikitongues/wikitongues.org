@@ -14,33 +14,80 @@
 * in-line php lines up with previous html element (if statements)
 * line-breaks between php and in-line html
 
-# Deployment Details
+# Continuous Integration and Deployment (CI/CD)
 
-* We follow Continuous Integration principles. 
-* We work with 4 primary environments: feature, Main, Staging, and Production
-	* **Feature:** an independent, feature-scoped environment for developing new features.
-	* **Main:** a pre-deployment environment to manage feature integration and catch merge conflicts independently from deployment.
-	* **Staging:** a deployed environment to safely test integrations on a live server without touching Production.
-	* **Production:** the public-facing environment on the live URL.
-* Feature development is done in a feature branch. (Be sure to push feature branches to Github so others might test and review them)
-* Once features are ready for integration, the first step is to merge the feature branch to `integration` locally
+This project follows a structured Continuous Integration and Continuous Deployment (CI/CD) process, utilizing four primary environments to ensure seamless development, testing, and production deployment.
+
+## Environments
+
+1. **Feature**: 
+   - Used for developing and testing new features in isolated branches.
+   - Feature branches should be regularly pushed to GitHub for visibility and collaboration.
+
+2. **Main**: 
+   - Serves as the integration branch where feature branches are merged.
+   - Ensures that features are tested and stable before further deployment.
+
+3. **Staging**: 
+   - URL: [staging.wikitongues.org](https://staging.wikitongues.org)
+   - A live testing environment where integrated features from `main` are deployed.
+   - Used for end-to-end testing in a production-like setting before going live.
+
+4. **Production**: 
+   - URL: [wikitongues.org](https://wikitongues.org)
+   - The public-facing environment where fully tested and approved features are deployed.
+   - Direct pushes to `production` are prohibited to maintain stability.
+
+## Workflow
+
+1. **Feature Development**: 
+   - Begin by branching off from `main` to develop new features.
+   - Regularly push updates to the feature branch on GitHub for peer review and testing.
+
+2. **Integration**: 
+   - Once a feature is ready, submit a pull request to merge the feature branch into `main`.
+   - Resolve any conflicts, run tests, and ensure the integration is smooth.
+
+3. **Staging Deployment**: 
+   - After merging into `main`, create a pull request to merge `main` into `staging`.
+   - Automatic deployment to the Staging environment allows for live testing.
+   - Conduct thorough testing and verification in the Staging environment.
+
+4. **Production Deployment**: 
+   - Following successful testing in Staging, create a pull request to merge `staging` into `production`.
+   - The merge triggers an automatic deployment to the Production environment.
+   - Monitor the deployment to ensure stability and functionality.
 
 ## Automatic Deployment
 
-* This repository will automatically deploy changes to production when successfully merging to deployment branches.
-* We use 2 deployment branches: `staging` and `production`.
-* `main` can only be edited by pull-requests from other branches.
+- **Deployment Branches**:
+  - `staging`: Automatically deploys to the Staging environment upon merge.
+  - `production`: Automatically deploys to the Production environment upon merge.
+  
+- **Branch Protection**:
+  - The `main` and `production` branches are protected and can only be modified via pull requests from other branches.
+  - This ensures that all changes are reviewed, tested, and approved before affecting live environments.
+
+
+# CSS and Compiling Stylus
+
+This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor. 
+Stylus needs to be compiled into CSS before it is usable in HTML. 
+To run the compiler, run `stylus -w stylus` in the terminal.
 
 # To-Do
 
 ## Code structure and styles
+
 - [] later - simplify if statement syntax ( a ? b : c); e.g.
 `wp_nav_menu( array(
 	'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
 ) );`
 - [] clean up template/modules hierarchy on video single and language single
 - [] convert jquery to vanilla javascript
+
 ## global
+
 - [] add alert banner and display only if user hasn't visited the site in a week
 - [] build captions post type
 - [] build single page template for partners post type
@@ -49,30 +96,46 @@
 - [] ADA accessibility evaluation
 - [] blog integration
 - [] browser notifications opt-in
+
 ## home
+
 - [] make homepage banner a carousel
 - [] make testimonial carousel a true carousel
+
 ## search results
+
 - [] sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes
+
 ## team member post type
+
 - [] add: historical interns, other secondary team data
+
 ## languages single
+
 - [] inlcude more clarity for external resources
 - [] related languages carousel
 - [] add continent of origin
+
 ## video single
+
 - [] toggle metadata view for for more than 1 language
 - [] toggle all metadata view on mobile
 - [] once captions post type is live, add download feature
 - [] figure out navigation path from single videos back to the language in question
 - [] figure out embeds for Dropbox files (not on YouTube)
 - [] related videos carousel
+
 ## archive
+
 - [] language collection pages - probably page templates with customized for-loops baased on ACF fields  (need to define what we want to sort by)
+
 ## fellows single
+
 - [] micro-blogging feature
 - [] other fellows carousel
+
 ## revitalization toolkit
+
 - [] toolkit newsletter propt
 - [] toolkit language prompt
 - [] toolkit donate prompt
