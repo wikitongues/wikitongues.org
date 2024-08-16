@@ -88,6 +88,7 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 
 ## global
 
+- [] bug on search page title - title has first matching language iso (`Wikitongues | niv`) despite being search route (`?s=russian`).
 - [] add alert banner and display only if user hasn't visited the site in a week
 - [] build captions post type
 - [] build single page template for partners post type
