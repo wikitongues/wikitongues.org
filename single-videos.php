@@ -17,6 +17,8 @@ $video_thumbnail = get_field('video_thumbnail_v2');
 // video
 include( 'modules/videos-single--embed.php' );
 
+echo '<h1>' . get_field( 'video_title' ) . '</h1>';
+
 // left column - video metadata
 include( 'modules/meta--videos-single.php' );
 
