@@ -1,13 +1,18 @@
 <section class="wt_single-videos__content--body">
 	<div class="wt_meta--videos-single">	
 		<div class="wt_meta__video-downloads">
+		<?php
+				if ( $video_license && $video_license !== 'none' ) { 
+					echo '<p><strong class="wt_text--uppercase">Video license</strong></p>';
+					echo '<p><a href="' . $video_license_url . '">'. $video_license . '</a></p>';
+				}
+			?>
 			<p>
 				<strong class="wt_text--uppercase">Video file downloads</strong>
 			</p>
 
 			<p>
 			<?php if ( $public_status === 'Public' ) {
-
 				if ( $dropbox_link && $dropbox_link !== 'none' ) { 
 
 					echo '<a href="'. $dropbox_link . '" target="_blank">

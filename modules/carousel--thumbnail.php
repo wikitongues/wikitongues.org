@@ -1,7 +1,10 @@
-<?php $post_type = get_sub_field('thumbnail_carousel_posts'); ?>
-
+<?php 
+	$post_type = get_sub_field('thumbnail_carousel_posts'); 
+	$carousel_title = get_sub_field('thumbnail_carousel_title');
+?>
 <?php if ( $post_type ): ?>
 <section class="wt_carousel__wrapper"><!-- fix naming conventions -->
+	<?php echo '<h1>' . $carousel_title . '</h1>'; ?>
 	<button class="wt_carousel__left-scroll">
 		<i class="fa-regular fa-arrow-left-long"></i>
 	</button>
