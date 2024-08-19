@@ -665,6 +665,17 @@ body.search-results .wt_banner--searchbar {
   position: relative;
   margin: 6rem 0;
 }
+.wt_carousel__wrapper h1 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+  font-size: 4.8rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
 .wt_carousel__left-scroll {
   display: none;
   position: absolute;
@@ -1330,6 +1341,91 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 }
 .wt_search-results__thumbnail--copy a i {
   margin-left: 0.5rem;
+}
+.page-template-template-archive-success .wt_banner {
+  background-position-y: -150px;
+  background-position-x: right;
+  background-size: 110%;
+}
+.page-template-template-archive-success .wt_carousel__wrapper {
+  background: #101010;
+  padding: 3rem;
+}
+.page-template-template-archive-success .wt_carousel__wrapper * {
+  color: #fffcef;
+}
+.wt_archive__faq {
+  display: flex;
+  flex-direction: column;
+}
+.wt_archive__faq h1 {
+  margin: 0 auto 6rem;
+  width: 100%;
+  max-width: 600px;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+  font-size: 4.9rem;
+  text-align: center;
+}
+.wt_archive__faq section {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 3rem;
+  column-count: 3;
+  column-gap: 16px;
+}
+.wt_archive__faq section article {
+  float: left;
+  width: 100%;
+}
+.wt_archive__faq section article p {
+  margin: 0 auto 3rem;
+  width: 100%;
+  max-width: 600px;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: #101010;
+}
+.wt_archive__faq section article p strong {
+  font-family: 'Graphik Web';
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: #101010;
+  min-height: 3.3em;
+  display: inline-block;
+}
+.wt_archive__faq section article p a {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: #3814a5;
+}
+h1.success_cta {
+  margin: 12rem auto;
+  width: 100%;
+  max-width: 1000px;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+  text-align: center;
+  font-size: 4.9rem;
 }
 body.single-languages .wt_header__nav>ul>li:first-of-type:hover:before {
   display: none !important;
