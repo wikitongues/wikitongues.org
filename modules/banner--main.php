@@ -14,7 +14,6 @@ $banner_cta = $page_banner['banner_cta'];
 $banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
 ?>
 
-<!-- testing -->
 <div class="wt_banner" role="img" aria-label="<?php echo $banner_image['alt']; ?>" style="background-image:url(<?php echo $banner_image['url']; ?>);">
 	<div class="wt_banner__copy">
 		<h1 class="wt_text--header .SchnyderWideM-Light-Web">
