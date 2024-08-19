@@ -1,31 +1,52 @@
+$video_size = (9/16)*100 // in viewport widths
 .wt_single-videos
 	&__content
-		width 90%
-		max-width 1000px
-		margin 6rem auto
+		width 100%
+		margin 0 auto 6rem auto
+
+		&--body
+			width 90%
+			max-width 1000px
+			margin auto
+
+		h1
+			margin 0 auto 3rem
+			width 100%
+			max-width 1000px
+			text--header($black)
+
+	&__video,
+	&__no-video
+		background $black
+		padding 4rem 0
+		margin-bottom 6rem
+	
+	&__no-video
+		display flex
+		min-height ($video_size/16*9)vw
+		align-content center
+
+		p
+			margin auto
+			vertical-align middle
+			text-align center
+			max-width ($video_size)vw
+			text--body($parchment)
 		
 	&__video
-		position relative
 		width 100%
-		height 0
-		overflow hidden
-		padding-top 56.25%
-		margin-bottom 6rem
+		height 100%
 		text--strong($parchment)
 		text-align center
 		
 		video
-			background $black
-			
+			background lighten($black, 10%)
+			width 100%
+
 		video,
 		iframe
-			position absolute
-			top 0
-			left 0
-			right 0
-			bottom 0
-			width 100%
-			height 100%
+			min-height ($video_size/16*9)vw
+			max-width ($video_size)vw
 		
 		p
 			background $purple
