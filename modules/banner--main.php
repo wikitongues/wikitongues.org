@@ -37,6 +37,7 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
 			<!-- there is no CTA or helper text to display -->
 		<?php endif; ?>
 	</div>
+	<p class="caption"><strong><?php echo $banner_image['caption']; ?></strong></p>
 </div>
 <div class="wt_banner__copy--mobile">
 	<h1 class="wt_text--header .SchnyderWideM-Light-Web">
