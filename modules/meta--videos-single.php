@@ -4,7 +4,7 @@
 		<?php
 				if ( $video_license && $video_license !== 'none' ) { 
 					echo '<p><strong class="wt_text--uppercase">Video license</strong></p>';
-					echo '<p><a href="' . $video_license_url . '">'. $video_license . '</a></p>';
+					echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
 				}
 			?>
 			<p>
