@@ -18,8 +18,7 @@
 			$testimonial_link_back = get_field('testimonial_link_back');
 			?>
 			<li class="wt_testimonial">
-				<img class="wt_testimonial__image" src="<?php echo $testimonial_image['url']; ?>" alt="<?php echo $testimonial_image['alt']; ?>">
-
+				<?php echo '<div class="wt_testimonial__image" role="img"' . 'style="background-image:url(' .  wp_get_attachment_url($testimonial_image) . ');" alt="' . $testimonial_name . '" title="Wikitongues Fellow ' . $testimonial_name . '"></div>'?>
 				<div class="wt_testimonial__copy">
 					<p>
 						<span><?php echo $testimonial_copy; ?></span>

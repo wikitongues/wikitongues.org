@@ -909,9 +909,11 @@ body.search-results .wt_banner--searchbar {
   align-items: center;
 }
 .wt_carousel--testimonials ul .wt_testimonial__image {
-  max-width: 200px;
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
   margin-right: 3rem;
+  background-size: cover;
 }
 .wt_carousel--testimonials ul .wt_testimonial__copy p {
   margin-bottom: 1.5rem;
