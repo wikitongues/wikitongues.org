@@ -432,6 +432,7 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
   .wt_header__mobile-buttons button {
     background: none;
     border: none;
+    float: right;
     font-family: 'Graphik Web';
     font-weight: 700;
     font-style: normal;
@@ -450,8 +451,8 @@ body.page-template-template-giving-campaign.logged-in[data-alert="true"] {
     display: none;
     z-index: 7;
     position: fixed;
-    top: 3rem;
-    right: 3rem;
+    top: 2.5rem;
+    right: 1.6rem;
   }
   .wt_header.transparent-background .wt_header__mobile-buttons button:first-of-type {
     font-family: 'Graphik Web';
@@ -882,6 +883,9 @@ body.search-results .wt_banner--searchbar {
     width: 100%;
     background: #3814a5;
     padding: 5rem 6rem 6rem;
+  }
+  .wt_content-block--wide__copy h1 {
+    font-size: 4rem;
   }
 }
 .wt_carousel--testimonials p {
@@ -2407,7 +2411,10 @@ text
 }
 @media all and (max-width: 768px) {
   .wt_newsletter {
-    padding: 6rem 3rem;
+    padding: 4rem 3rem 6rem;
+  }
+  .wt_newsletter h2 {
+    font-size: 4rem;
   }
   .wt_newsletter form>div {
     display: block;
