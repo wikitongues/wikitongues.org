@@ -55,3 +55,28 @@ h1.success_cta
   text--header($black)
   text-align center
   font-size 4.9rem
+
+@media all and (max-width:$mobile)
+  .page-template-template-archive-success
+    .wt_banner
+      background-position initial
+
+  .wt_archive
+    &__faq
+      padding 0 3rem
+
+      h1
+        margin-bottom 4rem
+        font-size 3rem
+        text-align-last left
+
+      section
+        width 100%
+        max-width 1000px
+        column-count 1
+        margin 0 auto
+
+        article
+          p
+            strong
+              min-height 2em
