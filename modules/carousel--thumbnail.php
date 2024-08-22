@@ -25,24 +25,10 @@
 		<li class="wt_thumbnail">
 		<?php 
 			if ( $thumbnail_image ) {
-
-				echo '<div class="wt_thumbnail__image" role="img"'.
-					 'style="background-image:url(' . 
-					 $thumbnail_image .
-					 ');" alt="' .
-					 $thumbnail_image['alt'] .
-					 '"></div>';
-
+				echo '<div class="wt_thumbnail__image" role="img"' . 'style="background-image:url(' .  $thumbnail_image . ');" alt="' . $thumbnail_image['alt'] . '"></div>';
 			} elseif ( has_post_thumbnail() ) {
-
 				// the_post_thumbnail( 'large', array('class'=>'wt_thumbnail__image') );
-				echo '<div class="wt_thumbnail__image" role="img"'.
-					 'style="background-image:url(' . 
-					 get_the_post_thumbnail_url() .
-					 ');" alt="' .
-					 $thumbnail_image['alt'] .
-					 '"></div>';
-
+				echo '<div class="wt_thumbnail__image" role="img"' . 'style="background-image:url(' . get_the_post_thumbnail_url() . ');" alt="' . $thumbnail_image['alt'] . '"></div>';
 			} else {
 
 				echo '<div class="wt_thumbnail__image blank" role="img"></div>';
