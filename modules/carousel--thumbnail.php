@@ -14,9 +14,13 @@
 	<ul class="wt_carousel--thumbnails">
 	<?php foreach ( $post_type as $post ): setup_postdata( $post ); ?>
 	<?php 
-		$thumbnail_title = get_field('thumbnail_title');
+		$custom_title = get_field('thumbnail_title');
+		$video_title = get_field('video_title');
 		$thumbnail_cta_text = get_field('thumbnail_cta_text'); 
-		$thumbnail_image = get_field('thumbnail_image');
+		$custom_thumbnail = get_field('thumbnail_image')['url'];
+		$video_thumbnail = wp_get_attachment_url(get_field('video_thumbnail_v2'));
+		$thumbnail_title = is_null($custom_title) ? $video_title : $custom_title;
+		$thumbnail_image = is_null($custom_thumbnail) ? $video_thumbnail : $custom_thumbnail;
 		?>
 		<li class="wt_thumbnail">
 		<?php 
@@ -24,7 +28,7 @@
 
 				echo '<div class="wt_thumbnail__image" role="img"'.
 					 'style="background-image:url(' . 
-					 $thumbnail_image['url'] .
+					 $thumbnail_image .
 					 ');" alt="' .
 					 $thumbnail_image['alt'] .
 					 '"></div>';
