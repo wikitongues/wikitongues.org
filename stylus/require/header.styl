@@ -2,7 +2,6 @@ body
 	max-width 1800px
 	margin auto
 	box-shadow 0 0 100px rgba(0,0,0,.05)
-	// padding-top 122.63px
 	background $parchment
 
 	&[data-alert="true"]
@@ -12,7 +11,6 @@ body
 			top 72px !important
 
 	&.logged-in
-		// padding-top 154.63px !important
 
 		.wt_header
 			top 32px !important
@@ -41,19 +39,8 @@ body
 				padding 10px
 
 		&.logged-in
-			// padding-top 32px !important
-
 			.wt_header
 				top 32px !important
-
-	// &.page-template-template-giving-campaign
-	// 	padding-top 131.63px !important
-
-	// 	&.logged-in
-	// 		// padding-top 91.63px !important
-
-	// 		&[data-alert="true"]
-	// 			padding-top 163.63px !important
 
 .wt_header
 	z-index 10
@@ -62,12 +49,8 @@ body
 	align-items center
 	position fixed
 	top 0
-	// left 50%
-	// transform translateX(-50%)
 	width 100%
 	max-width 1800px
-	// height 60px
-	// padding 0 1.5rem
 	box-sizing border-box
 	background $parchment
 	transition-property background
@@ -87,7 +70,7 @@ body
 	&__primary
 		display flex
 		width 100%
-		padding 10px 10px 0
+		padding 8px
 
 	&__logo
 		flex-grow initial
@@ -135,14 +118,8 @@ body
 			display none !important
 
 	&__secondary
-		// z-index 2
-		// position fixed
-		// top 60px
-		// left 0
+		border-top 1px solid $lightPurple
 		width 100%
-		// padding 10px 3rem 20px
-		// background $white
-		// border-top 1px solid $blue
 
 	&__nav
 		z-index inherit
@@ -251,8 +228,9 @@ body
 		&--secondary
 			z-index 2
 			text-align center
+
 			ul
-				padding 0 0 10px
+				padding 8px 0
 
 				li
 					display inline-block
@@ -266,7 +244,6 @@ body
 						text--body($blue)
 						font-size 1.3rem !important
 						text-decoration none
-						// text-transform uppercase
 						padding 10px
 						display inline-block
 
@@ -369,8 +346,8 @@ body
 					display none
 					z-index 7
 					position fixed
-					top 2.5rem
-					right 1.6rem
+					top 3rem
+					right 3rem
 
 		&.transparent-background
 			.wt_header__mobile-buttons

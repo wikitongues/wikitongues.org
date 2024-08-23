@@ -1,19 +1,17 @@
 <section class="wt_single-videos__content--body">
-	<div class="wt_meta--videos-single">	
+	<div class="wt_meta--videos-single">
 		<div class="wt_meta__video-downloads">
-		<?php
-				if ( $video_license && $video_license !== 'none' ) { 
-					echo '<p><strong class="wt_text--uppercase">Video license</strong></p>';
+			<?php
+				if ( $video_license && $video_license !== 'none' ) {
+					echo '<h2>Video license</h2>';
 					echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
 				}
 			?>
-			<p>
-				<strong class="wt_text--uppercase">Video file downloads</strong>
-			</p>
+			<h2>Video file downloads</h2>
 
 			<p>
 			<?php if ( $public_status === 'Public' ) {
-				if ( $dropbox_link && $dropbox_link !== 'none' ) { 
+				if ( $dropbox_link && $dropbox_link !== 'none' ) {
 
 					echo '<a href="'. $dropbox_link . '" target="_blank">
 						Dropbox (.mp4)</a>';
@@ -29,13 +27,13 @@
 				if ( $dropbox_link === 'none' && !$wikimedia_commons_link ) {
 
 					echo 'File downloads are currently unavailable for this video.';
-					
+
 				}
 
 				if ( !$dropbox_link && !$wikimedia_commons_link ) {
 
 					echo 'File downloads are currently unavailable for this video.';
-					
+
 				}
 
 				// later version: captions
@@ -60,13 +58,13 @@
 				$alternate_names = get_field('alternate_names');
 				$nations_of_origin = get_field('nations_of_origin');
 				$writing_systems = get_field('writing_systems');
-				$linguistic_genealogy = get_field('linguistic_genealogy'); 
+				$linguistic_genealogy = get_field('linguistic_genealogy');
 				?>
-				<strong class="wt_text--uppercase">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
+				<h2 class="wt_sectionHeader">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></h2>
 				<ul>
 				<?php if ( $nations_of_origin ): ?>
 					<li>
-						<p>Countries of origin</p>
+						<h2>Countries of origin</h2>
 						<p class="wt_text--label">
 							<?php echo $nations_of_origin; ?>
 						</p>
@@ -75,7 +73,7 @@
 
 				<?php if ( $writing_systems ): ?>
 					<li>
-						<p>Writing systems</p>
+						<h2>Writing systems</h2>
 						<p class="wt_text--label">
 							<?php echo $writing_systems; ?>
 						</p>
@@ -84,7 +82,7 @@
 
 				<?php if ( $linguistic_genealogy ): ?>
 					<li>
-						<p>Linguistic genealogy</p>
+						<h2>Linguistic genealogy</h2>
 						<p class="wt_text--label">
 							<?php echo $linguistic_genealogy; ?>
 						</p>
@@ -93,7 +91,7 @@
 				<!-- EGIDS status? -->
 				</ul>
 			</li>
-		<?php endforeach; wp_reset_postdata(); ?> 
+		<?php endforeach; wp_reset_postdata(); ?>
 		</ul>
-		
+
 	</div>
