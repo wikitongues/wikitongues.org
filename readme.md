@@ -75,6 +75,12 @@ This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
 Stylus needs to be compiled into CSS before it is usable in HTML. 
 To run the compiler, run `stylus -w stylus` in the terminal.
 
+# Plugins
+
+**Typeahead Search**
+This project uses a React search component maintained in a [separate repository](https://github.com/wikitongues/typeahead/tree/main).
+To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments. Consider using `rsync` to facilitate the distribution. Additionally, the plugin has a PHP file that is not currently tracked on Git due to this repository being only a subset of the full installation. We may want to change this later.
+
 # To-Do
 
 ## Code structure and styles
@@ -89,6 +95,7 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 ## global
 
 - [] bug on search page title - title has first matching language iso (`Wikitongues | niv`) despite being search route (`?s=russian`).
+- [] track entire wordpress instance in git to capture plugin-specific (typeahead) changes
 - [] add alert banner and display only if user hasn't visited the site in a week
 - [] build captions post type
 - [] build single page template for partners post type
