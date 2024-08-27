@@ -1,0 +1,281 @@
+#primary
+  margin-top 100px
+
+$aspect-ratio = 16/9
+
+.custom-gallery
+  text--body($blue)
+  font-size 2em
+
+  &.full
+    margin 32px
+
+  &.home
+    h2
+      text--header($black)
+      text-align center
+      font-size 4rem
+      margin-bottom 1.5rem
+      border-bottom 1px solid $lightPurple
+      padding-bottom 12px
+
+  h2
+    text--strong($black)
+    margin-bottom 1.5rem
+    border-bottom 1px solid $lightPurple
+    padding-bottom 12px
+
+  > p
+    color $black
+
+  .gallery-container
+    margin-bottom 24px
+
+    &.paginated
+      margin-bottom 0
+
+    .gallery-list
+      width 100%
+      gap 16px
+      display grid
+
+      .gallery-item
+        width 100%
+
+        a
+          background-color $black
+          display inline-block
+          color $parchment
+          width 100%
+          position relative
+          padding 16px
+          float left
+
+          img,
+          .no-thumbnail,
+          .thumbnail,
+          span
+            width 100%
+            float left
+            display inline-block
+            height 0
+            padding ((1/($aspect-ratio))*50)% 0// 16:9 aspect ratio
+            position relative
+
+          img,
+          .no-thumbnail,
+          .thumbnail
+            background $blue
+            background-position center
+            background-size cover
+            border-radius 8px 0 8px 0
+
+          .no-thumbnail
+            p
+              width 100%
+              position absolute
+              text-align center
+              top 50%
+              margin 0
+              margin-top -1rem
+
+
+          h3
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
+            overflow hidden
+            float left
+            max-width 90%
+
+          aside
+            float right
+            font-family monospace
+
+          p
+            position absolute
+            bottom 0
+            left 0
+            font-size 1.6rem
+            margin 1.6rem
+
+  &.languages
+    .gallery-list
+      grid-template-columns repeat(4, 1fr)
+
+      h3
+        margin-bottom 16px
+
+  &.videos
+    .gallery-list
+      grid-template-columns repeat(3, 1fr)
+
+      h3
+        margin-top 16px
+
+  &.videos,
+  &.languages
+    .gallery-list
+      h3
+        height 52px
+
+  &.fellows
+    .gallery-container
+      .gallery-list
+        grid-template-columns repeat(5, 1fr)
+        row-gap 32px
+
+        .gallery-item
+          padding 16px 0 0 16px
+
+          // light theme
+          a
+            color $black
+            background $parchment
+            border 2px solid $blue
+
+            .no-thumbnail
+              p
+                color $parchment
+
+            table
+              tr
+                &:last-of-type
+                  td
+                    &:last-of-type
+                      color $blue
+
+          .thumbnail,
+          .no-thumbnail
+            position absolute
+            top -16px
+            left -16px
+
+          h3
+            font-size 2.4rem
+            height 64px
+
+          table
+            width 100%
+            float left
+            margin-top 16px
+
+            tr
+              &:first-of-type
+                font-size 1.6rem
+
+              &:last-of-type
+                td
+                  &:last-of-type
+                    color $blue
+
+              td
+                &:nth-of-type(2)
+                  text-align right
+
+  .gallery-pagination
+    display flex
+    justify-content center
+
+    li
+      float left
+
+      &.page-helper
+        width 100%
+        &:first-of-type
+          text-align right
+
+      a
+        padding 16px
+        display inline-block
+        text-decoration none
+
+        &.page-numbers
+          text--body($blue)
+          text-decoration none
+
+          &.active
+            text--strong($blue)
+            pointer-events none
+
+.custom-gallery-fellows-navigation
+  width 100%
+  display inline-block
+  text--body($black)
+  padding 0 32px
+  position relative
+
+  h2,
+  ul,
+  p
+    max-width (100/3)%
+    display inline-block
+    float left
+
+  h2
+    text--strong($black)
+    width 50%
+    padding 16px 0
+
+  ul
+    display flex
+    width 100%
+    justify-content center
+    pointer-events none
+
+    li
+      float left
+      pointer-events all
+
+      button
+        text--body($blue)
+        background none
+        border none
+        padding 16px
+        cursor pointer
+
+        &.active
+          text--strong($blue)
+          pointer-events none
+
+  p
+    text-align right
+    width 50%
+
+    a
+      text--strong($blue)
+      padding 16px 0 16px 16px
+      float right
+
+  a
+    text-decoration none
+    color $blue
+
+
+.custom-cta-container
+  width 100%
+  display inline-block
+
+  &.full
+    padding 0 32px
+
+  .custom-gallery-video-cta
+    background $lightPurple
+    border-radius 8px
+    display inline-block
+    width 100%
+    overflow hidden
+
+    a
+      text-decoration none
+      text--body($blue)
+      padding 24px
+      line-height 2.6rem
+
+      &:first-of-type
+        text--strong($blue)
+        font-size 2rem
+        float left
+
+      &:last-of-type
+        float right
