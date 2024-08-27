@@ -4,6 +4,9 @@
 require_once('includes/class-wt-rest-posts-controller.php');
 require_once('includes/update-videos.php');
 
+// update video language ISOs when editing featured languages in admin
+require_once('includes/update-video-featured-language-iso-codes.php');
+
 // enqueue stylesheets
 add_action( 'wp_enqueue_scripts', 'wt_enqueue_styles' );
 
@@ -21,8 +24,6 @@ function wt_enqueue_styles() {
 }
 
 // enqueue custom js with jquery dependency
-add_action( 'wp_enqueue_scripts', 'wt_enqueue_js' );
-
 function wt_enqueue_js() {
     wp_register_script(
         'wt_js',
@@ -31,6 +32,7 @@ function wt_enqueue_js() {
 
     wp_enqueue_script('wt_js');
 }
+add_action( 'wp_enqueue_scripts', 'wt_enqueue_js' );
 
 function searchfilter($query)
 {

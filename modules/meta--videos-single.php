@@ -1,55 +1,54 @@
-<section class="wt_single-videos__content--body">
-	<div class="wt_meta--videos-single">
-		<div class="wt_meta__video-downloads">
-			<?php
-				if ( $video_license && $video_license !== 'none' ) {
-					echo '<h2>Video license</h2>';
-					echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
-				}
-			?>
-			<h2>Video file downloads</h2>
+<div class="wt_meta--videos-single">
+	<div class="wt_meta__video-downloads">
+		<?php
+			if ( $video_license && $video_license !== 'none' ) {
+				echo '<h2>Video license</h2>';
+				echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
+			}
+		?>
+		<h2>Video file downloads</h2>
 
-			<p>
-			<?php if ( $public_status === 'Public' ) {
-				if ( $dropbox_link && $dropbox_link !== 'none' ) {
+		<p>
+		<?php if ( $public_status === 'Public' ) {
+			if ( $dropbox_link && $dropbox_link !== 'none' ) {
 
-					echo '<a href="'. $dropbox_link . '" target="_blank">
-						Dropbox (.mp4)</a>';
+				echo '<a href="'. $dropbox_link . '" target="_blank">
+					Dropbox (.mp4)</a>';
 
-				}
+			}
 
-				if ( $wikimedia_commons_link ) {
+			if ( $wikimedia_commons_link ) {
 
-					echo '<br /><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a>';
+				echo '<br /><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a>';
 
-				}
+			}
 
-				if ( $dropbox_link === 'none' && !$wikimedia_commons_link ) {
+			if ( $dropbox_link === 'none' && !$wikimedia_commons_link ) {
 
-					echo 'File downloads are currently unavailable for this video.';
+				echo 'File downloads are currently unavailable for this video.';
 
-				}
+			}
 
-				if ( !$dropbox_link && !$wikimedia_commons_link ) {
+			if ( !$dropbox_link && !$wikimedia_commons_link ) {
 
-					echo 'File downloads are currently unavailable for this video.';
+				echo 'File downloads are currently unavailable for this video.';
 
-				}
+			}
 
-				// later version: captions
-			} elseif ( $public_status === 'Processing' ) {
+			// later version: captions
+		} elseif ( $public_status === 'Processing' ) {
 
-				echo 'File downloads will be ready when this is video is finished processing. Please check back soon.'; // later version: 'subscribe for notifications'
+			echo 'File downloads will be ready when this is video is finished processing. Please check back soon.'; // later version: 'subscribe for notifications'
 
-			} elseif ( $public_status === 'Private') {
+		} elseif ( $public_status === 'Private') {
 
-				echo 'File downloads are disabled because the creator of this video has chosen to make this video private.';
+			echo 'File downloads are disabled because the creator of this video has chosen to make this video private.';
 
-			} ?>
-			</p>
-		</div>
+		} ?>
+		</p>
+	</div>
 
-		<ul class="wt_meta__featured-languages">
+	<ul class="wt_meta__featured-languages">
 		<?php foreach( $featured_languages as $post ): setup_postdata( $post ); ?>
 			<li>
 				<?php
@@ -92,6 +91,5 @@
 				</ul>
 			</li>
 		<?php endforeach; wp_reset_postdata(); ?>
-		</ul>
-
-	</div>
+	</ul>
+</div>

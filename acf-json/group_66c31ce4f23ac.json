@@ -86,9 +86,9 @@
             ]
         },
         {
-            "key": "field_66c3251653cbd",
-            "label": "Thumbnail carousel",
-            "name": "thumbnail_carousel",
+            "key": "field_66d06b55105e4",
+            "label": "Custom Gallery Posts",
+            "name": "custom_gallery_posts",
             "aria-label": "",
             "type": "group",
             "instructions": "",
@@ -102,9 +102,9 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_66c33a0fcfd31",
-                    "label": "Thumbnail carousel title",
-                    "name": "thumbnail_carousel_title",
+                    "key": "field_66d06bd5b1232",
+                    "label": "Custom Gallery ID",
+                    "name": "custom_gallery_id",
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
@@ -122,9 +122,29 @@
                     "append": ""
                 },
                 {
-                    "key": "field_66c33a10cfd32",
-                    "label": "Thumbnail carousel posts",
-                    "name": "thumbnail_carousel_posts",
+                    "key": "field_66d3345854da2",
+                    "label": "Custom Gallery Title",
+                    "name": "custom_gallery_title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_66d06be6b1233",
+                    "label": "Custom Gallery Post",
+                    "name": "custom_gallery_post",
                     "aria-label": "",
                     "type": "post_object",
                     "instructions": "",
@@ -135,8 +155,16 @@
                         "class": "",
                         "id": ""
                     },
-                    "post_type": "",
-                    "post_status": "",
+                    "post_type": [
+                        "videos",
+                        "languages",
+                        "fellows",
+                        "resources",
+                        "lexicons"
+                    ],
+                    "post_status": [
+                        "publish"
+                    ],
                     "taxonomy": "",
                     "return_format": "object",
                     "multiple": 1,
@@ -144,26 +172,6 @@
                     "bidirectional": 0,
                     "ui": 1,
                     "bidirectional_target": []
-                },
-                {
-                    "key": "field_66c33a2fcfd33",
-                    "label": "Thumbnail carousel ID",
-                    "name": "thumbnail_carousel_id",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
                 }
             ]
         }
@@ -186,5 +194,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1724070657
+    "modified": 1725117580
 }

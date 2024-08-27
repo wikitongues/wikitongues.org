@@ -4,5 +4,3 @@
 	</p>
 </div>
 <div class="clear"></div>
-</section><!-- close body section -->
-</main><!-- close main content wrapper. reconsider templating hierarchy later -->

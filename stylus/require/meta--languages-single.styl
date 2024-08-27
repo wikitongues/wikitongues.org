@@ -15,15 +15,17 @@
 	h2
 		text--strong($black)
 
-	h2.wt_sectionHeader
-		margin-bottom 1.5rem
-		border-bottom 1px solid $lightPurple
-		padding-bottom 12px
+		&.wt_sectionHeader
+			margin-bottom 1.5rem
+			border-bottom 1px solid $lightPurple
+			padding-bottom 12px
 
 	ul
 		li
 			margin-bottom 1.5rem
-
+			a
+				&:hover
+					text-decoration underline
 	a
 		text-decoration none
 		text--body($blue)
@@ -35,8 +37,14 @@
 		span
 			text--body($blue)
 
-		&:hover
-			text-decoration underline
+		&.donate-cta
+			background-color $red
+			color $white
+			padding 1rem 2rem
+			border-radius 4px
+			text-align center
+			display inline-block
+			margin-top 1rem
 
 @media all and (max-width:$mobile)
 	.wt_meta--languages-single
