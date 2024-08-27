@@ -1,10 +1,8 @@
 	<div id="wt_single-languages__resources" class="wt_single-languages__contents">
-		<p>
-			<strong>External resources</strong>
-		</p>
+		<h2 class="wt_sectionHeader">External resources</h2>
 		<?php if ( $external_resources ): ?>
 			<ul>
-			<?php 
+			<?php
 			// loop through available lexicons
 			foreach( $external_resources as $post ) {
 				// foreach video, setup posts data
@@ -28,7 +26,7 @@
 				// include content block template
 				include( 'content-block--grid.php' );
 
-			} wp_reset_postdata(); 
+			} wp_reset_postdata();
 			?>
 			</ul>
 		<?php else: ?>

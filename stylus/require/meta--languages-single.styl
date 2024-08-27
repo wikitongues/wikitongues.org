@@ -2,30 +2,39 @@
 	width calc(100%/4)
 	float left
 	padding-left 6rem
-	
+
+	section
+		margin-bottom 1rem
+
 	strong
 		text--strong($black)
-	
+
 	p
+		text--body($black)
+
+	h2
+		text--strong($black)
+
+	h2.wt_sectionHeader
 		margin-bottom 1.5rem
-		text-transform uppercase
-		
-		strong
-			text--strong($black)
-	
+		border-bottom 1px solid $lightPurple
+		padding-bottom 12px
+
 	ul
 		li
 			margin-bottom 1.5rem
-	
+
 	a
 		text-decoration none
-		
+		text--body($blue)
+		display block
+
 		strong
 			text--strong($blue)
-			
+
 		span
 			text--body($blue)
-		
+
 		&:hover
 			text-decoration underline
 

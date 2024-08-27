@@ -1,42 +1,29 @@
+<?php
+	$standard_name = get_field('standard_name');
+	$nations_of_origin = get_field('nations_of_origin');
+	$writing_systems = get_field('writing_systems');
+	$linguistic_genealogy = get_field('linguistic_genealogy');
+?>
 <div class="wt_meta--languages-single">
-	<p>
-		<strong>
-			<?php the_field('standard_name'); ?> resources
-		</strong>
-	</p>
+	<h2 class="wt_sectionHeader"><?php  echo $standard_name; ?> resources</h2>
 	<ul>
 		<li>
 			<a href="#wt_single-languages__videos">
-				<strong>Videos (<?php echo $videos_count; ?>)</strong><br />
+				<h2>Videos <?php echo ($videos_count > 0 ? '(' . $videos_count . ')' : ''); ?></h2>
 			</a>
-			<a href="<?php bloginfo('url'); ?>/submit-a-video">
-				<span>Submit a video</span>
-			</a>
+			<a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a video</a>
 		</li>
-		<li>	
+		<li>
 			<a href="#wt_single-languages__lexicons">
-			<?php if ( $lexicons_count > 0 ): ?>
-				<strong>Dictionaries, phrase books, and lexicons (<?php echo $lexicons_count; ?>)</strong><br />
-			<?php else: ?>
-				<strong>Dictionaries, phrase books, and lexicons (0)</strong><br />
-			<?php endif; ?>
+				<h2>Dictionaries, phrase books, and lexicons <?php echo ($lexicons_count > 0 ? '(' . $lexicons_count . ')' : ''); ?></h2>
 			</a>
-			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">
-				<span>Submit a lexicon</span>
-			</a>
+			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">Submit a lexicon</a>
 		</li>
-		<!-- resources -->
-		<li>	
+		<li>
 			<a href="#wt_single-languages__resources">
-			<?php if ( $external_resources_count > 0 ): ?>
-				<strong>External Resources (<?php echo $external_resources_count; ?>)</strong><br />
-			<?php else: ?>
-				<strong>External Resources (0)</strong><br />
-			<?php endif; ?>
+				<h2>External Resources <?php echo ($external_resources_count > 0 ? '(' . $external_resources_count . ')' : ''); ?></h2>
 			</a>
-			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">
-				<span>Recommend a resource</span>
-			</a>
+			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">Recommend a resource</a>
 		</li>
 	</ul>
 </div>
