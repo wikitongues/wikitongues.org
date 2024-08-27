@@ -7,21 +7,23 @@ body
 						&:hover
 							&:before
 								display none !important
-								
+
 							.sub-menu
 								display none !important
-								
-	.wt_single-languages	
+
+	.wt_single-languages
 		&__content
 			width calc(100%/4*3)
 			float left
-			margin-bottom 6rem
 			padding 0 6rem 0 3rem
 			box-sizing border-box
-		
+
 		&__contents
 			margin-bottom 6rem
-			
+
+			&:last-of-type
+				margin-bottom 0
+
 			h2.wt_sectionHeader
 				text--strong($black)
 				margin-bottom 1.5rem
@@ -36,24 +38,24 @@ body
 
 				a
 					text--body($blue)
-				
+
 				strong
 					text--strong($black)
 					text-transform uppercase
-		
+
 			&#wt_single-languages__lexicons,
 			&#wt_single-languages__resources
 				.wt_content-block--thirds
 					&:before
 						display none
-						
+
 					&__image
 						display none
-					
+
 					&__copy
 						padding-top 3.5rem
 						padding-bottom 4rem
-						background $blue 
+						background $blue
 
 @media all and (max-width:$mobile)
 	.wt_single-languages
