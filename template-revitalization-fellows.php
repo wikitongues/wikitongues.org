@@ -1,57 +1,43 @@
 <?php /* Template name: Revitalization Fellows */
 
-// header
 get_header();
 
-// banner
 $page_banner = get_field('revitalization_fellows_banner');
 
 include( 'modules/banner--main.php' );
 
-// foreach linked page, display 1/3 content block
-$query = new WP_Query( 
-	array( 
-		'post_type' => 'fellows',
-		'meta_key' => 'fellow_year',
-		'orderby' => 'meta_value',
-		'order' => 'DESC',
-		'posts_per_page' => 50
-	) 
-);
+$selected_year = isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : '';
 
-if ( $query->have_posts() ) {
+?>
 
-	echo '<main class="wt_content-block--thirds__wrapper">';
+<div class="custom-gallery-fellows-navigation">
+  <h2>Fellowship Cohorts</h2>
+  <ul>
+    <li><button class="<?php echo ($selected_year === '2023' || $selected_year === '') ? 'active' : ''; ?>" data-year="2023" onclick="updateGallery('2023')">2023</button></li>
+    <li><button class="<?php echo $selected_year === '2022' ? 'active' : ''; ?>" data-year="2022" onclick="updateGallery('2022')">2022</button></li>
+    <li><button class="<?php echo $selected_year === '2021' ? 'active' : ''; ?>" data-year="2021" onclick="updateGallery('2021')">2021</button></li>
+  </ul>
+  <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p>
+</div>
 
-	while ( $query->have_posts() ) {
+<?php
+  $custom_title = '';
+  $custom_post_type = 'fellows';
+  $custom_class = 'full';
+  $custom_columns = 4;
+  $custom_posts_per_page = 60;
+  $custom_orderby = 'date';
+  $custom_order = 'asc';
+  $custom_pagination = 'true';
+  $custom_meta_key = 'fellow_year';
+  $custom_meta_value = isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : '2023';
+  $custom_selected_posts = '';
+  echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+  get_footer();
+?>
 
-		$query->the_post();
-
-		// grab fellow-specific metadata
-		$first_name = get_field('first_name');
-		$last_name = get_field('last_name');
-		$fellow_language = get_field('fellow_language');
-		$fellow_language_preferred_name = get_field('fellow_language_preferred_name');
-		$fellow_location = get_field('fellow_location');
-
-		// set content block module variables to fellow-specific metada
-		$content_block_image = get_field('fellow_headshot');
-		$content_block_header = $first_name . ' ' . $last_name;
-		if ( $fellow_language_preferred_name ) {
-			$content_block_copy = '<strong>' . $fellow_language_preferred_name. '</strong><br /><span>' . $fellow_location . '</span>';
-		} else {
-			$content_block_copy = '<strong>' . $fellow_language->standard_name . '</strong><br /><span>' . $fellow_location . '</span>';
-		}
-		$content_block_cta_link = get_the_permalink();
-		$content_block_cta_text = 'Read more';
-
-		include( 'modules/content-block--grid.php' );
-	}
-
-	echo '</main>';
-
-	wp_reset_postdata();
+<script>
+function updateGallery(year) {
+    window.location.href = '<?php echo get_permalink(); ?>?fellow_year=' + year;
 }
-
-// footer
-get_footer();
+</script>

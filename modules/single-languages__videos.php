@@ -1,33 +1,27 @@
-<main class="wt_single-languages__content">
-	<div id="wt_single-languages__videos" class="wt_single-languages__contents">
+<div id="wt_single-languages__videos" class="wt_single-languages__contents">
+	<?php if ( $videos ): ?>
+		<?php
+			$custom_title = 'Videos';
+			$custom_post_type = 'videos';
+			$custom_class = '';
+			$custom_columns = 3;
+			$custom_posts_per_page = 6;
+			$custom_orderby = 'date';
+			$custom_order = 'asc';
+			$custom_pagination = 'true';
+			$custom_meta_key = 'language_iso_codes';
+			$custom_meta_value = get_the_title();
+			$custom_selected_posts = '';
+			echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+		?>
+		<div class="custom-cta-container">
+			<section class="custom-gallery-video-cta">
+				<a href="<?php bloginfo('url'); ?>/submit-a-video">Contribute a video</a>
+				<a href="">How to create an oral history</a>
+			</section>
+		</div>
+	<?php else: ?>
 		<h2 class="wt_sectionHeader">Videos</h2>
-		<?php if ( $videos ): ?>
-			<ul>
-			<?php
-			// loop through available videos
-			foreach( $videos as $post ) {
-				// foreach video, setup posts data
-				setup_postdata( $post );
-
-				// define variables
-				$content_block_image = get_field('video_thumbnail_v2');
-				$video_title = get_field('video_title');
-				$video_custom_title = get_field('video_custom_title');
-				if ( $video_custom_title ) {
-					$content_block_header = $video_custom_title;
-				} else {
-					$content_block_header = $video_title;
-				}
-				$content_block_cta_link = get_the_permalink();
-				$content_block_cta_text = 'Watch';
-
-				// include content block template
-				include( 'content-block--grid.php' );
-
-			} wp_reset_postdata();
-			?>
-			</ul>
-		<?php else: ?>
-			<p>There are no videos to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a video</a>.</p>
-		<?php endif; ?>
-	</div>
+		<p>There are no videos to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a video</a>.</p>
+	<?php endif; ?>
+</div>

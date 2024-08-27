@@ -37,8 +37,23 @@ if ( $fellow_bio ) {
 	include( 'modules/fellow-bio.php');
 
 }
-
-// loop through other fellows
-// include( 'modules/carousal--thumbnail.php' );
+?>
+<div class="custom-gallery full">
+	<h2 class="wt_sectionHeader"><?php echo 'Other fellows from ' . $fellow_year ?></h2>
+	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="">Support a revitalization project.</a></p>
+</div>
+<?php
+$custom_title = '';
+$custom_post_type = 'fellows';
+$custom_class = 'full';
+$custom_columns = 4;
+$custom_posts_per_page = 4;
+$custom_orderby = 'rand';
+$custom_order = '';
+$custom_pagination = 'false';
+$custom_meta_key = 'fellow_year';
+$custom_meta_value = $fellow_year;
+$custom_selected_posts = '';
+echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
 
 get_footer();
