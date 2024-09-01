@@ -1,11 +1,11 @@
 <?php
-$standard_name = get_field('standard_name');
-$alternate_names = get_field('alternate_names');
-$iso_code = get_field('iso_code');
-$glottocode = get_field('glottocode');
-$nations_of_origin = get_field('nations_of_origin');
-$writing_systems = get_field('writing_systems');
-$linguistic_genealogy = get_field('linguistic_genealogy');
+	$standard_name = get_field('standard_name');
+	$alternate_names = get_field('alternate_names');
+	$iso_code = get_field('iso_code');
+	$glottocode = get_field('glottocode');
+	$nations_of_origin = get_field('nations_of_origin');
+	$writing_systems = get_field('writing_systems');
+	$linguistic_genealogy = get_field('linguistic_genealogy');
 ?>
 <div class="wt_banner--languages">
 	<section class="wt_banner--languages__meta">

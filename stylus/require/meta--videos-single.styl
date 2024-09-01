@@ -1,43 +1,51 @@
 .wt_meta--videos-single
 	width calc(100%/4)
 	float left
-	
+
 	strong
 		text--strong($black)
 		text-transform uppercase
-	
+
+	h2
+		text--strong($black)
+		margin-bottom 4px
+
 	p
-		margin-bottom 1.5rem
-		// text-transform uppercase
 		text--body($black)
-		
+		margin-bottom 1.6rem
+
+	h2.wt_sectionHeader
+		text--strong($black)
+		margin-bottom 1.6rem
+		border-bottom 1px solid $lightPurple
+		padding-bottom 12px
+
 		strong
 			text--strong($black)
-	
+
 	ul
 		margin-top 1.5rem
-		
+
 		&.wt_meta__featured-languages
 			margin-top 3rem
-		
+
 		li
-			margin-bottom 1.5rem
-			
-			p
-				&:first-of-type
+			margin-bottom 1.6rem
+
+			p&:first-of-type, h2
 					text--strong($black)
-	
+
 	a
 		text-decoration none
 		color $blue
-		
+
 		strong
 			text--strong($blue)
 			text
-			
+
 		span
 			text--body($blue)
-		
+
 		&:hover
 			text-decoration underline
 
@@ -46,12 +54,12 @@
 		&--videos-single
 			float none
 			width 100%
-		
+
 		&__featured-languages
 			li
 				&:last-of-type
 					margin-bottom 0
-					
+
 				ul
 					li
 						display inline-block

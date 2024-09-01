@@ -1,11 +1,9 @@
 <main class="wt_single-languages__content">
 	<div id="wt_single-languages__videos" class="wt_single-languages__contents">
-		<p>
-			<strong>Videos</strong>
-		</p>
+		<h2 class="wt_sectionHeader">Videos</h2>
 		<?php if ( $videos ): ?>
 			<ul>
-			<?php 
+			<?php
 			// loop through available videos
 			foreach( $videos as $post ) {
 				// foreach video, setup posts data
@@ -26,7 +24,7 @@
 				// include content block template
 				include( 'content-block--grid.php' );
 
-			} wp_reset_postdata(); 
+			} wp_reset_postdata();
 			?>
 			</ul>
 		<?php else: ?>

@@ -1,10 +1,8 @@
 	<div id="wt_single-languages__lexicons" class="wt_single-languages__contents">
-		<p>
-			<strong>Dictionaries, phrase books, and other lexicons</strong>
-		</p>
+		<h2 class="wt_sectionHeader">Dictionaries, phrase books, and other lexicons</h2>
 		<?php if ( $lexicons ): ?>
 			<ul>
-			<?php 
+			<?php
 			// loop through available lexicons
 			foreach( $lexicons as $post ) {
 				// foreach video, setup posts data
@@ -34,13 +32,13 @@
 					array_push($target_languages_names,$target_language_name);
 
 				} wp_reset_postdata();
-	 
+
 				// lexicon has a custom title
 				if ( $lexicon_custom_title ) {
 
 					// display custom title
 					$content_block_header = $lexicon_custom_title;
-					
+
 				} else {
 
 					// display default title
@@ -52,7 +50,7 @@
 				if ( $source_languages && $target_languages ) {
 
 					// display both
-					$content_block_copy = $source_language_name . ' to ' . implode(', ',$target_languages_names); 
+					$content_block_copy = $source_language_name . ' to ' . implode(', ',$target_languages_names);
 
 				// if only source languages are available
 				} elseif ( $source_languages && !$target_languages ) {
@@ -62,7 +60,7 @@
 
 				// if source and target languages are both empthy
 				} else {
-					
+
 					// variable is null
 					$content_block_copy = null;
 
@@ -71,10 +69,10 @@
 				// if dropbox link
 				if ( $dropbox_link ) {
 					// if dropbox link
-					$content_block_cta_link = $dropbox_link; 				
+					$content_block_cta_link = $dropbox_link;
 				} elseif ( $external_link ) {
 					// if external link
-					$content_block_cta_link = $external_link; 				
+					$content_block_cta_link = $external_link;
 				} else {
 					//
 				}
@@ -82,7 +80,7 @@
 				// include content block template
 				include( 'content-block--grid.php' );
 
-			} wp_reset_postdata(); 
+			} wp_reset_postdata();
 			?>
 			</ul>
 		<?php else: ?>
