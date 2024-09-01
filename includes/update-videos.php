@@ -43,3 +43,30 @@ function update_video_featured_language_iso_codes($post_id) {
     }
 }
 add_action('save_post', 'update_video_featured_language_iso_codes');
+
+// Function to trigger save_post for all 'videos' posts
+function trigger_save_post_for_all_videos() {
+    // Check for a custom admin action
+    if (isset($_GET['trigger_save_post']) && $_GET['trigger_save_post'] == 'true') {
+        // Get all posts of post type 'videos'
+        $args = array(
+            'post_type' => 'videos',
+            'posts_per_page' => -1, // Get all posts
+            'post_status' => 'any', // Include all post statuses if needed
+        );
+
+        $video_posts = get_posts($args);
+
+        if ($video_posts) {
+            foreach ($video_posts as $post) {
+                // Trigger save_post by updating the post
+                wp_update_post(array('ID' => $post->ID));
+            }
+            echo '<div class="notice notice-success"><p>' . count($video_posts) . ' video records updated.</p></div>';
+        } else {
+            echo '<div class="notice notice-warning"><p>No video records found.</p></div>';
+        }
+    }
+}
+add_action('admin_notices', 'trigger_save_post_for_all_videos');
+?>
