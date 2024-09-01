@@ -2,6 +2,8 @@
 /* CONSIDER BREAKING INTO MULTIPLE FUNCTIONS FILES */
 
 require_once('includes/class-wt-rest-posts-controller.php');
+require_once('includes/update-video-featured-language-iso-codes.php');
+// require_once('includes/update-all-videos-featured-language-iso-codes.php');
 
 // enqueue stylesheets
 add_action( 'wp_enqueue_scripts', 'wt_enqueue_styles' );
@@ -9,7 +11,7 @@ add_action( 'wp_enqueue_scripts', 'wt_enqueue_styles' );
 function wt_enqueue_styles() {
     $parenthandle = 'blankslate-style';
     $theme = wp_get_theme();
-    wp_enqueue_style( $parenthandle, get_template_directory_uri() . '/style.css', 
+    wp_enqueue_style( $parenthandle, get_template_directory_uri() . '/style.css',
         array(),
         $theme->parent()->get('Version')
     );
@@ -25,7 +27,7 @@ add_action( 'wp_enqueue_scripts', 'wt_enqueue_js' );
 function wt_enqueue_js() {
     wp_register_script(
         'wt_js',
-        get_stylesheet_directory_uri() . '/js/custom.js', 
+        get_stylesheet_directory_uri() . '/js/custom.js',
         array('jquery'), true);
 
     wp_enqueue_script('wt_js');
@@ -133,7 +135,7 @@ function searchfilter($query)
     }
     return $query;
 }
- 
+
 add_filter('pre_get_posts', 'searchfilter');
 
 // remove header bump from core css output
@@ -141,10 +143,10 @@ add_action('get_header', 'my_filter_head');
 
 function my_filter_head() {
    remove_action('wp_head', '_admin_bar_bump_cb');
-} 
+}
 
 // initiate options page - consider deprecating this
-if( function_exists('acf_add_options_page') ) {   
+if( function_exists('acf_add_options_page') ) {
     acf_add_options_page();
 }
 
@@ -277,9 +279,9 @@ function html5wp_pagination()
 }
 
 // add custom post types for language archive
-add_action('init', 'create_post_type_languages'); 
+add_action('init', 'create_post_type_languages');
 add_action('init', 'create_post_type_videos');
-add_action('init', 'create_post_type_lexicons'); 
+add_action('init', 'create_post_type_lexicons');
 add_action('init', 'create_post_type_resources'); // indexing misc.
 // revitalization project
 // translation/interpretation
@@ -294,12 +296,12 @@ add_action('init', 'create_post_type_reports');
 // Team
 function create_post_type_team()
 {
-    register_taxonomy_for_object_type('category', 'team'); 
+    register_taxonomy_for_object_type('category', 'team');
     register_taxonomy_for_object_type('post_tag', 'team');
     register_post_type('team',
         array(
         'labels' => array(
-            'name' => __('Team', 'team'), 
+            'name' => __('Team', 'team'),
             'singular_name' => __('Team', 'team'),
             'add_new' => __('Add New', 'team'),
             'add_new_item' => __('Add New team', 'team'),
@@ -332,12 +334,12 @@ function create_post_type_team()
 // Partners
 function create_post_type_partners()
 {
-    register_taxonomy_for_object_type('category', 'partners'); 
+    register_taxonomy_for_object_type('category', 'partners');
     register_taxonomy_for_object_type('post_tag', 'partners');
     register_post_type('partners',
         array(
         'labels' => array(
-            'name' => __('Partners', 'partner'), 
+            'name' => __('Partners', 'partner'),
             'singular_name' => __('Partner', 'partner'),
             'add_new' => __('Add New', 'partner'),
             'add_new_item' => __('Add New Partner', 'partner'),
@@ -368,12 +370,12 @@ function create_post_type_partners()
 // Languages
 function create_post_type_languages()
 {
-    register_taxonomy_for_object_type('category', 'languages'); 
+    register_taxonomy_for_object_type('category', 'languages');
     register_taxonomy_for_object_type('post_tag', 'languages');
     register_post_type('languages',
         array(
         'labels' => array(
-            'name' => __('Languages', 'language'), 
+            'name' => __('Languages', 'language'),
             'singular_name' => __('Language', 'language'),
             'add_new' => __('Add New', 'language'),
             'add_new_item' => __('Add New Language', 'language'),
@@ -408,12 +410,12 @@ function create_post_type_languages()
 // Videos
 function create_post_type_videos()
 {
-    register_taxonomy_for_object_type('category', 'videos'); 
+    register_taxonomy_for_object_type('category', 'videos');
     register_taxonomy_for_object_type('post_tag', 'videos');
     register_post_type('videos',
         array(
         'labels' => array(
-            'name' => __('Videos', 'video'), 
+            'name' => __('Videos', 'video'),
             'singular_name' => __('Video', 'video'),
             'add_new' => __('Add New', 'video'),
             'add_new_item' => __('Add New Video', 'video'),
@@ -449,12 +451,12 @@ function create_post_type_videos()
 // Lexicons
 function create_post_type_lexicons()
 {
-    register_taxonomy_for_object_type('category', 'lexicons'); 
+    register_taxonomy_for_object_type('category', 'lexicons');
     register_taxonomy_for_object_type('post_tag', 'lexicons');
     register_post_type('lexicons',
         array(
         'labels' => array(
-            'name' => __('Lexicons', 'lexicons'), 
+            'name' => __('Lexicons', 'lexicons'),
             'singular_name' => __('Lexicon', 'lexicon'),
             'add_new' => __('Add New', 'lexicon'),
             'add_new_item' => __('Add New Lexicon', 'lexicon'),
@@ -490,12 +492,12 @@ function create_post_type_lexicons()
 // External Resources
 function create_post_type_resources()
 {
-    register_taxonomy_for_object_type('category', 'resources'); 
+    register_taxonomy_for_object_type('category', 'resources');
     register_taxonomy_for_object_type('post_tag', 'resources');
     register_post_type('resources',
         array(
         'labels' => array(
-            'name' => __('Resources', 'resource'), 
+            'name' => __('Resources', 'resource'),
             'singular_name' => __('Resource', 'resource'),
             'add_new' => __('Add New', 'resource'),
             'add_new_item' => __('Add New Resource', 'resource'),
@@ -532,12 +534,12 @@ function create_post_type_resources()
 // Fellows
 function create_post_type_fellows()
 {
-    register_taxonomy_for_object_type('category', 'fellows'); 
+    register_taxonomy_for_object_type('category', 'fellows');
     register_taxonomy_for_object_type('post_tag', 'fellows');
     register_post_type('fellows',
         array(
         'labels' => array(
-            'name' => __('Fellows', 'fellows'), 
+            'name' => __('Fellows', 'fellows'),
             'singular_name' => __('Fellow', 'fellows'),
             'add_new' => __('Add New', 'fellows'),
             'add_new_item' => __('Add New Fellow', 'fellows'),
@@ -571,12 +573,12 @@ function create_post_type_fellows()
 // Reports
 function create_post_type_reports()
 {
-    register_taxonomy_for_object_type('category', 'reports'); 
+    register_taxonomy_for_object_type('category', 'reports');
     register_taxonomy_for_object_type('post_tag', 'reports');
     register_post_type('reports',
         array(
         'labels' => array(
-            'name' => __('Reports', 'reports'), 
+            'name' => __('Reports', 'reports'),
             'singular_name' => __('Report', 'reports'),
             'add_new' => __('Add New', 'reports'),
             'add_new_item' => __('Add New Report', 'reports'),
