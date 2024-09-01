@@ -84,10 +84,12 @@
             "post_type": [
                 "languages"
             ],
+            "post_status": "",
             "taxonomy": "",
-            "allow_null": 0,
-            "multiple": 1,
             "return_format": "object",
+            "multiple": 1,
+            "allow_null": 0,
+            "bidirectional": 0,
             "ui": 1,
             "bidirectional_target": []
         },
@@ -257,6 +259,27 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_66cba73d7ea4a",
+            "label": "Language ISO Codes",
+            "name": "language_iso_codes",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "readonly": true,
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -277,5 +300,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1718738564
+    "modified": 1725185778
 }
