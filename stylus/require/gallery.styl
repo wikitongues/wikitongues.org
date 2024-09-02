@@ -279,3 +279,41 @@ $aspect-ratio = 16/9
 
       &:last-of-type
         float right
+
+@media all and (max-width:$mobile)
+  .custom-gallery
+    &.full
+      width 90%
+      margin 0 auto
+
+    .gallery-container
+      .gallery-list
+        grid-template-columns repeat(1, 1fr) !important
+    > p
+      margin-bottom 2rem
+
+  .custom-cta-container
+    .custom-gallery-video-cta
+      background none
+
+      a
+        text-align center
+
+        &:first-of-type
+          background $lightPurple
+          border-radius 8px
+          width 100%
+
+        &:last-of-type
+          width 100%
+
+  .custom-gallery-fellows-navigation
+    h2,
+    ul,
+    p
+      max-width 100%
+      width 100%
+      padding 0
+
+    p
+      display none

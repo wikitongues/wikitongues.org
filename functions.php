@@ -2,10 +2,8 @@
 /* CONSIDER BREAKING INTO MULTIPLE FUNCTIONS FILES */
 
 require_once('includes/class-wt-rest-posts-controller.php');
-require_once('includes/update-videos.php');
-
 // update video language ISOs when editing featured languages in admin
-require_once('includes/update-video-featured-language-iso-codes.php');
+require_once('includes/update-videos.php');
 
 // enqueue stylesheets
 add_action( 'wp_enqueue_scripts', 'wt_enqueue_styles' );
