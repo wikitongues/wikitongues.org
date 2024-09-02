@@ -48,24 +48,58 @@ add_action('save_post', 'update_video_featured_language_iso_codes');
 function trigger_save_post_for_all_videos() {
     // Check for a custom admin action
     if (isset($_GET['trigger_save_post']) && $_GET['trigger_save_post'] == 'true') {
-        // Get all posts of post type 'videos'
+        // Log the start of the operation
+        error_log('Triggering save_post for all videos...');
+
+        // Initialize page number
+        $paged = 1;
+
+        // Define the query arguments for retrieving 'videos' posts
         $args = array(
             'post_type' => 'videos',
-            'posts_per_page' => -1, // Get all posts
+            'posts_per_page' => 50, // Get 50 posts at a time
             'post_status' => 'any', // Include all post statuses if needed
+            'paged' => $paged, // Start from the first page
         );
 
-        $video_posts = get_posts($args);
+        // Perform the query in a loop to handle pagination
+        while (true) {
+            // Log the current page being processed
+            error_log('Processing page: ' . $paged);
 
-        if ($video_posts) {
-            foreach ($video_posts as $post) {
-                // Trigger save_post by updating the post
-                wp_update_post(array('ID' => $post->ID));
+            // Create a new WP_Query instance
+            $query = new WP_Query($args);
+
+            // If no posts are found, break the loop
+            if (!$query->have_posts()) {
+                error_log('No more posts found. Ending process.');
+                break;
             }
-            echo '<div class="notice notice-success"><p>' . count($video_posts) . ' video records updated.</p></div>';
-        } else {
-            echo '<div class="notice notice-warning"><p>No video records found.</p></div>';
+
+            // Loop through the posts
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                // Get the current post ID
+                $post_id = get_the_ID();
+
+                // Trigger save_post by updating the post
+                wp_update_post(array('ID' => $post_id));
+
+                // Log the updated post ID
+                error_log('Updated post ID: ' . $post_id);
+
+                // Reset the global post data to free up memory
+                wp_reset_postdata();
+            }
+
+            // Increment the page number
+            $paged++;
+            $args['paged'] = $paged; // Update the query for the next page
         }
+
+        // Log the completion of the operation
+        error_log('Done processing all video posts.');
     }
 }
 add_action('admin_notices', 'trigger_save_post_for_all_videos');
