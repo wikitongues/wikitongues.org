@@ -61,9 +61,21 @@ body.logged-in .wt_single-videos__content
 			height auto
 
 @media all and (max-width:$mobile)
-	.wt_single-videos
-		&__content
-			margin 2rem auto
+	body
+		&.logged-in
+			.wt_single-videos__content
+				h1
+					width 90%
 
-		&__video
-			margin-bottom 3rem
+				.wt_single-videos
+					&__content
+						margin 0
+
+					&__video
+						margin-bottom 3rem
+						padding 5vw 0
+
+						video,
+						iframe
+							min-height (90/16*9)vw
+							max-width (90)vw
