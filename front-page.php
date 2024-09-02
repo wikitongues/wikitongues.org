@@ -33,6 +33,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 
 		} elseif ( get_row_layout() == 'custom_gallery_posts' && $row_id === 'archive') {
 			$custom_posts = get_sub_field('custom_gallery_post');
+
 			if ($custom_posts) {
 				$post_ids = implode(',', wp_list_pluck($custom_posts, 'ID'));
 			}
@@ -48,10 +49,9 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 			$custom_meta_value = '';
 			$custom_selected_posts = esc_attr($post_ids);
 			echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
-		}
-
-		elseif ( get_row_layout() == 'custom_gallery_posts' && $row_id === 'fellows') {
+		} elseif ( get_row_layout() == 'custom_gallery_posts' && $row_id === 'fellows') {
 			$custom_posts = get_sub_field('custom_gallery_post');
+
 			if ($custom_posts) {
 				$post_ids = implode(',', wp_list_pluck($custom_posts, 'ID'));
 			}
