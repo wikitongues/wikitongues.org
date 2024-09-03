@@ -1,47 +1,63 @@
 .wt_newsletter
+	margin 1.6rem 3.2rem 0
 	padding 6rem 0
-	background $purple
-	text-align center
-	
+	text-align left
+	text-transform initial
+	border-top 2px solid $lightPurple
+
 	h2
 		text--header($black)
 		margin-bottom 3rem
+		font-size 5rem
 
-	form
-		&>div
-			display flex
-			justify-content center
-			
-		.clear
-			position relative
-			
-			i
-				position absolute
-				top 50%
-				transform translateY(-50%)
-				right 1.5rem
-				color $parchment
-				font-size 1.6rem
-		
-		input
-			border-width 0 !important
-			border-radius 0 !important
-			-webkit-appearance none !important
-			-webkit-border-radius 0 !important
-			
-			&[type="email"]
-				width 300px
-				button--large($parchment, $black)
-				
-				&:focus
-					outline none
-			
-			&[type="submit"]
-				button--large($blue, $parchment)
-				padding-right 4rem // clunky override to position iframe arrow
-				
-				&:hover
-					cursor pointer
+	h2,
+	p
+		width 600px
+		margin 0 auto
+
+	p
+		text--body($black)
+		margin-top 3rem
+
+	#mc_embed_signup
+		max-width 600px
+		margin 5rem auto 3rem
+
+		label
+			display block
+			margin-bottom 1rem
+			text--strong($black)
+
+		form
+			#mc_embed_signup_scroll
+				width 100%
+				display flex
+
+				.mc-field-group
+					float left
+					flex-grow 1
+					margin-right 16px
+
+				input
+					border none
+					-webkit-appearance none
+
+					&[type="email"]
+						width 100%
+						button--large($parchment, $black)
+						text-transform none
+						border-bottom 2px solid $blue
+						margin-right 8px
+
+						&:focus
+							outline none
+
+					&[type="submit"]
+						button--large($blue, $parchment)
+						text-transform none
+						border-radius 8px
+						-webkit-border-radius 8px
+						cursor pointer
 
 .wt_footer
 	padding 2rem 4rem
@@ -50,17 +66,17 @@
 	font-size 1.28rem !important
 	display inline-block
 	width 100%
-	
+
 	&__logo
 		width 100%
-		display inline-block	
+		display inline-block
 		margin-bottom 8px
 		border-bottom 1px dotted $blue
-		
+
 		a
 			display inline-block
-			float right 
-		
+			float right
+
 		img
 			max-width 250px
 
@@ -73,7 +89,7 @@
 		&#content
 			display flex
 			flex-direction row
-		
+
 		&#colophon
 			text-align center
 			margin 2rem 0 3rem 0
@@ -81,20 +97,20 @@
 	&__nav
 		flex-grow 3
 		text-transform uppercase
-		
+
 		>ul
 			display flex
 			flex-direction row
-			
-			li					
+
+			li
 				a
 					text--body($parchment)
 					text-decoration none
 					text-transform initial
-			
+
 			&>li
 				margin-right 3rem
-				
+
 				&>a
 					font-weight bold
 
@@ -105,7 +121,7 @@
 				font-size 1em
 				padding 0.2rem 0
 				display inline-block
-		
+
 	&__meta
 		flex-grow initial
 		text-align right
@@ -114,16 +130,16 @@
 			display inline-block
 			clear both
 			float left
-			
+
 			div
 				float left
 
 				&:first-of-type
-					margin-right 16px		
+					margin-right 16px
 
 	&__address
 		margin 0 0 1.5rem 0
-		
+
 	&__land-acknowledgement
 		a
 			color $parchment
@@ -132,11 +148,11 @@
 		font-weight 700
 		margin-top 8px
 		display inline-block
-	
+
 	&__candid
 		display inline-block
 		width 100px
-		
+
 		img
 			width 100%
 			height auto
@@ -145,14 +161,14 @@
 	.wt_footer
 		&__section:first-of-type
 			display block
-			
+
 		&__nav
 			width 100%
 			// text-align center
-			
+
 			&>ul
 				justify-content center
-		
+
 		&__meta
 			margin 6rem auto
 			width 100%
@@ -164,11 +180,11 @@
 
 		h2
 			font-size 4rem
-				
+
 		form
 			&>div
 				display block
-			
+
 			input
 				&[type="email"]
 					width 100%
@@ -176,7 +192,7 @@
 
 				&[type="submit"]
 					width 100%
-	
+
 	.wt_footer
 		&__logo
 			display flex
@@ -185,7 +201,7 @@
 		&__section
 			&#content
 				flex-direction column
-		
+
 		&__nav
 			&>ul
 				display block
@@ -194,10 +210,10 @@
 				&>li
 					margin-top 2rem
 					margin-right 0rem
-					
+
 					&:first-of-type
 						margin-top 0
-		
+
 		&__meta
 			margin 2rem auto 0
 			display flex
