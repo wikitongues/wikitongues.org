@@ -1,5 +1,6 @@
 <section class="wt_newsletter">
-	<h2>Stay in touch</h2>
+	<h2>Discover new languages, cultures, and stories.</h2>
+	<p>Sign up for our newsletter and get the latest news, stories, and ways to make an impact.</p>
 	<?php echo get_field('newsletter_signup_embed', 'options'); ?>
 </section>
 
@@ -13,7 +14,7 @@
 
 	<section class="wt_footer__section" id="content">
 		<?php wp_nav_menu(
-			array( 
+			array(
 				'theme_location' => 'footer-menu',
 				'container' => 'nav',
 				'container_class' => 'wt_footer__nav'
@@ -44,7 +45,7 @@
 			<span class="wt_footer__copyright">&#169; Copyright <?php echo date('Y'); ?> Wikitongues, All Rights Reserved</span>
 		</p>
 	</section>
-	
+
 	<?php wp_footer(); ?>
 </footer>
 </body>
