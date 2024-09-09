@@ -153,6 +153,26 @@
                     "display": "row",
                     "sub_fields": [
                         {
+                            "key": "field_66a1129163280",
+                            "label": "Thumbnail carousel title",
+                            "name": "thumbnail_carousel_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
                             "key": "field_64c18f2450613",
                             "label": "Thumbnail carousel posts",
                             "name": "thumbnail_carousel_posts",
@@ -174,6 +194,26 @@
                             "allow_null": 1,
                             "ui": 1,
                             "bidirectional_target": []
+                        },
+                        {
+                            "key": "field_66b24f71b0c5f",
+                            "label": "Thumbnail carousel ID",
+                            "name": "thumbnail_carousel_id",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -324,6 +364,88 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_66d05b7f39be8": {
+                    "key": "layout_66d05b7f39be8",
+                    "name": "custom_gallery_posts",
+                    "label": "Custom Gallery Posts",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_66d0621e50f4c",
+                            "label": "Custom Gallery ID",
+                            "name": "custom_gallery_id",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_66d1dd66d0bba",
+                            "label": "Custom Gallery Title",
+                            "name": "custom_gallery_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_66d05b9a39bee",
+                            "label": "Custom Gallery Posts",
+                            "name": "custom_gallery_post",
+                            "aria-label": "",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "videos",
+                                "fellows",
+                                "languages",
+                                "lexicons",
+                                "resources"
+                            ],
+                            "post_status": [
+                                "publish"
+                            ],
+                            "taxonomy": "",
+                            "return_format": "object",
+                            "multiple": 1,
+                            "allow_null": 0,
+                            "bidirectional": 0,
+                            "ui": 1,
+                            "bidirectional_target": []
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",
@@ -349,5 +471,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1699626269
+    "modified": 1725313326
 }

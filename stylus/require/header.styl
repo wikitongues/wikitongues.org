@@ -13,7 +13,7 @@ body
 	&.logged-in
 
 		.wt_header
-			top 32px !important
+			top 32px
 
 		&[data-alert="true"]
 			padding-top 226.63px !important
@@ -279,10 +279,15 @@ body
 
 @media all and (max-width:$mobile)
 	body
-		padding-top 119.63px
+		padding-top 102px
+
+		&.logged-in
+			.wt_header
+				top 46px
 
 	.wt_header
-		&__nav
+		&__nav,
+		&__secondary
 			display	none
 
 			&--mobile
@@ -334,6 +339,7 @@ body
 				background none
 				border none
 				float right
+				padding	11px 14px
 				text--strong($black)
 
 				&:hover
@@ -346,8 +352,8 @@ body
 					display none
 					z-index 7
 					position fixed
-					top 3rem
-					right 3rem
+					top 5rem
+					right 1rem
 
 		&.transparent-background
 			.wt_header__mobile-buttons

@@ -26,4 +26,5 @@
 			<a href="<?php bloginfo('url'); ?>/submit-a-lexicon">Recommend a resource</a>
 		</li>
 	</ul>
+	<a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</a>
 </div>
