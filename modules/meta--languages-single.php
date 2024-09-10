@@ -17,7 +17,7 @@
 			<a href="#wt_single-languages__resources">
 				<h2>External Resources <?php echo ($external_resources_count > 0 ? '(' . $external_resources_count . ')' : ''); ?></h2>
 			</a>
-			<a href="<?php echo home_url(); ?>/submit-a-lexicon">Recommend a resource</a>
+			<a href="<?php echo home_url(); ?>/submit-a-resource">Recommend a resource</a>
 		</li>
 	</ul>
 	<a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</a>
