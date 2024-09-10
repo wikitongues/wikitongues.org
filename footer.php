@@ -7,7 +7,7 @@
 <footer class="wt_footer">
 
 	<section class="wt_footer__logo">
-		<a href="<?php bloginfo('url'); ?>">
+		<a href="<?php echo home_url(); ?>">
 			<img src="<?php the_field('footer_logo', 'options'); ?>" alt="Wikitongues Logo">
 		</a>
 	</section>
