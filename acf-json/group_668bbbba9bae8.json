@@ -1,6 +1,6 @@
 {
     "key": "group_668bbbba9bae8",
-    "title": "Typeahead-Settings",
+    "title": "Global: Search",
     "fields": [
         {
             "key": "field_668bbbbc1ad8d",
@@ -168,7 +168,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options"
+                "value": "custom-search"
             }
         ]
     ],
@@ -181,5 +181,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1721600905
+    "modified": 1725972972
 }
