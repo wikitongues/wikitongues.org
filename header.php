@@ -26,19 +26,19 @@
 
 		<?php $banner_alert_status = get_field( 'banner_alert_status', 'options' ); ?>
 
-		<body <?php body_class(); ?> 
+		<body <?php body_class(); ?>
 			<?php if ( $banner_alert_status === 'active' ): ?>data-alert="true"<?php endif; ?>><!-- is an additional content wrapper necessary for drop shadow gradient? -->
 			<!-- Google Tag Manager (noscript) -->
 			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M6VGJW4" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-			
+
 			<?php wp_body_open(); ?>
-			
+
 			<!-- alert/message banner -->
-			<?php 
+			<?php
 			// load alert banner if user hasn't visited the site in 1 day
 			// day counter var isn't working, counting in seconds ~~~~DU Feb '24
-			//if ( $_SESSION['days_since_last_visit']>86400 ) { 
-				// include( 'modules/banner--alert.php' ); 
+			//if ( $_SESSION['days_since_last_visit']>86400 ) {
+				// include( 'modules/banner--alert.php' );
 			//}
 
 			if ( $banner_alert_status === 'active' ) {
@@ -46,24 +46,24 @@
 			}
 
 			?>
-			
+
 			<header class="wt_header <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" role="banner">
 				<section class="wt_header__primary">
 					<div class="wt_header__logo">
-						<a href="<?php bloginfo('url'); ?>">
+						<a href="<?php echo home_url(); ?>">
 							<img class="wt_header__logo--light <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_light', 'options'); ?>" alt="Wikitongues logo: light color scheme">
 							<img class="wt_header__logo--dark <?php if ( is_front_page() ): ?>transparent-background<?php endif; ?>" src="<?php the_field('header_logo_dark', 'options'); ?>" alt="Wikitongues logo: dark color scheme">
 						</a>
 					</div>
 					<?php echo do_shortcode('[react_typeahead id="typeahead_nav" custom_class="nav-style" data_source="airtable"]'); ?>
-					<?php 
+					<?php
 
 					// global var? define somewher else?
 					$template_slug = get_page_template_slug();
 
 					if ( is_front_page() ) {
 						wp_nav_menu(
-							array( 
+							array(
 								'theme_location' => 'main-menu',
 								'container' => 'nav',
 								'container_class' => 'wt_header__nav transparent-background'
@@ -71,7 +71,7 @@
 						);
 					} else {
 						wp_nav_menu(
-							array( 
+							array(
 								'theme_location' => 'main-menu',
 								'container' => 'nav',
 								'container_class' => 'wt_header__nav'
@@ -81,7 +81,7 @@
 
 					// mobile menu
 					wp_nav_menu(
-						array( 
+						array(
 							'theme_location' => 'mobile-menu',
 							'container' => 'nav',
 							'container_class' => 'wt_header__nav--mobile'
@@ -98,29 +98,29 @@
 						</button>
 					</aside>
 				</section>
-				
+
 				<?php if ( !is_front_page() && !is_page_template('template-giving-campaign.php') ): ?>
 				<section class="wt_header__secondary">
 					<?php
-						if ( 
+						if (
 							strpos($template_slug, 'revitalization') !== false ||
 							is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
-						) { 
+						) {
 							wp_nav_menu(
-								array( 
+								array(
 									'theme_location' => 'revitalization-menu',
 									'container' => 'nav',
 									'container_class' => 'wt_header__nav--secondary'
 								)
-							); 
-						} elseif ( 
-							strpos($template_slug, 'archive') !== false || 
-							is_singular('languages') || 
+							);
+						} elseif (
+							strpos($template_slug, 'archive') !== false ||
+							is_singular('languages') ||
 							is_singular('videos') ||
-							is_search() 
+							is_search()
 						) {
 							wp_nav_menu(
-								array( 
+								array(
 									'theme_location' => 'archive-menu',
 									'container' => 'nav',
 									'container_class' => 'wt_header__nav--secondary'
@@ -128,14 +128,14 @@
 							); // if single language or single video, display the language
 						} elseif ( strpos($template_slug, 'about') !== false ) {
 							wp_nav_menu(
-								array( 
+								array(
 									'theme_location' => 'about-menu',
 									'container' => 'nav',
 									'container_class' => 'wt_header__nav--secondary'
 								)
 							);
 						}
-					?>	
+					?>
 				</section>
 				<?php endif; ?>
 			</header>
