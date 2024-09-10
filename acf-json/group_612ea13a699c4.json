@@ -282,46 +282,6 @@
             },
             "default_value": "",
             "placeholder": ""
-        },
-        {
-            "key": "field_66df2cfcf2e83",
-            "label": "Mailchimp Newsletter User",
-            "name": "mailchimp_newsletter_user",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_66df2d07f2e84",
-            "label": "Mailchimp Newsletter ID",
-            "name": "mailchimp_newsletter_id",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
         }
     ],
     "location": [
@@ -329,7 +289,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options"
+                "value": "general"
             }
         ]
     ],
@@ -342,5 +302,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1725902099
+    "modified": 1725971625
 }
