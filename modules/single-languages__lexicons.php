@@ -84,6 +84,6 @@
 		?>
 		</ul>
 	<?php else: ?>
-		<p>There are no lexicons to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a lexicon</a>.</p>
+		<p>There are no lexicons to display—yet. <a href="<?php echo home_url() ;?>/submit-a-video">Submit a lexicon</a>.</p>
 	<?php endif; ?>
 </div>
