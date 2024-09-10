@@ -78,26 +78,6 @@
             "preview_size": "medium"
         },
         {
-            "key": "field_612e8e0e3750d",
-            "label": "Newsletter Signup Embed",
-            "name": "newsletter_signup_embed",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
             "key": "field_612fed546a5fa",
             "label": "Footer Logo",
             "name": "footer_logo",
@@ -302,5 +282,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1725971625
+    "modified": 1725973497
 }
