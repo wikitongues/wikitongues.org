@@ -10,11 +10,11 @@
 	<?php if ( $favicon ): ?>
 		<link href="<?php echo $favicon['url']; ?>" rel="shortcut icon">
 	<?php else: ?>
-		<link href="<?php echo bloginfo('url'); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+		<link href="<?php echo home_url(); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
 	<?php endif; ?>
 
 	<!-- Custom metadata variables -->
-	<?php 
+	<?php
 		$global              = $wp;
 		$seo_title           = get_field('seo_title');
 		$seo_description     = get_field('seo_description');
@@ -26,12 +26,12 @@
 
 	<!-- SEO title -->
 	<title><?php
-		if ( $seo_title ) { 
+		if ( $seo_title ) {
 			// use title from SEO CRM, if available
 			echo $seo_title;
 
 		} else if ( is_archive() ) {
-			// grab archived post type 
+			// grab archived post type
 			$archive_post_type = get_queried_object();
 
 			// title page based on archived post type
