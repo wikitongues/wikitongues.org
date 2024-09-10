@@ -288,6 +288,13 @@
                 "operator": "==",
                 "value": "videos"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "video"
+            }
         ]
     ],
     "menu_order": 0,
