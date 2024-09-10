@@ -1,10 +1,12 @@
 <?php
 	$user = get_field('mailchimp_newsletter_user', 'options');
 	$id = get_field('mailchimp_newsletter_id', 'options');
+	$newsletter_title = get_field('block_title', 'options');
+	$newsletter_copy = get_field('block_copy', 'options');
 ?>
 <section class="wt_newsletter">
-	<h2>Discover new languages, cultures, and stories.</h2>
-	<p>Sign up for our newsletter and get the latest news, stories, and ways to make an impact.</p>
+	<h2><?php echo $newsletter_title; ?></h2>
+	<p><?php echo $newsletter_copy; ?></p>
 	<div id="mc_embed_signup">
 		<label for="mce-EMAIL">Your email</label>
 		<?php
@@ -19,9 +21,7 @@
 					<div class="response" id="mce-success-response" style="display:none"></div>
 				</div>
 				<div style="position: absolute; left: -5000px;" aria-hidden="true">
-					<?php
-						echo '<input type="text" name="b_'.$user.'_'.$id.'" tabindex="-1" value="">'
-					?>
+					<?php echo '<input type="text" name="b_'.$user.'_'.$id.'" tabindex="-1" value="">'; ?>
 				</div>
 				<div class="clear">
 					<input type="submit" value="Stay informed" name="subscribe" id="mc-embedded-subscribe" class="button wt_cta">

@@ -274,7 +274,6 @@
                 "class": "",
                 "id": ""
             },
-            "readonly": true,
             "default_value": "",
             "maxlength": "",
             "placeholder": "",
@@ -289,6 +288,13 @@
                 "operator": "==",
                 "value": "videos"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "video"
+            }
         ]
     ],
     "menu_order": 0,
@@ -300,5 +306,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1725185778
+    "modified": 1725972840
 }
