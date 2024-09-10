@@ -30,6 +30,6 @@
 		?>
 		</ul>
 	<?php else: ?>
-		<p>There are no resources to display—yet. <a href="<?php echo home_url() ;?>/submit-a-video">Recommend a resource</a>.</p>
+		<p>There are no resources to display—yet. <a href="<?php echo home_url() ;?>/submit-a-resource">Recommend a resource</a>.</p>
 	<?php endif; ?>
 </div>
