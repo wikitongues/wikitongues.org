@@ -1,7 +1,6 @@
 <?php
 get_header();
 
-// $standard_name = get_field('standard_name');
 $youtube_id = get_field('youtube_id');
 $youtube_link = get_field('youtube_link');
 $language_iso_codes = get_field('language_iso_codes');
@@ -12,7 +11,6 @@ $public_status = get_field('public_status');
 $video_license = get_field('video_license');
 $video_license_url = array_pop(array_reverse(get_field('license_link' )));
 $featured_languages = get_field('featured_languages');
-// $video_thumbnail = get_field('video_thumbnail_v2');
 
 $language_names_array = [];
 $iso_codes_array = [];
@@ -70,8 +68,8 @@ echo '<main class="wt_single-videos__content">';
   $custom_selected_posts = '';
   echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
 
-  $cta_el = '<a href="">Contribute a video</a>';
-  $cta_el .= '<a href="">How to create an oral history</a>';
+  $cta_el = '<a href="'.home_url().'/submit-a-video">Contribute a video</a>';
+  $cta_el .= '<a href="'.home_url().'/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf">How to create an oral history</a>';
   $gallery_cta = '<div class="custom-cta-container full"><section class="custom-gallery-video-cta">'.$cta_el.'</section></div>';
   echo $gallery_cta;
 
