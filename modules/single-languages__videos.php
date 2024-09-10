@@ -16,12 +16,12 @@
 		?>
 		<div class="custom-cta-container">
 			<section class="custom-gallery-video-cta">
-				<a href="<?php bloginfo('url'); ?>/submit-a-video">Contribute a video</a>
-				<a href="">How to create an oral history</a>
+				<a href="<?php echo home_url(); ?>/submit-a-video">Contribute a video</a>
+				<a href="<?php echo home_url(); ?>/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf">How to create an oral history</a>
 			</section>
 		</div>
 	<?php else: ?>
 		<h2 class="wt_sectionHeader">Videos</h2>
-		<p>There are no videos to display—yet. <a href="<?php bloginfo('url'); ?>/submit-a-video">Submit a video</a>.</p>
+		<p>There are no videos to display—yet. <a href="<?php echo home_url(); ?>/submit-a-video">Submit a video</a>.</p>
 	<?php endif; ?>
 </div>
