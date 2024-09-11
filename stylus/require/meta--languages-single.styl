@@ -2,6 +2,7 @@
 	width calc(100%/4)
 	float left
 	padding-left 6rem
+	margin-bottom 6.4rem
 
 	section
 		margin-bottom 1rem
@@ -21,6 +22,8 @@
 			padding-bottom 12px
 
 	ul
+		border-bottom 1px solid $lightPurple
+		margin-bottom 16px
 		li
 			margin-bottom 1.5rem
 			a
@@ -36,6 +39,14 @@
 
 		span
 			text--body($blue)
+
+		&.official-link
+			padding 8px 12px
+			border-left 2px solid $blue
+			margin-bottom 16px
+			font-weight bold
+			&:hover
+					text-decoration underline
 
 		&.donate-cta
 			background-color $red
