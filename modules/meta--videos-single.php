@@ -11,39 +11,23 @@
 		<p>
 		<?php if ( $public_status === 'Public' ) {
 			if ( $dropbox_link && $dropbox_link !== 'none' ) {
-
-				echo '<a href="'. $dropbox_link . '" target="_blank">
-					Dropbox (.mp4)</a>';
-
+				echo '<a href="'. $dropbox_link . '" target="_blank">Dropbox (.mp4)</a>';
 			}
 
 			if ( $wikimedia_commons_link ) {
-
 				echo '<br /><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a>';
-
 			}
 
-			if ( $dropbox_link === 'none' && !$wikimedia_commons_link ) {
-
+			if ( ($dropbox_link === 'none' || !$dropbox_link) && !$wikimedia_commons_link ) {
 				echo 'File downloads are currently unavailable for this video.';
-
-			}
-
-			if ( !$dropbox_link && !$wikimedia_commons_link ) {
-
-				echo 'File downloads are currently unavailable for this video.';
-
 			}
 
 			// later version: captions
 		} elseif ( $public_status === 'Processing' ) {
-
 			echo 'File downloads will be ready when this is video is finished processing. Please check back soon.'; // later version: 'subscribe for notifications'
 
 		} elseif ( $public_status === 'Private') {
-
 			echo 'File downloads are disabled because the creator of this video has chosen to make this video private.';
-
 		} ?>
 		</p>
 	</div>
