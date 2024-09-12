@@ -6,7 +6,7 @@ on:
       - production
 
 env:
-  REMOTE_DIR: ./public_html/wp-content/themes/blankslate-child
+  REMOTE_DIR: ./public_html/
 
 jobs:
   deploy:
