@@ -6,7 +6,7 @@ on:
       - staging
 
 env:
-  REMOTE_DIR: ./public_html/staging.wikitongues.org/wp-content/themes/blankslate-child
+  REMOTE_DIR: ./public_html/staging.wikitongues.org/
 
 jobs:
   deploy:
