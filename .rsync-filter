@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+=======
+- .rsync-filter
+- .git
+- .github/
+- .gitignore
+- readme.md
+- temp/
+>>>>>>> 5b7705f... edit .rsync-filter
