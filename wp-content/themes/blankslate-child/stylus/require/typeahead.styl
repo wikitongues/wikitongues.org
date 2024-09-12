@@ -11,29 +11,30 @@
     font-family 'Graphik Web'
     font-size 1.28rem
 
-    input
+    .typeahead-input
       background  $parchment
       border-radius 8px
       font-family inherit
       font-size inherit
+      outline-color $blue
       transition-property background, width
       transition-duration 0.6s
       transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
-      
+
       &::placeholder
         color $parchment
-        color $blue	
+        color $blue
         font-family 'Graphik Web'
         font-style italic
         font-size inherit
-      
+
       &:active,
       &:focus
-        color $blue	
-        
+        color $blue
+
         &::placeholder
           color $blue
-      
+
     .typeahead-list
       background $parchment
       font-family inherit
@@ -41,15 +42,38 @@
       border none
       margin-top 4px
 
-      span
-        line-height 2rem
-      
-        &.label
-          position relative
-          display inline-block
-          color $blue
-          font-family inherit
-          font-size inherit
 
+      .typeahead-item
+        &.selected
+          background #E1DCF2
+
+          &[data-resource="true"]::before,
+          span.highlight
+            background-color #C3B9E4
+
+        &:hover
+          background #EBE8F6
+
+          &[data-resource="true"]::before,
+          span.highlight
+            background-color #C7BDE6
+
+
+        &[data-resource="true"]::before,
         .highlight
-          background lighten($purple,60%)
+          background-color #CDC4E8
+
+        &[data-resource="true"]
+          .identifier
+            color $blue
+
+        span
+          &.label
+            position relative
+            color $blue
+            font-family inherit
+            font-size inherit
+
+          .highlight
+            background #CDC4E8
+            transition: background 0.6s cubic-bezier(0.65, 0, 0.35, 1);
