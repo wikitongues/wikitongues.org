@@ -69,6 +69,10 @@ This project follows a structured Continuous Integration and Continuous Deployme
   - This ensures that all changes are reviewed, tested, and approved before affecting live environments.
 
 
+# Setting up new Staging
+
+- Read instructions [here](https://www.greengeeks.com/tutorials/how-to-set-up-a-wordpress-development-environment-and-why/)
+
 # CSS and Compiling Stylus
 
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
@@ -77,9 +81,14 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 
 # Plugins
 
-**Typeahead Search**
-This project uses a React search component maintained in a [separate repository](https://github.com/wikitongues/typeahead/tree/main).
-To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments. Consider using `rsync` to facilitate the distribution. Additionally, the plugin has a PHP file that is not currently tracked on Git due to this repository being only a subset of the full installation. We may want to change this later.
+- **Typeahead Search**:
+
+   This project uses a React search component maintained in a [separate repository](https://github.com/wikitongues/typeahead/tree/main).
+   To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments. Consider using `rsync` to facilitate the distribution. Additionally, the plugin has a PHP file that is not currently tracked on Git due to this repository being only a subset of the full installation. We may want to change this later.
+
+- **Custom Gallery**:
+
+   This plugin handles all galleries for this project.
 
 # To-Do
 
@@ -100,7 +109,7 @@ To update the component in this wordpress project, you'll have to update the /bu
 - [] build captions post type
 - [] build single page template for partners post type
 - [] add: "about" drop down to header (footer only for launch)
-- [] backwards compatibility evaluation
+- [x] backwards compatibility evaluation
 - [] ADA accessibility evaluation
 - [] blog integration
 - [] browser notifications opt-in
@@ -108,7 +117,7 @@ To update the component in this wordpress project, you'll have to update the /bu
 ## home
 
 - [] make homepage banner a carousel
-- [] make testimonial carousel a true carousel
+- [x] make testimonial carousel a true carousel
 
 ## search results
 
@@ -121,7 +130,7 @@ To update the component in this wordpress project, you'll have to update the /bu
 ## languages single
 
 - [] inlcude more clarity for external resources
-- [] related languages carousel
+- [x] related languages carousel
 - [] add continent of origin
 
 ## video single
@@ -129,9 +138,9 @@ To update the component in this wordpress project, you'll have to update the /bu
 - [] toggle metadata view for for more than 1 language
 - [] toggle all metadata view on mobile
 - [] once captions post type is live, add download feature
-- [] figure out navigation path from single videos back to the language in question
+- [x] figure out navigation path from single videos back to the language in question
 - [] figure out embeds for Dropbox files (not on YouTube)
-- [] related videos carousel
+- [x] related videos carousel
 
 ## archive
 
@@ -140,33 +149,10 @@ To update the component in this wordpress project, you'll have to update the /bu
 ## fellows single
 
 - [] micro-blogging feature
-- [] other fellows carousel
+- [x] other fellows carousel
 
 ## revitalization toolkit
 
 - [] toolkit newsletter propt
 - [] toolkit language prompt
 - [] toolkit donate prompt
-
-
-
-
-# wordpress
-The full Wikitongues.org Wordpress installation
-
-# vague and messy instructions to be made legible later
-
-* we use { } for continguous php and :/else:/endif; for PHP broken up by html
-* https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
-* in-line php lines up with html (if statements)
-* line-breaks between php and in-line html
-
-# immediate to-do's
-
-* build out project pages (content) and add them to home (code)
-* fellowship page (code)
-* SEO and sharing, including title bug (content)
-* search results pagination (code)
-* persistant search (code)
-* archive pages for videos, lexicons, etc.
-* full submission flow (lexicons, ext resources) (content+code)
