@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - production
+  workflow_dispatch:
 
 env:
   REMOTE_DIR: ./public_html/
