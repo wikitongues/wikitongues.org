@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - staging
+  workflow_dispatch:
 
 env:
   REMOTE_DIR: ./public_html/staging.wikitongues.org/
