@@ -25,28 +25,29 @@ html {
   font-family: 'Graphik Web';
   font-size: 1.28rem;
 }
-.react-typeahead-container .typeahead-form input {
+.react-typeahead-container .typeahead-form .typeahead-input {
   background: #fffcef;
   border-radius: 8px;
   font-family: inherit;
   font-size: inherit;
+  outline-color: #3814a5;
   transition-property: background, width;
   transition-duration: 0.6s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
-.react-typeahead-container .typeahead-form input::placeholder {
+.react-typeahead-container .typeahead-form .typeahead-input::placeholder {
   color: #fffcef;
   color: #3814a5;
   font-family: 'Graphik Web';
   font-style: italic;
   font-size: inherit;
 }
-.react-typeahead-container .typeahead-form input:active,
-.react-typeahead-container .typeahead-form input:focus {
+.react-typeahead-container .typeahead-form .typeahead-input:active,
+.react-typeahead-container .typeahead-form .typeahead-input:focus {
   color: #3814a5;
 }
-.react-typeahead-container .typeahead-form input:active::placeholder,
-.react-typeahead-container .typeahead-form input:focus::placeholder {
+.react-typeahead-container .typeahead-form .typeahead-input:active::placeholder,
+.react-typeahead-container .typeahead-form .typeahead-input:focus::placeholder {
   color: #3814a5;
 }
 .react-typeahead-container .typeahead-form .typeahead-list {
@@ -56,18 +57,36 @@ html {
   border: none;
   margin-top: 4px;
 }
-.react-typeahead-container .typeahead-form .typeahead-list span {
-  line-height: 2rem;
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item.selected {
+  background: #e1dcf2;
 }
-.react-typeahead-container .typeahead-form .typeahead-list span.label {
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item.selected[data-resource="true"]::before,
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item.selected span.highlight {
+  background-color: #c3b9e4;
+}
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item:hover {
+  background: #ebe8f6;
+}
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item:hover[data-resource="true"]::before,
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item:hover span.highlight {
+  background-color: #c7bde6;
+}
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item[data-resource="true"]::before,
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item .highlight {
+  background-color: #cdc4e8;
+}
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item[data-resource="true"] .identifier {
+  color: #3814a5;
+}
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item span.label {
   position: relative;
-  display: inline-block;
   color: #3814a5;
   font-family: inherit;
   font-size: inherit;
 }
-.react-typeahead-container .typeahead-form .typeahead-list span .highlight {
-  background: #d5cde7;
+.react-typeahead-container .typeahead-form .typeahead-list .typeahead-item span .highlight {
+  background: #cdc4e8;
+  transition: background 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 body {
   max-width: 1800px;
