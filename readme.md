@@ -7,12 +7,16 @@
 * php files named by wp page/template type or module/element type with -- modifiers
 * ACF organized into groups by corresponding post type, page template, or global group, with post type or page template name as prefix
 
-# PHP style guidelines
+# Code Style Guidelines
 
+*PHP*
 * we use { } for continguous php and :/else:/endif; for PHP broken up by html
 * https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
 * in-line php lines up with previous html element (if statements)
 * line-breaks between php and in-line html
+
+*CSS*
+* Use tabs, not spaces for Stylus files.
 
 # Continuous Integration and Deployment (CI/CD)
 
