@@ -1,64 +1,3 @@
-.wt_newsletter
-	margin 1.6rem 3.2rem 0
-	padding 6rem 0
-	text-align left
-	text-transform initial
-	border-top 2px solid $lightPurple
-
-	h2
-		text--header($black)
-		margin-bottom 3rem
-		font-size 5rem
-
-	h2,
-	p
-		width 600px
-		margin 0 auto
-
-	p
-		text--body($black)
-		margin-top 3rem
-
-	#mc_embed_signup
-		max-width 600px
-		margin 5rem auto 3rem
-
-		label
-			display block
-			margin-bottom 1rem
-			text--strong($black)
-
-		form
-			#mc_embed_signup_scroll
-				width 100%
-				display flex
-
-				.mc-field-group
-					float left
-					flex-grow 1
-					margin-right 16px
-
-				input
-					border none
-					-webkit-appearance none
-
-					&[type="email"]
-						width 100%
-						button--large($parchment, $black)
-						text-transform none
-						border-bottom 2px solid $blue
-						margin-right 8px
-
-						&:focus
-							outline none
-
-					&[type="submit"]
-						button--large($blue, $parchment)
-						text-transform none
-						border-radius 8px
-						-webkit-border-radius 8px
-						cursor pointer
-
 .wt_footer
 	padding 2rem 4rem
 	background $black
@@ -164,7 +103,6 @@
 
 		&__nav
 			width 100%
-			// text-align center
 
 			&>ul
 				justify-content center
@@ -172,27 +110,8 @@
 		&__meta
 			margin 6rem auto
 			width 100%
-			// text-align center
 
 @media all and (max-width:$mobile)
-	.wt_newsletter
-		padding 4rem 3rem 6rem
-
-		h2
-			font-size 4rem
-
-		form
-			&>div
-				display block
-
-			input
-				&[type="email"]
-					width 100%
-					text-align center
-
-				&[type="submit"]
-					width 100%
-
 	.wt_footer
 		&__logo
 			display flex
