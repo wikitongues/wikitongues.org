@@ -56,7 +56,7 @@ function render_gallery_items($query, $atts, $gallery_id, $paged, $data_attribut
       } else {
         $video_thumbnail_object = '<div class="no-thumbnail"><p>Thumbnail unavailable</p></div><span>&nbsp;</span>';
       }
-      $fellow_el = '<table><tr><td>'.$fellow_nation.'</td><td>Revitalization</td></tr><tr><td>'.$fellow_language_preferred_name.'</td><td>See Project</td></tr></table>';
+      $fellow_el = '<div class="fellow-metadata"><p>'.$fellow_nation.'</p><h3>'.$fellow_language_preferred_name.'</h3><p>Revitalization</p></div>';
     }
 
     if ($atts['post_type'] === 'languages') {
