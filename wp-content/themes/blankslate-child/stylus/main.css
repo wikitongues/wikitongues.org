@@ -2466,107 +2466,6 @@ text
     width: 100%;
   }
 }
-.wt_newsletter {
-  margin: 1.6rem 3.2rem 0;
-  padding: 6rem 0;
-  text-align: left;
-  text-transform: initial;
-  border-top: 2px solid #d4cce0;
-}
-.wt_newsletter h2 {
-  font-family: 'Schnyder Wide M Web';
-  font-weight: 300;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 6.08rem;
-  color: #101010;
-  margin-bottom: 3rem;
-  font-size: 5rem;
-}
-.wt_newsletter h2,
-.wt_newsletter p {
-  width: 600px;
-  margin: 0 auto;
-}
-.wt_newsletter p {
-  font-family: 'Graphik Web';
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.6rem;
-  line-height: 1.3;
-  color: #101010;
-  margin-top: 3rem;
-}
-.wt_newsletter #mc_embed_signup {
-  max-width: 600px;
-  margin: 5rem auto 3rem;
-}
-.wt_newsletter #mc_embed_signup label {
-  display: block;
-  margin-bottom: 1rem;
-  font-family: 'Graphik Web';
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.6rem;
-  line-height: 1.3;
-  color: #101010;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll {
-  width: 100%;
-  display: flex;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll .mc-field-group {
-  float: left;
-  flex-grow: 1;
-  margin-right: 16px;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll input {
-  border: none;
-  -webkit-appearance: none;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll input[type="email"] {
-  width: 100%;
-  display: inline-block;
-  padding: 1.5rem 2rem;
-  background: #fffcef;
-  font-family: 'Graphik Web';
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.6rem;
-  line-height: 1.3;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: #101010;
-  text-wrap: nowrap;
-  text-transform: none;
-  border-bottom: 2px solid #3814a5;
-  margin-right: 8px;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll input[type="email"]:focus {
-  outline: none;
-}
-.wt_newsletter #mc_embed_signup form #mc_embed_signup_scroll input[type="submit"] {
-  display: inline-block;
-  padding: 1.5rem 2rem;
-  background: #3814a5;
-  font-family: 'Graphik Web';
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 1.6rem;
-  line-height: 1.3;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: #fffcef;
-  text-wrap: nowrap;
-  text-transform: none;
-  border-radius: 8px;
-  -webkit-border-radius: 8px;
-  cursor: pointer;
-}
 .wt_footer {
   padding: 2rem 4rem;
   background: #101010;
@@ -2691,22 +2590,6 @@ text
   }
 }
 @media all and (max-width: 768px) {
-  .wt_newsletter {
-    padding: 4rem 3rem 6rem;
-  }
-  .wt_newsletter h2 {
-    font-size: 4rem;
-  }
-  .wt_newsletter form>div {
-    display: block;
-  }
-  .wt_newsletter form input[type="email"] {
-    width: 100%;
-    text-align: center;
-  }
-  .wt_newsletter form input[type="submit"] {
-    width: 100%;
-  }
   .wt_footer__logo {
     display: flex;
     justify-content: center;
@@ -3000,7 +2883,7 @@ text
   float: right;
   font-family: monospace;
 }
-.custom-gallery .gallery-container .gallery-list .gallery-item a p {
+.custom-gallery .gallery-container .gallery-list .gallery-item a .thumbnail p {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -3051,19 +2934,19 @@ text
   font-size: 2.4rem;
   height: 64px;
 }
-.custom-gallery.fellows .gallery-container .gallery-list .gallery-item table {
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata {
   width: 100%;
   float: left;
   margin-top: 16px;
 }
-.custom-gallery.fellows .gallery-container .gallery-list .gallery-item table tr:first-of-type {
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata h3,
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
+  float: left;
+  width: 100%;
+  max-width: initial;
+}
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
   font-size: 1.6rem;
-}
-.custom-gallery.fellows .gallery-container .gallery-list .gallery-item table tr:last-of-type td:last-of-type {
-  color: #3814a5;
-}
-.custom-gallery.fellows .gallery-container .gallery-list .gallery-item table tr td:nth-of-type(2) {
-  text-align: right;
 }
 .custom-gallery .gallery-pagination {
   display: flex;
@@ -3225,6 +3108,17 @@ text
 }
 .custom-cta-container .custom-gallery-video-cta a:last-of-type {
   float: right;
+}
+@media all and (max-width: 1140px) {
+  .custom-gallery.fellows .gallery-container .gallery-list .gallery-item a table tbody tr td {
+    white-space: nowrap;
+    padding: 2px;
+    clear: both;
+    float: left;
+  }
+  td.custom-gallery.fellows .gallery-container .gallery-list .gallery-item a table tbody tr:first-of-type:last-of-type {
+    font-size: 0.8rem;
+  }
 }
 @media all and (max-width: 768px) {
   .custom-gallery.full {
