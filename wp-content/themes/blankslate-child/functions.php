@@ -202,6 +202,18 @@ function modify_page_title() {
 }
 add_action('wp_head', 'modify_page_title');
 
+function redirect_attachment_pages_to_404() {
+    if ( is_attachment() ) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header( 404 );
+        nocache_headers();
+        include( get_query_template( '404' ) );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'redirect_attachment_pages_to_404' );
+
 add_action('rest_api_init', function () {
     $routes = rest_get_server()->get_routes();
     error_log(print_r($routes, true));
