@@ -1,4 +1,7 @@
 <?php
+// ====================
+// Register Custom Post Type
+// ====================
 add_action('init', 'create_post_type_languages');
 function create_post_type_languages()
 {
@@ -25,87 +28,154 @@ function create_post_type_languages()
         'menu_icon' => 'dashicons-translation',
         'has_archive' => true,
         'supports' => array(
-            'title',
-            'thumbnail',
-            'excerpt'
+            'title', 'thumbnail', 'excerpt'
         ),
         'can_export' => true,
-        // 'taxonomies' => array(
-        //     'post_tag',
-        //     'category'
-        // ),
         'show_in_rest' => true,
         'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
-
-// Add custom columns to the 'fellows' post type
+// ====================
+// Manage Custom Columns
+// ====================
+// Add custom columns to the 'languages' post type
+add_filter('manage_languages_posts_columns', 'add_languages_custom_columns');
 function add_languages_custom_columns($columns) {
 	unset($columns['date']);
 	$columns['standard_name'] = __('Name', 'languages');
-	$columns['nations_of_origin'] = __('Nations', 'fellows');
-    $columns['speakers_recorded'] = __('Videos', 'fellows');
+	$columns['nations_of_origin'] = __('Nations', 'languages');
+    $columns['speakers_recorded'] = __('Videos', 'languages');
+    $columns['lexicons'] = __('Lexicons', 'languages');
+    $columns['external_resources'] = __('Resources', 'languages');
 
 	return $columns;
 }
-add_filter('manage_languages_posts_columns', 'add_languages_custom_columns');
 
+add_action('manage_languages_posts_custom_column', 'fill_languages_custom_columns', 10, 2);
 function fill_languages_custom_columns($column, $post_id) {
 	switch ($column) {
         case 'standard_name':
-            $standard_name = get_field('standard_name', $post_id);
-            echo esc_html($standard_name);
-            break;
-
         case 'nations_of_origin':
-            $nations_of_origin = get_field('nations_of_origin', $post_id);
-            echo esc_html($nations_of_origin);
+            $value = get_field($column, $post_id);
+            echo esc_html($value);
             break;
 
         case 'speakers_recorded':
-            $speakers_recorded = get_field('speakers_recorded', $post_id);
-            if ($speakers_recorded instanceof WP_Post) {
-                // If the ACF field returns a post object, display the post title
-                echo esc_html($speakers_recorded->post_title);
-            } elseif (is_array($speakers_recorded)) {
-                // If it's an array of post objects (multiple posts selected)
-                $titles = wp_list_pluck($speakers_recorded, 'post_title'); // Get titles of all posts
-                echo esc_html(implode(', ', $titles)); // Display them as a comma-separated list
-            } else {
-                echo __('No related post found', 'languages'); // Handle cases where the field is empty or invalid
-            }
+        case 'lexicons':
+        case 'external_resources':
+            $field = get_field($column, $post_id);
+            $count = is_array($field) ? count($field) : (($field instanceof WP_Post) ? 1 : 0);
+            echo esc_html($count);
             break;
 	}
 }
-add_action('manage_languages_posts_custom_column', 'fill_languages_custom_columns', 10, 2);
 
+add_filter('manage_edit-languages_sortable_columns', 'make_languages_columns_sortable');
 function make_languages_columns_sortable($columns) {
 	$columns['standard_name'] = 'standard_name';
     $columns['nations_of_origin'] = 'nations_of_origin';
     $columns['speakers_recorded'] = 'speakers_recorded';
+    $columns['lexicons'] = 'lexicons';
+    $columns['external_resources'] = 'external_resources';
 	return $columns;
 }
-add_filter('manage_edit-languages_sortable_columns', 'make_languages_columns_sortable');
 
+// ====================
+// Handle Sorting by Custom Fields
+// ====================
 // // Modify the query to sort by custom fields
-function languages_custom_column_orderby($query) {
-	if (!is_admin()) {
-			return;
-	}
-
-	$orderby = $query->get('orderby');
-	if ('standard_name' == $orderby) {
-			$query->set('meta_key', 'standard_name');
-			$query->set('orderby', 'meta_value');
-	}
-	if ('nations_of_origin' == $orderby) {
-			$query->set('meta_key', 'nations_of_origin');
-			$query->set('orderby', 'meta_value');
-	}
-    if ('speakers_recorded' == $orderby) {
-        $query->set('meta_key', 'speakers_recorded');
-        $query->set('orderby', 'meta_value');
-}
-}
 add_action('pre_get_posts', 'languages_custom_column_orderby');
+function languages_custom_column_orderby($query) {
+    if (!is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    $orderby = $query->get('orderby');
+    $order = $query->get('order') ? $query->get('order') : 'ASC';
+
+    if (in_array($orderby, ['standard_name', 'nations_of_origin'])) {
+        $query->set('meta_key', $orderby);
+        $query->set('orderby', 'meta_value');
+    } elseif (in_array($orderby, ['speakers_recorded', 'lexicons', 'external_resources'])) {
+        // Map the column to the meta key
+        $meta_key = $orderby . '_count';
+        $meta_query_key = $orderby . '_clause';
+
+        // Get existing meta queries if any
+        $meta_query = $query->get('meta_query');
+        if (!is_array($meta_query)) {
+            $meta_query = [];
+        }
+
+        // Add our meta query clause
+        $meta_query[] = [
+            'key' => $meta_key,
+            'type' => 'NUMERIC',
+        ];
+        $query->set('meta_query', $meta_query);
+
+        // Set the orderby to use our meta query clause
+        $query->set('orderby', [
+            'meta_value_num' => $order,
+            'title' => 'ASC',
+        ]);
+
+        // Ensure meta_key is not set to prevent exclusion of posts
+        $query->set('meta_key', '');
+    }
+}
+
+
+
+// ====================
+// Update Counts for Custom Fields
+// ====================
+function update_custom_fields_counts($post_id) {
+    if (get_post_type($post_id) !== 'languages') {
+        return;
+    }
+
+    $fields = ['speakers_recorded', 'lexicons', 'external_resources'];
+
+    foreach ($fields as $field) {
+        $value = get_field($field, $post_id);
+
+        $count = is_array($value) ? count($value) : ((!empty($value)) ? 1 : 0);
+
+        update_post_meta($post_id, "{$field}_count", $count);
+    }
+
+    // Conditional logging
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log("Updated counts for post ID: $post_id");
+    }
+}
+
+add_action('save_post_languages', 'update_custom_fields_counts_on_save');
+function update_custom_fields_counts_on_save($post_id) {
+    // Check if batch update is currently in progress
+    if (!empty($GLOBALS['batch_update_in_progress'])) {
+        return;
+    }
+
+    // Check if this is an autosave or a revision.
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check if relevant fields have changed
+    $fields = ['speakers_recorded', 'lexicons', 'external_resources'];
+    $fields_changed = false;
+
+    foreach ($fields as $field) {
+        if (isset($_POST['acf'][$field])) {
+            $fields_changed = true;
+            break;
+        }
+    }
+
+    if ($fields_changed) {
+        update_custom_fields_counts($post_id);
+    }
+}
