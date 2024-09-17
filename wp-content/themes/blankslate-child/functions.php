@@ -6,4 +6,4 @@ require_once('includes/menus.php');
 require_once('includes/search-filter.php');
 require_once('includes/template-helpers.php');
 require_once('includes/rest-endpoints.php');
-require_once('includes/update-videos.php'); // update video language ISOs when editing featured languages in admin
+require_once('includes/batch-operations.php');

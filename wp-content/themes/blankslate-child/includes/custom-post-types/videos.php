@@ -40,9 +40,7 @@ function create_post_type_videos()
     ));
 }
 
-
-// featured_languages, public_status
-// Add custom columns to the 'fellows' post type
+add_filter('manage_videos_posts_columns', 'add_videos_custom_columns');
 function add_videos_custom_columns($columns) {
 	unset($columns['date']);
 	$columns['featured_languages'] = __('Languages', 'videos');
@@ -50,8 +48,8 @@ function add_videos_custom_columns($columns) {
 
 	return $columns;
 }
-add_filter('manage_videos_posts_columns', 'add_videos_custom_columns');
 
+add_action('manage_videos_posts_custom_column', 'fill_videos_custom_columns', 10, 2);
 function fill_videos_custom_columns($column, $post_id) {
 	switch ($column) {
         case 'featured_languages':
@@ -74,16 +72,19 @@ function fill_videos_custom_columns($column, $post_id) {
             break;
 	}
 }
-add_action('manage_videos_posts_custom_column', 'fill_videos_custom_columns', 10, 2);
 
+add_filter('manage_edit-videos_sortable_columns', 'make_videos_columns_sortable');
 function make_videos_columns_sortable($columns) {
 	$columns['featured_languages'] = 'featured_languages';
 	$columns['public_status'] = 'public_status';
 	return $columns;
 }
-add_filter('manage_edit-videos_sortable_columns', 'make_videos_columns_sortable');
 
+// ====================
+// Handle Sorting by Custom Fields
+// ====================
 // // Modify the query to sort by custom fields
+add_action('pre_get_posts', 'videos_custom_column_orderby');
 function videos_custom_column_orderby($query) {
 	if (!is_admin()) {
 			return;
@@ -99,4 +100,64 @@ function videos_custom_column_orderby($query) {
 			$query->set('orderby', 'meta_value');
 	}
 }
-add_action('pre_get_posts', 'videos_custom_column_orderby');
+
+// ====================
+// Update ISO Codes on Save
+// ====================
+function update_video_featured_language_iso_codes($post_id) {
+    // Only run this for 'videos' post type
+    if (get_post_type($post_id) !== 'videos') {
+        return;
+    }
+
+    // Get the 'featured_languages' field
+    $featured_languages = get_field('featured_languages', $post_id);
+
+    // Log the featured languages for debugging
+    if ($featured_languages) {
+        error_log('Featured languages: ' . print_r($featured_languages, true));
+    } else {
+        error_log('No featured languages found.');
+    }
+
+    if ($featured_languages && is_array($featured_languages)) {
+        $iso_codes = array();
+
+        foreach ($featured_languages as $language) {
+            if (isset($language->post_name)) {
+                $iso_codes[] = $language->post_name;
+            }
+        }
+
+        $iso_code_string = implode(',', $iso_codes);
+        update_field('language_iso_codes', $iso_code_string, $post_id);
+    } else {
+        update_field('language_iso_codes', '', $post_id);
+    }
+
+    // Conditional logging
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log("Updated ISO codes for post ID: $post_id");
+    }
+}
+
+// Trigger ISO code update on save
+add_action('save_post', 'update_video_featured_language_iso_codes_on_save');
+function update_video_featured_language_iso_codes_on_save($post_id) {
+    // Check if batch update is currently in progress
+    if (!empty($GLOBALS['batch_update_in_progress'])) {
+        return;
+    }
+
+    // Only run this for 'videos' post type
+    if (get_post_type($post_id) !== 'videos') {
+        return;
+    }
+
+    // Check if this is an autosave or a revision.
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    update_video_featured_language_iso_codes($post_id);
+}
