@@ -44,6 +44,7 @@ error_log
 #
 # Note: If you wish to whitelist plugins,
 !/wp-content/plugins/typeahead/
+!/wp-content/plugins/typeahead/build
 !/wp-content/plugins/wt-gallery/
 
 # Misc
