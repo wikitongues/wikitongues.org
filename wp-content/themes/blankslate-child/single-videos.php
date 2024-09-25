@@ -75,4 +75,6 @@ echo '<main class="wt_single-videos__content">';
 
 echo '</main>';
 
+include( 'modules/newsletter.php' );
+
 get_footer();

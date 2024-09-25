@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // header
 get_header();
@@ -8,6 +8,8 @@ include( 'modules/banner--searchbar.php' );
 
 // pull search results loop
 include( 'modules/search-results.php' );
+
+include( 'modules/newsletter.php' );
 
 get_footer();
 

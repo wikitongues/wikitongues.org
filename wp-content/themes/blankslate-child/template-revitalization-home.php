@@ -23,12 +23,13 @@ if ( have_rows( 'content_blocks' ) ) {
 		$content_block_cta = get_sub_field('content_block_cta');
 		$content_block_cta_link = $content_block_cta['url'];
 		$content_block_cta_text = $content_block_cta['title'];
-		
+
 		include( 'modules/content-block--grid.php' );
 	}
 
 	echo '</main>';
 }
 
-// footer
+include( 'modules/newsletter.php' );
+
 get_footer();
