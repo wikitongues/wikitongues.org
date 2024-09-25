@@ -5,4 +5,6 @@ get_header();
 
 // design
 
+include( 'modules/newsletter.php' );
+
 get_footer();

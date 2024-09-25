@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_64fa2961c3faf",
-            "label": "Partner logo",
+            "label": "Partner Logo",
             "name": "partner_logo",
             "aria-label": "",
             "type": "image",
@@ -82,6 +82,32 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_66f41314feae2",
+            "label": "Partner Type",
+            "name": "partner_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "funders": "Funder",
+                "partners": "Partner"
+            },
+            "default_value": false,
+            "return_format": "label",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
         }
     ],
     "location": [
@@ -102,5 +128,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694116869
+    "modified": 1727274641
 }

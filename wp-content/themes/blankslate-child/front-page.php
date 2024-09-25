@@ -71,5 +71,8 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 	}
 }
 
-// footer
+include( 'modules/social-proof.php' );
+
+include( 'modules/newsletter.php' );
+
 get_footer();

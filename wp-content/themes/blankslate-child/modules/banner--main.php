@@ -3,7 +3,7 @@
 if(is_front_page()){
 	$banner_images = $page_banner['banner_image'];
 	$random_image_index = array_rand($banner_images);
-	$banner_image = $banner_images[$random_image_index]; 
+	$banner_image = $banner_images[$random_image_index];
 }
 else{
 	$banner_image = $page_banner['banner_image'];
@@ -37,7 +37,7 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
 			<!-- there is no CTA or helper text to display -->
 		<?php endif; ?>
 	</div>
-	<p class="caption"><strong><?php echo $banner_image['caption']; ?></strong></p>
+	<p class="caption"><strong><?php echo $banner_image['caption'];?></strong></p>
 </div>
 <div class="wt_banner__copy--mobile">
 	<h1 class="wt_text--header .SchnyderWideM-Light-Web">

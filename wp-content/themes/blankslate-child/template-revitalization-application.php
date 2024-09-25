@@ -17,5 +17,6 @@ include( 'modules/banner--main.php' );
 // standard content loop - do we need a var outside the template?
 include( 'modules/main-content.php' );
 
-// footer
+include( 'modules/newsletter.php' );
+
 get_footer();
