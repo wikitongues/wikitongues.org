@@ -16,5 +16,6 @@ $donation_link = get_field('donation_link');
 
 include( 'modules/main-content--giving-campaign.php' );
 
-// footer
+include( 'modules/newsletter.php' );
+
 get_footer();

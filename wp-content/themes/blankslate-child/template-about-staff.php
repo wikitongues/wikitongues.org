@@ -1,4 +1,4 @@
-<?php /* Template name: Staff */ 
+<?php /* Template name: Staff */
 
 // header
 get_header();
@@ -44,7 +44,7 @@ if ( $interns_and_volunteers ) {
 		// setup post data for each post
 		setup_postdata( $post );
 
-		// variables - would be cool to add a 
+		// variables - would be cool to add a
 		$profile_picture = get_field('profile_picture');
 		$name = get_the_title();
 		$title = get_field('leadership_title');
@@ -60,5 +60,7 @@ if ( $interns_and_volunteers ) {
 	} wp_reset_postdata();
 
 }
+
+include( 'modules/newsletter.php' );
 
 get_footer();

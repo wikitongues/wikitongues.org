@@ -24,4 +24,6 @@
     </main><!-- #main -->
 </div><!-- #primary -->
 
+<?php include( 'modules/newsletter.php' ); ?>
+
 <?php get_footer(); ?>

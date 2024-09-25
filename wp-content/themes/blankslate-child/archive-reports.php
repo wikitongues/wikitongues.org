@@ -1,6 +1,5 @@
 <?php
 
-// header
 get_header();
 
 // $page_header = 'Wikitongues <br/> Reports';
@@ -12,7 +11,7 @@ get_header();
 if ( have_posts() ) {
 	while ( have_posts() ) {
 
-		the_post(); 
+		the_post();
 
 		$post_date = get_the_date('Y');
 
@@ -22,5 +21,6 @@ if ( have_posts() ) {
 	}
 }
 
-// footer
+include( 'modules/newsletter.php' );
+
 get_footer();

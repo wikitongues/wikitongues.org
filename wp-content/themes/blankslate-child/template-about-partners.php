@@ -1,6 +1,5 @@
-<?php /* Template name: Partners */ 
+<?php /* Template name: Partners */
 
-// header
 get_header();
 
 // team banner
@@ -26,5 +25,7 @@ foreach( $partners as $post ) {
 	include( 'modules/team-member--partner.php' );
 
 } wp_reset_postdata();
+
+include( 'modules/newsletter.php' );
 
 get_footer();

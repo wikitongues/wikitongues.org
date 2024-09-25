@@ -1,4 +1,4 @@
-<?php /* Template name: Board and Advisors */ 
+<?php /* Template name: Board and Advisors */
 
 // header
 get_header();
@@ -31,5 +31,7 @@ foreach( $board_members as $post ) {
 	include( 'modules/team-member--wide.php' );
 
 } wp_reset_postdata();
+
+include( 'modules/newsletter.php' );
 
 get_footer();

@@ -49,5 +49,6 @@ echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$cu
 // other languages (thumbnail carousel)
 // include( 'modules/carousal--thumbnail.php' );
 
-// footer
+include( 'modules/newsletter.php' );
+
 get_footer();
