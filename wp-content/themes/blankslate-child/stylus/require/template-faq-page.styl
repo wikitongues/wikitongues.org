@@ -1,0 +1,117 @@
+.page-template-faq-page
+	scroll-behavior smooth
+
+	.faq-container
+		position relative
+		margin 0 auto 128px
+		padding-top 7rem
+		width 100%
+		display flex
+		box-sizing border-box
+		flex-direction row-reverse
+		justify-content center
+		align-items flex-start
+
+		.faq-content
+			max-width 1000px
+			padding-right 32px
+			margin-top -7rem
+
+			h1
+				text--header($black)
+
+			h2
+				text--header($black)
+				font-size 3rem
+				margin 1.6rem 0
+				padding-top 7rem
+				padding-bottom 1rem
+				border-bottom 2px solid $lightPurple
+
+				&:first-of-type
+					margin-top 0
+
+			h3
+				text--strong($black)
+				margin .8rem 0 0
+
+			ul
+				margin-bottom -7rem
+
+			.faq-entry
+				margin-left 1.6rem
+				margin-bottom 2.4rem
+
+				p, li
+					text--body($black)
+					line-height 3.6rem
+					margin-left 1.6rem
+
+				ol, ul
+					list-style-type auto
+					margin-left 2.4rem
+
+		.faq-navigation
+			position sticky
+			z-index 9
+			top 200px
+			min-width 360px
+
+			ul
+				list-style none
+				margin 0
+				padding 0
+
+				li
+					line-height 3rem
+					clear both
+
+					a
+						text-decoration none
+						text--body($blue)
+						padding-left .8rem
+						position relative
+
+						&::before
+							content ''
+							width 4px
+							height 18.5px
+							position absolute
+							left -4px
+							top 0
+							border-radius 0 4px 4px 0
+							background transparent
+
+						&.active
+							text--strong($blue)
+							&::before
+								background $lightPurple
+
+			p
+				text--body($black)
+				font-size 1.2rem
+				margin-top 1.6rem
+
+				a
+					clear both
+					color $blue
+					text-decoration none
+
+@media (max-width: $mobile)
+	.page-template-faq-page
+		.faq-container
+			padding-top 0
+			margin-bottom 64px
+
+			.faq-navigation
+				display none
+
+			.faq-content
+				padding 0 32px
+				margin-top 0
+
+				h2
+					padding-top 0
+
+				ul
+					margin-bottom 0
