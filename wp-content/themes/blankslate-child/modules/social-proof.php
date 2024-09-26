@@ -2,8 +2,13 @@
 	function renderPartners($type) {
 		$args = array(
 			'post_type' => 'partners',
-			'meta_key' => 'partner_type',
-			'meta_value' => $type,
+			'tax_query' => array(
+        array(
+            'taxonomy' => 'category',
+            'field' => 'slug',
+            'terms' => $type,
+        ),
+			),
 		);
 		$query = get_custom_gallery_query($args);
 		$output = '';
@@ -28,7 +33,7 @@
 
 		if ($query->have_posts()) {
 			$output .= '<section>';
-			$output .= '<h2>'.ucfirst($type).'</h2>';
+			// $output .= '<h2>'.ucfirst($type).'</h2>';
 			$output .= '<ul>'.$contents.'</ul>';
 			$output .= '</section>';
 		}
@@ -36,9 +41,11 @@
 	}
 ?>
 
+
 <div id="wt_socialproof">
+
 	<h1>Funders and partners</h1>
 	<p>Our work would not be possible without the support of our core partners</p>
-		<?php renderPartners('funders');?>
-		<?php renderPartners('partners');?>
+	<?php renderPartners('Funder');?>
+	<?php renderPartners('Partner');?>
 </div>
