@@ -115,13 +115,6 @@
                 "operator": "==",
                 "value": "newsletter"
             }
-        ],
-        [
-            {
-                "param": "taxonomy",
-                "operator": "==",
-                "value": "all"
-            }
         ]
     ],
     "menu_order": 0,
@@ -133,5 +126,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1725973443
+    "modified": 1727352694
 }
