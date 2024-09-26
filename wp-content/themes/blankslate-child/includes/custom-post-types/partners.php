@@ -29,30 +29,69 @@ function create_post_type_partners()
         ),
         'can_export' => true,
         'taxonomies' => array(
-            // 'post_tag',
-            // 'category'
+            'post_tag',
+            'category'
         ),
         'show_in_rest' => true,
         'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));
 }
 
-add_filter('manage_partners_posts_columns', 'add_partners_custom_columns');
-function add_partners_custom_columns($columns) {
-	unset($columns['date']);
-	$columns['partner_type'] = __('Type', 'partners');
-    var_dump($columns);
-	return $columns;
-}
-
-add_action('manage_partners_posts_custom_column', 'fill_partners_custom_columns', 10, 2);
-function fill_partners_custom_columns($column, $post_id) {
-    $partner_type = get_field('partner_type', $post_id);
-    echo esc_html($partner_type);
-}
-
 add_filter('manage_edit-partners_sortable_columns', 'make_partners_columns_sortable');
 function make_partners_columns_sortable($columns) {
-	$columns['partner_type'] = 'partner_type';
-	return $columns;
+    $columns['categories'] = 'categories';
+    return $columns;
+}
+
+// Shortcode to Display FAQs
+add_shortcode('partners', 'partner_shortcode');
+function partner_shortcode($atts) {
+	$atts = shortcode_atts(array(
+			'category' => '',
+			'ids' => '',
+	), $atts, 'partners');
+
+	$args = array(
+			'post_type' => 'partner',
+			'posts_per_page' => -1,
+			'orderby' => 'menu_order',
+			'order' => 'ASC',
+	);
+
+	if (!empty($atts['category'])) {
+			$args['tax_query'] = array(
+					array(
+							'taxonomy' => 'partner_category',
+							'field' => 'slug',
+							'terms' => explode(',', $atts['category']),
+					),
+			);
+	}
+
+	if (!empty($atts['ids'])) {
+			$args['post__in'] = explode(',', $atts['ids']);
+	}
+
+	$partners = new WP_Query($args);
+
+	ob_start();
+
+	if ($partners->have_posts()) {
+			echo '<section class="partners">';
+            echo '<ul>';
+			while ($partners->have_posts()) {
+					$partners->the_post();
+					echo '<li class="partner">';
+                    echo '<a href="'. $partner_link .'"><img src="'.$partner_logo.'" title="'.$partner_name.'" alt="'.$partner_name.'"></a>';
+					// echo '<h3 class="partner-question">' . get_the_title() . '</h3>';
+					// echo '<div class="partner-answer">' . apply_filters('the_content', get_the_content()) . '</div>';
+					echo '</li>';
+			}
+            echo '</ul>';
+			echo '</section>';
+	}
+
+	wp_reset_postdata();
+
+	return ob_get_clean();
 }
