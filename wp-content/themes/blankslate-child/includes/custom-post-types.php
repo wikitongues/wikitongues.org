@@ -6,4 +6,5 @@ require_once('custom-post-types/resources.php');
 require_once('custom-post-types/fellows.php');
 require_once('custom-post-types/team.php');
 require_once('custom-post-types/partners.php');
+require_once('custom-post-types/faq.php');
 require_once('custom-post-types/reports.php');
