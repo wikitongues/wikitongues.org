@@ -10,13 +10,13 @@ function get_environment() {
 	}
 }
 
+add_action('wp_head', 'modify_page_title');
 function modify_page_title() {
 	$environment = get_environment();
 	if ($environment) {
 			echo "<script>document.title = '" . ucfirst($environment) . " | ' + document.title;</script>";
 	}
 }
-add_action('wp_head', 'modify_page_title');
 
 // remove header bump from core css output
 add_action('get_header', 'my_filter_head');

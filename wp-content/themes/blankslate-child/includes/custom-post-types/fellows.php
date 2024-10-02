@@ -39,6 +39,20 @@ function create_post_type_fellows()
     ));
 }
 
+// ====================
+// Manage Fellows Page Titles
+// ====================
+add_filter('the_title', 'change_fellows_post_title', 10, 2);
+function change_fellows_post_title($title, $post_id) {
+    if (is_singular('fellows')) {
+			$title = 'Fellows | ' . $title;
+	}
+	return $title;
+}
+
+// ====================
+// Manage Custom Columns
+// ====================
 // Add custom columns to the 'fellows' post type
 function add_fellows_custom_columns($columns) {
 	unset($columns['date']);
