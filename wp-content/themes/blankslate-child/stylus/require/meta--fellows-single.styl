@@ -2,28 +2,62 @@
 	width 90%
 	max-width 600px
 	margin 0 auto 3rem
-		
+
+	.info
+		border-bottom 2px solid $lightPurple
+		margin-bottom 16px
+		h1
+			text--header($black)
+			font-size 4rem
+
+		a
+			border 2px solid $blue
+			border-radius 8px 0 8px 0
+			text-decoration none
+			display flex
+			font-size 2rem
+			padding 8px 16px
+			margin 16px 0
+			align-items flex-end
+
+			span.identifier, p
+				float left
+				line-height 2
+
+
+			span.identifier
+				color $blue
+				font-weight 800
+
+			p
+				text--body($blue)
+				line-height 2
+				font-size 2rem
+		> p
+			text--body($black)
+			margin-bottom 1.5rem
+
 	article
 		margin-bottom 1.5rem
-		
+
 		strong
 			text--strong($black)
-	
-	ul	
+
+	ul
 		margin-top .5rem
-				
+
 		li
 			display inline-block
 			margin-right 1.5rem
 			text--body($black)
-			
+
 			&:last-of-type
 				margin-right 0
-			
+
 			a
 				text--body($blue)
 				text-decoration none
-	
+
 	&--links
 		ul li
 			display block !important

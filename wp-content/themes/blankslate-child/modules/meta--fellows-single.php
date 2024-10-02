@@ -1,4 +1,31 @@
 <section class="wt_fellow__meta">
+	<section class="info">
+	<?php
+		$lang = '';
+		if ($fellow_language instanceof WP_Post) {
+			$lang = esc_html($fellow_language->post_title);
+		} elseif (is_array($fellow_language)) {
+			foreach ($fellow_language as $language) {
+				if ($language instanceof WP_Post) {
+					$lang = esc_html($language->post_title) . ' ';
+				} else {
+					$lang = esc_html($language) . ' ';
+				}
+			}
+		} else {
+			echo '<span class="identifier">' . esc_html($fellow_language) . '</span>';
+		}
+		$language_url = home_url('/languages/'.$lang);
+		echo '<h1>' . esc_html($fellow_name) . '</h1>';
+		echo '<a href="'.$language_url.'">';
+		echo '<span class="identifier">'.$lang.'</span>';
+		echo '<p>' . esc_html($fellow_language_preferred_name) . '</p>';
+		echo '</a>';
+		if($fellow_location) {
+			echo '<p>' . esc_html($fellow_location) . '</p>';
+		}
+	?>
+	</section>
 	<article>
 		<strong><?php echo $fellow_name; ?> is a member of the Wikitongues Language Revitalization Fellowship's <?php echo $fellow_year; ?> cohort.</strong>
 	</article>
@@ -68,7 +95,7 @@
 		</ul>
 	</article>
 	<?php endif; ?>
-	
+
 	<!-- links other than the fellow's personal social media or website -->
 	<?php if ( have_rows('custom_links') ): ?>
 	<article class="wt_fellow__meta--links">
@@ -79,7 +106,7 @@
 				<a href="<?php echo get_sub_field('link_url'); ?>">
 					<?php echo get_sub_field('link_name'); ?>
 				</a>
-			</li>		
+			</li>
 		<?php endwhile; ?>
 		</ul>
 	</article>
