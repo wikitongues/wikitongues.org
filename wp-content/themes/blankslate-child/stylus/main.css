@@ -2277,6 +2277,59 @@ text
   max-width: 600px;
   margin: 0 auto 3rem;
 }
+.wt_fellow__meta .info {
+  border-bottom: 2px solid #d4cce0;
+  margin-bottom: 16px;
+}
+.wt_fellow__meta .info h1 {
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 6.08rem;
+  color: #101010;
+  font-size: 4rem;
+}
+.wt_fellow__meta .info a {
+  border: 2px solid #3814a5;
+  border-radius: 8px 0 8px 0;
+  text-decoration: none;
+  display: flex;
+  font-size: 2rem;
+  padding: 8px 16px;
+  margin: 16px 0;
+  align-items: flex-end;
+}
+.wt_fellow__meta .info a span.identifier,
+.wt_fellow__meta .info a p {
+  float: left;
+  line-height: 2;
+}
+.wt_fellow__meta .info a span.identifier {
+  color: #3814a5;
+  font-weight: 800;
+}
+.wt_fellow__meta .info a p {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: #3814a5;
+  line-height: 2;
+  font-size: 2rem;
+}
+.wt_fellow__meta .info > p {
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: #101010;
+  margin-bottom: 1.5rem;
+}
 .wt_fellow__meta article {
   margin-bottom: 1.5rem;
 }
@@ -2907,7 +2960,8 @@ text
   font-size: 1.6rem;
   margin-bottom: 1.6rem;
 }
-.custom-gallery > p a {
+.custom-gallery h2 a,
+.custom-gallery p a {
   text-decoration: none;
   font-weight: bold;
 }

@@ -44,8 +44,8 @@ function create_post_type_fellows()
 // ====================
 add_filter('the_title', 'change_fellows_post_title', 10, 2);
 function change_fellows_post_title($title, $post_id) {
-    if (is_singular('fellows')) {
-			$title = 'Fellows | ' . $title;
+		if ('fellows' === get_post_type($post_id)) {
+				$title = 'Fellows | '.$title;
 	}
 	return $title;
 }

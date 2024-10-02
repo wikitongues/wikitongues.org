@@ -20,14 +20,12 @@ include( 'modules/banner--languages-single.php' );
 
 // left column language metada
 include( 'modules/meta--languages-single.php' );
+
 echo '<main class="wt_single-languages__content">';
-// videos loop (content blocks - grid)
+
+include( 'modules/single-languages__fellows.php' );
 include( 'modules/single-languages__videos.php' );
-
-// dictionaries (content blocks - grid)
 include( 'modules/single-languages__lexicons.php' );
-
-// language indexing resources (content blocks - grid)
 include( 'modules/single-languages__resources.php' );
 
 echo '</main>';
