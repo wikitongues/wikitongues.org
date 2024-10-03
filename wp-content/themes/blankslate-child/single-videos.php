@@ -1,6 +1,5 @@
 <?php
-get_header();
-
+$video_title = get_field('video_title');
 $youtube_id = get_field('youtube_id');
 $youtube_link = get_field('youtube_link');
 $language_iso_codes = get_field('language_iso_codes');
@@ -9,12 +8,30 @@ $dropbox_link_raw = str_replace("dl=0", "raw=1", $dropbox_link);
 $wikimedia_commons_link = get_field('wikimedia_commons_link');
 $public_status = get_field('public_status');
 $video_license = get_field('video_license');
-$video_license_url = array_pop(array_reverse(get_field('license_link' )));
+$license_link = get_field('license_link');
+if (is_array($license_link)) {
+  $reversed_license_link = array_reverse($license_link);
+  $video_license_url = array_pop($reversed_license_link);
+} else {
+  $video_license_url = '';
+}
 $featured_languages = get_field('featured_languages');
 
 $language_names_array = [];
 $iso_codes_array = [];
 $language_names = '';
+
+// ====================
+// Manage Language Page Titles
+// ====================
+if (is_singular('videos')) {
+  if ($video_title) {
+      echo '<script>document.title = "Wikitongues | ' . esc_js($video_title) . '";</script>';
+  }
+}
+
+get_header();
+
 if ($featured_languages && is_array($featured_languages)) {
     foreach ($featured_languages as $language_post) {
         $standard_name = get_field('standard_name', $language_post->ID);

@@ -37,20 +37,6 @@ function create_post_type_languages()
 }
 
 // ====================
-// Manage Language Page Titles
-// ====================
-add_filter('the_title', 'change_language_post_title', 10, 2);
-function change_language_post_title($title, $post_id) {
-    if ('languages' === get_post_type($post_id)) {
-        $standard_name = get_post_meta($post_id, 'standard_name', true);
-        if ($standard_name) {
-            $title = $standard_name;
-        }
-    }
-    return $title;
-}
-
-// ====================
 // Manage Custom Columns
 // ====================
 // Add custom columns to the 'languages' post type

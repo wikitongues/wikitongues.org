@@ -1,19 +1,30 @@
 <?php
-
-// header
-get_header();
-
-// $standard_name = get_field('standard_name');
+$standard_name = get_field('standard_name');
 $videos = get_field('speakers_recorded');
+$videos = is_array($videos) ? $videos : [];
 $videos_count = count($videos);
 $lexicon_source = get_field('lexicon_source');
 $lexicon_target = get_field('lexicon_target');
+$lexicon_source = is_array($lexicon_source) ? $lexicon_source : [];
+$lexicon_target = is_array($lexicon_target) ? $lexicon_target : [];
 $lexicons = array_merge($lexicon_source, $lexicon_target);
 $lexicons_count = count($lexicons);
 $external_resources = get_field('external_resources');
+$external_resources = is_array($external_resources) ? $external_resources : [];
 $external_resources_count = count($external_resources);
 $nations_of_origin = get_field('nations_of_origin');
 // $linguistic_genealogy = get_field('linguistic_genealogy');
+
+// ====================
+// Manage Language Page Titles
+// ====================
+if (is_singular('languages')) {
+    if ($standard_name) {
+        echo '<script>document.title = "Wikitongues | ' . esc_js($standard_name) . '";</script>';
+    }
+}
+
+get_header();
 
 // language single banner
 include( 'modules/banner--languages-single.php' );

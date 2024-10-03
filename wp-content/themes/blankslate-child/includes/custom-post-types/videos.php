@@ -40,21 +40,6 @@ function create_post_type_videos()
     ));
 }
 
-
-// ====================
-// Manage Language Page Titles
-// ====================
-add_filter('the_title', 'change_videos_post_title', 10, 2);
-function change_videos_post_title($title, $post_id) {
-    if ('videos' === get_post_type($post_id)) {
-        $video_title = get_post_meta($post_id, 'video_title', true);
-        if ($video_title) {
-            $title = $video_title;
-        }
-    }
-    return $title;
-}
-
 // ====================
 // Manage Custom Columns
 // ====================
