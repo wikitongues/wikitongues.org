@@ -10,8 +10,8 @@ else{
 }
 $banner_header = $page_banner['banner_header'];
 $banner_copy = $page_banner['banner_copy'];
-$banner_cta = $page_banner['banner_cta'];
-$banner_cta_placeholder = $page_banner['banner_cta_placeholder'];
+$banner_cta = $page_banner['banner_cta'] ?? false;
+$banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 ?>
 
 <div class="wt_banner" role="img" aria-label="<?php echo $banner_image['alt']; ?>" style="background-image:url(<?php echo $banner_image['url']; ?>);">

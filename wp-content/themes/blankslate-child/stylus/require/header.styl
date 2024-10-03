@@ -11,9 +11,17 @@ body
 			top 72px !important
 
 	&.logged-in
+		margin-top 32px
 
 		.wt_header
 			top 32px
+
+		&.page-parent,
+		&.page-child,
+		&.single-languages,
+		&.single-videos,
+		&.single-fellows
+			margin-top 32px + 110px
 
 		&[data-alert="true"]
 			padding-top 226.63px !important
@@ -23,23 +31,6 @@ body
 
 			.wt_header
 				top 104px !important
-
-	// consider moving these to page-specific style templates
-	&.page-template-template-archive-home
-		&.logged-in
-			margin-top 142px !important
-
-	&.home,
-	&.page-id-15577
-		padding-top 0
-
-		.wt_header
-			&__primary
-				padding 10px
-
-		&.logged-in
-			.wt_header
-				top 32px !important
 
 .wt_header
 	z-index 10
