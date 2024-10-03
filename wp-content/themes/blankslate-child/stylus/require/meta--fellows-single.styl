@@ -1,44 +1,88 @@
 .wt_fellow__meta
 	width 90%
-	max-width 600px
-	margin 0 auto 3rem
+	max-width 50vw
+	margin 0 auto
+	padding-top 6.4rem
 
-	.info
-		border-bottom 2px solid $lightPurple
-		margin-bottom 16px
-		h1
-			text--header($black)
-			font-size 4rem
+	.head
+		display flex
+		width 100%
+		align-items flex-end
+		margin-bottom 64px
 
-		a
-			border 2px solid $blue
-			border-radius 8px 0 8px 0
-			text-decoration none
-			display flex
-			font-size 2rem
-			padding 8px 16px
-			margin 16px 0
-			align-items flex-end
+		div.image, div.name
+			float left
+			vertical-align top
+			width 50%
 
-			span.identifier, p
+		div.image
+			height 0
+			width (100/3)*2%
+			padding-bottom 37.5%
+			background-size cover
+			background-position center
+			border-radius 16px 0 16px 0
+
+		div.name
+			width (100/3)*1%
+			padding 0 0 0 16px
+			height 100%
+
+			h1
+				text--header($black)
+				font-size 4rem
+				margin-bottom 16px
+
+		.info
+			display inline-block
+
+			a.language
+				border 2px solid $blue
+				border-radius 8px 0 8px 0
+				text-decoration none
+				display flex
+				font-size 1.6rem
+				padding 8px 16px
+				margin-right 8px
+				margin-bottom 8px
 				float left
-				line-height 2
+				align-items flex-end
+				width fit-content
 
+				&:last-of-type
+					margin-right 0
 
-			span.identifier
-				color $blue
-				font-weight 800
+				span.identifier, p
+					float left
+					line-height 2
+					font-size inherit
 
-			p
+				span.identifier
+					color $blue
+					font-weight 800
+					flex initial
+					min-width initial
+					margin-right 1rem
+
+				p
+					text--body($blue)
+					line-height 2
+					font-size inherit
+
+			> p
+				text--body($black)
+				margin-bottom .8rem
+
+			a.cohort
+				width 100%
+				display block
 				text--body($blue)
-				line-height 2
-				font-size 2rem
-		> p
-			text--body($black)
-			margin-bottom 1.5rem
+				margin 0 0 3.2rem 0
+				text-decoration none
+				font-weight bold
 
 	article
-		margin-bottom 1.5rem
+		margin-bottom 1.6rem
 
 		strong
 			text--strong($black)
@@ -48,7 +92,7 @@
 
 		li
 			display inline-block
-			margin-right 1.5rem
+			margin-right 1.6rem
 			text--body($black)
 
 			&:last-of-type

@@ -6,7 +6,7 @@ $args = array(
         array(
             'key' => 'fellow_language',
             'value' => get_the_ID(),
-            'compare' => '='
+            'compare' => 'LIKE'
         )
     )
 );

@@ -2,18 +2,21 @@
 $first_name = get_field('first_name');
 $last_name = get_field('last_name');
 $fellow_name = $first_name . ' ' . $last_name;
+$page_banner = get_field('fellow_banner');
 $fellow_year = get_field('fellow_year');
 $fellow_language = get_field('fellow_language');
 $fellow_location = get_field('fellow_location');
 $fellow_language_preferred_name = get_field('fellow_language_preferred_name');
-$website = get_field('website');
-$email = get_field('email');
-$twitter = get_field('twitter');
-$instagram = get_field('instagram');
-$facebook = get_field('facebook');
-$linkedin = get_field('linkedin');
-$youtube = get_field('youtube');
-$tiktok = get_field('tiktok');
+$social_links = [
+	'email'     => ['url' => get_field('email'), 'icon' => 'fa-brands fa-square-email'],
+	'facebook'  => ['url' => get_field('facebook'), 'icon' => 'fa-brands fa-square-facebook'],
+	'instagram' => ['url' => get_field('instagram'), 'icon' => 'fa-brands fa-instagram'],
+	'linkedin'  => ['url' => get_field('linkedin'), 'icon' => 'fa-brands fa-linkedin'],
+	'tiktok'    => ['url' => get_field('tiktok'), 'icon' => 'fa-brands fa-tiktok'],
+	'twitter'   => ['url' => get_field('twitter'), 'icon' => 'fa-brands fa-twitter'],
+	'website'   => ['url' => get_field('website'), 'icon' => 'fa-regular fa-link'],
+	'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
+];
 $revitalization_fellows_url = home_url('/revitalization/fellows/?fellow_year=');
 $revitalization_fellows_url = add_query_arg('fellow_year', $fellow_year, $revitalization_fellows_url);
 
