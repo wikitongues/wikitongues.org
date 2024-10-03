@@ -1,14 +1,4 @@
 <?php
-
-// header
-get_header();
-
-// banner
-$page_banner = get_field('fellow_banner');
-
-include( 'modules/banner--main.php' );
-
-// fellow meta
 $first_name = get_field('first_name');
 $last_name = get_field('last_name');
 $fellow_name = $first_name . ' ' . $last_name;
@@ -27,18 +17,26 @@ $tiktok = get_field('tiktok');
 $revitalization_fellows_url = home_url('/revitalization/fellows/?fellow_year=');
 $revitalization_fellows_url = add_query_arg('fellow_year', $fellow_year, $revitalization_fellows_url);
 
+// ====================
+// Manage Fellows Page Titles
+// ====================
+if (is_singular('fellows')) {
+	echo '<script>document.title = "Fellows | '. $fellow_name . '";</script>';
+}
+
+get_header();
+
+// include( 'modules/banner--main.php' );
+
 include( 'modules/meta--fellows-single.php' );
 
 // fellow narrative/content
 include( 'modules/main-content.php' );
 
-// fellow bio
 $fellow_bio = get_field('fellow_bio');
 
 if ( $fellow_bio ) {
-
 	include( 'modules/fellow-bio.php');
-
 }
 ?>
 <div class="custom-gallery full">
