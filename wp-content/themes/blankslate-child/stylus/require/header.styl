@@ -32,6 +32,31 @@ body
 			.wt_header
 				top 104px !important
 
+@media all and (max-width:$mobile)
+	body
+		&.archive,
+		&.page-template
+			margin-top 56px
+
+		&.logged-in
+			margin-top 46px
+
+			.wt_header
+				top 46px
+
+			.wt_header
+				&__nav,
+				&__secondary
+					&--mobile
+						top 46px
+
+			&.page-parent,
+			&.page-child,
+			&.single-languages,
+			&.single-videos,
+			&.archive
+				margin-top 46px + 56px
+
 .wt_header
 	z-index 10
 	display flex
@@ -268,13 +293,6 @@ body
 						margin-right 3rem
 
 @media all and (max-width:$mobile)
-	body
-		padding-top 102px
-
-		&.logged-in
-			.wt_header
-				top 46px
-
 	.wt_header
 		&__nav,
 		&__secondary
@@ -291,7 +309,7 @@ body
 				overflow-y scroll
 				box-sizing border-box
 				padding 6rem
-				background $whiteTransparent
+				background $parchment
 				transition .2s right ease-in-out
 				-ms-overflow-style none
 				scrollbar-width none
@@ -342,7 +360,7 @@ body
 					display none
 					z-index 7
 					position fixed
-					top 5rem
+					top 1rem
 					right 1rem
 
 		&.transparent-background
