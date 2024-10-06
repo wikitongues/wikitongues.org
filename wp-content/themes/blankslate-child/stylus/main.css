@@ -122,6 +122,29 @@ body.logged-in[data-alert="true"] .wt_banner-alert__container {
 body.logged-in[data-alert="true"] .wt_header {
   top: 104px !important;
 }
+@media all and (max-width: 768px) {
+  body.archive,
+  body.page-template {
+    margin-top: 56px;
+  }
+  body.logged-in {
+    margin-top: 46px;
+  }
+  body.logged-in .wt_header {
+    top: 46px;
+  }
+  body.logged-in .wt_header__nav--mobile,
+  body.logged-in .wt_header__secondary--mobile {
+    top: 46px;
+  }
+  body.logged-in.page-parent,
+  body.logged-in.page-child,
+  body.logged-in.single-languages,
+  body.logged-in.single-videos,
+  body.logged-in.archive {
+    margin-top: 102px;
+  }
+}
 .wt_header {
   z-index: 10;
   display: flex;
@@ -368,12 +391,6 @@ body.logged-in[data-alert="true"] .wt_header {
   }
 }
 @media all and (max-width: 768px) {
-  body {
-    padding-top: 102px;
-  }
-  body.logged-in .wt_header {
-    top: 46px;
-  }
   .wt_header__nav,
   .wt_header__secondary {
     display: none;
@@ -390,7 +407,7 @@ body.logged-in[data-alert="true"] .wt_header {
     overflow-y: scroll;
     box-sizing: border-box;
     padding: 6rem;
-    background: rgba(255,255,255,0.97);
+    background: #fffcef;
     transition: 0.2s right ease-in-out;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -465,7 +482,7 @@ body.logged-in[data-alert="true"] .wt_header {
     display: none;
     z-index: 7;
     position: fixed;
-    top: 5rem;
+    top: 1rem;
     right: 1rem;
   }
   .wt_header.transparent-background .wt_header__mobile-buttons button:first-of-type {
@@ -586,6 +603,9 @@ body.home .wt_banner {
   .wt_banner {
     height: 15vh !important;
     margin-bottom: 0;
+  }
+  .wt_banner p.caption {
+    white-space: pre-line;
   }
   .wt_banner__copy {
     display: none;
@@ -2412,6 +2432,26 @@ text
 }
 .wt_fellow__meta--links ul li {
   display: block !important;
+}
+@media all and (max-width: 768px) {
+  .wt_fellow__meta {
+    max-width: initial;
+  }
+  .wt_fellow__meta .head {
+    flex-direction: column;
+    margin-bottom: 32px;
+  }
+  .wt_fellow__meta .head div.image,
+  .wt_fellow__meta .head div.name {
+    width: 100%;
+  }
+  .wt_fellow__meta .head div.image {
+    padding-bottom: 56.25%;
+    margin-bottom: 16px;
+  }
+  .wt_fellow__meta .head div.name {
+    padding: 0;
+  }
 }
 .wt_fellow__bio {
   width: 90%;
