@@ -2,7 +2,7 @@ body
 	&.home
 		.wt_banner
 			height calc(100vh/3*2)
-			
+
 .wt_banner
 	position relative
 	width 100%
@@ -14,7 +14,7 @@ body
 	background-position center
 	background-size cover
 	background-repeat no-repeat
-	
+
 	&:before
 		content ''
 		position absolute
@@ -23,7 +23,7 @@ body
 		height 100%
 		background rgba(0,0,0,.3)
 		background linear-gradient(90deg, rgba(1, 1, 1, 0) 0%, rgba(1, 1, 1, .3) 80%)
-	
+
 	&__copy
 		position absolute
 		top 50%
@@ -31,35 +31,34 @@ body
 		transform translateY(-50%)
 		width 45rem
 		margin-top 80px
-		
+
 		&--mobile
 			display none
-		
+
 		.wt_text
 			&--header
 				text--header($parchment)
-		
+
 			&--body
 				margin 3rem 0
 				text--body($parchment)
-				
+
 				strong
 					text--strong($parchment)
-				
+
 		.wt_button--large
 			button--large($parchment,$blue)
-			
+
 			i
 				margin-left 0.5rem
 				font-size 1.6rem
-	
+
 	p.caption
 		position absolute
 		bottom 0
 		margin 16px
 		white-space pre
 		text--strong($parchment)
-
 
 @media all and (max-height:$shortScreen) and (orientation:landscape)
 	.wt_banner
@@ -68,37 +67,40 @@ body
 @media all and (max-width:$smallScreen)
 	.wt_banner
 		height calc(100vh/5*2.5)
-		
+
 @media all and (max-width:$mobile)
 	.wt_banner
 		height 15vh !important
 		margin-bottom 0
-		
+
+		p.caption
+			white-space pre-line
+
 		&__copy
 			display none
-			
+
 			&--mobile
 				display block
 				margin-bottom 3rem
 				box-sizing border-box
 				padding 3rem
 				background $purple
-				
+
 				.wt_text
 					&--header
 						text--header($parchment)
 						font-size 4rem
-				
+
 					&--body
 						margin 3rem 0
 						text--body($parchment)
-						
+
 						strong
 							text--strong($parchment)
-						
+
 				.wt_button--large
 					button--large($white,$purple)
-					
+
 					i
 						margin-left 0.5rem
 						font-size 1.6rem
