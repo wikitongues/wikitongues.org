@@ -126,8 +126,6 @@ function languages_custom_column_orderby($query) {
     }
 }
 
-
-
 // ====================
 // Update Counts for Custom Fields
 // ====================

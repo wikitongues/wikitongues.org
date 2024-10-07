@@ -110,6 +110,7 @@ body.logged-in.page-template-faq-page,
 body.logged-in.post-type-archive-reports {
   margin-top: 88px;
 }
+body.logged-in.page-template-template-archive-home,
 body.logged-in.page-template-template-revitalization-home,
 body.logged-in.page-template-template-revitalization-toolkit,
 body.logged-in.page-template-template-revitalization-fellows,
@@ -2323,6 +2324,7 @@ text
   width: 66.66666666666667%;
   padding-bottom: 37.5%;
   background-size: cover;
+  background-color: #3814a5;
   background-position: center;
   border-radius: 16px 0 16px 0;
 }
@@ -3224,6 +3226,7 @@ text
 .custom-gallery p a {
   text-decoration: none;
   font-weight: bold;
+  color: #3814a5;
 }
 .custom-gallery .gallery-container {
   margin-bottom: 24px;
@@ -3348,6 +3351,8 @@ text
   float: left;
   width: 100%;
   max-width: initial;
+  display: flex;
+  align-items: flex-end;
 }
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
   font-size: 1.6rem;

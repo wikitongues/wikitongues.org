@@ -30,19 +30,35 @@ function get_custom_gallery_query($atts = array()) {
             foreach ($val_array as $value) {
                 $value = trim($value);
                 if(!empty($value)) {
-                    $meta_query[] = array(
-                        'key' => $atts['meta_key'],
-                        'value' => $value,
-                        'compare' => 'LIKE',
-                    );
+                    if ($atts['meta_key'] === 'nations_of_origin') {
+                        $meta_query[] = array(
+                            'key' => $atts['meta_key'],
+                            'value' => $value,
+                            'compare' => '=',
+                        );
+                    } else {
+                        $meta_query[] = array(
+                            'key' => $atts['meta_key'],
+                            'value' => $value,
+                            'compare' => 'LIKE',
+                        );
+                    }
                 }
             }
         } else {
-            $meta_query[] = array(
-                'key' => $atts['meta_key'],
-                'value' => $atts['meta_value'],
-                'compare' => 'LIKE',
-            );
+            if ($atts['meta_key'] === 'nations_of_origin') {
+                $meta_query[] = array(
+                    'key' => $atts['meta_key'],
+                    'value' => $atts['meta_value'],
+                    'compare' => '=',
+                );
+            } else {
+                $meta_query[] = array(
+                    'key' => $atts['meta_key'],
+                    'value' => $atts['meta_value'],
+                    'compare' => 'LIKE',
+                );
+            }
         };
 
         $args['meta_query'] = $meta_query;
@@ -58,6 +74,9 @@ function get_custom_gallery_query($atts = array()) {
 
     $query = new WP_Query($args);
 
+    // echo '<pre>';
+    // print_r($query);
+    // echo '</pre>';
     return $query;
 }
 
