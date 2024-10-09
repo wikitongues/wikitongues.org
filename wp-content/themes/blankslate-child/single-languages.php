@@ -1,9 +1,14 @@
 <?php
 $standard_name = get_field('standard_name');
-$external_resources = get_field('external_resources');
+$language = get_the_ID();
+$videos = get_field('speakers_recorded');
+$videos = is_array($videos) ? $videos : [];
+$videos_count = count($videos);
+$external_resources = get_field('resources');
 $external_resources = is_array($external_resources) ? $external_resources : [];
 $external_resources_count = count($external_resources);
 $nations_of_origin = get_field('nations_of_origin');
+
 // $linguistic_genealogy = get_field('linguistic_genealogy');
 
 // ====================

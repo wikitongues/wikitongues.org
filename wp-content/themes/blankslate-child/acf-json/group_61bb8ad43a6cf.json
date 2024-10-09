@@ -17,10 +17,10 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
         },
         {
             "key": "field_61bb8ad93fe60",
@@ -76,11 +76,14 @@
             "post_type": [
                 "languages"
             ],
+            "post_status": "",
             "taxonomy": "",
-            "allow_null": 0,
+            "return_format": "id",
             "multiple": 0,
-            "return_format": "object",
-            "ui": 1
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_61bb8b879f81c",
@@ -121,5 +124,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690319333
+    "modified": 1728509694
 }
