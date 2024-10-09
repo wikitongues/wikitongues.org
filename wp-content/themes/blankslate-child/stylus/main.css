@@ -3366,6 +3366,23 @@ text
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
   font-size: 1.6rem;
 }
+.custom-gallery.resources .gallery-container .gallery-list .gallery-item a {
+  border-left: 4px solid #3814a5;
+  height: 100%;
+  background: #fffcef;
+  color: #101010;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.custom-gallery.resources .gallery-container .gallery-list .gallery-item a p {
+  padding-top: 8px;
+  font-size: 1.2rem;
+}
+.custom-gallery.resources .gallery-container .gallery-list .gallery-item a p.domain {
+  color: #3814a5;
+}
 .custom-gallery .gallery-pagination {
   display: flex;
   justify-content: center;
@@ -3497,7 +3514,8 @@ text
 .custom-cta-container .custom-gallery-video-cta {
   background: #d4cce0;
   border-radius: 8px;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   overflow: hidden;
 }
@@ -3522,10 +3540,6 @@ text
   line-height: 1.3;
   color: #3814a5;
   font-size: 2rem;
-  float: left;
-}
-.custom-cta-container .custom-gallery-video-cta a:last-of-type {
-  float: right;
 }
 @media all and (max-width: 1140px) {
   .custom-gallery.fellows .gallery-container .gallery-list .gallery-item a table tbody tr td {

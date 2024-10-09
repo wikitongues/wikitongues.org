@@ -190,6 +190,28 @@ $aspect-ratio = 16/9
 						p
 							font-size 1.6rem
 
+	&.resources
+		.gallery-container
+			.gallery-list
+				.gallery-item
+
+					a
+						border-left 4px solid $blue
+						height 100%
+						background $parchment
+						color $black
+						text-decoration none
+						display flex
+						flex-direction column
+						justify-content space-between
+
+						p
+							padding-top 8px
+							font-size 1.2rem
+
+							&.domain
+								color $blue
+
 	.gallery-pagination
 		display flex
 		justify-content center
@@ -279,7 +301,8 @@ $aspect-ratio = 16/9
 	.custom-gallery-video-cta
 		background $lightPurple
 		border-radius 8px
-		display inline-block
+		display flex
+		justify-content space-between
 		width 100%
 		overflow hidden
 
@@ -292,10 +315,7 @@ $aspect-ratio = 16/9
 			&:first-of-type
 				text--strong($blue)
 				font-size 2rem
-				float left
 
-			&:last-of-type
-				float right
 
 @media all and (max-width:1140px)
 	.custom-gallery
