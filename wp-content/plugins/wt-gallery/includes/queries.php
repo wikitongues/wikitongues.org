@@ -22,43 +22,34 @@ function get_custom_gallery_query($atts = array()) {
     $meta_query = array();
 
     if (!empty($atts['meta_key']) && !empty($atts['meta_value'])) {
-        $val_array = explode(',',$atts['meta_value']);
+        $val_array = explode(',', $atts['meta_value']);
         $val_array = array_map('trim', $val_array);
+
+        // Use '=' for exact match when filtering by ID for fellows
+        if ($atts['meta_key'] === 'nations_of_origin' || $atts['post_type'] === 'fellows') {
+            $compare_operator = '=';
+        } else {
+            $compare_operator = 'LIKE';
+        }
 
         if (count($val_array) > 1) {
             $meta_query = array('relation' => 'OR');
             foreach ($val_array as $value) {
                 $value = trim($value);
-                if(!empty($value)) {
-                    if ($atts['meta_key'] === 'nations_of_origin') {
-                        $meta_query[] = array(
-                            'key' => $atts['meta_key'],
-                            'value' => $value,
-                            'compare' => '=',
-                        );
-                    } else {
-                        $meta_query[] = array(
-                            'key' => $atts['meta_key'],
-                            'value' => $value,
-                            'compare' => 'LIKE',
-                        );
-                    }
+                if (!empty($value)) {
+                    $meta_query[] = array(
+                        'key' => $atts['meta_key'],
+                        'value' => $value,
+                        'compare' => $compare_operator,
+                    );
                 }
             }
         } else {
-            if ($atts['meta_key'] === 'nations_of_origin') {
-                $meta_query[] = array(
-                    'key' => $atts['meta_key'],
-                    'value' => $atts['meta_value'],
-                    'compare' => '=',
-                );
-            } else {
-                $meta_query[] = array(
-                    'key' => $atts['meta_key'],
-                    'value' => $atts['meta_value'],
-                    'compare' => 'LIKE',
-                );
-            }
+            $meta_query[] = array(
+                'key' => $atts['meta_key'],
+                'value' => $atts['meta_value'],
+                'compare' => $compare_operator,
+            );
         };
 
         $args['meta_query'] = $meta_query;
@@ -66,7 +57,7 @@ function get_custom_gallery_query($atts = array()) {
         unset($args['meta_value']);
     }
 
-    // // Exclude current post from the query
+    // Exclude current post from the query
     $current_post_type = get_post_type();
     if ($current_post_type === $args['post_type']) {
         $args['post__not_in'] = array(get_the_ID());
@@ -74,9 +65,6 @@ function get_custom_gallery_query($atts = array()) {
 
     $query = new WP_Query($args);
 
-    // echo '<pre>';
-    // print_r($query);
-    // echo '</pre>';
     return $query;
 }
 
