@@ -15,10 +15,10 @@ function manageNav() {
   } else {
     toggleNavTransparency("remove")
   }
-  
+
 }
 
-function changeHeaderClass() {  
+function changeHeaderClass() {
   window.addEventListener("scroll", function () {
     manageNav()
   });
@@ -138,7 +138,7 @@ function setActiveLinks() {
 
   if (isLanguagePath) {
       // Add active class to the archive nav item
-      let archiveNavItem = document.querySelector('nav li');
+      let archiveNavItem = document.querySelector('nav li#menu-item-15090');
       if (archiveNavItem) {
           archiveNavItem.classList.add('current_page_item');
       }
