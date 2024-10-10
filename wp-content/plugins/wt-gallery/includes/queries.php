@@ -6,7 +6,7 @@
  * @return WP_Query The query result.
  */
 
-function get_custom_gallery_query($atts = array()) {
+ function get_custom_gallery_query($atts = array()) {
     $defaults = array(
         'post_type' => 'languages', // videos, languages, fellows
         'posts_per_page' => 6,
@@ -25,41 +25,38 @@ function get_custom_gallery_query($atts = array()) {
         $val_array = explode(',',$atts['meta_value']);
         $val_array = array_map('trim', $val_array);
 
+        // Default compare operator
+        $compare_operator = 'LIKE';
+
+        // If dealing with fellows or a serialized array, wrap ID in quotes for serialized match
+        if ($atts['meta_key'] === 'fellow_language') {
+            // For fellow_language, wrap ID in quotes for serialized match
+            $compare_operator = 'LIKE';
+            $val_array = array_map(function($value) {
+                return '"' . intval($value) . '"'; // Wrap each value in quotes for serialized match
+            }, $val_array);
+        } elseif ($atts['meta_key'] === 'nations_of_origin') {
+            $compare_operator = '=';
+        }
+
         if (count($val_array) > 1) {
             $meta_query = array('relation' => 'OR');
             foreach ($val_array as $value) {
-                $value = trim($value);
-                if(!empty($value)) {
-                    if ($atts['meta_key'] === 'nations_of_origin') {
-                        $meta_query[] = array(
-                            'key' => $atts['meta_key'],
-                            'value' => $value,
-                            'compare' => '=',
-                        );
-                    } else {
-                        $meta_query[] = array(
-                            'key' => $atts['meta_key'],
-                            'value' => $value,
-                            'compare' => 'LIKE',
-                        );
-                    }
+                if (!empty($value)) {
+                    $meta_query[] = array(
+                        'key' => $atts['meta_key'],
+                        'value' => $value,
+                        'compare' => $compare_operator,
+                    );
                 }
             }
         } else {
-            if ($atts['meta_key'] === 'nations_of_origin') {
-                $meta_query[] = array(
-                    'key' => $atts['meta_key'],
-                    'value' => $atts['meta_value'],
-                    'compare' => '=',
-                );
-            } else {
-                $meta_query[] = array(
-                    'key' => $atts['meta_key'],
-                    'value' => $atts['meta_value'],
-                    'compare' => 'LIKE',
-                );
-            }
-        };
+            $meta_query[] = array(
+                'key' => $atts['meta_key'],
+                'value' => $val_array[0],
+                'compare' => $compare_operator,
+            );
+        }
 
         $args['meta_query'] = $meta_query;
         unset($args['meta_key']);
@@ -73,12 +70,9 @@ function get_custom_gallery_query($atts = array()) {
     }
 
     $query = new WP_Query($args);
-
-    // echo '<pre>';
-    // print_r($query);
-    // echo '</pre>';
     return $query;
 }
+
 
 /**
  * Retrieves a random video for a given language ISO code.

@@ -3247,6 +3247,7 @@ text
   display: inline-block;
   color: #fffcef;
   width: 100%;
+  height: 100%;
   position: relative;
   padding: 16px;
   float: left;
@@ -3254,7 +3255,7 @@ text
 .custom-gallery .gallery-container .gallery-list .gallery-item a img,
 .custom-gallery .gallery-container .gallery-list .gallery-item a .no-thumbnail,
 .custom-gallery .gallery-container .gallery-list .gallery-item a .thumbnail,
-.custom-gallery .gallery-container .gallery-list .gallery-item a span {
+.custom-gallery .gallery-container .gallery-list .gallery-item a span.thumbnail-spacer {
   width: 100%;
   float: left;
   display: inline-block;
@@ -3346,13 +3347,21 @@ text
   float: left;
   margin-top: 16px;
 }
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata span {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata h3 {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 8px;
+}
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata h3,
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
   float: left;
-  width: 100%;
   max-width: initial;
-  display: flex;
-  align-items: flex-end;
 }
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {
   font-size: 1.6rem;
