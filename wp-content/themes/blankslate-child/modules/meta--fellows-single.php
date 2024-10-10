@@ -3,32 +3,29 @@
 		<div class="image" style="background-image:url('<?php echo esc_html($page_banner['banner_image']['url'])?>'"></div>
 		<div class="name">
 			<?php
-				echo '<h1>' . esc_html($fellow_name) . '</h1>';?>
-			<?php if (array_filter(array_column($social_links, 'url'))): ?>
+				echo '<h1>' . esc_html($fellow_name) . '</h1>';
+				if (array_filter(array_column($social_links, 'url'))): ?>
 				<article class="wt_fellow__meta--social">
-						<!-- <strong>Follow <?php echo esc_html(get_field('first_name')); ?></strong><br/> -->
-						<ul>
-								<?php foreach ($social_links as $platform => $data): ?>
-										<?php if ($data['url']): ?>
-												<li>
-														<a href="<?php echo esc_url($data['url']); ?>">
-																<i class="<?php echo esc_attr($data['icon']); ?>"></i>
-														</a>
-												</li>
-										<?php endif; ?>
-								<?php endforeach; ?>
-						</ul>
+					<ul>
+						<?php foreach ($social_links as $platform => $data): ?>
+							<?php if ($data['url']): ?>
+								<li>
+									<a href="<?php echo esc_url($data['url']); ?>">
+										<i class="<?php echo esc_attr($data['icon']); ?>"></i>
+									</a>
+								</li>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</ul>
 				</article>
 			<?php endif; ?>
-			<?php
-
-			?>
 			<section class="info">
 				<?php
-				echo '<p>' . esc_html($page_banner['banner_copy']) . '</p>';
+					echo '<p>' . esc_html($page_banner['banner_copy']) . '</p>';
 					if ($fellow_year) {
 						echo '<a class="cohort" href="'.$revitalization_fellows_url.'">' . esc_html($fellow_year) . ' cohort</a>';
 					}
+
 					// Function to generate a single language link with an optional preferred name
 					function generate_language_link($language, $preferred_name = '') {
 							if ($language instanceof WP_Post) {
@@ -39,39 +36,32 @@
 
 					// Function to generate links for multiple languages
 					function generate_language_links($fellow_language) {
-							$output = '';
+						$output = '';
 
-							if ($fellow_language instanceof WP_Post) {
-									// Handle single language, use the global preferred name if passed
-									$preferred_name = get_post_meta($fellow_language->ID, 'standard_name', true);
-									print_r($preferred_name);
-									$output .= generate_language_link($fellow_language, $preferred_name);
-							} elseif (is_array($fellow_language)) {
-								if (count($fellow_language) > 1) {
-									foreach ($fellow_language as $language) {
-										if ($language instanceof WP_Post) {
-												$preferred_name = get_post_meta($language->ID, 'standard_name', true);
-												$output .= generate_language_link($language, $preferred_name);
-										} else {
-												$output .= generate_language_link($language);
-										}
-									}
+						// Handle single language ID
+						if (is_int($fellow_language)) {
+							$preferred_name = get_post_meta($fellow_language, 'standard_name', true);
+							$language_post = get_post($fellow_language); // Get the WP_Post object by ID
+							$output .= generate_language_link($language_post, $preferred_name);
+
+						// Handle multiple language IDs
+						} elseif (is_array($fellow_language)) {
+							foreach ($fellow_language as $language_id) {
+								if (is_int($language_id)) {
+									$preferred_name = get_post_meta($language_id, 'standard_name', true);
+									$language_post = get_post($language_id); // Fetch WP_Post by ID
+									$output .= generate_language_link($language_post, $preferred_name);
 								} else {
-									foreach ($fellow_language as $language) {
-										if ($language instanceof WP_Post) {
-												$preferred_name = get_field('fellow_language_preferred_name');
-												$output .= generate_language_link($language, $preferred_name);
-										} else {
-												$output .= generate_language_link($language);
-										}
-									}
+									// In case the array item is not an ID, output directly
+									$output .= '<span class="identifier">' . esc_html($language_id) . '</span>';
 								}
-
-							} else {
-									$output .= '<span class="identifier">' . esc_html($fellow_language) . '</span>';
 							}
+						} else {
+							// Fallback if $fellow_language is not an ID or array of IDs
+							$output .= '<span class="identifier">' . esc_html($fellow_language) . '</span>';
+						}
 
-							return $output;
+						return $output;
 					}
 
 					// Main rendering block

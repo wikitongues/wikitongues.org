@@ -61,7 +61,7 @@
             ],
             "post_status": "",
             "taxonomy": "",
-            "return_format": "object",
+            "return_format": "id",
             "multiple": 1,
             "allow_null": 0,
             "bidirectional": 0,
@@ -575,5 +575,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1728232228
+    "modified": 1728512618
 }
