@@ -7,6 +7,8 @@ $fellow_year = get_field('fellow_year');
 $fellow_language = get_field('fellow_language');
 $fellow_location = get_field('fellow_location');
 $fellow_language_preferred_name = get_field('fellow_language_preferred_name');
+$categories = get_the_terms(get_the_ID(), 'fellow-category');
+$category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
 $social_links = [
 	'email'     => ['url' => get_field('email'), 'icon' => 'fa-brands fa-square-email'],
 	'facebook'  => ['url' => get_field('facebook'), 'icon' => 'fa-brands fa-square-facebook'],

@@ -1727,7 +1727,7 @@ body .wt_single-languages__contents#wt_single-languages__resources .wt_content-b
   margin-bottom: 16px;
 }
 .wt_meta--languages-single ul li {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 .wt_meta--languages-single ul li a:hover {
   text-decoration: underline;
@@ -1762,9 +1762,8 @@ body .wt_single-languages__contents#wt_single-languages__resources .wt_content-b
   color: #3814a5;
 }
 .wt_meta--languages-single a.official-link {
-  padding: 8px 12px;
+  padding: 4px 8px;
   border-left: 2px solid #3814a5;
-  margin-bottom: 16px;
   font-weight: bold;
 }
 .wt_meta--languages-single a.official-link:hover {
@@ -2362,18 +2361,20 @@ text
   font-size: 4rem;
   margin-bottom: 16px;
 }
+.wt_fellow__meta .head div.name h1,
+.wt_fellow__meta .head div.name .info > * {
+  margin-left: 8px !important;
+}
 .wt_fellow__meta .head .info {
   display: inline-block;
 }
 .wt_fellow__meta .head .info a.language {
-  border: 2px solid #3814a5;
-  border-radius: 8px 0 8px 0;
+  border-bottom: 2px solid #3814a5;
   text-decoration: none;
   display: flex;
   font-size: 1.6rem;
-  padding: 8px 16px;
+  padding: 4px 12px;
   margin-right: 8px;
-  margin-bottom: 8px;
   float: left;
   align-items: flex-end;
   width: fit-content;
@@ -2405,6 +2406,10 @@ text
   line-height: 2;
   font-size: inherit;
 }
+.wt_fellow__meta .head .info a.language p span.identifier,
+.wt_fellow__meta .head .info a.language p p {
+  color: #fffcef;
+}
 .wt_fellow__meta .head .info > p {
   font-family: 'Graphik Web';
   font-weight: 400;
@@ -2414,6 +2419,9 @@ text
   line-height: 1.3;
   color: #101010;
   margin-bottom: 0.8rem;
+}
+.wt_fellow__meta .head .info p.categories {
+  font-weight: bold;
 }
 .wt_fellow__meta .head .info a.cohort {
   width: 100%;
@@ -2425,7 +2433,7 @@ text
   font-size: 1.6rem;
   line-height: 1.3;
   color: #3814a5;
-  margin: 0 0 3.2rem 0;
+  margin: 0 0 1.6rem 0;
   text-decoration: none;
   font-weight: bold;
 }
@@ -3366,16 +3374,21 @@ text
   float: left;
   margin-top: 16px;
 }
-.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata span {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata h3 {
   display: flex;
   align-items: flex-end;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+}
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata span {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  float: left;
+}
+.custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata span p:first-of-type {
+  margin-right: 8px;
 }
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata h3,
 .custom-gallery.fellows .gallery-container .gallery-list .gallery-item .fellow-metadata p {

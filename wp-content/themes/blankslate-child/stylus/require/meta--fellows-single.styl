@@ -34,21 +34,23 @@
 				font-size 4rem
 				margin-bottom 16px
 
+			h1, .info > *
+				margin-left 8px !important
+
 		.info
 			display inline-block
 
 			a.language
-				border 2px solid $blue
-				border-radius 8px 0 8px 0
+				border-bottom 2px solid $blue
 				text-decoration none
 				display flex
 				font-size 1.6rem
-				padding 8px 16px
+				padding 4px 12px
 				margin-right 8px
-				margin-bottom 8px
 				float left
 				align-items flex-end
 				width fit-content
+
 
 				&:last-of-type
 					margin-right 0
@@ -70,15 +72,21 @@
 					line-height 2
 					font-size inherit
 
+					span.identifier, p
+						color $parchment
+
 			> p
 				text--body($black)
 				margin-bottom .8rem
+
+			p.categories
+				font-weight bold
 
 			a.cohort
 				width 100%
 				display block
 				text--body($blue)
-				margin 0 0 3.2rem 0
+				margin 0 0 1.6rem 0
 				text-decoration none
 				font-weight bold
 

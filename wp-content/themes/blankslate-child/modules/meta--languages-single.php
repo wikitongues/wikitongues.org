@@ -17,8 +17,8 @@
 	$links = [
 		'ethnologue' => $ethnologue,
 		'glottolog' => $glottolog,
-		'OLAC' => $olac,
-		'wikipedia' => $wikipedia,
+		'Open Language Archives Community' => $olac,
+		'English Wikipedia Article' => $wikipedia,
 	];
 ?>
 <div class="wt_meta--languages-single">
