@@ -100,6 +100,25 @@ body[data-alert="true"] {
 body[data-alert="true"] .wt_header {
   top: 72px !important;
 }
+body.page-template-faq-page,
+body.post-type-archive-reports {
+  margin-top: 56px;
+}
+body.page-template-template-archive-home,
+body.page-template-template-revitalization-home,
+body.page-template-template-revitalization-toolkit,
+body.page-template-template-revitalization-fellows,
+body.page-template-template-revitalization-application,
+body.page-template-template-about-board,
+body.page-template-template-about-staff,
+body.single-languages,
+body.single-videos,
+body.single-fellows {
+  margin-top: 110px;
+}
+body.post-type-archive-reports {
+  padding-top: 32px;
+}
 body.logged-in {
   margin-top: 32px;
 }
