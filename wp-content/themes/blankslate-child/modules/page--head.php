@@ -41,54 +41,54 @@
 			// use the default page title
 			echo 'Wikitongues' . ' | ' . get_the_title();
 
-		} ?>		
+		} ?>
 	</title>
 
 	<!-- SEO description -->
-	<meta name="description" 
-		 content="<?php 
-		 	if ( $seo_description ) { 
-		 		echo $seo_description; 
-		 	} else { 
+	<meta name="description"
+		 content="<?php
+		 	if ( $seo_description ) {
+		 		echo $seo_description;
+		 	} else {
 		 		echo $default_description; } ?>">
 
 	<!-- SEO keywords -->
-	<meta name="keywords" 
-		  content="<?php 
-		  	if ( $seo_keywords ) { 
-		  		echo $seo_keywords; 
-		  	} else { 
+	<meta name="keywords"
+		  content="<?php
+		  	if ( $seo_keywords ) {
+		  		echo $seo_keywords;
+		  	} else {
 		  		echo 'language, linguistics, language revitalization, endangered languages, culture, diversity, travel'; } ?>">
 
 	<!-- SEO robots instructions -->
 	<meta name="robots" content="index,follow">
 
 	<!-- Open graph title for social media sharing -->
-	<meta property="og:title" 
-		  content="<?php 
-		  	if ( $sharing_title ) { 
-		  		echo $sharing_title; 
-		  	} else { 
-		  		echo 'Wikitongues' . ' | ' . get_the_title(); 
+	<meta property="og:title"
+		  content="<?php
+		  	if ( $sharing_title ) {
+		  		echo $sharing_title;
+		  	} else {
+		  		echo 'Wikitongues' . ' | ' . get_the_title();
 		  	} ?>">
 
 	<!-- Open graph description -->
-	<meta property="og:description" 
-		  content="<?php 
-		  	if ( $sharing_description ) { 
-		  		echo $sharing_description; 
-		  	} else { 
+	<meta property="og:description"
+		  content="<?php
+		  	if ( $sharing_description ) {
+		  		echo $sharing_description;
+		  	} else {
 		  		echo $default_description; } ?>">
 
 	<!-- Open graph image -->
 	<meta property="og:image"
-		  content="<?php 
-		  	if ( $sharing_image ) { 
-		  		echo $sharing_image['url']; 
+		  content="<?php
+		  	if ( $sharing_image ) {
+		  		echo $sharing_image['url'];
 		  	} // what should the default be here? ?>">
 
 	<!-- Open graph url -->
-	<meta property="og:url" 
+	<meta property="og:url"
 		  content="<?php echo home_url( $wp->request); ?>">
 
 	<!-- Twitter card format -->
