@@ -10,6 +10,22 @@ function get_environment() {
 	}
 }
 
+function get_current_datetime() {
+	return date('Y-m-d H:i:s');
+}
+
+function log_data($data, $method = 'console') {
+	if ($method === 'console') {
+		echo '<script>';
+		echo 'console.log(' . json_encode($data) . ')';
+		echo '</script>';
+	} elseif ($method === 'dom') {
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+	}
+}
+
 add_action('wp_head', 'modify_page_title');
 function modify_page_title() {
 	$environment = get_environment();

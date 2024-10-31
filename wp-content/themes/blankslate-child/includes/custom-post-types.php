@@ -8,3 +8,4 @@ require_once('custom-post-types/team.php');
 require_once('custom-post-types/partners.php');
 require_once('custom-post-types/faq.php');
 require_once('custom-post-types/reports.php');
+require_once('custom-post-types/events.php');
