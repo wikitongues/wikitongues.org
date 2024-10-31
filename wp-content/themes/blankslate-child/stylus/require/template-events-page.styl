@@ -1,0 +1,82 @@
+.page-template-events-page
+	scroll-behavior smooth
+	.filter-buttons
+		max-width 1140px
+		width calc(100% - 3.2rem)
+		margin 0 auto
+		border-bottom 2px solid $lightPurple
+		margin-bottom 16px
+
+		button
+			background none
+			border none
+			text--body($blue)
+			padding 1.6rem
+			cursor pointer
+
+			&.active
+				font-weight bold
+
+	.event-list
+		max-width 1140px
+		width 100%
+		display flex
+		flex-wrap wrap
+		justify-content center
+		margin 0 auto
+
+		.empty-events
+			width 100%
+			text--body($black)
+			text-align center
+			padding 6.4rem 1.6rem
+			border-radius 16px
+			color $black
+			flex 0 1 calc(50% - 1rem)
+
+		.event-entry
+			width 100%
+			text--body($black)
+			padding 1.6rem
+			border-radius 16px
+			flex 1 1 calc(50% - 1rem)
+
+			h3
+				text--strong($black)
+
+			h3,p
+				margin-bottom 16px
+
+			.event-details
+				display inline-block
+
+				p
+					float left
+
+					&:first-of-type
+						margin-right 1.6em
+
+			.event-description
+				margin-left 1.6em
+
+			a
+				text-decoration none
+				font-weight bold
+				color $blue
+
+			// &:hover
+			// 	background $blue
+			// 	color $parchment
+
+			// 	h3
+			// 		color $parchment
+
+			// 	a
+			// 		color $yellow
+
+@media (max-width: $mobile)
+	.page-template-events-page
+		.event-list
+			.event-entry
+				flex 1 1 100%
+				margin 0 1.6rem 1.6rem
