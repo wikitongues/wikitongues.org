@@ -22,7 +22,7 @@
 		width 100%
 		display flex
 		flex-wrap wrap
-		justify-content center
+		justify-content flex-start
 		margin 0 auto
 
 		.empty-events
@@ -32,10 +32,12 @@
 			padding 6.4rem 1.6rem
 			border-radius 16px
 			color $black
-			flex 0 1 calc(50% - 1rem)
+			flex 2
 
 		.event-entry
 			width 100%
+			max-width 50%
+			margin-bottom 32px
 			text--body($black)
 			padding 1.6rem
 			border-radius 16px
@@ -64,15 +66,15 @@
 				font-weight bold
 				color $blue
 
-			// &:hover
-			// 	background $blue
-			// 	color $parchment
+			&:hover
+				background $lightPurple
+				color $blue
 
-			// 	h3
-			// 		color $parchment
+				h3
+					color $blue
 
-			// 	a
-			// 		color $yellow
+				a
+					color $blue
 
 @media (max-width: $mobile)
 	.page-template-events-page

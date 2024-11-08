@@ -67,13 +67,11 @@ function ajax_filter_events() {
 
 	if ($posts) {
 			ob_start();
-			echo '<ul class="event-list">';
 			foreach ($posts as $post) {
 					setup_postdata($post);
 					echo render_event($post->ID);
 			}
 			wp_reset_postdata();
-			echo '</ul>';
 			$response = ob_get_clean();
 			wp_send_json_success($response);
 	} else {
