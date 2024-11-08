@@ -2929,7 +2929,7 @@ text
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin: 0 auto;
 }
 .page-template-events-page .event-list .empty-events {
@@ -2945,10 +2945,12 @@ text
   padding: 6.4rem 1.6rem;
   border-radius: 16px;
   color: #101010;
-  flex: 0 1 calc(50% - 1rem);
+  flex: 2;
 }
 .page-template-events-page .event-list .event-entry {
   width: 100%;
+  max-width: 50%;
+  margin-bottom: 32px;
   font-family: 'Graphik Web';
   font-weight: 400;
   font-style: normal;
@@ -2988,6 +2990,16 @@ text
 .page-template-events-page .event-list .event-entry a {
   text-decoration: none;
   font-weight: bold;
+  color: #3814a5;
+}
+.page-template-events-page .event-list .event-entry:hover {
+  background: #d4cce0;
+  color: #3814a5;
+}
+.page-template-events-page .event-list .event-entry:hover h3 {
+  color: #3814a5;
+}
+.page-template-events-page .event-list .event-entry:hover a {
   color: #3814a5;
 }
 @media (max-width: 768px) {
