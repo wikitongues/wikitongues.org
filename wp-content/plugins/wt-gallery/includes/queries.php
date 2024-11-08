@@ -37,6 +37,8 @@
             }, $val_array);
         } elseif ($atts['meta_key'] === 'nations_of_origin') {
             $compare_operator = '=';
+        } elseif ($atts['meta_key'] === 'language_iso_codes') {
+            $compare_operator = '=';
         }
 
         if (count($val_array) > 1) {
