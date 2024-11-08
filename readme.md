@@ -18,64 +18,140 @@
 *CSS*
 * Use tabs, not spaces for Stylus files.
 
-# Continuous Integration and Deployment (CI/CD)
+# Continuous Integration and Deployment
 
 This project follows a structured Continuous Integration and Continuous Deployment (CI/CD) process, utilizing four primary environments to ensure seamless development, testing, and production deployment.
 
-## Environments
+### Environments
+**Local**
+- Local Postgres
+- Serves as the integration branch where feature branches are merged.
+- Ensures that features are tested and stable before further deployment.
 
-1. **Feature**:
-   - Used for developing and testing new features in isolated branches.
-   - Feature branches should be regularly pushed to GitHub for visibility and collaboration.
+**Staging**
+- MariaDB hosted on GreenGeeks
+- URL: [staging.wikitongues.org](https://staging.wikitongues.org)
+- A live testing environment where integrated features from `main` are deployed.
+- Used for end-to-end testing in a production-like setting before going live.
 
-2. **Main**:
-   - Serves as the integration branch where feature branches are merged.
-   - Ensures that features are tested and stable before further deployment.
+**Production**
+- MariaDB hosted on GreenGeeks
+- URL: [wikitongues.org](https://wikitongues.org)
+- The public-facing environment where fully tested and approved features are deployed.
+- Direct pushes to `production` are prohibited to maintain stability.
 
-3. **Staging**:
-   - URL: [staging.wikitongues.org](https://staging.wikitongues.org)
-   - A live testing environment where integrated features from `main` are deployed.
-   - Used for end-to-end testing in a production-like setting before going live.
-
-4. **Production**:
-   - URL: [wikitongues.org](https://wikitongues.org)
-   - The public-facing environment where fully tested and approved features are deployed.
-   - Direct pushes to `production` are prohibited to maintain stability.
+**Note:** [Instructions for setting up a new Staging Environment on Greengeeks](https://www.greengeeks.com/tutorials/how-to-set-up-a-wordpress-development-environment-and-why/)
 
 ## Workflow
+### Branches:
 
-1. **Feature Development**:
-   - Begin by branching off from `main` to develop new features.
-   - Regularly push updates to the feature branch on GitHub for peer review and testing.
+**Feature Development**
+- Begin by branching off from `main` to develop new features.
+- Regularly push updates to the feature branch on GitHub for peer review and testing.
 
-2. **Integration**:
-   - Once a feature is ready, submit a pull request to merge the feature branch into `main`.
-   - Resolve any conflicts, run tests, and ensure the integration is smooth.
+**Main**
+- Once a feature is ready, submit a pull request to merge the feature branch into `main`.
+- Resolve any conflicts, run tests, and ensure the integration is smooth.
 
-3. **Staging Deployment**:
-   - After merging into `main`, create a pull request to merge `main` into `staging`.
-   - Automatic deployment to the Staging environment allows for live testing.
-   - Conduct thorough testing and verification in the Staging environment.
+**Staging**
+- After merging into `main`, create a pull request to merge `main` into `staging`.
+- Automatic deployment to the Staging environment allows for live testing.
+- Conduct thorough testing and verification in the Staging environment.
 
-4. **Production Deployment**:
-   - Following successful testing in Staging, create a pull request to merge `staging` into `production`.
-   - The merge triggers an automatic deployment to the Production environment.
-   - Monitor the deployment to ensure stability and functionality.
+**Production**
+- Following successful testing in Staging, create a pull request to merge `staging` into `production`.
+- The merge triggers an automatic deployment to the Production environment.
+- Monitor the deployment to ensure stability and functionality.
 
 ## Automatic Deployment
 
-- **Deployment Branches**:
-  - `staging`: Automatically deploys to the Staging environment upon merge.
-  - `production`: Automatically deploys to the Production environment upon merge.
+**Deployment Branches**
+- `staging`: Automatically deploys to the Staging environment upon merge.
+- `production`: Automatically deploys to the Production environment upon merge.
 
-- **Branch Protection**:
-  - The `main` and `production` branches are protected and can only be modified via pull requests from other branches.
-  - This ensures that all changes are reviewed, tested, and approved before affecting live environments.
+**Branch Protection**
+- The `main` and `production` branches are protected and can only be modified via pull requests from other branches.
+- This ensures that all changes are reviewed, tested, and approved before affecting live environments.
 
+## DBs
+Local database is postgres
+Staging and Production databases are MariaDB
+Set up Beekeeper Studio or Equivalent DB client to interact with databases programmatically.
 
-# Setting up new Staging
+### Setting Up Remote Access to MariaDB via SSH Tunnel
 
-- Read instructions [here](https://www.greengeeks.com/tutorials/how-to-set-up-a-wordpress-development-environment-and-why/)
+#### Overview
+This guide provides step-by-step instructions for setting up and accessing a remote MariaDB database using an SSH tunnel. The steps outlined here ensure that you can connect securely to the database, such as for using database management tools like Beekeeper Studio.
+
+#### Prerequisites
+- SSH access to your server (e.g., GreenGeeks hosting).
+- Database credentials (username, password) found in your `wp-config.php` file.
+- A database management tool, like **Beekeeper Studio**.
+
+#### Step 1: Set Up SSH Tunnel
+To create a secure SSH tunnel between your local machine and the server, run the following command:
+
+```bash
+ssh -L 3307:127.0.0.1:3306 yourusername@yourserver.com
+```
+
+- **3307**: The port on your local machine that will be used for accessing the remote database.
+- **127.0.0.1:3306**: The remote server's address and port for MariaDB.
+- **yourusername@yourserver.com**: Your SSH username and server domain or IP address.
+
+Make sure to leave the terminal window with this command running. Closing it will terminate the tunnel.
+
+#### Step 2: Verify Database User Permissions
+Once you have SSH access, log into the MariaDB console to ensure that the database user has the proper permissions.
+
+1. Log in to the MariaDB console:
+   ```bash
+   mysql -u root -p
+   ```
+   Enter your root password when prompted.
+
+2. Grant permissions to the database user (`wikitong` in this example) to allow local and remote access:
+   ```sql
+   GRANT ALL PRIVILEGES ON your_database_name.* TO 'wikitong'@'localhost' IDENTIFIED BY 'yourpassword';
+   GRANT ALL PRIVILEGES ON your_database_name.* TO 'wikitong'@'%' IDENTIFIED BY 'yourpassword';
+   FLUSH PRIVILEGES;
+   ```
+   Replace `your_database_name` and `yourpassword` with the appropriate values.
+
+#### Step 3: Set Up Beekeeper Studio Connection
+With the SSH tunnel running, configure Beekeeper Studio to connect to your database.
+
+1. **Add New Connection**:
+   - **Host**: `localhost`
+   - **Port**: `3307` (or whichever local port you specified in the SSH tunnel command)
+   - **Username**: Your database username (e.g., `wikitong`).
+   - **Password**: Your database password (from `wp-config.php`).
+   - **Database**: The name of your WordPress database.
+
+2. **Save and Test**: Save the connection and click "Test Connection" to verify that everything is set up correctly.
+
+#### How to Access the Database in the Future
+- **Run the SSH Tunnel Command**: Before accessing the database through Beekeeper Studio, you need to set up the SSH tunnel:
+  ```bash
+  ssh -L 3307:127.0.0.1:3306 yourusername@yourserver.com
+  ```
+  Ensure the terminal session remains open.
+
+- **Open Beekeeper Studio**: Use the saved connection details to access your database.
+
+##### Reminder: SSH Tunnel Must Be Running
+Database access through Beekeeper Studio is only possible while the SSH tunnel is running. Make sure the terminal session stays active throughout your database session.
+
+#### Troubleshooting
+- **Access Denied Errors**: Double-check the database username and password. Ensure the user permissions are properly granted for remote access.
+- **Connection Terminated Unexpectedly**: Verify the SSH tunnel is still running and that you are using the correct port (`3307` in this example).
+- **Database User Not Allowed**: Use the MariaDB console to grant appropriate privileges (`GRANT ALL PRIVILEGES` commands) as described in Step 2.
+
+## Database Sync
+Work is underway to syncronize databases across environments
+Utilizing WP-CLI
+Local database syncs are accomplished with the `tool-sync-db-from-prod.sh` script.
+
 
 # CSS and Compiling Stylus
 
@@ -85,14 +161,35 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 
 # Plugins
 
-- **Typeahead Search**:
+Some of our advanced features are maintained as custom plugins. At present, we have:
+
+- ## **Typeahead Search**:
 
    This project uses a React search component maintained in a [separate repository](https://github.com/wikitongues/typeahead/tree/main).
-   To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments. Consider using `rsync` to facilitate the distribution. Additionally, the plugin has a PHP file that is not currently tracked on Git due to this repository being only a subset of the full installation. We may want to change this later.
+   To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments.
 
-- **Custom Gallery**:
+   Consider using `rsync` to facilitate the distribution.
+   ``` bash
+   rsync -avz --delete -e 'ssh -o StrictHostKeyChecking=no' ./build/ USERNAME@HOSTNAME:PATH/TO/plugins/typeahead/build/ && echo 'Done'
+   ```
 
-   This plugin handles all galleries for this project.
+- ## **Custom Gallery**:
+
+   This plugin handles all galleries for this project. It presently handles galleries for the following post types:
+
+   - Languages
+   - Videos
+   - Resources
+   - Fellows
+
+   It lives in `/wp-content/plugins/wt-gallery`, and is organized as follows:
+   ```
+   wt-gallery.php
+   /js/custom-gallery-ajax.js
+   /includes/queries.php
+   /includes/render_gallery_items.php
+   /includes/templates/*
+   ```
 
 # To-Do
 
@@ -108,20 +205,15 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 ## global
 
 - [] bug on search page title - title has first matching language iso (`Wikitongues | niv`) despite being search route (`?s=russian`).
-- [] track entire wordpress instance in git to capture plugin-specific (typeahead) changes
 - [] add alert banner and display only if user hasn't visited the site in a week
 - [] build captions post type
 - [] build single page template for partners post type
-- [] add: "about" drop down to header (footer only for launch)
-- [x] backwards compatibility evaluation
+- [] add "about" drop down to header (footer only for launch)
 - [] ADA accessibility evaluation
 - [] blog integration
 - [] browser notifications opt-in
-
-## home
-
-- [] make homepage banner a carousel
-- [x] make testimonial carousel a true carousel
+- [x] track entire wordpress instance in git to capture plugin-specific (typeahead) changes
+- [x] backwards compatibility evaluation
 
 ## search results
 
@@ -134,7 +226,6 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 ## languages single
 
 - [] inlcude more clarity for external resources
-- [x] related languages carousel
 - [] add continent of origin
 
 ## video single
@@ -142,9 +233,7 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 - [] toggle metadata view for for more than 1 language
 - [] toggle all metadata view on mobile
 - [] once captions post type is live, add download feature
-- [x] figure out navigation path from single videos back to the language in question
 - [] figure out embeds for Dropbox files (not on YouTube)
-- [x] related videos carousel
 
 ## archive
 
@@ -153,7 +242,6 @@ To run the compiler, run `stylus -w stylus` in the terminal.
 ## fellows single
 
 - [] micro-blogging feature
-- [x] other fellows carousel
 
 ## revitalization toolkit
 
