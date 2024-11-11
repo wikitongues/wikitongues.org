@@ -13,7 +13,7 @@ if (is_array($license_link)) {
   $reversed_license_link = array_reverse($license_link);
   $video_license_url = array_pop($reversed_license_link);
 } else {
-  $video_license_url = '';
+  $video_license_url = $license_link;
 }
 $featured_languages = get_field('featured_languages');
 
