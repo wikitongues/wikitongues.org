@@ -148,9 +148,7 @@ Database access through Beekeeper Studio is only possible while the SSH tunnel i
 - **Database User Not Allowed**: Use the MariaDB console to grant appropriate privileges (`GRANT ALL PRIVILEGES` commands) as described in Step 2.
 
 ## Database Sync
-Work is underway to syncronize databases across environments
-Utilizing WP-CLI
-Local database syncs are accomplished with the `tool-sync-db-from-prod.sh` script.
+Work is underway to syncronize databases across environments. To sync your local database up with Prod, run `bash tool-sync-db-from-prod.sh` from your local terminal.
 
 
 # CSS and Compiling Stylus
@@ -190,6 +188,12 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    /includes/render_gallery_items.php
    /includes/templates/*
    ```
+
+# Errors
+
+Localhost db view error: `The user specified as a definer ('wikitong_master'@'localhost') does not exist`
+1. `DROP VIEW IF EXISTS languages_view;`
+1. Recreate the View
 
 # To-Do
 
