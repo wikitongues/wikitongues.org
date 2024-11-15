@@ -167,6 +167,7 @@
                     "max_height": "",
                     "max_size": "",
                     "mime_types": "",
+                    "allow_in_bindings": 1,
                     "preview_size": "medium"
                 },
                 {
@@ -270,6 +271,7 @@
             "max_height": "",
             "max_size": "",
             "mime_types": "",
+            "allow_in_bindings": 1,
             "preview_size": "medium"
         },
         {
@@ -555,6 +557,26 @@
                     "parent_repeater": "field_65026258fda44"
                 }
             ]
+        },
+        {
+            "key": "field_673603d7a1bd1",
+            "label": "Marketing Text",
+            "name": "marketing_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
         }
     ],
     "location": [
@@ -575,5 +597,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1728232228
+    "modified": 1731593396
 }
