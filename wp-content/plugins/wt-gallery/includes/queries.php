@@ -38,7 +38,7 @@
         } elseif ($atts['meta_key'] === 'nations_of_origin') {
             $compare_operator = '=';
         } elseif ($atts['meta_key'] === 'language_iso_codes') {
-            $compare_operator = '=';
+            $compare_operator = 'LIKE';
         }
 
         if (count($val_array) > 1) {
