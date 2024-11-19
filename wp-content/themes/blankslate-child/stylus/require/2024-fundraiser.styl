@@ -1,0 +1,137 @@
+$aspect-ratio = 1.185185185
+.page-template-template-giving-campaign-24
+	.content
+		max-width 1000px
+		margin 0 auto 64px
+
+		h1
+			text--header($black)
+			font-size 4rem
+			margin-bottom 1.6rem
+
+		p
+			text--body($black)
+
+		.cta-group
+			width 100%
+			display inline-block
+			margin 16px 0
+
+			a
+				text--body($blue)
+				text-decoration none
+				margin 1.6rem auto
+				display block
+				text-align center
+
+			button,
+			a.cta
+				width 100%
+				border-radius 8px
+				background $red
+				text--strong($parchment)
+				border none
+				padding 1.6rem
+				cursor pointer
+
+		.image
+			width 100%
+			height 0
+			padding-bottom (1/(16/9)*100)%
+			background-position center
+			background-size cover
+			border-radius 8px
+			margin 32px 0
+
+		.stats
+			display flex
+			justify-content space-evenly
+			margin 64px 0 128px
+
+			li
+				float left
+
+				h1
+					text-align center
+					font-size 6rem
+
+		.donations-button-group
+			section.secondary
+				display flex
+
+				h2
+					text--strong($black)
+					margin-bottom 1.6rem
+
+				button,
+				a.cta
+					margin 2.4rem	auto 0
+					border none
+					border-radius 8px
+					padding 1.6rem
+					display block
+					cursor pointer
+					text--strong($parchment)
+					text-align center
+					text-decoration none
+
+				div.option
+					display flex
+					flex-direction column
+					align-content center
+
+					&:first-of-type
+						button,
+						a.cta
+							background $blue
+
+					&:last-of-type
+						button,
+						a.cta
+							background transparent
+							color $blue
+
+			&> p
+				text-align center
+				margin-top 4.8rem
+
+		.custom-gallery.custom.fundraiser
+			.gallery-container
+				.gallery-list
+					li
+						margin-bottom 32px
+
+						.thumbnail,
+						section
+							float left
+
+						.thumbnail
+							width (1/2*100)%
+							height 0
+							padding-bottom (((1/16)*9)*50)%
+							background-position center
+							background-size cover
+							border-radius 8px
+
+						section
+							width	(1/2*100)%
+							padding-left 16px
+							padding-bottom 16px
+							height 100%
+							display flex
+							flex-direction column
+							justify-content flex-end
+
+							h2
+								border-bottom none
+
+							p
+								text--body($black)
+
+						// &:nth-of-type(odd)
+						// 	.thumbnail
+						// 		float right
+
+						// 	section
+						// 		padding-right 16px
+						// 		padding-left 0

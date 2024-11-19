@@ -14,7 +14,7 @@ function get_current_datetime() {
 	return date('Y-m-d H:i:s');
 }
 
-function log_data($data, $method = 'console') {
+function log_data($data, $method = 'console') { // methods: console, dom
 	if ($method === 'console') {
 		echo '<script>';
 		echo 'console.log(' . json_encode($data) . ')';
