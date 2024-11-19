@@ -10,11 +10,14 @@ $page_banner = get_field('banner');
 $impact_photo = get_field('impact_photo');
 $fundraising_photo = get_field('fundraising_photo');
 $fundraising_link = home_url()."/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ";
+
 include( 'modules/banner--main.php' );
 ?>
+
 <div class="content">
 <h1>Can you help us grow?</h1>
 <div class="cta-group"><a class="cta" href="<?php echo $fundraising_link?>">Donate Now</a><a href="<?php echo $fundraising_link?>">Or set up automatic monthly donations</a></div>
+
 <ul class="stats">
 	<li>
 		<h1>45</h1>
