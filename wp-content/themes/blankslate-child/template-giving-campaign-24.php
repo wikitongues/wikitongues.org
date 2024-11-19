@@ -9,13 +9,15 @@ get_header();
 $page_banner = get_field('banner');
 $impact_photo = get_field('impact_photo');
 $fundraising_photo = get_field('fundraising_photo');
+$fundraising_link = home_url()."/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ";
 
 include( 'modules/banner--main.php' );
-
 ?>
+
 <div class="content">
 <h1>Can you help us grow?</h1>
-<div class="cta-group"><a class="cta" href="https://wikitongues.org/?element=XESPGTCJ&form=FUNQMUDJDGQ">Donate Now</a><a href="https://wikitongues.org/?element=XESPGTCJ&form=FUNQMUDJDGQ">Or set up automatic monthly donations</a></div>
+<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link?>">Donate Now</a><a href="<?php echo $fundraising_link?>">Or set up automatic monthly donations</a></div>
+
 <ul class="stats">
 	<li>
 		<h1>45</h1>
@@ -59,7 +61,7 @@ echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$cu
 ?>
 <div class="donations-button-group">
 	<h1>Make a Lasting Impact</h1>
-	<div class="cta-group"><a class="cta" href="https://wikitongues.org/?element=XESPGTCJ&form=FUNQMUDJDGQ">Donate Now</a><a href="https://wikitongues.org/?element=XESPGTCJ&form=FUNQMUDJDGQ">Or set up automatic monthly donations</a></div>
+	<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link?>">Donate Now</a><a href="<?php echo $fundraising_link?>">Or set up automatic monthly donations</a></div>
 	<?php
 		echo '<div class="image" style="background-image:url('.esc_url($fundraising_photo['url']).');" alt="' . get_the_title() . '"></div>';
 	?>
@@ -67,7 +69,7 @@ echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$cu
 		<div class="option">
 			<h2>Monthly Giving</h2>
 			<p>Want to grow your impact impact? Become a monthly supporter and help us give stable support to language activists worldwide.</p>
-			<a class="cta" href="https://wikitongues.org/?element=XESPGTCJ&form=FUNQMUDJDGQ">Schedule monthly donation</a>
+			<a class="cta" href="<?php echo $fundraising_link?>">Schedule monthly donation</a>
 		</div>
 		<div class="option">
 			<h2>Share Our Campaign</h2>
