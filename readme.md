@@ -189,6 +189,12 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    /includes/templates/*
    ```
 
+# Dependencies
+
+## Font Awesome
+
+We use [FontAwewsome](https://fontawesome.com/) to render social icons.
+
 # Errors
 
 Localhost db view error: `The user specified as a definer ('wikitong_master'@'localhost') does not exist`

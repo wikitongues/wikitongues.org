@@ -2,7 +2,7 @@
 // Function to generate a single language link with an optional preferred name
 function generate_language_link($language, $preferred_name = '') {
 		if ($language instanceof WP_Post) {
-				$language_url = home_url('/languages/' . $language->post_name);
+				$language_url = home_url('/languages/' . $language->post_name, 'relative');
 				return '<a class="language" href="' . esc_url($language_url) . '"><span class="identifier">' . esc_html($language->post_title) . '</span><p>' . esc_html($preferred_name) . '</p></a>';
 		}
 }

@@ -4,12 +4,7 @@ $smallScreen = 1024px
 $tablet = 899px
 $mobile = 768px // consider different number
 
-// margins
-$margin0 = 15px
-$margin1 = 30px
-$margin2 = 60px
-$margin3 = 90px
-$margin4 = 120px
+$content = 1000px
 
 // colors
 $white = #ffffff
@@ -29,66 +24,70 @@ $yellow = #ffff00
 // typography
 html
 	font-size 62.5%
-	
+
 @media all and (max-width:$mobile)
 	html
 		font-size 51.398%
 
+text--base(a)
+	font-style normal
+	font-stretch normal
+	color a
+
 text--header(a)
+	text--base(a)
 	font-family 'Schnyder Wide M Web'
 	font-weight 300
-	font-style normal
-	font-stretch normal
 	font-size 6.08rem
-	color a
-	
+
 text--body(a)
+	text--base(a)
 	font-family 'Graphik Web'
 	font-weight 400
-	font-style normal
-	font-stretch normal
 	font-size 1.6rem
 	line-height 1.3
-	color a
-	
+
 text--strong(a)
+	text--base(a)
 	font-family 'Graphik Web'
 	font-weight 700
-	font-style normal
-	font-stretch normal
 	font-size 1.6rem
 	line-height 1.3
+
+anchor(a,b)
+	text-decoration none
 	color a
+	padding b (b * 2)
+	margin (b * -1) (b * -2)
+	border-radius (b * 2)
+
+	&:hover
+		background $lightPurple
+		mix-blend-mode darken
+
+button--base(a,b)
+	display inline-block
+	background a
+	font-family 'Graphik Web'
+	font-weight 400
+	font-style normal
+	font-stretch normal
+	text-transform uppercase
+	text-decoration none
+	color b
+	text-wrap nowrap
 
 button--large(a,b)
-	display inline-block
+	button--base(a,b)
 	padding 1.5rem 2rem
-	background a
-	font-family 'Graphik Web'
-	font-weight 400
-	font-style normal
-	font-stretch normal
 	font-size 1.6rem
 	line-height 1.3
-	text-transform uppercase
-	text-decoration none
-	color b
-	text-wrap nowrap
 
 button--small(a,b)
-	display inline-block
+	button--base(a,b)
 	padding 1.25rem 1.5rem
-	background a
 	border 1px solid $blue
-	font-family 'Graphik Web'
-	font-weight 400
-	font-style normal
-	font-stretch normal
 	font-size 1.28rem
-	text-transform uppercase
-	text-decoration none
-	color b
-	text-wrap nowrap
 
 // misc
 .clear

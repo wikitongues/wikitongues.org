@@ -4,7 +4,7 @@
 	$iso_code = get_the_title();
 	$iso_code_element = '<aside>'.esc_html($iso_code).'</aside>';
 	$video_query = get_videos_by_featured_language($iso_code);
-	$url = home_url('/languages/' . $iso_code);
+	$url = home_url('/languages/' . $iso_code, 'relative');
 
 	if ($video_query->have_posts()) {
 			while ($video_query->have_posts()) {

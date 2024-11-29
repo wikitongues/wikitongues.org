@@ -15,12 +15,15 @@ $social_links = [
 	'instagram' => ['url' => get_field('instagram'), 'icon' => 'fa-brands fa-instagram'],
 	'linkedin'  => ['url' => get_field('linkedin'), 'icon' => 'fa-brands fa-linkedin'],
 	'tiktok'    => ['url' => get_field('tiktok'), 'icon' => 'fa-brands fa-tiktok'],
-	'twitter'   => ['url' => get_field('twitter'), 'icon' => 'fa-brands fa-twitter'],
-	'website'   => ['url' => get_field('website'), 'icon' => 'fa-regular fa-link'],
+	'twitter'   => ['url' => get_field('twitter'), 'icon' => 'fa-brands fa-x-twitter'],
+	'website'   => ['url' => get_field('website'), 'icon' => 'fa-solid fa-link'],
 	'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
 ];
-$revitalization_fellows_url = home_url('/revitalization/fellows/?fellow_year=');
+$revitalization_fellows_url = home_url('/revitalization/fellows/?fellow_year=', 'relative');
 $revitalization_fellows_url = add_query_arg('fellow_year', $fellow_year, $revitalization_fellows_url);
+
+$current_slug = add_query_arg( array(), $wp->request );
+$fundraising_link = home_url("{$current_slug}/?element=XESPGTCJ&form=FUNQMUDJDGQ", 'relative');
 
 // ====================
 // Manage Fellows Page Titles
@@ -46,7 +49,7 @@ if ( $fellow_bio ) {
 ?>
 <div class="custom-gallery full">
 	<h2 class="wt_sectionHeader"><?php echo 'Other fellows from <a href="'.esc_url($revitalization_fellows_url).'">' . $fellow_year ?></a></h2>
-	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="">Support a revitalization project.</a></p>
+	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link?>">Support a revitalization project.</a></p>
 </div>
 <?php
 $custom_title = '';

@@ -26,7 +26,7 @@
 		?>
 		<div class="custom-cta-container">
 			<section class="custom-gallery-video-cta">
-				<a href="<?php echo home_url(); ?>/submit-a-video">Contribute a resource</a>
+				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Contribute a resource</a>
 			</section>
 		</div>
 </div>
