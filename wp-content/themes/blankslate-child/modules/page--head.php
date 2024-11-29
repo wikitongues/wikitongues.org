@@ -10,7 +10,7 @@
 	<?php if ( $favicon ): ?>
 		<link href="<?php echo $favicon['url']; ?>" rel="shortcut icon">
 	<?php else: ?>
-		<link href="<?php echo home_url(); ?>/wp-content/themes/blankslate-child/img/icons/favicon.ico" rel="shortcut icon">
+		<link href="<?php echo home_url('/wp-content/themes/blankslate-child/img/icons/favicon.ico', 'relative'); ?>" rel="shortcut icon">
 	<?php endif; ?>
 
 	<!-- Custom metadata variables -->
@@ -88,8 +88,7 @@
 		  	} // what should the default be here? ?>">
 
 	<!-- Open graph url -->
-	<meta property="og:url"
-		  content="<?php echo home_url( $wp->request); ?>">
+	<meta property="og:url" content="<?php echo home_url( $wp->request, 'relative'); ?>">
 
 	<!-- Twitter card format -->
 	<meta name="twitter:card" content="summary_large_image">
@@ -97,7 +96,7 @@
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
 
 	<!-- Font Awesome connection for UI/UX icons and small graphic elements -->
-	<script src="https://kit.fontawesome.com/01c8e3d542.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/5c48172421.js" crossorigin="anonymous"></script>
 
 	<!-- Fundraise Up connection -->
 	<script>(function(w,d,s,n,a){if(!w[n]){var l='call,catch,on,once,set,then,track'

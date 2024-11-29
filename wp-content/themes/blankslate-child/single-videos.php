@@ -85,8 +85,8 @@ echo '<main class="wt_single-videos__content">';
   $custom_selected_posts = '';
   echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
 
-  $cta_el = '<a href="'.home_url().'/submit-a-video">Contribute a video</a>';
-  $cta_el .= '<a href="'.home_url().'/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf">How to create an oral history</a>';
+  $cta_el = '<a href="'.home_url('/submit-a-video', 'relative').'">Contribute a video</a>';
+  $cta_el .= '<a href="'.home_url('/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf', 'relative').'">How to create an oral history</a>';
   $gallery_cta = '<div class="custom-cta-container full"><section class="custom-gallery-video-cta">'.$cta_el.'</section></div>';
   echo $gallery_cta;
 

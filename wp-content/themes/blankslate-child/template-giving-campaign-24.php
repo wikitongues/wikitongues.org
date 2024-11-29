@@ -9,7 +9,7 @@ get_header();
 $page_banner = get_field('banner');
 $impact_photo = get_field('impact_photo');
 $fundraising_photo = get_field('fundraising_photo');
-$fundraising_link = home_url()."/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ";
+$fundraising_link = home_url('/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ', 'relative');
 
 include( 'modules/banner--main.php' );
 ?>

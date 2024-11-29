@@ -1,5 +1,2 @@
 <?php
-
-$wikitongues_url = home_url();
-
-header('Location: ' . $wikitongues_url . '/team');
+header('Location: ' . home_url('/team', 'relative'));

@@ -1,5 +1,2 @@
 <?php
-
-$wikitongues_url = home_url();
-
-header('Location: ' . $wikitongues_url . '/events');
+header('Location: ' . home_url('/events', 'relative'));

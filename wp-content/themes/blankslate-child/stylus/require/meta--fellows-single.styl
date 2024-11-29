@@ -1,14 +1,14 @@
 .wt_fellow__meta
 	width 90%
-	max-width 50vw
-	margin 0 auto
+	max-width $content
+	margin 0 auto 4.8rem
 	padding-top 6.4rem
 
 	.head
 		display flex
 		width 100%
 		align-items flex-end
-		margin-bottom 64px
+		margin-bottom 4.8rem
 
 		div.image, div.name
 			float left
@@ -98,22 +98,37 @@
 
 	ul
 		margin-top .5rem
+		display inline-block
 
 		li
-			display inline-block
-			margin-right 1.6rem
 			text--body($black)
+			margin-right 0.8rem
 
 			&:last-of-type
 				margin-right 0
 
 			a
 				text--body($blue)
-				text-decoration none
+
+	&--social
+		ul
+			li
+				margin-left 8px
+				float left
+
+				a
+					font-size 2rem
+					anchor($blue, 4px)
 
 	&--links
-		ul li
-			display block !important
+		ul
+			list-style initial
+
+			li
+				margin .1rem 1.6rem .1rem 2rem
+
+				a
+					anchor($blue, 2px)
 
 @media all and (max-width:$mobile)
 	.wt_fellow__meta
