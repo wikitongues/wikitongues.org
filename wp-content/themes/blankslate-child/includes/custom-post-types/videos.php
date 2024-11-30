@@ -26,15 +26,10 @@ function create_post_type_videos()
         'has_archive' => true,
         'supports' => array(
             'title',
-            'editor',
             'excerpt',
             'thumbnail'
         ),
         'can_export' => true,
-        // 'taxonomies' => array(
-        //     'post_tag',
-        //     'category'
-        // ),
         'show_in_rest' => true,
         'rest_controller_class' => 'WT_REST_Posts_Controller'
     ));

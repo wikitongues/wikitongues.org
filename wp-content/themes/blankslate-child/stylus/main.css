@@ -101,7 +101,8 @@ body[data-alert="true"] .wt_header {
   top: 72px !important;
 }
 body.page-template-faq-page,
-body.post-type-archive-reports {
+body.post-type-archive-reports,
+body.post-type-archive-careers {
   margin-top: 56px;
 }
 body.page-template-template-archive-home,
@@ -126,7 +127,8 @@ body.logged-in .wt_header {
   top: 32px;
 }
 body.logged-in.page-template-faq-page,
-body.logged-in.post-type-archive-reports {
+body.logged-in.post-type-archive-reports,
+body.logged-in.post-type-archive-careers {
   margin-top: 88px;
 }
 body.logged-in.page-template-template-archive-home,
@@ -1203,7 +1205,7 @@ body.search-results .wt_banner--searchbar {
 .main-content {
   margin: 0 auto 6.4rem;
   width: 90%;
-  max-width: 1000px;
+  max-width: 1140px;
 }
 .main-content h1 {
   margin: auto;
@@ -1290,11 +1292,6 @@ body.search-results .wt_banner--searchbar {
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
-}
-.main-content .wp-caption-text {
-  margin-top: 1.5rem;
-  text-align: center;
-  color: #979797;
 }
 body.search-results .wt_header__nav>ul>li:first-of-type {
   background: #fffcef !important;
@@ -1487,7 +1484,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 }
 .wt_archive__faq section {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1140px;
   margin: 0 auto 3rem;
   column-count: 3;
   column-gap: 16px;
@@ -1540,7 +1537,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 h1.success_cta {
   margin: 12rem auto;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1140px;
   font-style: normal;
   font-stretch: normal;
   color: #101010;
@@ -1575,7 +1572,7 @@ h1.success_cta a:hover {
   }
   .wt_archive__faq section {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1140px;
     column-count: 1;
     margin: 0 auto;
   }
@@ -1872,13 +1869,13 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 }
 .wt_single-videos__content--body {
   width: 90%;
-  max-width: 1000px;
+  max-width: 1140px;
   margin: auto;
 }
 .wt_single-videos__content h1 {
   margin: 0 auto 3rem;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1140px;
   font-style: normal;
   font-stretch: normal;
   color: #101010;
@@ -2402,7 +2399,7 @@ text
 }
 .wt_fellow__meta {
   width: 90%;
-  max-width: 1000px;
+  max-width: 1140px;
   margin: 0 auto 4.8rem;
   padding-top: 6.4rem;
 }
@@ -2862,7 +2859,7 @@ text
   align-items: flex-start;
 }
 .page-template-faq-page .faq-container .faq-content {
-  max-width: 1000px;
+  max-width: 1140px;
   padding-right: 32px;
   margin-top: -7rem;
 }
@@ -3150,7 +3147,7 @@ text
   }
 }
 .page-template-template-giving-campaign-24 .content {
-  max-width: 1000px;
+  max-width: 1140px;
   margin: 0 auto 64px;
 }
 .page-template-template-giving-campaign-24 .content h1 {
@@ -4037,4 +4034,154 @@ text
   .custom-gallery-fellows-navigation p {
     display: none;
   }
+}
+.careers-page {
+  max-width: 1140px;
+  margin: 0 auto 3.2rem;
+}
+.careers-page h1 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 6.08rem;
+}
+.careers-page .career-section {
+  margin: 1.6rem 0;
+}
+.careers-page .career-section h2 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 6.08rem;
+  font-size: 3rem;
+  margin-bottom: 0.8rem;
+}
+.careers-page ul li {
+  width: 100%;
+}
+.careers-page ul li.empty {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Graphik Web';
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+.careers-page ul li a {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  padding: 0.6rem 1.2rem;
+}
+.careers-page ul li a:hover {
+  border-left-color: #3814a5;
+}
+.careers-page ul li a h3 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Graphik Web';
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  line-height: 2.6rem;
+  margin-right: 1.6rem;
+}
+.careers-page ul li a p,
+.careers-page ul li a time {
+  font-style: normal;
+  font-stretch: normal;
+  color: #6f6f6f;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin-right: 1.6rem;
+}
+.careers-page p.alternative {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin-top: 3.2rem;
+}
+.careers-page p.alternative a {
+  text-decoration: none;
+  color: #3814a5;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border-radius: 4px;
+}
+.careers-page p.alternative a:hover {
+  background: #d4cce0;
+  mix-blend-mode: darken;
+}
+.career-post {
+  max-width: 1140px;
+  margin: 89px auto 0;
+  padding: 4.8rem 0;
+}
+.career-post h1 {
+  margin: 3.2rem 0;
+}
+.career-post a {
+  font-style: normal;
+  font-stretch: normal;
+  color: #3814a5;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.career-post h2 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 6.08rem;
+  font-size: 3rem;
+}
+.career-post p,
+.career-post time {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Graphik Web';
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin: 0 1.6rem;
+  padding: 0.8rem 0;
+  line-height: 2.6rem;
+}
+.career-post section {
+  margin: 1.6rem;
+}
+.career-post section.career-application a {
+  padding: 1.6rem 3.2rem;
+  display: inline-block;
+  margin-top: 1.6rem;
+  background: #3814a5;
+  border-radius: 8px;
+  color: #fffcef;
+}
+.career-post .career-title {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 6.08rem;
 }
