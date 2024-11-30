@@ -13,27 +13,38 @@
 	p
 		text--body($black)
 
-	h2, h3
-		text--strong($black)
-
 	h2
+		text--strong($black)
 		margin-bottom 1.5rem
 		padding-bottom 12px
 
 		&.wt_sectionHeader
 			border-bottom 1px solid $lightPurple
+	h3
+		text--strong($blue)
 
 	ul
 		border-bottom 1px solid $lightPurple
 		margin-bottom 16px
+
 		li
 			margin-bottom 1.2rem
+
+
+		&.resources
+			li
+				display inline-block
+
 			a
-				&:hover
-					text-decoration underline
+				clear both
+
+				&:last-of-type
+					float left
+					anchor($blue, 2px)
+					margin-left 1rem
 	a
-		text-decoration none
 		text--body($blue)
+		text-decoration none
 		display block
 
 		strong

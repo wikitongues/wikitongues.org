@@ -91,10 +91,10 @@
 
 					<aside class="wt_header__mobile-buttons">
 						<button id="mobile-nav-open">
-							<i class="fa-regular fa-bars"></i>
+							<i class="fa-solid fa-bars"></i>
 						</button>
 						<button id="mobile-nav-close">
-							<i class="fa-regular fa-x"></i>
+							<i class="fa-solid fa-xmark"></i>
 						</button>
 					</aside>
 				</section>

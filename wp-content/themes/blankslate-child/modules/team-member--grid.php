@@ -1,7 +1,7 @@
 <article class="wt_team-member--grid">
 	<!-- team member image -->
 	<aside class="wt_team-member--grid__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
-	
+
 	<!-- team member meta -->
 	<aside class="wt_team-member--grid__meta">
 		<!-- team member name and title -->
@@ -23,7 +23,7 @@
 		<?php if ( $email ): ?>
 			<li>
 				<a href="mailto:<?php echo $email; ?>">
-					<i class="fa-sharp fa-solid fa-envelope"></i>
+					<i class="fa-solid fa-envelope"></i>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -40,7 +40,7 @@
 		<?php if ( $website ): ?>
 			<li>
 				<a href="<?php echo $twitter; ?>">
-					<i class="fa-brands fa-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>
+					<i class="fa-brands fa-x-twitter"></i>/<i class="fa-brands fa-x-twitter"></i>
 				</a>
 			</li>
 		<?php endif; ?>

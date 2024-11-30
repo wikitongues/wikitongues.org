@@ -67,9 +67,9 @@
             "label": "Block Copy",
             "name": "block_copy",
             "aria-label": "",
-            "type": "text",
+            "type": "textarea",
             "instructions": "",
-            "required": 0,
+            "required": false,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -77,10 +77,10 @@
                 "id": ""
             },
             "default_value": "",
+            "new_lines": "",
             "maxlength": "",
             "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "rows": ""
         }
     ],
     "location": [
@@ -101,5 +101,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1728232279
+    "modified": 1732883697
 }

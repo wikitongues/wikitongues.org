@@ -21,7 +21,7 @@ function create_events_cpt() {
         'public' => true,
         'has_archive' => false,
         'rewrite' => array('slug' => 'events'),
-        'supports' => array('title', 'editor', 'revisions'),
+        'supports' => array('title', 'revisions'),
         'menu_icon' => 'dashicons-calendar-alt',
         'show_in_rest' => true,
     );
