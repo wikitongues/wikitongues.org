@@ -26,6 +26,10 @@ function log_data($data, $method = 'console') { // methods: console, dom
 	}
 }
 
+function get_url() {
+	$url = home_url();
+}
+
 add_action('wp_head', 'modify_page_title');
 function modify_page_title() {
 	$environment = get_environment();

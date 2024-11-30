@@ -13,7 +13,7 @@
 		align-items flex-start
 
 		.faq-content
-			max-width 1000px
+			max-width $content
 			padding-right 32px
 			margin-top -7rem
 
@@ -24,9 +24,9 @@
 				text--header($black)
 				font-size 3rem
 				margin 1.6rem 0
-				padding-top 7rem
 				padding-bottom 1rem
 				border-bottom 2px solid $lightPurple
+				scroll-margin-top 75px
 
 				&:first-of-type
 					margin-top 0
@@ -35,17 +35,25 @@
 				text--strong($black)
 				margin .8rem 0 0
 
-			ul
-				margin-bottom -7rem
-
 			.faq-entry
-				margin-left 1.6rem
+				padding-left 1.6rem
 				margin-bottom 2.4rem
+				border-left 2px solid transparent
+
+				&:hover
+					border-left-color $blue
 
 				p, li
 					text--body($black)
-					line-height 3.6rem
+					line-height 2.6rem
 					margin-left 1.6rem
+					padding 0.2rem 0
+
+					b
+						font-weight 700
+
+					a, a:visited, a:active, a span
+						anchor($blue, 2px)
 
 				ol, ul
 					list-style-type auto

@@ -34,7 +34,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
   }
 }
 
-echo '<h1 class="success_cta">Have more to say? Submit another video <a href="http://localhost:8888/wikitongues/archive/submit-a-video/">here</a>.</h1>';
+echo '<h1 class="success_cta">Have more to say? Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h1>';
 
 include( 'modules/newsletter.php' );
 

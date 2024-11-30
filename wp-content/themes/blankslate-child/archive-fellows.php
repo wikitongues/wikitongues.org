@@ -1,5 +1,2 @@
 <?php
-
-$wikitongues_url = home_url();
-
-header('Location: ' . $wikitongues_url . '/revitalization/fellows');
+header('Location: ' . home__url('/revitalization/fellows','relative'));

@@ -1,0 +1,86 @@
+.careers-page
+	max-width $content
+	margin 0 auto 3.2rem
+
+	h1
+		text--header($black)
+
+	.career-section
+		margin 1.6rem 0
+
+		h2
+			text--header($black)
+			font-size 3rem
+			margin-bottom 0.8rem
+
+	ul
+		li
+			width 100%
+
+			&.empty
+				text--strong($black)
+
+			a
+				display flex
+				flex-direction row
+				align-items baseline
+				text-decoration none
+				border-left 4px solid transparent
+				padding .6rem 1.2rem
+
+				&:hover
+					border-left-color $blue
+
+				h3
+					text--strong($black)
+					line-height 2.6rem
+					margin-right 1.6rem
+
+				p, time
+					text--body($darkGrey)
+					margin-right 1.6rem
+
+	p.alternative
+		text--body($black)
+		margin-top 3.2rem
+
+		a
+			anchor($blue, 2px)
+
+.career-post
+	max-width $content
+	margin 89px auto 0
+	padding 4.8rem 0
+
+	h1
+		margin 3.2rem 0
+
+	a
+		text--body($blue)
+		text-decoration none
+
+	h2
+		text--header($black)
+		font-size 3rem
+
+	p, time
+		text--body($black)
+		margin 0 1.6rem
+		padding 0.8rem 0
+		line-height 2.6rem
+
+	section
+		margin 1.6rem
+
+		&.career-application
+			a
+				padding 1.6rem 3.2rem
+				display inline-block
+				margin-top 1.6rem
+				background $blue
+				border-radius 8px
+				color $parchment
+
+	.career
+		&-title
+			text--header($black)
