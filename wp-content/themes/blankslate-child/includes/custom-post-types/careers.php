@@ -5,7 +5,7 @@ if (!class_exists('CareersPostType')) {
         public function __construct()
         {
             add_action('init', [$this, 'register_post_type']);
-            add_action('acf/init', [$this, 'register_acf_fields']);
+						add_action('init', [$this, 'register_taxonomy']);
         }
 
         public function register_post_type()
@@ -37,7 +37,31 @@ if (!class_exists('CareersPostType')) {
 
             register_post_type('careers', $args);
         }
+				public function register_taxonomy()
+				{
+						$labels = [
+								'name'              => __('Career Types', 'textdomain'),
+								'singular_name'     => __('Career Type', 'textdomain'),
+								'search_items'      => __('Search Career Types', 'textdomain'),
+								'all_items'         => __('All Career Types', 'textdomain'),
+								'edit_item'         => __('Edit Career Type', 'textdomain'),
+								'update_item'       => __('Update Career Type', 'textdomain'),
+								'add_new_item'      => __('Add New Career Type', 'textdomain'),
+								'new_item_name'     => __('New Career Type Name', 'textdomain'),
+								'menu_name'         => __('Career Types', 'textdomain'),
+						];
 
+						$args = [
+								'hierarchical'      => true, // Behaves like categories
+								'labels'            => $labels,
+								'show_ui'           => true,
+								'show_admin_column' => true,
+								'query_var'         => true,
+								'rewrite'           => ['slug' => 'career-type'],
+						];
+
+						register_taxonomy('career_type', 'careers', $args);
+				}
         public function register_acf_fields()
         {
             if (function_exists('acf_add_local_field_group')) {
@@ -97,21 +121,4 @@ if (!class_exists('CareersPostType')) {
     }
 
     new CareersPostType();
-}
-function display_global_acf_fields() {
-	$fields = [
-		'why_wikitongues' => 'Why Wikitongues',
-		'about_wikitongues' => 'About Wikitongues',
-		'dei' => 'Diversity, Equity, and Inclusion',
-	];
-
-	foreach ($fields as $field_key => $label) {
-			$value = get_field($field_key, 'option');
-			if ($value) {
-					echo '<div class="' . esc_attr($field_key) . '">';
-					echo '<h2>' . esc_html($label) . '</h2>';
-					echo wp_kses_post($value);
-					echo '</div>';
-			}
-	}
 }
