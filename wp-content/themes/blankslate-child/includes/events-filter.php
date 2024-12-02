@@ -14,7 +14,6 @@ function format_event_date_with_proximity($date_string) {
 			elseif ($days_difference < 0) $proximity = " Last $day_of_week, ";
 			else $proximity = " Today, ";
 	}
-
 	return $proximity . $event_date->format('j F Y, gA');
 }
 

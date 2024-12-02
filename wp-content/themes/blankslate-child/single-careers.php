@@ -71,4 +71,5 @@ if (have_posts()) :
 	endwhile;
 endif;
 
+include('modules/newsletter.php');
 get_footer();

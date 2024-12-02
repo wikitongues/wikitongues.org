@@ -4,9 +4,8 @@ get_header();
 
 $page_banner = get_field('archive_success_banner');
 include( 'modules/banner--main.php' );
-include( 'modules/main-content--archive-success.php' );
 
-$thumbnail_carousel = get_field('thumbnail_carousel');
+include( 'modules/main-content--archive-success.php' ); // Success page FAQ
 
 if ( have_rows( 'custom_gallery_posts' ) ) {
   while ( have_rows( 'custom_gallery_posts') ) {
@@ -34,7 +33,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
   }
 }
 
-echo '<h1 class="success_cta">Have more to say? Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h1>';
+echo '<div class="success_cta"><h1>Have more to say?</h1> <br> <h2>Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h2></div>';
 
 include( 'modules/newsletter.php' );
 

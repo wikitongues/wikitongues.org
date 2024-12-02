@@ -1,17 +1,26 @@
-<div class="wt_archive__faq">
-	<h1>Frequently Asked Questions</h1>
-	<section>
-    <article>
-      <p><strong>When will my video by available on the website?</strong><br>
-      We typically archive videos within one week of submission. You will receive an email when your video has been archived. After that, your video should be viewable on the website within 24-48 hours!</p>
-    </article>
-    <article>
-      <p><strong>Will my video by published on YouTube?</strong><br>
-      All videos are added to our website, but not all are added to our YouTube channel. We prioritize videos that have good audio quality and limited background noise.</p>
-    </article>
-    <article>
-      <p><strong>Can I change my video information after submission?</strong><br>
-      Yes, if you would like to change your licensing selection or submit subtitles for your video, please send us an email at <a href="mailto:hello@wikitongues.org">hello@wikitongues.org</a>.</p>
-    </article>
-  </section>
-</div>
+<?php
+if (have_rows('custom_faq_posts')) {
+  echo '<div class="wt_archive__faq">';
+  echo '<h1>Frequently Asked Questions</h1>';
+	echo '<ul>';
+	while (have_rows('custom_faq_posts')) {
+			the_row();
+			$custom_posts = get_sub_field('custom_gallery_post');
+
+			if ($custom_posts) {
+					foreach ($custom_posts as $post) {
+							setup_postdata($post);
+
+							echo '<li>';
+							echo '<h2>'.esc_html(get_the_title($post)).'</h2>';
+              echo '<p>'.apply_filters('the_content', get_the_content($post)).'</p>';
+							echo '</li>';
+					}
+
+					wp_reset_postdata();
+			}
+	}
+	echo '</ul>';
+  echo '</div>';
+}
+?>
