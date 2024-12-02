@@ -14,25 +14,30 @@
 	&__faq
 		display flex
 		flex-direction column
+		max-width $content
+		margin 0 auto
 
 		h1
-			margin 0 auto 6rem
+			margin 0 auto 2.4rem
 			width 100%
-			max-width 600px
-			text--header($black)
-			font-size 4.9rem
-			text-align center
+			text--subheader($black)
 
-		section
+		h2
+			text--strong($black)
+			text-align left
+			margin 0
+
+		ul
 			width 100%
 			max-width $content
 			margin 0 auto 3rem
 			column-count 3
 			column-gap 16px
 
-			article
+			li
 				float left
 				width 100%
+				list-style-type none
 
 				p
 					margin 0 auto 3rem
@@ -49,16 +54,23 @@
 						text--body($blue)
 						anchor($blue, 2px)
 
-h1.success_cta
-	margin 12rem auto
-	width 100%
-	max-width $content
-	text--header($black)
-	text-align center
-	font-size 4.9rem
+div.success_cta
+	h1
+		margin 12rem auto 0
+		width 100%
+		max-width $content
+		text--header($black)
+		text-align center
+		font-size 4.9rem
 
-	a
-		anchor($blue, 4px)
+	h2
+		text--subheader($black)
+		margin 0 auto 12rem
+		width 100%
+		text-align center
+
+		a
+			anchor($blue, 4px)
 
 @media all and (max-width:$mobile)
 	.page-template-template-archive-success

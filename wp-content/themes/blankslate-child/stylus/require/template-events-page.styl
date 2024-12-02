@@ -45,37 +45,38 @@
 			flex 1 1 calc(50% - 1rem)
 
 			h3
-				text--strong($black)
+				text--header($black)
+				font-size 2.6rem
 
-			h3,p
-				margin-bottom 16px
+			h3, .event-details
+				margin-bottom 8px
 
 			.event-details
+				margin-left 1.6rem
 				display inline-block
 
 				p
 					float left
+					color $darkGrey
 
 					&:first-of-type
-						margin-right 1.6em
+						margin-right 1.6rem
 
 			.event-description
-				margin-left 1.6em
+				margin-left 1.6rem
 
 			a
+				display inline-block
 				text-decoration none
-				font-weight bold
 				color $blue
+				padding 8px 12px
+				margin 4px 0px
+				border-radius 4px
 
 			&:hover
-				background $lightPurple
-				color $blue
-
-				h3
-					color $blue
-
 				a
-					color $blue
+					background $blue
+					color $parchment
 
 @media (max-width: $mobile)
 	.page-template-events-page
