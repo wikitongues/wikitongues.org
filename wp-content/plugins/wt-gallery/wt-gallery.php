@@ -157,7 +157,6 @@ function custom_gallery($atts) {
 
   $output = '<div class="' . $classes . '">';
 
-  // Set up title
   if ($query->have_posts()) {
     if ($atts['title']) {
       $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';

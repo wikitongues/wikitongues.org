@@ -32,7 +32,8 @@ function render_gallery_items($query, $atts, $gallery_id, $paged, $data_attribut
 
   wp_reset_postdata();
 
-  return ob_get_clean();
+  $output = ob_get_clean();
+  return $output;
 }
 
 function generate_gallery_pagination($query, $gallery_id, $paged) {

@@ -210,6 +210,13 @@ body.logged-in[data-alert="true"] .wt_header {
 .wt_header__logo {
   flex-grow: initial;
 }
+.wt_header__logo a {
+  display: inline-block;
+  padding: 0;
+}
+.wt_header__logo a:hover {
+  background: none;
+}
 .wt_header__logo--light {
   display: none;
 }
@@ -1468,32 +1475,43 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 .wt_archive__faq {
   display: flex;
   flex-direction: column;
+  max-width: 1140px;
+  margin: 0 auto;
 }
 .wt_archive__faq h1 {
-  margin: 0 auto 6rem;
+  margin: 0 auto 2.4rem;
   width: 100%;
-  max-width: 600px;
   font-style: normal;
   font-stretch: normal;
   color: #101010;
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
-  font-size: 6.08rem;
-  font-size: 4.9rem;
-  text-align: center;
+  font-size: 3.2rem;
 }
-.wt_archive__faq section {
+.wt_archive__faq h2 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Graphik Web';
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  text-align: left;
+  margin: 0;
+}
+.wt_archive__faq ul {
   width: 100%;
   max-width: 1140px;
   margin: 0 auto 3rem;
   column-count: 3;
   column-gap: 16px;
 }
-.wt_archive__faq section article {
+.wt_archive__faq ul li {
   float: left;
   width: 100%;
+  list-style-type: none;
 }
-.wt_archive__faq section article p {
+.wt_archive__faq ul li p {
   margin: 0 auto 3rem;
   width: 100%;
   max-width: 600px;
@@ -1505,7 +1523,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   font-size: 1.6rem;
   line-height: 1.3;
 }
-.wt_archive__faq section article p strong {
+.wt_archive__faq ul li p strong {
   font-style: normal;
   font-stretch: normal;
   color: #101010;
@@ -1516,7 +1534,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   min-height: 3.3em;
   display: inline-block;
 }
-.wt_archive__faq section article p a {
+.wt_archive__faq ul li p a {
   font-style: normal;
   font-stretch: normal;
   color: #3814a5;
@@ -1530,12 +1548,12 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   margin: -2px -4px;
   border-radius: 4px;
 }
-.wt_archive__faq section article p a:hover {
+.wt_archive__faq ul li p a:hover {
   background: #d4cce0;
   mix-blend-mode: darken;
 }
-h1.success_cta {
-  margin: 12rem auto;
+div.success_cta h1 {
+  margin: 12rem auto 0;
   width: 100%;
   max-width: 1140px;
   font-style: normal;
@@ -1547,14 +1565,25 @@ h1.success_cta {
   text-align: center;
   font-size: 4.9rem;
 }
-h1.success_cta a {
+div.success_cta h2 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 3.2rem;
+  margin: 0 auto 12rem;
+  width: 100%;
+  text-align: center;
+}
+div.success_cta h2 a {
   text-decoration: none;
   color: #3814a5;
   padding: 4px 8px;
   margin: -4px -8px;
   border-radius: 8px;
 }
-h1.success_cta a:hover {
+div.success_cta h2 a:hover {
   background: #d4cce0;
   mix-blend-mode: darken;
 }
@@ -2879,6 +2908,7 @@ text
   font-weight: 300;
   font-size: 6.08rem;
   font-size: 3rem;
+  text-align: left;
   margin: 1.6rem 0;
   padding-bottom: 1rem;
   border-bottom: 2px solid #d4cce0;
@@ -3104,41 +3134,40 @@ text
   font-style: normal;
   font-stretch: normal;
   color: #101010;
-  font-family: 'Graphik Web';
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 1.3;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 6.08rem;
+  font-size: 2.6rem;
 }
 .page-template-events-page .event-list .event-entry h3,
-.page-template-events-page .event-list .event-entry p {
-  margin-bottom: 16px;
+.page-template-events-page .event-list .event-entry .event-details {
+  margin-bottom: 8px;
 }
 .page-template-events-page .event-list .event-entry .event-details {
+  margin-left: 1.6rem;
   display: inline-block;
 }
 .page-template-events-page .event-list .event-entry .event-details p {
   float: left;
+  color: #6f6f6f;
 }
 .page-template-events-page .event-list .event-entry .event-details p:first-of-type {
-  margin-right: 1.6em;
+  margin-right: 1.6rem;
 }
 .page-template-events-page .event-list .event-entry .event-description {
-  margin-left: 1.6em;
+  margin-left: 1.6rem;
 }
 .page-template-events-page .event-list .event-entry a {
+  display: inline-block;
   text-decoration: none;
-  font-weight: bold;
   color: #3814a5;
-}
-.page-template-events-page .event-list .event-entry:hover {
-  background: #d4cce0;
-  color: #3814a5;
-}
-.page-template-events-page .event-list .event-entry:hover h3 {
-  color: #3814a5;
+  padding: 8px 12px;
+  margin: 4px 0px;
+  border-radius: 4px;
 }
 .page-template-events-page .event-list .event-entry:hover a {
-  color: #3814a5;
+  background: #3814a5;
+  color: #fffcef;
 }
 @media (max-width: 768px) {
   .page-template-events-page .event-list .event-entry {
@@ -3156,8 +3185,7 @@ text
   color: #101010;
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
-  font-size: 6.08rem;
-  font-size: 4rem;
+  font-size: 3.2rem;
   margin-bottom: 1.6rem;
 }
 .page-template-template-giving-campaign-24 .content p {
@@ -3603,8 +3631,7 @@ text
   color: #101010;
   font-family: 'Schnyder Wide M Web';
   font-weight: 300;
-  font-size: 6.08rem;
-  font-size: 3rem;
+  font-size: 3.2rem;
   margin-bottom: 1.5rem;
 }
 #page-404 a {
@@ -3654,6 +3681,7 @@ text
   font-weight: 700;
   font-size: 1.6rem;
   line-height: 1.3;
+  text-align: left;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #d4cce0;
   padding-bottom: 12px;
@@ -4128,7 +4156,7 @@ text
 }
 .career-post {
   max-width: 1140px;
-  margin: 89px auto 0;
+  margin: 58px auto 0;
   padding: 4.8rem 0;
 }
 .career-post h1 {
