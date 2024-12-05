@@ -4,9 +4,10 @@
 
 	h1
 		text--header($black)
+		margin-bottom 3.6rem
 
 	.career-section
-		margin 1.6rem 0
+		margin 1.6rem 0 3.2rem
 
 		h2
 			text--header($black)
@@ -18,15 +19,18 @@
 			width 100%
 
 			&.empty
-				text--strong($black)
+				text--body($darkGrey)
+				font-style italic
+
+			a,.empty p
+				padding .6rem 1.2rem
+				border-left 4px solid transparent
 
 			a
 				display flex
 				flex-direction row
 				align-items baseline
 				text-decoration none
-				border-left 4px solid transparent
-				padding .6rem 1.2rem
 
 				&:hover
 					border-left-color $blue
@@ -34,15 +38,15 @@
 				h3
 					text--strong($black)
 					line-height 2.6rem
-					margin-right 1.6rem
+					display block
 
 				p, time
 					text--body($darkGrey)
-					margin-right 1.6rem
 
 	p.alternative
 		text--body($black)
 		margin-top 3.2rem
+		margin-bottom 6.4rem
 
 		a
 			anchor($blue, 2px)
