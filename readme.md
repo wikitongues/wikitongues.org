@@ -201,6 +201,11 @@ Localhost db view error: `The user specified as a definer ('wikitong_master'@'lo
 1. `DROP VIEW IF EXISTS languages_view;`
 1. Recreate the View
 
+# Dependencies
+We are still developing the best method to get this project set up.
+Plugins
+Blankslate theme
+
 # To-Do
 
 ## Code structure and styles
