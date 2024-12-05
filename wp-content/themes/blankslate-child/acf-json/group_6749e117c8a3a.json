@@ -300,6 +300,26 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": ""
+                },
+                {
+                    "key": "field_67520eaa530ee",
+                    "label": "Application URL",
+                    "name": "application",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
                 }
             ]
         },
@@ -382,5 +402,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1733430014
+    "modified": 1733430987
 }
