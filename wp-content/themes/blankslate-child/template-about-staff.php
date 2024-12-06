@@ -12,6 +12,8 @@ include( 'modules/banner--team.php' );
 $staff_members = get_field('staff_members');
 
 // cycle through	 selected posts
+echo '<div class="wrapper" id="staff">';
+echo '<h2>Staff</h2>	';
 foreach( $staff_members as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
@@ -21,22 +23,30 @@ foreach( $staff_members as $post ) {
 	$title = get_field('leadership_title');
 	$bio = get_field('bio');
 	$location = get_field('contributor_location');
-	$linkedin = get_field('linkedin');
-	$website = get_field('website');
-	$twitter = get_field('twitter');
-	$email = get_field('email');
 	$personal_languages = get_field('languages');
+	$social_links = [
+		'email'     => ['url' => get_field('email'), 'icon' => 'fa-solid fa-envelope'],
+		'facebook'  => ['url' => get_field('facebook'), 'icon' => 'fa-brands fa-square-facebook'],
+		'instagram' => ['url' => get_field('instagram'), 'icon' => 'fa-brands fa-instagram'],
+		'linkedin'  => ['url' => get_field('linkedin'), 'icon' => 'fa-brands fa-linkedin'],
+		'tiktok'    => ['url' => get_field('tiktok'), 'icon' => 'fa-brands fa-tiktok'],
+		'twitter'   => ['url' => get_field('twitter'), 'icon' => 'fa-brands fa-x-twitter'],
+		'website'   => ['url' => get_field('website'), 'icon' => 'fa-solid fa-link'],
+		'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
+	];
 
 	// show board member module
 	include( 'modules/team-member--wide.php' );
 
 } wp_reset_postdata();
+echo "</div>";
 
 // define volunteer+intern team member posts to display acf
 
 // cycle through selected posts
 $interns_and_volunteers = get_field('interns_and_volunteers');
-
+echo '<div class="wrapper" id="volunteers">';
+echo '<h2>Interns and Volunteers</h2>	';
 if ( $interns_and_volunteers ) {
 
 	// cycle through selected posts
@@ -49,10 +59,16 @@ if ( $interns_and_volunteers ) {
 		$name = get_the_title();
 		$title = get_field('leadership_title');
 		$location = get_field('contributor_location');
-		$linkedin = get_field('linkedin');
-		$website = get_field('website');
-		$twitter = get_field('twitter');
-		$email = get_field('email');
+		$social_links = [
+			'email'     => ['url' => get_field('email'), 'icon' => 'fa-solid fa-envelope'],
+			'facebook'  => ['url' => get_field('facebook'), 'icon' => 'fa-brands fa-square-facebook'],
+			'instagram' => ['url' => get_field('instagram'), 'icon' => 'fa-brands fa-instagram'],
+			'linkedin'  => ['url' => get_field('linkedin'), 'icon' => 'fa-brands fa-linkedin'],
+			'tiktok'    => ['url' => get_field('tiktok'), 'icon' => 'fa-brands fa-tiktok'],
+			'twitter'   => ['url' => get_field('twitter'), 'icon' => 'fa-brands fa-x-twitter'],
+			'website'   => ['url' => get_field('website'), 'icon' => 'fa-solid fa-link'],
+			'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
+		];
 
 		// show board member module
 		include( 'modules/team-member--grid.php' );
@@ -60,7 +76,7 @@ if ( $interns_and_volunteers ) {
 	} wp_reset_postdata();
 
 }
-
+echo "</div>";
 include( 'modules/newsletter.php' );
 
 get_footer();
