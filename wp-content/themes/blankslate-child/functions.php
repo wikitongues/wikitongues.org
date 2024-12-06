@@ -9,3 +9,4 @@ require_once('includes/rest-endpoints.php');
 require_once('includes/batch-operations.php');
 require_once('includes/admin-helpers.php');
 require_once('includes/events-filter.php');
+require_once('includes/acf-helpers.php');

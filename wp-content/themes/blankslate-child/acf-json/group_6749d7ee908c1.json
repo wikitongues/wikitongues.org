@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_6749d8356450f",
-            "label": "Location",
+            "label": "Role Location",
             "name": "location",
             "aria-label": "",
             "type": "text",
@@ -23,8 +23,26 @@
             "append": ""
         },
         {
+            "key": "field_6752003567808",
+            "label": "Application Deadline",
+            "name": "deadline",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "F j, Y",
+            "first_day": 1
+        },
+        {
             "key": "field_6749db9b64510",
-            "label": "Team and Role Description",
+            "label": "Team Description",
             "name": "team_description",
             "aria-label": "",
             "type": "wysiwyg",
@@ -49,7 +67,7 @@
             "aria-label": "",
             "type": "wysiwyg",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -64,12 +82,12 @@
         },
         {
             "key": "field_6749dbd8f96ea",
-            "label": "Candidate Background",
-            "name": "candidate_background",
+            "label": "Requirements",
+            "name": "requirements",
             "aria-label": "",
             "type": "wysiwyg",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -104,12 +122,12 @@
         },
         {
             "key": "field_6749dbeff96ec",
-            "label": "Application",
+            "label": "Application Link",
             "name": "application",
             "aria-label": "",
             "type": "url",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -138,5 +156,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1732924665
+    "modified": 1733429072
 }

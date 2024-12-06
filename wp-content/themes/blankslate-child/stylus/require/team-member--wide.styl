@@ -1,56 +1,91 @@
+.page-template-template-about-staff,
+.page-template-template-about-board
+	.wrapper
+		display flex
+		flex-direction row
+		flex-wrap wrap
+		justify-content center
+		align-items flex-start
+		max-width $content
+		margin auto
+
+		> h2
+			width 100%
+			text--subheader($black)
+			margin 1.6rem 1.6rem 3.2rem
+			grid-column span 3
+
 .wt_team-member--wide
 	display flex
-	align-items top
 	margin 0 auto 6rem
-	width 900px
-	
+	width calc(50% - .8rem)
+
+	&:nth-of-type(even)
+		margin-left 1.6rem
+
+	&:nth-of-type(odd)
+		margin-left 0
+
 	&__img
 		display inline-block
 		width 95%
 		max-width 300px
-		height 200px
+		height 300px
 		background-position center center
 		background-size cover
 		background-repeat no-repeat
-		
+		border-radius 16px 0 16px 0
+
 	&__meta
-		display inline-block
+		display flex
 		width 95%
 		max-width 600px
-		padding-left 3rem
+		padding-left 2.4rem
 		box-sizing border-box
-		
+		justify-content flex-end
+		flex-direction column
+
+		h2
+			text--subheader($black)
+
 		strong
 			text--strong($black)
-			
-			span
-				&:first-of-type
-					text-transform uppercase
-		
+			margin-top 0.8rem
+			margin-bottom 1.6rem
+
 		p
 			text--body($black)
-		
+
+		h3
+			text--body($black)
+
 		ul
-			margin 1.5rem 0
-			
+			margin 0 0 1.5rem 0
+
 			li
 				display inline-block
-				margin-right 1.5rem
+				margin-right .8rem
 				text--body($black)
-				
+
 				&:last-of-type
 					margin-right 0
-				
+
 				a
 					text--body($blue)
 					text-decoration none
+					anchor($blue, 2px)
+
+			&.social
+				a
+					font-size 2rem
+					anchor($blue, 4px)
 
 @media all and (max-width:$mobile)
 	.wt_team-member--wide
 		display block
 		width 100%
 		margin-bottom 3rem
-		
+
 		&__img
 			display block
 			width 90%

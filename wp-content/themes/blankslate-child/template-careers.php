@@ -42,21 +42,20 @@ include( 'modules/banner--main.php' );
                                 <li>
                                     <a href="<?php the_permalink(); ?>">
                                         <h3><?php the_title(); ?></h3>
-                                        <p class="location"><?php echo esc_html(get_field('location')); ?></p>
-                                        <time datetime="<?php echo format_event_date_with_proximity(get_the_date('c')); ?>" itemprop="datePublished"><?php echo format_event_date_with_proximity(get_the_date()); ?></time>
+                                        <p class="location">&nbsp;— <?php echo esc_html(get_field('location')); ?></p>
                                     </a>
                                 </li>
                             <?php
                         endwhile;
                     else :
                         // No posts found
-                        echo '<li class="empty">No open positions at the moment</li>';
+                        echo '<li class="empty"><p>No open positions at the moment</p></li>';
                     endif;
 
                     wp_reset_postdata();
                 } else {
                     // Term does not exist
-                    echo '<li class="empty">No open positions at the moment</li>';
+                    echo '<li class="empty"><p>No open positions at the moment</p></li>';
                 }
                 ?>
             </ul>
