@@ -1,43 +1,52 @@
+.wrapper#volunteers
+	display grid
+	grid-template-columns repeat(3, 1fr)
+	grid-column-gap 1.6rem
+
 .wt_team-member--grid
 	display inline-block
-	margin 0 0 6rem 3.3333333%
-	width 20.8333333%
-	vertical-align top 
-	
+	margin 0 0 6rem 0
+	width 100%
+	vertical-align top
+
+	&:first-of-type
+		margin-left 0
+
 	&__img
 		display block
 		width 100%
-		height 200px
+		height 300px
 		background-position center center
 		background-size cover
 		background-repeat no-repeat
-		
+		border-radius 16px 0 16px 0
+
 	&__meta
 		display block
 		width 100%
 		margin-top 1.5rem
-		
+
 		strong
 			text--strong($black)
-			
+
 			span
 				&:first-of-type
 					text-transform uppercase
-		
+
 		p
 			text--body($black)
-		
+
 		ul
 			margin 1.5rem 0
-			
+
 			li
 				display inline-block
 				margin-right 1.5rem
 				text--body($black)
-				
+
 				&:last-of-type
 					margin-right 0
-				
+
 				a
 					text--body($blue)
 					text-decoration none
@@ -46,12 +55,11 @@
 	.wt_team-member--grid
 		width 47%
 		margin-bottom 3rem
-		
+
 		&:nth-of-type(even)
 			margin-left 1%
 			margin-right 2%
-		
+
 		&:nth-of-type(odd)
 			margin-left 2%
 			margin-right 1%
-		
