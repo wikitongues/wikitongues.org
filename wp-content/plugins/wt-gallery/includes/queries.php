@@ -8,6 +8,7 @@
 
  function get_custom_gallery_query($atts = array()) {
     $defaults = array(
+        'post_status' => 'publish',
         'post_type' => 'languages', // videos, languages, fellows
         'posts_per_page' => 6,
         'orderby' => 'date',
@@ -15,6 +16,8 @@
         'meta_key' => '',
         'meta_value' => '',
         'paged' => 1,
+        'taxonomy' => '',
+        'term' => '',
     );
 
     $args = wp_parse_args($atts, $defaults);
@@ -63,15 +66,47 @@
         $args['meta_query'] = $meta_query;
         unset($args['meta_key']);
         unset($args['meta_value']);
+    } else if (!empty($atts['taxonomy']) && !empty($atts['term'])) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => $atts['taxonomy'],
+                'field' => 'slug',
+                'terms' => $atts['term'],
+            ),
+        );
+
     }
 
-    // // Exclude current post from the query
+    // Exclude current post from the query
     $current_post_type = get_post_type();
     if ($current_post_type === $args['post_type']) {
         $args['post__not_in'] = array(get_the_ID());
     }
 
     $query = new WP_Query($args);
+    if (!empty($args['tax_query'])) {
+        $tax_query = $args['tax_query'][0];
+        $terms = explode(',', $tax_query['terms']);
+        $terms = array_map('trim', $terms);
+
+        if (count($terms) > 1) {
+            $args['tax_query'] = array('relation' => 'OR');
+            foreach ($terms as $term) {
+                if (!empty($term)) {
+                    $args['tax_query'][] = array(
+                        'taxonomy' => $tax_query['taxonomy'],
+                        'field' => $tax_query['field'],
+                        'terms' => $term,
+                    );
+                }
+            }
+        } else {
+            $args['tax_query'][0]['terms'] = $terms[0];
+        }
+    }
+
+    $query = new WP_Query($args);
+    // log_data($query,"dom");
     return $query;
 }
 

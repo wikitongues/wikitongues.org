@@ -99,6 +99,43 @@ function get_custom_title($post_type) {
   }
 }
 
+function create_gallery_instance($params) {
+	$defaults = [
+		'title' => '',
+		'custom_class' => '',
+		'post_type' => 'post',
+		'columns' => 1,
+		'posts_per_page' => 3,
+		'orderby' => 'date',
+		'order' => 'desc',
+		'pagination' => 'false',
+		'meta_key' => '',
+		'meta_value' => '',
+		'selected_posts' => '',
+		'display_blank' => 'true',
+		'taxonomy' => '',
+		'term' => ''
+	];
+
+	$args = wp_parse_args($params, $defaults);
+
+	return do_shortcode('[custom_gallery title="'.
+  $args['title'].'" custom_class="'.
+  $args['custom_class'].'" post_type="'.
+  $args['post_type'].'" columns="'.
+  $args['columns'].'" posts_per_page="'.
+  $args['posts_per_page'].'" orderby="'.
+  $args['orderby'].'" order="'.
+  $args['order'].'" pagination="'.
+  $args['pagination'].'" meta_key="'.
+  $args['meta_key'].'" meta_value="'.
+  $args['meta_value'].'" selected_posts="'.
+  $args['selected_posts'].'" display_blank="'.
+  $args['display_blank'].'" taxonomy="'.
+  $args['taxonomy'].'" term="'.
+  $args['term'].'"]');
+}
+
 function custom_gallery($atts) {
   static $gallery_counter = 0;
   $gallery_counter++;
@@ -117,6 +154,9 @@ function custom_gallery($atts) {
     'pagination' => 'true', // string true or false
     'gallery_id' => 'gallery_' . $gallery_counter,
     'selected_posts' => array(),
+    'display_blank' => 'true', // define whether to use the default blank state or string true or false
+    'taxonomy' => '',
+    'term' => '',
   ), $atts, 'custom_gallery');
 
   $paged = get_query_var('paged') ? get_query_var('paged') : 1;
@@ -130,21 +170,26 @@ function custom_gallery($atts) {
 
   // Query setup
   $args = array(
-      'post_type' => $atts['post_type'],
-      'posts_per_page' => $atts['posts_per_page'],
-      'orderby' => $atts['orderby'],
-      'order' => $atts['order'],
-      'meta_key' => $atts['meta_key'],
-      'meta_value' => $atts['meta_value'],
-      'paged' => $paged,
-      'columns' => $atts['columns'],
-      'pagination' => $atts['pagination'],
+    'post_type' => $atts['post_type'],
+    'posts_per_page' => $atts['posts_per_page'],
+    'orderby' => $atts['orderby'],
+    'order' => $atts['order'],
+    'meta_key' => $atts['meta_key'],
+    'meta_value' => $atts['meta_value'],
+    'paged' => $paged,
+    'columns' => $atts['columns'],
+    'pagination' => $atts['pagination'],
+    'display_blank' => $atts['display_blank'],
+    'taxonomy' => $atts['taxonomy'],
+    'term' => $atts['term'],
   );
+
 
   // Merge in any additional arguments (like selected posts)
   if (!empty($selected_posts)) {
       $args['post__in'] = $selected_posts;
   }
+  // log_data($args,"dom");
 
   $data_attributes = esc_attr(json_encode($args));
 
@@ -163,10 +208,12 @@ function custom_gallery($atts) {
     }
     $output .= render_gallery_items($query, $atts, $atts['gallery_id'], $paged, $data_attributes);
   } else {
-    if ($atts['title']) {
-      $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
+    if ($atts['display_blank']==='true') {
+      if ($atts['title']) {
+        $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
+      }
+      $output .= '<p>There are no other '.$atts['post_type'].' to display—yet.</p>';
     }
-    $output .= '<p>There are no other '.$atts['post_type'].' to display—yet.</p>';
   }
   $output .= '</div>';
 
