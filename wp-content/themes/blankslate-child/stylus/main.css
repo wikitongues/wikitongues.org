@@ -2149,6 +2149,57 @@ text
     border-top: 1px solid #dcdcdc;
   }
 }
+.page-template-template-about-staff .wrapper,
+.page-template-template-about-board .wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1140px;
+  margin: auto;
+  grid-row-gap: 2.4rem;
+}
+.page-template-template-about-staff .wrapper > h2,
+.page-template-template-about-board .wrapper > h2 {
+  width: 100%;
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 3.2rem;
+  margin: 0 0 1.6rem 0;
+  grid-column: span 3;
+}
+.custom-gallery.careers {
+  width: 1140px;
+  margin: 6.4rem auto;
+}
+.custom-gallery.careers h2 {
+  font-style: normal;
+  font-stretch: normal;
+  color: #101010;
+  font-family: 'Schnyder Wide M Web';
+  font-weight: 300;
+  font-size: 3.2rem;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.custom-gallery.careers .gallery-container .gallery-list .gallery-item a {
+  background-color: transparent;
+  color: #101010;
+  text-decoration: none;
+  color: #3814a5;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  border-radius: 8px;
+  height: initial;
+}
+.custom-gallery.careers .gallery-container .gallery-list .gallery-item a:hover {
+  background: #d4cce0;
+  mix-blend-mode: darken;
+}
 .wt_banner--team {
   margin-bottom: 4.8rem;
   padding: 6rem;
@@ -2179,31 +2230,9 @@ text
     padding: 6rem 3rem;
   }
 }
-.page-template-template-about-staff .wrapper,
-.page-template-template-about-board .wrapper {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  max-width: 1140px;
-  margin: auto;
-}
-.page-template-template-about-staff .wrapper > h2,
-.page-template-template-about-board .wrapper > h2 {
-  width: 100%;
-  font-style: normal;
-  font-stretch: normal;
-  color: #101010;
-  font-family: 'Schnyder Wide M Web';
-  font-weight: 300;
-  font-size: 3.2rem;
-  margin: 1.6rem 1.6rem 3.2rem;
-  grid-column: span 3;
-}
 .wt_team-member--wide {
   display: flex;
-  margin: 0 auto 6rem;
+  margin: 0 auto;
   width: calc(50% - 0.8rem);
 }
 .wt_team-member--wide:nth-of-type(even) {
@@ -2336,7 +2365,7 @@ text
 }
 .wt_team-member--grid {
   display: inline-block;
-  margin: 0 0 6rem 0;
+  margin: 0;
   width: 100%;
   vertical-align: top;
 }
