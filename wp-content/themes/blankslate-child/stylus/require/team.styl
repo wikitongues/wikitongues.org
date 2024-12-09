@@ -1,0 +1,35 @@
+.page-template-template-about-staff,
+.page-template-template-about-board
+	.wrapper
+		display flex
+		flex-direction row
+		flex-wrap wrap
+		justify-content center
+		align-items flex-start
+		max-width $content
+		margin auto
+		grid-row-gap 2.4rem
+
+		> h2
+			width 100%
+			text--subheader($black)
+			margin 0 0 1.6rem 0
+			grid-column span 3
+
+.custom-gallery.careers
+	width $content
+	margin 6.4rem auto
+
+	h2
+		text--subheader($black)
+		border-bottom none
+		margin-bottom 0
+
+	.gallery-container
+		.gallery-list
+			.gallery-item
+				a
+					background-color transparent
+					color $black
+					anchor($blue, 4px)
+					height initial

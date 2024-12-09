@@ -24,18 +24,24 @@ include( 'modules/banner--main.php' );
 </div>
 
 <?php
-  $custom_title = '';
-  $custom_post_type = 'fellows';
-  $custom_class = 'full';
-  $custom_columns = 4;
-  $custom_posts_per_page = 60;
-  $custom_orderby = 'date';
-  $custom_order = 'asc';
-  $custom_pagination = 'true';
-  $custom_meta_key = 'fellow_year';
-  $custom_meta_value = isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : $cohorts[0];
-  $custom_selected_posts = '';
-  echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+  // Gallery
+  $params = [
+    'title' => '',
+    'post_type' => 'fellows',
+    'custom_class' => 'full',
+    'columns' => 4,
+    'posts_per_page' => 60,
+    'orderby' => 'date',
+    'order' => 'asc',
+    'pagination' => 'true',
+    'meta_key' => 'fellow_year',
+    'meta_value' => isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : $cohorts[0],
+    'selected_posts' => '',
+    'display_blank' => '',
+    'taxonomy' => '',
+    'term' => '',
+  ];
+  echo create_gallery_instance($params);
 
   include( 'modules/newsletter.php' );
 

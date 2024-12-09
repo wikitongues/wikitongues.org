@@ -34,18 +34,24 @@ include( 'modules/single-languages__resources.php' );
 
 echo '</main>';
 
-$custom_title = 'Other languages from '.$nations_of_origin;
-$custom_post_type = 'languages';
-$custom_class = 'full';
-$custom_columns = 4;
-$custom_posts_per_page = 8;
-$custom_orderby = 'rand';
-$custom_order = 'asc';
-$custom_pagination = 'false';
-$custom_meta_key = 'nations_of_origin';
-$custom_meta_value = $nations_of_origin;
-$custom_selected_posts = '';
-echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+// Gallery
+$params = [
+	'title' => 'Other languages from '.$nations_of_origin,
+	'post_type' => 'languages',
+	'custom_class' => 'full',
+	'columns' => 4,
+	'posts_per_page' => 8,
+	'orderby' => 'rand',
+	'order' => 'asc',
+	'pagination' => 'false',
+	'meta_key' => 'nations_of_origin',
+	'meta_value' => $nations_of_origin,
+	'selected_posts' => '',
+	'display_blank' => '',
+	'taxonomy' => '',
+	'term' => ''
+];
+echo create_gallery_instance($params);
 
 // other posts (revitalization projects, translation/etc, learning options) - add in later version
 
