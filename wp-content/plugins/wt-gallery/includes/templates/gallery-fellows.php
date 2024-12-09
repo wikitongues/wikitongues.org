@@ -1,4 +1,5 @@
 <?php
+$url = get_permalink();
 $categories = get_the_terms(get_the_ID(), 'fellow-category');
 $category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
 $class = $atts['custom_class'];
@@ -10,27 +11,27 @@ $marketing_text = get_field('marketing_text');
 $thumbnail = '';
 
 if ($thumbnail_url) {
-		$thumbnail = '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail_url).');" alt="' . get_the_title() . '"></div><span class="thumbnail-spacer">&nbsp;</span>';
+	$thumbnail = '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail_url).');" alt="' . get_the_title() . '"></div><span class="thumbnail-spacer">&nbsp;</span>';
 } else {
-		$thumbnail = '<div class="no-thumbnail"><p>Thumbnail unavailable</p></div><span class="thumbnail-spacer">&nbsp;</span>';
+	$thumbnail = '<div class="no-thumbnail"><p>Thumbnail unavailable</p></div><span class="thumbnail-spacer">&nbsp;</span>';
 }
 
 if ($class === "custom fundraiser") {
-	echo '<li>';
-	echo '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail_url).');" alt="' . get_the_title() . '"></div>';
-	echo '<section>';
-	echo '<h2>'.$title.'<br>'.$location.'</h2>';
-	echo '<p>'.$marketing_text.'</p>';
-	echo '</section>';
-	echo '</li>';
+  echo '<li>';
+  echo '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail_url).');" alt="' . get_the_title() . '"></div>';
+  echo '<section>';
+  echo '<h2>'.$title.'<br>'.$location.'</h2>';
+  echo '<p>'.$marketing_text.'</p>';
+  echo '</section>';
+  echo '</li>';
 } else {
-	echo '<li class="gallery-item">';
-	echo '<a href="'.esc_url(get_permalink()).'">';
-	echo $thumbnail;
-	echo '<div><h3>' . $title . '</h3></div>';
-	$metadata = '<div class="fellow-metadata"><h3>'.$fellow_language_preferred_name.'</h3>';
-	$metadata .= '<p>'.$category_names.'</p><span><p>'.$location.'</p><p>'.$fellow_year.'</p></span></div>';
-	echo $metadata;
-	echo '</a>';
-	echo '</li>';
+  echo '<li class="gallery-item">';
+  echo '<a href="' . esc_url($url) . '">';
+  echo $thumbnail;
+  echo '<div><h3>' . $title . '</h3></div>';
+  $metadata = '<div class="fellow-metadata"><h3>'.$fellow_language_preferred_name.'</h3>';
+  $metadata .= '<p>'.$category_names.'</p><span><p>'.$location.'</p><p>'.$fellow_year.'</p></span></div>';
+  echo $metadata;
+  echo '</a>';
+  echo '</li>';
 }
