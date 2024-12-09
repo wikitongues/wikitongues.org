@@ -40,6 +40,24 @@ foreach( $staff_members as $post ) {
 
 } wp_reset_postdata();
 echo "</div>";
+// Gallery
+$careers = [
+	'title' => 'Explore careers',
+	'post_type' => 'careers',
+	'custom_class' => '',
+	'columns' => 1,
+	'posts_per_page' => 3,
+	'orderby' => 'rand',
+	'order' => 'asc',
+	'pagination' => 'false',
+	'meta_key' => '',
+	'meta_value' => '',
+	'selected_posts' => '',
+	'display_blank' => 'false',
+	'taxonomy' => 'career_type',
+	'term' => 'Staff'
+];
+echo create_gallery_instance($careers);
 
 // define volunteer+intern team member posts to display acf
 
@@ -77,6 +95,25 @@ if ( $interns_and_volunteers ) {
 
 }
 echo "</div>";
+// Gallery
+$otherOpportunities = [
+	'title' => 'Explore other opportunities',
+	'post_type' => 'careers',
+	'custom_class' => '',
+	'columns' => 1,
+	'posts_per_page' => 3,
+	'orderby' => 'rand',
+	'order' => 'asc',
+	'pagination' => 'false',
+	'meta_key' => '',
+	'meta_value' => '',
+	'selected_posts' => '',
+	'display_blank' => 'false',
+	'taxonomy' => 'career_type',
+	'term' => 'Intern,Volunteer'
+];
+echo create_gallery_instance($otherOpportunities);
+
 include( 'modules/newsletter.php' );
 
 get_footer();

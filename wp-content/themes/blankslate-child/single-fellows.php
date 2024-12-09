@@ -52,18 +52,24 @@ if ( $fellow_bio ) {
 	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link?>">Support a revitalization project.</a></p>
 </div>
 <?php
-$custom_title = '';
-$custom_post_type = 'fellows';
-$custom_class = 'full';
-$custom_columns = 4;
-$custom_posts_per_page = 4;
-$custom_orderby = 'rand';
-$custom_order = '';
-$custom_pagination = 'false';
-$custom_meta_key = 'fellow_year';
-$custom_meta_value = $fellow_year;
-$custom_selected_posts = '';
-echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+// Gallery
+$params = [
+	'title' => '',
+	'post_type' => 'fellows',
+	'custom_class' => 'full',
+	'columns' => 4,
+	'posts_per_page' => 4,
+	'orderby' => 'rand',
+	'order' => '',
+	'pagination' => 'false',
+	'meta_key' => 'fellow_year',
+	'meta_value' => $fellow_year,
+	'selected_posts' => '',
+	'display_blank' => '',
+	'taxonomy' => '',
+	'term' => ''
+];
+echo create_gallery_instance($params);
 
 include( 'modules/newsletter.php' );
 

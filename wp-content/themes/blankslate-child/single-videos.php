@@ -72,18 +72,24 @@ echo '<main class="wt_single-videos__content">';
 
   echo '</section>';
 
-  $custom_title = 'Other videos of ' . $language_names;
-  $custom_post_type = 'videos';
-  $custom_class = 'full';
-  $custom_columns = 5;
-  $custom_posts_per_page = 5;
-  $custom_orderby = 'rand';
-  $custom_order = 'asc';
-  $custom_pagination = 'false';
-  $custom_meta_key = 'language_iso_codes';
-  $custom_meta_value = $language_iso_codes;
-  $custom_selected_posts = '';
-  echo do_shortcode('[custom_gallery title="'.$custom_title.'" custom_class="'.$custom_class.'" post_type="'.$custom_post_type.'" columns="'.$custom_columns.'" posts_per_page="'.$custom_posts_per_page.'" orderby="'.$custom_orderby.'" order="'.$custom_order.'" pagination="'.$custom_pagination.'" meta_key="'.$custom_meta_key.'" meta_value="'.$custom_meta_value.'" selected_posts="'.$custom_selected_posts.'"]');
+  // Gallery
+  $params = [
+    'title' => 'Other videos of ' . $language_names,
+    'post_type' => 'videos',
+    'custom_class' => 'full',
+    'columns' => 5,
+    'posts_per_page' => 5,
+    'orderby' => 'rand',
+    'order' => 'asc',
+    'pagination' => 'false',
+    'meta_key' => 'language_iso_codes',
+    'meta_value' => $language_iso_codes,
+    'selected_posts' => '',
+    'display_blank' => '',
+    'taxonomy' => '',
+    'term' => ''
+  ];
+  echo create_gallery_instance($params);
 
   $cta_el = '<a href="'.home_url('/submit-a-video', 'relative').'">Contribute a video</a>';
   $cta_el .= '<a href="'.home_url('/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf', 'relative').'">How to create an oral history</a>';
