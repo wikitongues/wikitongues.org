@@ -2,36 +2,81 @@
 	<div class="wt_meta__video-downloads">
 		<?php
 			if ( $video_license && $video_license !== 'none' ) {
+				echo '<section>';
 				echo '<strong>Video license</strong>';
-				echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
+				echo '<a class="license" href="' . $video_license_url . '">'. $video_license . '</a>';
+				echo '</section>';
 			}
 		?>
-		<strong>Video file downloads</strong>
 
-		<p>
+		<?php
+		// Get captions linked to this video
+		$video_id = get_the_ID();
+
+		$captions = get_posts([
+				'post_type' => 'captions',
+				'posts_per_page' => -1,
+				'meta_query' => [
+						[
+								'key' => 'source_video',
+								'value' => $video_id,
+								'compare' => '='
+						]
+				]
+		]);
+
+		if ( $captions ) {
+			echo '<section>';
+			echo '<strong>Available captions</strong>';
+			echo '<ul>';
+			foreach ( $captions as $caption ) {
+					$file_url = get_field( 'file_url', $caption->ID );
+					$source_languages = get_field( 'source_language', $caption->ID ); // array of WP_Posts
+
+					if ( is_array( $source_languages ) && !empty( $source_languages ) ) {
+							$caption_language_names = array_map(function($lang_post) {
+									return get_field('standard_name', $lang_post->ID);
+							}, $source_languages);
+
+							$label = implode(', ', array_filter($caption_language_names)); // avoid null values
+					} else {
+							$label = 'Unknown Language';
+					}
+					if ( $file_url ) {
+							echo '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
+					}
+			}
+			echo '</ul>';
+			echo '</section>';
+	}
+		?>
+
+		<section>
+		<strong>Video file downloads</strong>
 		<?php if ( $public_status === 'Public' ) {
 			if ( ($dropbox_link && $dropbox_link !== 'none') || $wikimedia_commons_link ) {
+				echo '<ul>';
 				if ( $dropbox_link && $dropbox_link !== 'none' ) {
-					echo '<a href="'. $dropbox_link . '" target="_blank">Dropbox (.mp4)</a>';
+					echo '<li><a href="'. $dropbox_link . '" target="_blank">Dropbox (.mp4)</a></li>';
 				}
 
 				if ( $wikimedia_commons_link ) {
-					echo '<br /><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a>';
+					echo '<li><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
 				}
+				echo '</ul>';
 			}
 
 			if ( ($dropbox_link === 'none' || !$dropbox_link) && !$wikimedia_commons_link ) {
-				echo 'File downloads are currently unavailable for this video.';
+				echo '<p>File downloads are currently unavailable for this video.</p>';
 			}
 
-			// later version: captions
 		} elseif ( $public_status === 'Processing' ) {
-			echo 'File downloads will be ready when this is video is finished processing. Please check back soon.'; // later version: 'subscribe for notifications'
+			echo '<p>File downloads will be ready when this is video is finished processing. Please check back soon.</p>'; // later version: 'subscribe for notifications'
 
 		} elseif ( $public_status === 'Private') {
-			echo 'File downloads are disabled because the creator of this video has chosen to make this video private.';
+			echo '<p>File downloads are disabled because the creator of this video has chosen to make this video private.</p>';
 		} ?>
-		</p>
+		</section>
 	</div>
 
 	<ul class="wt_meta__featured-languages">
