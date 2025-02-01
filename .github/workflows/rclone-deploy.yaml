@@ -1,0 +1,49 @@
+name: Deploy to Staging or Production
+
+on:
+  push:
+    branches:
+      - staging    # Trigger deployment to staging on push to staging branch
+      - production       # Trigger deployment to production on push to production branch
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      STAGING_REMOTE_DIR: public_html/staging.wikitongues.org/
+      PRODUCTION_REMOTE_DIR: public_html/
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Install Rclone
+      - name: Install Rclone
+        run: curl https://rclone.org/install.sh | sudo bash
+
+      # Step 3: Configure SSH for Rclone
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      # Step 4: Deploy to the correct environment
+      - name: Deploy to Staging or Production
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            echo "Deploying to Staging..."
+            rclone sync ./ staging:${{ env.STAGING_REMOTE_DIR }} --progress --delete-during --exclude-from .deploy-filter --dry-run
+          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
+            echo "Deploying to Production..."
+            rclone sync ./ production:${{ env.PRODUCTION_REMOTE_DIR }} --progress --delete-during --exclude-from .deploy-filter --dry-run
+          fi
+
+      # Step 5: Clean up known hosts
+      - name: Clean up Known Hosts
+        run: rm -f ~/.ssh/known_hosts
