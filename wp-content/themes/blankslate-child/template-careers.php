@@ -62,7 +62,6 @@ include( 'modules/banner--main.php' );
         </div>
 
     <?php endforeach; ?>
-    <p class="alternative">Not seeing the right opportunity? Pitch us at <a href="mailto:hello@wikitongues.org">hello@wikitongues.org</a>.</p>
 </div>
 
 <?php
