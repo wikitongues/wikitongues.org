@@ -22,16 +22,13 @@ if (is_singular('languages')) {
 
 get_header();
 
-include( 'modules/banner--languages-single.php' );
 include( 'modules/meta--languages-single.php' );
 
 echo '<main class="wt_single-languages__content">';
-
 include( 'modules/single-languages__fellows.php' );
 include( 'modules/single-languages__videos.php' );
 include( 'modules/single-languages__lexicons.php' );
 include( 'modules/single-languages__resources.php' );
-
 echo '</main>';
 
 // Gallery

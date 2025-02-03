@@ -4,32 +4,54 @@
 	padding-left 6rem
 	margin-bottom 6.4rem
 
-	section
-		margin-bottom 1rem
+	h1
+		margin-bottom 3rem
+		text--header($black)
 
-	strong
-		text--strong($black)
+	.metadata
+		padding 16px 0
+		border-bottom 2px solid $lightPurple
+		display inline-block
+		width 100%
 
-	p
-		text--body($black)
+		&:first-of-type
+			padding-top 0
 
+		&:last-of-type
+			border-bottom 0
+
+		&#identifiers
+			> strong
+				display block
+			span
+				width 50%
+				float left
 	h2
 		text--strong($black)
-		margin-bottom 1.5rem
 		padding-bottom 12px
 
-		&.wt_sectionHeader
-			border-bottom 1px solid $lightPurple
 	h3
 		text--strong($blue)
 
-	ul
-		border-bottom 1px solid $lightPurple
+	strong
+		text--strong($black)
+		display inline-block
+		margin-bottom 4px
+
+	p
+		text--body($black)
+		display block
 		margin-bottom 16px
 
+		&:last-of-type
+			margin-bottom 0
+
+	ul
 		li
 			margin-bottom 1.2rem
 
+			&:last-of-type
+				margin-bottom 0
 
 		&.resources
 			li
