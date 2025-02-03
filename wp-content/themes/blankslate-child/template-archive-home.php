@@ -5,7 +5,7 @@ get_header();
 
 include( 'modules/banner--searchbar.php' );
 
-// content blocks - thirds showing language collections (add in later version, how to filter?)
+include( 'modules/languages-list.php' );
 
 include( 'modules/newsletter.php' );
 
