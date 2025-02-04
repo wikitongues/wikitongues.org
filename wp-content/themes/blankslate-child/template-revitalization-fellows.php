@@ -2,12 +2,31 @@
 
 $page_banner = get_field('revitalization_fellows_banner');
 $selected_year = isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : '';
-$cohorts = array('2024', '2023', '2022', '2021');
+$cohorts = '';
 
 get_header();
 
 include( 'modules/banner--main.php' );
 
+$fellow = get_posts ([
+  'post_type'      => 'fellows',
+  'posts_per_page' => 1,
+  'fields'         => 'ids', // Only fetch IDs (cheapest query)
+]);
+
+$fellow_id = $fellow ? $fellow[0] : null;
+if ($fellow_id) {
+  $field_object = get_field_object('fellow_year', $fellow_id);
+
+  if ($field_object) {
+      $cohorts = $field_object['choices']; // List of available options
+      rsort($cohorts);
+  } else {
+    echo "Field object not found.";
+  }
+} else {
+  echo "No fellows found in the database.";
+}
 ?>
 
 <div class="custom-gallery-fellows-navigation">
