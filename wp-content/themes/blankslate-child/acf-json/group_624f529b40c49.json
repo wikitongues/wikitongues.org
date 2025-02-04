@@ -90,7 +90,7 @@
         },
         {
             "key": "field_64fa4744ab1c9",
-            "label": "Fellow year",
+            "label": "Fellow Year",
             "name": "fellow_year",
             "aria-label": "",
             "type": "select",
