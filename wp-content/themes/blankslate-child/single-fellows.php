@@ -43,6 +43,31 @@ include( 'modules/main-content.php' );
 
 $fellow_bio = get_field('fellow_bio');
 
+if( have_rows('main_content') ):
+		while( have_rows('main_content') ) : the_row();
+
+			// Determine the current layout.
+			$layout = get_row_layout();
+
+			// Load a partial based on the layout.
+			if( $layout == 'text_layout' ):
+				// get_template_part('template-parts/flexible/hero');
+				echo '<section class="main-content">';
+				echo wpautop(wp_kses_post(get_sub_field('text')));
+				echo '</section>';
+
+			elseif( $layout == 'video_layout' ):
+				$fellow_video = get_sub_field('video');
+				$dropbox_link_raw = str_replace("dl=0", "raw=1", $fellow_video);
+				if ( $dropbox_link_raw ) {
+					echo '<div class="wt_single-videos__embed"><video width="320" height="240" controls><source src="'. $dropbox_link_raw .'" type="video/mp4">Your browser does not support the video tag.</video></div>';
+				}
+			endif;
+
+		endwhile;
+	endif;
+
+
 if ( $fellow_bio ) {
 	include( 'modules/fellow-bio.php');
 }
