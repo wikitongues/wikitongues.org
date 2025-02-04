@@ -36,8 +36,8 @@ $aspect-ratio = 16/9
 	h2,p
 		a
 			text-decoration none
-			font-weight bold
 			color $blue
+			font-style italic
 
 	.gallery-container
 		margin-top 12px
@@ -252,7 +252,11 @@ $aspect-ratio = 16/9
 			border-bottom none
 
 		.gallery-container
+			border-top none
+
 			.gallery-list
+				gap 32px 16px
+
 				.gallery-item
 					a
 						background $parchment
@@ -338,6 +342,12 @@ $aspect-ratio = 16/9
 					&.active
 						text--strong($blue)
 						pointer-events none
+
+#wt_single-languages__lexicons
+	.custom-gallery
+		&:first-of-type
+			padding-bottom 16px
+			border-bottom 2px solid $lightPurple
 
 .custom-gallery-fellows-navigation
 	width 100%
