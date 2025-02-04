@@ -1,15 +1,4 @@
 <div id="wt_single-languages__resources" class="wt_single-languages__contents">
-	<?php
-	if (!function_exists('getDomainFromUrl')) {
-    function getDomainFromUrl($url) {
-        $host = parse_url($url, PHP_URL_HOST);
-        if (substr($host, 0, 4) === 'www.') {
-            $host = substr($host, 4);
-        }
-        return $host;
-    }
-}
-	?>
 		<?php
 			// Gallery
 			$params = [
@@ -32,7 +21,7 @@
 		?>
 		<div class="custom-cta-container">
 			<section class="custom-gallery-video-cta">
-				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Contribute a resource</a>
+				<a href="<?php echo home_url('/submit-a-resource', 'relative'); ?>">Contribute a resource</a>
 			</section>
 		</div>
 </div>

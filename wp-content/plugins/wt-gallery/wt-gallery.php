@@ -36,8 +36,10 @@ function custom_gallery_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'custom_gallery_enqueue_scripts');
 
+require_once plugin_dir_path(__FILE__) . 'includes/helpers.php';
 require_once plugin_dir_path(__FILE__) . 'includes/queries.php';
 require_once plugin_dir_path(__FILE__) . 'includes/render_gallery_items.php';
+
 
 // AJAX callback function to load more gallery items
 function load_custom_gallery_ajax_callback() {
@@ -189,7 +191,6 @@ function custom_gallery($atts) {
   if (!empty($selected_posts)) {
       $args['post__in'] = $selected_posts;
   }
-  // log_data($args,"dom");
 
   $data_attributes = esc_attr(json_encode($args));
 
@@ -212,8 +213,9 @@ function custom_gallery($atts) {
       if ($atts['title']) {
         $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
       }
-      $output .= '<p>There are no other '.$atts['post_type'].' to display—yet.</p>';
+      $output .= '<p>There are no other '.$atts['post_type'].'s to display—<a href="'.home_url('/submit-a-lexicon'.rtrim($atts['post_type'], 's'), 'relative').'">yet</a>.</p>';
     }
+
   }
   $output .= '</div>';
 
