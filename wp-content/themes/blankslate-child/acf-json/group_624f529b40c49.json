@@ -562,23 +562,6 @@
             "new_lines": ""
         },
         {
-            "key": "field_67a21fbd2128a",
-            "label": "Fellow Video",
-            "name": "fellow_video",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
             "key": "field_67a2231ef5fb9",
             "label": "Main Content",
             "name": "main_content",
@@ -645,6 +628,26 @@
                             },
                             "default_value": "",
                             "placeholder": ""
+                        },
+                        {
+                            "key": "field_67a23e9a7fde2",
+                            "label": "Video Title",
+                            "name": "video_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -674,5 +677,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738679394
+    "modified": 1738686115
 }
