@@ -584,8 +584,8 @@
                     "sub_fields": [
                         {
                             "key": "field_67a2242b68bad",
-                            "label": "Text",
-                            "name": "text",
+                            "label": "Text Area",
+                            "name": "text_area",
                             "aria-label": "",
                             "type": "wysiwyg",
                             "instructions": "",
@@ -677,5 +677,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738686115
+    "modified": 1738687505
 }
