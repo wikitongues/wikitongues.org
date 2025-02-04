@@ -258,32 +258,6 @@
             ]
         },
         {
-            "key": "field_64d159b3dee63",
-            "label": "Fellow Headshot",
-            "name": "fellow_headshot",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "allow_in_bindings": 1,
-            "preview_size": "medium"
-        },
-        {
             "key": "field_62546d83dc64a",
             "label": "Fellow Bio",
             "name": "fellow_bio",
@@ -586,6 +560,103 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_67a2231ef5fb9",
+            "label": "Main Content",
+            "name": "main_content",
+            "aria-label": "",
+            "type": "flexible_content",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layouts": {
+                "layout_67a223227fc2d": {
+                    "key": "layout_67a223227fc2d",
+                    "name": "text_layout",
+                    "label": "Text Layout",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67a2242b68bad",
+                            "label": "Text Area",
+                            "name": "text_area",
+                            "aria-label": "",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1,
+                            "delay": 0
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_67a2244268bae": {
+                    "key": "layout_67a2244268bae",
+                    "name": "video_layout",
+                    "label": "Video Layout",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_67a2244668bb0",
+                            "label": "Video",
+                            "name": "video",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_67a23e9a7fde2",
+                            "label": "Video Title",
+                            "name": "video_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                }
+            },
+            "min": "",
+            "max": "",
+            "button_label": "Add Row"
         }
     ],
     "location": [
@@ -606,5 +677,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738503801
+    "modified": 1738687505
 }

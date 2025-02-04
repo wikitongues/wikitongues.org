@@ -4,8 +4,8 @@
     "fields": [
         {
             "key": "field_679e98a9c94e7",
-            "label": "Editorial Content",
-            "name": "editorial_content",
+            "label": "Main Content",
+            "name": "main_content",
             "aria-label": "",
             "type": "flexible_content",
             "instructions": "",
@@ -19,8 +19,8 @@
             "layouts": {
                 "layout_679e98b633bc8": {
                     "key": "layout_679e98b633bc8",
-                    "name": "text_block",
-                    "label": "Text Block",
+                    "name": "text_layout",
+                    "label": "Text Layout",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -49,8 +49,8 @@
                 },
                 "layout_679e9a6a86159": {
                     "key": "layout_679e9a6a86159",
-                    "name": "banner",
-                    "label": "Banner",
+                    "name": "banner_layout",
+                    "label": "Banner Layout",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -178,8 +178,8 @@
                 },
                 "layout_679e9a3b7738d": {
                     "key": "layout_679e9a3b7738d",
-                    "name": "gallery",
-                    "label": "Gallery",
+                    "name": "gallery_layout",
+                    "label": "Gallery Layout",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -376,8 +376,8 @@
                 },
                 "layout_679ea63d73229": {
                     "key": "layout_679ea63d73229",
-                    "name": "video",
-                    "label": "Video",
+                    "name": "video_layout",
+                    "label": "Video Layout",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -385,7 +385,7 @@
                             "label": "Video",
                             "name": "video",
                             "aria-label": "",
-                            "type": "post_object",
+                            "type": "url",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -394,19 +394,28 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "post_type": [
-                                "videos"
-                            ],
-                            "post_status": [
-                                "publish"
-                            ],
-                            "taxonomy": "",
-                            "return_format": "object",
-                            "multiple": 0,
-                            "allow_null": 0,
-                            "bidirectional": 0,
-                            "ui": 1,
-                            "bidirectional_target": []
+                            "default_value": "",
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_67a23eb5566c7",
+                            "label": "Video Title",
+                            "name": "video_title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -439,5 +448,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738497507
+    "modified": 1738687181
 }

@@ -43,6 +43,21 @@ include( 'modules/main-content.php' );
 
 $fellow_bio = get_field('fellow_bio');
 
+if( have_rows('main_content') ):
+		while( have_rows('main_content') ) : the_row();
+
+			$layout = get_row_layout();
+
+			if( $layout == 'text_layout' ):
+				include( 'modules/flexible-content--text-layout.php' );
+			elseif( $layout == 'video_layout' ):
+				include( 'modules/flexible-content--video-layout.php' );
+			endif;
+
+		endwhile;
+	endif;
+
+
 if ( $fellow_bio ) {
 	include( 'modules/fellow-bio.php');
 }

@@ -2,24 +2,21 @@
 
 get_header();
 
-	if( have_rows('editorial_content') ):
-		while( have_rows('editorial_content') ) : the_row();
+	if( have_rows('main_content') ):
+		while( have_rows('main_content') ) : the_row();
 
 			// Determine the current layout.
 			$layout = get_row_layout();
 
 			// Load a partial based on the layout.
-			if( $layout == 'text_block' ):
-				// get_template_part('template-parts/flexible/hero');
-				echo '<section class="main-content">';
-				echo wpautop(wp_kses_post(get_sub_field('text_area')));
-				echo '</section>';
-
-			elseif( $layout == 'banner' ):
+			if( $layout == 'text_layout' ):
+				include( 'modules/flexible-content--text-layout.php' );
+			elseif( $layout == 'banner_layout' ):
 				$page_banner = get_sub_field('banner');
 				include( 'modules/banner--main.php' );
-
-			elseif( $layout == 'gallery' ):
+			elseif( $layout == 'video_layout' ):
+				include( 'modules/flexible-content--video-layout.php' );
+			elseif( $layout == 'gallery_layout' ):
 				if ( have_rows( 'custom_gallery_posts' ) ) {
 					while ( have_rows( 'custom_gallery_posts') ) {
 						the_row();
@@ -48,8 +45,7 @@ get_header();
 							];
 							echo create_gallery_instance($params);
 					}
-				}
-
+				};
 			endif;
 
 		endwhile;
