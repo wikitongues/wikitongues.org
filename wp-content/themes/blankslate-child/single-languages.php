@@ -9,8 +9,6 @@ $external_resources = is_array($external_resources) ? $external_resources : [];
 $external_resources_count = count($external_resources);
 $nations_of_origin = get_field('nations_of_origin');
 
-// $linguistic_genealogy = get_field('linguistic_genealogy');
-
 // ====================
 // Manage Language Page Titles
 // ====================
@@ -36,11 +34,11 @@ $params = [
 	'title' => 'Other languages from '.$nations_of_origin,
 	'post_type' => 'languages',
 	'custom_class' => 'full',
-	'columns' => 4,
-	'posts_per_page' => 8,
+	'columns' => 5,
+	'posts_per_page' => 5,
 	'orderby' => 'rand',
 	'order' => 'asc',
-	'pagination' => 'false',
+	'pagination' => 'true',
 	'meta_key' => 'nations_of_origin',
 	'meta_value' => $nations_of_origin,
 	'selected_posts' => '',
