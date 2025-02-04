@@ -213,7 +213,7 @@ function custom_gallery($atts) {
       if ($atts['title']) {
         $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
       }
-      $output .= '<p>There are no other '.$atts['post_type'].'s to display—<a href="'.home_url('/submit-a-'.rtrim($atts['post_type'], 's'), 'relative').'">yet</a>.</p>';
+      $output .= '<p>There are no other '.$atts['post_type'].' to display—<a href="'.home_url('/submit-a-'.rtrim($atts['post_type'], 's'), 'relative').'">yet</a>.</p>';
     }
 
   }
