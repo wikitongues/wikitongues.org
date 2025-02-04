@@ -2,24 +2,24 @@
 
 get_header();
 
-	if( have_rows('editorial_content') ):
-		while( have_rows('editorial_content') ) : the_row();
+	if( have_rows('main_content') ):
+		while( have_rows('main_content') ) : the_row();
 
 			// Determine the current layout.
 			$layout = get_row_layout();
 
 			// Load a partial based on the layout.
-			if( $layout == 'text_block' ):
+			if( $layout == 'text_layout' ):
 				// get_template_part('template-parts/flexible/hero');
 				echo '<section class="main-content">';
 				echo wpautop(wp_kses_post(get_sub_field('text_area')));
 				echo '</section>';
 
-			elseif( $layout == 'banner' ):
+			elseif( $layout == 'banner_layout' ):
 				$page_banner = get_sub_field('banner');
 				include( 'modules/banner--main.php' );
 
-			elseif( $layout == 'gallery' ):
+			elseif( $layout == 'gallery_layout' ):
 				if ( have_rows( 'custom_gallery_posts' ) ) {
 					while ( have_rows( 'custom_gallery_posts') ) {
 						the_row();
@@ -48,8 +48,23 @@ get_header();
 							];
 							echo create_gallery_instance($params);
 					}
-				}
-
+				};
+			elseif( $layout == 'video_layout' ):
+				$video = get_sub_field('video');
+				$video_title = get_sub_field('video_title');
+				$dropbox_link_raw = str_replace("dl=0", "raw=1", $video);
+				if ( $dropbox_link_raw ) {
+					?>
+					<div class="wt_single-videos__embed">
+						<video width="320" height="240" controls>
+							<source src="<?php echo $dropbox_link_raw ?>" type="video/mp4">Your browser does not support the video tag.
+						</video>
+						<?php
+					if ( $video_title ) {
+						echo '<h3>' . $video_title . '</h3>';
+					};
+					echo '</div>';
+				};
 			endif;
 
 		endwhile;
