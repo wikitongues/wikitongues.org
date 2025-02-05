@@ -736,11 +736,13 @@ body.home .wt_banner {
   border: 2px solid #3814a5;
 }
 .wt_banner--searchbar #typeahead_archive .typeahead-form .typeahead-list {
-  position: initial;
+  position: relative;
+  background: #fffcef;
   max-height: 60vh;
   border-radius: 0;
   border-top: 2px solid #3814a5;
   padding-top: 4px;
+  margin-bottom: -64px;
 }
 .wt_banner--searchbar #typeahead_archive .typeahead-form .typeahead-list .typeahead-item {
   border-radius: 8px;
@@ -1528,7 +1530,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 2;
   background: #fffcef;
   border-bottom: 2px solid #d4cce0;
 }
@@ -1579,6 +1581,7 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   text-decoration: none;
   color: #3814a5;
   display: flex;
+  position: relative;
 }
 #language-list-container .language-item * {
   float: left;
@@ -1588,6 +1591,15 @@ body.search-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 }
 #language-list-container .language-item.has-speakers span {
   color: #3814a5;
+}
+#language-list-container .language-item.has-speakers span::before {
+  position: absolute;
+  content: '';
+  width: 4px;
+  height: 21px;
+  left: 0;
+  border-radius: 0 4px 4px 0;
+  background: #c7bde6;
 }
 #language-list-container .language-item:hover {
   background: #ebe8f6;

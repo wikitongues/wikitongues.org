@@ -2,14 +2,14 @@
 // Define the special characters and the base letters, then merge them.
 $special_chars = ['!', '’', '‡', '|', 'ǂ'];
 $base_letters = range('A', 'Z');
-$letters = array_merge($special_chars, $base_letters);
+$letters = array_merge($base_letters, $special_chars);
 ?>
 
 <div id="language-list-container">
 	<h2 class="title">Language Index</h2>
     <nav id="language-nav">
 			<?php foreach ($letters as $letter): ?>
-				<a class="nav-btn loading" href="<?php echo esc_attr("#letter-" . $letter); ?>" data-letter="<?php echo esc_attr($letter); ?>">
+				<a class="nav-btn loading" href="<?php echo esc_attr("#letter-" . $letter); ?>" title="Languages starting with <?php echo esc_attr($letter); ?>" data-letter="<?php echo esc_attr($letter); ?>">
 					<?php echo esc_html($letter); ?>
 				</a>
 			<?php endforeach; ?>
@@ -68,7 +68,7 @@ class LazyLanguageLoader {
 		this.createLetterContainer(letter);
 		this.showLoader();
 
-		return fetch(`../wp-content/themes/blankslate-child/modules/languages-list-ajax.php?start_letter=${encodeURIComponent(letter)}`)
+		return fetch(`../wp-content/themes/blankslate-child/modules/language-index-ajax.php?start_letter=${encodeURIComponent(letter)}`)
 			.then(response => response.json())
 			.then(data => {
 				if (!Array.isArray(data) || data.length === 0) {
@@ -89,47 +89,17 @@ class LazyLanguageLoader {
 			});
 	}
 
-	// loadLetterChunks(letter, page = 1) {
-	// 	const limit = 10; // Chunk size (number of records per request)
-	// 	let group = document.getElementById(`letter-${letter}`);
-	// 	if (!group) {
-	// 		this.createLetterContainer(letter);
-	// 		group = document.getElementById(`letter-${letter}`);
-	// 	}
-	// 	// Show a loader inside the letter container.
-	// 	this.showLoaderForLetter(letter);
-
-	// 	// Build URL with pagination parameters (page and limit).
-	// 	const url = `../wp-content/themes/blankslate-child/modules/languages-list-ajax.php?start_letter=${encodeURIComponent(letter)}&page=${page}&limit=${limit}`;
-	// 	return fetch(url)
-	// 		.then(response => response.json())
-	// 		.then(data => {
-	// 			this.appendDataToLetter(letter, data);
-	// 			if (data.length === limit) {
-	// 				return this.loadLetterChunks(letter, page + 1);
-	// 			} else {
-	// 				this.hideLoaderForLetter(letter);
-	// 				this.loadedLetters.add(letter);
-	// 				this.removeNavLoading(letter);
-	// 			}
-	// 		})
-	// 		.catch(error => {
-	// 			console.error(`Error loading letter ${letter}, page ${page}:`, error);
-	// 			this.hideLoaderForLetter(letter);
-	// 		});
-	// }
-
 	// Append a chunk of data to the existing letter container.
-	appendDataToLetter(letter, data) {
-		let group = document.getElementById(`letter-${letter}`);
-		let columns = group.querySelector(".language-columns");
-		columns.innerHTML += data.map(lang => `
-			<a href="${lang.permalink}" class="language-item ${lang.has_speakers ? 'has-speakers' : ''}">
-				<span>${lang.iso}</span>
-				<p>${lang.standard_name}</p>
-			</a>
-		`).join("");
-	}
+	// appendDataToLetter(letter, data) {
+	// 	let group = document.getElementById(`letter-${letter}`);
+	// 	let columns = group.querySelector(".language-columns");
+	// 	columns.innerHTML += data.map(lang => `
+	// 		<a href="${lang.permalink}" class="language-item ${lang.has_speakers ? 'has-speakers' : ''}" title="${lang.has_speakers ? `${lang.iso} resources available` : ''}">
+	// 			<span>${lang.iso}</span>
+	// 			<p>${lang.standard_name}</p>
+	// 		</a>
+	// 	`).join("");
+	// }
 
 	// Show a loader (spinner) inside the letter container.
 	showLoaderForLetter(letter) {
@@ -208,7 +178,7 @@ class LazyLanguageLoader {
 		let group = document.getElementById(`letter-${letter}`);
 		let columns = group.querySelector(".language-columns");
 		columns.innerHTML = this.pendingResponses[letter].map(lang => `
-			<a href="${lang.permalink}" class="language-item ${lang.has_speakers ? 'has-speakers' : ''}">
+			<a href="${lang.permalink}" class="language-item ${lang.has_speakers ? 'has-speakers' : ''}" title="${lang.has_speakers ? `${lang.iso} resources available` : ''}">
 				<span>${lang.iso}</span>
 				<p>${lang.standard_name}</p>
 			</a>
