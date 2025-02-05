@@ -2,8 +2,10 @@
 .wt_banner--searchbar
 	width 100%
 	display flex
+	gap 32px
 	min-height 50vh
 	align-content flex-start
+	flex-direction column
 	justify-content center
 	align-items center
 	padding .5rem 0 4rem 0
@@ -21,6 +23,7 @@
 				border none
 				padding 2.5rem
 				font-size 2rem
+				border 2px solid $blue
 
 			.typeahead-list
 				position initial
@@ -36,6 +39,10 @@
 
 					&[data-resource=true]::before
 						top 12px
+
+	a
+		text--body($blue)
+		text-decoration none
 
 body.search-results
 	.wt_banner--searchbar

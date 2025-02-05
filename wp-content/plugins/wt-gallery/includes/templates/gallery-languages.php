@@ -18,7 +18,7 @@
   }
 
   echo '<a href="' . esc_url($url) . '">';
-  echo '<div><h3>' . $title . '</h3>' . $iso_code_element . '</div>';
+  echo '<div class="metadata"><h3>' . $title . '</h3>' . $iso_code_element . '</div>';
   echo $thumbnail_object;
   echo '</a>';
   ?>
