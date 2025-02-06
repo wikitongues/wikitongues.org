@@ -1,74 +1,62 @@
-body
-	max-width 1800px
-	margin auto
-	background $parchment
+$wpChrome = 32px
+$primary = 56px
+$secondary = 54px
+$headerFontSize = 12px
 
+body
 	&[data-alert="true"]
 		padding-top 194.63px
 
 		.wt_header
 			top 72px !important
 
-	&.page-template-faq-page,
+	// Primary Navigation Bar
+	&.page-template,
+	&.single-careers
 	&.post-type-archive-reports,
-	&.post-type-archive-careers
-		margin-top 56px
+	&.post-type-archive-careers,
+	&.error404
+		margin-top $primary
 
-	&.page-template-template-archive-home,
-	&.page-template-template-revitalization-home,
-	&.page-template-template-revitalization-toolkit,
-	&.page-template-template-revitalization-fellows,
-	&.page-template-template-revitalization-application,
-	&.page-template-template-about-board,
-	&.page-template-template-about-staff,
-	&.single-languages,
-	&.single-videos,
-	&.single-fellows
-		margin-top 110px
+		&.logged-in
+			margin-top $wpChrome + $primary
 
-	&.post-type-archive-reports
-		padding-top 32px
+	// Primary + Secondary Navigation Bar
+	&.page-parent,
+	&.page-child,
+	&.single:not(&.single-careers)
+		margin-top $primary + $secondary
+
+		&.logged-in
+			margin-top $primary + $secondary + $wpChrome
 
 	&.logged-in
-		margin-top 32px
-
 		.wt_header
-			top 32px
-
-		&.page-template-faq-page,
-		&.post-type-archive-reports,
-		&.post-type-archive-careers
-			margin-top 32px + 56px
-
-		&.page-template-template-archive-home,
-		&.page-template-template-revitalization-home,
-		&.page-template-template-revitalization-toolkit,
-		&.page-template-template-revitalization-fellows,
-		&.page-template-template-revitalization-application,
-		&.page-template-template-about-board,
-		&.page-template-template-about-staff,
-		&.single-languages,
-		&.single-videos,
-		&.single-fellows
-			margin-top 32px + 110px
-
-		&.post-type-archive-reports
-			padding-top 32px
+			top $wpChrome
 
 		&[data-alert="true"]
 			padding-top 226.63px !important
 
 			.wt_banner-alert__container
-				top 32px !important
+				top $wpChrome !important
 
 			.wt_header
 				top 104px !important
+
+.skip-link
+	text--body($black)
+
+	&:focus
+		top 16px
+		left 16px
+		background $yellow
+		color $black
 
 @media all and (max-width:$mobile)
 	body
 		&.archive,
 		&.page-template
-			margin-top 56px
+			margin-top $primary
 
 		&.logged-in
 			margin-top 46px
@@ -87,7 +75,7 @@ body
 			&.single-languages,
 			&.single-videos,
 			&.archive
-				margin-top 46px + 56px
+				margin-top 46px + $primary
 
 .wt_header
 	z-index 10
@@ -125,6 +113,7 @@ body
 		a
 			display inline-block
 			padding 0
+			float left
 
 			&:hover
 				background none
@@ -144,7 +133,6 @@ body
 		img
 			height 40px
 			width auto
-
 
 	#typeahead_nav
 		.typeahead-form
@@ -172,7 +160,7 @@ body
 			display none !important
 
 	&__secondary
-		border-top 1px solid $lightPurple
+		border-top 1px solid $blue-22
 		width 100%
 
 	&__nav
@@ -210,7 +198,7 @@ body
 
 		&>ul>li
 			position relative
-			margin-left 1.3rem
+			margin-left 1.6rem
 			button--small($parchment, $blue)
 			border none
 			border-radius 8px
@@ -231,6 +219,7 @@ body
 				color inherit
 				padding 1.25rem
 				display inline-block
+				font-size $headerFontSize
 
 			&:hover
 				cursor pointer
@@ -277,7 +266,7 @@ body
 					width 100%
 
 					&:hover
-						background #eee
+						background $blue-10
 
 		&--secondary
 			z-index 2
@@ -296,7 +285,7 @@ body
 
 					a
 						text--body($blue)
-						font-size 1.3rem !important
+						font-size $headerFontSize
 						text-decoration none
 						padding 10px
 						display inline-block

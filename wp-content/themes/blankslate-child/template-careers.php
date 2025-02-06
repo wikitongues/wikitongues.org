@@ -18,7 +18,7 @@ include( 'modules/banner--main.php' );
         ?>
 
         <div class="career-section">
-            <h2><?php echo esc_html($category); ?></h2>
+            <h4><?php echo esc_html($category); ?></h4>
             <ul>
                 <?php
                 if ($term) {

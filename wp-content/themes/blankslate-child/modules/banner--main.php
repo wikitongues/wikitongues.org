@@ -16,7 +16,7 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 
 <div class="wt_banner" role="img" aria-label="<?php echo $banner_image['alt']; ?>" style="background-image:url(<?php echo $banner_image['url']; ?>);">
 	<div class="wt_banner__copy">
-		<h1 class="wt_text--header .SchnyderWideM-Light-Web">
+		<h1 class="wt_text--header">
 			<?php echo $banner_header; ?>
 		</h1>
 		<p class="wt_text--body">
@@ -40,7 +40,7 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 	<p class="caption"><strong><?php echo $banner_image['caption'];?></strong></p>
 </div>
 <div class="wt_banner__copy--mobile">
-	<h1 class="wt_text--header .SchnyderWideM-Light-Web">
+	<h1 class="wt_text--header">
 		<?php echo $banner_header; ?>
 	</h1>
 	<p class="wt_text--body">

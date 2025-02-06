@@ -29,7 +29,7 @@ if (!function_exists('render_event')) {
 
 		ob_start(); ?>
 		<li class="event-entry">
-				<h3 class="event-question"><?php echo esc_html(get_the_title($post_id)); ?></h3>
+				<h5 class="event-question"><?php echo esc_html(get_the_title($post_id)); ?></h5>
 				<div class="event-details">
 						<p><?php echo $event_datetime . ' ' . $event_timezone; ?></p>
 						<p><?php echo $event_location; ?></p>

@@ -65,7 +65,7 @@ if( have_rows('faq_section') ):
 			$section_id = 'faq-section-' . $section_count;
 
 			if( $section_header ) {
-				echo '<h2 id="' . esc_attr( $section_id ) . '">' . esc_html( $section_header ) . '</h2>';
+				echo '<h4 id="' . esc_attr( $section_id ) . '">' . esc_html( $section_header ) . '</h4>';
 			}
 
 			if( $faq_entries ) {

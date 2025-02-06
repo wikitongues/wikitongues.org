@@ -45,23 +45,23 @@
 
       .typeahead-item
         &.selected
-          background #E1DCF2
+          background $blue-15
 
           &[data-resource="true"]::before,
           span.highlight
-            background-color #C3B9E4
+            background-color $blue-30
 
         &:hover
-          background #EBE8F6
+          background $blue-10
 
           &[data-resource="true"]::before,
           span.highlight
-            background-color #C7BDE6
+            background-color $blue-28
 
 
         &[data-resource="true"]::before,
         .highlight
-          background-color #CDC4E8
+          background-color $blue-25
 
         &[data-resource="true"]
           .identifier
@@ -75,5 +75,5 @@
             font-size inherit
 
           .highlight
-            background #CDC4E8
+            background $blue-25
             transition: background 0.6s cubic-bezier(0.65, 0, 0.35, 1);

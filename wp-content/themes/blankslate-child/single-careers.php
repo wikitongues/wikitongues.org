@@ -11,7 +11,7 @@ function render_section($field_name, $headers, $page_id = null) {
 	$title_value = $headers[$field_name];
 	if ($field_value) {
 		echo "<section class='" . esc_attr($field_name) . "'>";
-		echo "<h2>" . esc_attr($title_value) . "</h2>";
+		echo "<h4>" . esc_attr($title_value) . "</h4>";
 		echo wpautop(wp_kses_post($field_value));
 		echo "</section>";
 	}
@@ -24,7 +24,7 @@ if (have_posts()) :
 			<a href="<?php echo home_url('/careers', 'relative'); ?>">Back to Careers</a>
 			<h1 class="career-title"><?php the_title(); ?></h1>
 			<section>
-				<?php echo "<h2>" . $headers["posted_date"] . "</h2>";?>
+				<?php echo "<h4>" . $headers["posted_date"] . "</h4>";?>
 				<time datetime="<?php echo get_the_date('c'); ?>" itemprop="datePublished"><?php echo get_the_date(); ?></time>
 			</section>
 			<?php
@@ -40,7 +40,7 @@ if (have_posts()) :
 			?>
 
 			<section class="career-application">
-				<?php echo "<h2>" . $headers["application"] . "</h2>";?>
+				<?php echo "<h4>" . $headers["application"] . "</h4>";?>
 				<a href="<?php echo esc_url(get_field('application')); ?>" target="_blank">
 					Apply Here
 				</a>
