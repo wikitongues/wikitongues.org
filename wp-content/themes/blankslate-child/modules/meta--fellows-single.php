@@ -50,7 +50,7 @@ function generate_language_links($fellow_language) {
 		<div class="image" style="background-image:url('<?php echo esc_html($page_banner['banner_image']['url'])?>'"></div>
 		<div class="name">
 			<?php
-				echo '<h1>' . esc_html($fellow_name) . '</h1>';?>
+				echo '<h3>' . esc_html($fellow_name) . '</h3>';?>
 			<?php if (array_filter(array_column($social_links, 'url'))): ?>
 				<article class="wt_fellow__meta--social">
 						<ul>

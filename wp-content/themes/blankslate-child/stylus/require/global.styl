@@ -8,67 +8,91 @@ $content = 1140px
 
 // colors
 $white = #ffffff
-$whiteTransparent = rgba(255,255,255,.97)
 $parchment = #fffcef
-$parchmentTransparent = rgba(255,252,239,.97)
 $black = #101010
-$blackTransparent = rgba(16, 16, 16,.97)
 $grey = #dcdcdc
 $darkGrey = #6f6f6f
 $red = #e52600
-$blue = #3814A5
-$purple = #9581c2
-$lightPurple = #D4CCE0
+$blue = #3814a5
+$blue-50 = blend(rgba($blue,.50),$parchment)
+$blue-30 = blend(rgba($blue,.30),$parchment)
+$blue-28 = blend(rgba($blue,.28),$parchment)
+$blue-25 = blend(rgba($blue,.25),$parchment)
+$blue-22 = blend(rgba($blue,.22),$parchment)
+$blue-15 = blend(rgba($blue,.15),$parchment)
+$blue-10 = blend(rgba($blue,.10),$parchment)
 $yellow = #ffff00
 
 // typography
 html
-	font-size 62.5%
+	font-size 10px
+
+body
+	max-width 1800px
+	margin auto
+	background $parchment
+
+$header = 6rem
+
+h1
+	font-size $header
+h2
+	font-size ($header/12)*9 // 4.5
+h3
+	font-size ($header/12)*7 // 3.5
+h4
+	font-size ($header/12)*6 // 3
+h5
+	font-size ($header/12)*5 // 2.5
+h6
+	font-size ($header/12)*4 // 2
 
 @media all and (max-width:$mobile)
 	html
 		font-size 51.398%
 
-text--base(a)
+text--base(color)
 	font-style normal
 	font-stretch normal
-	color a
+	color color
 
-text--header(a)
-	text--base(a)
-	font-family 'Schnyder Wide M Web'
-	font-weight 300
-	font-size 6.08rem
+typeface(style)
+	if style
+		font-family 'Schnyder Wide M Web'
+		font-weight 300
+	else
+		font-family 'Graphik Web'
+		font-size 1.6rem
+		line-height 1.3
 
-text--subheader(a)
-	text--base(a)
-	font-family 'Schnyder Wide M Web'
-	font-weight 300
+text--header(color)
+	text--base(color)
+	typeface('display')
+
+text--subheader(color)
+	text--base(color)
+	typeface('display')
 	font-size 3.2rem
 
-text--body(a)
-	text--base(a)
-	font-family 'Graphik Web'
+text--body(color)
+	text--base(color)
+	typeface('')
 	font-weight 400
-	font-size 1.6rem
-	line-height 1.3
 
-text--strong(a)
-	text--base(a)
-	font-family 'Graphik Web'
+text--strong(color)
+	text--base(color)
+	typeface('')
 	font-weight 700
-	font-size 1.6rem
-	line-height 1.3
 
-anchor(a,b)
+anchor(color, padding)
 	text-decoration none
-	color a
-	padding b (b * 2)
-	margin (b * -1) (b * -2)
-	border-radius (b * 2)
+	color color
+	padding padding (padding * 2)
+	margin (padding * -1) (padding * -2)
+	border-radius (padding * 2)
 
 	&:hover
-		background $lightPurple
+		background $blue-22
 		mix-blend-mode darken
 
 button--base(a,b)

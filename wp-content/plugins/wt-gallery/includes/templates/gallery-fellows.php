@@ -28,8 +28,8 @@ if ($class === "custom fundraiser") {
   echo '<li class="gallery-item">';
   echo '<a href="' . esc_url($url) . '">';
   echo $thumbnail;
-  echo '<div><h3>' . $title . '</h3></div>';
-  $metadata = '<div class="fellow-metadata"><h3>'.$fellow_language_preferred_name.'</h3>';
+  echo '<div><h6>' . $title . '</h6></div>';
+  $metadata = '<div class="fellow-metadata"><h6>'.$fellow_language_preferred_name.'</h6>';
   $metadata .= '<p>'.$category_names.'</p><span><p>'.$location.'</p><p>'.$fellow_year.'</p></span></div>';
   echo $metadata;
   echo '</a>';

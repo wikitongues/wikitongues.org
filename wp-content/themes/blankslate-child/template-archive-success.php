@@ -40,7 +40,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
   }
 }
 
-echo '<div class="success_cta"><h1>Have more to say?</h1> <br> <h2>Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h2></div>';
+echo '<div class="success_cta"><h2>Have more to say?</h2> <br> <h3>Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h3></div>';
 
 include( 'modules/newsletter.php' );
 

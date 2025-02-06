@@ -77,21 +77,15 @@
 		<h2 class="wt_sectionHeader"><?php  echo $standard_name; ?> resources</h2>
 		<ul class="resources">
 			<li>
-				<a href="#wt_single-languages__videos">
-					<h3>Videos</h3>
-				</a>
+				<h3>Videos</h3>
 				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Submit a video</a>
 			</li>
 			<li>
-				<a href="#wt_single-languages__lexicons">
-					<h3>Dictionaries, phrase books, and lexicons</h3>
-				</a>
+				<h3>Dictionaries, phrase books, and lexicons</h3>
 				<a href="<?php echo home_url('/submit-a-lexicon', 'relative'); ?>">Submit a lexicon</a>
 			</li>
 			<li>
-				<a href="#wt_single-languages__resources">
-					<h3>External Resources</h3>
-				</a>
+				<h3>External Resources</h3>
 				<a href="<?php echo home_url('/submit-a-resource', 'relative'); ?>">Recommend a resource</a>
 			</li>
 		</ul>

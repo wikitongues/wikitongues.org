@@ -7,7 +7,7 @@
     $domain = getDomainFromUrl($url);
 
     echo '<a href="' . esc_url($url) . '">';
-    echo '<h1>' . esc_html($title) . '</h1>';
+    echo '<h6>' . esc_html($title) . '</h6>';
     if ($resource_description) {
       echo '<p class="description">' . esc_html($resource_description) . '</p>';
     }
