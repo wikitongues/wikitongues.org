@@ -33,7 +33,6 @@
 
 		if ($query->have_posts()) {
 			$output .= '<section>';
-			// $output .= '<h2>'.ucfirst($type).'</h2>';
 			$output .= '<ul>'.$contents.'</ul>';
 			$output .= '</section>';
 		}

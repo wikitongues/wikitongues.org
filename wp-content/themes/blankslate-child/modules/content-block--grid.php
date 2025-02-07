@@ -12,9 +12,9 @@
 	<!-- show nothing -->
 <?php endif; ?>
 	<aside class="wt_content-block--thirds__copy">
-		<h1>
+		<strong>
 			<?php echo $content_block_header; ?>
-		</h1>
+		</strong>
 		<?php if ( $content_block_copy ): ?>
 		<p>
 			<?php echo $content_block_copy; ?>

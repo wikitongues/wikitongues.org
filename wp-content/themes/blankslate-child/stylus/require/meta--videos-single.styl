@@ -3,24 +3,18 @@
 	float left
 
 	strong
-		text--strong($black)
-		text-transform uppercase
-
-	h2
-		text--strong($black)
+		text--strong($black) // strong
 		margin-bottom 4px
+		display block
+
+		&.wt_sectionHeader
+			margin-bottom 1.6rem
+			padding-bottom 12px
 
 	p
 		text--body($black)
 		margin-bottom 1.6rem
 
-	h2.wt_sectionHeader
-		text--strong($black)
-		margin-bottom 1.6rem
-		padding-bottom 12px
-
-		strong
-			text--strong($black)
 
 	ul
 		margin-top 1.5rem
@@ -31,17 +25,9 @@
 		li
 			margin-bottom 1.6rem
 
-			p&:first-of-type, h2
-					text--strong($black)
-
 	a
 		text-decoration none
-		color $blue
 		anchor($blue, 2px)
-
-		strong
-			text--strong($blue)
-			text
 
 		span
 			text--body($blue)

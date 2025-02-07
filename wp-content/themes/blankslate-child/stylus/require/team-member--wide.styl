@@ -28,11 +28,11 @@
 		justify-content flex-end
 		flex-direction column
 
-		h2
-			text--subheader($black)
+		h4
+			text--header($black)
 
 		strong
-			text--strong($black)
+			text--strong($black) // strong
 			margin-top 0.8rem
 			margin-bottom 1.6rem
 
@@ -60,7 +60,7 @@
 
 			&.social
 				a
-					font-size 2rem
+					font-size $socialIcon
 					anchor($blue, 4px)
 
 @media all and (max-width:$mobile)

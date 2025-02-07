@@ -2,11 +2,11 @@
 	<div class="wt_meta__video-downloads">
 		<?php
 			if ( $video_license && $video_license !== 'none' ) {
-				echo '<h2>Video license</h2>';
+				echo '<strong>Video license</strong>';
 				echo '<p><a class="license" href="' . $video_license_url . '">'. $video_license . '</a></p>';
 			}
 		?>
-		<h2>Video file downloads</h2>
+		<strong>Video file downloads</strong>
 
 		<p>
 		<?php if ( $public_status === 'Public' ) {
@@ -43,11 +43,11 @@
 				$writing_systems = get_field('writing_systems');
 				$linguistic_genealogy = get_field('linguistic_genealogy');
 				?>
-				<h2 class="wt_sectionHeader">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></h2>
+				<strong class="wt_sectionHeader">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
 				<ul>
 				<?php if ( $nations_of_origin ): ?>
 					<li>
-						<h2>Countries of origin</h2>
+						<strong>Countries of origin</strong>
 						<p class="wt_text--label">
 							<?php echo $nations_of_origin; ?>
 						</p>
@@ -56,7 +56,7 @@
 
 				<?php if ( $writing_systems ): ?>
 					<li>
-						<h2>Writing systems</h2>
+						<strong>Writing systems</strong>
 						<p class="wt_text--label">
 							<?php echo $writing_systems; ?>
 						</p>
@@ -65,7 +65,7 @@
 
 				<?php if ( $linguistic_genealogy ): ?>
 					<li>
-						<h2>Linguistic genealogy</h2>
+						<strong>Linguistic genealogy</strong>
 						<p class="wt_text--label">
 							<?php echo $linguistic_genealogy; ?>
 						</p>

@@ -1,9 +1,10 @@
 .wt_newsletter
+	clear both
 	margin 1.6rem 3.2rem 0
 	padding 6rem 0
 	text-align left
 	text-transform initial
-	border-top 2px solid $blue-22
+	border-top 2px solid $border-color
 	box-sizing border-box
 
 	h2
@@ -25,7 +26,8 @@
 		label
 			display block
 			margin-bottom 1rem
-			text--strong($black)
+			text--strong($black) // label
+			pointer-events none
 
 		form
 			#mc_embed_signup_scroll
@@ -53,8 +55,10 @@
 						border-bottom 2px solid $blue
 						margin-right 8px
 						border-radius 4px 4px 0 0
+						transition background .1s ease-in-out
 
-						&:focus
+						&:focus,
+						&:hover
 							outline none
 							background $blue-10
 
@@ -70,7 +74,7 @@
 			width 100%
 
 		h2
-			font-size 4rem
+			font-size 4rem // mobile
 
 		form
 			> div

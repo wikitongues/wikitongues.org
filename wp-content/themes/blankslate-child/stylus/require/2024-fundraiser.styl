@@ -4,8 +4,8 @@ $aspect-ratio = 1.185185185
 		max-width $content
 		margin 0 auto 64px
 
-		h1
-			text--subheader($black)
+		h4
+			text--header($black)
 			margin-bottom 1.6rem
 
 		p
@@ -28,7 +28,7 @@ $aspect-ratio = 1.185185185
 				width 100%
 				border-radius 8px
 				background $red
-				text--strong($parchment)
+				text--strong($parchment) // button, a
 				border none
 				padding 1.6rem
 				cursor pointer
@@ -51,15 +51,15 @@ $aspect-ratio = 1.185185185
 				float left
 
 				h1
+					text--header($black)
 					text-align center
-					font-size 6rem
 
 		.donations-button-group
 			section.secondary
 				display flex
 
-				h2
-					text--strong($black)
+				strong
+					text--strong($black) // strong
 					margin-bottom 1.6rem
 
 				button,
@@ -70,7 +70,7 @@ $aspect-ratio = 1.185185185
 					padding 1.6rem
 					display block
 					cursor pointer
-					text--strong($parchment)
+					text--strong($parchment) // button, a
 					text-align center
 					text-decoration none
 
@@ -118,10 +118,11 @@ $aspect-ratio = 1.185185185
 							padding-bottom 16px
 							height 100%
 							display flex
+							gap 1.6rem
 							flex-direction column
 							justify-content flex-end
 
-							h2
+							strong
 								border-bottom none
 
 							p
