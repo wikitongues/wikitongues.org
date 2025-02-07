@@ -2,7 +2,7 @@
 	<aside class="wt_team-member--wide__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
 
 	<aside class="wt_team-member--wide__meta">
-		<h2><?php echo $name; ?></h2>
+		<h4><?php echo $name; ?></h4>
 		<strong><?php echo $title; ?></strong>
 		<?php
 		$first_name = explode(' ', trim($name))[0];

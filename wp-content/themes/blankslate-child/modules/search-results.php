@@ -4,8 +4,7 @@
 		<span>Showing results for '<?php echo $_GET['s']; ?>'</span>
 	</header>
 	<section class="wt_search-results__results">
-	<?php if ( have_posts() ): while ( have_posts() ): the_post(); ?>
-
+	<?php if ( have_posts() ): while ( have_posts() ): the_post();?>
 		<article class="wt_search-results__thumbnail">
 			<?php include('search-results__thumbnail.php'); ?>
 		</article>

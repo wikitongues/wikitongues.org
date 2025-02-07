@@ -10,7 +10,7 @@
 			</video>
 			<?php
 		if ( $video_title ) {
-			echo '<h3>' . $video_title . '</h3>';
+			echo '<h6>' . $video_title . '</h6>';
 		};
 		echo '</div>';
 	};

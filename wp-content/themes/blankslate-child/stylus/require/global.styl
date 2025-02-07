@@ -10,8 +10,9 @@ $content = 1140px
 $white = #ffffff
 $parchment = #fffcef
 $black = #101010
-$grey = #dcdcdc
-$darkGrey = #6f6f6f
+$grey-50 = blend(rgba($black,.5),$parchment)
+$grey-33 = blend(rgba($black,.33),$parchment)
+$grey-25 = blend(rgba($black,.25),$parchment)
 $red = #e52600
 $blue = #3814a5
 $blue-50 = blend(rgba($blue,.50),$parchment)
@@ -22,6 +23,8 @@ $blue-22 = blend(rgba($blue,.22),$parchment)
 $blue-15 = blend(rgba($blue,.15),$parchment)
 $blue-10 = blend(rgba($blue,.10),$parchment)
 $yellow = #ffff00
+
+$border-color = $blue-22
 
 // typography
 html
@@ -46,6 +49,10 @@ h5
 	font-size ($header/12)*5 // 2.5
 h6
 	font-size ($header/12)*4 // 2
+p, a, time, button
+	font-size 1.6rem
+
+$socialIcon = 2rem
 
 @media all and (max-width:$mobile)
 	html
@@ -59,30 +66,26 @@ text--base(color)
 typeface(style)
 	if style
 		font-family 'Schnyder Wide M Web'
-		font-weight 300
 	else
 		font-family 'Graphik Web'
-		font-size 1.6rem
-		line-height 1.3
 
 text--header(color)
 	text--base(color)
 	typeface('display')
-
-text--subheader(color)
-	text--base(color)
-	typeface('display')
-	font-size 3.2rem
+	font-weight 300
 
 text--body(color)
 	text--base(color)
 	typeface('')
 	font-weight 400
+	line-height 1.2
 
 text--strong(color)
 	text--base(color)
 	typeface('')
 	font-weight 700
+	line-height 1.3
+	font-size 1.6rem
 
 anchor(color, padding)
 	text-decoration none

@@ -6,7 +6,7 @@ $letters = array_merge($base_letters, $special_chars);
 ?>
 
 <div id="language-list-container">
-	<h2 class="title">Language Index</h2>
+	<h4 class="title">Language Index</h4>
     <nav id="language-nav">
 			<?php foreach ($letters as $letter): ?>
 				<a class="nav-btn loading" href="<?php echo esc_attr("#letter-" . $letter); ?>" title="Languages starting with <?php echo esc_attr($letter); ?>" data-letter="<?php echo esc_attr($letter); ?>">
@@ -59,10 +59,6 @@ class LazyLanguageLoader {
 	}
 
 	loadLetter(letter) {
-		// if (letter === 'A') {
-		// 	return this.loadLetterChunks(letter);
-		// }
-
 		if (!letter || letter === " " || this.loadedLetters.has(letter)) return Promise.resolve();
 		this.loadedLetters.add(letter);
 		this.createLetterContainer(letter);
@@ -88,18 +84,6 @@ class LazyLanguageLoader {
 				this.removeNavLoading(letter);
 			});
 	}
-
-	// Append a chunk of data to the existing letter container.
-	// appendDataToLetter(letter, data) {
-	// 	let group = document.getElementById(`letter-${letter}`);
-	// 	let columns = group.querySelector(".language-columns");
-	// 	columns.innerHTML += data.map(lang => `
-	// 		<a href="${lang.permalink}" class="language-item ${lang.has_speakers ? 'has-speakers' : ''}" title="${lang.has_speakers ? `${lang.iso} resources available` : ''}">
-	// 			<span>${lang.iso}</span>
-	// 			<p>${lang.standard_name}</p>
-	// 		</a>
-	// 	`).join("");
-	// }
 
 	// Show a loader (spinner) inside the letter container.
 	showLoaderForLetter(letter) {
@@ -132,7 +116,7 @@ class LazyLanguageLoader {
 			group.id = `letter-${letter}`;
 			group.classList.add("language-group");
 			group.innerHTML = `
-				<h2>${letter}</h2>
+				<h4>${letter}</h4>
 				<div class="language-loader">
 					<div class="spinner"></div>
 				</div>

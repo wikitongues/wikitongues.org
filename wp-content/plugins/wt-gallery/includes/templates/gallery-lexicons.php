@@ -13,14 +13,14 @@
 ;
 		echo "<a href={$url}>";
 
-		echo '<section><p>Lexicon</p>';
+		echo '<section><p class="meta">Lexicon</p>';
 
 		foreach ($source_languages as $language_post_id) {
 			echo get_language_gallery_html($language_post_id);
 		}
 		echo '</section>';
 
-		echo '<section><p>to</p><span class="target-languages">';
+		echo '<section><p class="meta">to</p><span class="target-languages">';
 		foreach ($target_languages as $language_post_id) {
 			echo get_language_gallery_html($language_post_id);
 		}

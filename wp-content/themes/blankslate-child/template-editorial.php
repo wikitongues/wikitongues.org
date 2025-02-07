@@ -39,7 +39,7 @@ get_header();
 								'meta_key' => '',
 								'meta_value' => '',
 								'selected_posts' => esc_attr($post_ids),
-								'display_blank' => '',
+								'display_blank' => 'false',
 								'taxonomy' => '',
 								'term' => '',
 							];

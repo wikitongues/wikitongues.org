@@ -1,7 +1,7 @@
 <?php
 if (have_rows('custom_faq_posts')) {
   echo '<div class="wt_archive__faq">';
-  echo '<h1>Frequently Asked Questions</h1>';
+  echo '<h4>Frequently Asked Questions</h4>';
 	echo '<ul>';
 	while (have_rows('custom_faq_posts')) {
 			the_row();

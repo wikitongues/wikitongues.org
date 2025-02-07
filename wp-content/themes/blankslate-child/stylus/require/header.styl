@@ -24,6 +24,7 @@ body
 	// Primary + Secondary Navigation Bar
 	&.page-parent,
 	&.page-child,
+	&.search,
 	&.single:not(&.single-careers)
 		margin-top $primary + $secondary
 
@@ -52,31 +53,6 @@ body
 		background $yellow
 		color $black
 
-@media all and (max-width:$mobile)
-	body
-		&.archive,
-		&.page-template
-			margin-top $primary
-
-		&.logged-in
-			margin-top 46px
-
-			.wt_header
-				top 46px
-
-			.wt_header
-				&__nav,
-				&__secondary
-					&--mobile
-						top 46px
-
-			&.page-parent,
-			&.page-child,
-			&.single-languages,
-			&.single-videos,
-			&.archive
-				margin-top 46px + $primary
-
 .wt_header
 	z-index 10
 	display flex
@@ -91,6 +67,9 @@ body
 	transition-property background
 	transition-duration 0.3s
 	transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
+
+	a
+		font-size 1.2rem
 
 	&.transparent-background
 		background none
@@ -160,14 +139,11 @@ body
 			display none !important
 
 	&__secondary
-		border-top 1px solid $blue-22
+		border-top 1px solid $border-color
 		width 100%
 
 	&__nav
-		z-index inherit
 		margin-left auto
-		text-align right
-		font-size 0
 
 		#dark
 			position fixed
@@ -319,6 +295,31 @@ body
 
 					&:last-of-type
 						margin-right 3rem
+
+@media all and (max-width:$mobile)
+	body
+		&.archive,
+		&.page-template
+			margin-top $primary
+
+		&.logged-in
+			margin-top 46px
+
+			.wt_header
+				top 46px
+
+			.wt_header
+				&__nav,
+				&__secondary
+					&--mobile
+						top 46px
+
+			&.page-parent,
+			&.page-child,
+			&.single-languages,
+			&.single-videos,
+			&.archive
+				margin-top 46px + $primary
 
 @media all and (max-width:$mobile)
 	body

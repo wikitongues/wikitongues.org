@@ -80,7 +80,7 @@ $params = [
 	'meta_key' => 'fellow_year',
 	'meta_value' => $fellow_year,
 	'selected_posts' => '',
-	'display_blank' => '',
+	'display_blank' => 'false',
 	'taxonomy' => '',
 	'term' => ''
 ];

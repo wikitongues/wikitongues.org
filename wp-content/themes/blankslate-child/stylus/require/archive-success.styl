@@ -17,13 +17,14 @@
 		max-width $content
 		margin 0 auto
 
-		h1
+		h4
 			margin 0 auto 2.4rem
 			width 100%
-			text--subheader($black)
+			text--header($black)
 
 		h2
 			text--strong($black)
+			min-height @font-size * @line-height * 2 // 2 lh
 			text-align left
 			margin 0
 
@@ -55,21 +56,29 @@
 						anchor($blue, 2px)
 
 div.success_cta
+	display flex
+	justify-content center
+	flex-direction column
+	align-items center
+	gap 1.6rem
+	margin 8rem 0
+
 	h2
-		margin 12rem auto 0
-		width 100%
-		max-width $content
 		text--header($black)
+		max-width $content
 		text-align center
 
-	h3
-		text--subheader($black)
-		margin 0 auto 12rem
-		width 100%
-		text-align center
+	section
+		background $blue-22
+		border-radius 8px
 
 		a
-			anchor($blue, 4px)
+			display block
+			text-decoration none
+			text--strong($blue, 2rem) // issue
+			font-size 2rem // issue
+			padding 24px
+			line-height 2.6rem
 
 @media all and (max-width:$mobile)
 	.page-template-template-archive-success
@@ -82,7 +91,7 @@ div.success_cta
 
 			h1
 				margin-bottom 4rem
-				font-size 3rem
+				font-size 3rem // mobile
 				text-align-last left
 
 			section

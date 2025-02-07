@@ -42,7 +42,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 				'meta_key' => '',
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
-				'display_blank' => '',
+				'display_blank' => 'false',
 				'taxonomy' => '',
 				'term' => ''
 			];
@@ -67,7 +67,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 				'meta_key' => '',
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
-				'display_blank' => '',
+				'display_blank' => 'false',
 				'taxonomy' => '',
 				'term' => ''
 			];
