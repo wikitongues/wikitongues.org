@@ -73,12 +73,12 @@ include( 'modules/banner--main.php' );
 		?>
 		<section class="secondary">
 			<div class="option">
-				<h2>Monthly Giving</h2>
+				<strong>Monthly Giving</strong>
 				<p>Want to grow your impact impact? Become a monthly supporter and help us give stable support to language activists worldwide.</p>
 				<a class="cta" href="<?php echo $fundraising_link?>">Schedule monthly donation</a>
 			</div>
 			<div class="option">
-				<h2>Share Our Campaign</h2>
+				<strong>Share Our Campaign</strong>
 				<p>Spread the word! Share this campaign with friends and family and bring more voices into the language diversity movement.</p>
 				<button>Share</button>
 			</div>

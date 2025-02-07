@@ -75,7 +75,7 @@ if( have_rows('faq_section') ):
 					// $faq_text = get_sub_field('short_answer');
 					?>
 					<li class="faq-entry">
-						<h3 class="faq-question"><?php the_title(); ?></h3>
+						<strong class="faq-question"><?php the_title(); ?></strong>
 						<?php the_content(); ?>
 					</li>
 					<?php

@@ -39,7 +39,7 @@ include('modules/banner--main.php');
         echo render_event(get_the_ID());
       }
     } else {
-      echo '<li class="empty-events">No events found.</li>';
+      echo '<li class="empty-events"><p>No events found.</p></li>';
     }
     wp_reset_postdata();
     ?>

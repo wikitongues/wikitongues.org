@@ -20,7 +20,7 @@ if ($class === "custom fundraiser") {
   echo '<li>';
   echo '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail_url).');" alt="' . get_the_title() . '"></div>';
   echo '<section>';
-  echo '<h2>'.$title.'<br>'.$location.'</h2>';
+  echo '<strong>'.$title.'<br>'.$location.'</strong>';
   echo '<p>'.$marketing_text.'</p>';
   echo '</section>';
   echo '</li>';

@@ -1,7 +1,7 @@
 $wpChrome = 32px
 $primary = 56px
 $secondary = 54px
-$headerFontSize = 12px
+$headerFontSize = 14px
 
 body
 	&[data-alert="true"]
@@ -364,7 +364,7 @@ body
 						margin-bottom 3rem
 
 						&>a
-							text--strong($blue)
+							text--strong($blue) // a
 							text-decoration none
 
 						ul
@@ -387,7 +387,7 @@ body
 				border none
 				float right
 				padding	11px 14px
-				text--strong($black)
+				text--strong($black) // button
 
 				&:hover
 					cursor pointer
@@ -405,4 +405,4 @@ body
 		&.transparent-background
 			.wt_header__mobile-buttons
 					button:first-of-type
-						text--strong($parchment)
+						text--strong($parchment) // button, issue

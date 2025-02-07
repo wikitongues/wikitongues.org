@@ -21,22 +21,17 @@
 			border-bottom 0
 
 		&#identifiers
-			> strong
-				display block
 			span
 				width 50%
 				float left
-	h2
-		text--strong($black)
-		padding-bottom 12px
-
-	h3
-		text--strong($black)
 
 	strong
-		text--strong($black)
-		display inline-block
+		text--strong($black) // strong
+		display block
 		margin-bottom 4px
+
+		&.wt_sectionHeader
+			padding-bottom 12px
 
 	p
 		text--body($black)
@@ -73,7 +68,7 @@
 			text-decoration underline
 
 		strong
-			text--strong($blue)
+			text--strong($blue) // strong
 
 		span
 			text--body($blue)

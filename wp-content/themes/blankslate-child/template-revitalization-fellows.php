@@ -30,7 +30,7 @@ if ($fellow_id) {
 ?>
 
 <div class="custom-gallery-fellows-navigation">
-  <h2>Fellowship Cohorts</h2>
+  <strong>Fellowship Cohorts</strong>
   <ul>
     <?php
     foreach ($cohorts as $index => $cohort) {
