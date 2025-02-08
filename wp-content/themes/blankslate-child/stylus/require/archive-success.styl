@@ -23,7 +23,7 @@
 			text--header($black)
 
 		strong
-			text--strong($black) // strong
+			text--strong($black)
 			font-size 1.6rem // required for the height below
 			min-height @font-size * @line-height * 2 // 2 lh
 			text-align left
@@ -50,13 +50,13 @@
 					text--body($black)
 
 					strong
-						text--strong($black) // strong
+						text--strong($black)
 						min-height 3.3em
 						display inline-block
 
 					a
-						text--body($blue)
-						anchor($blue, 2px)
+						text--body($blue())
+						anchor($blue(),2px)
 
 div.success_cta
 	display flex
@@ -72,15 +72,7 @@ div.success_cta
 		text-align center
 
 	section
-		background $blue-22
-		border-radius 8px
-
-		a
-			display block
-			text-decoration none
-			text--strong($blue) // a; issue
-			font-size 2rem // issue
-			padding 24px
+		button--primary($blue(22), $blue())
 
 @media all and (max-width:$mobile)
 	.page-template-template-archive-success

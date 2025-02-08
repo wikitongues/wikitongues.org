@@ -15,8 +15,8 @@ $content_block_cta_text = get_sub_field('content_block_cta_text');
 		<p>
 			<?php echo $content_block_copy; ?>
 		</p>
-		<a href="<?php echo $content_block_cta_link; ?>">
+		<button href="<?php echo $content_block_cta_link; ?>">
 			<?php echo $content_block_cta_text; ?>
-		</a>
+		</button>
 	</aside>
 </section>

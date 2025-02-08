@@ -11,7 +11,7 @@
 		button
 			background none
 			border none
-			text--body($blue)
+			text--body($blue())
 			padding 1.6rem
 			cursor pointer
 
@@ -66,14 +66,14 @@
 			a
 				display inline-block
 				text-decoration none
-				color $blue
+				color $blue()
 				padding 8px 12px
 				margin 4px 0px
 				border-radius 4px
 
 			&:hover
 				a
-					background $blue
+					background $blue()
 					color $parchment
 
 @media (max-width: $mobile)

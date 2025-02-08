@@ -23,10 +23,9 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 			<?php echo $banner_copy; ?>
 		</p>
 		<?php if ( $banner_cta ): ?>
-			<a class="wt_button--large" href="<?php echo $banner_cta['url']; ?>">
+			<button href="<?php echo $banner_cta['url']; ?>">
 				<?php echo $banner_cta['title']; ?>
-				<i class="fa-regular fa-arrow-right-long"></i>
-			</a>
+			</button>
 		<?php elseif ( $banner_cta_placeholder ): ?>
 			<p class="wt_text--body">
 				<strong>
@@ -47,10 +46,9 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 		<?php echo $banner_copy; ?>
 	</p>
 	<?php if ( $banner_cta ): ?>
-		<a class="wt_button--large" href="<?php echo $banner_cta['url']; ?>">
+		<button href="<?php echo $banner_cta['url']; ?>">
 			<?php echo $banner_cta['title']; ?>
-			<i class="fa-regular fa-arrow-right-long"></i>
-		</a>
+		</button>
 	<?php elseif ( $banner_cta_placeholder ): ?>
 		<p class="wt_text--body">
 			<strong>

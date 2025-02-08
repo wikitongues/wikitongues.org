@@ -2,13 +2,13 @@
 
 <!-- to add later: buttons with carousel js -->
 <?php if ( $post_type ): ?>
-	<section class="wt_carousel--testimonials">	
+	<section class="wt_carousel--testimonials">
 	<p>
 		<strong>What our community is saying</strong>
 	</p>
 	<ul>
 		<?php foreach ( $post_type as $post ): setup_postdata( $post ); ?>
-		<?php 
+		<?php
 			$testimonial_image = get_field('fellow_headshot');
 			$testimonial_copy = get_field('fellow_testimonial');
 			$first_name = get_field('first_name');
@@ -27,10 +27,7 @@
 						</span>
 					</p>
 					<?php if ( $testimonial_link_back ): ?>
-					<a href="<?php echo get_the_permalink(); ?>">
-						<span>Read more</span>
-						<i class="fa-regular fa-arrow-right-long"></i>
-					</a>
+					<a href="<?php echo get_the_permalink(); ?>">Read more</a>
 					<?php endif; ?>
 				</div>
 			</li>

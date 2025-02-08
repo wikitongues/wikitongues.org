@@ -15,7 +15,7 @@
 		left .75%
 		width 99.25%
 		height 100%
-		background $blue
+		background $blue()
 		border-radius 4px
 
 	&__image
@@ -44,8 +44,8 @@
 			margin 3rem 0
 			text--body($parchment)
 
-		a
-			button--large($parchment, $blue)
+		button
+			button--secondary($parchment, $blue())
 
 			i
 				margin-left 0.5rem
@@ -73,7 +73,7 @@
 
 		&__copy
 			width 100%
-			background $blue
+			background $blue()
 			padding 5rem 6rem 6rem
 
 			h1

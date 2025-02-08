@@ -32,10 +32,10 @@
 				text-decoration none
 
 				&:hover
-					border-left-color $blue
+					border-left-color $blue()
 
 				strong
-					text--strong($black) // strong
+					text--strong($black)
 					line-height 2.6rem
 					display block
 
@@ -48,7 +48,7 @@
 		margin-bottom 6.4rem
 
 		a
-			anchor($blue, 2px)
+			anchor($blue(),2px)
 
 .career-post
 	max-width $content
@@ -59,7 +59,7 @@
 		margin 3.2rem 0
 
 	a
-		text--body($blue)
+		text--body($blue())
 		text-decoration none
 
 	h4
@@ -79,7 +79,7 @@
 				padding 1.6rem 3.2rem
 				display inline-block
 				margin-top 1.6rem
-				background $blue
+				background $blue()
 				border-radius 8px
 				color $parchment
 

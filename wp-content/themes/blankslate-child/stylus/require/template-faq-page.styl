@@ -32,7 +32,7 @@
 					margin-top 0
 
 			strong
-				text--strong($black) // strong
+				text--strong($black)
 				margin .8rem 0 0
 
 			.faq-entry
@@ -41,7 +41,7 @@
 				border-left 2px solid transparent
 
 				&:hover
-					border-left-color $blue
+					border-left-color $blue()
 
 				p, li
 					text--body($black)
@@ -53,7 +53,7 @@
 						font-weight 700
 
 					a, a:visited, a:active, a span
-						anchor($blue, 2px)
+						anchor($blue(),2px)
 
 				ol, ul
 					list-style-type auto
@@ -76,7 +76,7 @@
 
 					a
 						text-decoration none
-						text--body($blue)
+						text--body($blue())
 						padding-left .8rem
 						position relative
 
@@ -91,10 +91,10 @@
 							background transparent
 
 						&.active
-							text--strong($blue) // a
+							text--strong($blue()) // a
 
 							&::before
-								background $blue-22
+								background $blue(22)
 
 			p
 				text--body($black)
@@ -103,7 +103,7 @@
 
 				a
 					clear both
-					color $blue
+					color $blue()
 					text-decoration none
 					font-size inherit
 

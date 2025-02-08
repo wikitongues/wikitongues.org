@@ -38,7 +38,7 @@
 		padding 4px 10px
 		cursor pointer
 		text-decoration none
-		text--body($blue)
+		text--body($blue())
 
 		&.active
 			font-weight bold
@@ -46,7 +46,7 @@
 		&.loading
 			color $grey-25
 			pointer-events none
-			pointer cursor
+			cursor pointer
 
 		&:hover
 			font-weight 900
@@ -56,12 +56,15 @@
 		scroll-margin-top 162px
 
 	.language-columns
+		$gutter = 8px
+		$columns = 5
 		display grid
 		flex-wrap wrap
-		grid-template-columns repeat(auto-fill, minmax(($content / 5), 1fr))
+		grid-template-columns repeat(auto-fill, minmax((($content - ($gutter * $columns)) / $columns), 1fr))
+		column-gap $gutter
 
 	.language-item
-		text--body($blue)
+		text--body($blue())
 		padding 8px 16px
 		border-radius 4px
 		text-decoration none
@@ -75,19 +78,19 @@
 			font-weight 900
 
 			span
-				color $blue
+				color $blue()
 
 				&::before
 					position absolute
 					content ''
 					width 4px
 					height 21px
-					left 0
+					left 4px
 					border-radius 0 4px 4px 0
-					background $blue-28
+					background $blue(28)
 
 		&:hover
-			background $blue-10
+			background $blue(10)
 
 		span
 			margin-right 1rem
@@ -106,7 +109,7 @@
 			height 40px
 			float left
 			border 5px solid $border-color
-			border-top-color $blue
+			border-top-color $blue()
 			border-radius 50%
 			animation spin 1s linear infinite
 
@@ -115,7 +118,7 @@
 				transform: rotate(360deg)
 
 		p
-			text--body($blue)
+			text--body($blue())
 			float left
 			margin 0 16px
 

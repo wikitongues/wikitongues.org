@@ -20,7 +20,7 @@
 			width (100/3)*2%
 			padding-bottom 37.5%
 			background-size cover
-			background-color $blue
+			background-color $blue()
 			background-position center
 			border-radius 1.6rem 0 1.6rem 0
 
@@ -43,8 +43,8 @@
 				margin-left -8px
 
 				a.language
-					color $blue
-					border-bottom 2px solid $blue
+					color $blue()
+					border-bottom 2px solid $blue()
 					text-decoration none
 					display flex
 					padding 4px 12px
@@ -55,7 +55,7 @@
 					border-radius 4px 4px 0 0
 
 					&:hover
-						background $blue-10
+						background $blue(10)
 
 					&:first-of-type
 						margin-left 0
@@ -65,7 +65,7 @@
 						line-height 2
 
 					span.identifier
-						color $blue
+						color $blue()
 						font-weight 800
 						flex initial
 						min-width initial
@@ -82,14 +82,14 @@
 				font-weight bold
 
 			a.cohort
-				text--strong($blue) // a
+				text--strong($blue()) // a
 				text-decoration none
 
 	article
 		margin-bottom 1.6rem
 
 		strong
-			text--strong($black) // strong
+			text--strong($black)
 
 	ul
 		margin-top .5rem
@@ -103,7 +103,7 @@
 				margin-right 0
 
 			a
-				text--body($blue)
+				text--body($blue())
 
 	&--social
 		ul
@@ -113,7 +113,7 @@
 
 				a
 					font-size $socialIcon
-					anchor($blue, 4px)
+					anchor($blue(),4px)
 
 	&--links
 		ul
@@ -123,7 +123,7 @@
 				margin .1rem 1.6rem .1rem 2rem
 
 				a
-					anchor($blue, 2px)
+					anchor($blue(),2px)
 
 @media all and (max-width:$mobile)
 	.wt_fellow__meta

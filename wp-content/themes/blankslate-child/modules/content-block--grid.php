@@ -20,8 +20,8 @@
 			<?php echo $content_block_copy; ?>
 		</p>
 		<?php endif; ?>
-		<a href="<?php echo $content_block_cta_link; ?>" class="<?php echo $content_block_class; ?>">
+		<button href="<?php echo $content_block_cta_link; ?>" class="<?php echo $content_block_class; ?>">
 			<?php echo $content_block_cta_text; ?>
-		</a>
+		</button>
 	</aside>
 </section>

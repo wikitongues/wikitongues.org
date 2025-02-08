@@ -20,11 +20,11 @@
 		line-height 2.6rem
 
 		strong
-			text--strong($black) // strong
+			text--strong($black)
 
 		a
-			text--body($blue)
-			anchor($blue, 2px)
+			text--body($blue())
+			anchor($blue(),2px)
 
 	ul
 		text--body($black)
@@ -35,7 +35,7 @@
 			list-style disc
 
 			a
-				text--body($blue)
+				text--body($blue())
 
 	>div,
 	img

@@ -32,7 +32,7 @@
 			text--header($black)
 
 		strong
-			text--strong($black) // strong
+			text--strong($black)
 			margin-top 0.8rem
 			margin-bottom 1.6rem
 
@@ -54,14 +54,14 @@
 					margin-right 0
 
 				a
-					text--body($blue)
+					text--body($blue())
 					text-decoration none
-					anchor($blue, 2px)
+					anchor($blue(),2px)
 
 			&.social
 				a
 					font-size $socialIcon
-					anchor($blue, 4px)
+					anchor($blue(),4px)
 
 @media all and (max-width:$mobile)
 	.wt_team-member--wide
