@@ -4,7 +4,7 @@
 $aspect-ratio = 16/9
 
 .custom-gallery
-	text--body($blue)
+	text--body($blue())
 	clear both
 
 	&:nth-of-type(2)
@@ -22,7 +22,7 @@ $aspect-ratio = 16/9
 
 	&:not(&.home)
 		strong
-			text--strong($black) // strong
+			text--strong($black)
 			text-align left
 			clear both
 
@@ -37,7 +37,7 @@ $aspect-ratio = 16/9
 	p
 		a
 			text-decoration none
-			color $blue
+			color $blue()
 
 	.gallery-container
 		margin-top 12px
@@ -95,7 +95,7 @@ $aspect-ratio = 16/9
 					img,
 					.no-thumbnail,
 					.thumbnail
-						background $blue
+						background $blue()
 						background-position 50% 50%
 						background-size cover
 						border-radius 8px 0 8px 0
@@ -176,11 +176,11 @@ $aspect-ratio = 16/9
 					a
 						color $black
 						background $parchment
-						border 2px solid $blue
+						border 2px solid $blue()
 						transition all 0.2s ease-in-out
 
 						&:hover
-							box-shadow 0 0 0 1px $blue
+							box-shadow 0 0 0 1px $blue()
 
 							.thumbnail,
 							.no-thumbnail
@@ -198,7 +198,7 @@ $aspect-ratio = 16/9
 								&:last-of-type
 									td
 										&:last-of-type
-											color $blue
+											color $blue()
 
 					.thumbnail,
 					.no-thumbnail
@@ -244,7 +244,7 @@ $aspect-ratio = 16/9
 				.gallery-item
 
 					a
-						border-left 4px solid $blue
+						border-left 4px solid $blue()
 						height 100%
 						background $parchment
 						color $black
@@ -265,7 +265,7 @@ $aspect-ratio = 16/9
 							font-size 1.2rem
 
 							&.domain
-								color $blue
+								color $blue()
 
 	&.lexicons
 		.wt_sectionHeader
@@ -291,7 +291,7 @@ $aspect-ratio = 16/9
 						transition box-shadow 0.2s ease-in-out
 
 						&:hover
-							box-shadow 0px 0px 0px 4px $blue-22
+							box-shadow 0px 0px 0px 4px $blue(22)
 
 						section
 							display flex
@@ -304,7 +304,7 @@ $aspect-ratio = 16/9
 								font-size 1.2rem
 
 							&:first-of-type
-								border-bottom 2px solid $blue
+								border-bottom 2px solid $blue()
 
 								.language
 									p
@@ -342,6 +342,8 @@ $aspect-ratio = 16/9
 	.gallery-pagination
 		display flex
 		justify-content center
+		gap 4px
+		margin 8px 0
 
 		li
 			float left
@@ -352,16 +354,21 @@ $aspect-ratio = 16/9
 					text-align right
 
 			a
-				padding 16px
+				padding 11px 16px
 				display inline-block
 				text-decoration none
 
 				&.page-numbers
-					text--body($blue)
+					text--body($blue())
 					text-decoration none
+					border-radius 8px
+					transition background-color .1s ease-in-out
+
+					&:hover
+						background $blue(10)
 
 					&.active
-						text--strong($blue) // a
+						text--strong($blue()) // a
 						pointer-events none
 
 #wt_single-languages__lexicons
@@ -384,7 +391,7 @@ $aspect-ratio = 16/9
 		float left
 
 	strong
-		text--strong($black) // strong
+		text--strong($black)
 		width 50%
 		padding 16px 0
 
@@ -399,14 +406,14 @@ $aspect-ratio = 16/9
 			pointer-events all
 
 			button
-				text--body($blue)
+				text--body($blue())
 				background none
 				border none
 				padding 16px
 				cursor pointer
 
 				&.active
-					text--strong($blue) // button
+					text--strong($blue()) // button
 					pointer-events none
 
 	p
@@ -414,13 +421,13 @@ $aspect-ratio = 16/9
 		width 50%
 
 		a
-			text--strong($blue) // a
+			text--strong($blue()) // a
 			padding 16px 0 16px 16px
 			float right
 
 	a
 		text-decoration none
-		color $blue
+		color $blue()
 
 .custom-cta-container
 	width 100%
@@ -430,23 +437,7 @@ $aspect-ratio = 16/9
 		padding 0 32px
 
 	.custom-gallery-video-cta
-		background $blue-22
-		border-radius 8px
-		display flex
-		justify-content space-between
-		width 100%
-		overflow hidden
-
-		a
-			text-decoration none
-			text--body($blue)
-			padding 24px
-			line-height 2.6rem
-
-			&:first-of-type
-				text--strong($blue) // a
-				font-size 2rem
-
+		button--primary($blue(22), $blue())
 
 @media all and (max-width:1140px)
 	.custom-gallery
@@ -488,7 +479,7 @@ $aspect-ratio = 16/9
 				text-align center
 
 				&:first-of-type
-					background $blue-22
+					background $blue(22)
 					border-radius 8px
 					width 100%
 

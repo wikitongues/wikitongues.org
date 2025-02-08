@@ -69,7 +69,7 @@ body
 	transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
 
 	a
-		font-size 1.2rem
+		font-size $headerFontSize
 
 	&.transparent-background
 		background none
@@ -131,7 +131,7 @@ body
 			.typeahead-list
 				width 400px
 				border-radius 8px
-				outline 2px solid #3814a5
+				outline 2px solid $blue()
 				z-index 3
 
 	@media all and (max-width:$smallScreen)
@@ -170,12 +170,12 @@ body
 				border none !important
 
 				&>a
-					color $blue
+					color $blue()
 
-		&>ul>li
+		#menu-main-menu>li
 			position relative
 			margin-left 1.6rem
-			button--small($parchment, $blue)
+			button--secondary($parchment, $blue())
 			border none
 			border-radius 8px
 			text-transform initial
@@ -195,7 +195,6 @@ body
 				color inherit
 				padding 1.25rem
 				display inline-block
-				font-size $headerFontSize
 
 			&:hover
 				cursor pointer
@@ -212,7 +211,7 @@ body
 		.sub-menu
 			display none
 			position absolute
-			top 38px
+			top 43px
 			left 0
 			width 100%
 			padding 8px 0
@@ -235,14 +234,14 @@ body
 					border-radius 0 0 8px 8px
 
 				a
-					color $blue
+					color $blue()
 					padding 1.25rem
 					text-decoration none
 					display inline-block
 					width 100%
 
 					&:hover
-						background $blue-10
+						background $blue(10)
 
 		&--secondary
 			z-index 2
@@ -260,7 +259,7 @@ body
 							font-weight bold
 
 					a
-						text--body($blue)
+						text--body($blue())
 						font-size $headerFontSize
 						text-decoration none
 						padding 10px
@@ -364,7 +363,7 @@ body
 						margin-bottom 3rem
 
 						&>a
-							text--strong($blue) // a
+							text--strong($blue()) // a
 							text-decoration none
 
 						ul
@@ -374,7 +373,7 @@ body
 								margin-bottom 1.5rem
 
 								a
-									text--body($blue)
+									text--body($blue())
 									text-decoration none
 
 		&__mobile-buttons

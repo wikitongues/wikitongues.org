@@ -89,17 +89,12 @@ if ( $thumbnail_image ) {
 
 
 	if ( $thumbnail_cta_text ) {
-
-		echo '<a href="' . get_the_permalink() . '">' .
-			 $thumbnail_cta_text .
-			 '<i class="fa-regular fa-arrow-right-long"></i></a>'; // add arrow
-
+		$cta_text = $thumbnail_cta_text;
 	} else {
-
-		echo '<a href="' . get_the_permalink() . '">' .
-			 'Read more<i class="fa-regular fa-arrow-right-long"></i></a>'; // add arrow
-
+		$cta_text = 'Read more';
 	}
+
+	echo '<button href="' . get_the_permalink() . '">' . $cta_text . '</button>';
 
 ?>
 </div>

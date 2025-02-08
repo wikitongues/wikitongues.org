@@ -40,7 +40,6 @@ require_once plugin_dir_path(__FILE__) . 'includes/helpers.php';
 require_once plugin_dir_path(__FILE__) . 'includes/queries.php';
 require_once plugin_dir_path(__FILE__) . 'includes/render_gallery_items.php';
 
-
 // AJAX callback function to load more gallery items
 function load_custom_gallery_ajax_callback() {
   check_ajax_referer('custom_gallery_nonce', 'nonce'); // Security check

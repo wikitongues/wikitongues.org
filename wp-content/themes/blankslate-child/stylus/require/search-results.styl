@@ -1,7 +1,9 @@
 body
-	&.search-results
+	&.search-results,
+	&.search-no-results
 		.wt_banner--searchbar
 			display none
+
 		.wt_header
 			&__nav
 				&>ul>li
@@ -37,13 +39,13 @@ body
 		margin-bottom 12rem
 		text-align center
 
-		span
+		p
 			width 100%
 			text-align center
 			text--body($black)
 
 			a
-				text--body($blue)
+				text--body($blue())
 
 	&__pagination
 		margin-bottom 6rem
@@ -55,7 +57,7 @@ body
 
 		a
 			margin-right 3rem
-			text--strong($blue) // a
+			text--strong($blue()) // a
 			text-decoration none
 
 @media all and (max-width:$mobile)

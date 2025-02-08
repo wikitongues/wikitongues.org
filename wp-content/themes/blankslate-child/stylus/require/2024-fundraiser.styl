@@ -17,7 +17,7 @@ $aspect-ratio = 1.185185185
 			margin 16px 0
 
 			a
-				text--body($blue)
+				text--body($blue())
 				text-decoration none
 				margin 1.6rem auto
 				display block
@@ -59,7 +59,7 @@ $aspect-ratio = 1.185185185
 				display flex
 
 				strong
-					text--strong($black) // strong
+					text--strong($black)
 					margin-bottom 1.6rem
 
 				button,
@@ -82,13 +82,13 @@ $aspect-ratio = 1.185185185
 					&:first-of-type
 						button,
 						a.cta
-							background $blue
+							background $blue()
 
 					&:last-of-type
 						button,
 						a.cta
 							background transparent
-							color $blue
+							color $blue()
 
 			&> p
 				text-align center

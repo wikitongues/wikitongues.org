@@ -17,7 +17,7 @@
 			min-width 300px
 			width 300px
 			height 170px
-			background $blue
+			background $blue()
 
 		&--copy
 			display inline-block
@@ -27,13 +27,13 @@
 				margin-bottom 1.5rem
 
 				strong
-					text--strong($black) // strong
+					text--strong($black)
 
 				span
 					text--body($black)
 
-			a
-				button--small($blue,$parchment)
+			button
+				button--secondary($blue(), $parchment)
 
 				i
 					margin-left 0.5rem

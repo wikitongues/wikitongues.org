@@ -6,6 +6,7 @@ $class = $atts['custom_class'];
 $thumbnail_url = get_custom_image('fellows');
 $fellow_year = get_field('fellow_year');
 $location = get_field('fellow_location');
+$fellow_language = get_field('fellow_language');
 $fellow_language_preferred_name = get_field('fellow_language_preferred_name');
 $marketing_text = get_field('marketing_text');
 $thumbnail = '';
