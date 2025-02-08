@@ -28,8 +28,8 @@
 		justify-content flex-end
 		flex-direction column
 
-		h2
-			text--subheader($black)
+		h4
+			text--header($black)
 
 		strong
 			text--strong($black)
@@ -54,14 +54,14 @@
 					margin-right 0
 
 				a
-					text--body($blue)
+					text--body($blue())
 					text-decoration none
-					anchor($blue, 2px)
+					anchor($blue(),2px)
 
 			&.social
 				a
-					font-size 2rem
-					anchor($blue, 4px)
+					font-size $socialIcon
+					anchor($blue(),4px)
 
 @media all and (max-width:$mobile)
 	.wt_team-member--wide

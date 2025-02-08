@@ -12,7 +12,7 @@
 
     echo '<a href="' . esc_url($url) . '">';
     echo $thumbnail_object;
-    echo '<div><h3>' . $title . '</h3></div>';
+    echo '<div><h6>' . $title . '</h6></div>';
     echo '</a>';
   ?>
 </li>

@@ -5,7 +5,7 @@ get_header();
 
 include( 'modules/banner--searchbar.php' );
 
-include( 'modules/languages-list.php' );
+include( 'modules/language-index.php' );
 
 include( 'modules/newsletter.php' );
 

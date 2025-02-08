@@ -4,8 +4,8 @@
 	display flex
 	flex-direction column
 
-	h2
-		text--subheader($black)
+	h4
+		text--header($black)
 		margin-bottom 16px
 		padding-left 16px
 
@@ -30,24 +30,23 @@
 			position fixed
 			left 0
 			right 0
-			z-index 1000
+			z-index 2
 			background $parchment
-			border-bottom 2px solid $lightPurple
+			border-bottom 2px solid $border-color
 
 	.nav-btn
 		padding 4px 10px
 		cursor pointer
-		font-size 2rem
 		text-decoration none
-		text--body($blue)
+		text--body($blue())
 
 		&.active
 			font-weight bold
 
 		&.loading
-			color grey
+			color $grey-25
 			pointer-events none
-			pointer cursor
+			cursor pointer
 
 		&:hover
 			font-weight 900
@@ -57,29 +56,41 @@
 		scroll-margin-top 162px
 
 	.language-columns
+		$gutter = 8px
+		$columns = 5
 		display grid
 		flex-wrap wrap
-		grid-template-columns repeat(auto-fill, minmax(($content / 5), 1fr))
+		grid-template-columns repeat(auto-fill, minmax((($content - ($gutter * $columns)) / $columns), 1fr))
+		column-gap $gutter
 
 	.language-item
-		text--body($blue)
-		display inline-block
+		text--body($blue())
 		padding 8px 16px
 		border-radius 4px
 		text-decoration none
-		color $blue
 		display flex
+		position relative
 
 		*
 			float left
 
 		&.has-speakers
 			font-weight 900
+
 			span
-				color $blue
+				color $blue()
+
+				&::before
+					position absolute
+					content ''
+					width 4px
+					height 21px
+					left 4px
+					border-radius 0 4px 4px 0
+					background $blue(28)
 
 		&:hover
-			background #ebe8f6
+			background $blue(10)
 
 		span
 			margin-right 1rem
@@ -97,8 +108,8 @@
 			width 40px
 			height 40px
 			float left
-			border 5px solid $lightPurple
-			border-top-color $blue
+			border 5px solid $border-color
+			border-top-color $blue()
 			border-radius 50%
 			animation spin 1s linear infinite
 
@@ -107,7 +118,7 @@
 				transform: rotate(360deg)
 
 		p
-			text--body($blue)
+			text--body($blue())
 			float left
 			margin 0 16px
 
@@ -118,4 +129,4 @@
 			overflow-x scroll
 
 			.nav-btn
-				font-size 2.4rem
+				font-size 2.4rem // mobile

@@ -63,7 +63,7 @@ if ( $fellow_bio ) {
 }
 ?>
 <div class="custom-gallery full">
-	<h2 class="wt_sectionHeader"><?php echo 'Other fellows from <a href="'.esc_url($revitalization_fellows_url).'">' . $fellow_year ?></a></h2>
+	<strong class="wt_sectionHeader"><?php echo 'Other fellows from <a href="'.esc_url($revitalization_fellows_url).'">' . $fellow_year ?></a></strong>
 	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link?>">Support a revitalization project.</a></p>
 </div>
 <?php
@@ -80,7 +80,7 @@ $params = [
 	'meta_key' => 'fellow_year',
 	'meta_value' => $fellow_year,
 	'selected_posts' => '',
-	'display_blank' => '',
+	'display_blank' => 'false',
 	'taxonomy' => '',
 	'term' => ''
 ];

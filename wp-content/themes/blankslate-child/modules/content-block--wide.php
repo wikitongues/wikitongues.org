@@ -2,7 +2,7 @@
 $content_block_image = get_sub_field('content_block_image');
 $content_block_header = get_sub_field('content_block_header');
 $content_block_copy = get_sub_field('content_block_copy');
-$content_block_cta_link = get_sub_field('content_block_cta_link'); 
+$content_block_cta_link = get_sub_field('content_block_cta_link');
 $content_block_cta_text = get_sub_field('content_block_cta_text');
 ?>
 
@@ -15,9 +15,8 @@ $content_block_cta_text = get_sub_field('content_block_cta_text');
 		<p>
 			<?php echo $content_block_copy; ?>
 		</p>
-		<a href="<?php echo $content_block_cta_link; ?>">
+		<button href="<?php echo $content_block_cta_link; ?>">
 			<?php echo $content_block_cta_text; ?>
-			<i class="fa-regular fa-arrow-right-long"></i>
-		</a>
+		</button>
 	</aside>
 </section>

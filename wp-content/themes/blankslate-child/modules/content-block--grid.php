@@ -12,16 +12,16 @@
 	<!-- show nothing -->
 <?php endif; ?>
 	<aside class="wt_content-block--thirds__copy">
-		<h1>
+		<strong>
 			<?php echo $content_block_header; ?>
-		</h1>
+		</strong>
 		<?php if ( $content_block_copy ): ?>
 		<p>
 			<?php echo $content_block_copy; ?>
 		</p>
 		<?php endif; ?>
-		<a href="<?php echo $content_block_cta_link; ?>" class="<?php echo $content_block_class; ?>">
+		<button href="<?php echo $content_block_cta_link; ?>" class="<?php echo $content_block_class; ?>">
 			<?php echo $content_block_cta_text; ?>
-		</a>
+		</button>
 	</aside>
 </section>

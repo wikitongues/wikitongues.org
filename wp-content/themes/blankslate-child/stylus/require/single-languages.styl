@@ -22,7 +22,7 @@ body
 		&__content
 			width calc(100%/4*3)
 			float left
-			padding 0 6rem
+			padding 0 6rem 6rem
 			box-sizing border-box
 
 		&__contents
@@ -32,20 +32,6 @@ body
 
 			&:last-of-type
 				margin-bottom 0
-
-			&>p
-				width 100%
-				margin 0 auto 3rem
-				padding-bottom 3rem
-				text--body($black)
-
-				a
-					text--body($blue)
-					anchor($blue, 2px)
-
-				strong
-					text--strong($black)
-					text-transform uppercase
 
 			&#wt_single-languages__lexicons,
 			&#wt_single-languages__resources
@@ -59,7 +45,7 @@ body
 					&__copy
 						padding-top 3.5rem
 						padding-bottom 4rem
-						background $blue
+						background $blue()
 
 @media all and (max-width:$mobile)
 	.wt_single-languages

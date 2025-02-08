@@ -1,93 +1,57 @@
-body
-	max-width 1800px
-	margin auto
-	background $parchment
+$wpChrome = 32px
+$primary = 56px
+$secondary = 54px
+$headerFontSize = 14px
 
+body
 	&[data-alert="true"]
 		padding-top 194.63px
 
 		.wt_header
 			top 72px !important
 
-	&.page-template-faq-page,
+	// Primary Navigation Bar
+	&.page-template,
+	&.single-careers
 	&.post-type-archive-reports,
-	&.post-type-archive-careers
-		margin-top 56px
+	&.post-type-archive-careers,
+	&.error404
+		margin-top $primary
 
-	&.page-template-template-archive-home,
-	&.page-template-template-revitalization-home,
-	&.page-template-template-revitalization-toolkit,
-	&.page-template-template-revitalization-fellows,
-	&.page-template-template-revitalization-application,
-	&.page-template-template-about-board,
-	&.page-template-template-about-staff,
-	&.single-languages,
-	&.single-videos,
-	&.single-fellows
-		margin-top 110px
+		&.logged-in
+			margin-top $wpChrome + $primary
 
-	&.post-type-archive-reports
-		padding-top 32px
+	// Primary + Secondary Navigation Bar
+	&.page-parent,
+	&.page-child,
+	&.search,
+	&.single:not(&.single-careers)
+		margin-top $primary + $secondary
+
+		&.logged-in
+			margin-top $primary + $secondary + $wpChrome
 
 	&.logged-in
-		margin-top 32px
-
 		.wt_header
-			top 32px
-
-		&.page-template-faq-page,
-		&.post-type-archive-reports,
-		&.post-type-archive-careers
-			margin-top 32px + 56px
-
-		&.page-template-template-archive-home,
-		&.page-template-template-revitalization-home,
-		&.page-template-template-revitalization-toolkit,
-		&.page-template-template-revitalization-fellows,
-		&.page-template-template-revitalization-application,
-		&.page-template-template-about-board,
-		&.page-template-template-about-staff,
-		&.single-languages,
-		&.single-videos,
-		&.single-fellows
-			margin-top 32px + 110px
-
-		&.post-type-archive-reports
-			padding-top 32px
+			top $wpChrome
 
 		&[data-alert="true"]
 			padding-top 226.63px !important
 
 			.wt_banner-alert__container
-				top 32px !important
+				top $wpChrome !important
 
 			.wt_header
 				top 104px !important
 
-@media all and (max-width:$mobile)
-	body
-		&.archive,
-		&.page-template
-			margin-top 56px
+.skip-link
+	text--body($black)
 
-		&.logged-in
-			margin-top 46px
-
-			.wt_header
-				top 46px
-
-			.wt_header
-				&__nav,
-				&__secondary
-					&--mobile
-						top 46px
-
-			&.page-parent,
-			&.page-child,
-			&.single-languages,
-			&.single-videos,
-			&.archive
-				margin-top 46px + 56px
+	&:focus
+		top 16px
+		left 16px
+		background $yellow
+		color $black
 
 .wt_header
 	z-index 10
@@ -103,6 +67,9 @@ body
 	transition-property background
 	transition-duration 0.3s
 	transition-timing-function cubic-bezier(0.16, 1, 0.3, 1);
+
+	a
+		font-size $headerFontSize
 
 	&.transparent-background
 		background none
@@ -125,6 +92,7 @@ body
 		a
 			display inline-block
 			padding 0
+			float left
 
 			&:hover
 				background none
@@ -145,7 +113,6 @@ body
 			height 40px
 			width auto
 
-
 	#typeahead_nav
 		.typeahead-form
 			input
@@ -164,7 +131,7 @@ body
 			.typeahead-list
 				width 400px
 				border-radius 8px
-				outline 2px solid #3814a5
+				outline 2px solid $blue()
 				z-index 3
 
 	@media all and (max-width:$smallScreen)
@@ -172,14 +139,11 @@ body
 			display none !important
 
 	&__secondary
-		border-top 1px solid $lightPurple
+		border-top 1px solid $border-color
 		width 100%
 
 	&__nav
-		z-index inherit
 		margin-left auto
-		text-align right
-		font-size 0
 
 		#dark
 			position fixed
@@ -206,12 +170,12 @@ body
 				border none !important
 
 				&>a
-					color $blue
+					color $blue()
 
-		&>ul>li
+		#menu-main-menu>li
 			position relative
-			margin-left 1.3rem
-			button--small($parchment, $blue)
+			margin-left 1.6rem
+			button--secondary($parchment, $blue())
 			border none
 			border-radius 8px
 			text-transform initial
@@ -247,7 +211,7 @@ body
 		.sub-menu
 			display none
 			position absolute
-			top 38px
+			top 43px
 			left 0
 			width 100%
 			padding 8px 0
@@ -270,14 +234,14 @@ body
 					border-radius 0 0 8px 8px
 
 				a
-					color $blue
+					color $blue()
 					padding 1.25rem
 					text-decoration none
 					display inline-block
 					width 100%
 
 					&:hover
-						background #eee
+						background $blue(10)
 
 		&--secondary
 			z-index 2
@@ -295,8 +259,8 @@ body
 							font-weight bold
 
 					a
-						text--body($blue)
-						font-size 1.3rem !important
+						text--body($blue())
+						font-size $headerFontSize
 						text-decoration none
 						padding 10px
 						display inline-block
@@ -330,6 +294,31 @@ body
 
 					&:last-of-type
 						margin-right 3rem
+
+@media all and (max-width:$mobile)
+	body
+		&.archive,
+		&.page-template
+			margin-top $primary
+
+		&.logged-in
+			margin-top 46px
+
+			.wt_header
+				top 46px
+
+			.wt_header
+				&__nav,
+				&__secondary
+					&--mobile
+						top 46px
+
+			&.page-parent,
+			&.page-child,
+			&.single-languages,
+			&.single-videos,
+			&.archive
+				margin-top 46px + $primary
 
 @media all and (max-width:$mobile)
 	body
@@ -374,7 +363,7 @@ body
 						margin-bottom 3rem
 
 						&>a
-							text--strong($blue)
+							text--strong($blue()) // a
 							text-decoration none
 
 						ul
@@ -384,7 +373,7 @@ body
 								margin-bottom 1.5rem
 
 								a
-									text--body($blue)
+									text--body($blue())
 									text-decoration none
 
 		&__mobile-buttons
@@ -397,7 +386,7 @@ body
 				border none
 				float right
 				padding	11px 14px
-				text--strong($black)
+				text--strong($black) // button
 
 				&:hover
 					cursor pointer
@@ -415,4 +404,4 @@ body
 		&.transparent-background
 			.wt_header__mobile-buttons
 					button:first-of-type
-						text--strong($parchment)
+						text--strong($parchment) // button, issue

@@ -24,7 +24,7 @@
 					<?php echo '<input type="text" name="b_'.$user.'_'.$id.'" tabindex="-1" value="">'; ?>
 				</div>
 				<div class="clear">
-					<input type="submit" value="Stay informed" name="subscribe" id="mc-embedded-subscribe" class="button wt_cta">
+					<button type="submit" name="subscribe" id="mc-embedded-subscribe" class="button wt_cta">Stay informed</button>
 				</div>
 			</div>
 		</form>

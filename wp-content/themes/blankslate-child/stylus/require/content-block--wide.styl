@@ -2,11 +2,11 @@
 	position relative
 	display flex
 	margin 6rem auto
-	width 95%
+	width 66.6%
 	height 500px
 	flex-direction row
 	align-items center
-	
+
 	&:before
 		content ''
 		z-index -1
@@ -15,30 +15,38 @@
 		left .75%
 		width 99.25%
 		height 100%
-		background $blue
-	
+		background $blue()
+		border-radius 4px
+
 	&__image
-		width 55%
+		width 100%
+		max-width 60%
 		height 100%
 		background-size cover
 		background-repeat no-repeat
 		background-position center
-	
+
 	&__copy
-		width 45%
+		width 40%
 		box-sizing border-box
-		padding 6rem
-		
+		padding 32px
+		display flex
+		flex-direction column
+		justify-content flex-end
+		height 100%
+		align-items baseline
+
 		h1
 			text--header($parchment)
-			
+			width 100%
+
 		p
 			margin 3rem 0
 			text--body($parchment)
-			
-		a
-			button--large($parchment, $blue)
-			
+
+		button
+			button--secondary($parchment, $blue())
+
 			i
 				margin-left 0.5rem
 
@@ -46,7 +54,7 @@
 	.wt_content-block--wide
 		&__image
 			width 50%
-		
+
 		&__copy
 			width 50%
 
@@ -55,18 +63,18 @@
 		display block
 		margin 3rem auto
 		height initial
-		
+
 		&:before
 			display none
-		
+
 		&__image
 			width 100%
 			padding-bottom 50%
 
 		&__copy
 			width 100%
-			background $blue
+			background $blue()
 			padding 5rem 6rem 6rem
 
 			h1
-				font-size 4rem
+				font-size 4rem // mobile

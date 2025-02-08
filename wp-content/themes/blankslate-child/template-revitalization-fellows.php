@@ -30,7 +30,7 @@ if ($fellow_id) {
 ?>
 
 <div class="custom-gallery-fellows-navigation">
-  <h2>Fellowship Cohorts</h2>
+  <strong>Fellowship Cohorts</strong>
   <ul>
     <?php
     foreach ($cohorts as $index => $cohort) {
@@ -56,7 +56,7 @@ if ($fellow_id) {
     'meta_key' => 'fellow_year',
     'meta_value' => isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : $cohorts[0],
     'selected_posts' => '',
-    'display_blank' => '',
+    'display_blank' => 'false',
     'taxonomy' => '',
     'term' => '',
   ];

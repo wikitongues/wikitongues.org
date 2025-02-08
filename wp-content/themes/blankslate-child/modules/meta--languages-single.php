@@ -40,7 +40,7 @@
 	<?php endif; ?>
 	<?php if ( $iso_code || $glottocode): ?>
 		<div class="metadata" id="identifiers">
-			<h2>Identifiers</h2>
+			<strong class="wt_sectionHeader">Identifiers</strong>
 			<?php if ( $iso_code ): ?>
 				<span>
 					<strong>ISO code</strong>
@@ -74,30 +74,24 @@
 		</div>
 	<?php endif; ?>
 	<div class="metadata" id="resources">
-		<h2 class="wt_sectionHeader"><?php  echo $standard_name; ?> resources</h2>
+		<strong class="wt_sectionHeader"><?php  echo $standard_name; ?> resources</strong>
 		<ul class="resources">
 			<li>
-				<a href="#wt_single-languages__videos">
-					<h3>Videos</h3>
-				</a>
+				<strong>Videos</strong>
 				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Submit a video</a>
 			</li>
 			<li>
-				<a href="#wt_single-languages__lexicons">
-					<h3>Dictionaries, phrase books, and lexicons</h3>
-				</a>
+				<strong>Dictionaries, phrase books, and lexicons</strong>
 				<a href="<?php echo home_url('/submit-a-lexicon', 'relative'); ?>">Submit a lexicon</a>
 			</li>
 			<li>
-				<a href="#wt_single-languages__resources">
-					<h3>External Resources</h3>
-				</a>
+				<strong>External Resources</strong>
 				<a href="<?php echo home_url('/submit-a-resource', 'relative'); ?>">Recommend a resource</a>
 			</li>
 		</ul>
 	</div>
 	<div class="metadata" id="external-links">
-		<h2>Learn more about <?php  echo $standard_name; ?></h2>
+		<strong class="wt_sectionHeader">Learn more about <?php  echo $standard_name; ?></strong>
 		<ul>
 		<?php
 			foreach ($links as $key => $value) {
@@ -108,5 +102,5 @@
 		?>
 		</ul>
 	</div>
-	<a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</a>
+	<button href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</button>
 </div>

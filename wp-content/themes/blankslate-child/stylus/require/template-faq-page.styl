@@ -20,19 +20,18 @@
 			h1
 				text--header($black)
 
-			h2
+			h4
 				text--header($black)
-				font-size 3rem
 				text-align left
 				margin 1.6rem 0
 				padding-bottom 1rem
-				border-bottom 2px solid $lightPurple
+				border-bottom 2px solid $border-color
 				scroll-margin-top 75px
 
 				&:first-of-type
 					margin-top 0
 
-			h3
+			strong
 				text--strong($black)
 				margin .8rem 0 0
 
@@ -42,7 +41,7 @@
 				border-left 2px solid transparent
 
 				&:hover
-					border-left-color $blue
+					border-left-color $blue()
 
 				p, li
 					text--body($black)
@@ -54,7 +53,7 @@
 						font-weight 700
 
 					a, a:visited, a:active, a span
-						anchor($blue, 2px)
+						anchor($blue(),2px)
 
 				ol, ul
 					list-style-type auto
@@ -77,7 +76,7 @@
 
 					a
 						text-decoration none
-						text--body($blue)
+						text--body($blue())
 						padding-left .8rem
 						position relative
 
@@ -92,9 +91,10 @@
 							background transparent
 
 						&.active
-							text--strong($blue)
+							text--strong($blue()) // a
+
 							&::before
-								background $lightPurple
+								background $blue(22)
 
 			p
 				text--body($black)
@@ -103,8 +103,9 @@
 
 				a
 					clear both
-					color $blue
+					color $blue()
 					text-decoration none
+					font-size inherit
 
 @media (max-width: $mobile)
 	.page-template-faq-page
@@ -119,7 +120,7 @@
 				padding 0 32px
 				margin-top 0
 
-				h2
+				h4
 					padding-top 0
 
 				ul

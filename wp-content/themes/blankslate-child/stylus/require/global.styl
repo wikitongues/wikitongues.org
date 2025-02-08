@@ -1,103 +1,179 @@
-// responsive breakpoints
-$shortScreen = 699px // for short and wide browsers
-$smallScreen = 1024px
-$tablet = 899px
-$mobile = 768px // consider different number
+// Responsive Breakpoints
+// ------------------
+	$content = 1140px
+	$smallScreen = 1024px
+	$tablet = 899px
+	$shortScreen = 699px // for short and wide browsers
+	$mobile = 768px // consider different number
 
-$content = 1140px
+// Colors
+// ------------------
+	$parchment = #fffcef
+	$black = #101010
+	$grey-50 = blend(rgba($black,.5),$parchment)
+	$grey-33 = blend(rgba($black,.33),$parchment)
+	$grey-25 = blend(rgba($black,.25),$parchment)
+	$red = #e52600
+	$yellow = #ffff00
 
-// colors
-$white = #ffffff
-$whiteTransparent = rgba(255,255,255,.97)
-$parchment = #fffcef
-$parchmentTransparent = rgba(255,252,239,.97)
-$black = #101010
-$blackTransparent = rgba(16, 16, 16,.97)
-$grey = #dcdcdc
-$darkGrey = #6f6f6f
-$red = #e52600
-$blue = #3814A5
-$purple = #9581c2
-$lightPurple = #D4CCE0
-$yellow = #ffff00
+	$blue(tint = 100)
+		// Returns a blended value for blue
+		// Use $blue(22) for a 22% tint of blue
+		// Values in use: 50, 30, 28, 25, 22, 15, 10
+		base = #3814a5
+		if tint < 100
+			tint = tint / 100
+			return blend(rgba(base, tint), $parchment)
+		return base
 
-// typography
-html
-	font-size 62.5%
+	$border-color = $blue(22)
 
-@media all and (max-width:$mobile)
+// Typography Base
+// ------------------
 	html
-		font-size 51.398%
+		font-size 10px // make 16
 
-text--base(a)
-	font-style normal
-	font-stretch normal
-	color a
+	body
+		max-width 1800px
+		margin auto
+		background $parchment
 
-text--header(a)
-	text--base(a)
-	font-family 'Schnyder Wide M Web'
-	font-weight 300
-	font-size 6.08rem
+	// Header size scales down from $header value
+	$header = 6rem
+	$scaleDenominator = 12
+	$fontScale(numerator)
+		($header)*numerator/$scaleDenominator
+	h1
+		font-size $header
+	h2
+		font-size $fontScale(9) // 4.5
+	h3
+		font-size $fontScale(7) // 3.5
+	h4
+		font-size $fontScale(6) // 3
+	h5
+		font-size $fontScale(5) // 2.5
+	h6
+		font-size $fontScale(4) // 2
 
-text--subheader(a)
-	text--base(a)
-	font-family 'Schnyder Wide M Web'
-	font-weight 300
-	font-size 3.2rem
+	p, a, time, button, strong, label
+		font-size 1.6rem
 
-text--body(a)
-	text--base(a)
-	font-family 'Graphik Web'
-	font-weight 400
-	font-size 1.6rem
-	line-height 1.3
+	a
+		text-decoration none
 
-text--strong(a)
-	text--base(a)
-	font-family 'Graphik Web'
-	font-weight 700
-	font-size 1.6rem
-	line-height 1.3
+	$socialIcon = 2rem
 
-anchor(a,b)
-	text-decoration none
-	color a
-	padding b (b * 2)
-	margin (b * -1) (b * -2)
-	border-radius (b * 2)
+	@media all and (max-width:$mobile)
+		html
+			font-size 51.398%
 
-	&:hover
-		background $lightPurple
-		mix-blend-mode darken
+// Typography Mixins
+// ------------------
+	text--base(color)
+		font-style normal
+		font-stretch normal
+		color color
 
-button--base(a,b)
-	display inline-block
-	background a
-	font-family 'Graphik Web'
-	font-weight 400
-	font-style normal
-	font-stretch normal
-	text-transform uppercase
-	text-decoration none
-	color b
-	text-wrap nowrap
+	typeface(style)
+		if style
+			font-family 'Schnyder Wide M Web'
+		else
+			font-family 'Graphik Web'
 
-button--large(a,b)
-	button--base(a,b)
-	padding 1.5rem 2rem
-	font-size 1.6rem
-	line-height 1.3
+	text--header(color)
+		text--base(color)
+		typeface('display')
+		font-weight 300
 
-button--small(a,b)
-	button--base(a,b)
-	padding 1.25rem 1.5rem
-	border 1px solid $blue
-	font-size 1.28rem
+	text--body(color)
+		text--base(color)
+		typeface('')
+		font-weight 400
+		line-height 1.2
 
-// misc
-.clear
-	clear both
+	text--strong(color)
+		// HTML Strong
+		text--base(color)
+		typeface('')
+		font-weight 700
+		line-height 1.3
 
-.no-scroll
-	overflow hidden
+	anchor(color, padding)
+		text-decoration none
+		color color
+		padding padding (padding * 2)
+		margin (padding * -1) (padding * -2)
+		border-radius (padding * 2)
+
+		&:hover
+			background $blue-22
+			mix-blend-mode darken
+
+// Button Mixins
+// ------------------
+	button--base(background, color)
+		background background
+		text--body(color)
+		text-decoration none
+		text-wrap nowrap
+		border none
+
+	button--primary(background, color)
+		// HTML Section wrapping 1 or 2 Anchors
+		button--base(background, color)
+		border-radius 8px
+		display flex
+		overflow hidden
+		justify-content space-between
+		align-items stretch
+
+		a
+			padding 24px
+			cursor pointer
+			transition background-color .1s ease-in-out
+			align-content center
+
+			&:hover
+				background $blue(15)
+
+			&:last-of-type
+				text--body($blue())
+
+			&:first-of-type
+				text--strong($blue())
+				font-size 2rem
+
+
+	button--secondary(background, color)
+		// HTML Button
+		button--base(background, color)
+		padding 1.5rem 2rem
+		line-height 1.3
+		border-radius 4px
+		cursor pointer
+		display inline-block
+
+		if background == $parchment
+			transition background-color .1s ease-in-out
+
+			&:hover
+				background $blue(10)
+
+	button--tertiary(color)
+		if color
+			text--strong(color)
+		else
+			text--strong($blue())
+
+	// strong buttons or a should be tertiary button
+	// small full color buttons are small
+	// big soft buttons are big
+
+// Miscelaneous
+// ------------------
+	.clear
+		clear both
+
+	.no-scroll
+		overflow hidden

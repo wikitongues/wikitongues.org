@@ -1,2 +1,2 @@
 <?php
-header('Location: ' . home__url('/revitalization/fellows','relative'));
+header('Location: ' . home_url('/revitalization/fellows','relative'));

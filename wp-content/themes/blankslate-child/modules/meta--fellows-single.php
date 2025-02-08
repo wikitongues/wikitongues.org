@@ -8,29 +8,33 @@ function generate_language_link($language, $preferred_name = '') {
 }
 
 // Function to generate links for multiple languages
+// If array, do not use preferred name. If single language, use preferred name if passed.
 function generate_language_links($fellow_language) {
 		$output = '';
 
 		if ($fellow_language instanceof WP_Post) {
 				// Handle single language, use the global preferred name if passed
-				$preferred_name = get_post_meta($fellow_language->ID, 'standard_name', true);
-				print_r($preferred_name);
-				$output .= generate_language_link($fellow_language, $preferred_name);
+				$output_name = get_post_meta($fellow_language->ID, 'standard_name', true);
+				$output .= generate_language_link($fellow_language, $output_name);
 		} elseif (is_array($fellow_language)) {
 			if (count($fellow_language) > 1) {
+				// If array, do not use preferred name since we cannot set distinct names per entry.
 				foreach ($fellow_language as $language) {
 					if ($language instanceof WP_Post) {
-							$preferred_name = get_post_meta($language->ID, 'standard_name', true);
-							$output .= generate_language_link($language, $preferred_name);
+							$output_name = get_post_meta($language->ID, 'standard_name', true);
+							$output .= generate_language_link($language, $output_name);
 					} else {
 							$output .= generate_language_link($language);
 					}
 				}
 			} else {
+				// If single language, use preferred name if passed.
 				foreach ($fellow_language as $language) {
 					if ($language instanceof WP_Post) {
 							$preferred_name = get_field('fellow_language_preferred_name');
-							$output .= generate_language_link($language, $preferred_name);
+							$standard_nmame = get_post_meta($language->ID, 'standard_name', true);
+							$output_name = $preferred_name ? $preferred_name : $standard_nmame;
+							$output .= generate_language_link($language, $output_name);
 					} else {
 							$output .= generate_language_link($language);
 					}
@@ -50,7 +54,7 @@ function generate_language_links($fellow_language) {
 		<div class="image" style="background-image:url('<?php echo esc_html($page_banner['banner_image']['url'])?>'"></div>
 		<div class="name">
 			<?php
-				echo '<h1>' . esc_html($fellow_name) . '</h1>';?>
+				echo '<h3>' . esc_html($fellow_name) . '</h3>';?>
 			<?php if (array_filter(array_column($social_links, 'url'))): ?>
 				<article class="wt_fellow__meta--social">
 						<ul>

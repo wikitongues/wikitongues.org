@@ -31,7 +31,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
 				'meta_key' => '',
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
-				'display_blank' => '',
+				'display_blank' => 'false',
 				'taxonomy' => '',
 				'term' => '',
 			];
@@ -39,9 +39,14 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
 		}
   }
 }
-
-echo '<div class="success_cta"><h1>Have more to say?</h1> <br> <h2>Submit another video <a href="'.home_url('/archive/submit-a-video/', 'relative').'">here</a>.</h2></div>';
-
-include( 'modules/newsletter.php' );
+?>
+	<div class="success_cta">
+		<h2>Have more to say?</h2>
+			<section>
+				<a href="<?php echo home_url('/archive/submit-a-video/', 'relative'); ?>">Submit another video here.</a>
+			</section>
+		</div>
+	<?php
+	include( 'modules/newsletter.php' );
 
 get_footer();

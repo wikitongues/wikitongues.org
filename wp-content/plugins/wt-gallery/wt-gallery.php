@@ -40,7 +40,6 @@ require_once plugin_dir_path(__FILE__) . 'includes/helpers.php';
 require_once plugin_dir_path(__FILE__) . 'includes/queries.php';
 require_once plugin_dir_path(__FILE__) . 'includes/render_gallery_items.php';
 
-
 // AJAX callback function to load more gallery items
 function load_custom_gallery_ajax_callback() {
   check_ajax_referer('custom_gallery_nonce', 'nonce'); // Security check
@@ -77,7 +76,13 @@ function get_custom_image($post_type) {
       $video_thumbnail = wp_get_attachment_url(get_field('video_thumbnail_v2'));
       return $video_thumbnail;
     case 'fellows':
-      return wp_get_attachment_url(get_field('fellow_headshot'));
+      $page_banner = get_field('fellow_banner');
+      if( $page_banner && is_array($page_banner) && isset($page_banner['banner_image']['url']) ) {
+        return esc_html( $page_banner['banner_image']['url'] );
+      } else {
+          // Handle the case where the field isn't set or doesn't have the expected structure.
+          return null;
+      }
     case 'languages':
       return null; // No image field available
     default:
@@ -201,24 +206,26 @@ function custom_gallery($atts) {
     $classes .= ' ' . $atts['custom_class'];
   }
 
-  $output = '<div class="' . $classes . '">';
-
+  $output = '';
   if ($query->have_posts()) {
-    if ($atts['title']) {
-      $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
-    }
-    $output .= render_gallery_items($query, $atts, $atts['gallery_id'], $paged, $data_attributes);
-  } else {
-    if ($atts['display_blank']==='true') {
+    $output = '<div class="' . $classes . '">';
       if ($atts['title']) {
-        $output .= '<h2 class="wt_sectionHeader">'.$atts['title'].'</h2>';
+        $output .= '<strong class="wt_sectionHeader">'.$atts['title'].'</strong>';
       }
-      $output .= '<p>There are no other '.$atts['post_type'].' to display—<a href="'.home_url('/submit-a-'.rtrim($atts['post_type'], 's'), 'relative').'">yet</a>.</p>';
-    }
-
+      $output .= render_gallery_items($query, $atts, $atts['gallery_id'], $paged, $data_attributes);
+    $output .= '</div>';
+  } else {
+      if ($atts['display_blank']==='true') {
+        $output = '<div class="' . $classes . '">';
+        if ($atts['title']) {
+          $output .= '<strong class="wt_sectionHeader">'.$atts['title'].'</strong>';
+        }
+        $output .= '<p>There are no other '.$atts['post_type'].' to display—<a href="'.home_url('/submit-a-'.rtrim($atts['post_type'], 's'), 'relative').'">yet</a>.</p>';
+        $output .= '</div>';
+      }
   }
-  $output .= '</div>';
 
   return $output;
 }
+
 add_shortcode('custom_gallery', 'custom_gallery');

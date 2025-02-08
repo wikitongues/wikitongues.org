@@ -10,7 +10,7 @@
 
 	.metadata
 		padding 16px 0
-		border-bottom 2px solid $lightPurple
+		border-bottom 2px solid $border-color
 		display inline-block
 		width 100%
 
@@ -21,22 +21,17 @@
 			border-bottom 0
 
 		&#identifiers
-			> strong
-				display block
 			span
 				width 50%
 				float left
-	h2
-		text--strong($black)
-		padding-bottom 12px
-
-	h3
-		text--strong($blue)
 
 	strong
 		text--strong($black)
-		display inline-block
+		display block
 		margin-bottom 4px
+
+		&.wt_sectionHeader
+			padding-bottom 12px
 
 	p
 		text--body($black)
@@ -56,41 +51,36 @@
 		&.resources
 			li
 				display inline-block
+				width 100%
 
 			a
 				clear both
 
 				&:last-of-type
 					float left
-					anchor($blue, 2px)
-					margin-left 1rem
 	a
-		text--body($blue)
+		text--body($blue())
 		text-decoration none
 		display block
+		line-height 1.6
+
+		&:hover
+			text-decoration underline
 
 		strong
-			text--strong($blue)
+			text--strong($blue())
 
 		span
-			text--body($blue)
+			text--body($blue())
 
 		&.official-link
 			padding 4px 8px
-			border-left 2px solid $blue
+			border-left 2px solid $blue()
 			font-weight bold
 
-			&:hover
-					text-decoration underline
-
-		&.donate-cta
-			background-color $red
-			color $white
-			padding 1rem 2rem
-			border-radius 4px
-			text-align center
-			display inline-block
-			margin-top 1rem
+	button
+		margin-top 1rem
+		button--secondary($red, $parchment)
 
 @media all and (max-width:$mobile)
 	.wt_meta--languages-single

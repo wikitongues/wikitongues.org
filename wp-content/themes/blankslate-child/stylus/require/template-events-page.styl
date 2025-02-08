@@ -5,13 +5,13 @@
 		max-width $content
 		width calc(100% - 3.2rem)
 		margin 0 auto
-		border-bottom 2px solid $lightPurple
+		border-bottom 2px solid $border-color
 		margin-bottom 16px
 
 		button
 			background none
 			border none
-			text--body($blue)
+			text--body($blue())
 			padding 1.6rem
 			cursor pointer
 
@@ -28,11 +28,10 @@
 
 		.empty-events
 			width 100%
-			text--body($black)
+			text--body($grey-50)
 			text-align center
 			padding 6.4rem 1.6rem
 			border-radius 16px
-			color $black
 			flex 2
 
 		.event-entry
@@ -44,11 +43,10 @@
 			border-radius 16px
 			flex 1 1 calc(50% - 1rem)
 
-			h3
+			h5
 				text--header($black)
-				font-size 2.6rem
 
-			h3, .event-details
+			h5, .event-details
 				margin-bottom 8px
 
 			.event-details
@@ -57,7 +55,7 @@
 
 				p
 					float left
-					color $darkGrey
+					color $grey-50
 
 					&:first-of-type
 						margin-right 1.6rem
@@ -68,14 +66,14 @@
 			a
 				display inline-block
 				text-decoration none
-				color $blue
+				color $blue()
 				padding 8px 12px
 				margin 4px 0px
 				border-radius 4px
 
 			&:hover
 				a
-					background $blue
+					background $blue()
 					color $parchment
 
 @media (max-width: $mobile)
