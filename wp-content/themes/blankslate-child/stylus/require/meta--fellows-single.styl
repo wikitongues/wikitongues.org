@@ -9,7 +9,8 @@
 		align-items flex-end
 		margin-bottom 4.8rem
 
-		div.image, div.name
+		div.image,
+		div.name
 			float left
 			vertical-align top
 			width 50%
@@ -19,75 +20,70 @@
 			width (100/3)*2%
 			padding-bottom 37.5%
 			background-size cover
-			background-color $blue
+			background-color $blue()
 			background-position center
-			border-radius 16px 0 16px 0
+			border-radius 1.6rem 0 1.6rem 0
 
 		div.name
 			width (100/3)*1%
-			padding 0 0 0 16px
+			padding 0 0 0 2.4rem
 			height 100%
 
-			h1
+			h3
 				text--header($black)
-				font-size 4rem
-				margin-bottom 16px
-
-			h1, .info > *
-				margin-left 8px !important
+				margin-bottom 1.6rem
 
 		.info
-			display inline-block
+			display flex
+			flex-direction column
+			gap 1.6rem
+			text--body($black)
 
-			a.language
-				border-bottom 2px solid $blue
-				text-decoration none
-				display flex
-				font-size 1.6rem
-				padding 4px 12px
-				margin-right 8px
-				float left
-				align-items flex-end
-				width fit-content
+			.languages
+				margin-left -8px
 
-
-				&:last-of-type
-					margin-right 0
-
-				span.identifier, p
+				a.language
+					color $blue()
+					border-bottom 2px solid $blue()
+					text-decoration none
+					display flex
+					padding 4px 12px
 					float left
-					line-height 2
-					font-size inherit
+					align-items flex-end
+					width fit-content
+					margin-left 8px
+					border-radius 4px 4px 0 0
 
-				span.identifier
-					color $blue
-					font-weight 800
-					flex initial
-					min-width initial
-					margin-right 1rem
+					&:hover
+						background $blue(10)
 
-				p
-					text--body($blue)
-					line-height 2
-					font-size inherit
+					&:first-of-type
+						margin-left 0
 
 					span.identifier, p
-						color $parchment
+						float left
+						line-height 2
 
-			> p
-				text--body($black)
-				margin-bottom .8rem
+					span.identifier
+						color $blue()
+						font-weight 800
+						flex initial
+						min-width initial
+						margin-right 1rem
+
+					p
+						line-height 2
+
+						span.identifier, p
+							color $parchment
+
 
 			p.categories
 				font-weight bold
 
 			a.cohort
-				width 100%
-				display block
-				text--body($blue)
-				margin 0 0 1.6rem 0
+				text--strong($blue()) // a
 				text-decoration none
-				font-weight bold
 
 	article
 		margin-bottom 1.6rem
@@ -107,7 +103,7 @@
 				margin-right 0
 
 			a
-				text--body($blue)
+				text--body($blue())
 
 	&--social
 		ul
@@ -116,8 +112,8 @@
 				float left
 
 				a
-					font-size 2rem
-					anchor($blue, 4px)
+					font-size $socialIcon
+					anchor($blue(),4px)
 
 	&--links
 		ul
@@ -127,7 +123,7 @@
 				margin .1rem 1.6rem .1rem 2rem
 
 				a
-					anchor($blue, 2px)
+					anchor($blue(),2px)
 
 @media all and (max-width:$mobile)
 	.wt_fellow__meta

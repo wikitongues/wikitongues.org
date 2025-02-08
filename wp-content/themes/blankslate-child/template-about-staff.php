@@ -13,7 +13,7 @@ $staff_members = get_field('staff_members');
 
 // cycle through	 selected posts
 echo '<div class="wrapper" id="staff">';
-echo '<h2>Staff</h2>	';
+echo '<h4>Staff</h4>	';
 foreach( $staff_members as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
@@ -59,20 +59,13 @@ $careers = [
 ];
 echo create_gallery_instance($careers);
 
-// define volunteer+intern team member posts to display acf
-
-// cycle through selected posts
+// Interns and Volunteers
 $interns_and_volunteers = get_field('interns_and_volunteers');
 echo '<div class="wrapper" id="volunteers">';
-echo '<h2>Interns and Volunteers</h2>	';
+echo '<h4>Interns and Volunteers</h4>	';
 if ( $interns_and_volunteers ) {
-
-	// cycle through selected posts
 	foreach( $interns_and_volunteers as $post ) {
-		// setup post data for each post
 		setup_postdata( $post );
-
-		// variables - would be cool to add a
 		$profile_picture = get_field('profile_picture');
 		$name = get_the_title();
 		$title = get_field('leadership_title');
@@ -87,12 +80,8 @@ if ( $interns_and_volunteers ) {
 			'website'   => ['url' => get_field('website'), 'icon' => 'fa-solid fa-link'],
 			'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
 		];
-
-		// show board member module
 		include( 'modules/team-member--grid.php' );
-
 	} wp_reset_postdata();
-
 }
 echo "</div>";
 // Gallery

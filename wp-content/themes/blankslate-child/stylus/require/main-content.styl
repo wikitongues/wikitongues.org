@@ -7,13 +7,9 @@
 		margin auto
 		max-width 600px
 
-	h2
-		text--header($black)
-		font-size 3rem
-		margin 3rem auto 1.6rem
-
 	h3
-		text--strong($black)
+		text--strong($black) // h3 ??
+		font-size 1.6rem
 		margin 1.6rem 0 0
 
 	p,
@@ -27,8 +23,8 @@
 			text--strong($black)
 
 		a
-			text--body($blue)
-			anchor($blue, 2px)
+			text--body($blue())
+			anchor($blue(),2px)
 
 	ul
 		text--body($black)
@@ -39,7 +35,7 @@
 			list-style disc
 
 			a
-				text--body($blue)
+				text--body($blue())
 
 	>div,
 	img

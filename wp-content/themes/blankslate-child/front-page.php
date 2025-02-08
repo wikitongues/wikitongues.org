@@ -19,18 +19,10 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 
 		$row_id = get_sub_field('custom_gallery_id');
 
-		if ( get_row_layout() == 'thumbnail_carousel' ) {
-
-			include( 'modules/carousel--thumbnail.php' );
-
-		} elseif ( get_row_layout() == 'content_block' ) {
-
+		if ( get_row_layout() == 'content_block' ) {
 			include( 'modules/content-block--wide.php' );
-
 		} elseif ( get_row_layout() == 'testimonial' ) {
-
 			include( 'modules/carousel--testimonial.php' );
-
 		} elseif ( get_row_layout() == 'custom_gallery_posts' && $row_id === 'archive') {
 			$custom_posts = get_sub_field('custom_gallery_post');
 
@@ -50,7 +42,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 				'meta_key' => '',
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
-				'display_blank' => '',
+				'display_blank' => 'false',
 				'taxonomy' => '',
 				'term' => ''
 			];
@@ -75,7 +67,7 @@ if ( have_rows( 'front_page_content_layout' ) ) {
 				'meta_key' => '',
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
-				'display_blank' => '',
+				'display_blank' => 'false',
 				'taxonomy' => '',
 				'term' => ''
 			];

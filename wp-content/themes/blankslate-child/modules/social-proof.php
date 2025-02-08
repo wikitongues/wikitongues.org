@@ -33,7 +33,6 @@
 
 		if ($query->have_posts()) {
 			$output .= '<section>';
-			// $output .= '<h2>'.ucfirst($type).'</h2>';
 			$output .= '<ul>'.$contents.'</ul>';
 			$output .= '</section>';
 		}
@@ -44,7 +43,7 @@
 
 <div id="wt_socialproof">
 
-	<h1>Funders and partners</h1>
+	<h2>Funders and partners</h2>
 	<p>Our work would not be possible without the support of our core partners</p>
 	<?php renderPartners('Funder');?>
 	<?php renderPartners('Partner');?>

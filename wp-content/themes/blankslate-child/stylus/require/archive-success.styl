@@ -17,15 +17,19 @@
 		max-width $content
 		margin 0 auto
 
-		h1
+		h4
 			margin 0 auto 2.4rem
 			width 100%
-			text--subheader($black)
+			text--header($black)
 
-		h2
+		strong
 			text--strong($black)
+			font-size 1.6rem // required for the height below
+			min-height @font-size * @line-height * 2 // 2 lh
 			text-align left
 			margin 0
+			clear both
+			display inline-block
 
 		ul
 			width 100%
@@ -40,7 +44,7 @@
 				list-style-type none
 
 				p
-					margin 0 auto 3rem
+					margin 1.6rem auto
 					width 100%
 					max-width 600px
 					text--body($black)
@@ -51,26 +55,24 @@
 						display inline-block
 
 					a
-						text--body($blue)
-						anchor($blue, 2px)
+						text--body($blue())
+						anchor($blue(),2px)
 
 div.success_cta
-	h1
-		margin 12rem auto 0
-		width 100%
-		max-width $content
-		text--header($black)
-		text-align center
-		font-size 4.9rem
+	display flex
+	justify-content center
+	flex-direction column
+	align-items center
+	gap 1.6rem
+	margin 8rem 0
 
 	h2
-		text--subheader($black)
-		margin 0 auto 12rem
-		width 100%
+		text--header($black)
+		max-width $content
 		text-align center
 
-		a
-			anchor($blue, 4px)
+	section
+		button--primary($blue(22), $blue())
 
 @media all and (max-width:$mobile)
 	.page-template-template-archive-success
@@ -83,7 +85,7 @@ div.success_cta
 
 			h1
 				margin-bottom 4rem
-				font-size 3rem
+				font-size 3rem // mobile
 				text-align-last left
 
 			section

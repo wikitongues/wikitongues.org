@@ -1,19 +1,22 @@
 .wt_footer
 	padding 2rem 4rem
 	background $black
-	text--body($parchment)
-	font-size 1.28rem !important
 	display inline-block
 	width 100%
 	color $parchment
 
+	p, a
+		text--body($parchment)
+		font-size 1.28rem
+
 	a
 		color $parchment
+
 	&__logo
 		width 100%
 		display inline-block
 		margin-bottom 8px
-		border-bottom 1px dotted $blue
+		border-bottom 1px dotted $blue()
 
 		a
 			display inline-block
@@ -40,27 +43,25 @@
 		flex-grow 3
 		text-transform uppercase
 
-		>ul
+		ul:not(.sub-menu)
 			display flex
 			flex-direction row
 
+			li.menu-item-has-children
+				margin-right 3rem
+				> a
+					font-size 1.6em
+					font-weight bold
+
 			li
 				a
-					text--body($parchment)
 					text-decoration none
 					text-transform initial
-
-			&>li
-				margin-right 3rem
-
-				&>a
-					font-weight bold
 
 		.sub-menu
 			margin-top .5rem
 
 			a
-				font-size 1em
 				padding 0.2rem 0
 				display inline-block
 
@@ -127,7 +128,7 @@
 		&__nav
 			&>ul
 				display block
-				font-size 1.2em
+				font-size 1.2em // mobile
 
 				&>li
 					margin-top 2rem

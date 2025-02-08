@@ -15,7 +15,7 @@
 		height auto
 		max-width 1800px
 		padding 15px
-		background-color $blue
+		background-color $blue()
 
 	&__text
 		display flex
@@ -27,9 +27,9 @@
 		font-weight 700 !important
 		text-transform uppercase !important
 
-	&__button
+	button
 		margin-left 15px
-		button--small($parchment,$blue)
+		button--secondary($parchment,$blue())
 
 		&--link
 			display flex
@@ -45,7 +45,7 @@
 			right 8px
 			transform translateY(-50%)
 			padding 10px
-			font-size 24px
+			font-size 2.4rem
 			cursor pointer
 			color $parchment
 			background none

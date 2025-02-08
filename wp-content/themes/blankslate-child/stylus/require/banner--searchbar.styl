@@ -2,12 +2,14 @@
 .wt_banner--searchbar
 	width 100%
 	display flex
+	gap 32px
 	min-height 50vh
 	align-content flex-start
+	flex-direction column
 	justify-content center
 	align-items center
 	padding .5rem 0 4rem 0
-	border-bottom 2px solid $lightPurple
+	border-bottom 2px solid $border-color
 
 	#typeahead_archive
 		.typeahead-form
@@ -21,13 +23,16 @@
 				border none
 				padding 2.5rem
 				font-size 2rem
+				border 2px solid $blue()
 
 			.typeahead-list
-				position initial
+				position relative
+				background $parchment
 				max-height 60vh
 				border-radius 0
-				border-top 2px solid $blue
+				border-top 2px solid $blue()
 				padding-top 4px
+				margin-bottom -64px
 
 				.typeahead-item
 					border-radius 8px
@@ -36,6 +41,10 @@
 
 					&[data-resource=true]::before
 						top 12px
+
+	a
+		text--body($blue())
+		text-decoration none
 
 body.search-results
 	.wt_banner--searchbar

@@ -29,7 +29,10 @@ include( 'modules/single-languages__lexicons.php' );
 include( 'modules/single-languages__resources.php' );
 echo '</main>';
 
+// ====================
 // Gallery
+// return empty if no nations of origin match
+// ====================
 $params = [
 	'title' => 'Other languages from '.$nations_of_origin,
 	'post_type' => 'languages',
@@ -42,7 +45,7 @@ $params = [
 	'meta_key' => 'nations_of_origin',
 	'meta_value' => $nations_of_origin,
 	'selected_posts' => '',
-	'display_blank' => '',
+	'display_blank' => 'false',
 	'taxonomy' => '',
 	'term' => ''
 ];
