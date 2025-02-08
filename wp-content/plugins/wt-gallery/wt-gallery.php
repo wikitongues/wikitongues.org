@@ -76,7 +76,13 @@ function get_custom_image($post_type) {
       $video_thumbnail = wp_get_attachment_url(get_field('video_thumbnail_v2'));
       return $video_thumbnail;
     case 'fellows':
-      return wp_get_attachment_url(get_field('fellow_headshot'));
+      $page_banner = get_field('fellow_banner');
+      if( $page_banner && is_array($page_banner) && isset($page_banner['banner_image']['url']) ) {
+        return esc_html( $page_banner['banner_image']['url'] );
+      } else {
+          // Handle the case where the field isn't set or doesn't have the expected structure.
+          return null;
+      }
     case 'languages':
       return null; // No image field available
     default:
