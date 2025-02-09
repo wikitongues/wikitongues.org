@@ -1189,7 +1189,7 @@ body.search-results .wt_banner--searchbar {
 }
 .main-content p a:hover,
 .main-content article a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .main-content ul {
@@ -1636,7 +1636,7 @@ body.search-no-results .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 4px;
 }
 .wt_archive__faq ul li p a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 div.success_cta {
@@ -2055,7 +2055,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 4px;
 }
 .wt_meta--videos-single a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .wt_meta--videos-single a span {
@@ -2172,7 +2172,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   height: initial;
 }
 .custom-gallery.careers .gallery-container .gallery-list .gallery-item a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .wt_banner--team {
@@ -2297,7 +2297,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 4px;
 }
 .wt_team-member--wide__meta ul li a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .wt_team-member--wide__meta ul.social a {
@@ -2309,7 +2309,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 8px;
 }
 .wt_team-member--wide__meta ul.social a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 @media all and (max-width: 768px) {
@@ -2640,7 +2640,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 8px;
 }
 .wt_fellow__meta--social ul li a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .wt_fellow__meta--links ul {
@@ -2657,7 +2657,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   border-radius: 4px;
 }
 .wt_fellow__meta--links ul li a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 @media all and (max-width: 768px) {
@@ -2970,7 +2970,7 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 .page-template-faq-page .faq-container .faq-content .faq-entry li a:active:hover,
 .page-template-faq-page .faq-container .faq-content .faq-entry p a span:hover,
 .page-template-faq-page .faq-container .faq-content .faq-entry li a span:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .page-template-faq-page .faq-container .faq-content .faq-entry ol,
@@ -4231,7 +4231,7 @@ body.post-type-archive-reports {
   border-radius: 4px;
 }
 .careers-page p.alternative a:hover {
-  background: $blue-22;
+  background: #ebe5e8;
   mix-blend-mode: darken;
 }
 .career-post {
