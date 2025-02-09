@@ -107,7 +107,7 @@
 		border-radius (padding * 2)
 
 		&:hover
-			background $blue-22
+			background $blue(10)
 			mix-blend-mode darken
 
 // Button Mixins
@@ -159,16 +159,6 @@
 
 			&:hover
 				background $blue(10)
-
-	button--tertiary(color)
-		if color
-			text--strong(color)
-		else
-			text--strong($blue())
-
-	// strong buttons or a should be tertiary button
-	// small full color buttons are small
-	// big soft buttons are big
 
 // Miscelaneous
 // ------------------
