@@ -34,33 +34,11 @@ if (is_singular('fellows')) {
 
 get_header();
 
-// include( 'modules/banner--main.php' );
-
 include( 'modules/meta--fellows-single.php' );
 
-// fellow narrative/content
-include( 'modules/main-content.php' );
-
 $fellow_bio = get_field('fellow_bio');
+include( 'modules/editorial-content.php' );
 
-if( have_rows('main_content') ):
-		while( have_rows('main_content') ) : the_row();
-
-			$layout = get_row_layout();
-
-			if( $layout == 'text_layout' ):
-				include( 'modules/flexible-content--text-layout.php' );
-			elseif( $layout == 'video_layout' ):
-				include( 'modules/flexible-content--video-layout.php' );
-			endif;
-
-		endwhile;
-	endif;
-
-
-if ( $fellow_bio ) {
-	include( 'modules/fellow-bio.php');
-}
 ?>
 <div class="custom-gallery full">
 	<strong class="wt_sectionHeader"><?php echo 'Other fellows from <a href="'.esc_url($revitalization_fellows_url).'">' . $fellow_year ?></a></strong>

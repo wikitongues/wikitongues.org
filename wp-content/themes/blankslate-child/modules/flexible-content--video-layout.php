@@ -4,7 +4,7 @@
 	$dropbox_link_raw = str_replace("dl=0", "raw=1", $video);
 	if ( $dropbox_link_raw ) {
 		?>
-		<div class="wt_single-videos__embed">
+		<div class="main-content wt_single-videos__embed">
 			<video width="320" height="240" controls>
 				<source src="<?php echo $dropbox_link_raw ?>" type="video/mp4">Your browser does not support the video tag.
 			</video>
