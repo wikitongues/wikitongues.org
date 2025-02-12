@@ -1,16 +1,21 @@
 .main-content
-	margin 0 auto 6.4rem
+	margin 3.2rem auto
 	width 90%
 	max-width $content
+	clear both
+
 
 	h1
 		margin auto
-		max-width 600px
 
-	h3
-		text--strong($black) // h3 ??
+	h1,h2
+		text--header($black)
+
+	h3, strong
+		text--strong($black) // Using both h3 and strong due to template return
 		font-size 1.6rem
-		margin 1.6rem 0 0
+		margin 1.6rem 0
+		display block
 
 	p,
 	article
@@ -19,8 +24,10 @@
 		padding 0.2rem 0 .6rem
 		line-height 2.6rem
 
-		strong
-			text--strong($black)
+		&:first-of-type
+			&::first-letter
+				text--header($black)
+				font-size 3.2rem
 
 		a
 			text--body($blue())
@@ -28,17 +35,62 @@
 
 	ul
 		text--body($black)
-		margin 0 auto 3rem
-		padding 0 0 0 1.5rem
+		padding 0
+		display inline-block
+
+		&.link-group
+			li
+				list-style-type none
+				padding 0
+
+				a
+					text--body($blue())
+					border-left 2px solid $blue()
+					padding 4px 8px
+					float left
+
+					&:hover
+						text-decoration underline
 
 		li
-			list-style disc
+			margin-bottom 8px
+			list-style-type initial
+			padding 4px 8px
+			float left
+			clear both
 
-			a
-				text--body($blue())
+			&:last-of-type
+				margin-bottom 0
+
+	&.wt_single-videos__embed
+		margin-bottom 0
 
 	>div,
 	img
 		margin-left auto
 		margin-right auto
 		max-width 100%
+
+	&.has-image
+		.image-container
+			border-radius 4px
+			background $black
+			padding 8px
+			float right
+			width (2 / 3) * 100%
+			margin 0 -32px 8px 16px
+
+			p
+				color $parchment
+				padding .6rem 0 0
+
+				&::first-letter
+					text--body(inherit)
+					font-size 1.6rem
+
+		&:nth-of-type(2n - 1)
+			margin-top 48px
+
+			.image-container
+				float left
+				margin 0 16px 8px -32px
