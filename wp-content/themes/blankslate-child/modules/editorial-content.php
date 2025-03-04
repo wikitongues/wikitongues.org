@@ -1,20 +1,23 @@
 <?php
 if( have_rows('main_content') ):
-	log_data("hi");
 	while( have_rows('main_content') ) : the_row();
 		// Determine the current layout.
 		$layout = get_row_layout();
 		// Load a partial based on the layout.
 		if( $layout == 'text_layout' ):
 			$image = get_sub_field('image');
-			include( 'flexible-content--text-layout.php' );
+			include( 'flexible-content/text-layout.php' );
 		elseif( $layout == 'banner_layout' ):
 			$page_banner = get_sub_field('banner');
 			include( 'banner--main.php' );
 		elseif( $layout == 'video_layout' ):
-			include( 'flexible-content--video-layout.php' );
+			include( 'flexible-content/video-layout.php' );
+		elseif( $layout == 'testimonials_layout' ):
+			include( 'carousel--testimonial.php' );
+		elseif( $layout == 'block_layout' ):
+			include( 'flexible-content/block-layout.php' );
 		elseif( $layout == 'link_group_layout' ):
-			include( 'flexible-content--link-group-layout.php' );
+			include( 'flexible-content/link-group-layout.php' );
 		elseif( $layout == 'gallery_layout' ):
 			if ( have_rows( 'custom_gallery_posts' ) ) {
 				while ( have_rows( 'custom_gallery_posts') ) {
