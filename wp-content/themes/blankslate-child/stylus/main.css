@@ -863,7 +863,8 @@ body.search-results .wt_banner--searchbar {
   font-weight: 400;
   line-height: 1.2;
 }
-.wt_content-block--wide__copy button {
+.wt_content-block--wide__copy button,
+.wt_content-block--wide__copy a {
   background: #fffcef;
   font-style: normal;
   font-stretch: normal;
@@ -881,10 +882,12 @@ body.search-results .wt_banner--searchbar {
   display: inline-block;
   transition: background-color 0.1s ease-in-out;
 }
-.wt_content-block--wide__copy button:hover {
+.wt_content-block--wide__copy button:hover,
+.wt_content-block--wide__copy a:hover {
   background: #ebe5e8;
 }
-.wt_content-block--wide__copy button i {
+.wt_content-block--wide__copy button i,
+.wt_content-block--wide__copy a i {
   margin-left: 0.5rem;
 }
 @media all and (max-width: 1024px) {
@@ -1079,7 +1082,8 @@ body.search-results .wt_banner--searchbar {
   font-weight: 700;
   line-height: 1.3;
 }
-.wt_content-block--thirds__copy button {
+.wt_content-block--thirds__copy button,
+.wt_content-block--thirds__copy a {
   background: #fffcef;
   font-style: normal;
   font-stretch: normal;
@@ -1097,10 +1101,12 @@ body.search-results .wt_banner--searchbar {
   display: inline-block;
   transition: background-color 0.1s ease-in-out;
 }
-.wt_content-block--thirds__copy button:hover {
+.wt_content-block--thirds__copy button:hover,
+.wt_content-block--thirds__copy a:hover {
   background: #ebe5e8;
 }
-.wt_content-block--thirds__copy button i {
+.wt_content-block--thirds__copy button i,
+.wt_content-block--thirds__copy a i {
   margin-left: 0.5rem;
 }
 @media all and (max-width: 1024px) {
