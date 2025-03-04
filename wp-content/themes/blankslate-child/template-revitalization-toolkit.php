@@ -1,17 +1,13 @@
 <?php /* Template name: Revitalization Toolkit */
 
-// header
 get_header();
 
-// banner
-$page_banner = get_field('revitalization_toolkit_banner');
-
-include( 'modules/banner--main.php' );
+include( 'modules/editorial-content.php' );
 
 // foreach linked page, display 1/3 content block
 if ( have_rows( 'content_blocks' ) ) {
 
-	echo '<main class="wt_content-block--thirds__wrapper">';
+	echo '<main class="wrapper">';
 
 	while ( have_rows( 'content_blocks' ) ) {
 
