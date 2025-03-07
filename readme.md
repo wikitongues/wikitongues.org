@@ -18,6 +18,16 @@
 *CSS*
 * Use tabs, not spaces for Stylus files.
 
+# Setup
+* Download and install [MAMP](https://www.mamp.info/). The free version is enough.
+* On a Mac, MAMP will create a directory called MAMP in your Applications directory. In there, you will find a directory called `htdocs`.
+* Inside `htdocs`, create a directory called `wikitongues`. Inside that, you will initialize a [Wordpress installation](https://documentation.mamp.info/en/MAMP-Mac/FAQ/How-do-I-install-WordPress/)
+* From the newly created `wikitongues` directory, initialize Github and add this repository as the origin remote. Pull main.
+* Configure your wp-config file. Talk to the maintainer to get the necessary details.
+* Talk to the maintainer to get a version of the prod sync script tool-sync-db-from-prod.sh.
+* We dont have direct experience on Windows. Please let us know if you wish to try that out and submit your steps to this readme via PR.
+
+
 # Continuous Integration and Deployment
 
 This project follows a structured Continuous Integration and Continuous Deployment (CI/CD) process, utilizing four primary environments to ensure seamless development, testing, and production deployment.
