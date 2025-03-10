@@ -1,5 +1,57 @@
-# Theme Structure
+# Setup
+**1. Installing The Server**
+* Download and install [MAMP](https://www.mamp.info/). The free version is enough.
+* On a Mac, MAMP will create a directory called MAMP in your Applications directory. In there, you will find a directory called `htdocs`.
 
+**2. Installing Wordpress**
+* Request the database name `$name` from the maintainer.
+* Initialize a [Wordpress installation](https://documentation.mamp.info/en/MAMP-Mac/FAQ/How-do-I-install-WordPress/).
+	* In step 5, name your database according to the database `$name` provided by the maintainer.
+	* In step 6 item 3, be sure to use `$name` as the database name as well.
+* Optionally rename the newly created `Wordpress` directory to `wikitongues`.
+* You have now installed Wordpress! With MAMP running, you may now visit [localhost:8888/wikitongues](localhost:8888/wikitongues).
+> _(**Note:** The address will match your directory name)_
+
+**3. Setting Up Version Control**
+* Within your project directory, initialize Github and add this repository as the origin remote. Pull default branch `main`.
+	* ``` bash
+	   git init
+	   git remote add "origin" git@github.com:wikitongues/wikitongues.git
+	   git pull main
+	   git co main
+	   git branch -d master```
+
+**4. Setting Up Plugins**
+* In admin ([localhost:8888/wikitongues/wp-admin/](localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
+* In the sidebar, click on `Add New Plugin`. Add the following plugins. 
+	* [Classic editor](https://wordpress.org/plugins/classic-editor/)
+	* [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/)
+	* [Make Connector](https://wordpress.org/plugins/integromat-connector/)
+	* [WPS Hide Login](https://wordpress.org/plugins/wps-hide-login/) provides increased security to the site by masking the admin url.
+* After adding each plugin, it needs to be activated. This includes the plugins already available via Github.
+
+**5. Populating The Database**
+* Talk to the maintainer to get a version of the prod sync script `tool-sync-db-from-prod.sh`.
+* Confirm tool is executable.
+  ``` bash
+  chmod +x tool-sync-db-from-prod.sh
+  ```
+* Make sure local path is correctly configured.
+* Pull prod db (mamp has to be running). Check prod connection. run `bash tool-sync-db-from-prod.sh`.
+
+**6. Configurations**
+* Add logging to your `wp-config.php`
+	``` php
+	define('WP_DEBUG', true);
+	define('WP_DEBUG_LOG', true);
+	define('WP_DEBUG_DISPLAY', true);
+	```
+ This will make it such that all system logs get printed to `wp-content/debug.log`.
+* Confirm other wp-config parameters with the maintainer.
+
+> _**Note:** We dont have direct experience on Windows. Please let us know if you wish to try that out and submit your steps to this readme via PR._
+
+# Theme Structure
 * primary functions are stored in functions.php
 * secondary/plug-in functions are stored in /includes
 * recurring UI elements are stored as unique php files in /modules
@@ -8,7 +60,6 @@
 * ACF organized into groups by corresponding post type, page template, or global group, with post type or page template name as prefix
 
 # Code Style Guidelines
-
 *PHP*
 * we use { } for continguous php and :/else:/endif; for PHP broken up by html
 * https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
@@ -18,18 +69,7 @@
 *CSS*
 * Use tabs, not spaces for Stylus files.
 
-# Setup
-* Download and install [MAMP](https://www.mamp.info/). The free version is enough.
-* On a Mac, MAMP will create a directory called MAMP in your Applications directory. In there, you will find a directory called `htdocs`.
-* Inside `htdocs`, create a directory called `wikitongues`. Inside that, you will initialize a [Wordpress installation](https://documentation.mamp.info/en/MAMP-Mac/FAQ/How-do-I-install-WordPress/)
-* From the newly created `wikitongues` directory, initialize Github and add this repository as the origin remote. Pull main.
-* Configure your wp-config file. Talk to the maintainer to get the necessary details.
-* Talk to the maintainer to get a version of the prod sync script tool-sync-db-from-prod.sh.
-* We dont have direct experience on Windows. Please let us know if you wish to try that out and submit your steps to this readme via PR.
-
-
 # Continuous Integration and Deployment
-
 This project follows a structured Continuous Integration and Continuous Deployment (CI/CD) process, utilizing four primary environments to ensure seamless development, testing, and production deployment.
 
 ### Environments
