@@ -20,17 +20,19 @@
 	   git pull main
 	   git co main
 	   git branch -d master```
+> _(**Note:** The project's primary branch is called '**main**', not 'master'.)_
 
 **4. Setting Up Plugins**
 * In admin ([localhost:8888/wikitongues/wp-admin/](localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
+* Install [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/) by putting the plugin folder provided by the maintainer in `/wp-content/plugins/`.
 * In the sidebar, click on `Add New Plugin`. Add the following plugins. 
 	* [Classic editor](https://wordpress.org/plugins/classic-editor/)
-	* [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/)
 	* [Make Connector](https://wordpress.org/plugins/integromat-connector/)
 	* [WPS Hide Login](https://wordpress.org/plugins/wps-hide-login/) provides increased security to the site by masking the admin url.
 * After adding each plugin, it needs to be activated. This includes the plugins already available via Github.
 
 **5. Populating The Database**
+* Install [wp-cli](https://wp-cli.org/)
 * Talk to the maintainer to get a version of the prod sync script `tool-sync-db-from-prod.sh`.
 * Confirm tool is executable.
   ``` bash
@@ -202,7 +204,7 @@ Work is underway to syncronize databases across environments. To sync your local
 
 
 # CSS and Compiling Stylus
-
+* Install [stylus](https://stylus-lang.com/)
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
 Stylus needs to be compiled into CSS before it is usable in HTML.
 To run the compiler, run `stylus -w stylus` in the terminal.
