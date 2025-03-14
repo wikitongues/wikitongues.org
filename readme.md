@@ -100,6 +100,7 @@ This project follows a structured Continuous Integration and Continuous Deployme
 **Feature Development**
 - Begin by branching off from `main` to develop new features.
 - Regularly push updates to the feature branch on GitHub for peer review and testing.
+> **Notes:** Branches should start with one of: `feature/` or `fix/` based on the purpose. Branches starting with `_` are considered inactive.
 
 **Main**
 - Once a feature is ready, submit a pull request to merge the feature branch into `main`.
