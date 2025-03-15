@@ -109,7 +109,7 @@ $aspect-ratio = 16/9
 							margin 0 16px
 							text-align center
 
-					h5,h6
+					h5, h6
 						display -webkit-box
 						-webkit-line-clamp 2
 						-webkit-box-orient vertical
@@ -143,6 +143,7 @@ $aspect-ratio = 16/9
 				a
 					h6
 						margin-top 16px
+						height 7.2rem
 
 					&:hover
 						box-shadow 0px 0px 0px 4px $black
@@ -178,9 +179,13 @@ $aspect-ratio = 16/9
 						background $parchment
 						border 2px solid $blue()
 						transition all 0.2s ease-in-out
+						display flex
+						flex-direction column
+						justify-content space-between
 
 						&:hover
 							box-shadow 0 0 0 1px $blue()
+							background $blue(10)
 
 							.thumbnail,
 							.no-thumbnail
@@ -207,20 +212,27 @@ $aspect-ratio = 16/9
 						left -16px
 						transition all 0.1s ease-in-out
 
-
-					h5
-						height 64px
+					.details
+						display flex
+						flex-direction column
+						justify-content space-between
+						gap 32px
+						height 100%
 
 					.fellow-metadata
 						width 100%
 						float left
-						margin-top 16px
+						display flex
+						flex-direction column
 
-						h5
+						.language
 							display flex
 							align-items flex-end
 							width 100%
-							margin-bottom 4px
+							margin-bottom 16px
+
+						.description
+							-webkit-line-clamp initial
 
 						span
 							width 100%
@@ -233,10 +245,41 @@ $aspect-ratio = 16/9
 								&:first-of-type
 									margin-right 8px
 
-						h5,
+						.name,
 						p
 							float left
 							max-width initial
+
+		&.display
+			.gallery-container
+				.gallery-list
+					.gallery-item
+						a
+							display flex
+							flex-direction row
+							padding 0
+
+							img,
+							.no-thumbnail,
+							.thumbnail,
+							span.thumbnail-spacer
+								width (2/3)*100%
+								padding (((2/3)/$aspect-ratio)/2)*100% 0// 16:9 aspect ratio
+
+							.details
+								width (1/3)*100%
+								padding 32px 32px 32px 16px
+								display flex
+								flex-direction column
+								justify-content space-between
+
+								.name
+									text--header($black)
+									max-width 100%
+									height initial
+
+								.fellow-metadata
+									gap 16px
 
 	&.resources
 		.gallery-container
@@ -468,6 +511,28 @@ $aspect-ratio = 16/9
 		.gallery-container
 			.gallery-list
 				grid-template-columns repeat(1, 1fr) !important
+
+		&.fellows.display
+			.gallery-container
+				.gallery-list
+					.gallery-item
+						a
+							flex-direction column
+
+							img,
+							.no-thumbnail,
+							.thumbnail,
+							span.thumbnail-spacer
+								width 100%
+								padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
+
+							.details
+								width 100%
+								padding 0 32px 16px 16px
+								gap 16px
+
+								.fellow-metadata
+									gap 16px
 		> p
 			margin-bottom 2rem
 

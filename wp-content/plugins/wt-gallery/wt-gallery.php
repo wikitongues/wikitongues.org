@@ -55,6 +55,7 @@ function load_custom_gallery_ajax_callback() {
 
   // Fetch query results
   $query = get_custom_gallery_query($atts);
+  $data_attributes = esc_attr(json_encode($atts));
 
   if ($query->have_posts()) {
       ob_start();
@@ -189,8 +190,8 @@ function custom_gallery($atts) {
     'display_blank' => $atts['display_blank'],
     'taxonomy' => $atts['taxonomy'],
     'term' => $atts['term'],
+    'custom_class' => $atts['custom_class'],
   );
-
 
   // Merge in any additional arguments (like selected posts)
   if (!empty($selected_posts)) {

@@ -30,9 +30,9 @@ if ( $fellows ):
 			$params = [
 				'title' => 'Fellows',
 				'post_type' => 'fellows',
-				'custom_class' => '',
-				'columns' => 3,
-				'posts_per_page' => 6,
+				'custom_class' => 'display',
+				'columns' => 1,
+				'posts_per_page' => 1,
 				'orderby' => 'date',
 				'order' => 'asc',
 				'pagination' => 'true',
@@ -45,5 +45,6 @@ if ( $fellows ):
 			];
 			echo create_gallery_instance($params);
 		?>
+		<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support a revitalization project</a>.</p>
 	</div>
 <?php endif; ?>
