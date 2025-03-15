@@ -830,6 +830,7 @@
                                             "collapsed": "",
                                             "button_label": "Add new language",
                                             "rows_per_page": 20,
+                                            "parent_repeater": "field_67b73cf0b0f20",
                                             "sub_fields": [
                                                 {
                                                     "key": "field_67b73d7daf7a0",
@@ -880,6 +881,7 @@
                                                     "collapsed": "",
                                                     "button_label": "Add new format",
                                                     "rows_per_page": 20,
+                                                    "parent_repeater": "field_67b73d6baf79f",
                                                     "sub_fields": [
                                                         {
                                                             "key": "field_67b73dd0af7a3",
@@ -930,11 +932,9 @@
                                                             "mime_types": "",
                                                             "parent_repeater": "field_67b73d98af7a1"
                                                         }
-                                                    ],
-                                                    "parent_repeater": "field_67b73d6baf79f"
+                                                    ]
                                                 }
-                                            ],
-                                            "parent_repeater": "field_67b73cf0b0f20"
+                                            ]
                                         }
                                     ]
                                 }
@@ -985,5 +985,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1740100782
+    "modified": 1741996354
 }
