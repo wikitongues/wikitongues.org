@@ -17,6 +17,40 @@
     return $query->have_posts() ? $query->posts[0] : null;
 }
 
+add_action('wp_ajax_fetch_document_files', function () {
+	$parent_id = intval($_POST['parent_id']);
+	$lang_id = intval($_POST['lang_id']); // it's a post ID now!
+
+	// Query using post ID
+	$files = get_posts([
+			'post_type'  => 'document_files',
+			'meta_query' => [
+					['key' => 'parent_download', 'value' => $parent_id, 'compare' => '='],
+					['key' => 'language', 'value' => $lang_id, 'compare' => '='], // compare post ID
+			],
+			'orderby' => 'meta_value_num',
+			'meta_key' => 'version',
+			'order'   => 'DESC',
+	]);
+
+	ob_start();
+	foreach ($files as $file) {
+			$version = get_field('version', $file->ID);
+			$language = get_field('language', $file->ID);
+			$iso_code = is_object($language) ? $language->post_title : 'Unknown';
+			$language_name = is_object($language) ? get_field('standard_name', $language->ID) : 'Unknown';
+
+			echo '<tr>';
+			echo '<td>' . esc_html($language_name) . ' (' . esc_html($iso_code) . ')</td>';
+			echo '<td>' . esc_html($version) . '</td>';
+			echo '<td><button class="download-btn" data-file-id="' . esc_attr($file->ID) . '">Download</button></td>';
+			echo '</tr>';
+	}
+	$html = ob_get_clean();
+
+	wp_send_json_success(['html' => $html]);
+});
+
 
 function handle_document_download() {
 	if (!isset($_POST['file_id'])) {

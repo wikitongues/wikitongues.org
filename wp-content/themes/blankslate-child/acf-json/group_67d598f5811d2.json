@@ -95,6 +95,25 @@
             "min_size": "",
             "max_size": "",
             "mime_types": "pdf, txt"
+        },
+        {
+            "key": "field_67d6f9d2f2fdf",
+            "label": "Version Date",
+            "name": "version_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "d\/m\/Y",
+            "first_day": 1,
+            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -115,5 +134,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742058230
+    "modified": 1742141930
 }

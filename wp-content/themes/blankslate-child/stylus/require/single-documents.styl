@@ -1,0 +1,31 @@
+.main-content
+	max-width $content
+	margin 0 auto 3.2rem
+
+	.document-description,
+	table
+		text--body($black)
+
+	h3
+		text--header($black)
+
+	table
+		tr
+
+			&:nth-of-type(2n)
+				background-color $blue(10)
+
+			th, td
+				padding 8px
+
+				&:first-of-type
+					border-radius 8px 0 0 8px
+
+				&:last-of-type
+					border-radius 0 8px 8px 0
+
+		button
+			background transparent
+			border none
+			cursor pointer
+			anchor($blue(), 4px)

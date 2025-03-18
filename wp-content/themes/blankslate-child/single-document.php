@@ -1,13 +1,19 @@
 <?php
 get_header();
-echo '<h1>' . get_the_title() . '</h1>';
+
 $description = get_field('description');
-if ($description) {
-	echo '<div class="document-description">' . wp_kses_post(esc_html($description)) . '</div>';
-	wpautop(wp_kses_post(get_sub_field('text_area')));
-}
+$selected_file = get_field('selected_file');
+$file_field = get_field('file', $selected_file->ID);
+$file_cta = get_field('file_cta');
+
+include( 'modules/editorial-content.php' );
+
+echo '<div class="main-content">';
+render_download_ui(get_the_ID());
+echo '</div>';
 
 function render_download_ui($document_id) {
+	// Fetch all files
 	$files = get_posts([
 			'post_type'  => 'document_files',
 			'meta_query' => [
@@ -20,6 +26,7 @@ function render_download_ui($document_id) {
 			'orderby' => 'meta_value_num',
 			'meta_key' => 'version',
 			'order'   => 'DESC',
+			'posts_per_page' => -1,
 	]);
 
 	if (!$files) {
@@ -27,90 +34,149 @@ function render_download_ui($document_id) {
 			return;
 	}
 
-	echo '<h3>Available Downloads</h3>';
-	echo '<table id="downloadsTable">';
-	echo '<thead><tr><th>Language</th><th>Version</th><th>Download</th></tr></thead>';
-	echo '<tbody>';
+	// Group files by language
+	$grouped = [];
+	$primary_download = null;
 
 	foreach ($files as $file) {
-		$version = get_field('version', $file->ID);
-		$file_id = $file->ID;
+			$lang_obj = get_field('language', $file->ID);
+			$language_field = get_field('language', $file->ID);
+			$version = get_field('version', $file->ID);
+			// $lang_id = is_object($lang_obj) ? $lang_obj->ID : null;
+			$lang_id = is_object($language_field) ? $language_field->ID : (is_numeric($language_field) ? intval($language_field) : null);
 
-		$language = get_field('language', $file->ID);
-		$language_name = 'Unknown';
 
-		if (is_object($language) && isset($language->ID)) {
-				$standard_name = get_field('standard_name', $language->ID);
-				$language_name = !empty($standard_name) ? esc_html($standard_name) : get_the_title($language->ID);
-		}
+			if (!isset($grouped[$lang_id])) {
+					$grouped[$lang_id] = [];
+			}
 
-		echo '<tr>';
-		echo '<td>' . esc_html($language_name) . '</td>';
-		echo '<td>' . esc_html($version) . '</td>';
-		echo '<td><button class="download-btn" data-file-id="' . esc_attr($file_id) . '">Download</button></td>';
-		echo '</tr>';
+			$grouped[$lang_id][] = [
+					'file_id' => $file->ID,
+					'version' => $version,
+					'language_id' => $lang_id,
+					'language_name' => $lang_id ? (get_field('standard_name', $lang_id) ?: get_the_title($lang_id)) : 'Unknown',
+			];
+
+			// Identify the primary download (latest English version)
+			if (!$primary_download && $lang_id && get_field('standard_name', $lang_id) === 'eng') {
+					$primary_download = $file;
+			}
 	}
 
-	echo '</tbody>';
-	echo '</table>';
+	// Fallback if no English file is found
+	if (!$primary_download) {
+			$primary_download = $files[0];
+	}
 
-	// Include the AJAX script
+	// Render UI
 	?>
+	<h3>Download</h3>
+	<div class="primary-download">
+			<button id="primary-download-btn" data-file-id="<?php echo esc_attr($primary_download->ID); ?>">
+					Download latest English version
+			</button>
+	</div>
+
+	<div class="language-selector">
+			<label for="language-filter">Filter other downloads by language:</label>
+			<select id="language-filter">
+				<?php
+				foreach ($grouped as $lang_id => $docs) {
+						$lang_obj = get_post($lang_id);
+
+						echo '<!-- DEBUG: lang_id = ' . esc_html($lang_id) . ', lang_obj = ' . json_encode([
+								'post_id' => $lang_obj->ID ?? 'N/A',
+								'post_title' => $lang_obj->post_title ?? 'N/A',
+								'standard_name' => get_field('standard_name', $lang_id) ?: 'N/A',
+						]) . ' -->';
+
+						$iso_code = $lang_obj->post_title ?? 'no_iso';
+						$lang_name = get_field('standard_name', $lang_id);
+						$selected = ($iso_code === 'eng') ? 'selected' : '';
+
+						echo '<option value="' . esc_attr($lang_id) . '" ' . $selected . '>' . esc_html($lang_name) . ' (' . esc_html($iso_code) . ')</option>';
+				}
+				?>
+		</select>
+
+
+	</div>
+
+	<table id="downloadsTable">
+			<thead><tr><th>Language</th><th>Version</th><th>Download</th></tr></thead>
+			<tbody>
+			</tbody>
+	</table>
+
 	<script>
 	document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".download-btn").forEach(button => {
-        button.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent any accidental redirections
+    const ajaxUrl = "<?php echo admin_url('admin-ajax.php'); ?>";
+    const languageSelect = document.getElementById("language-filter");
+    const primaryButton = document.getElementById("primary-download-btn");
 
-            const fileId = this.getAttribute("data-file-id");
-
-            fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({
-                    action: "download_document",
-                    file_id: fileId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("AJAX Response:", data); // Debugging log
-
-                if (data.success && data.data.file_url) {
-                    console.log("Triggering download: " + data.data.file_url);
-                    window.location.href = data.data.file_url; // Initiate file download
-                } else {
-                    alert("Error downloading file: " + (data.message || "Unknown error."));
-                }
-            })
-            .catch(error => {
-                console.error("AJAX Error:", error);
-                alert("Request failed. Please try again.");
-            });
-        });
+    // Primary download button logic
+    primaryButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        triggerDownload(this.dataset.fileId);
     });
+
+    // Auto-load table with pre-selected language (e.g., "eng")
+    if (languageSelect.value) {
+        fetchTable(languageSelect.value);
+    }
+
+    // On language change, refresh table
+    languageSelect.addEventListener("change", function () {
+        fetchTable(this.value);
+    });
+
+    // Fetch & populate table based on selected ISO code
+    function fetchTable(isoCode) {
+        fetch(ajaxUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                action: "fetch_document_files",
+                parent_id: "<?php echo esc_attr($document_id); ?>",
+                lang_iso: isoCode
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector("#downloadsTable tbody").innerHTML = data.html;
+        });
+    }
+
+    // Handle download clicks inside the table dynamically (delegation)
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains('download-btn')) {
+            e.preventDefault();
+            triggerDownload(e.target.dataset.fileId);
+        }
+    });
+
+    // Trigger download handler (AJAX fetch → file redirect)
+    function triggerDownload(fileId) {
+        fetch(ajaxUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                action: "download_document",
+                file_id: fileId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.file_url) {
+                window.location.href = data.data.file_url;
+            } else {
+                alert("Error downloading file: " + (data.message || "Unknown error."));
+            }
+        });
+    }
 });
-
-
 	</script>
 	<?php
-}
-
-
-// Call the function to render the UI
-render_download_ui(get_the_ID());
-
-// Process user selection
-if (isset($_GET['language']) || isset($_GET['version'])) {
-    $selected_language_id = isset($_GET['language']) ? intval($_GET['language']) : null;
-    $selected_version = isset($_GET['version']) ? $_GET['version'] : null;
-
-    $file = get_latest_document_file(get_the_ID(), $selected_language_id);
-
-    if ($file && (!$selected_version || get_field('version', $file->ID) == $selected_version)) {
-        $file_url = get_field('file', $file->ID);
-        echo '<p><a href="' . esc_url($file_url) . '" download>Download File</a></p>';
-    }
 }
 
 include('modules/newsletter.php');
