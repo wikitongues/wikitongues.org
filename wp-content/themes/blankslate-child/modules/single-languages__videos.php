@@ -1,8 +1,16 @@
 <div id="wt_single-languages__videos" class="wt_single-languages__contents">
 	<?php
 		// Gallery
+		$title = 'Videos';
+		$title_name = $standard_name;
+		log_data($standard_name);
+		if (substr($standard_name, -7) !== 'anguage') {
+      $title_name .= ' language';
+		}
+		$title = $title_name . ' Videos';
 		$params = [
-			'title' => 'Videos',
+			'title' => $title,
+			'subtitle' => 'Wikitongues crowd-sources video samples of every language in the world.',
 			'post_type' => 'videos',
 			'custom_class' => '',
 			'columns' => 3,

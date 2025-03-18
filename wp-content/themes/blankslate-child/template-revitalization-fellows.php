@@ -46,6 +46,7 @@ if ($fellow_id) {
   // Gallery
   $params = [
     'title' => '',
+    'subtitle' => '',
     'post_type' => 'fellows',
     'custom_class' => 'full',
     'columns' => 4,

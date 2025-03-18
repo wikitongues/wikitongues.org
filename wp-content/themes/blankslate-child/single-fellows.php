@@ -48,6 +48,7 @@ include( 'modules/editorial-content.php' );
 // Gallery
 $params = [
 	'title' => '',
+	'subtitle' => '',
 	'post_type' => 'fellows',
 	'custom_class' => 'full',
 	'columns' => 4,

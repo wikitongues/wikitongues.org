@@ -75,6 +75,7 @@ echo '<main class="wt_single-videos__content">';
   // Gallery
   $params = [
     'title' => 'Other videos of ' . $language_names,
+    'subtitle' => '',
     'post_type' => 'videos',
     'custom_class' => 'full',
     'columns' => 5,

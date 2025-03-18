@@ -21,6 +21,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
 			// Gallery
 			$params = [
 				'title' => get_sub_field('custom_gallery_title'),
+				'subtitle' => '',
 				'post_type' => 'videos',
 				'custom_class' => 'full',
 				'columns' => 3,

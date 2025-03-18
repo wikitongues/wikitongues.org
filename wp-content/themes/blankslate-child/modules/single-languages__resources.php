@@ -1,8 +1,15 @@
 <div id="wt_single-languages__resources" class="wt_single-languages__contents">
 		<?php
 			// Gallery
+			$title = 'External resources';
+			$title_name = $standard_name;
+			if (substr($standard_name, -7) !== 'anguage') {
+				$title_name .= ' language';
+			}
+			$title = $title_name . ' external resources';
 			$params = [
-				'title' => 'External Resources',
+				'title' => $title,
+				'subtitle' => 'Wikitongues indexes language resources from across the internet.',
 				'post_type' => 'resources',
 				'custom_class' => '',
 				'columns' => 3,
