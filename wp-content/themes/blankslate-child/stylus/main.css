@@ -1762,6 +1762,12 @@ body .wt_single-languages__contents#wt_single-languages__fellows p {
 body .wt_single-languages__contents#wt_single-languages__fellows p a:first-of-type {
   font-weight: 700;
 }
+body .wt_single-languages__contents#wt_single-languages__lexicons {
+  gap: 32px;
+}
+body .wt_single-languages__contents#wt_single-languages__lexicons .custom-cta-container {
+  margin-top: 0;
+}
 body .wt_single-languages__contents#wt_single-languages__lexicons .wt_content-block--thirds:before,
 body .wt_single-languages__contents#wt_single-languages__resources .wt_content-block--thirds:before {
   display: none;
@@ -1944,11 +1950,13 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
   padding: 4rem 0;
   margin-bottom: 6rem;
 }
+.wt_single-videos__video .error,
 .wt_single-videos__no-video {
   display: flex;
   min-height: 31.640625vw;
   align-content: center;
 }
+.wt_single-videos__video .error p,
 .wt_single-videos__no-video p {
   margin: auto;
   vertical-align: middle;
@@ -1994,10 +2002,6 @@ body.single-videos .wt_header__nav>ul>li:first-of-type:hover .sub-menu {
 .wt_single-videos__embed iframe {
   min-height: 31.640625vw;
   max-width: 56.25vw;
-}
-.wt_single-videos__video p,
-.wt_single-videos__embed p {
-  background: #9c88ca;
 }
 .wt_single-videos__video img,
 .wt_single-videos__embed img {
@@ -3608,12 +3612,7 @@ body.post-type-archive-reports {
   text-align: left;
   clear: both;
 }
-.custom-gallery > p {
-  color: #101010;
-  margin-bottom: 1.6rem;
-  margin-top: 0.8rem;
-}
-.custom-gallery > p a {
+.custom-gallery.full a {
   font-style: italic;
 }
 .custom-gallery strong,
@@ -3898,11 +3897,9 @@ body.post-type-archive-reports {
 .custom-gallery.resources .gallery-container .gallery-list .gallery-item a p.domain {
   color: #3814a5;
 }
-.custom-gallery.lexicons:nth-of-type(2) {
-  margin-top: 1.6rem;
-}
 .custom-gallery.lexicons .wt_sectionHeader {
   border-bottom: none;
+  padding-bottom: 0;
 }
 .custom-gallery.lexicons .gallery-container {
   border-top: none;
@@ -4106,6 +4103,7 @@ body.post-type-archive-reports {
 .custom-cta-container {
   width: 100%;
   display: inline-block;
+  margin-top: 32px;
 }
 .custom-cta-container.full {
   padding: 0 32px;

@@ -18,7 +18,6 @@
 				if ( $wikimedia_commons_link ) {
 					echo '<br /><a href="'. $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a>';
 				}
-				echo do_shortcode('[wikitongues_form]');
 			}
 
 			if ( ($dropbox_link === 'none' || !$dropbox_link) && !$wikimedia_commons_link ) {
