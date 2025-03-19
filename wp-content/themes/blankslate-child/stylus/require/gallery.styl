@@ -6,6 +6,9 @@ $aspect-ratio = 16/9
 .custom-gallery
 	text--body($blue())
 	clear both
+	display flex
+	flex-direction column
+	gap 16px
 
 	&.full
 		margin 32px
@@ -24,14 +27,22 @@ $aspect-ratio = 16/9
 
 	strong,
 	p
+		text-align left
+		clear both
+
 		a
 			text-decoration none
 			color $blue()
 
+	strong
+		text--strong($black)
+
+	p
+		text--body($black)
+
 	.wt_sectionHeader
 		border-bottom 2px solid $border-color
 		padding-bottom 1.5rem
-		margin-bottom 12px
 		display inline-block
 		width 100%
 
@@ -123,6 +134,11 @@ $aspect-ratio = 16/9
 							bottom 0
 							left 0
 							margin 1.6rem
+
+					.no-thumbnail,
+					.thumbnail
+						p
+							color $parchment
 
 	&.languages
 		.gallery-list
@@ -479,7 +495,6 @@ $aspect-ratio = 16/9
 			color $blue()
 
 	.custom-gallery.fellows.full
-		// margin-top 16px
 		margin 16px 0 32px 0
 
 .custom-cta-container
