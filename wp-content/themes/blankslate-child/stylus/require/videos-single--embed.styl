@@ -23,6 +23,7 @@ $video_size = (9/16)*100 // in viewport widths
 		padding 4rem 0
 		margin-bottom 6rem
 
+	&__video .error,
 	&__no-video
 		display flex
 		min-height ($video_size/16*9)vw
@@ -61,9 +62,6 @@ $video_size = (9/16)*100 // in viewport widths
 		iframe
 			min-height ($video_size/16*9)vw
 			max-width ($video_size)vw
-
-		p
-			background $blue(50)
 
 		img
 			width 100%

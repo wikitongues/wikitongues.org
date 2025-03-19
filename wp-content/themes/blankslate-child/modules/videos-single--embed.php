@@ -9,7 +9,7 @@
 		<?php elseif ( $dropbox_link || $video_thumbnail ): ?>
 			<video width="320" height="240" controls><source src="<?php echo $dropbox_link_raw; ?>" type="video/mp4">Your browser does not support the video tag.</video>
 		<?php else: ?>
-			<p>Sorry, there was an error loading the video file. We're probably still processing it, so please check back soon.</p>
+			<p class="error">Sorry, there was an error loading the video file. We're probably still processing it, so please check back soon.</p>
 		<?php endif; ?>
 	</div>
 	<!-- __video wrap -->
