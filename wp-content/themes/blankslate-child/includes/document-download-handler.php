@@ -154,6 +154,7 @@ function enqueue_admin_document_validation_script($hook) {
 			'parent_download' => 'acf[field_' . sanitize_title('parent_download') . ']',
 			'language' => 'acf[field_' . sanitize_title('language') . ']',
 			'version' => 'acf[field_' . sanitize_title('version') . ']',
+			'format' => 'acf[field_' . sanitize_title('format') . ']',
 	];
 
 	// Enqueue JavaScript
@@ -180,7 +181,7 @@ function validate_unique_document_file($valid, $value, $field, $input_name) {
 	}
 
 	// Only run validation on specific fields
-	$target_fields = ['parent_download', 'language', 'version'];
+	$target_fields = ['parent_download', 'language', 'version', 'format'];
 	if (!in_array($field['name'], $target_fields)) {
 			return $valid;
 	}
@@ -197,8 +198,9 @@ function validate_unique_document_file($valid, $value, $field, $input_name) {
 	$parent_download = $_POST['acf']['field_67d59913af082'] ?? null;
 	$language = $_POST['acf']['field_67d59952af085'] ?? null;
 	$version = $_POST['acf']['field_67d59940af084'] ?? null;
+	$format = $_POST['acf']['field_67da007bd82c5'] ?? null;
 
-	if (!$parent_download || !$language || !$version) {
+	if (!$parent_download || !$language || !$version || !$format) {
 			return $valid; // Skip validation if required fields are missing
 	}
 
@@ -206,6 +208,7 @@ function validate_unique_document_file($valid, $value, $field, $input_name) {
 	$parent_download = intval($parent_download);
 	$language_id = intval($language);
 	$version = sanitize_text_field($version);
+	$format = sanitize_text_field($format);
 
 	// Query for existing files with the same parent, language, and version
 	$existing_files = new WP_Query([
@@ -232,11 +235,16 @@ function validate_unique_document_file($valid, $value, $field, $input_name) {
 							'value'   => $version,
 							'compare' => '=',
 					],
+					[
+							'key'     => 'format',
+							'value'   => $format,
+							'compare' => '=',
+					],
 			],
 	]);
 
 	if ($existing_files->have_posts()) {
-			return "Error: A file with this Language-Version combination already exists.";
+			return "Error: A file with this combination of 'Language - Format - Version' already exists.";
 	}
 
 	return $valid;
