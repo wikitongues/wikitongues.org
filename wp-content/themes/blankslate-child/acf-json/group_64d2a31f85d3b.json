@@ -3,6 +3,27 @@
     "title": "Template: Revitalization Toolkit",
     "fields": [
         {
+            "key": "field_67dac7df8d209",
+            "label": "migration_assistant",
+            "name": "migration_assistant",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_64d2a31f8af40",
             "label": "Revitalization Toolkit banner",
             "name": "revitalization_toolkit_banner",
@@ -274,5 +295,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1721317228
+    "modified": 1742391307
 }

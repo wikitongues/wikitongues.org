@@ -3,11 +3,11 @@
     "title": "Post type: Documents",
     "fields": [
         {
-            "key": "field_67d5b2ff0c0cb",
-            "label": "Description",
-            "name": "description",
+            "key": "field_67d9a23346fef",
+            "label": "Primary File",
+            "name": "selected_file",
             "aria-label": "",
-            "type": "textarea",
+            "type": "post_object",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -16,11 +16,37 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "post_type": "",
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "object",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_67d9ac105550b",
+            "label": "Call to action",
+            "name": "file_cta",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Download latest version",
             "maxlength": "",
-            "rows": "",
+            "allow_in_bindings": 0,
             "placeholder": "",
-            "new_lines": ""
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -41,5 +67,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742058744
+    "modified": 1742319454
 }

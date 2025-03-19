@@ -563,8 +563,8 @@
         },
         {
             "key": "field_67a2231ef5fb9",
-            "label": "Main Content",
-            "name": "main_content",
+            "label": "Main Content Fellows",
+            "name": "main_content_fellows",
             "aria-label": "",
             "type": "flexible_content",
             "instructions": "",
@@ -677,5 +677,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738626283
+    "modified": 1739320354
 }
