@@ -3,6 +3,7 @@ jQuery(document).ready(function ($) {
 			let parentDownload = $(`select[name="${ajax_object.acf_fields.parent_download}"]`).val();
 			let language = $(`select[name="${ajax_object.acf_fields.language}"]`).val();
 			let version = $(`input[name="${ajax_object.acf_fields.version}"]`).val();
+			let format = $(`input[name="${ajax_object.acf_fields.format}"]`).val();
 
 			if (!parentDownload || !language || !version) {
 					$('#duplicate-warning').remove();
@@ -17,7 +18,8 @@ jQuery(document).ready(function ($) {
 							action: 'check_duplicate_document_file',
 							parent_download: parentDownload,
 							language: language,
-							version: version
+							version: version,
+							format: format
 					},
 					success: function (response) {
 							$('#duplicate-warning').remove();
