@@ -12,7 +12,7 @@
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "16.666666667",
                 "class": "",
                 "id": ""
             },
@@ -24,6 +24,7 @@
             "return_format": "object",
             "multiple": 0,
             "allow_null": 0,
+            "allow_in_bindings": 1,
             "bidirectional": 0,
             "ui": 1,
             "bidirectional_target": []
@@ -38,13 +39,14 @@
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "16.666666667",
                 "class": "",
                 "id": ""
             },
             "default_value": "",
             "min": 0,
             "max": "",
+            "allow_in_bindings": 1,
             "placeholder": "",
             "step": 1,
             "prepend": "",
@@ -60,7 +62,7 @@
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "16.666666667",
                 "class": "",
                 "id": ""
             },
@@ -72,48 +74,10 @@
             "return_format": "object",
             "multiple": 0,
             "allow_null": 0,
+            "allow_in_bindings": 1,
             "bidirectional": 0,
             "ui": 1,
             "bidirectional_target": []
-        },
-        {
-            "key": "field_67d5992faf083",
-            "label": "File",
-            "name": "file",
-            "aria-label": "",
-            "type": "file",
-            "instructions": "",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "25",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "library": "all",
-            "min_size": "",
-            "max_size": "",
-            "mime_types": "pdf, txt"
-        },
-        {
-            "key": "field_67d6f9d2f2fdf",
-            "label": "Version Date",
-            "name": "version_date",
-            "aria-label": "",
-            "type": "date_picker",
-            "instructions": "",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "display_format": "F j, Y",
-            "return_format": "d\/m\/Y",
-            "first_day": 1,
-            "allow_in_bindings": 0
         },
         {
             "key": "field_67da007bd82c5",
@@ -122,10 +86,10 @@
             "aria-label": "",
             "type": "select",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "16.666666667",
                 "class": "",
                 "id": ""
             },
@@ -142,6 +106,46 @@
             "ui": 0,
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_67d5992faf083",
+            "label": "File",
+            "name": "file",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "16.666666667",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf, txt",
+            "allow_in_bindings": 1
+        },
+        {
+            "key": "field_67d6f9d2f2fdf",
+            "label": "Version Date",
+            "name": "version_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "16.666666667",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "d\/m\/Y",
+            "first_day": 1,
+            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -162,5 +166,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742340252
+    "modified": 1742410163
 }
