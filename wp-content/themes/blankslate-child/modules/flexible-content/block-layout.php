@@ -1,231 +1,90 @@
 <?php
-	$image = get_sub_field('thumbnail');
-	$header = get_sub_field('header');
-	$block_type = get_sub_field('block_type');
-	$link_type = get_sub_field('link_type');
-	$text = get_sub_field('text');
-	$link = get_sub_field('link');
-	$document = get_sub_field('document_download');
-	$documentGroup = [];
-	$form_id = 'download-form-' . uniqid();
-	if($link_type === "Download" && !empty($document) ) {
-		$document_name = $document['name'];
-		$document_versions = $document['version_container'];
-		foreach($document_versions as $version) {
-			$document_version = $version['version'];
-			$document_languages = $version['language_container'];
-			foreach($document_languages as $language) {
-				$language_post = $language['language'];
-				$document_language = get_field('standard_name', $language_post->ID);
-				if (!$document_language) {
-					$document_language = $language_post->post_title;
-				}
-				$document_formats = $language['format_container'];
-				foreach($document_formats as $format) {
-					$document_format = $format['format'];
-					$document_url = $format['file'];
-					$documentGroup[] = [
-						'name' => $document_name,
-						'version' => $document_version,
-						'language' => $document_language,
-						'format' => $document_format,
-						'url' => $document_url
-					];
-				}
-			}
-		}
-	};
+$block_type = get_sub_field('block_type');
+$class = ($block_type === 'Card') ? 'thirds' : (($block_type === 'Block') ? 'wide' : '');
+echo '<main class="wrapper ' . esc_attr($class) . '">';
 
-	$anchorElement = '';
-	switch($link_type) {
-		case 'Link' :
-			$anchorElement = '<a href="'. $link['url'] . '">' . $link['title'] . '</a>';
-			break;
-		case 'Download' :
-			$anchorElement = '<button class="'.$form_id.'" type="button">Download</button>';
-			$anchorElement .=  do_shortcode('[wikitongues_form]');
-			if ($link_type === "Download" && !empty($document) ):
-				$anchorElement .= '<form id="download-selector-'.$form_id.'" class="wikitongues-form form-element-2">';
-				$anchorElement .= '<fieldset>';
-				$anchorElement .= '<legend>'.$document_name.'</legend>';
-				foreach(['version', 'language', 'format'] as $option) {
-					$anchorElement .= '<label for="'.$option.'-select-'.$form_id.'">'.ucfirst($option).':';
-					$anchorElement .= '</label>';
-					$anchorElement .= '<select id="'.$option.'-select-'.$form_id.'" class="'.$option.'-select"></select>';
-				}
-				$anchorElement .= '</fieldset>';
-				$anchorElement .= '<button id="download-btn-'.$form_id.'" class="download-btn" disabled>Download</button>';
-				$anchorElement .= '</form>';
-			endif;
-			break;
-	}
+while (have_rows('block_group')) :
+    the_row();
 
-	$class = 'block';
-	switch($block_type) {
-		case 'Card' :
-			$class .= ' thirds';
-			break;
-		case 'Block' :
-			$class .= ' wide';
-			break;
-	}
+    // Get all fields
+    $header = get_sub_field('header');
+    $image = get_sub_field('thumbnail');
+    $text = get_sub_field('text');
+    $link_type = get_sub_field('link_type'); // 'Link' or 'Download'
+    $link = get_sub_field('link');
+    $display_secondary = get_sub_field('display_secondary');
+    $display_caption = get_sub_field('display_caption');
 
-	echo '<section class="'.$class.'">';
-?>
-<?php if ( $image ): ?>
-	<div class="thumbnail"
-		role="img"
-		aria-label="<?php echo get_post_meta($image, '_wp_attachment_image_alt', TRUE); ?>"
-		style="background-image:url(<?php echo wp_get_attachment_url($image) ?>);">
-	</div>
-<?php elseif ( !$image && $post->post_type !== 'lexicons' && $post->post_type !== 'resources' ): ?>
-	<div class="thumbnail" role="img" aria-label="<?php echo $image['alt']; ?>" style="background-image:url(<?php echo $image['url']; ?>);"></div>
-<?php else: ?>
-	<!-- show nothing -->
-<?php endif; ?>
-	<aside class="copy">
-		<?php
-			echo $block_type === 'Block' ? '<h1>' . $header . '</h1>' : '<strong>' . $header . '</strong>';
-			echo $text ? '<p>'.$text.'</p>' : '';
-			echo $anchorElement
-		?>
-	</aside>
-</section>
+    // Resolve image data
+    $image_url = '';
+    $image_alt = '';
+    $image_caption = '';
 
-<script>
-	const documents = <?php echo json_encode($documentGroup); ?>;
 
-// Utility: return an array with unique values
-(function() {
-    // Unique identifier for this form instance.
-    var formId = "<?php echo $form_id; ?>";
-    // Container for this form.
-    var container = document.getElementById("download-selector-" + formId);
-
-    // Grab references to the dropdowns and button inside this container.
-    var formStart = document.querySelector("."+formId);
-
-		formStart.addEventListener("click", function() {
-			let flow = document.querySelectorAll('form.wikitongues-form');
-			flow[0].style.display="flex";
-			console.log(document.querySelector(flow[0] "button"))
-
-    });
-
-    var versionSelect = container.querySelector(".version-select");
-    var languageSelect = container.querySelector(".language-select");
-    var formatSelect = container.querySelector(".format-select");
-    var downloadBtn = container.querySelector(".download-btn");
-    var downloadBtn = container.querySelector(".download");
-
-    // Utility: return an array with unique values.
-    function unique(arr) {
-        return Array.from(new Set(arr));
-    }
-
-    // Utility: get unique values for a given property from an array of objects.
-    function getUniqueValues(array, property) {
-        return unique(array.map(function(item) { return item[property]; }));
-    }
-
-    // Populate a select element, disabling options not in the available list.
-    function populateSelectWithAvailability(select, allOptions, availableOptions) {
-        select.innerHTML = "";
-        allOptions.forEach(function(opt) {
-            var option = document.createElement("option");
-            option.value = opt;
-            option.textContent = opt;
-            if (availableOptions.indexOf(opt) === -1) {
-                option.disabled = true;
-								option.title = 'This option is not available for your selection.';
-            }
-            select.appendChild(option);
-        });
-    }
-
-    // Build master lists from the global documents array.
-    var allVersions = getUniqueValues(documents, 'version');
-    var allLanguages = getUniqueValues(documents, 'language');
-    var allFormats = getUniqueValues(documents, 'format');
-
-    // Populate the version dropdown.
-    function updateVersionOptions() {
-        versionSelect.innerHTML = "";
-        allVersions.forEach(function(ver) {
-            var option = document.createElement("option");
-            option.value = ver;
-            option.textContent = ver;
-            versionSelect.appendChild(option);
-        });
-    }
-
-    // Update language dropdown based on selected version.
-    function updateLanguageOptions() {
-        var selectedVersion = versionSelect.value;
-        var docsForVersion = documents.filter(function(doc) {
-            return doc.version == selectedVersion;
-        });
-        var availableLanguages = getUniqueValues(docsForVersion, 'language');
-        populateSelectWithAvailability(languageSelect, allLanguages, availableLanguages);
-
-        // Log current value before adjustment.
-        // If current selection is not available, select the first available option.
-        if (availableLanguages.indexOf(languageSelect.value) === -1 && availableLanguages.length > 0) {
-            languageSelect.value = availableLanguages[0];
+    if ($image) {
+        if (is_numeric($image)) {
+            $image_url = wp_get_attachment_url($image);
+            $image_alt = get_post_meta($image, '_wp_attachment_image_alt', true);
+            $image_caption = get_post($image)->post_excerpt;
+        } elseif (is_array($image)) {
+            $image_url = $image['url'] ?? '';
+            $image_alt = $image['alt'] ?? '';
         }
     }
 
-    // Update format dropdown based on selected version and language.
-    function updateFormatOptions() {
-        var selectedVersion = versionSelect.value;
-        var selectedLanguage = languageSelect.value;
-        var docsForSelection = documents.filter(function(doc) {
-            return doc.version == selectedVersion && doc.language === selectedLanguage;
-        });
-        var availableFormats = getUniqueValues(docsForSelection, 'format');
-        populateSelectWithAvailability(formatSelect, allFormats, availableFormats);
+    // Handle linked post + file
+    $anchor = '';
+    $linked_post_id = !empty($link) ? url_to_postid($link['url']) : null;
+    $linked_post_type = $linked_post_id ? get_post_type($linked_post_id) : '';
+    $selected_file = ($linked_post_type === 'document') ? get_field('selected_file', $linked_post_id) : null;
+    $file_field = $selected_file ? get_field('file', $selected_file->ID) : '';
 
-        // Log current format before adjustment.
-        // If current selection is not available, select the first available option.
-        if (availableFormats.indexOf(formatSelect.value) === -1 && availableFormats.length > 0) {
-            formatSelect.value = availableFormats[0];
+    // Primary CTA logic
+    if (!empty($link)) {
+        if ($link_type === 'link') {
+            $anchor .= '<a href="' . esc_url($link['url']) . '">' . esc_html($link['title']) . '</a>';
         }
-        downloadBtn.disabled = availableFormats.length === 0;
+        if ($link_type === 'download' && $file_field) {
+            $anchor .= '<a href="' . esc_url($file_field) . '">Download</a>';
+        }
     }
 
-    // Initialize dropdowns.
-    updateVersionOptions();
-    updateLanguageOptions();
-    updateFormatOptions();
-
-    // Update dependent dropdowns on change.
-    versionSelect.addEventListener("change", function() {
-        updateLanguageOptions();
-        updateFormatOptions();
-    });
-
-    languageSelect.addEventListener("change", function() {
-        updateFormatOptions();
-    });
-
-    // Download button: when clicked, open the URL for the selected document.
-    downloadBtn.addEventListener("click", function() {
-        var selectedVersion = versionSelect.value;
-        var selectedLanguage = languageSelect.value;
-        var selectedFormat = formatSelect.value;
-        var selectedDoc = documents.find(function(doc) {
-            return doc.version === selectedVersion &&
-                   doc.language === selectedLanguage &&
-                   doc.format === selectedFormat;
-        });
-        if (selectedDoc && selectedDoc.url) {
-            window.open(selectedDoc.url, '_blank');
-        } else {
-            alert("This document is not available in the selected combination.");
+    // Secondary CTA logic
+    if ($display_secondary === 'Yes' && $linked_post_type === 'document') {
+        if ($link_type === 'link' && $file_field) {
+            $anchor .= '<a class="secondary" href="' . esc_url($file_field) . '">Download</a>';
         }
-    });
+        if ($link_type === 'download') {
+            $anchor .= '<a class="secondary" href="' . esc_url($link['url']) . '">' . esc_html($link['title']) . '</a>';
+        }
+    } else {
+    }
 
+    // Render Block
+    echo '<section class="block">';
 
-})();
+    // Thumbnail
+    if ($image_url) :
+        ?>
+        <div class="thumbnail"
+             role="img"
+             aria-label="<?php echo esc_attr($image_alt); ?>"
+             style="background-image: url('<?php echo esc_url($image_url); ?>');">
+            <?php if (!empty($image_caption) && $display_caption === 'Yes') :?>
+                <span><?php echo esc_html($image_caption); ?></span>
+            <?php endif; ?>
+        </div>
+    <?php
+    endif;
 
-</script>
+    // Copy Section
+    echo '<aside class="copy">';
+    echo $block_type === 'Block' ? '<h1>' . esc_html($header) . '</h1>' : '<strong>' . esc_html($header) . '</strong>';
+    echo $text ? '<p>' . esc_html($text) . '</p>' : '';
+    echo $anchor ? '<div>' . $anchor . '</div>' : '';
+    echo '</aside>';
+
+    echo '</section>';
+endwhile;
+
+echo '</main>';

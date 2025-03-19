@@ -10,14 +10,6 @@ $aspect-ratio = 16/9
 	&.full
 		margin 32px
 
-	&.home
-		strong
-			text--header($black)
-			font-size ($header/12)*7
-			text-align center
-			display block
-
-	&:not(&.home)
 		strong
 			text--strong($black)
 			text-align left
@@ -420,57 +412,75 @@ $aspect-ratio = 16/9
 						text--strong($blue()) // a
 						pointer-events none
 
-.custom-gallery-fellows-navigation
+.home
+	.custom-gallery
+		strong
+			text--header($black)
+			font-size ($header/12)*7
+			text-align center
+			display block
+
+.custom-gallery-fellows-navigation-wrapper
 	width 100%
 	display inline-block
 	padding 0 32px
 	position relative
 
-	strong,
-	ul,
-	p
-		max-width (100/3)%
-		display inline-block
-		float left
-
-	strong
-		text--strong($black)
-		width 50%
-		padding 16px 0
-
-	ul
-		display flex
+	.custom-gallery-fellows-navigation
 		width 100%
-		justify-content center
-		pointer-events none
+		display inline-block
+		border-bottom 2px solid $border-color
+		padding-bottom 16px
 
-		li
+		strong,
+		ul,
+		p
+			max-width (100/3)%
+			display inline-block
 			float left
-			pointer-events all
 
-			button
-				text--body($blue())
-				background none
-				border none
-				padding 16px
-				cursor pointer
+		strong
+			text--strong($black)
+			width 50%
+			padding 16px 0
 
-				&.active
-					text--strong($blue()) // button
-					pointer-events none
+		ul
+			display flex
+			width 100%
+			justify-content center
+			pointer-events none
 
-	p
-		text-align right
-		width 50%
+			li
+				float left
+				pointer-events all
+
+				button
+					text--body($blue())
+					background none
+					border none
+					padding 16px
+					cursor pointer
+
+					&.active
+						text--strong($blue()) // button
+						pointer-events none
+
+		p
+			text-align right
+			width 50%
+
+			a
+				text--strong($blue()) // a
+				padding 16px 0 16px 16px
+				float right
 
 		a
-			text--strong($blue()) // a
-			padding 16px 0 16px 16px
-			float right
+			text-decoration none
+			color $blue()
 
-	a
-		text-decoration none
-		color $blue()
+	.custom-gallery.fellows.full
+		// margin-top 16px
+		margin 16px 0 32px 0
 
 .custom-cta-container
 	width 100%

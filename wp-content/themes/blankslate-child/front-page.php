@@ -3,6 +3,7 @@
 // header
 get_header();
 $migration = get_field('migration_assistant');
+
 if ($migration === true) {
 	include( 'modules/editorial-content.php' );
 } else {

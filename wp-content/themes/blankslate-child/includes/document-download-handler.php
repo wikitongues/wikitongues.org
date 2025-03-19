@@ -1,5 +1,9 @@
 <?php
-	function get_latest_document_file($document_id, $language_id = null) {
+// ====================
+// User Interaction
+// ====================
+// Generate document file title automatically
+function get_latest_document_file($document_id, $language_id = null) {
     $meta_query = [['key' => 'parent_download', 'value' => $document_id, 'compare' => '=']];
     if ($language_id) {
         $meta_query[] = ['key' => 'language', 'value' => $language_id, 'compare' => '='];
@@ -20,7 +24,6 @@
 add_action('wp_ajax_fetch_document_files', function () {
 	$parent_id = intval($_POST['parent_id']);
 	$lang_id = intval($_POST['lang_id']); // it's a post ID now!
-
 	// Query using post ID
 	$files = get_posts([
 			'post_type'  => 'document_files',
@@ -36,21 +39,21 @@ add_action('wp_ajax_fetch_document_files', function () {
 	ob_start();
 	foreach ($files as $file) {
 			$version = get_field('version', $file->ID);
+			$format = get_field('format', $file->ID);
 			$language = get_field('language', $file->ID);
 			$iso_code = is_object($language) ? $language->post_title : 'Unknown';
 			$language_name = is_object($language) ? get_field('standard_name', $language->ID) : 'Unknown';
 
 			echo '<tr>';
 			echo '<td>' . esc_html($language_name) . ' (' . esc_html($iso_code) . ')</td>';
-			echo '<td>' . esc_html($version) . '</td>';
+			echo '<td class="version">' . esc_html($version) . '</td>';
+			echo '<td>' . esc_html($format) . '</td>';
 			echo '<td><button class="download-btn" data-file-id="' . esc_attr($file->ID) . '">Download</button></td>';
 			echo '</tr>';
 	}
 	$html = ob_get_clean();
-
-	wp_send_json_success(['html' => $html]);
+	wp_send_json_success($html);
 });
-
 
 function handle_document_download() {
 	if (!isset($_POST['file_id'])) {
@@ -68,7 +71,6 @@ function handle_document_download() {
 }
 add_action('wp_ajax_download_document', 'handle_document_download');
 add_action('wp_ajax_nopriv_download_document', 'handle_document_download');
-
 
 // Force file download
 function force_download_file() {
@@ -101,6 +103,76 @@ add_action('init', function () {
 			force_download_file();
 	}
 });
+
+// ====================
+// Admin
+// ====================
+// Generate document file title automatically
+function auto_generate_document_file_title($post_id, $post, $update) {
+	if ($post->post_type !== 'document_files') {
+			return;
+	}
+
+	// Get parent, version, and language
+	$parent = get_field('parent_download', $post_id);
+	$version = get_field('version', $post_id);
+	$language = get_field('language', $post_id);
+	$format = get_field('format', $post_id);
+
+	if (!$parent || !$version || !$language || !$format) {
+			return; // Don't override title if required fields are missing
+	}
+
+	$parent_title = get_the_title($parent);
+	$language_name = get_the_title($language);
+
+	// Generate system title
+	$new_title = $parent_title . '_v' . $version . '_' . $language_name . '_' . $format;
+
+	// Prevent infinite loop when saving
+	remove_action('save_post', 'auto_generate_document_file_title', 10);
+	wp_update_post(['ID' => $post_id, 'post_title' => $new_title, 'post_name' => sanitize_title($new_title)]);
+	add_action('save_post', 'auto_generate_document_file_title', 10, 3);
+}
+add_action('save_post', 'auto_generate_document_file_title', 10, 3);
+
+function enqueue_admin_document_validation_script($hook) {
+	global $post;
+
+	// Only load on post editing and creation screens
+	if (!in_array($hook, ['post.php', 'post-new.php'])) {
+			return;
+	}
+
+	// Only load for 'document_files' post type
+	if (!isset($post) || $post->post_type !== 'document_files') {
+			return;
+	}
+
+	// Dynamically retrieve ACF field names (instead of hardcoded field keys)
+	$acf_fields = [
+			'parent_download' => 'acf[field_' . sanitize_title('parent_download') . ']',
+			'language' => 'acf[field_' . sanitize_title('language') . ']',
+			'version' => 'acf[field_' . sanitize_title('version') . ']',
+	];
+
+	// Enqueue JavaScript
+	wp_enqueue_script(
+			'document-files-validation',
+			get_template_directory_uri() . '/js/document-files-validation.js',
+			['jquery'],
+			null,
+			true
+	);
+
+	// Pass ACF field keys and AJAX URL to JavaScript
+	wp_localize_script('document-files-validation', 'ajax_object', [
+			'ajax_url' => admin_url('admin-ajax.php'),
+			'current_post_id' => $post->ID,
+			'acf_fields' => $acf_fields,
+	]);
+}
+add_action('admin_enqueue_scripts', 'enqueue_admin_document_validation_script');
 
 function validate_unique_document_file($valid, $value, $field, $input_name) {
 	if (!$valid) {
@@ -170,68 +242,3 @@ function validate_unique_document_file($valid, $value, $field, $input_name) {
 	return $valid;
 }
 add_filter('acf/validate_value', 'validate_unique_document_file', 10, 4);
-
-function auto_generate_document_file_title($post_id, $post, $update) {
-	if ($post->post_type !== 'document_files') {
-			return;
-	}
-
-	// Get parent, version, and language
-	$parent = get_field('parent_download', $post_id);
-	$version = get_field('version', $post_id);
-	$language = get_field('language', $post_id);
-
-	if (!$parent || !$version || !$language) {
-			return; // Don't override title if required fields are missing
-	}
-
-	$parent_title = get_the_title($parent);
-	$language_name = is_object($language) ? get_field('standard_name', $language->ID) : get_the_title($language);
-
-	// Generate system title
-	$new_title = $parent_title . '_' . $version . '_' . $language_name;
-
-	// Prevent infinite loop when saving
-	remove_action('save_post', 'auto_generate_document_file_title', 10);
-	wp_update_post(['ID' => $post_id, 'post_title' => $new_title, 'post_name' => sanitize_title($new_title)]);
-	add_action('save_post', 'auto_generate_document_file_title', 10, 3);
-}
-add_action('save_post', 'auto_generate_document_file_title', 10, 3);
-
-function enqueue_admin_document_validation_script($hook) {
-	global $post;
-
-	// Only load on post editing and creation screens
-	if (!in_array($hook, ['post.php', 'post-new.php'])) {
-			return;
-	}
-
-	// Only load for 'document_files' post type
-	if (!isset($post) || $post->post_type !== 'document_files') {
-			return;
-	}
-
-	// Dynamically retrieve ACF field names (instead of hardcoded field keys)
-	$acf_fields = [
-			'parent_download' => 'acf[field_' . sanitize_title('parent_download') . ']',
-			'language' => 'acf[field_' . sanitize_title('language') . ']',
-			'version' => 'acf[field_' . sanitize_title('version') . ']',
-	];
-
-	// Enqueue JavaScript
-	wp_enqueue_script(
-			'document-files-validation',
-			get_template_directory_uri() . '/js/document-files-validation.js',
-			['jquery'],
-			null,
-			true
-	);
-
-	// Pass ACF field keys and AJAX URL to JavaScript
-	wp_localize_script('document-files-validation', 'ajax_object', [
-			'ajax_url' => admin_url('admin-ajax.php'),
-			'current_post_id' => $post->ID,
-			'acf_fields' => $acf_fields,
-	]);
-}
-add_action('admin_enqueue_scripts', 'enqueue_admin_document_validation_script');

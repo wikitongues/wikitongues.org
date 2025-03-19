@@ -2,30 +2,51 @@
 	max-width $content
 	margin 0 auto 3.2rem
 
-	.document-description,
-	table
-		text--body($black)
+	.download-container
+		padding 16px
+		border 2px solid $black
+		border-radius 8px
+		float left
+		margin 3rem 0 6rem
 
-	h3
-		text--header($black)
+		.language-selector
+			margin-bottom 1.6rem
+			label
+				text--strong($black)
 
-	table
-		tr
+			select
+				background transparent
+				border none
+				text--body($blue())
+				font-size 1.6rem
+				padding 4px
+				border-radius 4px
 
-			&:nth-of-type(2n)
-				background-color $blue(10)
+				&:hover
+					background $blue(10)
 
-			th, td
-				padding 8px
+		table
+			width 100%
+			text--body($black)
 
-				&:first-of-type
-					border-radius 8px 0 0 8px
+			tbody
+				tr
+					&:nth-of-type(2n-1)
+						background-color $blue(5)
 
-				&:last-of-type
-					border-radius 0 8px 8px 0
+				th, td
+					padding 8px
+					text-align center
 
-		button
-			background transparent
-			border none
-			cursor pointer
-			anchor($blue(), 4px)
+					&:first-of-type
+						text-align left
+						border-radius 8px 0 0 8px
+
+					&:last-of-type
+						border-radius 0 8px 8px 0
+
+			button
+				background transparent
+				border none
+				cursor pointer
+				anchor($blue(), 4px)

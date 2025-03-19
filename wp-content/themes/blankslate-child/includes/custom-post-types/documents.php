@@ -40,6 +40,7 @@ function add_document_files_custom_columns($columns) {
 	$columns['version'] = __('Version Number', 'document_files');
 	$columns['version_date'] = __('Version Date', 'document_files');
 	$columns['language'] = __('Language', 'document_files');
+	$columns['format'] = __('Format', 'document_files');
 
 	return $columns;
 }
@@ -48,25 +49,30 @@ add_action('manage_document_files_posts_custom_column', 'fill_document_files_cus
 function fill_document_files_custom_columns($column, $post_id) {
 	switch ($column) {
         case 'parent_download':
-						$document_files = get_field($column, $post_id);
-						echo esc_html($document_files->post_title);
-						break;
+            $document_files = get_field($column, $post_id);
+            echo esc_html($document_files->post_title);
+            break;
 
-				case 'version':
-						$version = get_field($column, $post_id);
-						echo esc_html($version);
-						break;
+        case 'version':
+            $version = get_field($column, $post_id);
+            echo esc_html($version);
+            break;
 
-				case 'version_date':
-						$version_date = get_field($column, $post_id);
-						echo esc_html($version_date);
-						break;
+        case 'version_date':
+            $version_date = get_field($column, $post_id);
+            echo esc_html($version_date);
+            break;
 
         case 'language':
-						$language = get_field($column, $post_id);
-						echo esc_html($language->post_title);
-						break;
-	}
+            $language = get_field($column, $post_id);
+            echo esc_html($language->post_title);
+            break;
+
+        case 'format':
+            $format = get_field($column, $post_id);
+            echo esc_html($format);
+            break;
+    }
 }
 
 add_filter('manage_edit-document_files_sortable_columns', 'make_document_files_columns_sortable');
@@ -74,6 +80,7 @@ function make_document_files_columns_sortable($columns) {
 	$columns['parent_download'] = 'parent_download';
 	$columns['version'] = 'version';
 	$columns['language'] = 'language';
+	$columns['format'] = 'format';
 	return $columns;
 }
 
@@ -90,7 +97,7 @@ function document_files_custom_column_orderby($query) {
     $orderby = $query->get('orderby');
     $order = $query->get('order') ? $query->get('order') : 'ASC';
 
-    if (in_array($orderby, ['parent_download', 'version', 'language'])) {
+    if (in_array($orderby, ['parent_download', 'version', 'language', 'format'])) {
         $query->set('meta_key', $orderby);
         $query->set('orderby', 'meta_value');
     }

@@ -31,6 +31,7 @@ if( have_rows('main_content') ):
 						// Gallery
 						$params = [
 							'title' => get_sub_field('custom_gallery_title'),
+							'subtitle' => '',
 							'post_type' => get_sub_field('custom_gallery_type'),
 							'custom_class' => 'full',
 							'columns' => get_sub_field('custom_gallery_columns'),

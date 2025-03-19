@@ -3,16 +3,16 @@
 	padding 0 3rem 0
 	box-sizing border-box
 	display flex
-	flex-wrap nowrap
-	column-gap 32px
+	flex-direction row
+	flex-wrap wrap
+	gap 4.8rem 3.2rem
 	width 100%
-
-	.block.thirds
-		margin 0 !important
 
 .block
 	display flex
 	position relative
+	width 100%
+	max-width (2/3)*100%
 
 	&:before
 		content ''
@@ -20,37 +20,53 @@
 		position absolute
 		background $blue()
 		border-radius 4px
+		top 12px
+		left 12px
+		width 100%
+		height 100%
 
 	.thumbnail
 		width 100%
 		background-size cover
 		background-repeat no-repeat
 		background-position center
+		position relative
+
+		span
+			position absolute
+			bottom 1.6rem
+			left 1.6rem
+			font-size 1.6rem
+			text--caption()
 
 	.copy
-		p
-			margin 3rem 0
+		height 100%
+		display flex
+		flex-direction column
+		align-items flex-start
+		gap 32px
 
 		button, a
-			color white
 			button--secondary($parchment,$blue())
+
+			&.secondary
+				margin-left 1.6rem
+				button--secondary($blue(),$parchment)
+
+				&:hover
+					background $blue(85)
 
 			i
 				margin-left 0.5rem
 
+&.wide
+	justify-content center
 
-	&.wide
-		margin 6rem auto
-		width 66.6%
+	.block
+		margin auto
 		height 500px
 		flex-direction row
 		align-items center
-
-		&:before
-			top 2.5%
-			left .75%
-			width 99.25%
-			height 100%
 
 		.thumbnail
 			max-width 60%
@@ -63,7 +79,6 @@
 			display flex
 			flex-direction column
 			justify-content flex-end
-			height 100%
 			align-items baseline
 			position relative
 
@@ -74,24 +89,14 @@
 			p
 				text--body($parchment)
 
-	&.thirds
+&.thirds
+	justify-content left
+
+	.block
 		flex-direction column
 		vertical-align top
-		width calc(100%/3)
-		margin 0 0 6rem calc(10%/3)
+		flex 0 0 32%
 		float left
-
-		&:first-of-type
-			margin-left calc(10%/3)
-
-		&:nth-of-type(3n)
-			margin-right 0
-
-		&:before
-			top 1rem
-			left 1rem
-			width 100%
-			height 100%
 
 		.thumbnail
 			padding-bottom calc(100%/3*2)
@@ -111,13 +116,14 @@
 					text--body($parchment)
 
 		.copy
-			padding 3rem 3rem 3rem 4rem
+			padding 3.2rem 3.2rem 2.4rem 4.8rem
 			text--body($parchment)
 
 			strong
-				margin-bottom 1.5rem
 				text--strong($parchment)
 
 			p
+				flex-grow 1
+
 				strong
 					text--strong($parchment)
