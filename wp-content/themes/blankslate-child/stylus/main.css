@@ -358,7 +358,7 @@ body.logged-in[data-alert="true"] .wt_header {
 .wt_header__nav .sub-menu {
   display: none;
   position: absolute;
-  top: 43px;
+  top: 40px;
   left: 0;
   width: 100%;
   padding: 8px 0;
