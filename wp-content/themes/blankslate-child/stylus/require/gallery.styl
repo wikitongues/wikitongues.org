@@ -6,6 +6,9 @@ $aspect-ratio = 16/9
 .custom-gallery
 	text--body($blue())
 	clear both
+	display flex
+	flex-direction column
+	gap 16px
 
 	&.full
 		margin 32px
@@ -15,23 +18,27 @@ $aspect-ratio = 16/9
 			text-align left
 			clear both
 
-	> p
-		color $black
-		margin-bottom 1.6rem
-		margin-top .8rem
 		a
 			font-style italic
 
 	strong,
 	p
+		text-align left
+		clear both
+
 		a
 			text-decoration none
 			color $blue()
 
+	strong
+		text--strong($black)
+
+	p
+		text--body($black)
+
 	.wt_sectionHeader
 		border-bottom 2px solid $border-color
 		padding-bottom 1.5rem
-		margin-bottom 12px
 		display inline-block
 		width 100%
 
@@ -123,6 +130,11 @@ $aspect-ratio = 16/9
 							bottom 0
 							left 0
 							margin 1.6rem
+
+					.no-thumbnail,
+					.thumbnail
+						p
+							color $parchment
 
 	&.languages
 		.gallery-list
@@ -306,11 +318,9 @@ $aspect-ratio = 16/9
 								color $blue()
 
 	&.lexicons
-		&:nth-of-type(2)
-			margin-top 1.6rem
-
 		.wt_sectionHeader
 			border-bottom none
+			padding-bottom 0
 
 		.gallery-container
 			border-top none
@@ -479,12 +489,12 @@ $aspect-ratio = 16/9
 			color $blue()
 
 	.custom-gallery.fellows.full
-		// margin-top 16px
 		margin 16px 0 32px 0
 
 .custom-cta-container
 	width 100%
 	display inline-block
+	margin-top 32px
 
 	&.full
 		padding 0 32px
