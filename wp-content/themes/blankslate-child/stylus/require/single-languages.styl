@@ -11,14 +11,7 @@ body
 							.sub-menu
 								display none !important
 
-	#wt_single-languages
-		&__videos,
-		&__lexicons,
-		&__resources
-			scroll-margin-top 108px
-
 	.wt_single-languages
-
 		&__content
 			width calc(100%/4*3)
 			float left
@@ -32,6 +25,15 @@ body
 
 			&:last-of-type
 				margin-bottom 0
+
+			&#wt_single-languages__fellows
+				margin-bottom 3rem
+				p
+					text--body($black)
+
+					a
+						&:first-of-type
+							font-weight 700
 
 			&#wt_single-languages__lexicons,
 			&#wt_single-languages__resources

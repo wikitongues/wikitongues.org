@@ -49,6 +49,7 @@ include( 'modules/banner--main.php' );
 	// Gallery
 	$params = [
 		'title' => get_sub_field('custom_gallery_title'),
+		'subtitle' => '',
 		'post_type' => 'fellows',
 		'custom_class' => 'custom fundraiser',
 		'columns' => 1,

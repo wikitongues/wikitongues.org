@@ -7,20 +7,9 @@ $aspect-ratio = 16/9
 	text--body($blue())
 	clear both
 
-	&:nth-of-type(2)
-		margin-top 1.6rem
-
 	&.full
 		margin 32px
 
-	&.home
-		strong
-			text--header($black)
-			font-size ($header/12)*7
-			text-align center
-			display block
-
-	&:not(&.home)
 		strong
 			text--strong($black)
 			text-align left
@@ -39,11 +28,15 @@ $aspect-ratio = 16/9
 			text-decoration none
 			color $blue()
 
+	.wt_sectionHeader
+		border-bottom 2px solid $border-color
+		padding-bottom 1.5rem
+		margin-bottom 12px
+		display inline-block
+		width 100%
+
 	.gallery-container
-		margin-top 12px
-		padding-top 1.5rem
 		margin-bottom 24px
-		border-top 2px solid $border-color
 
 		&.paginated
 			margin-bottom 0
@@ -63,7 +56,9 @@ $aspect-ratio = 16/9
 
 				a
 					background-color $black
-					display inline-block
+					display flex
+					flex-direction column
+					justify-content space-between
 					color $parchment
 					width 100%
 					height 100%
@@ -109,7 +104,7 @@ $aspect-ratio = 16/9
 							margin 0 16px
 							text-align center
 
-					h5,h6
+					h5, h6
 						display -webkit-box
 						-webkit-line-clamp 2
 						-webkit-box-orient vertical
@@ -143,6 +138,7 @@ $aspect-ratio = 16/9
 				a
 					h6
 						margin-top 16px
+						height 7.2rem
 
 					&:hover
 						box-shadow 0px 0px 0px 4px $black
@@ -178,9 +174,13 @@ $aspect-ratio = 16/9
 						background $parchment
 						border 2px solid $blue()
 						transition all 0.2s ease-in-out
+						display flex
+						flex-direction column
+						justify-content space-between
 
 						&:hover
 							box-shadow 0 0 0 1px $blue()
+							background $blue(10)
 
 							.thumbnail,
 							.no-thumbnail
@@ -207,20 +207,27 @@ $aspect-ratio = 16/9
 						left -16px
 						transition all 0.1s ease-in-out
 
-
-					h5
-						height 64px
+					.details
+						display flex
+						flex-direction column
+						justify-content space-between
+						gap 32px
+						height 100%
 
 					.fellow-metadata
 						width 100%
 						float left
-						margin-top 16px
+						display flex
+						flex-direction column
 
-						h5
+						.language
 							display flex
 							align-items flex-end
 							width 100%
-							margin-bottom 4px
+							margin-bottom 16px
+
+						.description
+							-webkit-line-clamp initial
 
 						span
 							width 100%
@@ -233,10 +240,41 @@ $aspect-ratio = 16/9
 								&:first-of-type
 									margin-right 8px
 
-						h5,
+						.name,
 						p
 							float left
 							max-width initial
+
+		&.display
+			.gallery-container
+				.gallery-list
+					.gallery-item
+						a
+							display flex
+							flex-direction row
+							padding 0
+
+							img,
+							.no-thumbnail,
+							.thumbnail,
+							span.thumbnail-spacer
+								width (2/3)*100%
+								padding (((2/3)/$aspect-ratio)/2)*100% 0// 16:9 aspect ratio
+
+							.details
+								width (1/3)*100%
+								padding 32px 32px 32px 16px
+								display flex
+								flex-direction column
+								justify-content space-between
+
+								.name
+									text--header($black)
+									max-width 100%
+									height initial
+
+								.fellow-metadata
+									gap 16px
 
 	&.resources
 		.gallery-container
@@ -268,6 +306,9 @@ $aspect-ratio = 16/9
 								color $blue()
 
 	&.lexicons
+		&:nth-of-type(2)
+			margin-top 1.6rem
+
 		.wt_sectionHeader
 			border-bottom none
 
@@ -371,63 +412,75 @@ $aspect-ratio = 16/9
 						text--strong($blue()) // a
 						pointer-events none
 
-#wt_single-languages__lexicons
+.home
 	.custom-gallery
-		&:first-of-type
-			padding-bottom 16px
-			border-bottom 2px solid $border-color
+		strong
+			text--header($black)
+			font-size ($header/12)*7
+			text-align center
+			display block
 
-.custom-gallery-fellows-navigation
+.custom-gallery-fellows-navigation-wrapper
 	width 100%
 	display inline-block
 	padding 0 32px
 	position relative
 
-	strong,
-	ul,
-	p
-		max-width (100/3)%
-		display inline-block
-		float left
-
-	strong
-		text--strong($black)
-		width 50%
-		padding 16px 0
-
-	ul
-		display flex
+	.custom-gallery-fellows-navigation
 		width 100%
-		justify-content center
-		pointer-events none
+		display inline-block
+		border-bottom 2px solid $border-color
+		padding-bottom 16px
 
-		li
+		strong,
+		ul,
+		p
+			max-width (100/3)%
+			display inline-block
 			float left
-			pointer-events all
 
-			button
-				text--body($blue())
-				background none
-				border none
-				padding 16px
-				cursor pointer
+		strong
+			text--strong($black)
+			width 50%
+			padding 16px 0
 
-				&.active
-					text--strong($blue()) // button
-					pointer-events none
+		ul
+			display flex
+			width 100%
+			justify-content center
+			pointer-events none
 
-	p
-		text-align right
-		width 50%
+			li
+				float left
+				pointer-events all
+
+				button
+					text--body($blue())
+					background none
+					border none
+					padding 16px
+					cursor pointer
+
+					&.active
+						text--strong($blue()) // button
+						pointer-events none
+
+		p
+			text-align right
+			width 50%
+
+			a
+				text--strong($blue()) // a
+				padding 16px 0 16px 16px
+				float right
 
 		a
-			text--strong($blue()) // a
-			padding 16px 0 16px 16px
-			float right
+			text-decoration none
+			color $blue()
 
-	a
-		text-decoration none
-		color $blue()
+	.custom-gallery.fellows.full
+		// margin-top 16px
+		margin 16px 0 32px 0
 
 .custom-cta-container
 	width 100%
@@ -468,6 +521,28 @@ $aspect-ratio = 16/9
 		.gallery-container
 			.gallery-list
 				grid-template-columns repeat(1, 1fr) !important
+
+		&.fellows.display
+			.gallery-container
+				.gallery-list
+					.gallery-item
+						a
+							flex-direction column
+
+							img,
+							.no-thumbnail,
+							.thumbnail,
+							span.thumbnail-spacer
+								width 100%
+								padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
+
+							.details
+								width 100%
+								padding 0 32px 16px 16px
+								gap 16px
+
+								.fellow-metadata
+									gap 16px
 		> p
 			margin-bottom 2rem
 

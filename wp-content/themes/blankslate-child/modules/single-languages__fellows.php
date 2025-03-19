@@ -27,12 +27,19 @@ if ( $fellows ):
 	<div id="wt_single-languages__fellows" class="wt_single-languages__contents">
 		<?php
 			// Gallery
+			$title = 'Revitalization Projects';
+			$title_name = $standard_name;
+			if (substr($standard_name, -7) !== 'anguage') {
+				$title_name .= ' language';
+			}
+			$title = $title_name . ' Revitalization Projects';
 			$params = [
-				'title' => 'Fellows',
+				'title' => $title,
+				'subtitle' => 'The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects.',
 				'post_type' => 'fellows',
-				'custom_class' => '',
-				'columns' => 3,
-				'posts_per_page' => 6,
+				'custom_class' => 'display',
+				'columns' => 1,
+				'posts_per_page' => 1,
 				'orderby' => 'date',
 				'order' => 'asc',
 				'pagination' => 'true',
@@ -45,5 +52,6 @@ if ( $fellows ):
 			];
 			echo create_gallery_instance($params);
 		?>
+
 	</div>
 <?php endif; ?>
