@@ -54,7 +54,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "document"
+                "value": "documents"
             }
         ]
     ],
@@ -67,5 +67,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742319454
+    "modified": 1742410797
 }
