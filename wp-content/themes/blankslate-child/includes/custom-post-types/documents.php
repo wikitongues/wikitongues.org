@@ -1,7 +1,7 @@
 <?php
 // Register Document Post Type
-add_action('init', 'register_document_post_type');
-function register_document_post_type() {
+add_action('init', 'register_documents_post_type');
+function register_documents_post_type() {
     $args = [
         'label'               => 'Documents',
         'public'              => true,
@@ -11,7 +11,7 @@ function register_document_post_type() {
         'menu_icon'           => 'dashicons-download',
     ];
 
-    register_post_type('document', $args);
+    register_post_type('documents', $args);
 }
 
 // Register Download File Post Type

@@ -17,7 +17,7 @@
                 "id": ""
             },
             "post_type": [
-                "document"
+                "documents"
             ],
             "post_status": "",
             "taxonomy": "",
@@ -166,5 +166,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742410163
+    "modified": 1742410828
 }

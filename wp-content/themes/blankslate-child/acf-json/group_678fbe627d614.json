@@ -886,7 +886,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "document"
+                "value": "documents"
             }
         ],
         [
@@ -916,5 +916,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742390754
+    "modified": 1742410853
 }
