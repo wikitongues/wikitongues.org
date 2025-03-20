@@ -104,6 +104,7 @@
 					<?php
 						if (
 							strpos($template_slug, 'revitalization') !== false ||
+							is_singular('documents') ||
 							is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
 						) {
 							wp_nav_menu(

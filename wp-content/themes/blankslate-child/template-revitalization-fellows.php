@@ -29,23 +29,25 @@ if ($fellow_id) {
 }
 ?>
 
-<div class="custom-gallery-fellows-navigation">
-  <strong>Fellowship Cohorts</strong>
-  <ul>
-    <?php
-    foreach ($cohorts as $index => $cohort) {
-      $active_class = ($selected_year === $cohort || ($selected_year === '' && $index === 0)) ? 'active' : '';
-      echo '<li><button class="'.$active_class.'" data-year="'.$cohort.'" onclick="updateGallery(\''.$cohort.'\')">'.$cohort.'</button></li>';
-    }
-    ?>
-  </ul>
-  <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p>
-</div>
+<div class="custom-gallery-fellows-navigation-wrapper">
+  <div class="custom-gallery-fellows-navigation">
+    <strong>Fellowship Cohorts</strong>
+    <ul>
+      <?php
+      foreach ($cohorts as $index => $cohort) {
+        $active_class = ($selected_year === $cohort || ($selected_year === '' && $index === 0)) ? 'active' : '';
+        echo '<li><button class="'.$active_class.'" data-year="'.$cohort.'" onclick="updateGallery(\''.$cohort.'\')">'.$cohort.'</button></li>';
+      }
+      ?>
+    </ul>
+    <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p>
+  </div>
 
 <?php
   // Gallery
   $params = [
     'title' => '',
+    'subtitle' => '',
     'post_type' => 'fellows',
     'custom_class' => 'full',
     'columns' => 4,
@@ -61,6 +63,7 @@ if ($fellow_id) {
     'term' => '',
   ];
   echo create_gallery_instance($params);
+  echo '</div>';
 
   include( 'modules/newsletter.php' );
 

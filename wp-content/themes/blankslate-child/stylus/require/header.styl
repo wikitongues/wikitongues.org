@@ -12,7 +12,8 @@ body
 
 	// Primary Navigation Bar
 	&.page-template,
-	&.single-careers
+	&.single-careers,
+	&.single-document,
 	&.post-type-archive-reports,
 	&.post-type-archive-careers,
 	&.error404
@@ -25,7 +26,7 @@ body
 	&.page-parent,
 	&.page-child,
 	&.search,
-	&.single:not(&.single-careers)
+	&.single:not(&.single-careers):not(&.single-document)
 		margin-top $primary + $secondary
 
 		&.logged-in
@@ -83,6 +84,7 @@ body
 
 	&__primary
 		display flex
+		align-items center
 		width 100%
 		padding 8px
 
@@ -193,7 +195,7 @@ body
 			&>a // button--small is designed for a elements not li
 				text-decoration none
 				color inherit
-				padding 1.25rem
+				padding .95rem
 				display inline-block
 
 			&:hover
@@ -211,7 +213,7 @@ body
 		.sub-menu
 			display none
 			position absolute
-			top 43px
+			top 40px
 			left 0
 			width 100%
 			padding 8px 0

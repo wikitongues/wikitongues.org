@@ -35,6 +35,7 @@ echo '</main>';
 // ====================
 $params = [
 	'title' => 'Other languages from '.$nations_of_origin,
+	'subtitle' => '',
 	'post_type' => 'languages',
 	'custom_class' => 'full',
 	'columns' => 5,

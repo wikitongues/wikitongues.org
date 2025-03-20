@@ -1,52 +1,57 @@
 body
 	&.home
 		.wt_banner
-			height calc(100vh/3*2)
+			height 85vh
 
 .wt_banner
 	position relative
 	width 100%
-	height calc(100vh/5*2)
+	min-height calc(100vh/3*2)
 	margin-bottom 6rem
-	padding-top 120px
-	padding-bottom 80px
-	box-sizing content-box
 	background-position center
 	background-size cover
 	background-repeat no-repeat
+	display flex
+	flex-direction column
+	align-items center
+	justify-content center
+	box-sizing border-box
 
 	&:before
 		content ''
 		position absolute
 		top 0
+		right 0
 		width 100%
 		height 100%
 		background rgba(0,0,0,.3)
 		background linear-gradient(90deg, rgba(1, 1, 1, 0) 0%, rgba(1, 1, 1, .3) 80%)
 
 	&__copy
-		position absolute
-		top 50%
-		right 5%
-		transform translateY(-50%)
+		position relative
 		width 45rem
-		margin-top 80px
+		box-sizing content-box
+		align-self flex-end
+		padding 9rem
+		display flex
+		flex-direction column
+		align-items flex-start
+		gap 32px
 
 		&--mobile
 			display none
 
-		.wt_text
-			&--header
-				text--header($parchment)
+		h1
+			text--header($parchment)
+			margin-top (7.2rem + 3.2)
 
-			&--body
-				margin 3rem 0
-				text--body($parchment)
+		p
+			text--body($parchment)
 
-				strong
-					text--strong($parchment)
+		strong
+			text--strong($parchment)
 
-		button
+		a
 			button--secondary($parchment,$blue())
 
 			i
@@ -56,9 +61,10 @@ body
 	p.caption
 		position absolute
 		bottom 0
+		align-self flex-start
 		margin 16px
 		white-space pre
-		text--strong($parchment) // p
+		text--caption()
 
 @media all and (max-height:$shortScreen) and (orientation:landscape)
 	.wt_banner
@@ -98,7 +104,7 @@ body
 						strong
 							text--strong($parchment)
 
-				button
+				a
 					button--secondary($parchment,$blue(50))
 
 					i

@@ -3,6 +3,27 @@
     "title": "Template: Front page",
     "fields": [
         {
+            "key": "field_67da9c62e13a5",
+            "label": "migration assistant",
+            "name": "migration_assistant",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_64c18deecc5f6",
             "label": "Front page banner",
             "name": "front_page_banner",
@@ -23,7 +44,7 @@
                     "label": "Banner image",
                     "name": "banner_image",
                     "aria-label": "",
-                    "type": "gallery",
+                    "type": "image",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": [
@@ -41,8 +62,6 @@
                     },
                     "return_format": "array",
                     "library": "all",
-                    "min": "",
-                    "max": "",
                     "min_width": "",
                     "min_height": "",
                     "min_size": "",
@@ -50,8 +69,8 @@
                     "max_height": "",
                     "max_size": "",
                     "mime_types": "",
-                    "insert": "append",
-                    "preview_size": "thumbnail"
+                    "allow_in_bindings": 1,
+                    "preview_size": "medium"
                 },
                 {
                     "key": "field_64c18e86cc5f8",
@@ -471,5 +490,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738497333
+    "modified": 1742380349
 }

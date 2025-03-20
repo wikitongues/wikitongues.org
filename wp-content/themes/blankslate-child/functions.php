@@ -10,3 +10,4 @@ require_once('includes/batch-operations.php');
 require_once('includes/admin-helpers.php');
 require_once('includes/events-filter.php');
 require_once('includes/acf-helpers.php');
+require_once('includes/document-download-handler.php');
