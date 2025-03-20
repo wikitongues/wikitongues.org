@@ -33,7 +33,7 @@
 &.dark
 	.block
 		&:before
-			background $blue
+			background $blue()
 			border-color $blue()
 
 		.copy
@@ -67,6 +67,7 @@
 		height 100%
 		border-width 2px
 		border-style solid
+		box-sizing border-box
 
 	.thumbnail
 		width 100%
@@ -163,3 +164,42 @@
 
 			p
 				flex-grow 1
+
+@media all and (max-width:$mobile)
+	.wrapper
+		padding 0
+		gap 1.6rem
+
+		&.thirds
+			.block
+				flex initial
+
+				.copy
+					padding 2.4rem
+
+		&.wide
+			.block
+				.thumbnail
+					padding-bottom calc(100% / 3* 2)
+
+		.block
+			max-width initial
+			flex-direction column
+			height auto
+			margin 4px
+
+			&:before
+				left 0
+				top 0
+
+			.thumbnail
+				max-width initial
+				border-radius 4px 4px 0 0
+				border 2px solid $blue()
+				border-bottom 0
+
+				span
+					display none
+
+			.copy
+				width 100%
