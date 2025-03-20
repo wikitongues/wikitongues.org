@@ -36,7 +36,7 @@ while (have_rows('block_group')) :
     $anchor = '';
     $linked_post_id = !empty($link) ? url_to_postid($link['url']) : null;
     $linked_post_type = $linked_post_id ? get_post_type($linked_post_id) : '';
-    $selected_file = ($linked_post_type === 'document') ? get_field('selected_file', $linked_post_id) : null;
+    $selected_file = ($linked_post_type === 'documents') ? get_field('selected_file', $linked_post_id) : null;
     $file_field = $selected_file ? get_field('file', $selected_file->ID) : '';
 
     // Primary CTA logic
@@ -50,7 +50,7 @@ while (have_rows('block_group')) :
     }
 
     // Secondary CTA logic
-    if ($display_secondary === 'Yes' && $linked_post_type === 'document') {
+    if ($display_secondary === 'Yes' && $linked_post_type === 'documents') {
         if ($link_type === 'link' && $file_field) {
             $anchor .= '<a class="secondary" href="' . esc_url($file_field) . '">Download</a>';
         }
