@@ -117,13 +117,17 @@
 
 @media all and (max-width:$mobile)
 	.wt_footer
+		p,a
+			font-size 1.5rem
+
 		&__logo
-			display flex
-			justify-content center
-			margin 1.5rem 0
+			display none
+
 		&__section
 			&#content
 				flex-direction column
+			&#colophon
+				margin 4.8rem 0
 
 		&__nav
 			&>ul
@@ -137,7 +141,14 @@
 					&:first-of-type
 						margin-top 0
 
+			ul:not(.sub-menu)
+				flex-direction column
+
+				li.menu-item-has-children > a
+					font-size 2rem
+
 		&__meta
 			margin 2rem auto 0
 			display flex
-			justify-content center
+			justify-content left
+			text-align left

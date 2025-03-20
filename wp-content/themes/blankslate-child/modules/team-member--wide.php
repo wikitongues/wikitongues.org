@@ -6,7 +6,7 @@
 		<strong><?php echo $title; ?></strong>
 		<?php
 		$first_name = explode(' ', trim($name))[0];
-		echo '<h3>'.$first_name . ' speaks</h3>';
+		echo '<p>'.$first_name . ' speaks</p>';
 		?>
 
 		<ul>

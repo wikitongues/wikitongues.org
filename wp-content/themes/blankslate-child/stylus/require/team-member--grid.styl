@@ -52,14 +52,25 @@
 					text-decoration none
 
 @media all and (max-width:$mobile)
+	.page-template-template-about-staff,
+	.page-template-template-about-board
+		.wrapper
+			> h4
+				margin-left 2.4rem
+
+	.wrapper
+		&#volunteers
+			display flex
+
+		i
+			font-size 3.2rem
+
 	.wt_team-member--grid
-		width 47%
-		margin-bottom 3rem
+		width 100%
 
-		&:nth-of-type(even)
-			margin-left 1%
-			margin-right 2%
-
-		&:nth-of-type(odd)
-			margin-left 2%
-			margin-right 1%
+		&__img
+			height 200px
+			margin 0 auto 3rem
+			width 90%
+		&__meta
+			padding-left 2.4rem
