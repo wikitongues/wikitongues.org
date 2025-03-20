@@ -17,12 +17,6 @@
 		.copy
 			color $black
 
-			p
-				text--body($black)
-
-			strong
-				text--strong($black)
-
 			button, a
 				button--secondary($blue(), $parchment)
 
@@ -44,11 +38,6 @@
 
 		.copy
 			color $parchment
-
-			p
-				text--body($parchment)
-			strong
-				text--strong($parchment)
 
 			button, a
 				button--secondary($parchment, $blue())
@@ -100,6 +89,12 @@
 		align-items flex-start
 		gap 32px
 
+		p
+				text--body(inherit)
+
+		strong
+				text--strong(inherit)
+
 		button, a
 			&.secondary
 				margin-left 1.6rem
@@ -131,11 +126,11 @@
 			position relative
 
 			h1
-				text--header($parchment)
+				text--header(inherit)
 				width 100%
 
 			p
-				text--body($parchment)
+				text--body(inherit)
 
 &.thirds
 	justify-content left
@@ -161,11 +156,10 @@
 					transform translate(-50%,-50%)
 					width 90%
 					text-align center
-					text--body($parchment)
+					text--body(inherit)
 
 		.copy
 			padding 3.2rem 3.2rem 2.4rem 4.8rem
-			text--body($parchment)
 
 			p
 				flex-grow 1
