@@ -524,38 +524,56 @@ $aspect-ratio = 16/9
 												font-size 0.8rem // mobile
 
 @media all and (max-width:$mobile)
+	.custom-gallery,
+	.custom-gallery.fellows
+		.gallery-container
+				.gallery-list
+					row-gap 16px
+
+					.gallery-item
+						.details
+							gap 0
+
 	.custom-gallery
 		&.full
-			width 90%
+			width 95%
 			margin 0 auto
 
 		.gallery-container
 			.gallery-list
 				grid-template-columns repeat(1, 1fr) !important
 
-		&.fellows.display
-			.gallery-container
-				.gallery-list
-					.gallery-item
-						a
-							flex-direction column
+		&.careers
+			width 90%
 
-							img,
-							.no-thumbnail,
-							.thumbnail,
-							span.thumbnail-spacer
-								width 100%
-								padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
+		&.fellows
+			.display
+				.gallery-container
+					.gallery-list
+						.gallery-item
+							a
+								flex-direction column
 
-							.details
-								width 100%
-								padding 0 32px 16px 16px
-								gap 16px
+								img,
+								.no-thumbnail,
+								.thumbnail,
+								span.thumbnail-spacer
+									width 100%
+									padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
 
-								.fellow-metadata
+								.details
+									width 100%
+									padding 0 32px 16px 16px
 									gap 16px
+
+									.fellow-metadata
+										gap 16px
+
 		> p
 			margin-bottom 2rem
+
+		p
+			font-size 1.8rem
 
 	.custom-cta-container
 		.custom-gallery-video-cta

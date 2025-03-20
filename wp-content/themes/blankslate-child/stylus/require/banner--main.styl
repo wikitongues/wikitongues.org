@@ -76,33 +76,65 @@ body
 
 @media all and (max-width:$mobile)
 	.wt_banner
-		height 15vh !important
-		margin-bottom 0
+		height 80vh
+		margin-bottom 1.6rem
+		justify-content flex-end
+
+		&:before
+			position relative
+			background inherit
 
 		p.caption
-			white-space pre-line
-
-		&__copy
 			display none
 
+		&__copy
+			box-sizing border-box
+			padding 3rem
+			background $blue(50)
+			color $parchment
+			align-self initial
+			width 100%
+			gap 3.2rem
+
+			.wt_text
+					&--header
+						text--header(inherit)
+						font-size 4rem
+						margin-top 0
+
+				p
+					margin 0
+					text--body(inherit)
+
+					strong
+						text--strong(inherit)
+
+				a
+					button--secondary($parchment,$blue(50))
+
+					i
+						margin-left 0.5rem
+						font-size 1.6rem
+
 			&--mobile
-				display block
+				display none
 				margin-bottom 3rem
 				box-sizing border-box
 				padding 3rem
 				background $blue(50)
+				color $parchment
 
 				.wt_text
 					&--header
-						text--header($parchment)
+						text--header(inherit)
 						font-size 4rem // mobile
 
-					&--body
-						margin 3rem 0
-						text--body($parchment)
+				p
+					margin 3rem 0
+					text--body(inherit)
 
-						strong
-							text--strong($parchment)
+					strong
+						text--strong(inherit)
 
 				a
 					button--secondary($parchment,$blue(50))

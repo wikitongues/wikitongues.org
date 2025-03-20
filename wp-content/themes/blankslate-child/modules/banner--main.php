@@ -42,18 +42,3 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 		<p class="caption"><strong><?php echo $banner_image['caption']; ?></strong></p>
 	<?php endif; ?>
 </div>
-<div class="wt_banner__copy--mobile">
-	<h1 class="wt_text--header">
-		<?php echo $page_banner['banner_header']; ?>
-	</h1>
-		<?php echo $page_banner['banner_copy']; ?>
-	<?php if ( $banner_cta ): ?>
-		<a href="<?php echo $banner_cta['url']; ?>">
-			<?php echo $banner_cta['title']; ?>
-		</a>
-	<?php elseif ( $banner_cta_placeholder ): ?>
-			<strong>
-				<?php echo $banner_cta_placeholder; ?>
-			</strong>
-	<?php endif; ?>
-</div>
