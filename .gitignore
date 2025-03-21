@@ -3,13 +3,12 @@
 
 # Core
 #
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
 /wp-admin/
 /wp-content/index.php
 /wp-content/languages
 /wp-content/plugins/index.php
 /wp-content/themes/index.php
+/wp-content/themes/blankslate-child/stylus/main.css
 /wp-includes/
 /index.php
 /license.txt
@@ -20,15 +19,20 @@
 # Configuration
 wp-config.php
 
-# Example themes
+# Themes
 /wp-content/themes/twenty*/
 /wp-content/themes/blankslate/
 # /wp-content/themes/blankslate-child/
 
-# Example plugin
+# All plugins
+# Exclude
 /wp-content/plugins/hello.php
 /wp-content/plugins/*
 /wp-content/plugins/*/build/
+# Include
+!/wp-content/plugins/typeahead/
+!/wp-content/plugins/typeahead/build
+!/wp-content/plugins/wt-gallery/
 
 # Uploads
 /wp-content/uploads/
@@ -40,13 +44,6 @@ error_log
 # htaccess
 /.htaccess
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-!/wp-content/plugins/typeahead/
-!/wp-content/plugins/typeahead/build
-!/wp-content/plugins/wt-gallery/
-
 # Misc
 .ftpquota
 ggstemp.html
@@ -55,9 +52,3 @@ temp/
 transmit_sync_offset_2135232021
 /wp-content/backups-dup-pro/
 tool-sync-db-from-prod.sh
-
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
