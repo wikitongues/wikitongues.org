@@ -4,3 +4,5 @@
 - .gitignore
 - readme.md
 - temp/
+- wp-content/themes/blankslate-child/stylus/require
+- wp-content/themes/blankslate-child/stylus/main.styl

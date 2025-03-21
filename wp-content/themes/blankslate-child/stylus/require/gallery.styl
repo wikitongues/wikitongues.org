@@ -397,6 +397,9 @@ $aspect-ratio = 16/9
 		gap 4px
 		margin 8px 0
 
+		&.mobile
+			display none
+
 		li
 			float left
 
@@ -415,6 +418,8 @@ $aspect-ratio = 16/9
 					text-decoration none
 					border-radius 8px
 					transition background-color .1s ease-in-out
+					width 100%
+					text-align center
 
 					&:hover
 						background $blue(10)
@@ -524,42 +529,80 @@ $aspect-ratio = 16/9
 												font-size 0.8rem // mobile
 
 @media all and (max-width:$mobile)
+	.custom-gallery,
+	.custom-gallery.fellows
+		.gallery-container
+				.gallery-list
+					row-gap 16px
+
+					.gallery-item
+						.details
+							gap 0
+
 	.custom-gallery
 		&.full
-			width 90%
-			margin 0 auto
+			width 100%
+			margin 3rem auto
+
+			strong
+				width 95%
+				margin 0 auto
 
 		.gallery-container
 			.gallery-list
+				padding 0 2.5%
 				grid-template-columns repeat(1, 1fr) !important
 
-		&.fellows.display
-			.gallery-container
-				.gallery-list
-					.gallery-item
-						a
-							flex-direction column
+		&.careers
+			width 90%
 
-							img,
-							.no-thumbnail,
-							.thumbnail,
-							span.thumbnail-spacer
-								width 100%
-								padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
+		&.fellows
+			&.display
+				.gallery-container
+					.gallery-list
+						.gallery-item
+							a
+								flex-direction column
 
-							.details
-								width 100%
-								padding 0 32px 16px 16px
-								gap 16px
+								img,
+								.no-thumbnail,
+								.thumbnail,
+								span.thumbnail-spacer
+									width 100%
+									padding (((100%)/$aspect-ratio)/2) 0// 16:9 aspect ratio
 
-								.fellow-metadata
+								.details
+									width 100%
+									padding 0 32px 16px 16px
 									gap 16px
+
+									.fellow-metadata
+										gap 16px
+
 		> p
 			margin-bottom 2rem
 
+		p
+			font-size 1.8rem
+
+		.gallery-pagination
+			display none
+
+			&.mobile
+				display flex
+				gap 0
+				justify-content space-between
+
+				li
+					a.page-numbers
+						padding 11px 15px
+
 	.custom-cta-container
+		margin-top 0px
+
 		.custom-gallery-video-cta
 			background none
+			flex-direction column
 
 			a
 				text-align center

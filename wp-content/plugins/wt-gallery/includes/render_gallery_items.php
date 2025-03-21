@@ -31,7 +31,8 @@
 
         echo '</ul>';
         if ($atts['pagination'] === 'true' && $query->max_num_pages > 1) {
-            echo generate_gallery_pagination($query, $gallery_id, $paged);
+            echo generate_gallery_pagination($query, $gallery_id, $paged, 9, '');
+            echo generate_gallery_pagination($query, $gallery_id, $paged, 5, 'mobile');
         }
         echo '</div>';
 
@@ -41,11 +42,11 @@
         return $output;
     }
 
-    function generate_gallery_pagination($query, $gallery_id, $paged) {
+    function generate_gallery_pagination($query, $gallery_id, $paged, $pages_to_show, $custom_class) {
         $max_pages = $query->max_num_pages;
-        $pagination_html = '<ul class="gallery-pagination" data-gallery-id="' . esc_attr($gallery_id) . '">';
+        $classes = "gallery-pagination" . (!empty($custom_class) ? " " . $custom_class : "");
+        $pagination_html = '<ul class="' . $classes . '" data-gallery-id="' . esc_attr($gallery_id) . '">';
 
-        $pages_to_show = 9;
         $half_pages_to_show = floor($pages_to_show / 2);
 
         // Start and end page calculation
