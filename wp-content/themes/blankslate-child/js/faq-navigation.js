@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	let sections = $('h2[id]');
+	let sections = $('h4[id]');
 	let navigationLinks = $('.faq-navigation a');
 
 	$(window).on('scroll', function() {

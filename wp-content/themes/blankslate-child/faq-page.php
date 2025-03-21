@@ -4,6 +4,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_faq_navigation_script' );
 function enqueue_faq_navigation_script() {
 	if ( is_page_template( 'faq-page.php' ) ) {
 		wp_enqueue_script( 'faq-navigation', get_stylesheet_directory_uri() . '/js/faq-navigation.js', array( 'jquery' ), null, true );
+		wp_enqueue_script( 'mobile-accordion-helper', get_stylesheet_directory_uri() . '/js/mobile-accordion-helper.js', array( 'jquery' ), null, true );
 	}
 }
 
@@ -75,8 +76,8 @@ if( have_rows('faq_section') ):
 					// $faq_text = get_sub_field('short_answer');
 					?>
 					<li class="faq-entry">
-						<strong class="faq-question"><?php the_title(); ?></strong>
-						<?php the_content(); ?>
+						<strong class="faq-question mobile-accordion-header"><?php the_title(); ?></strong>
+						<div class="mobile-accordion-content"><?php the_content(); ?></div>
 					</li>
 					<?php
 				}

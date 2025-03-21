@@ -1,4 +1,12 @@
 <?php
+
+add_action( 'wp_enqueue_scripts', 'enqueue_mobile_accordion_script' );
+function enqueue_mobile_accordion_script() {
+	if ( is_singular('careers') ) {
+		wp_enqueue_script( 'mobile-accordion-helper', get_stylesheet_directory_uri() . '/js/mobile-accordion-helper.js', array( 'jquery' ), null, true );
+	}
+}
+
 get_header();
 
 // Fetch the global fields from the Careers list page
@@ -11,8 +19,8 @@ function render_section($field_name, $headers, $page_id = null) {
 	$title_value = $headers[$field_name];
 	if ($field_value) {
 		echo "<section class='" . esc_attr($field_name) . "'>";
-		echo "<h4>" . esc_attr($title_value) . "</h4>";
-		echo wpautop(wp_kses_post($field_value));
+		echo "<h4 class='mobile-accordion-header'>" . esc_attr($title_value) . "</h4>";
+		echo "<div class='mobile-accordion-content'>" . wpautop(wp_kses_post($field_value)) . "</div>";
 		echo "</section>";
 	}
 }
