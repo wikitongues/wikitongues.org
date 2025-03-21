@@ -37,6 +37,10 @@ get_header();
 include( 'modules/meta--fellows-single.php' );
 
 $fellow_bio = get_field('fellow_bio');
+echo '<div class="main-content">';
+echo wpautop(wp_kses_post($fellow_bio));
+echo wpautop(wp_kses_post(get_the_content()));
+echo '</div>';
 include( 'modules/editorial-content.php' );
 
 ?>
