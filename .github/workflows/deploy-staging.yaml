@@ -27,7 +27,7 @@ jobs:
 
       - name: Compile Stylus
         run: |
-          stylus -w wp-content/themes/blankslate-child/stylus --out themes/blankslate-child/stylus/
+          stylus wp-content/themes/blankslate-child/stylus --out themes/blankslate-child/stylus/
 
       - name: Install rsync
         run: sudo apt-get install -y rsync
