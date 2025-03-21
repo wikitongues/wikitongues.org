@@ -172,3 +172,17 @@
 
 	.no-scroll
 		overflow hidden
+
+// Accordeon
+// ------------------
+@media all and (max-width:$mobile)
+	.mobile-accordion-header
+		cursor pointer
+
+	.mobile-accordion-content
+		overflow hidden
+		max-height 0
+		transition all .3s ease-in-out
+
+	.mobile-accordion-content.active
+		max-height 500px

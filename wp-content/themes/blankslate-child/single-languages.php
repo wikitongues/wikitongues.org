@@ -1,4 +1,11 @@
 <?php
+add_action( 'wp_enqueue_scripts', 'enqueue_mobile_accordion_script' );
+function enqueue_mobile_accordion_script() {
+	if ( is_singular('languages') ) {
+		wp_enqueue_script( 'mobile-accordion-helper', get_stylesheet_directory_uri() . '/js/mobile-accordion-helper.js', array( 'jquery' ), null, true );
+	}
+}
+
 $standard_name = get_field('standard_name');
 $language = get_the_ID();
 $videos = get_field('speakers_recorded');
