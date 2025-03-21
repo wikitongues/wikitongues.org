@@ -9,34 +9,35 @@
 	.career-section
 		margin 1.6rem 0 3.2rem
 
-		h4
-			text--header($black)
+		strong
+			text--strong($black)
+			display block
 			margin-bottom 0.8rem
 
 	ul
 		li
 			width 100%
+			margin-bottom 0.8rem
 
 			&.empty
 				text--body($grey-50)
 				font-style italic
 
 			a,.empty p
-				padding .6rem 1.2rem
+				padding 0 1.2rem .6rem
 				border-left 4px solid transparent
 
 			a
 				display flex
-				flex-direction row
+				flex-direction column
 				align-items baseline
 				text-decoration none
 
 				&:hover
 					border-left-color $blue()
 
-				strong
-					text--strong($black)
-					line-height 2.6rem
+				h4
+					text--header($black)
 					display block
 
 				p, time
