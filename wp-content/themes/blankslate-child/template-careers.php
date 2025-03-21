@@ -18,11 +18,11 @@ include( 'modules/banner--main.php' );
         ?>
 
         <div class="career-section">
-            <h4><?php echo esc_html($category); ?></h4>
+            <strong><?php echo esc_html($category); ?></strong>
             <ul>
                 <?php
                 if ($term) {
-                    // Query posts in this category
+                    $today = date('Ymd');
                     $args = [
                         'post_type'      => 'careers',
                         'posts_per_page' => -1,
@@ -33,16 +33,41 @@ include( 'modules/banner--main.php' );
                                 'terms'    => $term->term_id,
                             ],
                         ],
+                        'meta_query' => [
+                            'relation' => 'OR',
+                            [
+                                'key'     => 'deadline',
+                                'value' => '',
+                                'compare' => '=',
+                            ],
+                            [
+                                'key'     => 'deadline',
+                                'value'   => $today,
+                                'compare' => '>=',
+                                'type'    => 'DATE',
+                            ],
+                        ],
+                        'orderby'  => 'meta_value',
+                        'order'    => 'ASC',
+                        'meta_key' => 'deadline',
                     ];
                     $query = new WP_Query($args);
 
                     if ($query->have_posts()) :
                         while ($query->have_posts()) : $query->the_post();
+
                             ?>
                                 <li>
                                     <a href="<?php the_permalink(); ?>">
-                                        <strong><?php the_title(); ?></strong>
-                                        <p class="location">&nbsp;— <?php echo esc_html(get_field('location')); ?></p>
+                                        <h4><?php the_title(); ?></h4>
+                                        <p class="deadline">
+                                            Application deadline:
+                                            <?php
+                                            $deadline = get_field('deadline');
+                                            echo $deadline ? esc_html(date('F j, Y', strtotime($deadline))) : 'Rolling basis';
+                                            ?>
+                                        </p>
+                                        <p class="location">Location: <?php echo esc_html(get_field('location')); ?></p>
                                     </a>
                                 </li>
                             <?php
