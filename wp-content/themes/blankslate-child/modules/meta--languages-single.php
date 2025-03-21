@@ -34,48 +34,56 @@
 	</h1>
 	<?php if ( $alternate_names ): ?>
 		<div class="metadata" id="alternate-names">
-			<strong>Alternate Names</strong>
-			<p><?php echo $alternate_names; ?></p>
+			<strong class="mobile-accordion-header">Alternate Names</strong>
+			<p class="mobile-accordion-content"><?php echo $alternate_names; ?></p>
 		</div>
 	<?php endif; ?>
 	<?php if ( $iso_code || $glottocode): ?>
 		<div class="metadata" id="identifiers">
-			<strong class="wt_sectionHeader">Identifiers</strong>
-			<?php if ( $iso_code ): ?>
-				<span>
-					<strong>ISO code</strong>
-					<p><?php echo $iso_code; ?></p>
-				</span>
+			<strong class="wt_sectionHeader mobile-accordion-header">Identifiers</strong>
+			<?php if ( $iso_code || $glottocode ): ?>
+				<div class="mobile-accordion-content">
+				<?php if ( $iso_code ): ?>
+					<span>
+						<strong>ISO code</strong>
+						<p><?php echo $iso_code; ?></p>
+					</span>
+				<?php endif; ?>
+				<?php if ( $glottocode ): ?>
+					<span>
+						<strong>Glottocode</strong>
+						<p><?php echo $glottocode; ?></p>
+					</span>
+				<?php endif; ?>
+				</div>
 			<?php endif; ?>
-			<?php if ( $glottocode ): ?>
-				<span>
-					<strong>Glottocode</strong>
-					<p><?php echo $glottocode; ?></p>
-				</span>
-			<?php endif; ?>
+
 		</div>
 	<?php endif; ?>
 	<?php if ( $nations_of_origin || $writing_systems || $linguistic_genealogy ) : ?>
 		<div class="metadata" id="metadata">
-			<?php if ( $nations_of_origin ): ?>
-				<strong>Countries of origin</strong>
-				<p class="wt_text--label"><?php echo $nations_of_origin; ?></p>
-			<?php endif; ?>
+			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
+			<div class="mobile-accordion-content">
+				<?php if ( $nations_of_origin ): ?>
+					<strong>Countries of origin</strong>
+					<p class="wt_text--label"><?php echo $nations_of_origin; ?></p>
+				<?php endif; ?>
 
-			<?php if ( $writing_systems ): ?>
-				<strong>Writing systems</strong>
-				<p class="wt_text--label"><?php echo $writing_systems; ?></p>
-			<?php endif ;?>
+				<?php if ( $writing_systems ): ?>
+					<strong>Writing systems</strong>
+					<p class="wt_text--label"><?php echo $writing_systems; ?></p>
+				<?php endif ;?>
 
-			<?php if ( $linguistic_genealogy ): ?>
-				<strong>Linguistic genealogy</strong>
-				<p class="wt_text--label"><?php echo $linguistic_genealogy; ?></p>
-			<?php endif; ?>
+				<?php if ( $linguistic_genealogy ): ?>
+					<strong>Linguistic genealogy</strong>
+					<p class="wt_text--label"><?php echo $linguistic_genealogy; ?></p>
+				<?php endif; ?>
+			</div>
 		</div>
 	<?php endif; ?>
 	<div class="metadata" id="resources">
-		<strong class="wt_sectionHeader"><?php  echo $standard_name; ?> resources</strong>
-		<ul class="resources">
+		<strong class="wt_sectionHeader mobile-accordion-header"><?php  echo $standard_name; ?> resources</strong>
+		<ul class="resources mobile-accordion-content">
 			<li>
 				<strong>Videos</strong>
 				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Submit a video</a>
@@ -91,8 +99,8 @@
 		</ul>
 	</div>
 	<div class="metadata" id="external-links">
-		<strong class="wt_sectionHeader">Learn more about <?php  echo $standard_name; ?></strong>
-		<ul>
+		<strong class="wt_sectionHeader mobile-accordion-header">Learn more about <?php  echo $standard_name; ?></strong>
+		<ul class="mobile-accordion-content">
 		<?php
 			foreach ($links as $key => $value) {
 				if (!empty($value)) {
