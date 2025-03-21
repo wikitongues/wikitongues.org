@@ -27,8 +27,8 @@ $video_size = (9/16)*100 // in viewport widths
 	&__no-video
 		display flex
 		min-height ($video_size/16*9)vw
-    justify-content center
-    align-items center
+		justify-content center
+		align-items center
 
 		p
 			margin auto
@@ -87,3 +87,11 @@ $video_size = (9/16)*100 // in viewport widths
 						iframe
 							min-height (90/16*9)vw
 							max-width (90)vw
+							margin auto
+							display block
+
+		.main-content
+			&.wt_single-videos__embed
+				video
+					margin auto
+					display block

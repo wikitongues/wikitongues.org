@@ -397,6 +397,9 @@ $aspect-ratio = 16/9
 		gap 4px
 		margin 8px 0
 
+		&.mobile
+			display none
+
 		li
 			float left
 
@@ -415,6 +418,8 @@ $aspect-ratio = 16/9
 					text-decoration none
 					border-radius 8px
 					transition background-color .1s ease-in-out
+					width 100%
+					text-align center
 
 					&:hover
 						background $blue(10)
@@ -536,18 +541,23 @@ $aspect-ratio = 16/9
 
 	.custom-gallery
 		&.full
-			width 95%
-			margin 0 auto
+			width 100%
+			margin 3rem auto
+
+			strong
+				width 95%
+				margin 0 auto
 
 		.gallery-container
 			.gallery-list
+				padding 0 2.5%
 				grid-template-columns repeat(1, 1fr) !important
 
 		&.careers
 			width 90%
 
 		&.fellows
-			.display
+			&.display
 				.gallery-container
 					.gallery-list
 						.gallery-item
@@ -575,9 +585,24 @@ $aspect-ratio = 16/9
 		p
 			font-size 1.8rem
 
+		.gallery-pagination
+			display none
+
+			&.mobile
+				display flex
+				gap 0
+				justify-content space-between
+
+				li
+					a.page-numbers
+						padding 11px 15px
+
 	.custom-cta-container
+		margin-top 0px
+
 		.custom-gallery-video-cta
 			background none
+			flex-direction column
 
 			a
 				text-align center
