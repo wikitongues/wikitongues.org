@@ -8,7 +8,20 @@ $fellow_language = get_field('fellow_language');
 $fellow_location = get_field('fellow_location');
 $fellow_language_preferred_name = get_field('fellow_language_preferred_name');
 $categories = get_the_terms(get_the_ID(), 'fellow-category');
-$category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
+if ( $categories && ! is_wp_error($categories) ) {
+    $category_links = [];
+    foreach ( $categories as $cat ) {
+        $cat_link = get_term_link( $cat, 'fellow-category' );
+        if ( ! is_wp_error( $cat_link ) ) {
+            $category_links[] = '<a href="' . esc_url( $cat_link ) . '">' . esc_html( $cat->name ) . '</a>';
+        }
+    }
+    $category_names = implode(', ', $category_links);
+} else {
+    $category_names = '';
+}
+log_data($categories);
+// $category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
 $social_links = [
 	'email'     => ['url' => get_field('email'), 'icon' => 'fa-brands fa-square-email'],
 	'facebook'  => ['url' => get_field('facebook'), 'icon' => 'fa-brands fa-square-facebook'],

@@ -77,13 +77,22 @@
 						span.identifier, p
 							color $parchment
 
-
 			p.categories
 				font-weight bold
+
+				a
+					text--strong($blue()) // a
+					text-decoration none
+
+					&:hover
+						text-decoration underline
 
 			a.cohort
 				text--strong($blue()) // a
 				text-decoration none
+
+				&:hover
+						text-decoration underline
 
 	article
 		margin-bottom 1.6rem
