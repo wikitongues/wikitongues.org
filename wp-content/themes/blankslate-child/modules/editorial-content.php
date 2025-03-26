@@ -1,14 +1,16 @@
 <?php
-if( have_rows('main_content') ):
-	while( have_rows('main_content') ) : the_row();
+$term = get_queried_object();
+
+if( have_rows('main_content', $term) ):
+	while( have_rows('main_content', $term) ) : the_row();
 		// Determine the current layout.
 		$layout = get_row_layout();
 		// Load a partial based on the layout.
 		if( $layout == 'text_layout' ):
-			$image = get_sub_field('image');
+			$image = get_sub_field('image', $term);
 			include( 'flexible-content/text-layout.php' );
 		elseif( $layout == 'banner_layout' ):
-			$page_banner = get_sub_field('banner');
+			$page_banner = get_sub_field('banner', $term);
 			include( 'banner--main.php' );
 		elseif( $layout == 'video_layout' ):
 			include( 'flexible-content/video-layout.php' );
