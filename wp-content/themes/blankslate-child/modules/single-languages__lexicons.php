@@ -27,6 +27,7 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 			'meta_value' => $language,
 			'selected_posts' => '',
 			'display_blank' => 'true',
+			'exclude_self' => 'true',
 			'taxonomy' => '',
 			'term' => '',
 		];
@@ -46,6 +47,7 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 			'meta_value' => $language,
 			'selected_posts' => '',
 			'display_blank' => 'true',
+			'exclude_self' => 'true',
 			'taxonomy' => '',
 			'term' => '',
 		];

@@ -87,6 +87,7 @@ echo '<main class="wt_single-videos__content">';
     'meta_value' => $language_iso_codes,
     'selected_posts' => '',
     'display_blank' => 'false',
+    'exclude_self' => 'true',
     'taxonomy' => '',
     'term' => ''
   ];

@@ -33,6 +33,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
 				'meta_value' => '',
 				'selected_posts' => esc_attr($post_ids),
 				'display_blank' => 'false',
+				'exclude_self' => 'true',
 				'taxonomy' => '',
 				'term' => '',
 			];

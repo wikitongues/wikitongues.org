@@ -64,6 +64,7 @@ $params = [
 	'meta_value' => $fellow_year,
 	'selected_posts' => '',
 	'display_blank' => 'false',
+	'exclude_self' => 'true',
 	'taxonomy' => '',
 	'term' => ''
 ];

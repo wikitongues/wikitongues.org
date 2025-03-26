@@ -21,6 +21,7 @@
 				'meta_value' => $language,
 				'selected_posts' => '',
 				'display_blank' => 'true',
+				'exclude_self' => 'true',
 				'taxonomy' => '',
 				'term' => '',
 			];

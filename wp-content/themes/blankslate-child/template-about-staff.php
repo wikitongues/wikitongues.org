@@ -54,6 +54,7 @@ $careers = [
 	'meta_value' => '',
 	'selected_posts' => '',
 	'display_blank' => 'false',
+	'exclude_self' => 'true',
 	'taxonomy' => 'career_type',
 	'term' => 'Staff'
 ];
@@ -98,6 +99,7 @@ $otherOpportunities = [
 	'meta_value' => '',
 	'selected_posts' => '',
 	'display_blank' => 'false',
+	'exclude_self' => 'true',
 	'taxonomy' => 'career_type',
 	'term' => 'Intern,Volunteer'
 ];
