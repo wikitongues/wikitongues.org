@@ -43,6 +43,7 @@ if( have_rows('main_content') ):
 							'meta_value' => '',
 							'selected_posts' => esc_attr($post_ids),
 							'display_blank' => 'false',
+							'exclude_self' => 'true',
 							'taxonomy' => '',
 							'term' => '',
 						];

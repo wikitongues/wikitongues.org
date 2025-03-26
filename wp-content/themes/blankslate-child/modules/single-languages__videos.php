@@ -21,6 +21,7 @@
 			'meta_value' => get_the_title(),
 			'selected_posts' => '',
 			'display_blank' => 'true',
+			'exclude_self' => 'true',
 			'taxonomy' => '',
 			'term' => ''
 		];
