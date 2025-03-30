@@ -40,7 +40,8 @@ if ($fellow_id) {
       }
       ?>
     </ul>
-    <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p>
+    <!-- <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p> -->
+    <p><a href="<?php echo home_url('/fellow-category/wikimedia/', 'relative')?>">Browse by category</a></p>
   </div>
 
 <?php
