@@ -94,7 +94,7 @@ if ( $thumbnail_image ) {
 		$cta_text = 'Read more';
 	}
 
-	echo '<button href="' . get_the_permalink() . '">' . $cta_text . '</button>';
+	echo '<a href="' . get_the_permalink() . '">' . $cta_text . '</a>';
 
 ?>
 </div>
