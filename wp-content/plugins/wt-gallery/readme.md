@@ -13,7 +13,7 @@
     'orderby' => 'rand',
     'order' => 'asc',
     'pagination' => 'false',
-    'meta_key' => 'language_iso_codes',
+    'meta_key' => 'featured_languages',
     'meta_value' => $language_iso_codes,
     'selected_posts' => '',
     'display_blank' => '',

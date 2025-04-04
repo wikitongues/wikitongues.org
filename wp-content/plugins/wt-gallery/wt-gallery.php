@@ -109,41 +109,44 @@ function get_custom_title($post_type) {
 
 function create_gallery_instance($params) {
 	$defaults = [
-		'title' => '',
-    'subtitle' => '',
-		'custom_class' => '',
-		'post_type' => 'post',
-		'columns' => 1,
-		'posts_per_page' => 3,
-		'orderby' => 'date',
-		'order' => 'desc',
-		'pagination' => 'false',
-		'meta_key' => '',
-		'meta_value' => '',
-		'selected_posts' => '',
-		'display_blank' => 'true',
-		'taxonomy' => '',
-		'term' => ''
+		'title'           => '',
+    'subtitle'        => '',
+		'custom_class'    => '',
+		'post_type'       => 'post',
+		'columns'         => 1,
+		'posts_per_page'  => 3,
+		'orderby'         => 'date',
+		'order'           => 'desc',
+		'pagination'      => 'false',
+		'meta_key'        => '',
+		'meta_value'      => '',
+		'selected_posts'  => '',
+		'display_blank'   => 'false',
+		'exclude_self'    => 'true',
+		'taxonomy'        => '',
+		'term'            => ''
 	];
 
 	$args = wp_parse_args($params, $defaults);
 
-	return do_shortcode('[custom_gallery title="'.
-  $args['title'].'" subtitle="'.
-  $args['subtitle'].'" custom_class="'.
-  $args['custom_class'].'" post_type="'.
-  $args['post_type'].'" columns="'.
-  $args['columns'].'" posts_per_page="'.
-  $args['posts_per_page'].'" orderby="'.
-  $args['orderby'].'" order="'.
-  $args['order'].'" pagination="'.
-  $args['pagination'].'" meta_key="'.
-  $args['meta_key'].'" meta_value="'.
-  $args['meta_value'].'" selected_posts="'.
-  $args['selected_posts'].'" display_blank="'.
-  $args['display_blank'].'" taxonomy="'.
-  $args['taxonomy'].'" term="'.
-  $args['term'].'"]');
+	return do_shortcode('[custom_gallery '.
+    'title="'         . $args['title']          . '" '.
+    'subtitle="'      . $args['subtitle']       . '" '.
+    'custom_class="'  . $args['custom_class']   . '" '.
+    'post_type="'     . $args['post_type']      . '" '.
+    'columns="'       . $args['columns']        . '" '.
+    'posts_per_page="'. $args['posts_per_page'] . '" '.
+    'orderby="'       . $args['orderby']        . '" '.
+    'order="'         . $args['order']          . '" '.
+    'pagination="'    . $args['pagination']     . '" '.
+    'meta_key="'      . $args['meta_key']       . '" '.
+    'meta_value="'    . $args['meta_value']     . '" '.
+    'selected_posts="'. $args['selected_posts'] . '" '.
+    'display_blank="' . $args['display_blank']  . '" '.
+    'exclude_self="'  . $args['exclude_self']   . '" '.
+    'taxonomy="'      . $args['taxonomy']       . '" '.
+    'term="'          . $args['term']           . '" '.
+    ']');
 }
 
 function custom_gallery($atts) {
@@ -152,25 +155,24 @@ function custom_gallery($atts) {
 
   // Set up default attributes and merge with user-supplied attributes
   $atts = shortcode_atts(array(
-    'title' => '',
-    'subtitle' => '',
-    'custom_class' => '',
-    'post_type' => 'languages', // videos, languages, fellows
-    'columns' => 3,
-    'posts_per_page' => 6,
-    'orderby' => 'date',
-    'order' => 'DESC',
-    'meta_key' => '',
-    'meta_value' => '',
-    'pagination' => 'true', // string true or false
-    'gallery_id' => 'gallery_' . $gallery_counter,
-    'selected_posts' => array(),
-    'display_blank' => 'true', // define whether to use the default blank state or string true or false
-    'taxonomy' => '',
-    'term' => '',
+    'title'           => '',
+    'subtitle'        => '',
+    'custom_class'    => '',
+    'post_type'       => 'languages', // videos, languages, fellows
+    'columns'         => 3,
+    'posts_per_page'  => 6,
+    'orderby'         => 'date',
+    'order'           => 'desc',
+    'meta_key'        => '',
+    'meta_value'      => '',
+    'pagination'      => 'false', // string true or false
+    'gallery_id'      => 'gallery_' . $gallery_counter,
+    'selected_posts'  => array(),
+    'display_blank'   => 'false', // define whether to use the default blank state or string true or false
+    'exclude_self'    => 'true', // define whether to show or hide the current post entry string true or false
+    'taxonomy'        => '',
+    'term'            => '',
   ), $atts, 'custom_gallery');
-
-  $paged = get_query_var('paged') ? get_query_var('paged') : 1;
 
   // ACF Custom posts
   if (!empty($atts['selected_posts'])) {
@@ -179,21 +181,23 @@ function custom_gallery($atts) {
     $args['orderby'] = 'post__in'; // Preserve order if needed
   }
 
+  $paged = get_query_var('paged') ? get_query_var('paged') : 1;
   // Query setup
   $args = array(
-    'post_type' => $atts['post_type'],
-    'posts_per_page' => $atts['posts_per_page'],
-    'orderby' => $atts['orderby'],
-    'order' => $atts['order'],
-    'meta_key' => $atts['meta_key'],
-    'meta_value' => $atts['meta_value'],
-    'paged' => $paged,
-    'columns' => $atts['columns'],
-    'pagination' => $atts['pagination'],
-    'display_blank' => $atts['display_blank'],
-    'taxonomy' => $atts['taxonomy'],
-    'term' => $atts['term'],
-    'custom_class' => $atts['custom_class'],
+    'post_type'       => $atts['post_type'],
+    'posts_per_page'  => $atts['posts_per_page'],
+    'orderby'         => $atts['orderby'],
+    'order'           => $atts['order'],
+    'meta_key'        => $atts['meta_key'],
+    'meta_value'      => $atts['meta_value'],
+    'paged'           => $paged,
+    'columns'         => $atts['columns'],
+    'pagination'      => $atts['pagination'],
+    'display_blank'   => $atts['display_blank'],
+    'exclude_self'    => $atts['exclude_self'],
+    'taxonomy'        => $atts['taxonomy'],
+    'term'            => $atts['term'],
+    'custom_class'    => $atts['custom_class'],
   );
 
   // Merge in any additional arguments (like selected posts)
