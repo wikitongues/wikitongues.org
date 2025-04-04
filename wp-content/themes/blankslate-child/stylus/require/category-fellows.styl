@@ -1,8 +1,14 @@
-.test
-	width 100%
+.fellow-gallery-nav
 	display flex
-	flex-direction column
-	padding 0 32px
+	flex-direction row
+	justify-content space-between
+	padding-bottom 8px
+	align-items baseline
+	border-bottom 2px solid $border-color
+	margin 0 32px
+
+	&:last-of-type
+		border-bottom 2px solid $border-color
 
 	strong
 		text--strong($black)
@@ -10,44 +16,38 @@
 		a
 			text--strong($blue())
 
-	.nav
+	select
+		float left
+		appearance none
+		background transparent
+		border none
+		border-radius 4px
+		padding 16px
+		text--strong($blue())
+		font-size 1.6rem
+
+		&:hover
+			background $blue(10)
+			cursor pointer
+
+	ul
 		display flex
 		flex-direction row
-		justify-content space-between
-		padding-bottom 8px
-		&:last-of-type
-			border-bottom 2px solid $border-color
+		margin-left 8px
+		padding-left 8px
 
-		select
-			float left
-			appearance none
-			background transparent
-			border none
-			border-radius 4px
-			padding 16px
-			text--strong($blue())
-			font-size 1.6rem
+		li
+			a
+				display inline-block
+				padding 16px
+				white-space nowrap
+				text--body($blue())
+				border-radius 4px
 
-			&:hover
-				background $blue(10)
-				cursor pointer
+				&:hover
+					background $blue(10)
+					cursor pointer
 
-		ul
-			display flex
-			flex-direction row
-			overflow-x scroll
-			border-left 2px solid $border-color
-			margin-left 8px
-			padding-left 8px
-
-			li
+			&.active
 				a
-					display inline-block
-					padding 16px
-					white-space nowrap
-					text--body($blue())
-					border-radius 4px
-
-					&:hover
-						background $blue(10)
-						cursor pointer
+					text--strong($blue())

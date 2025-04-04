@@ -18,6 +18,7 @@
         'paged' => 1,
         'taxonomy' => '',
         'term' => '',
+        'exclude_self' => '',
     );
 
     $args = wp_parse_args($atts, $defaults);

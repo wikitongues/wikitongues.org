@@ -1,5 +1,11 @@
 <?php
 	$category = get_queried_object();
+	$page_banner_override = [
+    'banner_header' => $category->name,
+    'banner_copy'   => $category->description,
+	];
+	global $page_banner_override;
+
  	get_header();
 	include( 'modules/editorial-content.php' );
 
@@ -10,29 +16,17 @@
 	// Check if terms exist and are valid
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 		?>
-			<div class="test">
-				<div class="nav">
-					<strong>Fellowship Categories</strong>
-					<strong><a href="<?php echo home_url('/revitalization/fellows', 'relative')?>">Browse by cohort</a></strong>
-				</div>
-				<div class="nav">
-					<select onchange="if (this.value) window.location.href=this.value;">
-						<?php
-						foreach ( $terms as $term ) {
-							$selected = $term->slug === $category->slug ? 'selected' : '';
-							echo '<option value="' . esc_url( get_term_link( $term ) ) . '" ' . $selected . '>' . esc_html( $term->name ) . '</option>';
-						}?>
-					</select>
-					<ul class="fellow-categories-nav">
+			<div class="fellow-gallery-nav">
+				<strong>Fellowship Categories</strong>
+				<ul>
 					<?php
 					foreach ( $terms as $term ) {
-						if( $term->slug !== $category->slug ) {
-							echo '<li><a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a></li>';
-						}
+						$class = ( $term->slug == $category->slug ) ? 'active' : '';
+						echo '<li class="'.$class.'"><a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a></li>';
 					}
 					?>
-					</ul>
-				</div>
+				</ul>
+				<strong><a href="<?php echo home_url('/revitalization/fellows', 'relative')?>">Browse by cohort</a></strong>
 			</div>
 		<?php
 	}
@@ -42,8 +36,8 @@
 
   <?php
     $params = [
-			// 'title' => $category->name . ' Fellows',
-			// 'subtitle' => $category->description,
+			'title' => '',
+			'subtitle' => '',
 			'post_type' => 'fellows',
 			'custom_class' => 'full',
 			'columns' => 4,
