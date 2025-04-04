@@ -122,6 +122,7 @@ function create_gallery_instance($params) {
 		'meta_value' => '',
 		'selected_posts' => '',
 		'display_blank' => 'true',
+		'exclude_self' => 'true',
 		'taxonomy' => '',
 		'term' => ''
 	];
@@ -141,7 +142,8 @@ function create_gallery_instance($params) {
   $args['meta_key'].'" meta_value="'.
   $args['meta_value'].'" selected_posts="'.
   $args['selected_posts'].'" display_blank="'.
-  $args['display_blank'].'" taxonomy="'.
+  $args['display_blank'].'" exclude_self="'.
+  $args['exclude_self'].'" taxonomy="'.
   $args['taxonomy'].'" term="'.
   $args['term'].'"]');
 }
@@ -165,7 +167,8 @@ function custom_gallery($atts) {
     'pagination' => 'true', // string true or false
     'gallery_id' => 'gallery_' . $gallery_counter,
     'selected_posts' => array(),
-    'display_blank' => 'true', // define whether to use the default blank state or string true or false
+    'display_blank' => 'false', // define whether to use the default blank state or string true or false
+    'exclude_self' => 'true', // define whether to show or hide the current post entry string true or false
     'taxonomy' => '',
     'term' => '',
   ), $atts, 'custom_gallery');
@@ -191,6 +194,7 @@ function custom_gallery($atts) {
     'columns' => $atts['columns'],
     'pagination' => $atts['pagination'],
     'display_blank' => $atts['display_blank'],
+    'exclude_self' => $atts['exclude_self'],
     'taxonomy' => $atts['taxonomy'],
     'term' => $atts['term'],
     'custom_class' => $atts['custom_class'],

@@ -18,6 +18,7 @@
         'paged' => 1,
         'taxonomy' => '',
         'term' => '',
+        'exclude_self' => '',
     );
 
     $args = wp_parse_args($atts, $defaults);
@@ -78,9 +79,11 @@
     }
 
     // Exclude current post from the query
-    $current_post_type = get_post_type();
-    if ($current_post_type === $args['post_type']) {
-        $args['post__not_in'] = array(get_the_ID());
+    if ($args['exclude_self'] === 'true') {
+        $current_post_type = get_post_type();
+        if ($current_post_type === $args['post_type']) {
+            $args['post__not_in'] = array(get_the_ID());
+        }
     }
 
     $query = new WP_Query($args);

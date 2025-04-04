@@ -929,6 +929,13 @@
                 "operator": "==",
                 "value": "default"
             }
+        ],
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "fellow-category"
+            }
         ]
     ],
     "menu_order": 1,
@@ -943,5 +950,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1742477319
+    "modified": 1743014024
 }

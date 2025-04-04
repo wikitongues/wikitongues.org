@@ -8,6 +8,9 @@ get_header();
 
 include( 'modules/banner--main.php' );
 
+// ==================
+// Create cohort set
+// ==================
 $fellow = get_posts ([
   'post_type'      => 'fellows',
   'posts_per_page' => 1,
@@ -27,20 +30,22 @@ if ($fellow_id) {
 } else {
   echo "No fellows found in the database.";
 }
+// ==================
+// End create cohort set
+// ==================
 ?>
 
-<div class="custom-gallery-fellows-navigation-wrapper">
-  <div class="custom-gallery-fellows-navigation">
+  <div class="fellow-gallery-nav">
     <strong>Fellowship Cohorts</strong>
     <ul>
       <?php
       foreach ($cohorts as $index => $cohort) {
-        $active_class = ($selected_year === $cohort || ($selected_year === '' && $index === 0)) ? 'active' : '';
-        echo '<li><button class="'.$active_class.'" data-year="'.$cohort.'" onclick="updateGallery(\''.$cohort.'\')">'.$cohort.'</button></li>';
+        $class = ($selected_year === $cohort || ($selected_year === '' && $index === 0)) ? 'active' : '';
+        echo '<li class="'.$class.'"><a data-year="'.$cohort.'" onclick="updateGallery(\''.$cohort.'\')">'.$cohort.'</a></li>';
       }
       ?>
     </ul>
-    <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p>
+    <strong><a href="<?php echo home_url('/fellow-category', 'relative')?>">Browse by category</a></strong>
   </div>
 
 <?php
@@ -59,11 +64,11 @@ if ($fellow_id) {
     'meta_value' => isset($_GET['fellow_year']) ? sanitize_text_field($_GET['fellow_year']) : $cohorts[0],
     'selected_posts' => '',
     'display_blank' => 'false',
+    'exclude_self' => 'true',
     'taxonomy' => '',
     'term' => '',
   ];
   echo create_gallery_instance($params);
-  echo '</div>';
 
   include( 'modules/newsletter.php' );
 
