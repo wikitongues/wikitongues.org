@@ -8,6 +8,9 @@ get_header();
 
 include( 'modules/banner--main.php' );
 
+// ==================
+// Create cohort set
+// ==================
 $fellow = get_posts ([
   'post_type'      => 'fellows',
   'posts_per_page' => 1,
@@ -27,10 +30,12 @@ if ($fellow_id) {
 } else {
   echo "No fellows found in the database.";
 }
+// ==================
+// End create cohort set
+// ==================
 ?>
 
-<!-- <div class="custom-gallery-fellows-navigation-wrapper"> -->
-  <div class="custom-gallery-fellows-navigation nav">
+  <div class="fellow-gallery-nav">
     <strong>Fellowship Cohorts</strong>
     <ul>
       <?php
@@ -40,7 +45,6 @@ if ($fellow_id) {
       }
       ?>
     </ul>
-    <!-- <p><a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU">Support language revitalization.</a></p> -->
     <strong><a href="<?php echo home_url('/fellow-category/wikimedia/', 'relative')?>">Browse by category</a></strong>
   </div>
 
@@ -65,7 +69,6 @@ if ($fellow_id) {
     'term' => '',
   ];
   echo create_gallery_instance($params);
-  // echo '</div>';
 
   include( 'modules/newsletter.php' );
 

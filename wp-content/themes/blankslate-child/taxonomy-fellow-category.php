@@ -16,19 +16,16 @@
 	// Check if terms exist and are valid
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 		?>
-			<div class="custom-gallery-fellows-navigation nav">
+			<div class="fellow-gallery-nav">
 				<strong>Fellowship Categories</strong>
-					<ul class="fellow-categories-nav">
+				<ul>
 					<?php
 					foreach ( $terms as $term ) {
-						$class = '';
-						if( $term->slug == $category->slug ) {
-							$class = 'active';
-						}
+						$class = ( $term->slug == $category->slug ) ? 'active' : '';
 						echo '<li class="'.$class.'"><a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a></li>';
 					}
 					?>
-					</ul>
+				</ul>
 				<strong><a href="<?php echo home_url('/revitalization/fellows', 'relative')?>">Browse by cohort</a></strong>
 			</div>
 		<?php
@@ -39,8 +36,8 @@
 
   <?php
     $params = [
-			// 'title' => $category->name . ' Fellows',
-			// 'subtitle' => $category->description,
+			'title' => '',
+			'subtitle' => '',
 			'post_type' => 'fellows',
 			'custom_class' => 'full',
 			'columns' => 4,
