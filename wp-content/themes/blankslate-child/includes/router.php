@@ -22,6 +22,11 @@ function wikitongues_custom_template_redirects() {
 		exit;
 	}
 
+	if (is_post_type_archive(['documents'])) {
+		wp_redirect(home_url('/revitalization', 'relative'));
+		exit;
+	}
+
 	// Single redirects
 
 	// Redirect lexicons to their source_language page
@@ -46,6 +51,30 @@ function wikitongues_custom_template_redirects() {
 			exit;
 		} else {
 			wp_redirect(home_url('/archive', 'relative'));
+			exit;
+		}
+	}
+
+	// Redirect /fellow-category/ to first fellow-category term
+	$request_path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+	// For local development, remove the subdirectory from the request path (if WP is installed in one)
+	$home_path = trim(parse_url(home_url(), PHP_URL_PATH), '/');
+	if ($home_path && str_starts_with($request_path, $home_path)) {
+			$request_path = trim(substr($request_path, strlen($home_path)), '/');
+	}
+	if ( is_404() && $request_path === 'fellow-category' ) {
+		log_data("404 fellow-category root detected");
+
+		$terms = get_terms([
+			'taxonomy'   => 'fellow-category',
+			'hide_empty' => false,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'number'     => 1,
+		]);
+
+		if ( !empty($terms) && !is_wp_error($terms) ) {
+			wp_redirect( get_term_link($terms[0]) );
 			exit;
 		}
 	}

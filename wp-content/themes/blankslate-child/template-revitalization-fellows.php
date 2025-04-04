@@ -45,7 +45,7 @@ if ($fellow_id) {
       }
       ?>
     </ul>
-    <strong><a href="<?php echo home_url('/fellow-category/wikimedia/', 'relative')?>">Browse by category</a></strong>
+    <strong><a href="<?php echo home_url('/fellow-category', 'relative')?>">Browse by category</a></strong>
   </div>
 
 <?php
