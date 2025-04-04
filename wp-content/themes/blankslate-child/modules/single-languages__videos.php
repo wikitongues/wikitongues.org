@@ -17,7 +17,7 @@
 			'orderby' => 'date',
 			'order' => 'asc',
 			'pagination' => 'true',
-			'meta_key' => 'language_iso_codes',
+			'meta_key' => 'featured_languages',
 			'meta_value' => get_the_title(),
 			'selected_posts' => '',
 			'display_blank' => 'true',
@@ -26,7 +26,6 @@
 			'term' => ''
 		];
 		echo create_gallery_instance($params);
-
 	?>
 	<div class="custom-cta-container">
 		<section class="custom-gallery-video-cta">

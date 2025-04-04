@@ -18,7 +18,7 @@
         'paged' => 1,
         'taxonomy' => '',
         'term' => '',
-        'exclude_self' => '',
+        'exclude_self' => 'false',
     );
 
     $args = wp_parse_args($atts, $defaults);
@@ -26,45 +26,68 @@
     $meta_query = array();
 
     if (!empty($atts['meta_key']) && !empty($atts['meta_value'])) {
-        $val_array = explode(',',$atts['meta_value']);
-        $val_array = array_map('trim', $val_array);
+        $val_array = array_map('trim', explode(',', $atts['meta_value']));
+        // Special handling for featured_languages
+        if ($atts['meta_key'] === 'featured_languages') {
+            global $wpdb;
+            $placeholders = implode(',', array_fill(0, count($val_array), '%s'));
+            $language_posts = $wpdb->get_col($wpdb->prepare("
+                SELECT ID FROM $wpdb->posts
+                WHERE post_type = 'languages'
+                AND post_status = 'publish'
+                AND post_title IN ($placeholders)
+            ", $val_array));
 
-        // Default compare operator
-        $compare_operator = 'LIKE';
+            if (!empty($language_posts)) {
+                // Step 2: Query videos by these IDs
+                $meta_query = ['relation' => 'OR'];
 
-        // If dealing with fellows or a serialized array, wrap ID in quotes for serialized match
-        if ($atts['meta_key'] === 'fellow_language') {
-            // For fellow_language, wrap ID in quotes for serialized match
-            $compare_operator = 'LIKE';
-            $val_array = array_map(function($value) {
-                return '"' . intval($value) . '"'; // Wrap each value in quotes for serialized match
-            }, $val_array);
-        } elseif ($atts['meta_key'] === 'nations_of_origin') {
-            $compare_operator = '=';
-        } elseif ($atts['meta_key'] === 'language_iso_codes') {
-            $compare_operator = 'LIKE';
-        }
-
-        if (count($val_array) > 1) {
-            $meta_query = array('relation' => 'OR');
-            foreach ($val_array as $value) {
-                if (!empty($value)) {
-                    $meta_query[] = array(
-                        'key' => $atts['meta_key'],
-                        'value' => $value,
-                        'compare' => $compare_operator,
-                    );
+                foreach ($language_posts as $language_id) {
+                    $meta_query[] = [
+                        'key' => 'featured_languages',
+                        'value' => '"' . $language_id . '"',
+                        'compare' => 'LIKE',
+                    ];
                 }
+
+                $args['meta_query'] = $meta_query;
+
+            } else {
+                // Force empty result if no language posts found
+                return new WP_Query(['post__in' => [0]]);
             }
+
         } else {
-            $meta_query[] = array(
-                'key' => $atts['meta_key'],
-                'value' => $val_array[0],
-                'compare' => $compare_operator,
-            );
+            // Non-featured_languages keys follow original logic
+            $compare_operator = 'LIKE';
+            if ($atts['meta_key'] === 'fellow_language') {
+                $val_array = array_map(fn($v) => '"' . intval($v) . '"', $val_array);
+            } elseif ($atts['meta_key'] === 'nations_of_origin') {
+                $compare_operator = '=';
+            }
+
+            if (count($val_array) > 1) {
+                $meta_query = ['relation' => 'OR'];
+                foreach ($val_array as $value) {
+                    if (!empty($value)) {
+                        $meta_query[] = [
+                            'key' => $atts['meta_key'],
+                            'value' => $value,
+                            'compare' => $compare_operator,
+                        ];
+                    }
+                }
+            } else {
+                $meta_query[] = [
+                    'key' => $atts['meta_key'],
+                    'value' => $val_array[0],
+                    'compare' => $compare_operator,
+                ];
+            }
+
+            $args['meta_query'] = $meta_query;
         }
 
-        $args['meta_query'] = $meta_query;
         unset($args['meta_key']);
         unset($args['meta_value']);
     } else if (!empty($atts['taxonomy']) && !empty($atts['term'])) {
@@ -109,7 +132,7 @@
     }
 
     $query = new WP_Query($args);
-    // log_data($query,"dom");
+    // log_data($query);
     return $query;
 }
 
