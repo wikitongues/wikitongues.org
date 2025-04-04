@@ -22,10 +22,12 @@
 		$sharing_title       = get_field('sharing_title');
 		$sharing_description = get_field('sharing_description');
 		$sharing_image       = get_field('sharing_image');
-		$default_description = 'Wikitongues safeguards endangered languages, expands access to linguistic resources, and directly supports language revitalization projects on every continent.'; ?>
+		$default_description = 'Wikitongues safeguards endangered languages, expands access to linguistic resources, and directly supports language revitalization projects on every continent.';
+		?>
 
 	<!-- SEO title -->
 	<title><?php
+
 		if ( $seo_title ) {
 			// use title from SEO CRM, if available
 			echo $seo_title;
@@ -33,9 +35,12 @@
 		} else if ( is_archive() ) {
 			// grab archived post type
 			$archive_post_type = get_queried_object();
-
-			// title page based on archived post type
-			echo 'Wikitongues | ' . $archive_post_type->labels->name;
+			if(!isset($archive_post_type->taxonomy)){
+				// title page based on archived post type
+				echo 'Wikitongues | ' . $archive_post_type->labels->name;
+			} else {
+				echo 'Wikitongues | ' . $archive_post_type->name;
+			};
 
 		} else {
 			// use the default page title

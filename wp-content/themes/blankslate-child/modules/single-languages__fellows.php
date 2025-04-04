@@ -47,6 +47,7 @@ if ( $fellows ):
 				'meta_value' => $language,
 				'selected_posts' => '',
 				'display_blank' => 'false',
+				'exclude_self' => 'true',
 				'taxonomy' => '',
 				'term' => '',
 			];

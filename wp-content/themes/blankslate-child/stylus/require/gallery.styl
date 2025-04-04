@@ -148,7 +148,6 @@ $aspect-ratio = 16/9
 				a
 					h6
 						margin-top 16px
-						height 7.2rem
 
 					&:hover
 						box-shadow 0px 0px 0px 4px $black
@@ -434,67 +433,6 @@ $aspect-ratio = 16/9
 			font-size ($header/12)*7
 			text-align center
 			display block
-
-.custom-gallery-fellows-navigation-wrapper
-	width 100%
-	display inline-block
-	padding 0 32px
-	position relative
-
-	.custom-gallery-fellows-navigation
-		width 100%
-		display inline-block
-		border-bottom 2px solid $border-color
-		padding-bottom 16px
-
-		strong,
-		ul,
-		p
-			max-width (100/3)%
-			display inline-block
-			float left
-
-		strong
-			text--strong($black)
-			width 50%
-			padding 16px 0
-
-		ul
-			display flex
-			width 100%
-			justify-content center
-			pointer-events none
-
-			li
-				float left
-				pointer-events all
-
-				button
-					text--body($blue())
-					background none
-					border none
-					padding 16px
-					cursor pointer
-
-					&.active
-						text--strong($blue()) // button
-						pointer-events none
-
-		p
-			text-align right
-			width 50%
-
-			a
-				text--strong($blue()) // a
-				padding 16px 0 16px 16px
-				float right
-
-		a
-			text-decoration none
-			color $blue()
-
-	.custom-gallery.fellows.full
-		margin 16px 0 32px 0
 
 .custom-cta-container
 	width 100%

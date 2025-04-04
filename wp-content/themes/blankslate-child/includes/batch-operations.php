@@ -8,11 +8,6 @@ $batch_operations = array(
         'callback'    => 'update_custom_fields_counts', // Core function
         'description' => 'Updates the counts of custom fields for languages post type.',
     ),
-    'update_video_featured_language_iso_codes' => array(
-        'label'       => 'Update Video Featured Language ISO Codes',
-        'callback'    => 'update_video_featured_language_iso_codes', // Core function
-        'description' => 'Updates the language ISO codes for videos.',
-    ),
     // Add more operations as needed
 );
 

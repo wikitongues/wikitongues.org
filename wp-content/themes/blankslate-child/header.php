@@ -104,8 +104,8 @@
 					<?php
 						if (
 							strpos($template_slug, 'revitalization') !== false ||
-							is_singular('documents') ||
-							is_singular('fellows') // how to apply "current" class to "fellows" page w/o js?
+							is_singular(['documents', 'fellows']) ||
+							is_tax('fellow-category')
 						) {
 							wp_nav_menu(
 								array(
@@ -116,8 +116,7 @@
 							);
 						} elseif (
 							strpos($template_slug, 'archive') !== false ||
-							is_singular('languages') ||
-							is_singular('videos') ||
+							is_singular(['languages', 'videos']) ||
 							is_search()
 						) {
 							wp_nav_menu(

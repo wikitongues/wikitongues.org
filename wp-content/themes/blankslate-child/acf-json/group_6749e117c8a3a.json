@@ -387,9 +387,9 @@
     "location": [
         [
             {
-                "param": "page",
+                "param": "page_template",
                 "operator": "==",
-                "value": "16669"
+                "value": "template-careers.php"
             }
         ]
     ],
@@ -402,5 +402,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1733745042
+    "modified": 1743014935
 }
