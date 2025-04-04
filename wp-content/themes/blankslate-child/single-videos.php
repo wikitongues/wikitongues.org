@@ -2,7 +2,6 @@
 $video_title = get_field('video_title');
 $youtube_id = get_field('youtube_id');
 $youtube_link = get_field('youtube_link');
-$language_iso_codes = get_field('language_iso_codes');
 $dropbox_link = get_field('dropbox_link');
 $dropbox_link_raw = str_replace("dl=0", "raw=1", $dropbox_link);
 $wikimedia_commons_link = get_field('wikimedia_commons_link');
@@ -45,6 +44,8 @@ if ($featured_languages && is_array($featured_languages)) {
     }
 }
 
+$iso_codes_string = implode(', ', $iso_codes_array);
+
 if (!empty($language_names_array)) {
   $last_name = array_pop($language_names_array);
   $sentence = implode(', ', $language_names_array);
@@ -83,8 +84,8 @@ echo '<main class="wt_single-videos__content">';
     'orderby' => 'rand',
     'order' => 'asc',
     'pagination' => 'false',
-    'meta_key' => 'language_iso_codes',
-    'meta_value' => $language_iso_codes,
+    'meta_key' => 'featured_languages',
+    'meta_value' => $iso_codes_string,
     'selected_posts' => '',
     'display_blank' => 'false',
     'exclude_self' => 'true',
