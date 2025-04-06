@@ -1,7 +1,7 @@
 <?php
-// universal banner variables; $banner_image is defined per template/page
-
 $banner_image = $page_banner['banner_image'];
+$banner_label = $banner_image['alt'] ?? '';
+$banner_url = $banner_image['url'] ?? '';
 $selected_file = get_field('selected_file');
 $display_caption = $page_banner['display_caption'] ?? '';
 
@@ -22,7 +22,7 @@ if ($principal_file) {
 $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 ?>
 
-<div class="wt_banner" role="img" aria-label="<?php echo $banner_image['alt']; ?>" style="background-image:url(<?php echo $banner_image['url']; ?>);">
+<div class="wt_banner" role="img" aria-label="<?php echo esc_html($banner_label); ?>" style="background-image:url(<?php echo esc_html($banner_url); ?>);">
 	<div class="wt_banner__copy">
 		<h1 class="wt_text--header">
 			<?php echo $page_banner['banner_header']; ?>
