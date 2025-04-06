@@ -4,6 +4,8 @@ $banner_label = $banner_image['alt'] ?? '';
 $banner_url = $banner_image['url'] ?? '';
 $selected_file = get_field('selected_file');
 $display_caption = $page_banner['display_caption'] ?? '';
+$banner_copy = wpautop(wp_kses_post($page_banner['banner_copy']));
+$banner_header = $page_banner['banner_header'];
 
 if($selected_file){
 	$banner_cta = [
@@ -24,11 +26,10 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 
 <div class="wt_banner" role="img" aria-label="<?php echo esc_html($banner_label); ?>" style="background-image:url(<?php echo esc_html($banner_url); ?>);">
 	<div class="wt_banner__copy">
-		<h1 class="wt_text--header">
-			<?php echo $page_banner['banner_header']; ?>
-		</h1>
-		<?php echo wpautop(wp_kses_post($page_banner['banner_copy'])) ?>
-		<?php if ( $banner_cta ): ?>
+		<h1 class="wt_text--header"><?php echo $banner_header; ?></h1>
+		<?php
+		echo $banner_copy;
+		 if ( $banner_cta ): ?>
 			<a href="<?php echo $banner_cta['url']; ?>">
 				<?php echo $banner_cta['title']; ?>
 			</a>
