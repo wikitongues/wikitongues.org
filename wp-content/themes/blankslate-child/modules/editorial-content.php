@@ -38,9 +38,10 @@ if( have_rows('main_content', $term) ):
 				while ( have_rows( 'custom_gallery_posts') ) {
 					the_row();
 						$custom_posts = get_sub_field('custom_gallery_post');
-
 						if ($custom_posts) {
 							$post_ids = implode(',', wp_list_pluck($custom_posts, 'ID'));
+						} else {
+							$post_ids = '';
 						}
 
 						// Gallery
