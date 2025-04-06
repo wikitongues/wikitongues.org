@@ -2,9 +2,10 @@
 	display flex
 	flex-direction row
 	justify-content space-between
-	align-items baseline
+	align-items center
 	border-bottom 2px solid $border-color
 	margin 0 32px
+	overflow hidden
 
 	&:last-of-type
 		border-bottom 2px solid $border-color
@@ -12,28 +13,19 @@
 	strong
 		text--strong($black)
 		float left
+
+		&.mobile
+			display none
+
 		a
 			text--strong($blue())
-
-	select
-		float left
-		appearance none
-		background transparent
-		border none
-		border-radius 4px
-		padding 16px
-		text--strong($blue())
-		font-size 1.6rem
-
-		&:hover
-			background $blue(10)
-			cursor pointer
 
 	ul
 		display flex
 		flex-direction row
 		margin-left 8px
-		padding-left 8px
+		padding 4px 0 4px 8px
+		overflow scroll
 
 		li
 			a
@@ -50,3 +42,34 @@
 			&.active
 				a
 					font-weight bold
+
+@media all and (max-width:$mobile)
+	.fellow-gallery-nav
+		flex-direction column
+		margin 0
+		padding 8px 0
+
+		.mobile-nav
+			display flex
+			justify-content space-between
+			width 100%
+			flex-direction row
+
+			strong
+				// margin-left 16px
+				padding 8px 16px
+
+				&.mobile
+					display initial
+
+		> strong
+			display none
+
+		ul
+			margin 0
+			padding 0
+			width 100%
+
+			li
+				a
+					padding 8px 16px

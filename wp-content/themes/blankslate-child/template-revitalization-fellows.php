@@ -36,7 +36,10 @@ if ($fellow_id) {
 ?>
 
   <div class="fellow-gallery-nav">
-    <strong>Fellowship Cohorts</strong>
+    <div class="mobile-nav">
+      <strong>Fellowship Cohorts</strong>
+      <strong class="mobile"><a href="<?php echo home_url('/fellow-category', 'relative')?>">Browse by category</a></strong>
+    </div>
     <ul>
       <?php
       foreach ($cohorts as $index => $cohort) {
