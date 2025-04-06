@@ -17,7 +17,10 @@
 	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 		?>
 			<div class="fellow-gallery-nav">
-				<strong>Fellowship Categories</strong>
+				<div class="mobile-nav">
+					<strong>Fellowship Categories</strong>
+					<strong class="mobile"><a href="<?php echo home_url('/revitalization/fellows', 'relative')?>">Browse by cohort</a></strong>
+				</div>
 				<ul>
 					<?php
 					foreach ( $terms as $term ) {
