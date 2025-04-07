@@ -1,0 +1,81 @@
+name: Sync to Staging
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [sync-staging]
+
+env:
+  DUMP_PATH: ~/public_html/tmp/prod_dump.sql
+
+jobs:
+  sync-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Drop existing views in staging (optional cleanup)
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' -N -e \"
+              SELECT table_name FROM information_schema.views
+              WHERE table_schema = '${{ secrets.STAGING_DB_NAME }}';
+            \" | while read view; do
+            echo "Dropping view \$view...""
+            mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' -e \"
+                DROP VIEW IF EXISTS \`${{ secrets.STAGING_DB_NAME }}\`.\`$view\`;
+              \"
+            done
+          "
+
+      - name: Import dump into staging DB
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' ${{ secrets.STAGING_DB_NAME }} < ${{ env.DUMP_PATH }}
+          "
+
+      - name: Sync uploads from prod to staging
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            rsync -av --delete ~/public_html/wp-content/uploads/ ~/public_html/staging.wikitongues.org/wp-content/uploads/
+          "
+
+      - name: Run WP-CLI search-replace on staging
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            cd ~/public_html/staging.wikitongues.org &&
+            wp search-replace 'https://wikitongues.org' 'https://staging.wikitongues.org' --skip-columns=guid --allow-root
+          "
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":truck: Staging DB successfully synced from `prod_dump.sql`.",
+              "username": "GitHub Actions",
+              "icon_emoji": ":truck:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":x: *Staging sync failed!*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>",
+              "username": "GitHub Actions",
+              "icon_emoji": ":rotating_light:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
