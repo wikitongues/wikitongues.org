@@ -1,0 +1,69 @@
+name: Backup Prod DB
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # Every Monday at 3am UTC
+  workflow_dispatch:
+
+env:
+  DUMP_PATH: ~/public_html/tmp/prod_dump.sql
+
+jobs:
+  backup-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Dump production database
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            mysqldump --no-tablespaces --skip-comments \
+              -u ${{ secrets.PROD_DB_USER }} -p'${{ secrets.PROD_DB_PASS }}' ${{ secrets.PROD_DB_NAME }} \
+            | sed '/\/\*!.*DEFINER=/d' \
+            > ${{ env.DUMP_PATH }}
+          "
+
+      - name: Confirm dump file created
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            ls -lh ${{ env.DUMP_PATH }}
+          "
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":floppy_disk: Prod DB backup complete (stored as `prod_dump.sql`).",
+              "username": "GitHub Actions",
+              "icon_emoji": ":floppy_disk:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":x: *Prod DB backup failed!*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>",
+              "username": "GitHub Actions",
+              "icon_emoji": ":rotating_light:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Trigger staging sync
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: sync-staging
