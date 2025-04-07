@@ -23,17 +23,15 @@ jobs:
 
       - name: Drop existing views in staging (optional cleanup)
         run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
-            mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' -N -e \"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} '
+            mysql -u ${{ secrets.STAGING_DB_USER }} -p'"'"'${{ secrets.STAGING_DB_PASS }}'"'"' -N -e "
               SELECT table_name FROM information_schema.views
-              WHERE table_schema = '${{ secrets.STAGING_DB_NAME }}';
-            \" | while read view; do
-            echo "Dropping view \$view...""
-            mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' -e \"
-                DROP VIEW IF EXISTS \`${{ secrets.STAGING_DB_NAME }}\`.\`$view\`;
-              \"
-            done
-          "
+              WHERE table_schema = '\''${{ secrets.STAGING_DB_NAME }}'\'';" \
+            | while read view; do
+                echo "Dropping view $view..."
+                mysql -u ${{ secrets.STAGING_DB_USER }} -p'"'"'${{ secrets.STAGING_DB_PASS }}'"'"' -e "DROP VIEW IF EXISTS \`${{ secrets.STAGING_DB_NAME }}\`.\`$view\`;"
+              done
+          '
 
       - name: Import dump into staging DB
         run: |
