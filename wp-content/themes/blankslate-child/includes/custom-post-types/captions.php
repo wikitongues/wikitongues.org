@@ -24,5 +24,6 @@ function create_post_type_captions()
 		'supports' => ['title', 'custom-fields'],
 		'has_archive' => true,
 		'show_in_rest' => true,
+		'rest_controller_class' => 'WT_REST_Posts_Controller'
 	));
 }
