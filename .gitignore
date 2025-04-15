@@ -49,6 +49,7 @@ error_log
 ggstemp.html
 readme_backup.md
 temp/
+temp-captions/
 transmit_sync_offset_2135232021
 /wp-content/backups-dup-pro/
 tool-sync-db-from-prod.sh
