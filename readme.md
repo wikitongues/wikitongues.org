@@ -25,7 +25,7 @@
 **4. Setting Up Plugins**
 * In admin ([localhost:8888/wikitongues/wp-admin/](localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
 * Install [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/) by putting the plugin folder provided by the maintainer in `/wp-content/plugins/`.
-* In the sidebar, click on `Add New Plugin`. Add the following plugins. 
+* In the sidebar, click on `Add New Plugin`. Add the following plugins.
 	* [Classic editor](https://wordpress.org/plugins/classic-editor/)
 	* [Make Connector](https://wordpress.org/plugins/integromat-connector/)
 	* [WPS Hide Login](https://wordpress.org/plugins/wps-hide-login/) provides increased security to the site by masking the admin url.
@@ -203,6 +203,18 @@ Database access through Beekeeper Studio is only possible while the SSH tunnel i
 ## Database Sync
 Work is underway to syncronize databases across environments. To sync your local database up with Prod, run `bash tool-sync-db-from-prod.sh` from your local terminal.
 
+## Working with data
+When importing data, there are 2 general approaches based on the objective:
+
+1. bulk import and
+1. pipeline import
+
+For **bulk import**, write an importer for the target data, and prepare a csv of the bulk dataset. Import it with wp-cli.
+
+For **pipeline import**, work with Make.com to create a scenario that keeps the dataset up to date with Airtable.
+> **Important note:** For importing values that are post objects in airtable, 2 things are required:
+> The post type needs to have access to the rest controller class WT_REST_Posts_Controller 'rest_controller_class' => 'WT_REST_Posts_Controller'
+> AND the field keys on Make.com need to be prefixed with _WT_TMP_. This enables wordpress to intercept the update and handle associating the import with the appropriate post records.
 
 # CSS and Compiling Stylus
 * Install [stylus](https://stylus-lang.com/)
