@@ -291,7 +291,28 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
-         }
+        },
+        {
+            "key": "field_68056a26feebe",
+            "label": "Wikipedia Description",
+            "name": "wikipedia_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        }
     ],
     "location": [
         [
@@ -311,5 +332,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1738497029
+    "modified": 1745185341
 }

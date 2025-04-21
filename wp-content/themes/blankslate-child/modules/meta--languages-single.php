@@ -8,7 +8,7 @@
 	$lexicon_target = is_array($lexicon_target) ? $lexicon_target : [];
 	$lexicons = array_merge($lexicon_source, $lexicon_target);
 	$lexicons_count = count($lexicons);
-
+	$wikipedia_description = get_field('wikipedia_description');
 	$wikipedia = get_field('wikipedia_url');
 	$olac = get_field('olac_url');
 	$glottocode = get_field('glottocode');
@@ -32,6 +32,11 @@
 	<h1>
 		<?php the_field('standard_name'); ?>
 	</h1>
+	<?php if ( $wikipedia_description )
+		echo '<p>'. $wikipedia_description . '&nbsp;';
+		echo '<a href="'.$wikipedia.'">Read more on Wikipedia</a>';
+		echo '</p>';
+	?>
 	<?php if ( $alternate_names ): ?>
 		<div class="metadata" id="alternate-names">
 			<strong class="mobile-accordion-header">Alternate Names</strong>
