@@ -5,7 +5,7 @@ get_header();
 // team banner
 $team_banner = get_field('team_banner');
 
-include( 'modules/banner--team.php' );
+include( 'modules/banners/banner--team.php' );
 
 // define partner posts to display (acf)
 $partners = get_field('partners');
@@ -22,7 +22,7 @@ foreach( $partners as $post ) {
 	$partner_email = get_field('partner_email');
 
 	// show board member module
-	include( 'modules/team-member--partner.php' );
+	include( 'modules/team/team-member--partner.php' );
 
 } wp_reset_postdata();
 

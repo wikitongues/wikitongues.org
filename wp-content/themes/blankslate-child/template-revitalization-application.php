@@ -9,7 +9,7 @@ get_header();
 $page_banner = get_field('revitalization_application_banner');
 
 // bug - banner displays twice, hiding with css
-include( 'modules/banner--main.php' );
+include( 'modules/banners/banner--main.php' );
 
 // if applications are open, display button
 // include( 'modules/button--wide.php' );

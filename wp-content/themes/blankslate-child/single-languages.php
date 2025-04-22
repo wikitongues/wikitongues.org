@@ -8,12 +8,6 @@ function enqueue_mobile_accordion_script() {
 
 $standard_name = get_field('standard_name');
 $language = get_the_ID();
-$videos = get_field('speakers_recorded');
-$videos = is_array($videos) ? $videos : [];
-$videos_count = count($videos);
-$external_resources = get_field('resources');
-$external_resources = is_array($external_resources) ? $external_resources : [];
-$external_resources_count = count($external_resources);
 $nations_of_origin = get_field('nations_of_origin');
 
 // ====================
@@ -27,13 +21,13 @@ if (is_singular('languages')) {
 
 get_header();
 
-include( 'modules/meta--languages-single.php' );
+include( 'modules/languages/meta--languages-single.php' );
 
 echo '<main class="wt_single-languages__content">';
-include( 'modules/single-languages__fellows.php' );
-include( 'modules/single-languages__videos.php' );
-include( 'modules/single-languages__lexicons.php' );
-include( 'modules/single-languages__resources.php' );
+include( 'modules/languages/single-languages__fellows.php' );
+include( 'modules/languages/single-languages__videos.php' );
+include( 'modules/languages/single-languages__lexicons.php' );
+include( 'modules/languages/single-languages__resources.php' );
 echo '</main>';
 
 // ====================

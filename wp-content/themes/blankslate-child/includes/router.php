@@ -1,13 +1,14 @@
 <?php
 // Route
 function wikitongues_custom_template_redirects() {
+
 	// Archive redirects
 	if (is_post_type_archive('fellows')) {
 		wp_redirect(home_url('/revitalization/fellows', 'relative'));
 		exit;
 	}
 
-	if (is_post_type_archive(['languages', 'videos', 'lexicons', 'resources'])) {
+	if (is_post_type_archive(['languages', 'videos', 'lexicons', 'resources', 'captions'])) {
 		wp_redirect(home_url('/archive', 'relative'));
 		exit;
 	}
@@ -28,6 +29,19 @@ function wikitongues_custom_template_redirects() {
 	}
 
 	// Single redirects
+
+	// Redirect captions to their source_video page
+	if ( is_singular('captions') ) {
+		$source_video = get_field('source_video');
+
+		if ( $source_video && get_post_status($source_video) === 'publish' ) {
+			wp_redirect( get_permalink($source_video) );
+			exit;
+		} else {
+			wp_redirect(home_url('/archive', 'relative'));
+			exit;
+		}
+	}
 
 	// Redirect lexicons to their source_language page
 	if ( is_singular('lexicons') ) {

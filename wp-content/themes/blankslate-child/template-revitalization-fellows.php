@@ -6,7 +6,7 @@ $cohorts = '';
 
 get_header();
 
-include( 'modules/banner--main.php' );
+include( 'modules/banners/banner--main.php' );
 
 // ==================
 // Create cohort set
