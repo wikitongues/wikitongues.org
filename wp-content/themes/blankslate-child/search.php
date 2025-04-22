@@ -4,10 +4,10 @@
 get_header();
 
 // reset searchbar
-include( 'modules/banner--searchbar.php' );
+include( 'modules/banners/banner--searchbar.php' );
 
 // pull search results loop
-include( 'modules/search-results.php' );
+include( 'modules/search/search-results.php' );
 
 include( 'modules/newsletter.php' );
 

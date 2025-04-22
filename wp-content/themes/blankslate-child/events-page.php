@@ -2,7 +2,7 @@
 /* Template Name: Events */
 get_header();
 $page_banner = get_field('events_banner');
-include('modules/banner--main.php');
+include( 'modules/banners/banner--main.php');
 ?>
 
 <div class="events">

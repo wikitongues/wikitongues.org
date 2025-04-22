@@ -6,7 +6,7 @@ get_header();
 // team banner
 $team_banner = get_field('team_banner');
 
-include( 'modules/banner--team.php' );
+include( 'modules/banners/banner--team.php' );
 
 // define team member posts to display
 $staff_members = get_field('staff_members');
@@ -36,7 +36,7 @@ foreach( $staff_members as $post ) {
 	];
 
 	// show board member module
-	include( 'modules/team-member--wide.php' );
+	include( 'modules/team/team-member--wide.php' );
 
 } wp_reset_postdata();
 echo "</div>";
@@ -81,7 +81,7 @@ if ( $interns_and_volunteers ) {
 			'website'   => ['url' => get_field('website'), 'icon' => 'fa-solid fa-link'],
 			'youtube'   => ['url' => get_field('youtube'), 'icon' => 'fa-brands fa-youtube']
 		];
-		include( 'modules/team-member--grid.php' );
+		include( 'modules/team/team-member--grid.php' );
 	} wp_reset_postdata();
 }
 echo "</div>";

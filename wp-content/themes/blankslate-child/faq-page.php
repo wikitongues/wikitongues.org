@@ -13,7 +13,7 @@ get_header();
 // banner
 $page_banner = get_field('faq_banner');
 
-include( 'modules/banner--main.php' );
+include( 'modules/banners/banner--main.php' );
 
 echo '<div class="faq-container">';
 

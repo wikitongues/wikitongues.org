@@ -24,7 +24,7 @@ if( have_rows('main_content', $term) ):
 				? $page_banner_override['banner_copy']
 				: $page_banner['banner_copy'];
 
-			include( 'banner--main.php' );
+			include( 'banners/banner--main.php' );
 		elseif( $layout == 'video_layout' ):
 			include( 'flexible-content/video-layout.php' );
 		elseif( $layout == 'testimonials_layout' ):
@@ -34,37 +34,7 @@ if( have_rows('main_content', $term) ):
 		elseif( $layout == 'link_group_layout' ):
 			include( 'flexible-content/link-group-layout.php' );
 		elseif( $layout == 'gallery_layout' ):
-			if ( have_rows( 'custom_gallery_posts' ) ) {
-				while ( have_rows( 'custom_gallery_posts') ) {
-					the_row();
-						$custom_posts = get_sub_field('custom_gallery_post');
-
-						if ($custom_posts) {
-							$post_ids = implode(',', wp_list_pluck($custom_posts, 'ID'));
-						}
-
-						// Gallery
-						$params = [
-							'title' => get_sub_field('custom_gallery_title'),
-							'subtitle' => '',
-							'post_type' => get_sub_field('custom_gallery_type'),
-							'custom_class' => 'full',
-							'columns' => get_sub_field('custom_gallery_columns'),
-							'posts_per_page' => get_sub_field('custom_gallery_posts_per_page'),
-							'orderby' => 'rand',
-							'order' => 'asc',
-							'pagination' => get_sub_field('custom_gallery_paginate'),
-							'meta_key' => '',
-							'meta_value' => '',
-							'selected_posts' => esc_attr($post_ids),
-							'display_blank' => 'false',
-							'exclude_self' => 'true',
-							'taxonomy' => '',
-							'term' => '',
-						];
-						echo create_gallery_instance($params);
-				}
-			};
+			include( 'flexible-content/gallery-layout.php' );
 		endif;
 
 	endwhile;

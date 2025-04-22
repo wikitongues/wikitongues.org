@@ -47,7 +47,7 @@ if (is_singular('fellows')) {
 
 get_header();
 
-include( 'modules/meta--fellows-single.php' );
+include( 'modules/fellows/meta--fellows-single.php' );
 
 $fellow_bio = get_field('fellow_bio');
 echo '<div class="main-content">';
