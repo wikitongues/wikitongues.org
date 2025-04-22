@@ -26,6 +26,7 @@
 	$nations_of_origin = get_field('nations_of_origin');
 	$writing_systems = get_field('writing_systems');
 	$linguistic_genealogy = get_field('linguistic_genealogy');
+	$egids = get_field('egids_status');
 ?>
 <div class="wt_meta--languages-single">
 	<h1>
@@ -71,7 +72,7 @@
 
 		</div>
 	<?php endif; ?>
-	<?php if ( $nations_of_origin || $writing_systems || $linguistic_genealogy ) : ?>
+	<?php if ( $nations_of_origin || $writing_systems || $linguistic_genealogy || $egids) : ?>
 		<div class="metadata" id="metadata">
 			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
 			<div class="mobile-accordion-content">
@@ -88,6 +89,11 @@
 				<?php if ( $linguistic_genealogy ): ?>
 					<strong>Linguistic genealogy</strong>
 					<p class="wt_text--label"><?php echo $linguistic_genealogy; ?></p>
+				<?php endif; ?>
+
+				<?php if ( $egids ): ?>
+					<strong>EGIDS Status</strong>
+					<p class="wt_text--label"><?php echo $egids; ?></p>
 				<?php endif; ?>
 			</div>
 		</div>
