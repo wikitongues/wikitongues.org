@@ -4,11 +4,16 @@
 	$wikipedia = get_field('wikipedia_url');
 	// $wikipedia_description = get_field('wikipedia_description');
 	$wikipedia_description = '';
+	$language_wikipedia = [
+		'url' => get_field('language_wikipedia_url'),
+		'name' => get_field('language_wikipedia_name')
+	];
 	$olac = get_field('olac_url');
 	$glottocode = get_field('glottocode');
 	$glottolog = !empty($glottocode) ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
 	$ethnologue = 'https://www.ethnologue.com/language/'.get_the_title();
 	$links = [
+		$language_wikipedia['name'] => $language_wikipedia['url'],
 		'English Wikipedia Article' => $wikipedia,
 		'ethnologue' => $ethnologue,
 		'glottolog' => $glottolog,

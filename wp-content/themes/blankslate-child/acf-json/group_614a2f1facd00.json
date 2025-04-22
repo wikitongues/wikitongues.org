@@ -180,7 +180,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "16.666666667",
+                "width": "12.5",
                 "class": "",
                 "id": ""
             },
@@ -201,7 +201,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "16.666666667",
+                "width": "12.5",
                 "class": "",
                 "id": ""
             },
@@ -222,7 +222,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33.333333333",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -232,7 +232,7 @@
         },
         {
             "key": "field_614a2f693b682",
-            "label": "Wikipedia URL",
+            "label": "English Wikipedia URL",
             "name": "wikipedia_url",
             "aria-label": "",
             "type": "url",
@@ -240,13 +240,52 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33.333333333",
+                "width": "16.666666667",
                 "class": "",
                 "id": ""
             },
             "default_value": "",
             "allow_in_bindings": 1,
             "placeholder": ""
+        },
+        {
+            "key": "field_680789a5b616d",
+            "label": "Language Wikipedia URL",
+            "name": "language_wikipedia_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "16.666666667",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_68078a7443f01",
+            "label": "Language Wikipedia Name",
+            "name": "language_wikipedia_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "16.666666667",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_68056a26feebe",
@@ -384,5 +423,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745316738
+    "modified": 1745324676
 }
