@@ -38,11 +38,11 @@
 			// load alert banner if user hasn't visited the site in 1 day
 			// day counter var isn't working, counting in seconds ~~~~DU Feb '24
 			//if ( $_SESSION['days_since_last_visit']>86400 ) {
-				// include( 'modules/banner--alert.php' );
+				// include( 'modules/banners/banner--alert.php' );
 			//}
 
 			if ( $banner_alert_status === 'active' ) {
-				include( 'modules/banner--alert.php' );
+				include( 'modules/banners/banner--alert.php' );
 			}
 
 			?>

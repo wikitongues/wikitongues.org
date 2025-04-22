@@ -11,7 +11,7 @@ $impact_photo = get_field('impact_photo');
 $fundraising_photo = get_field('fundraising_photo');
 $fundraising_link = home_url('/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ', 'relative');
 
-include( 'modules/banner--main.php' );
+include( 'modules/banners/banner--main.php' );
 ?>
 
 <div class="content">

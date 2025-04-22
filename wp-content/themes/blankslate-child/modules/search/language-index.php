@@ -64,7 +64,7 @@ class LazyLanguageLoader {
 		this.createLetterContainer(letter);
 		this.showLoader();
 
-		return fetch(`../wp-content/themes/blankslate-child/modules/language-index-ajax.php?start_letter=${encodeURIComponent(letter)}`)
+		return fetch(`../wp-content/themes/blankslate-child/modules/search/language-index-ajax.php?start_letter=${encodeURIComponent(letter)}`)
 			.then(response => response.json())
 			.then(data => {
 				if (!Array.isArray(data) || data.length === 0) {

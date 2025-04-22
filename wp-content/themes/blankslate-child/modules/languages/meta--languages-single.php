@@ -1,24 +1,18 @@
 <?php
-	$videos = get_field('speakers_recorded');
-	$videos = is_array($videos) ? $videos : [];
-	$videos_count = count($videos);
-	$lexicon_source = get_field('lexicon_source');
-	$lexicon_target = get_field('lexicon_target');
-	$lexicon_source = is_array($lexicon_source) ? $lexicon_source : [];
-	$lexicon_target = is_array($lexicon_target) ? $lexicon_target : [];
-	$lexicons = array_merge($lexicon_source, $lexicon_target);
-	$lexicons_count = count($lexicons);
-	$wikipedia_description = get_field('wikipedia_description');
+
+	$autonym = get_field('autonym');
 	$wikipedia = get_field('wikipedia_url');
+	// $wikipedia_description = get_field('wikipedia_description');
+	$wikipedia_description = '';
 	$olac = get_field('olac_url');
 	$glottocode = get_field('glottocode');
 	$glottolog = !empty($glottocode) ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
 	$ethnologue = 'https://www.ethnologue.com/language/'.get_the_title();
 	$links = [
+		'English Wikipedia Article' => $wikipedia,
 		'ethnologue' => $ethnologue,
 		'glottolog' => $glottolog,
 		'Open Language Archives Community' => $olac,
-		'English Wikipedia Article' => $wikipedia,
 	];
 
 	$alternate_names = get_field('alternate_names');
@@ -30,13 +24,20 @@
 ?>
 <div class="wt_meta--languages-single">
 	<h1>
-		<?php the_field('standard_name'); ?>
+		<?php echo $standard_name; ?>
 	</h1>
-	<?php if ( $wikipedia_description )
-		echo '<p>'. $wikipedia_description . '&nbsp;';
-		echo '<a href="'.$wikipedia.'">Read more on Wikipedia</a>';
-		echo '</p>';
-	?>
+	<?php if ( $wikipedia_description ) :?>
+		<p>
+			<?php echo $wikipedia_description ?> &nbsp;
+			<a href="<?php echo $wikipedia ?>">Read more on Wikipedia</a>
+		</p>
+	<?php endif; ?>
+	<?php if ( $autonym ): ?>
+		<div class="metadata" id="autonym">
+			<strong class="mobile-accordion-header">Autonyms</strong>
+			<p class="mobile-accordion-content"><?php echo $autonym; ?></p>
+		</div>
+	<?php endif; ?>
 	<?php if ( $alternate_names ): ?>
 		<div class="metadata" id="alternate-names">
 			<strong class="mobile-accordion-header">Alternate Names</strong>
@@ -86,25 +87,8 @@
 			</div>
 		</div>
 	<?php endif; ?>
-	<div class="metadata" id="resources">
-		<strong class="wt_sectionHeader mobile-accordion-header"><?php  echo $standard_name; ?> resources</strong>
-		<ul class="resources mobile-accordion-content">
-			<li>
-				<strong>Videos</strong>
-				<a href="<?php echo home_url('/submit-a-video', 'relative'); ?>">Submit a video</a>
-			</li>
-			<li>
-				<strong>Dictionaries, phrase books, and lexicons</strong>
-				<a href="<?php echo home_url('/submit-a-lexicon', 'relative'); ?>">Submit a lexicon</a>
-			</li>
-			<li>
-				<strong>External Resources</strong>
-				<a href="<?php echo home_url('/submit-a-resource', 'relative'); ?>">Recommend a resource</a>
-			</li>
-		</ul>
-	</div>
 	<div class="metadata" id="external-links">
-		<strong class="wt_sectionHeader mobile-accordion-header">Learn more about <?php  echo $standard_name; ?></strong>
+		<strong class="mobile-accordion-header">Learn more about <?php  echo $standard_name; ?></strong>
 		<ul class="mobile-accordion-content">
 		<?php
 			foreach ($links as $key => $value) {

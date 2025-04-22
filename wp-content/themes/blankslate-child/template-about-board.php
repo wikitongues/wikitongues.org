@@ -6,7 +6,7 @@ get_header();
 // team banner
 $team_banner = get_field('team_banner');
 
-include( 'modules/banner--team.php' );
+include( 'modules/banners/banner--team.php' );
 
 // define team member posts to display
 $board_members = get_field('board_members');
@@ -36,7 +36,7 @@ foreach( $board_members as $post ) {
 
 
 	// show board member module
-	include( 'modules/team-member--wide.php' );
+	include( 'modules/team/team-member--wide.php' );
 
 } wp_reset_postdata();
 echo "</div>";

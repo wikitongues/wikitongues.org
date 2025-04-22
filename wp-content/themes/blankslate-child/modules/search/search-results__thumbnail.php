@@ -16,9 +16,7 @@ if ( $post_type === 'languages' ) {
 	$thumbnail_cta_test = 'Read more';
 
 }
-
 if ( $thumbnail_image ) {
-
 	echo '<div role="img" class="wt_search-results__thumbnail--image" style="background-image:url('.
 		 $thumbnail_image['url'] .
 		 wp_get_attachment_url($thumbnail_image) .
