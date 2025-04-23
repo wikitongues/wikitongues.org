@@ -8,12 +8,13 @@
       'width' => get_field('metadata_width')
     ];
 
-    if ($public_status !== 'Public') {
-      $thumbnail_url = home_url('/wp-content/uploads/2025/04/wikitongues_processing_thumbnail.png');
-    }
-
     if (empty($metadata['height']) || empty($metadata['width'])) {
       $thumbnail_url = home_url('/wp-content/uploads/2025/04/wikitongues_audio_thumbnail.png');
+    }
+
+    // Public status check is the most important one. If not public, then processing.
+    if ($public_status !== 'Public') {
+      $thumbnail_url = home_url('/wp-content/uploads/2025/04/wikitongues_processing_thumbnail.png');
     }
 
     $thumbnail_object = $thumbnail_url
