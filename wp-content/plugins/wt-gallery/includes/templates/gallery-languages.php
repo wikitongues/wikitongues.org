@@ -11,7 +11,7 @@
       $video_query->the_post();
       $thumbnail = get_custom_image('videos');
       $video_title = get_custom_title('videos');
-      $thumbnail_object .= '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail).');" alt="' . get_the_title() . '"> <p>' . $video_title . '</p></div>';
+      $thumbnail_object .= '<div class="thumbnail" style="background-image:url('.esc_url($thumbnail).');" alt="' . get_the_title() . '" title=""> <p>' . $video_title . '</p></div>';
     }
   } else {
     $thumbnail_object .= '<div class="no-thumbnail"><p>No resources found to display – Yet.</p></div>';

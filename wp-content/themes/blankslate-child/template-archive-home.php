@@ -3,9 +3,9 @@
 // header
 get_header();
 
-include( 'modules/banner--searchbar.php' );
+include( 'modules/banners/banner--searchbar.php' );
 
-include( 'modules/language-index.php' );
+include( 'modules/search/language-index.php' );
 
 include( 'modules/newsletter.php' );
 

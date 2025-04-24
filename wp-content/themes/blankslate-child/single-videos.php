@@ -59,17 +59,17 @@ if (!empty($language_names_array)) {
 }
 // video
 echo '<main class="wt_single-videos__content">';
-  include( 'modules/videos-single--embed.php');
+  include( 'modules/videos/videos-single--embed.php');
 
   echo '<h1>' . get_field('video_title' ) . '</h1>';
 
   echo '<section class="wt_single-videos__content--body">';
 
     // left column - video metadata
-    include( 'modules/meta--videos-single.php');
+    include( 'modules/videos/meta--videos-single.php');
 
     // right column - video content
-    include( 'modules/main-content--videos-single.php');
+    include( 'modules/videos/main-content--videos-single.php');
 
   echo '</section>';
 
