@@ -1,5 +1,5 @@
 <?php
-	require_once('../../../../wp-load.php'); // Load WordPress environment
+	require_once('../../../../../wp-load.php'); // Load WordPress environment
 
 	global $wpdb;
 
