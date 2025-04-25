@@ -25,7 +25,7 @@
         },
         {
             "key": "field_680687802e7d8",
-            "label": "Autonym",
+            "label": "Endonym",
             "name": "autonym",
             "aria-label": "",
             "type": "text",
@@ -46,7 +46,7 @@
         },
         {
             "key": "field_680687892e7d9",
-            "label": "Autonym Source",
+            "label": "Endonym Source",
             "name": "autonym_source",
             "aria-label": "",
             "type": "text",
@@ -449,5 +449,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745442418
+    "modified": 1745581063
 }

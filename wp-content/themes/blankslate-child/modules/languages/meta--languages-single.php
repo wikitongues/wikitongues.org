@@ -1,6 +1,6 @@
 <?php
 
-	$autonym = get_field('autonym');
+	$endonym = get_field('autonym');
 	$wikipedia = get_field('wikipedia_url');
 	// $wikipedia_description = get_field('wikipedia_description');
 	$wikipedia_description = '';
@@ -53,10 +53,10 @@
 			<a href="<?php echo esc_url($wikipedia) ?>">Read more on Wikipedia</a>
 		</p>
 	<?php endif; ?>
-	<?php if ( $autonym ): ?>
-		<div class="metadata" id="autonym">
-			<strong class="mobile-accordion-header">Autonyms</strong>
-			<p class="mobile-accordion-content"><?php echo esc_html($autonym); ?></p>
+	<?php if ( $endonym ): ?>
+		<div class="metadata" id="endonym">
+			<strong class="mobile-accordion-header">Endonyms</strong>
+			<p class="mobile-accordion-content"><?php echo esc_html($endonym); ?></p>
 		</div>
 	<?php endif; ?>
 	<?php if ( $alternate_names ): ?>
