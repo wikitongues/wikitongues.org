@@ -4,11 +4,12 @@
 	$wikipedia = get_field( 'wikipedia_url' );
 	// $wikipedia_description = get_field('wikipedia_description');
 	$wikipedia_description = '';
-	$olac                  = get_field( 'olac_url' );
-	$glottocode            = get_field( 'glottocode' );
-	$glottolog             = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
-	$ethnologue            = 'https://www.ethnologue.com/language/' . get_the_title();
-	$links                 = array();
+	$olac = get_field('olac_url');
+	$glottocode = get_field('glottocode');
+	$glottolog = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
+	$ethnologue = 'https://www.ethnologue.com/language/'.get_the_title();
+	$links = [];
+	$territories = get_field('territories');
 
 if ( have_rows( 'wikipedia_editions' ) ) {
 	while ( have_rows( 'wikipedia_editions' ) ) {

@@ -13,3 +13,4 @@ require_once 'custom-post-types/careers.php';
 require_once 'custom-post-types/documents.php';
 require_once 'custom-post-types/captions.php';
 require_once 'custom-post-types/blogs.php';
+require_once 'custom-post-types/territories.php';
