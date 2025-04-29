@@ -108,6 +108,35 @@
             "append": ""
         },
         {
+            "key": "field_6810db0f101e3",
+            "label": "Territories",
+            "name": "territories",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "territories"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "object",
+            "multiple": 1,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 1,
+            "bidirectional_target": [
+                "field_680d0fdf5f618"
+            ],
+            "ui": 1
+        },
+        {
             "key": "field_614b90d5d2667",
             "label": "Writing Systems",
             "name": "writing_systems",
@@ -449,5 +478,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1745581063
+    "modified": 1745935331
 }

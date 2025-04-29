@@ -9,6 +9,7 @@
 	$glottolog = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
 	$ethnologue = 'https://www.ethnologue.com/language/'.get_the_title();
 	$links = [];
+	$territories = get_field('territories');
 
 	if (have_rows('wikipedia_editions')) {
 		while (have_rows('wikipedia_editions')) {

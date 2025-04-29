@@ -20,7 +20,7 @@ if ( $categories && ! is_wp_error($categories) ) {
 } else {
     $category_names = '';
 }
-log_data($categories);
+// log_data($categories);
 // $category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
 $social_links = [
 	'email'     => ['url' => get_field('email'), 'icon' => 'fa-brands fa-square-email'],
