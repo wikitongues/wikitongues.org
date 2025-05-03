@@ -1,23 +1,51 @@
-.related-territories
-	width 100%
-	padding 0 6rem
-	&.metadata
-		.territories-list
+.wt_meta--territories-single
+	width calc(100%/5)
+
+	.related-territories
+		width 100%
+
+		&.metadata
+			.territories-list
+				display flex
+				flex-wrap wrap
+				flex-direction row
+				justify-content left
+
+				.territory
+					width 20%
+					padding 8px
+					box-sizing border-box
+
+					a.territory-name
+						text--strong($blue())
+						padding 8px
+						display inline-block
+
+					.custom-gallery
+						.gallery-container
+							margin-bottom 0
+
+.wt_single-territories__content
+	width calc(100% / 5 * 4) !important
+
+.container
+	margin 0 6rem
+
+	h1
+		text--header($black)
+
+	section
+		ul.territories-list
 			display flex
 			flex-wrap wrap
-			flex-direction row
-			justify-content left
+			gap 16px
 
-			.territory
-				width 20%
-				padding 8px
-				box-sizing border-box
+			li
+				width calc(100% / 5.2)
 
-				a.territory-name
+				.territory-name
 					text--strong($blue())
-					padding 8px
-					display inline-block
 
 				.custom-gallery
 					.gallery-container
-						margin-bottom 0
+						margin 0

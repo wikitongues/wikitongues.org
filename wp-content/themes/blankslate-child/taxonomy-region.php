@@ -22,7 +22,7 @@ $territory = $current_region->name;
 		]
 	]);
 ?>
-
+<div class="container">
 	<h1><?php echo $territory ?></h1>
 	<?php	if ( $territory_query->have_posts() ) : ?>
 	<section class="related-territories metadata">
@@ -37,13 +37,14 @@ $territory = $current_region->name;
                     $language_ids = implode(',', wp_list_pluck($languages, 'ID'));
                 }
                 $params = [
-                    'title' => '',
+                    'title' => $title,
                     'subtitle' => '',
+                    'show_total' => 'true',
                     'post_type' => 'languages',
                     'custom_class' => '',
                     'columns' => 1,
                     'posts_per_page' => 1,
-                    'orderby' => '',
+                    'orderby' => 'rand',
                     'order' => '',
                     'pagination' => 'false',
                     'meta_key' => '',
@@ -66,6 +67,7 @@ $territory = $current_region->name;
 echo '<div class="wt_meta--languages-single">';
 include( 'modules/territories/territories-sibling-regions.php' );
 include( 'modules/territories/territories-parent-regions.php' );
+echo '</div>';
 echo '</div>';
 get_footer();
 ?>

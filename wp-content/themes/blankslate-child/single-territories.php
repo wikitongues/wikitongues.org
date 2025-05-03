@@ -4,12 +4,12 @@
 	get_header();
 	$territory = get_the_title();
 
-	echo '<div class="wt_meta--languages-single">';
+	echo '<div class="wt_meta--territories-single">';
 	include( 'modules/territories/meta--territories-single.php' );
 	echo '</div>';
 
 
-	echo '<main class="wt_single-languages__content">';
+	echo '<main class="wt_single-territories__content">';
 	$languages = get_field('languages');
 	$language_ids = [];
 	if ($languages) {
@@ -20,10 +20,11 @@
 	$params = [
 		'title' => $title,
 		'subtitle' => 'Wikitongues crowd-sources video samples of every language in the world.',
+		'show_total' => 'true',
 		'post_type' => 'languages',
 		'custom_class' => '',
-		'columns' => 3,
-		'posts_per_page' => 21,
+		'columns' => 4,
+		'posts_per_page' => 20,
 		'orderby' => '',
 		'order' => '',
 		'pagination' => 'true',
