@@ -80,7 +80,7 @@ function wikitongues_custom_template_redirects() {
 			$request_path = trim( substr( $request_path, strlen( $home_path ) ), '/' );
 	}
 	if ( is_404() && $request_path === 'fellow-category' ) {
-		log_data( '404 fellow-category root detected' );
+		// log_data( '404 fellow-category root detected' );
 
 		$terms = get_terms(
 			array(
