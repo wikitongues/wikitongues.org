@@ -49,7 +49,7 @@ $aspect-ratio = 16/9
 
 		.gallery-list
 			width 100%
-			gap 32px
+			gap 16px
 			display grid
 
 			.gallery-item
@@ -178,7 +178,7 @@ $aspect-ratio = 16/9
 						.thumbnail
 							margin -4px 0 -4px -4px
 							width calc(100% + 8px)
-							padding ((1/($aspect-ratio))*52)% 0// 16:9 aspect ratio
+							padding ((1/($aspect-ratio))*50)% 0// 16:9 aspect ratio
 
 
 	&.videos,
@@ -186,6 +186,35 @@ $aspect-ratio = 16/9
 		.gallery-list
 			h5
 				height 52px
+
+	&.territories
+		.gallery-container
+			.gallery-list
+				.gallery-item
+					> a
+						padding 8px 16px 16px
+						gap 8px
+
+						&:hover
+							.no-thumbnail,
+							.thumbnail
+								margin 0
+								width 100%
+								padding ((1/($aspect-ratio))*50)% 0// 16:9 aspect ratio
+
+						.languages
+							height 100%
+							display grid
+							grid-template-columns repeat(2, 1fr)
+							gap 8px
+
+							.thumbnail
+								p
+									margin 4px
+									padding 4px 8px
+									background $black
+									color $parchment
+									border-radius 4px
 
 	&.fellows
 		.gallery-container

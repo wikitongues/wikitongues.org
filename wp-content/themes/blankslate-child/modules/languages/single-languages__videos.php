@@ -10,7 +10,7 @@
 		$params = [
 			'title' => $title,
 			'subtitle' => 'Wikitongues crowd-sources video samples of every language in the world.',
-			'show_total' => 'true',
+			'show_total' => 'false',
 			'post_type' => 'videos',
 			'custom_class' => '',
 			'columns' => 3,

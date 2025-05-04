@@ -17,7 +17,6 @@ body
 	&.post-type-archive-reports,
 	&.post-type-archive-careers,
 	&.tax-fellow-category,
-	&.tax-region,
 	&.error404
 		margin-top $primary
 
@@ -28,7 +27,8 @@ body
 	&.page-parent,
 	&.page-child,
 	&.search,
-	&.single:not(&.single-careers):not(&.single-document)
+	&.single:not(&.single-careers):not(&.single-document),
+	&.tax-region
 		margin-top $primary + $secondary
 
 		&.logged-in

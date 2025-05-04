@@ -1,10 +1,10 @@
 .wt_meta--territories-single
 	width calc(100%/5)
 
-	.related-territories
+	.metadata
 		width 100%
 
-		&.metadata
+		&.related-territories
 			.territories-list
 				display flex
 				flex-wrap wrap
@@ -25,23 +25,31 @@
 						.gallery-container
 							margin-bottom 0
 
+		strong
+			a
+				text--strong($blue())
+				display inline-block
+				margin-bottom 4px
+
 .wt_single-territories__content
 	width calc(100% / 5 * 4) !important
 
 .container
-	margin 0 6rem
+	width calc(100%/5 * 4)
+	padding 0 6rem 6rem
+	float left
 
 	h1
 		text--header($black)
 
 	section
 		ul.territories-list
-			display flex
-			flex-wrap wrap
+			display grid
+			grid-template-columns repeat(4, 1fr)
 			gap 16px
 
 			li
-				width calc(100% / 5.2)
+				width 100%
 
 				.territory-name
 					text--strong($blue())
