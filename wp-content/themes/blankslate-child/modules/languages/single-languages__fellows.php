@@ -36,6 +36,7 @@ if ( $fellows ):
 			$params = [
 				'title' => $title,
 				'subtitle' => 'The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects.',
+				'show_total' => 'false',
 				'post_type' => 'fellows',
 				'custom_class' => 'display',
 				'columns' => 1,

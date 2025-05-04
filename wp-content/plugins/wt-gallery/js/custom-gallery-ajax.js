@@ -7,7 +7,6 @@ jQuery(document).on('click', '.gallery-pagination a.page-numbers', function(e) {
   var galleryContainer = jQuery('#' + galleryId);
   var galleryAtts = galleryContainer.data('attributes'); // Retrieve data attributes for gallery
 
-
   jQuery.ajax({
     type: 'POST',
     url: custom_gallery_ajax_params.ajax_url,
@@ -19,7 +18,7 @@ jQuery(document).on('click', '.gallery-pagination a.page-numbers', function(e) {
       nonce: custom_gallery_ajax_params.nonce
     },
     success: function(response) {
-      galleryContainer.html(response); // Replace the gallery content
+      galleryContainer.html(response.data.html); // Replace the gallery content
     },
     error: function(xhr, status, error) {
       console.error('AJAX Error:', error);
