@@ -228,8 +228,16 @@ function custom_gallery($atts) {
     $classes .= ' ' . $atts['custom_class'];
   }
 
-  // construct title and count
-  $header = $atts['show_total']==='true' ? $atts['title'].'<span>'.$query->found_posts.' '.$atts['post_type'].'</span>' : $atts['title'];
+  $count = (int) $query->found_posts;
+  $post_type_obj = get_post_type_object( $atts['post_type'] );
+
+  $singular = $post_type_obj ? $post_type_obj->labels->singular_name : rtrim( $atts['post_type'], 's' );
+  $plural   = $post_type_obj ? $post_type_obj->labels->name          : $singular . 's';
+
+  $label = _n( $singular, $plural, $count, 'my-text-domain' ); // note: the empty '' at the end is for translation purposes, it can be left empty if not needed.
+  $header = $atts['show_total'] === 'true'
+	? $atts['title'] . '<span>' . $count . ' ' . $label . '</span>'
+	: $atts['title'];
 
   $output = '';
   if ($query->have_posts() || $atts['display_blank']==='true') {
