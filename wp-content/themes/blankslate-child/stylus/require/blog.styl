@@ -1,0 +1,134 @@
+.blog-archive,
+.blog-post
+	text--body($black)
+
+.blog-archive
+	max-width $content
+	width 100%
+	margin 0 auto
+
+	h1
+		text--header($black)
+		margin-bottom 2.4rem
+
+	h5
+		text--body($grey-50)
+		margin-bottom 2.4rem
+
+	.blog-posts
+		a
+			display flex
+			justify-content flex-end
+			flex-direction column
+			height 450px
+			border-radius 8px 0 8px 0
+			background-position center
+			background-size cover
+			margin-bottom 1.6rem
+			color $parchment
+			padding 3.2rem
+
+			*
+				margin-bottom 1.6rem
+				max-width 600px
+
+				&:last-child
+					margin-bottom 0
+
+			h2
+				text--header(inherit)
+				line-height normal
+
+			.excerpt
+				p
+					font-size 1.6rem
+
+.blog-post
+	.breadcrumbs,
+	.entry-header,
+	.entry-content
+		width ($content / 1.5)
+		margin 0 auto
+
+	.breadcrumbs
+		a
+			color $blue()
+			margin-bottom 2.4rem
+			display block
+
+	header
+		*
+			margin-bottom 2.4rem
+			color $grey-50
+
+		h1
+			text--header($black)
+
+		.excerpt
+			p
+				font-size $fontScale(4) // 2
+
+	.entry-content
+		*
+			margin-bottom 1.6rem
+
+		em
+			font-style italic
+
+		.wp-caption
+			max-width 100%
+			margin 0 auto 1.6rem
+
+			img
+				width 110%
+				height auto
+				margin-left -5%
+				margin-top 2.4rem
+				border-radius 1.6rem
+
+		.wp-caption-text
+			color $grey-50
+			text-align center
+			max-width 960px
+			margin 0 auto
+
+		a
+			anchor($blue(), 4px)
+			text-decoration underline
+
+	.related-posts
+		width $content
+		margin 3.2rem auto
+		background $grey-10
+		border-radius 8px
+
+		h4
+			margin-bottom 1.6rem
+
+		.related-posts-grid
+			display grid
+			gap 1.6rem
+			grid-template-columns repeat(auto-fit, minmax(200px, 2fr))
+
+			.related-post
+				a
+					color $black
+					display flex
+					flex-direction column
+
+					*
+						margin-bottom 1.6rem
+
+					h6
+						height 90px
+
+					.thumbnail
+						display flex
+						height 200px
+						border-radius 8px 0 8px 0
+						background-position center
+						background-size cover
+
+					.excerpt,
+					.meta
+						color $grey-50

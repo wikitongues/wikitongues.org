@@ -10,6 +10,7 @@
 			$params = [
 				'title' => $title,
 				'subtitle' => 'Wikitongues indexes language resources from across the internet.',
+				'show_total' => 'false',
 				'post_type' => 'resources',
 				'custom_class' => '',
 				'columns' => 3,

@@ -50,6 +50,7 @@ include( 'modules/banners/banner--main.php' );
 	$params = [
 		'title' => get_sub_field('custom_gallery_title'),
 		'subtitle' => '',
+		'show_total' => 'false',
 		'post_type' => 'fellows',
 		'custom_class' => 'custom fundraiser',
 		'columns' => 1,
