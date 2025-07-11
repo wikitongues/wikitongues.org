@@ -29,13 +29,9 @@
             while ($related->have_posts()) : $related->the_post();
           ?>
               <article class="related-post">
-                <a href="<?php the_permalink(); ?>">
-                  <h6><?php the_title(); ?></h6>
-                  <?php if (has_post_thumbnail()) : ?>
-                    <div class="thumbnail" style="background-image: url('<?php echo get_the_post_thumbnail_url(get_the_ID(), 'medium'); ?>');"></div>
-                  <?php endif; ?>
-                  <p class="excerpt"><?php echo wp_kses_post( wp_trim_words( get_the_excerpt(), 9, '&hellip;' )); ?></p>
-                  <p class="meta"><?php echo get_the_date(); ?></p>
+                <a href="<?php the_permalink(); ?>" style="background-image: linear-gradient(#00000047, #000000b8), url('<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>');">
+                  <p class="related-title"><?php the_title();?></p>
+                  <p class="meta"><?php echo get_the_date();?></p>
                 </a>
               </article>
           <?php
