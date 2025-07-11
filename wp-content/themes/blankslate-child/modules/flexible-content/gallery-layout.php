@@ -12,6 +12,7 @@
 				$params = [
 					'title' => get_sub_field('custom_gallery_title'),
 					'subtitle' => '',
+					'show_total' => 'false',
 					'post_type' => get_sub_field('custom_gallery_type'),
 					'custom_class' => 'full',
 					'columns' => get_sub_field('custom_gallery_columns'),

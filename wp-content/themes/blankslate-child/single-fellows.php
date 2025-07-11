@@ -66,6 +66,7 @@ include( 'modules/editorial-content.php' );
 $params = [
 	'title' => '',
 	'subtitle' => '',
+	'show_total' => 'false',
 	'post_type' => 'fellows',
 	'custom_class' => 'full',
 	'columns' => 4,

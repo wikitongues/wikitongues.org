@@ -56,13 +56,24 @@ function load_custom_gallery_ajax_callback() {
   // Fetch query results
   $query = get_custom_gallery_query($atts);
   $data_attributes = esc_attr(json_encode($atts));
+  $total_items = $query->found_posts;
 
   if ($query->have_posts()) {
       ob_start();
       echo render_gallery_items($query, $atts, $gallery_id, $paged, $data_attributes);
-      echo ob_get_clean();
+      $html = ob_get_clean();
+
+      wp_send_json_success([
+        'html' => $html,
+        'total' => $total_items,
+        'page' => $paged,
+      ]);
   } else {
-      echo '<p>No posts found.</p>';
+      wp_send_json_success([
+        'html' => '<p>No posts found.</p>',
+        'total' => 0,
+        'page' => $paged,
+    ]);
   }
 
   wp_die(); // End the AJAX request
@@ -111,6 +122,7 @@ function create_gallery_instance($params) {
 	$defaults = [
 		'title'           => '',
     'subtitle'        => '',
+    'show_total'      => 'false',
 		'custom_class'    => '',
 		'post_type'       => 'post',
 		'columns'         => 1,
@@ -132,6 +144,7 @@ function create_gallery_instance($params) {
 	return do_shortcode('[custom_gallery '.
     'title="'         . $args['title']          . '" '.
     'subtitle="'      . $args['subtitle']       . '" '.
+    'show_total="'    . $args['show_total']     . '" '.
     'custom_class="'  . $args['custom_class']   . '" '.
     'post_type="'     . $args['post_type']      . '" '.
     'columns="'       . $args['columns']        . '" '.
@@ -157,6 +170,7 @@ function custom_gallery($atts) {
   $atts = shortcode_atts(array(
     'title'           => '',
     'subtitle'        => '',
+    'show_total'      => '',
     'custom_class'    => '',
     'post_type'       => 'languages', // videos, languages, fellows
     'columns'         => 3,
@@ -214,10 +228,21 @@ function custom_gallery($atts) {
     $classes .= ' ' . $atts['custom_class'];
   }
 
+  $count = (int) $query->found_posts;
+  $post_type_obj = get_post_type_object( $atts['post_type'] );
+
+  $singular = $post_type_obj ? $post_type_obj->labels->singular_name : rtrim( $atts['post_type'], 's' );
+  $plural   = $post_type_obj ? $post_type_obj->labels->name          : $singular . 's';
+
+  $label = _n( $singular, $plural, $count, 'my-text-domain' ); // note: the empty '' at the end is for translation purposes, it can be left empty if not needed.
+  $header = $atts['show_total'] === 'true'
+	? $atts['title'] . '<span>' . $count . ' ' . $label . '</span>'
+	: $atts['title'];
+
   $output = '';
   if ($query->have_posts() || $atts['display_blank']==='true') {
     $output = '<div class="' . $classes . '">';
-    $output .= $atts['title'] ? '<strong class="wt_sectionHeader">'.$atts['title'].'</strong>' : '';
+    $output .= $atts['title'] ? '<strong class="wt_sectionHeader">'. $header .'</strong>' : '';
     $output .= $atts['subtitle'] ? '<p class="wt_subtitle">'.$atts['subtitle'].'</p>' : '';
     if ($query->have_posts()) {
       $output .= render_gallery_items($query, $atts, $atts['gallery_id'], $paged, $data_attributes);

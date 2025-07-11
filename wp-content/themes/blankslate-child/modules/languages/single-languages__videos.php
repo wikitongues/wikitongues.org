@@ -6,10 +6,11 @@
 		if (substr($standard_name, -7) !== 'anguage') {
       $title_name .= ' language';
 		}
-		$title = $title_name . ' Videos';
+		$title = $title_name . ' videos';
 		$params = [
 			'title' => $title,
 			'subtitle' => 'Wikitongues crowd-sources video samples of every language in the world.',
+			'show_total' => 'true',
 			'post_type' => 'videos',
 			'custom_class' => '',
 			'columns' => 3,
