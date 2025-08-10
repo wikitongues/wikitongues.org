@@ -11,3 +11,9 @@ add_filter('acf/settings/load_json', function ($paths) {
     $paths[] = get_stylesheet_directory() . '/acf-json';
     return $paths;
 });
+
+// Function to return a meta value or a default value if the primary is empty.
+// Used in page--head.php
+function wt_meta_value( $primary, $fallback ) {
+    return esc_attr( !empty( $primary ) ? $primary : $fallback );
+}
