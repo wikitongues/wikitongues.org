@@ -25,77 +25,31 @@
 		$default_description = 'Wikitongues safeguards endangered languages, expands access to linguistic resources, and directly supports language revitalization projects on every continent.';
 		?>
 
-	<!-- SEO title -->
 	<title><?php
-
+		// use title from SEO CRM, if available
 		if ( $seo_title ) {
-			// use title from SEO CRM, if available
 			echo $seo_title;
-
 		} else if ( is_archive() ) {
-			// grab archived post type
 			$archive_post_type = get_queried_object();
 			if(!isset($archive_post_type->taxonomy)){
-				// title page based on archived post type
+				// if the archive post type is not a taxonomy, use the post type name
 				echo 'Wikitongues | ' . $archive_post_type->labels->name;
 			} else {
 				echo 'Wikitongues | ' . $archive_post_type->name;
 			};
-
 		} else {
 			// use the default page title
 			echo 'Wikitongues' . ' | ' . get_the_title();
-
 		} ?>
 	</title>
 
-	<!-- SEO description -->
-	<meta name="description"
-		 content="<?php
-		 	if ( $seo_description ) {
-		 		echo $seo_description;
-		 	} else {
-		 		echo $default_description; } ?>">
-
-	<!-- SEO keywords -->
-	<meta name="keywords"
-		  content="<?php
-		  	if ( $seo_keywords ) {
-		  		echo $seo_keywords;
-		  	} else {
-		  		echo 'language, linguistics, language revitalization, endangered languages, culture, diversity, travel'; } ?>">
-
-	<!-- SEO robots instructions -->
 	<meta name="robots" content="index,follow">
-
-	<!-- Open graph title for social media sharing -->
-	<meta property="og:title"
-		  content="<?php
-		  	if ( $sharing_title ) {
-		  		echo $sharing_title;
-		  	} else {
-		  		echo 'Wikitongues' . ' | ' . get_the_title();
-		  	} ?>">
-
-	<!-- Open graph description -->
-	<meta property="og:description"
-		  content="<?php
-		  	if ( $sharing_description ) {
-		  		echo $sharing_description;
-		  	} else {
-		  		echo $default_description; } ?>">
-
-	<!-- Open graph image -->
-	<meta property="og:image"
-		  content="<?php
-		  	if ( $sharing_image ) {
-		  		echo $sharing_image['url'];
-		  	} // what should the default be here? ?>">
-
-	<!-- Open graph url -->
-	<meta property="og:url" content="<?php echo home_url( $wp->request, 'relative'); ?>">
-
-	<!-- Twitter card format -->
+	<meta name="description" content="<?php echo wt_meta_value( $seo_description, $default_description ); ?>">
+	<meta name="keywords" content="<?php echo wt_meta_value( $seo_keywords, 'language, linguistics, language revitalization, endangered languages, culture, diversity, travel' ); ?>">
+	<meta property="og:title" content="<?php echo wt_meta_value( $sharing_title, 'Wikitongues | ' . get_the_title() ); ?>">
+	<meta property="og:description" content="<?php echo wt_meta_value( $sharing_description, $default_description ); ?>">
+	<meta property="og:image" content="<?php echo wt_meta_value( $sharing_image['url'] ?? '', '' ); ?>">
+	<meta property="og:url" content="<?php echo esc_url( home_url( $wp->request, 'relative' ) ); ?>">
 	<meta name="twitter:card" content="summary_large_image">
 
 	<!-- For the CMS: Reconciling the guidelines for the image is simple: follow Facebook’s recommendation of a minimum dimension of 1200×630 pixels and an aspect ratio of 1.91:1, but adhere to Twitter’s file size requirement of less than 1MB. Validate: https://developers.facebook.com/tools/debug/sharing/ and https://cards-dev.twitter.com/validator -->
