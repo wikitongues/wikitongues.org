@@ -23,6 +23,39 @@
 		*
 			color $parchment
 
+	.custom-gallery.full.faq
+		margin 0 auto 3.2rem
+		width 90%
+		max-width $content
+		clear both
+
+		.wt_sectionHeader
+			text--header($black)
+			font-size $fontScale(6) // 3
+			border-bottom 0
+			padding-bottom 0
+
+		.gallery-container
+			.gallery-list
+				.gallery-item
+					&:first-of-type
+						&::first-letter
+							text--header($black)
+							font-size 3.2rem
+					a
+						background-color initial
+						display inline
+						float initial
+						flex-direction initial
+						justify-content initial
+						border-radius 0
+						padding 0
+						transition none
+						color $blue()
+						text--body($blue())
+						anchor($blue(),2px)
+
+
 .wt_archive
 	&__faq
 		display flex
@@ -79,7 +112,7 @@ div.success_cta
 	gap 1.6rem
 	margin 8rem 0
 
-	h4
+	h2
 		text--header($black)
 		max-width $content
 		text-align center
