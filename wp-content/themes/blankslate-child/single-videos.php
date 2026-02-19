@@ -17,7 +17,7 @@ if ( is_array( $license_link ) ) {
 $featured_languages = get_field( 'featured_languages' );
 
 $language_names_array = array();
-$iso_codes_array      = array();
+$language_ids_array   = array();
 $language_names       = '';
 
 // ====================
@@ -34,17 +34,14 @@ get_header();
 if ( $featured_languages && is_array( $featured_languages ) ) {
 	foreach ( $featured_languages as $language_post ) {
 		$standard_name = get_field( 'standard_name', $language_post->ID );
-		$iso_code      = get_field( 'iso_code', $language_post->ID );
 		if ( $standard_name ) {
 			$language_names_array[] = $standard_name;
 		}
-		if ( $iso_code ) {
-			$iso_codes_array[] = $iso_code;
-		}
+		$language_ids_array[] = $language_post->ID;
 	}
 }
 
-$iso_codes_string = implode( ', ', $iso_codes_array );
+$language_ids_string = implode( ', ', $language_ids_array );
 
 if ( ! empty( $language_names_array ) ) {
 	$last_name = array_pop( $language_names_array );
@@ -86,7 +83,7 @@ echo '<main class="wt_single-videos__content">';
 		'order'          => 'asc',
 		'pagination'     => 'false',
 		'meta_key'       => 'featured_languages',
-		'meta_value'     => $iso_codes_string,
+		'meta_value'     => $language_ids_string,
 		'selected_posts' => '',
 		'display_blank'  => 'false',
 		'exclude_self'   => 'true',

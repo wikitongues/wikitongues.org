@@ -1,12 +1,14 @@
 <?php
 /**
- * Retrieves a list of posts for the custom gallery.
+ * Builds the WP_Query args array for the custom gallery.
  *
- * @param array $args Arguments to customize the WP_Query.
- * @return WP_Query The query result.
+ * Contains all arg-building logic for get_custom_gallery_query() so it can
+ * be tested independently of WP_Query instantiation.
+ *
+ * @param array $atts Shortcode/function attributes.
+ * @return array WP_Query arguments.
  */
-
-function get_custom_gallery_query( $atts = array() ) {
+function build_gallery_query_args( $atts = array() ) {
 	$defaults = array(
 		'post_status'    => 'publish',
 		'post_type'      => 'languages', // videos, languages, fellows
@@ -27,42 +29,17 @@ function get_custom_gallery_query( $atts = array() ) {
 
 	if ( ! empty( $atts['meta_key'] ) && ! empty( $atts['meta_value'] ) ) {
 		$val_array = array_map( 'trim', explode( ',', $atts['meta_value'] ) );
-		// Special handling for featured_languages
+		// Special handling for featured_languages: meta_value contains language post IDs.
 		if ( $atts['meta_key'] === 'featured_languages' ) {
-			global $wpdb;
-			$placeholders = implode( ',', array_fill( 0, count( $val_array ), '%s' ) );
-			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- $placeholders contains only %s tokens from array_fill(), not user input.
-			$language_posts = $wpdb->get_col(
-				$wpdb->prepare(
-					"
-                SELECT ID FROM $wpdb->posts
-                WHERE post_type = 'languages'
-                AND post_status = 'publish'
-                AND post_title IN ($placeholders)
-            ",
-					$val_array
-				)
-			);
-			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-
-			if ( ! empty( $language_posts ) ) {
-				// Step 2: Query videos by these IDs
-				$meta_query = array( 'relation' => 'OR' );
-
-				foreach ( $language_posts as $language_id ) {
-					$meta_query[] = array(
-						'key'     => 'featured_languages',
-						'value'   => '"' . $language_id . '"',
-						'compare' => 'LIKE',
-					);
-				}
-
-				$args['meta_query'] = $meta_query;
-
-			} else {
-				// Force empty result if no language posts found
-				return new WP_Query( array( 'post__in' => array( 0 ) ) );
+			$meta_query = array( 'relation' => 'OR' );
+			foreach ( $val_array as $language_id ) {
+				$meta_query[] = array(
+					'key'     => 'featured_languages',
+					'value'   => '"' . intval( $language_id ) . '"',
+					'compare' => 'LIKE',
+				);
 			}
+			$args['meta_query'] = $meta_query;
 		} else {
 			// Non-featured_languages keys follow original logic
 			$compare_operator = 'LIKE';
@@ -104,7 +81,6 @@ function get_custom_gallery_query( $atts = array() ) {
 				'terms'    => $atts['term'],
 			),
 		);
-
 	}
 
 	// Exclude current post from the query
@@ -115,7 +91,6 @@ function get_custom_gallery_query( $atts = array() ) {
 		}
 	}
 
-	$query = new WP_Query( $args );
 	if ( ! empty( $args['tax_query'] ) ) {
 		$tax_query = $args['tax_query'][0];
 		$terms     = explode( ',', $tax_query['terms'] );
@@ -137,9 +112,17 @@ function get_custom_gallery_query( $atts = array() ) {
 		}
 	}
 
-	$query = new WP_Query( $args );
-	// log_data($query);
-	return $query;
+	return $args;
+}
+
+/**
+ * Retrieves a list of posts for the custom gallery.
+ *
+ * @param array $atts Arguments to customize the WP_Query.
+ * @return WP_Query The query result.
+ */
+function get_custom_gallery_query( $atts = array() ) {
+	return new WP_Query( build_gallery_query_args( $atts ) );
 }
 
 
