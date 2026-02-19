@@ -1,0 +1,36 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+# PHP — WordPress Coding Standards use tabs
+[*.php]
+indent_style = tab
+indent_size = 4
+
+# Stylus — tabs per project convention
+[*.styl]
+indent_style = tab
+indent_size = 2
+
+# JavaScript
+[*.{js,jsx}]
+indent_style = space
+indent_size = 2
+
+# CSS
+[*.css]
+indent_style = space
+indent_size = 2
+
+# Data / config formats
+[*.{json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# Markdown — preserve trailing spaces (used for line breaks)
+[*.md]
+trim_trailing_whitespace = false

@@ -76,7 +76,7 @@ This project follows a structured Continuous Integration and Continuous Deployme
 
 ### Environments
 **Local**
-- Local Postgres
+- MySQL via MAMP (local)
 - Serves as the integration branch where feature branches are merged.
 - Ensures that features are tested and stable before further deployment.
 
@@ -217,10 +217,19 @@ For **pipeline import**, work with Make.com to create a scenario that keeps the 
 > AND the field keys on Make.com need to be prefixed with _WT_TMP_. This enables wordpress to intercept the update and handle associating the import with the appropriate post records.
 
 # CSS and Compiling Stylus
-* Install [stylus](https://stylus-lang.com/)
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
 Stylus needs to be compiled into CSS before it is usable in HTML.
-To run the compiler, run `stylus -w stylus` in the terminal.
+Stylus is included as a dev dependency — install it along with all other dev tooling by running `npm install` from the project root.
+
+To watch and recompile on change during local development:
+```bash
+npm run stylus:watch
+```
+
+To compile once:
+```bash
+npm run stylus:build
+```
 
 # Plugins
 
