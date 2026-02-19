@@ -1,0 +1,12 @@
+{
+  "name": "wikitongues",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "stylus:watch": "stylus -w wp-content/themes/blankslate-child/stylus",
+    "stylus:build": "stylus wp-content/themes/blankslate-child/stylus"
+  },
+  "devDependencies": {
+    "stylus": "^0.63.0"
+  }
+}

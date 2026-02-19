@@ -309,7 +309,7 @@
                                     },
                                     "choices": {
                                         "careers": "Careers",
-                                        "faqs": "FAQs",
+                                        "faq": "FAQs",
                                         "fellows": "Fellows",
                                         "languages": "Languages",
                                         "resources": "Resources",
@@ -319,6 +319,7 @@
                                     "return_format": "value",
                                     "multiple": 0,
                                     "allow_null": 0,
+                                    "allow_in_bindings": 1,
                                     "ui": 0,
                                     "ajax": 0,
                                     "placeholder": ""
@@ -430,7 +431,8 @@
                                     "post_type": [
                                         "languages",
                                         "fellows",
-                                        "videos"
+                                        "videos",
+                                        "faq"
                                     ],
                                     "post_status": [
                                         "publish"
@@ -439,6 +441,7 @@
                                     "return_format": "object",
                                     "multiple": 1,
                                     "allow_null": 0,
+                                    "allow_in_bindings": 1,
                                     "bidirectional": 0,
                                     "ui": 1,
                                     "bidirectional_target": []
@@ -936,6 +939,13 @@
                 "operator": "==",
                 "value": "fellow-category"
             }
+        ],
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
+                "value": "template-archive-success.php"
+            }
         ]
     ],
     "menu_order": 1,
@@ -950,5 +960,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1743014024
+    "modified": 1754851648
 }
