@@ -19,7 +19,7 @@
 			'order'          => 'asc',
 			'pagination'     => 'true',
 			'meta_key'       => 'featured_languages',
-			'meta_value'     => get_the_title(),
+			'meta_value'     => get_the_ID(),
 			'selected_posts' => '',
 			'display_blank'  => 'true',
 			'exclude_self'   => 'true',

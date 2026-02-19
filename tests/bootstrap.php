@@ -9,3 +9,4 @@ require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/import-c
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/search-filter.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_gallery_items.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/queries.php';
