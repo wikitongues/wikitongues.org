@@ -4,12 +4,15 @@
     "wp-coding-standards/wpcs": "^3.1",
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
     "phpunit/phpunit": "^9.6",
-    "10up/wp_mock": "^1.0"
+    "10up/wp_mock": "^1.0",
+    "phpstan/phpstan": "^1.0",
+    "szepeviktor/phpstan-wordpress": "^1.0"
   },
   "scripts": {
     "lint": "phpcs",
     "lint:fix": "phpcbf",
-    "test": "phpunit"
+    "test": "phpunit",
+    "analyse": "phpstan analyse --memory-limit=-1"
   },
   "config": {
     "allow-plugins": {

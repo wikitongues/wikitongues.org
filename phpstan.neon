@@ -1,0 +1,16 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - wp-content/themes/blankslate-child
+        - wp-content/plugins/wt-gallery
+        - wp-content/plugins/typeahead/typeahead.php
+        - tests
+    excludePaths:
+        - */vendor/*
+        - */node_modules/*
+        - wp-content/themes/blankslate-child/acf-json
+        - wp-content/plugins/typeahead/build

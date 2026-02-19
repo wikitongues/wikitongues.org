@@ -1,0 +1,871 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/helpers.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$args$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/queries.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$iso_code$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/queries.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-careers.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 6
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
+
+		-
+			message: "#^Variable \\$atts might not be defined\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
+
+		-
+			message: "#^Variable \\$output might not be defined\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
+
+		-
+			message: "#^Variable \\$output_name might not be defined\\.$#"
+			count: 3
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 3
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-languages.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 4
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-lexicons.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 5
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-resources.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-videos.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-videos.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 6
+			path: wp-content/plugins/wt-gallery/wt-gallery.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/wt-gallery.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/events-page.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function get_row_layout not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function reset_rows not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/faq-page.php
+
+		-
+			message: "#^Function the_field not found\\.$#"
+			count: 5
+			path: wp-content/themes/blankslate-child/footer.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/header.php
+
+		-
+			message: "#^Function the_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/header.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 5
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/documents.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/fellows.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int\\<0, max\\> given\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_link$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_logo$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_name$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/videos.php
+
+		-
+			message: "#^Call to function is_wp_error\\(\\) with int\\<0, max\\> will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^Call to static method add_command\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^Call to static method error\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^Call to static method success\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^is_wp_error\\(int\\<0, max\\>\\) will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 10
+			path: wp-content/themes/blankslate-child/includes/document-download-handler.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/document-download-handler.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/events-filter.php
+
+		-
+			message: "#^Call to function is_wp_error\\(\\) with int\\<0, max\\> will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^Call to static method add_command\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^Call to static method error\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^Call to static method success\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^is_wp_error\\(int\\<0, max\\>\\) will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/import-captions.php
+
+		-
+			message: "#^Function acf_maybe_get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/post-object-helpers.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/post-object-helpers.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/includes/router.php
+
+		-
+			message: "#^Parameter \\#1 \\$search of function str_replace expects array\\|string, int given\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/template-helpers.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/modules/banners/banner--alert.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$file_cta might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$file_field might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$page_banner might not be defined\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$team_banner might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/banners/banner--team.php
+
+		-
+			message: "#^Variable \\$wide_button_link might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/button--wide.php
+
+		-
+			message: "#^Variable \\$wide_button_text might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/button--wide.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 6
+			path: wp-content/themes/blankslate-child/modules/carousel--testimonial.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/carousel--testimonial.php
+
+		-
+			message: "#^Function get_row_layout not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/editorial-content.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/editorial-content.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/editorial-content.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/editorial-content.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$category_names might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$fellow_language might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$fellow_name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$fellow_year might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$page_banner might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$revitalization_fellows_url might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Variable \\$social_links might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
+
+		-
+			message: "#^Offset 'banner_copy' does not exist on array\\{banner_header\\: mixed\\}\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
+
+		-
+			message: "#^Variable \\$term might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 10
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 6
+			path: wp-content/themes/blankslate-child/modules/flexible-content/gallery-layout.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/gallery-layout.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/gallery-layout.php
+
+		-
+			message: "#^Variable \\$post_ids might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/gallery-layout.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/link-group-layout.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/link-group-layout.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/link-group-layout.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/modules/flexible-content/text-layout.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/video-layout.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 11
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^Variable \\$standard_name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
+
+		-
+			message: "#^Variable \\$standard_name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__fellows.php
+
+		-
+			message: "#^Variable \\$language might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__lexicons.php
+
+		-
+			message: "#^Variable \\$standard_name might not be defined\\.$#"
+			count: 5
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__lexicons.php
+
+		-
+			message: "#^Variable \\$language might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__resources.php
+
+		-
+			message: "#^Variable \\$standard_name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__resources.php
+
+		-
+			message: "#^Variable \\$standard_name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/languages/single-languages__videos.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/main-content--archive-success.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/main-content--archive-success.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/main-content--archive-success.php
+
+		-
+			message: "#^Variable \\$donation_link might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/main-content--giving-campaign.php
+
+		-
+			message: "#^Variable \\$progress_bar might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/main-content--giving-campaign.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/modules/newsletter.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 8
+			path: wp-content/themes/blankslate-child/modules/page--head.php
+
+		-
+			message: "#^Variable \\$wp might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/page--head.php
+
+		-
+			message: "#^Function the_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/search/search-results.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 6
+			path: wp-content/themes/blankslate-child/modules/search/search-results__thumbnail.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/search/search-results__thumbnail.php
+
+		-
+			message: "#^Variable \\$thumbnail_cta_text might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/search/search-results__thumbnail.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 9
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Function have_rows not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Parameter \\#1 \\(void\\) of echo cannot be converted to string\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Result of function the_title \\(void\\) is used\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/social-proof.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
+
+		-
+			message: "#^Variable \\$profile_picture might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
+
+		-
+			message: "#^Variable \\$social_links might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
+
+		-
+			message: "#^Variable \\$partner_bio might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
+
+		-
+			message: "#^Variable \\$partner_email might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
+
+		-
+			message: "#^Variable \\$partner_logo might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
+
+		-
+			message: "#^Variable \\$partner_website might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
+
+		-
+			message: "#^Function the_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$bio might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$personal_languages might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$profile_picture might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$social_links might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/main-content--videos-single.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 8
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$dropbox_link might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$featured_languages might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$public_status might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$video_license might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$video_license_url might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$wikimedia_commons_link might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$dropbox_link might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Variable \\$dropbox_link_raw might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Variable \\$public_status might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Variable \\$video_thumbnail might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Variable \\$youtube_id might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Variable \\$youtube_link might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/videos-single--embed.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/single-careers.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 9
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 16
+			path: wp-content/themes/blankslate-child/single-fellows.php
+
+		-
+			message: "#^Variable \\$wp might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/single-fellows.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/single-languages.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 12
+			path: wp-content/themes/blankslate-child/single-videos.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 15
+			path: wp-content/themes/blankslate-child/template-about-board.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 6
+			path: wp-content/themes/blankslate-child/template-about-partners.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 27
+			path: wp-content/themes/blankslate-child/template-about-staff.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-archive-success.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/template-careers.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+
+		-
+			message: "#^Function get_sub_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+
+		-
+			message: "#^Variable \\$post_ids might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/template-giving-campaign.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 3
+			path: wp-content/themes/blankslate-child/template-redirect.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-revitalization-application.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-revitalization-fellows.php
+
+		-
+			message: "#^Function get_field_object not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-revitalization-fellows.php
