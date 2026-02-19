@@ -1,4 +1,17 @@
 .page-template-template-archive-success
+	.wrapper
+		max-width $content
+		margin auto
+		column-gap 1.6rem
+
+		.block
+			&:before
+				top 0
+				left 0
+
+			.copy
+				padding 3.2rem
+
 	.wt_banner
 		background-position-y -150px
 		background-position-x right
@@ -9,6 +22,39 @@
 		padding 3rem
 		*
 			color $parchment
+
+	.custom-gallery.full.faq
+		margin 0 auto 3.2rem
+		width 90%
+		max-width $content
+		clear both
+
+		.wt_sectionHeader
+			text--header($black)
+			font-size $fontScale(6) // 3
+			border-bottom 0
+			padding-bottom 0
+
+		.gallery-container
+			.gallery-list
+				.gallery-item
+					&:first-of-type
+						&::first-letter
+							text--header($black)
+							font-size 3.2rem
+					a
+						background-color initial
+						display inline
+						float initial
+						flex-direction initial
+						justify-content initial
+						border-radius 0
+						padding 0
+						transition none
+						color $blue()
+						text--body($blue())
+						anchor($blue(),2px)
+
 
 .wt_archive
 	&__faq

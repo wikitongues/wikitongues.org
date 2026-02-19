@@ -1,41 +1,39 @@
 <?php
 $term = get_queried_object();
-
 global $page_banner_override;
 
-if( have_rows('main_content', $term) ):
-	while( have_rows('main_content', $term) ) : the_row();
-		// Determine the current layout.
-		$layout = get_row_layout();
-		// Load a partial based on the layout.
-		if( $layout == 'text_layout' ):
-			$image = get_sub_field('image', $term);
-			include( 'flexible-content/text-layout.php' );
-		elseif( $layout == 'banner_layout' ):
-			$page_banner 		= get_sub_field('banner', $term);
+$templates = [
+  'text_layout'         => 'modules/flexible-content/text-layout.php',
+  'banner_layout'       => 'modules/flexible-content/banner-layout.php',
+  'video_layout'        => 'modules/flexible-content/video-layout.php',
+  'testimonials_layout' => 'modules/carousel--testimonial.php',
+  'block_layout'        => 'modules/flexible-content/block-layout.php',
+  'link_group_layout'   => 'modules/flexible-content/link-group-layout.php',
+  'gallery_layout'      => 'modules/flexible-content/gallery-layout.php',
+];
 
-			global $page_banner_override;
+if (have_rows('main_content', $term)) :
+  while (have_rows('main_content', $term)) : the_row();
+    $layout = get_row_layout();
+    if (empty($templates[$layout])) {
+      continue; // unknown layout; skip safely
+    }
 
-			$page_banner['banner_header'] = !empty($page_banner_override['banner_header'])
-				? $page_banner_override['banner_header']
-				: $page_banner['banner_header'];
+    // Per-layout prep (only when needed)
+    switch ($layout) {
+      case 'text_layout':
+        $image = get_sub_field('image');
+        break;
+      default:
+        // no-op
+        break;
+    }
 
-			$page_banner['banner_copy'] = !empty($page_banner_override['banner_copy'])
-				? $page_banner_override['banner_copy']
-				: $page_banner['banner_copy'];
+    // Locate the template safely (supports child themes)
+    $template_path = locate_template($templates[$layout]);
 
-			include( 'banners/banner--main.php' );
-		elseif( $layout == 'video_layout' ):
-			include( 'flexible-content/video-layout.php' );
-		elseif( $layout == 'testimonials_layout' ):
-			include( 'carousel--testimonial.php' );
-		elseif( $layout == 'block_layout' ):
-			include( 'flexible-content/block-layout.php' );
-		elseif( $layout == 'link_group_layout' ):
-			include( 'flexible-content/link-group-layout.php' );
-		elseif( $layout == 'gallery_layout' ):
-			include( 'flexible-content/gallery-layout.php' );
-		endif;
-
-	endwhile;
+    if ($template_path) {
+      include $template_path;
+    }
+  endwhile;
 endif;

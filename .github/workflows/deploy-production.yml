@@ -15,25 +15,24 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install Stylus
-        run: npm install -g stylus
+      - name: Install dependencies
+        run: npm install
 
       - name: Compile Stylus
-        run: |
-          stylus wp-content/themes/blankslate-child/stylus
+        run: npm run stylus:build
 
       - name: Install rsync
         run: sudo apt-get install -y rsync
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 

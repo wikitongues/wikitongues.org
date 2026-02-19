@@ -1,10 +1,15 @@
 <?php
+$section_header = get_sub_field('section_header');
 $block_type = get_sub_field('block_type');
 $block_style = get_sub_field('block_style');
 
 $class = ($block_type === 'Card') ? 'thirds' : (($block_type === 'Block') ? 'wide' : '');
 $class .= ' '.$block_style;
 echo '<main class="wrapper ' . esc_attr($class) . '">';
+
+if ($section_header) {
+    echo '<h4>' . esc_html($section_header) . '</h4>';
+}
 
 while (have_rows('block_group')) :
     the_row();
