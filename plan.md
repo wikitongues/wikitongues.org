@@ -69,8 +69,8 @@ Requires a PHPStan config + WordPress stubs (`szepeviktor/phpstan-wordpress`).
 
 ---
 
-### Layer 2 — Unit Tests (Phase 3, in progress)
-**Tools:** PHPUnit 10 + WP_Mock
+### Layer 2 — Unit Tests (Phase 3, complete)
+**Tools:** PHPUnit 9.6 + WP_Mock 1.1
 **Catches:** regressions in isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math
 **Runs:** on every PR via GitHub Actions
 **Does not cover:** templates, DB queries, actual rendering, hook/filter wiring
@@ -82,6 +82,13 @@ Requires a PHPStan config + WordPress stubs (`szepeviktor/phpstan-wordpress`).
 - `render_gallery_items.php` → `generate_gallery_pagination()` (mock `esc_attr`, stdClass query stub)
 
 **Expand over time:** `getDomainFromUrl()` in `wt-gallery/helpers.php`, `get_environment()` and date logic in `template-helpers.php`, `format_event_date_with_proximity()` in `events-filter.php` once extracted. Any new function with non-trivial logic should ship with a unit test.
+
+**Known constraints and upgrade path:**
+WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
+
+The forward-looking exit from this constraint is not to wait for WP_Mock to catch up — it's to reduce the surface area of WP function mocking in the first place. Functions that receive `is_admin()` or `get_query_var()` results as arguments rather than calling them directly need no mocking at all and can be tested with plain PHPUnit against any version. The refactor direction is: **push WP API calls to the edges of functions**, keeping the logic core pure. This is both a testability improvement and a general architectural improvement (separation of concerns).
+
+As functions are refactored to be purer, WP_Mock can be removed from individual test classes incrementally. When WP_Mock is no longer needed by any test, we can upgrade to PHPUnit 10+ and drop the dependency entirely.
 
 ---
 
