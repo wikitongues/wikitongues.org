@@ -1,32 +1,32 @@
 <main class="main-content">
-<?php 
+<?php
 	// if progress bar exists
-	if ( $progress_bar ) { 
+if ( $progress_bar ) {
 
-		// display progress bar
-		echo $progress_bar;
-	}
-	
+	// display progress bar
+	echo $progress_bar;
+}
+
 	// if donation link exists
-	if ( $donation_link ) {
+if ( $donation_link ) {
 
-		// define wide button variables
-		$wide_button_link = $donation_link;
-		$wide_button_text = 'Donate';
+	// define wide button variables
+	$wide_button_link = $donation_link;
+	$wide_button_text = 'Donate';
 
-		// display donation button
-		include( 'button--wide.php' );
-	}
+	// display donation button
+	include 'button--wide.php';
+}
 
 	// content loop
-	if ( have_posts() ) {
+if ( have_posts() ) {
 
-		while ( have_posts() ){
+	while ( have_posts() ) {
 
-			the_post();
+		the_post();
 
-			the_content();
-		}
-	} 
+		the_content();
+	}
+}
 ?>
 </main>

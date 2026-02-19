@@ -1,7 +1,7 @@
 <?php
 // team banner variables
 $banner_header = $team_banner['banner_header'];
-$banner_copy = $team_banner['banner_copy'];
+$banner_copy   = $team_banner['banner_copy'];
 ?>
 
 <div class="wt_banner--team">

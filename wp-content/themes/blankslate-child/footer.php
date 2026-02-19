@@ -2,27 +2,29 @@
 
 	<section class="wt_footer__logo">
 		<a href="<?php echo home_url(); ?>">
-			<img src="<?php the_field('footer_logo', 'options'); ?>" alt="Wikitongues Logo">
+			<img src="<?php the_field( 'footer_logo', 'options' ); ?>" alt="Wikitongues Logo">
 		</a>
 	</section>
 
 	<section class="wt_footer__section" id="content">
-		<?php wp_nav_menu(
+		<?php
+		wp_nav_menu(
 			array(
-				'theme_location' => 'footer-menu',
-				'container' => 'nav',
-				'container_class' => 'wt_footer__nav'
+				'theme_location'  => 'footer-menu',
+				'container'       => 'nav',
+				'container_class' => 'wt_footer__nav',
 			)
-		); ?>
+		);
+		?>
 		<aside class="wt_footer__meta">
 			<section>
 				<div>
 				<p class="wt_footer__address">
-					<?php the_field('wikitongues_address', 'options'); ?>
+					<?php the_field( 'wikitongues_address', 'options' ); ?>
 				</p>
 				<p class="wt_footer__contact">
-					<?php the_field('wikitongues_email', 'options'); ?><br />
-					<?php the_field('wikitongues_phone', 'options'); ?>
+					<?php the_field( 'wikitongues_email', 'options' ); ?><br />
+					<?php the_field( 'wikitongues_phone', 'options' ); ?>
 				</p>
 				</div>
 				<div>
@@ -34,9 +36,9 @@
 
 	<section class="wt_footer__section" id="colophon">
 		<p class="wt_footer__land-acknowledgement">
-			<?php the_field('land_acknowledgement', 'options'); ?>
+			<?php the_field( 'land_acknowledgement', 'options' ); ?>
 			<br>
-			<span class="wt_footer__copyright">&#169; Copyright <?php echo date('Y'); ?> Wikitongues, All Rights Reserved</span>
+			<span class="wt_footer__copyright">&#169; Copyright <?php echo wp_date( 'Y' ); ?> Wikitongues, All Rights Reserved</span>
 		</p>
 	</section>
 

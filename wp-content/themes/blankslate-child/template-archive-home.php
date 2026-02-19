@@ -3,10 +3,10 @@
 // header
 get_header();
 
-include( 'modules/banners/banner--searchbar.php' );
+require 'modules/banners/banner--searchbar.php';
 
-include( 'modules/search/language-index.php' );
+require 'modules/search/language-index.php';
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();

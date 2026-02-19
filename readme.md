@@ -22,7 +22,28 @@
 	   git branch -d master```
 > _(**Note:** The project's primary branch is called '**main**', not 'master'.)_
 
-**4. Setting Up Plugins**
+**4. Installing Dev Tooling**
+
+Install [Composer](https://getcomposer.org/) if you don't have it:
+```bash
+brew install composer
+```
+
+From the project root, install PHP and JS dev dependencies:
+```bash
+composer install
+npm install
+```
+
+This provides:
+- `composer lint` — PHPCS with WordPress Coding Standards (PHP linting)
+- `composer lint:fix` — auto-fix PHPCS violations
+- `npm run lint:js` — ESLint on custom JS files
+- `npm run stylus:watch` — compile CSS on file change
+- `npm run stylus:build` — compile CSS once
+
+**5. Setting Up Plugins**
+
 * In admin ([localhost:8888/wikitongues/wp-admin/](localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
 * Install [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/) by putting the plugin folder provided by the maintainer in `/wp-content/plugins/`.
 * In the sidebar, click on `Add New Plugin`. Add the following plugins.
@@ -31,7 +52,7 @@
 	* [WPS Hide Login](https://wordpress.org/plugins/wps-hide-login/) provides increased security to the site by masking the admin url.
 * After adding each plugin, it needs to be activated. This includes the plugins already available via Github.
 
-**5. Populating The Database**
+**6. Populating The Database**
 * Install [wp-cli](https://wp-cli.org/)
 * Talk to the maintainer to get a version of the prod sync script `tool-sync-db-from-prod.sh`.
 * Confirm tool is executable.
@@ -41,7 +62,7 @@
 * Make sure local path is correctly configured.
 * Pull prod db (mamp has to be running). Check prod connection. run `bash tool-sync-db-from-prod.sh`.
 
-**6. Configurations**
+**7. Configurations**
 * Add logging to your `wp-config.php`
 	``` php
 	define('WP_DEBUG', true);

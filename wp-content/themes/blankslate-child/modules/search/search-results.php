@@ -4,13 +4,17 @@
 		<strong>Showing results for '<?php echo $_GET['s']; ?>'</strong>
 	</header>
 	<section class="wt_search-results__results">
-	<?php if ( have_posts() ): while ( have_posts() ): the_post();?>
+	<?php
+	if ( have_posts() ) :
+		while ( have_posts() ) :
+			the_post();
+			?>
 		<article class="wt_search-results__thumbnail">
-			<?php include('search-results__thumbnail.php'); ?>
+					<?php include 'search-results__thumbnail.php'; ?>
 		</article>
-	<?php endwhile; else: ?>
+			<?php endwhile; else : ?>
 		<article class="wt_search-results__none">
-			<p>No results for '<?php echo $_GET['s']; ?>'. If you think this is an error, please let us know at <a href="mailto:<?php the_field('wikitongues_email', 'options'); ?>"><?php the_field('wikitongues_email', 'options'); ?></a>.</p><!-- down the line: "did you mean?" or recommend something -->
+			<p>No results for '<?php echo $_GET['s']; ?>'. If you think this is an error, please let us know at <a href="mailto:<?php the_field( 'wikitongues_email', 'options' ); ?>"><?php the_field( 'wikitongues_email', 'options' ); ?></a>.</p><!-- down the line: "did you mean?" or recommend something -->
 		</article>
 	</section>
 <?php endif; ?>

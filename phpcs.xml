@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="Wikitongues">
+  <description>PHPCS rules for the Wikitongues WordPress project.</description>
+
+  <!-- Directories to scan (tracked custom code only) -->
+  <file>wp-content/themes/blankslate-child</file>
+  <file>wp-content/plugins/wt-gallery</file>
+  <file>wp-content/plugins/typeahead/typeahead.php</file>
+  <file>includes</file>
+
+  <!-- Exclusions -->
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>wp-content/themes/blankslate-child/acf-json/*</exclude-pattern>
+  <exclude-pattern>wp-content/plugins/typeahead/build/*</exclude-pattern>
+  <!-- JS is handled by ESLint; compiled CSS is auto-generated -->
+  <exclude-pattern>*.js</exclude-pattern>
+  <exclude-pattern>*.css</exclude-pattern>
+
+  <!-- WordPress Core coding standards -->
+  <rule ref="WordPress-Core" />
+
+  <!--
+    Style preferences not enforced on this project:
+    - YodaConditions: project convention is natural-order comparisons
+    - FileName: existing files cannot be renamed without breaking WordPress routing
+    - ShortTernary: ?: is acceptable shorthand
+    - ValidVariableName / ValidFunctionName: minor naming deviations in existing code
+  -->
+  <rule ref="WordPress.PHP.YodaConditions" ><severity>0</severity></rule>
+  <rule ref="WordPress.Files.FileName" ><severity>0</severity></rule>
+  <rule ref="Universal.Operators.DisallowShortTernary" ><severity>0</severity></rule>
+  <rule ref="WordPress.NamingConventions.ValidVariableName" ><severity>0</severity></rule>
+  <rule ref="WordPress.NamingConventions.ValidFunctionName" ><severity>0</severity></rule>
+
+  <!-- Minimum supported WP and PHP versions -->
+  <config name="minimum_supported_wp_version" value="6.0" />
+  <config name="testVersion" value="8.0-" />
+
+</ruleset>

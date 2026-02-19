@@ -1,20 +1,20 @@
 <?php
 // Define the special characters and the base letters, then merge them.
-$special_chars = ['!', '’', '‡', '|', 'ǂ'];
-$base_letters = range('A', 'Z');
-$letters = array_merge($base_letters, $special_chars);
+$special_chars = array( '!', '’', '‡', '|', 'ǂ' );
+$base_letters  = range( 'A', 'Z' );
+$letters       = array_merge( $base_letters, $special_chars );
 ?>
 
 <div id="language-list-container">
 	<h4 class="title">Language Index</h4>
-    <nav id="language-nav">
-			<?php foreach ($letters as $letter): ?>
-				<a class="nav-btn loading" href="<?php echo esc_attr("#letter-" . $letter); ?>" title="Languages starting with <?php echo esc_attr($letter); ?>" data-letter="<?php echo esc_attr($letter); ?>">
-					<?php echo esc_html($letter); ?>
+	<nav id="language-nav">
+			<?php foreach ( $letters as $letter ) : ?>
+				<a class="nav-btn loading" href="<?php echo esc_attr( '#letter-' . $letter ); ?>" title="Languages starting with <?php echo esc_attr( $letter ); ?>" data-letter="<?php echo esc_attr( $letter ); ?>">
+					<?php echo esc_html( $letter ); ?>
 				</a>
 			<?php endforeach; ?>
-    </nav>
-    <div id="language-list"></div>
+	</nav>
+	<div id="language-list"></div>
 
 	<div id="loading-spinner" class="hidden">
 		<div class="spinner"></div>
