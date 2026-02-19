@@ -12,6 +12,8 @@
 - package.json
 - package-lock.json
 - phpcs.xml
+- phpunit.xml.dist
+- tests/
 - eslint.config.js
 - .editorconfig
 - .npmrc
