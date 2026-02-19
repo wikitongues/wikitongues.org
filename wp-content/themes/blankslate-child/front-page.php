@@ -3,10 +3,10 @@
 // header
 get_header();
 
-include( 'modules/editorial-content.php' );
+require 'modules/editorial-content.php';
 
-include( 'modules/social-proof.php' );
+require 'modules/social-proof.php';
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();

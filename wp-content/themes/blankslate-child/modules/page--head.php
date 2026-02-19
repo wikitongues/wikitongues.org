@@ -1,46 +1,48 @@
 <head>
 	<!-- Google Analytics Script -->
-	<?php echo get_field('analytics_header_script', 'options'); ?>
+	<?php echo get_field( 'analytics_header_script', 'options' ); ?>
 	<!-- Language and browser view meta tags -->
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- favicon -->
-	<?php $favicon = get_field('favicon', 'options'); ?>
-	<?php if ( $favicon ): ?>
+	<?php $favicon = get_field( 'favicon', 'options' ); ?>
+	<?php if ( $favicon ) : ?>
 		<link href="<?php echo $favicon['url']; ?>" rel="shortcut icon">
-	<?php else: ?>
-		<link href="<?php echo home_url('/wp-content/themes/blankslate-child/img/icons/favicon.ico', 'relative'); ?>" rel="shortcut icon">
+	<?php else : ?>
+		<link href="<?php echo home_url( '/wp-content/themes/blankslate-child/img/icons/favicon.ico', 'relative' ); ?>" rel="shortcut icon">
 	<?php endif; ?>
 
 	<!-- Custom metadata variables -->
 	<?php
 		$global              = $wp;
-		$seo_title           = get_field('seo_title');
-		$seo_description     = get_field('seo_description');
-		$seo_keywords        = get_field('seo_keywords');
-		$sharing_title       = get_field('sharing_title');
-		$sharing_description = get_field('sharing_description');
-		$sharing_image       = get_field('sharing_image');
+		$seo_title           = get_field( 'seo_title' );
+		$seo_description     = get_field( 'seo_description' );
+		$seo_keywords        = get_field( 'seo_keywords' );
+		$sharing_title       = get_field( 'sharing_title' );
+		$sharing_description = get_field( 'sharing_description' );
+		$sharing_image       = get_field( 'sharing_image' );
 		$default_description = 'Wikitongues safeguards endangered languages, expands access to linguistic resources, and directly supports language revitalization projects on every continent.';
-		?>
+	?>
 
-	<title><?php
+	<title>
+	<?php
 		// use title from SEO CRM, if available
-		if ( $seo_title ) {
-			echo $seo_title;
-		} else if ( is_archive() ) {
-			$archive_post_type = get_queried_object();
-			if(!isset($archive_post_type->taxonomy)){
-				// if the archive post type is not a taxonomy, use the post type name
-				echo 'Wikitongues | ' . $archive_post_type->labels->name;
-			} else {
-				echo 'Wikitongues | ' . $archive_post_type->name;
-			};
+	if ( $seo_title ) {
+		echo $seo_title;
+	} elseif ( is_archive() ) {
+		$archive_post_type = get_queried_object();
+		if ( ! isset( $archive_post_type->taxonomy ) ) {
+			// if the archive post type is not a taxonomy, use the post type name
+			echo 'Wikitongues | ' . $archive_post_type->labels->name;
 		} else {
-			// use the default page title
-			echo 'Wikitongues' . ' | ' . get_the_title();
-		} ?>
+			echo 'Wikitongues | ' . $archive_post_type->name;
+		}
+	} else {
+		// use the default page title
+		echo 'Wikitongues' . ' | ' . get_the_title();
+	}
+	?>
 	</title>
 
 	<meta name="robots" content="index,follow">

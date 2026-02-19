@@ -3,8 +3,8 @@
 // header
 get_header();
 
-include( 'modules/editorial-content.php' );
+require 'modules/editorial-content.php';
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();

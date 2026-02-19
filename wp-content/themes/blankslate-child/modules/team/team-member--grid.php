@@ -4,11 +4,11 @@
 		<strong><?php echo $name; ?></strong>
 		<p><?php echo $title; ?></p>
 		<ul class="social">
-				<?php foreach ($social_links as $platform => $data): ?>
-						<?php if ($data['url']): ?>
+				<?php foreach ( $social_links as $platform => $data ) : ?>
+						<?php if ( $data['url'] ) : ?>
 								<li>
-										<a href="<?php echo esc_url($data['url']); ?>">
-												<i class="<?php echo esc_attr($data['icon']); ?>"></i>
+										<a href="<?php echo esc_url( $data['url'] ); ?>">
+												<i class="<?php echo esc_attr( $data['icon'] ); ?>"></i>
 										</a>
 								</li>
 						<?php endif; ?>

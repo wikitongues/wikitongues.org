@@ -13,14 +13,14 @@ if ( have_posts() ) {
 
 		the_post();
 
-		$post_date = get_the_date('Y');
+		$post_date = get_the_date( 'Y' );
 
 		if ( $post_date > 2023 ) {
-			include ( 'modules/single-reports__preview.php' );
+			include 'modules/single-reports__preview.php';
 		}
 	}
 }
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();
