@@ -50,8 +50,72 @@ maintainability of the CSS build pipeline.
 
 ---
 
-## Testing (Phase 3)
+## Testing Strategy
 
-### PHPUnit + WP_Mock setup
-Set up unit testing infrastructure for custom theme includes and `wt-gallery` plugin.
-See Phase 3 of the operational improvement plan.
+Goal: professional-grade coverage — no visual regressions, no behavior breakage, no security gaps.
+Coverage is built in layers, from fast/cheap to slow/comprehensive. Each phase depends on the one before it.
+
+---
+
+### Layer 1 — Static Analysis ✅ (Phase 2, complete)
+**Tools:** PHPCS + WordPress Coding Standards, ESLint
+**Catches:** coding standards violations, basic security anti-patterns (unescaped output, direct DB queries), JS style issues
+**Runs:** on every PR via GitHub Actions
+
+**Gap — PHPStan (Phase 4)**
+Type-safety analysis: undefined variables, wrong argument types, unreachable code, method calls on null.
+Complements PHPCS (style/security) with correctness guarantees.
+Requires a PHPStan config + WordPress stubs (`szepeviktor/phpstan-wordpress`).
+
+---
+
+### Layer 2 — Unit Tests (Phase 3, complete)
+**Tools:** PHPUnit 9.6 + WP_Mock 1.1
+**Catches:** regressions in isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math
+**Runs:** on every PR via GitHub Actions
+**Does not cover:** templates, DB queries, actual rendering, hook/filter wiring
+
+**Scope (initial):** functions in `includes/` that have testable logic without a database:
+- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()` (pure PHP, no mocks)
+- `acf-helpers.php` → `wt_meta_value()` (mock `esc_attr`)
+- `search-filter.php` → `searchfilter()` regex routing (mock `is_admin`, `get_query_var`, query stub)
+- `render_gallery_items.php` → `generate_gallery_pagination()` (mock `esc_attr`, stdClass query stub)
+
+**Expand over time:** `getDomainFromUrl()` in `wt-gallery/helpers.php`, `get_environment()` and date logic in `template-helpers.php`, `format_event_date_with_proximity()` in `events-filter.php` once extracted. Any new function with non-trivial logic should ship with a unit test.
+
+**Known constraints and upgrade path:**
+WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
+
+The forward-looking exit from this constraint is not to wait for WP_Mock to catch up — it's to reduce the surface area of WP function mocking in the first place. Functions that receive `is_admin()` or `get_query_var()` results as arguments rather than calling them directly need no mocking at all and can be tested with plain PHPUnit against any version. The refactor direction is: **push WP API calls to the edges of functions**, keeping the logic core pure. This is both a testability improvement and a general architectural improvement (separation of concerns).
+
+As functions are refactored to be purer, WP_Mock can be removed from individual test classes incrementally. When WP_Mock is no longer needed by any test, we can upgrade to PHPUnit 10+ and drop the dependency entirely.
+
+---
+
+### Layer 3 — Integration Tests (Phase 5, future)
+**Tools:** PHPUnit + `WP_UnitTestCase` (official WordPress test suite)
+**Catches:** hook/filter wiring, CPT registration, REST endpoint responses, DB reads/writes, query correctness
+**Covers templates indirectly:** tests the functions templates call, not the template files themselves
+**Requires:** MySQL test database in CI (Docker service)
+
+**Priority targets:** custom REST endpoints (`rest-endpoints.php`), `get_custom_gallery_query()` query logic, `searchfilter()` end-to-end with real WP_Query, CPT/taxonomy registration.
+
+---
+
+### Layer 4 — End-to-End & Visual Regression (Phase 6, future)
+**Tools:** Playwright
+**Catches:** full user flows (search a language, view a video, submit a form), JS behavior, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs)
+**This is the right layer for testing templates** — a real browser hits real page URLs; no WP internals to mock
+**Requires:** running WP instance in CI (Docker Compose with WP + MySQL + seeded content)
+
+**Priority flows:** language search (ISO / glottocode / generic term), language page render, video page render, gallery pagination, admin-restricted pages return 403.
+
+**Visual regression:** screenshot baseline per key page template; diff on every PR. Catches CSS/layout changes that behavior assertions miss.
+
+---
+
+### Security (ongoing)
+- PHPCS security sniffs already run (Layer 1)
+- **Gap:** WPScan in CI — checks installed plugins/themes against known CVE database
+- **Gap:** secrets scanning — ensure API keys, tokens never land in git history
+- `wt-form` and `integromat-connector` plugins need security review when brought into version control (see Plugins section below)
