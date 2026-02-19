@@ -5,6 +5,13 @@ Items are grouped by area and roughly ordered by priority within each group.
 
 ---
 
+## Manual entry
+* I'd like to dockerize this project for ease of contributor setup
+* I'd like to check/cleanup stale branches
+
+Projects that have been started but not finished:
+* Donors post type
+
 ## Code Quality
 
 ### Refactor dynamic IN clause in `wt-gallery` to eliminate raw SQL
