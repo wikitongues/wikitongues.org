@@ -1,12 +1,14 @@
 <?php
 /**
- * Retrieves a list of posts for the custom gallery.
+ * Builds the WP_Query args array for the custom gallery.
  *
- * @param array $args Arguments to customize the WP_Query.
- * @return WP_Query The query result.
+ * Contains all arg-building logic for get_custom_gallery_query() so it can
+ * be tested independently of WP_Query instantiation.
+ *
+ * @param array $atts Shortcode/function attributes.
+ * @return array WP_Query arguments.
  */
-
-function get_custom_gallery_query( $atts = array() ) {
+function build_gallery_query_args( $atts = array() ) {
 	$defaults = array(
 		'post_status'    => 'publish',
 		'post_type'      => 'languages', // videos, languages, fellows
@@ -79,7 +81,6 @@ function get_custom_gallery_query( $atts = array() ) {
 				'terms'    => $atts['term'],
 			),
 		);
-
 	}
 
 	// Exclude current post from the query
@@ -90,7 +91,6 @@ function get_custom_gallery_query( $atts = array() ) {
 		}
 	}
 
-	$query = new WP_Query( $args );
 	if ( ! empty( $args['tax_query'] ) ) {
 		$tax_query = $args['tax_query'][0];
 		$terms     = explode( ',', $tax_query['terms'] );
@@ -112,9 +112,17 @@ function get_custom_gallery_query( $atts = array() ) {
 		}
 	}
 
-	$query = new WP_Query( $args );
-	// log_data($query);
-	return $query;
+	return $args;
+}
+
+/**
+ * Retrieves a list of posts for the custom gallery.
+ *
+ * @param array $atts Arguments to customize the WP_Query.
+ * @return WP_Query The query result.
+ */
+function get_custom_gallery_query( $atts = array() ) {
+	return new WP_Query( build_gallery_query_args( $atts ) );
 }
 
 

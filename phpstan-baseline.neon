@@ -6,11 +6,6 @@ parameters:
 			path: wp-content/plugins/wt-gallery/includes/helpers.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$args$#"
-			count: 1
-			path: wp-content/plugins/wt-gallery/includes/queries.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$iso_code$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/includes/queries.php
