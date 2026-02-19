@@ -6,11 +6,6 @@ parameters:
 			path: wp-content/plugins/wt-gallery/includes/helpers.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$args$#"
-			count: 1
-			path: wp-content/plugins/wt-gallery/includes/queries.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$iso_code$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/includes/queries.php
@@ -802,7 +797,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 12
+			count: 11
 			path: wp-content/themes/blankslate-child/single-videos.php
 
 		-
