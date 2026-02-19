@@ -5,24 +5,34 @@
 		<h4><?php echo $name; ?></h4>
 		<strong><?php echo $title; ?></strong>
 		<?php
-		$first_name = explode(' ', trim($name))[0];
-		echo '<p>'.$first_name . ' speaks</p>';
+		$first_name = explode( ' ', trim( $name ) )[0];
+		echo '<p>' . $first_name . ' speaks</p>';
 		?>
 
 		<ul>
-			<?php foreach( $personal_languages as $index => $post ): setup_postdata( $post ); ?>
+			<?php
+			foreach ( $personal_languages as $index => $post ) :
+				setup_postdata( $post );
+				?>
 				<li>
-					<a href="<?php the_permalink(); ?>"><?php the_field('standard_name'); ?></a><?php if ($index < count($personal_languages) - 1) echo ',';?>
+					<a href="<?php the_permalink(); ?>"><?php the_field( 'standard_name' ); ?></a>
+					<?php
+					if ( $index < count( $personal_languages ) - 1 ) {
+						echo ',';}
+					?>
 				</li>
-			<?php endforeach; wp_reset_postdata(); ?>
+				<?php
+			endforeach;
+			wp_reset_postdata();
+			?>
 		</ul>
 
 		<ul class="social">
-				<?php foreach ($social_links as $platform => $data): ?>
-						<?php if ($data['url']): ?>
+				<?php foreach ( $social_links as $platform => $data ) : ?>
+						<?php if ( $data['url'] ) : ?>
 								<li>
-										<a href="<?php echo esc_url($data['url']); ?>">
-												<i class="<?php echo esc_attr($data['icon']); ?>"></i>
+										<a href="<?php echo esc_url( $data['url'] ); ?>">
+												<i class="<?php echo esc_attr( $data['icon'] ); ?>"></i>
 										</a>
 								</li>
 						<?php endif; ?>

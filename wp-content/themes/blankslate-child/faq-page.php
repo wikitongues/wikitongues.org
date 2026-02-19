@@ -11,42 +11,43 @@ function enqueue_faq_navigation_script() {
 get_header();
 
 // banner
-$page_banner = get_field('faq_banner');
+$page_banner = get_field( 'faq_banner' );
 
-include( 'modules/banners/banner--main.php' );
+require 'modules/banners/banner--main.php';
 
 echo '<div class="faq-container">';
 
-if( have_rows('faq_section') ):
+if ( have_rows( 'faq_section' ) ) :
 
-	$nav_items = array();
+	$nav_items     = array();
 	$section_count = 0;
 
-	while( have_rows('faq_section') ): the_row();
-			if( get_row_layout() == 'faq_layout' ):
-					$section_header = get_sub_field('section_header');
+	while ( have_rows( 'faq_section' ) ) :
+		the_row();
+		if ( get_row_layout() === 'faq_layout' ) :
+				$section_header = get_sub_field( 'section_header' );
 
-					// Generate the same unique ID as before
-					$section_id = 'faq-section-' . $section_count;
+				// Generate the same unique ID as before
+				$section_id = 'faq-section-' . $section_count;
 
-					// Add the section to the navigation items array
-					$nav_items[] = array(
-							'id' => $section_id,
-							'title' => $section_header,
-					);
+				// Add the section to the navigation items array
+				$nav_items[] = array(
+					'id'    => $section_id,
+					'title' => $section_header,
+				);
 
-					$section_count++;
+				++$section_count;
 
 			endif;
 	endwhile;
 
 	// Output the navigation menu
-	if( !empty( $nav_items ) ) {
+	if ( ! empty( $nav_items ) ) {
 			echo '<nav class="faq-navigation">';
 			echo '<ul>';
-			foreach( $nav_items as $item ) {
-					echo '<li><a href="#' . esc_attr( $item['id'] ) . '">' . esc_html( $item['title'] ) . '</a></li>';
-			}
+		foreach ( $nav_items as $item ) {
+				echo '<li><a href="#' . esc_attr( $item['id'] ) . '">' . esc_html( $item['title'] ) . '</a></li>';
+		}
 			$email = 'hello@wikitongues.org';
 			echo '</ul>';
 			echo '<p>Have another question? <a href="mailto:' . $email . '">Write us at ' . $email . '!</a></p>';
@@ -58,20 +59,21 @@ if( have_rows('faq_section') ):
 
 	$section_count = 0;
 	echo '<div class="faq-content">';
-	while( have_rows('faq_section') ): the_row();
+	while ( have_rows( 'faq_section' ) ) :
+		the_row();
 
-		if( get_row_layout() == 'faq_layout' ):
-			$section_header = get_sub_field('section_header');
-			$faq_entries = get_sub_field('faq_entries');
-			$section_id = 'faq-section-' . $section_count;
+		if ( get_row_layout() === 'faq_layout' ) :
+			$section_header = get_sub_field( 'section_header' );
+			$faq_entries    = get_sub_field( 'faq_entries' );
+			$section_id     = 'faq-section-' . $section_count;
 
-			if( $section_header ) {
+			if ( $section_header ) {
 				echo '<h4 id="' . esc_attr( $section_id ) . '">' . esc_html( $section_header ) . '</h4>';
 			}
 
-			if( $faq_entries ) {
+			if ( $faq_entries ) {
 				echo '<ul class="faqs">';
-				foreach( $faq_entries as $post ) {
+				foreach ( $faq_entries as $post ) {
 					setup_postdata( $post );
 					// $faq_text = get_sub_field('short_answer');
 					?>
@@ -89,13 +91,13 @@ if( have_rows('faq_section') ):
 			} else {
 					echo '<p>No FAQs selected in this section.</p>';
 			}
-			$section_count++;
+			++$section_count;
 		endif;
 
 	endwhile;
 	echo '</div>'; // Close 'faq-content' div
 
-else:
+else :
 
 	echo '<p>No FAQ sections found.</p>';
 
@@ -103,7 +105,7 @@ endif;
 
 echo '</div>';
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();
 ?>

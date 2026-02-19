@@ -47,6 +47,9 @@ error_log
 # Node
 node_modules/
 
+# Composer
+vendor/
+
 # Misc
 .ftpquota
 ggstemp.html

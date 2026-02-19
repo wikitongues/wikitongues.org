@@ -4,13 +4,11 @@
 get_header();
 
 // reset searchbar
-include( 'modules/banners/banner--searchbar.php' );
+require 'modules/banners/banner--searchbar.php';
 
 // pull search results loop
-include( 'modules/search/search-results.php' );
+require 'modules/search/search-results.php';
 
-include( 'modules/newsletter.php' );
+require 'modules/newsletter.php';
 
 get_footer();
-
-?>

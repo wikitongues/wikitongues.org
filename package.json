@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "stylus:watch": "stylus -w wp-content/themes/blankslate-child/stylus",
-    "stylus:build": "stylus wp-content/themes/blankslate-child/stylus"
+    "stylus:build": "stylus wp-content/themes/blankslate-child/stylus",
+    "lint:js": "eslint wp-content/themes/blankslate-child/js wp-content/plugins/wt-gallery/js"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^16.0.0",
     "stylus": "^0.63.0"
   }
 }
