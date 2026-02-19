@@ -11,7 +11,7 @@
 
 		<!-- contact information -->
 		<ul>
-		<?php if ( $partner_website ): ?>
+		<?php if ( $partner_website ) : ?>
 			<li>
 				<a href="<?php echo $partner_website; ?>">
 					<i class="fa-regular fa-link"></i>
@@ -19,7 +19,7 @@
 			</li>
 		<?php endif; ?>
 
-		<?php if ( $partner_email ): ?>
+		<?php if ( $partner_email ) : ?>
 			<li>
 				<a href="mailto:<?php echo $partner_email; ?>">
 					<i class="fa-solid fa-envelope"></i>

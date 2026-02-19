@@ -3,6 +3,17 @@
 - .github/
 - .gitignore
 - readme.md
+- plan.md
 - temp/
+- vendor/
+- node_modules/
+- composer.json
+- composer.lock
+- package.json
+- package-lock.json
+- phpcs.xml
+- eslint.config.js
+- .editorconfig
+- .npmrc
 - wp-content/themes/blankslate-child/stylus/require
 - wp-content/themes/blankslate-child/stylus/main.styl

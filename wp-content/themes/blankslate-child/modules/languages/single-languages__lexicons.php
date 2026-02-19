@@ -1,7 +1,7 @@
 <?php
-$title = 'dictionaries, phrase books, and other lexicons';
+$title      = 'dictionaries, phrase books, and other lexicons';
 $title_name = $standard_name;
-if (substr($standard_name, -7) !== 'anguage') {
+if ( substr( $standard_name, -7 ) !== 'anguage' ) {
 	$title_name = $standard_name . ' language';
 }
 $title = $title_name . ' dictionaries, phrase books, and other lexicons';
@@ -13,52 +13,52 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 	</div>
 	<?php
 		// Gallery
-		$params = [
-			'title' => "{$standard_name} to other languages",
-			'subtitle' => '',
-			'show_total' => 'false',
-			'post_type' => 'lexicons',
-			'custom_class' => '',
-			'columns' => 3,
+		$params = array(
+			'title'          => "{$standard_name} to other languages",
+			'subtitle'       => '',
+			'show_total'     => 'false',
+			'post_type'      => 'lexicons',
+			'custom_class'   => '',
+			'columns'        => 3,
 			'posts_per_page' => 6,
-			'orderby' => 'date',
-			'order' => 'asc',
-			'pagination' => 'true',
-			'meta_key' => 'source_languages',
-			'meta_value' => $language,
+			'orderby'        => 'date',
+			'order'          => 'asc',
+			'pagination'     => 'true',
+			'meta_key'       => 'source_languages',
+			'meta_value'     => $language,
 			'selected_posts' => '',
-			'display_blank' => 'true',
-			'exclude_self' => 'true',
-			'taxonomy' => '',
-			'term' => '',
-		];
-		echo create_gallery_instance($params);
+			'display_blank'  => 'true',
+			'exclude_self'   => 'true',
+			'taxonomy'       => '',
+			'term'           => '',
+		);
+		echo create_gallery_instance( $params );
 
-		$params = [
-			'title' => "Other languages to {$standard_name}",
-			'subtitle' => '',
-			'show_total' => 'false',
-			'post_type' => 'lexicons',
-			'custom_class' => '',
-			'columns' => 3,
+		$params = array(
+			'title'          => "Other languages to {$standard_name}",
+			'subtitle'       => '',
+			'show_total'     => 'false',
+			'post_type'      => 'lexicons',
+			'custom_class'   => '',
+			'columns'        => 3,
 			'posts_per_page' => 6,
-			'orderby' => 'date',
-			'order' => 'asc',
-			'pagination' => 'true',
-			'meta_key' => 'target_languages',
-			'meta_value' => $language,
+			'orderby'        => 'date',
+			'order'          => 'asc',
+			'pagination'     => 'true',
+			'meta_key'       => 'target_languages',
+			'meta_value'     => $language,
 			'selected_posts' => '',
-			'display_blank' => 'true',
-			'exclude_self' => 'true',
-			'taxonomy' => '',
-			'term' => '',
-		];
-		echo create_gallery_instance($params);
-	?>
+			'display_blank'  => 'true',
+			'exclude_self'   => 'true',
+			'taxonomy'       => '',
+			'term'           => '',
+		);
+		echo create_gallery_instance( $params );
+		?>
 
 	<div class="custom-cta-container">
 		<section class="custom-gallery-video-cta">
-			<a href="<?php echo home_url('/submit-a-lexicon', 'relative'); ?>">Contribute a lexicon</a>
+			<a href="<?php echo home_url( '/submit-a-lexicon', 'relative' ); ?>">Contribute a lexicon</a>
 		</section>
 	</div>
 </div>
