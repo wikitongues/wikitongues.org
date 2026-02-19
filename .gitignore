@@ -50,6 +50,9 @@ node_modules/
 # Composer
 vendor/
 
+# PHPUnit
+.phpunit.result.cache
+
 # Misc
 .ftpquota
 ggstemp.html
