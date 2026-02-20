@@ -1,6 +1,9 @@
 <?php
 // Route
 function wikitongues_custom_template_redirects() {
+	if ( get_query_var( 'region' ) || is_singular( 'territories' ) || is_post_type_archive( 'territories' ) || is_tax( 'region' ) ) {
+		return; // Don't redirect territories or regions
+	}
 
 	// Archive redirects
 	if ( is_post_type_archive( 'fellows' ) ) {
@@ -77,7 +80,7 @@ function wikitongues_custom_template_redirects() {
 			$request_path = trim( substr( $request_path, strlen( $home_path ) ), '/' );
 	}
 	if ( is_404() && $request_path === 'fellow-category' ) {
-		log_data( '404 fellow-category root detected' );
+		// log_data( '404 fellow-category root detected' );
 
 		$terms = get_terms(
 			array(

@@ -9,6 +9,20 @@
 	$glottolog             = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
 	$ethnologue            = 'https://www.ethnologue.com/language/' . get_the_title();
 	$links                 = array();
+	$territories           = get_field( 'territories' );
+	$territories_list      = '';
+if ( $territories ) {
+	$count = count( $territories );
+	foreach ( $territories as $index => $territory ) {
+		$post_title        = get_the_title( $territory );
+		$guid              = get_permalink( $territory );
+		$territories_list .= '<a href="' . esc_url( $guid ) . '">' . esc_html( $post_title );
+		if ( $index < $count - 1 ) {
+			$territories_list .= ',&nbsp;';
+		}
+		$territories_list .= '</a>';
+	}
+}
 
 if ( have_rows( 'wikipedia_editions' ) ) {
 	while ( have_rows( 'wikipedia_editions' ) ) {
@@ -94,6 +108,8 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 				<?php if ( $nations_of_origin ) : ?>
 					<strong>Countries of origin</strong>
 					<p class="wt_text--label"><?php echo esc_html( $nations_of_origin ); ?></p>
+					<strong>Also spoken in</strong>
+					<p class="wt_text--label territories"><?php echo $territories_list; ?></p>
 				<?php endif; ?>
 
 				<?php if ( $writing_systems ) : ?>

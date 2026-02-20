@@ -2,58 +2,95 @@
 
 This file tracks known issues, deferred refactors, and planned improvements.
 Items are grouped by area and roughly ordered by priority within each group.
+Completed work is documented in [plan-archive.md](plan-archive.md).
 
 ---
 
-## Manual entry
-* I'd like to dockerize this project for ease of contributor setup
-* I'd like to check/cleanup stale branches
+## Table of Contents
 
-Projects that have been started but not finished:
-* Donors post type
+- **[Backlog](#backlog)**
+  - [x] Convert plan.md to checklist format
+  - [ ] Dockerize project
+  - [ ] Audit and clean up stale branches
+  - [ ] Airtable reconciliation (520+ records missing fields)
+  - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
+  - [ ] Complete Donors post type
+  - [ ] Link Fellows to Territories and vice versa
+- [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
+
+- **[Code Quality](#code-quality)**
+  - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
+
+- **[Plugins](#plugins)**
+  - [ ] Track `wt-form` in version control
+  - [ ] Track `integromat-connector` in version control
+
+- **[Infrastructure](#infrastructure)**
+  - [ ] Migrate from Stylus
+  - [ ] Replace Font Awesome
+  - [ ] Performance profiling and monitoring
+
+- **[Testing Strategy](#testing-strategy)**
+  - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
+    - [x] PHPStan, Phase 4 ([archive](plan-archive.md))
+  - [x] Layer 2 — Unit Tests, Phase 3 ([archive](plan-archive.md))
+  - [ ] Layer 3 — Integration Tests, Phase 5
+  - [ ] Layer 4 — End-to-End & Visual Regression, Phase 6
+  - [ ] Layer 5 — Data Integrity, Phase 7
+  - **[Security](#security)**
+    - [x] PHPCS security sniffs ([archive](plan-archive.md))
+    - [ ] WPScan in CI
+    - [ ] Secrets scanning
+    - [ ] Security review of `wt-form` and `integromat-connector`
+
+---
+
+## Backlog
+
+- [ ] **Dockerize project** for ease of contributor setup
+- [ ] **Audit and clean up stale branches**
+- [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
+- [ ] **Complete Donors post type** (in progress, stalled)
+- [ ] **Link Fellows to Territories and vice versa**
+  Fellows posts should display the territory they are associated with. Territory pages should display a gallery of Fellows from that territory.
+  **Goal:** Add a territory relationship field to Fellows posts (or derive it from existing data); render the territory link on single-fellow pages; add a Fellows gallery block to `single-territories.php`.
+
+---
 
 ## Code Quality
 
-### Refactor dynamic IN clause in `wt-gallery` to eliminate raw SQL
-**File:** `wp-content/plugins/wt-gallery/includes/queries.php` (~line 33–44)
-**Context:** The `featured_languages` branch of `get_custom_gallery_query()` builds a
-dynamic `IN ($placeholders)` clause using `array_fill('%s')` and `$wpdb->prepare()`.
-This is the correct WordPress pattern, but PHPCS cannot statically verify that
-`$placeholders` is safe, requiring a `phpcs:disable` suppression comment.
-**Goal:** Refactor to avoid raw SQL entirely — query by post ID or slug instead of
-`post_title`, which would allow `WP_Query` args (`post__in`) to replace the manual
-`$wpdb` query. This also makes the query more robust (post titles are not unique).
-**Prerequisite:** Understand how gallery shortcode callers pass `meta_value` for
-`featured_languages` — the refactor must preserve that interface or update callers too.
+_All items complete. See [plan-archive.md](plan-archive.md)._
 
 ---
 
 ## Plugins
 
-### Track `wt-form` in version control when feature work resumes
-**File:** `wp-content/plugins/wt-form/`
-**Context:** Currently excluded from git. Plugin handles form submissions to Airtable
-and Mailchimp. Not actively used; excluded from linting scope for now.
-**Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, and review for
-security (form validation, API key handling).
+- [ ] **Track `wt-form` in version control** when feature work resumes
+  **File:** `wp-content/plugins/wt-form/`
+  Currently excluded from git. Plugin handles form submissions to Airtable and Mailchimp. Not actively used; excluded from linting scope for now.
+  **Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review security (form validation, API key handling).
 
-### Track `integromat-connector` in version control when automation work resumes
-**File:** `wp-content/plugins/integromat-connector/`
-**Context:** Currently excluded from git. Custom Make.com connector with API token
-auth. Not in active development; excluded from linting scope for now.
-**Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review API token
-handling and REST endpoint security.
+- [ ] **Track `integromat-connector` in version control** when automation work resumes
+  **File:** `wp-content/plugins/integromat-connector/`
+  Currently excluded from git. Custom Make.com connector with API token auth. Not in active development; excluded from linting scope for now.
+  **Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review API token handling and REST endpoint security.
 
 ---
 
 ## Infrastructure
 
-### Migrate from Stylus to a maintained CSS preprocessor
-**Context:** Stylus is largely unmaintained. Its dependency chain (`glob@7` →
-`minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact).
-`npm audit` flags 3 high-severity findings with no clean in-place fix.
-**Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term
-maintainability of the CSS build pipeline.
+- [ ] **Migrate from Stylus to a maintained CSS preprocessor** (PostCSS or Sass)
+  Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
+  **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
+
+- [ ] **Replace Font Awesome**
+  Font Awesome is loaded as an external dependency (CDN or npm package). It adds weight to every page load for a relatively small set of icons actually used. Replacing with inline SVGs or a purpose-built icon set (e.g. Heroicons, Phosphor) would reduce load time and remove the external CDN dependency.
+  **Goal:** Audit which FA icons are in use, replace with lightweight inline SVGs or a self-hosted sprite, remove the FA dependency entirely.
+
+- [ ] **Performance profiling and monitoring**
+  No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
+  **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
+  **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
 
 ---
 
@@ -69,26 +106,30 @@ Coverage is built in layers, from fast/cheap to slow/comprehensive. Each phase d
 **Catches:** coding standards violations, basic security anti-patterns (unescaped output, direct DB queries), JS style issues
 **Runs:** on every PR via GitHub Actions
 
-**Gap — PHPStan (Phase 4)**
-Type-safety analysis: undefined variables, wrong argument types, unreachable code, method calls on null.
-Complements PHPCS (style/security) with correctness guarantees.
-Requires a PHPStan config + WordPress stubs (`szepeviktor/phpstan-wordpress`).
+**PHPStan ✅ (Phase 4, complete)**
+Type-safety analysis at level 5 with `szepeviktor/phpstan-wordpress` stubs. Baseline of
+pre-existing violations in `phpstan-baseline.neon`; CI fails only on new violations.
+Runs on every PR via GitHub Actions alongside PHPCS.
 
 ---
 
-### Layer 2 — Unit Tests (Phase 3, complete)
+### Layer 2 — Unit Tests ✅ (Phase 3, complete)
 **Tools:** PHPUnit 9.6 + WP_Mock 1.1
 **Catches:** regressions in isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math
 **Runs:** on every PR via GitHub Actions
 **Does not cover:** templates, DB queries, actual rendering, hook/filter wiring
 
-**Scope (initial):** functions in `includes/` that have testable logic without a database:
-- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()` (pure PHP, no mocks)
-- `acf-helpers.php` → `wt_meta_value()` (mock `esc_attr`)
-- `search-filter.php` → `searchfilter()` regex routing (mock `is_admin`, `get_query_var`, query stub)
-- `render_gallery_items.php` → `generate_gallery_pagination()` (mock `esc_attr`, stdClass query stub)
+**Covered functions:**
+- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()`
+- `acf-helpers.php` → `wt_meta_value()`
+- `search-filter.php` → `searchfilter()` regex routing
+- `render_gallery_items.php` → `generate_gallery_pagination()`
+- `wt-gallery/helpers.php` → `getDomainFromUrl()`
+- `template-helpers.php` → `get_environment()`
+- `events-filter.php` → `format_event_date_with_proximity()`
+- `wt-gallery/includes/queries.php` → `build_gallery_query_args()` (10 tests)
 
-**Expand over time:** `getDomainFromUrl()` in `wt-gallery/helpers.php`, `get_environment()` and date logic in `template-helpers.php`, `format_event_date_with_proximity()` in `events-filter.php` once extracted. Any new function with non-trivial logic should ship with a unit test.
+**Expand over time:** any new function with non-trivial logic should ship with a unit test.
 
 **Known constraints and upgrade path:**
 WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
@@ -121,8 +162,31 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 
 ---
 
-### Security (ongoing)
-- PHPCS security sniffs already run (Layer 1)
-- **Gap:** WPScan in CI — checks installed plugins/themes against known CVE database
-- **Gap:** secrets scanning — ensure API keys, tokens never land in git history
-- `wt-form` and `integromat-connector` plugins need security review when brought into version control (see Plugins section below)
+### Layer 5 — Data Integrity (Phase 7, future)
+**Tools:** WP-CLI custom command, server cron or GitHub Actions scheduled workflow
+**Catches:** duplicate iso_codes/standard_names (root cause of the wblu/blu routing bug), missing required ACF fields, slug/iso_code mismatches, records that would cause routing or display failures
+**Runs:** weekly scheduled job; logs results; reports violations (log file + optional GitHub issue or admin notice)
+**Does not replace:** Airtable reconciliation (see Backlog) — complements it by catching problems that slip through to WordPress
+
+**Priority checks:**
+- No two published language posts share the same `iso_code` ACF value
+- No two published language posts share the same `standard_name` / `post_title`
+- No published language post has a blank `iso_code`
+- `post_name` (URL slug) matches `iso_code` for all published language posts — mismatch causes silent routing failures like the wblu/blu bug
+- (Future) Cross-check against Airtable API: every WordPress language record has a corresponding Airtable record
+
+**Implementation approach:**
+- WP-CLI command (`wp wt integrity check`) registered in a new `includes/cli/` file in the theme
+- Command queries the DB directly via `$wpdb`, outputs a structured report (pass/fail per check, count of violations, sample offending records)
+- Server cron runs weekly: `wp wt integrity check >> /path/to/integrity.log 2>&1`
+- GitHub Actions `schedule` workflow (weekly) can SSH to staging and run the command, posting results as a job summary
+- Violations do not block deploys — this is a monitoring/alerting layer, not a gate
+
+---
+
+### Security
+
+- [x] **PHPCS security sniffs** — runs on every PR via Layer 1
+- [ ] **WPScan in CI** — check installed plugins/themes against known CVE database
+- [ ] **Secrets scanning** — ensure API keys and tokens never land in git history
+- [ ] **Security review of `wt-form` and `integromat-connector`** — when brought into version control (see Plugins)

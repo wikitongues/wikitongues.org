@@ -1,4 +1,5 @@
-.wt_meta--languages-single
+.wt_meta--languages-single,
+.wt_meta--territories-single
 	width calc(100%/4)
 	float left
 	padding-left 6rem
@@ -7,6 +8,7 @@
 	h1
 		margin-bottom 3rem
 		text--header($black)
+		text-transform capitalize
 
 	.metadata
 		padding 16px 0
@@ -42,12 +44,19 @@
 		display block
 		margin-bottom 16px
 
+		&.territories
+			a
+				display inline-block
+
 		&:last-of-type
 			margin-bottom 0
 
 	ul
 		li
 			margin-bottom 1.2rem
+
+			a
+				text-transform capitalize
 
 			&:last-of-type
 				margin-bottom 0
@@ -67,6 +76,7 @@
 		text-decoration none
 		display block
 		line-height 1.6
+
 
 		&:hover
 			text-decoration underline
