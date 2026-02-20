@@ -55,19 +55,20 @@ if ( $territory_query->have_posts() ) :
 	$territory_ids = wp_list_pluck( $territory_query->posts, 'ID' );
 
 	// Fellows gallery — shown first if any fellows are linked to territories in this region.
+	$fellows_meta_query = array( 'relation' => 'OR' );
+	foreach ( $territory_ids as $t_id ) {
+		$fellows_meta_query[] = array(
+			'key'     => 'fellow_territory',
+			'value'   => '"' . intval( $t_id ) . '"',
+			'compare' => 'LIKE',
+		);
+	}
 	$fellows_query = new WP_Query(
 		array(
 			'post_type'      => 'fellows',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
-			'meta_query'     => array(
-				array(
-					'key'     => 'fellow_territory',
-					'value'   => $territory_ids,
-					'compare' => 'IN',
-					'type'    => 'NUMERIC',
-				),
-			),
+			'meta_query'     => $fellows_meta_query,
 		)
 	);
 	if ( $fellows_query->have_posts() ) {

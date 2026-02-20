@@ -19,9 +19,8 @@
 			'meta_query'     => array(
 				array(
 					'key'     => 'fellow_territory',
-					'value'   => $territory_id,
-					'compare' => '=',
-					'type'    => 'NUMERIC',
+					'value'   => '"' . intval( $territory_id ) . '"',
+					'compare' => 'LIKE',
 				),
 			),
 		)

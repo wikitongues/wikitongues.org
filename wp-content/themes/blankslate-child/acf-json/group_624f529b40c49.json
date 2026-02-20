@@ -140,7 +140,7 @@
             "post_status": "",
             "taxonomy": "",
             "return_format": "object",
-            "multiple": 0,
+            "multiple": 1,
             "allow_null": 1,
             "allow_in_bindings": 1,
             "bidirectional": 0,
