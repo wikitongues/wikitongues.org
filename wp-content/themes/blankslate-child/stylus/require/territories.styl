@@ -1,0 +1,59 @@
+.wt_meta--territories-single
+	width calc(100%/5)
+
+	.metadata
+		width 100%
+
+		&.related-territories
+			.territories-list
+				display flex
+				flex-wrap wrap
+				flex-direction row
+				justify-content left
+
+				.territory
+					width 20%
+					padding 8px
+					box-sizing border-box
+
+					a.territory-name
+						text--strong($blue())
+						padding 8px
+						display inline-block
+
+					.custom-gallery
+						.gallery-container
+							margin-bottom 0
+
+		strong
+			a
+				text--strong($blue())
+				display inline-block
+				margin-bottom 4px
+
+.wt_single-territories__content
+	width calc(100% / 5 * 4) !important
+
+.container
+	width calc(100%/5 * 4)
+	padding 0 6rem 6rem
+	float left
+
+	h1
+		text--header($black)
+
+	section
+		ul.territories-list
+			display grid
+			grid-template-columns repeat(4, 1fr)
+			gap 16px
+
+			li
+				width 100%
+
+				.territory-name
+					text--strong($blue())
+
+				.custom-gallery
+					.gallery-container
+						margin 0
