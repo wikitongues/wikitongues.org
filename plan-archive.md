@@ -5,6 +5,44 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-20
+
+### Territories CPT — "the" prefix generalisation
+**Branch:** `fix/cc/territories-prefix-the`
+**PR:** [#446](https://github.com/wikitongues/wikitongues.org/pull/446)
+**Merged & deployed to production:** 2026-02-20
+
+Centralised the "the Americas / the Bahamas / etc." prefix logic that was previously duplicated (with inconsistent name lists and capitalisation) across four territory template modules.
+
+Changes:
+- **`template-helpers.php`:** New `wt_prefix_the( string $name ): string` helper — covers Americas, Caribbean, Sahel, Gambia, Bahamas; returns lowercase `'the ' . $name`
+- **`single-territories.php`:** `$territory = wt_prefix_the( get_the_title() )` — fixes h1 and gallery title (e.g. "Bahamas" → "the Bahamas")
+- **`taxonomy-region.php`:** `$territory = wt_prefix_the( $current_region->name )` — fixes region page h1
+- **`territories-active-region.php`, `territories-child-regions.php`, `territories-parent-regions.php`, `territories-sibling-regions.php`:** All inline `in_array` prefix checks replaced with `wt_prefix_the()` calls
+- **`meta--languages-single.styl`:** `text-transform: capitalize` on territory h1 and sidebar list links so lowercase "the" displays correctly
+- **`phpstan-baseline.neon`:** Regenerated (446 errors) after removing dead commented-out code that had been counted in prior baseline
+
+---
+
+### Territories CPT — initial feature
+**Branch:** `feature/nations-post-type`
+**PR:** [#445](https://github.com/wikitongues/wikitongues.org/pull/445)
+**Merged & deployed to production:** 2026-02-20
+
+Introduced the `territories` custom post type and `region` hierarchical taxonomy, with a two-level continent → sub-region hierarchy.
+
+Changes:
+- **`includes/custom-post-types/territories.php`:** CPT registration; custom permalink `/territories/{region}/{territory}/`; rewrite rules; removed duplicate `add_filter` call; strict comparisons throughout
+- **`taxonomy-region.php`:** Region archive template; continent pages expand `tax_query` to include all child sub-region term IDs and pass `selected_posts` to gallery (single `term` slug insufficient for multi-region continent queries)
+- **`single-territories.php`:** Territory single template; `get_field('languages', id, false)` returns raw IDs rather than hydrated `WP_Post` objects — critical for large territories (India: 403 languages)
+- **`modules/territories/`:** Four sidebar modules — `territories-active-region`, `territories-child-regions`, `territories-parent-regions`, `territories-sibling-regions`
+- **`temp/territories/import-territories.php`:** WP-CLI `wp eval-file` import script; builds continent → sub-region hierarchy; idempotent (`wp_update_term` fixes missing parent on re-run); uses `__DIR__` path (WP-CLI rejects `--file` and `--tsv` as unknown params)
+- **`phpstan-baseline.neon`:** Regenerated to include territory template files (449 errors at time of merge)
+
+Notes: Territories data must be (re-)imported after each deploy with `wp eval-file temp/territories/import-territories.php`. Flush rewrite rules after first activation with `wp rewrite flush`.
+
+---
+
 ## 2026-02-19
 
 ### Low-hanging unit tests
