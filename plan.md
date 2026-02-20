@@ -15,6 +15,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [ ] Complete Donors post type
+- [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
@@ -25,6 +26,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
+  - [ ] Performance profiling and monitoring
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -75,6 +77,11 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
 - [ ] **Migrate from Stylus to a maintained CSS preprocessor** (PostCSS or Sass)
   Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
   **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
+
+- [ ] **Performance profiling and monitoring**
+  No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
+  **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
+  **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
 
 ---
 
