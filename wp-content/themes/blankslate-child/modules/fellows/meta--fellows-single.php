@@ -72,6 +72,9 @@ function generate_language_links( $fellow_language ) {
 			<?php endif; ?>
 			<section class="info">
 				<?php
+				if ( $fellow_territory ) {
+					echo '<p class="fellow-territory"><a href="' . esc_url( get_permalink( $fellow_territory->ID ) ) . '">' . esc_html( wt_prefix_the( $fellow_territory->post_title ) ) . '</a></p>';
+				}
 				echo '<p>' . esc_html( $page_banner['banner_copy'] ) . '</p>';
 				echo '<p class="categories">' . $category_names . '</p>';
 				if ( $fellow_year ) {
