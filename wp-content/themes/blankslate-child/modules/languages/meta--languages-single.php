@@ -4,25 +4,25 @@
 	$wikipedia = get_field( 'wikipedia_url' );
 	// $wikipedia_description = get_field('wikipedia_description');
 	$wikipedia_description = '';
-	$olac = get_field('olac_url');
-	$glottocode = get_field('glottocode');
-	$glottolog = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
-	$ethnologue = 'https://www.ethnologue.com/language/'.get_the_title();
-	$links = [];
-	$territories = get_field('territories');
-	$territories_list = '';
-	if ($territories) {
-    $count = count($territories);
-    foreach ($territories as $index => $territory) {
-        $post_title = get_the_title($territory);
-        $guid = get_permalink($territory);
-        $territories_list .= '<a href="' . esc_url($guid) . '">' . esc_html($post_title);
-        if ($index < $count - 1) {
-            $territories_list .= ',&nbsp;';
-        }
-        $territories_list .= '</a>';
-    }
+	$olac                  = get_field( 'olac_url' );
+	$glottocode            = get_field( 'glottocode' );
+	$glottolog             = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
+	$ethnologue            = 'https://www.ethnologue.com/language/' . get_the_title();
+	$links                 = array();
+	$territories           = get_field( 'territories' );
+	$territories_list      = '';
+if ( $territories ) {
+	$count = count( $territories );
+	foreach ( $territories as $index => $territory ) {
+		$post_title        = get_the_title( $territory );
+		$guid              = get_permalink( $territory );
+		$territories_list .= '<a href="' . esc_url( $guid ) . '">' . esc_html( $post_title );
+		if ( $index < $count - 1 ) {
+			$territories_list .= ',&nbsp;';
+		}
+		$territories_list .= '</a>';
 	}
+}
 
 if ( have_rows( 'wikipedia_editions' ) ) {
 	while ( have_rows( 'wikipedia_editions' ) ) {
@@ -107,9 +107,9 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 			<div class="mobile-accordion-content">
 				<?php if ( $nations_of_origin ) : ?>
 					<strong>Countries of origin</strong>
-					<p class="wt_text--label"><?php echo esc_html($nations_of_origin); ?></p>
+					<p class="wt_text--label"><?php echo esc_html( $nations_of_origin ); ?></p>
 					<strong>Also spoken in</strong>
-					<p class="wt_text--label territories"><?php echo $territories_list ;?></p>
+					<p class="wt_text--label territories"><?php echo $territories_list; ?></p>
 				<?php endif; ?>
 
 				<?php if ( $writing_systems ) : ?>

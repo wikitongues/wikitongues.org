@@ -1,7 +1,7 @@
 <?php
 // Route
 function wikitongues_custom_template_redirects() {
-	if ( get_query_var('region') || is_singular('territories') || is_post_type_archive('territories') || is_tax('region') ) {
+	if ( get_query_var( 'region' ) || is_singular( 'territories' ) || is_post_type_archive( 'territories' ) || is_tax( 'region' ) ) {
 		return; // Don't redirect territories or regions
 	}
 
