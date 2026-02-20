@@ -18,6 +18,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
   - [ ] Maps on territory templates
   - [ ] Gallery `link_out` param — filtered archive pages
+  - [ ] Download gateway plugin
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
@@ -70,6 +71,52 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - [ ] **Maps on territory templates**
   Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
   **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
+
+- [ ] **Download gateway plugin**
+  Downloads currently go through unprotected direct file URLs or `force_download_file()` (proxy streaming, no logging, no auth). The goal is a standalone plugin that logs every download, optionally gates access with a name/email modal, supports Dropbox-hosted assets via temporary API links, forwards events to GA4, and auto-anonymizes collected data.
+
+  **Full spec:** separate document provided to Claude Code. Summary below.
+
+  **Architectural decisions (resolved):**
+  - Signed expiring redirect URLs — not proxy streaming. Replaces the existing `force_download_file()` readfile approach.
+  - CPT strategy: use existing `resources` and `document_files` CPTs rather than introducing `dg_resource`. Records not yet populated so migration risk is low.
+  - Plugin namespace: `download-gateway` / prefix `dg_`.
+
+  **Schema additions (3 tables + 1 gap fix):**
+  - `wp_dg_people` — email_hash, email, name, consent fields, anonymization flags
+  - `wp_dg_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
+  - `wp_dg_webhook_delivery` — retry queue and dead-letter
+  - `wp_dg_tokens` (**not in original spec — required**) — one-time download tokens with expiry; needed by Phase 3 gate check and Phase 5 gate submission
+
+  **Phases:**
+  - **Phase 0** — Plugin scaffold: activation/deactivation/uninstall hooks, feature flag constant, settings page placeholder, logging conventions
+  - **Phase 1** — Data model: create tables with indexes on activation; idempotent migrations
+  - **Phase 2a** — Core primitives (unblocks Phase 3): PolicyResolver with precedence (per-resource → taxonomy → global), SettingsRepository, EventBus, DownloadEventRepository
+  - **Phase 2b** — Form/gate primitives (unblocks Phase 5): FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
+  - **Phase 2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
+  - **Phase 3** — Download endpoint: `/dg/download/{token-or-post-id}`, `dg_vid` visitor cookie, click event logging, UTM/referrer capture, IP hashing, no-cache headers
+  - **Phase 4** — Resource authoring: attach gateway fields to existing `resources`/`document_files` posts via ACF (file_url, storage_type, dropbox_path/share_id, version); metabox showing gateway URL; `[dg_download]` shortcode
+  - **Phase 5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/dg/v1/gate`; person upsert; one-time token returned; nonce + rate limit + honeypot
+  - **Phase 6** — Storage adapters + Dropbox: local/media/external adapters issue expiring tokenized redirects; Dropbox adapter calls `files/get_temporary_link`, caches result briefly, stores credentials in options with `autoload=no`
+  - **Phase 7** — GA4 forwarding: EventBus subscriber; client-side where possible; first-party log unaffected if GA4 blocked. Events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
+  - **Phase 8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
+  - **Phase 9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button
+  - **Phase 10** — Rollout: convert resources hub first, then top downloads; deprecate and remove `document-download-handler.php` `force_download_file()` once coverage is complete
+
+  **Cut lines (if scope must shrink):**
+  Must-have: Phase 0–3, Phase 5 (basic hard gate), Phase 9 (retention)
+  Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort single attempt), inline gate option (keep modal only)
+
+  **Implementation notes:**
+  - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
+  - Cache plugins (WP Rocket etc.) must explicitly exclude `/dg/download/` — HTTP headers alone are not sufficient
+  - `dg_vid` cookie: define whether it is set unconditionally or only after consent (GDPR/ePrivacy implications)
+  - Dropbox credentials: store in `wp_options` with `autoload=no`; ensure excluded from any REST API exposure
+  - ACF fields on plugin-registered CPT: use `register_meta` or own ACF JSON within the plugin — do not depend on theme's `acf-json/` directory
+  - EventBus: evaluate whether `do_action('dg/download/click', $event)` is sufficient before introducing a custom bus class
+
+  **Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
+  **Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
 
 ---
 
