@@ -15,6 +15,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [ ] Complete Donors post type
+  - [ ] Link Fellows to Territories and vice versa
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
@@ -26,6 +27,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
+  - [ ] Replace Font Awesome
   - [ ] Performance profiling and monitoring
 
 - **[Testing Strategy](#testing-strategy)**
@@ -49,6 +51,9 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - [ ] **Audit and clean up stale branches**
 - [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
 - [ ] **Complete Donors post type** (in progress, stalled)
+- [ ] **Link Fellows to Territories and vice versa**
+  Fellows posts should display the territory they are associated with. Territory pages should display a gallery of Fellows from that territory.
+  **Goal:** Add a territory relationship field to Fellows posts (or derive it from existing data); render the territory link on single-fellow pages; add a Fellows gallery block to `single-territories.php`.
 
 ---
 
@@ -77,6 +82,10 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
 - [ ] **Migrate from Stylus to a maintained CSS preprocessor** (PostCSS or Sass)
   Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
   **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
+
+- [ ] **Replace Font Awesome**
+  Font Awesome is loaded as an external dependency (CDN or npm package). It adds weight to every page load for a relatively small set of icons actually used. Replacing with inline SVGs or a purpose-built icon set (e.g. Heroicons, Phosphor) would reduce load time and remove the external CDN dependency.
+  **Goal:** Audit which FA icons are in use, replace with lightweight inline SVGs or a self-hosted sprite, remove the FA dependency entirely.
 
 - [ ] **Performance profiling and monitoring**
   No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.

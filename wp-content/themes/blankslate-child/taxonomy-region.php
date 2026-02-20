@@ -4,7 +4,7 @@ get_header();
 // Grab the current region term.
 $current_region    = get_queried_object();
 $current_parent_id = $current_region->parent ?: $current_region->term_id;
-$territory         = $current_region->name;
+$territory         = wt_prefix_the( $current_region->name );
 $is_continent      = ( 0 === $current_region->parent );
 
 // On continent pages, expand the query to include all child sub-region terms

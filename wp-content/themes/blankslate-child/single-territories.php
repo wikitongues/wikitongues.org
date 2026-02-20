@@ -2,7 +2,7 @@
 	$territory_id = get_the_ID();
 
 	get_header();
-	$territory = get_the_title();
+	$territory = wt_prefix_the( get_the_title() );
 
 	echo '<div class="wt_meta--territories-single">';
 	require 'modules/territories/meta--territories-single.php';

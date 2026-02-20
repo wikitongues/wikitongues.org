@@ -15,17 +15,15 @@
 			),
 		)
 	);
-	// $current_region_name = in_array($current_region->name, ['Americas', 'Caribbean', 'Sahel', 'Gambia']) ? 'The ' . $current_region->name : $current_region->name;
 	?>
-	<!-- <h1><?php echo $territory; ?></h1> -->
 	<?php	if ( $territory_query->have_posts() ) : ?>
 	<section class="related-territories metadata">
-		<strong>Territories in <a href="<?php echo esc_url( get_term_link( $current_region ) ); ?>"><?php echo esc_html( $current_region->name ); ?></a></strong>
+		<strong>Territories in <a href="<?php echo esc_url( get_term_link( $current_region ) ); ?>"><?php echo esc_html( wt_prefix_the( $current_region->name ) ); ?></a></strong>
 		<ul>
 			<?php
 			while ( $territory_query->have_posts() ) :
 				$territory_query->the_post();
-				$territory_name = in_array( get_the_title(), array( 'Americas', 'Caribbean', 'Sahel', 'Gambia' ), true ) ? 'The ' . get_the_title() : get_the_title();
+				$territory_name = wt_prefix_the( get_the_title() );
 				// if ( $territory_query->post->ID == $territory_id ) continue;
 				echo '<li><a href="' . esc_url( get_permalink() ) . '">' . esc_html( $territory_name ) . '</a></li>';
 			endwhile;
