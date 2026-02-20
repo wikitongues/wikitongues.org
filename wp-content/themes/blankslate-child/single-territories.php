@@ -32,7 +32,7 @@
 		$fellows_params = array(
 			'title'          => 'Fellows from ' . $territory,
 			'subtitle'       => '',
-			'show_total'     => 'false',
+			'show_total'     => 'true',
 			'post_type'      => 'fellows',
 			'custom_class'   => '',
 			'columns'        => 3,

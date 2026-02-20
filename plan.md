@@ -16,6 +16,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [ ] Complete Donors post type
   - [ ] Link Fellows to Territories and vice versa
+  - [ ] Maps on territory templates
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
@@ -54,6 +55,10 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - [ ] **Link Fellows to Territories and vice versa**
   Fellows posts should display the territory they are associated with. Territory pages should display a gallery of Fellows from that territory.
   **Goal:** Add a territory relationship field to Fellows posts (or derive it from existing data); render the territory link on single-fellow pages; add a Fellows gallery block to `single-territories.php`.
+
+- [ ] **Maps on territory templates**
+  Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
+  **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
 
 ---
 
