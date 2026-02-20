@@ -49,19 +49,64 @@ require 'modules/territories/territories-sibling-regions.php';
 require 'modules/territories/territories-parent-regions.php';
 echo '</div>';
 
+echo '<main class="wt_single-territories__content">';
+
 if ( $territory_query->have_posts() ) :
+	$territory_ids = wp_list_pluck( $territory_query->posts, 'ID' );
+
+	// Fellows gallery — shown first if any fellows are linked to territories in this region.
+	$fellows_query = new WP_Query(
+		array(
+			'post_type'      => 'fellows',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'meta_query'     => array(
+				array(
+					'key'     => 'fellow_territory',
+					'value'   => $territory_ids,
+					'compare' => 'IN',
+					'type'    => 'NUMERIC',
+				),
+			),
+		)
+	);
+	if ( $fellows_query->have_posts() ) {
+		$fellow_ids = wp_list_pluck( $fellows_query->posts, 'ID' );
+		wp_reset_postdata();
+		$fellows_params = array(
+			'title'          => 'Fellows from ' . $territory,
+			'subtitle'       => '',
+			'show_total'     => 'false',
+			'post_type'      => 'fellows',
+			'custom_class'   => '',
+			'columns'        => 3,
+			'posts_per_page' => 6,
+			'orderby'        => 'title',
+			'order'          => 'asc',
+			'pagination'     => 'true',
+			'meta_key'       => '',
+			'meta_value'     => '',
+			'selected_posts' => implode( ',', $fellow_ids ),
+			'display_blank'  => 'false',
+			'exclude_self'   => 'false',
+			'taxonomy'       => '',
+			'term'           => '',
+		);
+		echo create_gallery_instance( $fellows_params );
+	}
+
+	// Territories gallery.
 	// On continent pages the gallery's taxonomy/term params can only target a single
 	// term slug, so pass the full territory ID list as selected_posts instead.
 	$selected_posts   = '';
 	$gallery_taxonomy = 'region';
 	$gallery_term     = $current_region->slug;
 	if ( $is_continent ) {
-		$selected_posts   = implode( ',', wp_list_pluck( $territory_query->posts, 'ID' ) );
+		$selected_posts   = implode( ',', $territory_ids );
 		$gallery_taxonomy = '';
 		$gallery_term     = '';
 	}
 
-	echo '<div class="container">';
 	$params = array(
 		'title'          => 'Territories in ' . $territory,
 		'subtitle'       => '',
@@ -83,51 +128,9 @@ if ( $territory_query->have_posts() ) :
 	);
 	echo create_gallery_instance( $params );
 
-	$territory_ids = wp_list_pluck( $territory_query->posts, 'ID' );
 	wp_reset_postdata();
-	echo '</div>';
-
-	$fellows_query = new WP_Query(
-		array(
-			'post_type'      => 'fellows',
-			'posts_per_page' => -1,
-			'post_status'    => 'publish',
-			'meta_query'     => array(
-				array(
-					'key'     => 'fellow_territory',
-					'value'   => $territory_ids,
-					'compare' => 'IN',
-					'type'    => 'NUMERIC',
-				),
-			),
-		)
-	);
-	if ( $fellows_query->have_posts() ) {
-		$fellow_ids = wp_list_pluck( $fellows_query->posts, 'ID' );
-		wp_reset_postdata();
-		echo '<div class="container">';
-		$fellows_params = array(
-			'title'          => 'Fellows from ' . $territory,
-			'subtitle'       => '',
-			'show_total'     => 'false',
-			'post_type'      => 'fellows',
-			'custom_class'   => '',
-			'columns'        => 4,
-			'posts_per_page' => 12,
-			'orderby'        => 'title',
-			'order'          => 'asc',
-			'pagination'     => 'false',
-			'meta_key'       => '',
-			'meta_value'     => '',
-			'selected_posts' => implode( ',', $fellow_ids ),
-			'display_blank'  => 'false',
-			'exclude_self'   => 'false',
-			'taxonomy'       => '',
-			'term'           => '',
-		);
-		echo create_gallery_instance( $fellows_params );
-		echo '</div>';
-	}
 endif;
+
+echo '</main>';
 
 get_footer();

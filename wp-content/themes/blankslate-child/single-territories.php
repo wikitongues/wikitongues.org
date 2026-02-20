@@ -62,7 +62,7 @@
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
 		'custom_class'   => '',
-		'columns'        => 4,
+		'columns'        => 3,
 		'posts_per_page' => 6,
 		'orderby'        => $language_ids,
 		'order'          => 'asc',
