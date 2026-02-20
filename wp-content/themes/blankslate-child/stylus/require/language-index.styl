@@ -56,12 +56,13 @@
 		scroll-margin-top 162px
 
 	.language-columns
-		$gutter = 8px
+		$gutter = 4px
 		$columns = 5
 		display grid
 		flex-wrap wrap
 		grid-template-columns repeat(auto-fill, minmax((($content - ($gutter * $columns)) / $columns), 1fr))
 		column-gap $gutter
+		row-gap $gutter
 
 	.language-item
 		text--body($blue())
@@ -70,6 +71,7 @@
 		text-decoration none
 		display flex
 		position relative
+		border 1px solid #fef8dd
 
 		*
 			float left
@@ -91,6 +93,7 @@
 
 		&:hover
 			background $blue(10)
+			border-color $blue(12)
 
 		span
 			margin-right 1rem
