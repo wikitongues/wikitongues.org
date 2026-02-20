@@ -35,7 +35,7 @@
 			'post_type'      => 'fellows',
 			'custom_class'   => '',
 			'columns'        => 3,
-			'posts_per_page' => 6,
+			'posts_per_page' => 3,
 			'orderby'        => 'title',
 			'order'          => 'asc',
 			'pagination'     => 'true',
