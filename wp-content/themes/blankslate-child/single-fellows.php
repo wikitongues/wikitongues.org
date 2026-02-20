@@ -6,6 +6,7 @@ $page_banner                    = get_field( 'fellow_banner' );
 $fellow_year                    = get_field( 'fellow_year' );
 $fellow_language                = get_field( 'fellow_language' );
 $fellow_location                = get_field( 'fellow_location' );
+$fellow_territory               = get_field( 'fellow_territory' );
 $fellow_language_preferred_name = get_field( 'fellow_language_preferred_name' );
 $categories                     = get_the_terms( get_the_ID(), 'fellow-category' );
 if ( $categories && ! is_wp_error( $categories ) ) {
