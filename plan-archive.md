@@ -5,7 +5,40 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-21
+
+### Branch audit and cleanup
+**Type:** Maintenance (no PR)
+**Date:** 2026-02-21
+
+Audited all branches not owned by `cc/` automation. Three `_`-prefixed branches remained after all cc/ branches were auto-deleted on PR merge:
+
+- **`_feature/language-search-improvements`** — Orphaned search overlay, never wired up; superseded by `search-filter.php`. Deleted.
+- **`_fix/fix-thumbnails`** — Three files at wrong root-level `modules/` path, superseded by organised subdirectory versions (`modules/search/`, `modules/videos/`). Deleted.
+- **`_hotfix/rclone-cicd-action`** — Kept intentionally for potential future rsync/rclone CI work.
+
+---
+
 ## 2026-02-20
+
+### Fellows ↔ Territories — bidirectional linking
+**Branches:** `feature/cc/fellows-territories-linking`, `fix/fellow-territory-style`, `fix/cc/fellows-territory-comma-separated`
+**PRs:** [#450](https://github.com/wikitongues/wikitongues.org/pull/450), [#451](https://github.com/wikitongues/wikitongues.org/pull/451), [#452](https://github.com/wikitongues/wikitongues.org/pull/452), [#455](https://github.com/wikitongues/wikitongues.org/pull/455)
+**Merged & deployed to production:** 2026-02-20
+
+Added a `fellow_territory` ACF field to Fellows posts and wired up bidirectional display on fellow, territory, region, and continent pages.
+
+Changes:
+- **`acf-json/group_624f529b40c49.json`:** New `post_object` field `fellow_territory` — type `territories`, `multiple: 1`, `allow_null: 1`, `return_format: object`. Editors can associate one or more territories with a fellow.
+- **`single-fellows.php`:** `$fellow_territory = get_field('fellow_territory')` passed into scope for the meta module.
+- **`modules/fellows/meta--fellows-single.php`:** Territory link(s) rendered before `banner_copy` as a single `<p class="fellow-territory">` with comma-separated `<a>` anchors when multiple territories are set. Uses `wt_prefix_the()` for correct display ("the Bahamas", "the Americas").
+- **`single-territories.php`:** Restructured to sidebar + `<main>` layout (matching single-language page). Fellows gallery (3 cols, 6 posts, paginated) appears first, then languages gallery (3 cols, 6 posts, paginated). Fellows pre-queried with `LIKE '"id"'` meta_query to match ACF-serialised multiple post_object values.
+- **`taxonomy-region.php`:** Same layout restructure. Fellows aggregated across all territory IDs in the region via OR LIKE meta_query; languages aggregated via existing `selected_posts`. Applied to both region and continent pages (continent pages already expand child term IDs).
+- **`tests/unit/PrefixTheTest.php`:** 8 unit tests for `wt_prefix_the()` — covers all five prefixed names (Americas, Caribbean, Sahel, Gambia, Bahamas), ordinary names, empty string, and case-sensitivity. Total test count: 56 tests, 89 assertions.
+
+Notes: ACF serialises `post_object` arrays as `a:2:{i:0;s:3:"42";i:1;s:3:"99";}` — integer IDs stored as quoted strings. Meta queries must use `LIKE '"id"'` (not `= id` with `NUMERIC`) to match these values.
+
+---
 
 ### Territories CPT — "the" prefix generalisation
 **Branch:** `fix/cc/territories-prefix-the`

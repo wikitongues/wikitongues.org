@@ -11,11 +11,11 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - **[Backlog](#backlog)**
   - [x] Convert plan.md to checklist format
   - [ ] Dockerize project
-  - [ ] Audit and clean up stale branches
+  - [x] Audit and clean up stale branches ([archive](plan-archive.md))
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [ ] Complete Donors post type
-  - [ ] Link Fellows to Territories and vice versa
+  - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
   - [ ] Maps on territory templates
   - [ ] Gallery `link_out` param — filtered archive pages
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
@@ -50,13 +50,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 ## Backlog
 
 - [ ] **Dockerize project** for ease of contributor setup
-- [ ] **Audit and clean up stale branches**
 - [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
 - [ ] **Complete Donors post type** (in progress, stalled)
-- [ ] **Link Fellows to Territories and vice versa**
-  Fellows posts should display the territory they are associated with. Territory pages should display a gallery of Fellows from that territory.
-  **Goal:** Add a territory relationship field to Fellows posts (or derive it from existing data); render the territory link on single-fellow pages; add a Fellows gallery block to `single-territories.php`.
-
 - [ ] **Gallery `link_out` param — filtered archive pages**
   Gallery sections (e.g. "Fellows from the United States", "Languages from the United States", "English videos") should be linkable to a dedicated full-page listing showing all matching items with full pagination. Auto-generated — no editor action required.
 
@@ -146,7 +141,7 @@ Runs on every PR via GitHub Actions alongside PHPCS.
 - `search-filter.php` → `searchfilter()` regex routing
 - `render_gallery_items.php` → `generate_gallery_pagination()`
 - `wt-gallery/helpers.php` → `getDomainFromUrl()`
-- `template-helpers.php` → `get_environment()`
+- `template-helpers.php` → `get_environment()`, `wt_prefix_the()`
 - `events-filter.php` → `format_event_date_with_proximity()`
 - `wt-gallery/includes/queries.php` → `build_gallery_query_args()` (10 tests)
 
