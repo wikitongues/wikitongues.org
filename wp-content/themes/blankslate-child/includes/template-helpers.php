@@ -75,3 +75,14 @@ function html5wp_pagination() {
 		)
 	);
 }
+
+/**
+ * Prefix a territory or region name with "The" where grammatically required.
+ *
+ * @param string $name Territory or region name.
+ * @return string Name with "The " prepended if applicable.
+ */
+function wt_prefix_the( string $name ): string {
+	$prefixed_names = array( 'Americas', 'Caribbean', 'Sahel', 'Gambia', 'Bahamas' );
+	return in_array( $name, $prefixed_names, true ) ? 'the ' . $name : $name;
+}

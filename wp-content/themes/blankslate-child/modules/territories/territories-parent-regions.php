@@ -18,7 +18,8 @@
 			if ( $parent->term_id === $current_parent_id ) {
 				continue;
 			}
-			echo '<li><a href="' . esc_url( get_term_link( $parent ) ) . '">' . esc_html( $parent->name ) . '</a></li>';
+				$parent_name = wt_prefix_the( $parent->name );
+			echo '<li><a href="' . esc_url( get_term_link( $parent ) ) . '">' . esc_html( $parent_name ) . '</a></li>';
 		}
 		?>
 		</ul>

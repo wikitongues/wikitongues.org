@@ -8,7 +8,7 @@
 			'orderby'    => 'slug',
 		)
 	);
-	$parent_name     = get_term( $current_parent_id )->name;
+	$parent_name     = wt_prefix_the( get_term( $current_parent_id )->name );
 	$parent_link     = get_term_link( $current_parent_id );
 	if ( ! is_wp_error( $sibling_regions ) && ! empty( $sibling_regions ) ) : ?>
 		<section class="sibling-regions metadata">
@@ -19,7 +19,7 @@
 			if ( $sibling->term_id === $current_region->term_id ) {
 				continue;
 			}
-				$sibling_name = in_array( $sibling->name, array( 'Americas', 'Caribbean', 'Sahel', 'Gambia' ), true ) ? 'The ' . $sibling->name : $sibling->name;
+				$sibling_name = wt_prefix_the( $sibling->name );
 				echo '<li><a href="' . esc_url( get_term_link( $sibling ) ) . '">' . esc_html( $sibling_name ) . '</a></li>';
 		}
 		?>

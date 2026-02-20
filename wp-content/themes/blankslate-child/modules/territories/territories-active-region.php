@@ -15,7 +15,7 @@
 			),
 		)
 	);
-	$current_region_name = in_array( $current_region->name, array( 'Americas', 'Caribbean', 'Sahel', 'Gambia' ), true ) ? 'The ' . $current_region->name : $current_region->name;
+	$current_region_name = wt_prefix_the( $current_region->name );
 	?>
 	<h1><?php echo $territory; ?></h1>
 	<?php	if ( $territory_query->have_posts() ) : ?>
@@ -26,7 +26,7 @@
 			while ( $territory_query->have_posts() ) :
 				$territory_query->the_post();
 				$territory_name       = $territory_query->post->post_title;
-				$territory_name_clean = in_array( $territory_name, array( 'Americas', 'Caribbean', 'Sahel', 'Gambia' ), true ) ? 'The ' . $territory_name : $territory_name;
+				$territory_name_clean = wt_prefix_the( $territory_name );
 				if ( $territory_query->post->ID === $territory_id ) {
 					continue;
 				}
