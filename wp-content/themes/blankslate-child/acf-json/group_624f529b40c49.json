@@ -52,7 +52,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
@@ -64,6 +64,7 @@
             "return_format": "object",
             "multiple": 1,
             "allow_null": 0,
+            "allow_in_bindings": 1,
             "bidirectional": 0,
             "ui": 1,
             "bidirectional_target": []
@@ -78,12 +79,13 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
             "default_value": "",
             "maxlength": "",
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -98,7 +100,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
@@ -119,6 +121,33 @@
             "placeholder": ""
         },
         {
+            "key": "field_67b700001a001",
+            "label": "Fellow Territory",
+            "name": "fellow_territory",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "territories"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "object",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 1,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
             "key": "field_636d35600b10a",
             "label": "Fellow Location",
             "name": "fellow_location",
@@ -128,12 +157,13 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
             "default_value": "",
             "maxlength": "",
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -590,32 +620,6 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
-        },
-        {
-            "key": "field_67b700001a001",
-            "label": "Fellow Territory",
-            "name": "fellow_territory",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "territories"
-            ],
-            "post_status": [],
-            "taxonomy": [],
-            "return_format": "object",
-            "multiple": 0,
-            "allow_null": 1,
-            "bidirectional": 0,
-            "ui": 1,
-            "bidirectional_target": []
         }
     ],
     "location": [
@@ -636,5 +640,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1771545600
+    "modified": 1771607773
 }
