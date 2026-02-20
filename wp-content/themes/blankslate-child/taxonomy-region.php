@@ -49,19 +49,65 @@ require 'modules/territories/territories-sibling-regions.php';
 require 'modules/territories/territories-parent-regions.php';
 echo '</div>';
 
+echo '<main class="wt_single-territories__content">';
+
 if ( $territory_query->have_posts() ) :
+	$territory_ids = wp_list_pluck( $territory_query->posts, 'ID' );
+
+	// Fellows gallery — shown first if any fellows are linked to territories in this region.
+	$fellows_meta_query = array( 'relation' => 'OR' );
+	foreach ( $territory_ids as $t_id ) {
+		$fellows_meta_query[] = array(
+			'key'     => 'fellow_territory',
+			'value'   => '"' . intval( $t_id ) . '"',
+			'compare' => 'LIKE',
+		);
+	}
+	$fellows_query = new WP_Query(
+		array(
+			'post_type'      => 'fellows',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'meta_query'     => $fellows_meta_query,
+		)
+	);
+	if ( $fellows_query->have_posts() ) {
+		$fellow_ids = wp_list_pluck( $fellows_query->posts, 'ID' );
+		wp_reset_postdata();
+		$fellows_params = array(
+			'title'          => 'Fellows from ' . $territory,
+			'subtitle'       => '',
+			'show_total'     => 'true',
+			'post_type'      => 'fellows',
+			'custom_class'   => '',
+			'columns'        => 3,
+			'posts_per_page' => 3,
+			'orderby'        => 'title',
+			'order'          => 'asc',
+			'pagination'     => 'true',
+			'meta_key'       => '',
+			'meta_value'     => '',
+			'selected_posts' => implode( ',', $fellow_ids ),
+			'display_blank'  => 'false',
+			'exclude_self'   => 'false',
+			'taxonomy'       => '',
+			'term'           => '',
+		);
+		echo create_gallery_instance( $fellows_params );
+	}
+
+	// Territories gallery.
 	// On continent pages the gallery's taxonomy/term params can only target a single
 	// term slug, so pass the full territory ID list as selected_posts instead.
 	$selected_posts   = '';
 	$gallery_taxonomy = 'region';
 	$gallery_term     = $current_region->slug;
 	if ( $is_continent ) {
-		$selected_posts   = implode( ',', wp_list_pluck( $territory_query->posts, 'ID' ) );
+		$selected_posts   = implode( ',', $territory_ids );
 		$gallery_taxonomy = '';
 		$gallery_term     = '';
 	}
 
-	echo '<div class="container">';
 	$params = array(
 		'title'          => 'Territories in ' . $territory,
 		'subtitle'       => '',
@@ -84,7 +130,8 @@ if ( $territory_query->have_posts() ) :
 	echo create_gallery_instance( $params );
 
 	wp_reset_postdata();
-	echo '</div>';
 endif;
+
+echo '</main>';
 
 get_footer();

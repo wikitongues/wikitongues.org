@@ -16,6 +16,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [ ] Complete Donors post type
   - [ ] Link Fellows to Territories and vice versa
+  - [ ] Maps on territory templates
+  - [ ] Gallery `link_out` param — filtered archive pages
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
@@ -54,6 +56,25 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - [ ] **Link Fellows to Territories and vice versa**
   Fellows posts should display the territory they are associated with. Territory pages should display a gallery of Fellows from that territory.
   **Goal:** Add a territory relationship field to Fellows posts (or derive it from existing data); render the territory link on single-fellow pages; add a Fellows gallery block to `single-territories.php`.
+
+- [ ] **Gallery `link_out` param — filtered archive pages**
+  Gallery sections (e.g. "Fellows from the United States", "Languages from the United States", "English videos") should be linkable to a dedicated full-page listing showing all matching items with full pagination. Auto-generated — no editor action required.
+
+  **Two parts:**
+
+  1. **`wt-gallery` plugin — `link_out` param**: when `link_out` is set (a URL string), render the `wt_sectionHeader` as `<a href="{link_out}">` instead of plain text. No other gallery behaviour changes.
+
+  2. **Archive templates with filter params**: existing archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`) check for query-string filter params and apply them to the `WP_Query` or `WP_Query` args:
+     - `?territory=<slug>` on the fellows/languages archives → meta query filtering by territory
+     - `?language=<slug>` on the videos archive → tax query or meta query filtering by language
+     Callers (territory pages, language pages) pass the constructed URL as `link_out` when calling `create_gallery_instance()`.
+
+  **URL examples:** `/fellows/?territory=united-states`, `/languages/?territory=united-states`, `/videos/?language=eng`
+  No custom rewrite rules required — query params on existing archive templates.
+
+- [ ] **Maps on territory templates**
+  Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
+  **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
 
 ---
 

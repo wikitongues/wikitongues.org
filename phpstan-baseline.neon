@@ -381,6 +381,11 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
 
 		-
+			message: "#^Variable \\$fellow_territory might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
+
+		-
 			message: "#^Variable \\$fellow_year might not be defined\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
@@ -837,7 +842,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 16
+			count: 17
 			path: wp-content/themes/blankslate-child/single-fellows.php
 
 		-
