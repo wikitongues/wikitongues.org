@@ -145,6 +145,7 @@ function create_gallery_instance( $params ) {
 		'exclude_self'   => 'true',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 
 	$args = wp_parse_args( $params, $defaults );
@@ -168,6 +169,7 @@ function create_gallery_instance( $params ) {
 		'exclude_self="' . $args['exclude_self'] . '" ' .
 		'taxonomy="' . $args['taxonomy'] . '" ' .
 		'term="' . $args['term'] . '" ' .
+		'link_out="' . esc_url( $args['link_out'] ) . '" ' .
 		']'
 	);
 }
@@ -197,6 +199,7 @@ function custom_gallery( $atts ) {
 			'exclude_self'   => 'true', // define whether to show or hide the current post entry string true or false
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => '',
 		),
 		$atts,
 		'custom_gallery'
@@ -258,7 +261,7 @@ function custom_gallery( $atts ) {
 	$output = '';
 	if ( $query->have_posts() || $atts['display_blank'] === 'true' ) {
 		$output  = '<div class="' . $classes . '">';
-		$output .= $atts['title'] ? '<strong class="wt_sectionHeader">' . $header . '</strong>' : '';
+		$output .= $atts['title'] ? ( $atts['link_out'] ? '<a href="' . esc_url( $atts['link_out'] ) . '" class="wt_sectionHeader">' . $header . '</a>' : '<strong class="wt_sectionHeader">' . $header . '</strong>' ) : '';
 		$output .= $atts['subtitle'] ? '<p class="wt_subtitle">' . $atts['subtitle'] . '</p>' : '';
 		if ( $query->have_posts() ) {
 			$output .= render_gallery_items( $query, $atts, $atts['gallery_id'], $paged, $data_attributes );
