@@ -25,8 +25,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
 
 - **[Plugins](#plugins)**
-  - [ ] Delete `wt-form` plugin
-  - [ ] Track `integromat-connector` in version control
+  - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
+  - [ ] Audit `integromat-connector` REST API exposure
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
@@ -44,7 +44,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
     - [x] PHPCS security sniffs ([archive](plan-archive.md))
         - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
     - [x] Secrets scanning ([archive](plan-archive.md))
-    - [ ] Security review of `integromat-connector`
+    - [ ] Audit `integromat-connector` REST API exposure
 
 - **[Roadmap](#roadmap)**
 
@@ -55,7 +55,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
 **Key dependency chain:**
-`Secrets scanning` → plugin VCS → plugin security reviews
+`Secrets scanning` → integromat-connector audit
 `Stylus migration` + `Font Awesome replacement` + `Donors post type` → **Layer 4 visual baseline** (must all land before the E2E baseline is set)
 `Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
@@ -71,22 +71,22 @@ _No prerequisites. Unblocks all credential-sensitive work._
 ---
 
 ### Tier 2 — Plugin hygiene + infrastructure cleanup + quick wins
-_Parallel. Secrets scanning (Tier 1) required before `integromat-connector` enters VCS. `wt-form` deletion has no prerequisites (no live usage, no hardcoded credentials). Stylus, FA, and Donors have no hard deps but must land before the Layer 4 visual baseline (Tier 5)._
+_Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-party Make.com plugin (not custom code) — audit its REST API exposure rather than bringing it into VCS. Stylus, FA, and Donors must land before the Layer 4 visual baseline (Tier 5)._
 
-- [ ] Delete `wt-form` plugin _(no prerequisites — confirmed unused, credentials in ACF options not in files)_
-- [ ] Track `integromat-connector` in version control
-- [ ] Migrate from Stylus
+- [x] Delete `wt-form` plugin ([archive](plan-archive.md))
+- [ ] Audit `integromat-connector` REST API exposure _(third-party Make.com plugin — confirm which post types and meta fields are exposed; ensure scope is minimal)_
+- [x] Gallery `link_out` param ([archive](plan-archive.md))
 - [ ] Replace Font Awesome
 - [ ] Complete Donors post type
-- [ ] Gallery `link_out` param
+- [ ] Migrate from Stylus
 
 ---
 
-### Tier 3 — Docker + security reviews + data integrity
-_Parallel. Docker unblocks testing Layers 3–4. Security reviews require plugins to be in VCS. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
+### Tier 3 — Docker + integromat audit + data integrity
+_Parallel. Docker unblocks testing Layers 3–4. Integromat audit is a config review (what data is exposed to Make.com), not a code review. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
 
 - [ ] Dockerize project _(CSS/icon/Donors changes should be done first so Docker captures the final build)_
-- [ ] Security review of `integromat-connector`
+- [ ] Audit `integromat-connector` REST API exposure
 - [ ] Layer 5 — Data Integrity
 
 ---
@@ -197,15 +197,12 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
 
 ## Plugins
 
-- [ ] **Delete `wt-form` plugin**
-  **File:** `wp-content/plugins/wt-form/`
-  A prototype download gate for the Revitalization Toolkit — collects name and email, stores to a `form_submission` CPT, with stubs for Airtable and Mailchimp integration (both methods begin with `return;` and have never run). The `[wikitongues_form]` shortcode is not used on any published page. Fully superseded by download gateway Phase 5. Credentials are pulled from ACF options (not hardcoded), so no secrets risk.
-  **Goal:** Deactivate and delete the plugin folder. Can be done independently of secrets scanning. Do before the download gateway Phase 5 lands to avoid confusion between the two form systems.
+- [x] **Delete `wt-form` plugin** — done ([archive](plan-archive.md))
 
-- [ ] **Track `integromat-connector` in version control** when automation work resumes
-  **File:** `wp-content/plugins/integromat-connector/`
-  Currently excluded from git. Custom Make.com connector with API token auth. Not in active development; excluded from linting scope for now.
-  **Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review API token handling and REST endpoint security.
+- [ ] **Audit `integromat-connector` REST API exposure**
+  **File:** `wp-content/plugins/integromat-connector/` (v1.5.9)
+  This is the **official Make Connector plugin by Make.com (Celonis s.r.o.)** — not a custom-built plugin. Should not be tracked in git or linted as custom code; managed via WordPress admin plugin updates. An API token (`iwc_api_key`) is confirmed in the database, meaning Make.com is actively connected and using this plugin (likely for the Airtable → WordPress language sync).
+  **Goal:** Determine which post types and meta fields are exposed to Make.com via the plugin settings. Confirm the scope is minimal (only what the active scenarios require). Review whether the token has ever been rotated and document the rotation process.
 
 ---
 

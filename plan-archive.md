@@ -5,6 +5,28 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-21 (Tier 2 — Plugin hygiene + quick wins, partial)
+
+### Delete wt-form plugin
+**Branch:** `chore/cc/delete-wt-form-and-plan-updates`
+**PR:** (pending)
+
+`wt-form` was a prototype download gate for the Revitalization Toolkit. Both its Airtable and Mailchimp integration methods began with `return;` and never ran. The `[wikitongues_form]` shortcode was confirmed absent from all published content. Plugin folder deleted.
+
+Also corrected the plan entry for `integromat-connector`: it is the official Make Connector plugin by Make.com (Celonis s.r.o.), not custom code. Active API token confirmed in DB. Plan updated from "Track in VCS" to "Audit REST API exposure".
+
+---
+
+### Gallery `link_out` param
+**Branch:** `feature/cc/gallery-link-out`
+**PR:** [#462](https://github.com/wikitongues/wikitongues.org/pull/462)
+
+Added `link_out` param to `custom_gallery` shortcode and `create_gallery_instance()`. When set, the `wt_sectionHeader` renders as `<a href="{link_out}">` instead of `<strong>`. URL passes through `esc_url()` at both the passthrough and render points. No behaviour change when param is empty.
+
+Part 2 (archive templates with `?territory=` / `?language=` filter params) is a follow-on — `archive-fellows.php`, `archive-languages.php`, and `archive-videos.php` do not yet exist.
+
+---
+
 ## 2026-02-21 (Tier 1 — Security foundation, partial)
 
 ### Secrets scanning
