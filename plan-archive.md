@@ -5,6 +5,37 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-21 (Tier 1 — Security foundation)
+
+### Secrets scanning
+**Branch:** `feature/cc/tier-1-security`
+**PR:** (pending)
+
+Two-layer secrets scanning: GitHub-native for zero-maintenance push protection, TruffleHog as the PR gate.
+
+Changes:
+- **GitHub repository settings:** Native secret scanning and push protection enabled via API. Vulnerability alerts also enabled. Runs on every push; blocks pushes containing known credential patterns without any workflow required.
+- **`.github/workflows/security.yml`:** TruffleHog action (pinned to SHA `7c0734f` = v3.93.4) runs on every PR to main. `--only-verified` eliminates false positives. Scans PR diff only (base → head SHA).
+
+Notes: Update the SHA comment in the workflow when upgrading. One-time full history audit: `trufflehog git file://. --only-verified` run locally.
+
+---
+
+### WPScan in CI
+**Branch:** `feature/cc/tier-1-security`
+**PR:** (pending)
+
+Weekly scheduled scan of the production site against the WPVulnDB vulnerability database.
+
+Changes:
+- **`.github/workflows/wpscan.yml`:** Runs every Monday at 09:00 UTC and on manual dispatch. Installs wpscan gem pinned to 3.8.28. Enumerates vulnerable plugins (`vp`) and themes (`vt`) with mixed detection. Fails with a clear message if `WPSCAN_API_TOKEN` or `PRODUCTION_URL` secrets are not configured.
+
+Setup required (one-time, in repository Settings → Secrets):
+- `PRODUCTION_URL` — e.g. `https://wikitongues.org`
+- `WPSCAN_API_TOKEN` — free token from https://wpscan.com/api (25 req/day)
+
+---
+
 ## 2026-02-21
 
 ### Branch audit and cleanup
