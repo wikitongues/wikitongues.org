@@ -7,6 +7,24 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ## 2026-02-21 (Tier 2 — Plugin hygiene + quick wins, partial)
 
+### Audit `integromat-connector` REST API exposure
+**Branch:** `chore/cc/delete-wt-form-and-plan-updates`
+**PR:** (pending)
+
+Read all plugin source files and queried the DB for opted-in fields.
+
+**Findings:**
+- v1.5.9 (Make Connector by Celonis s.r.o.) — third-party plugin; not tracked in git
+- Token (`iwc_api_key`, 32-char) is active in DB; no expiry; no rotation performed
+- Authentication: `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator-level access)
+- Guard scope: only protects core WP entities (posts/users/comments/tags/categories/media) on POST/PUT/DELETE; custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin
+- **No ACF fields or custom taxonomies are opted in** (`integromat_api_options_post` / `integromat_api_options_taxonomy` absent from DB)
+- Implication: Make.com writes raw `wp_postmeta` keys directly, bypassing ACF hooks and validation
+
+**Follow-on:** Audit Make.com scenarios (Tier 3) to inventory active workflows and determine which ACF fields need to be opted in for a production-quality integration.
+
+---
+
 ### Delete wt-form plugin
 **Branch:** `chore/cc/delete-wt-form-and-plan-updates`
 **PR:** (pending)
