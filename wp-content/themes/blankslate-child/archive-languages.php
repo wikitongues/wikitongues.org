@@ -4,6 +4,7 @@ get_header();
 $territory_slug         = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
 $territory_post         = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
 $genealogy              = isset( $_GET['genealogy'] ) ? sanitize_text_field( wp_unslash( $_GET['genealogy'] ) ) : '';
+$genealogy_term         = $genealogy ? get_term_by( 'slug', $genealogy, 'linguistic-genealogy' ) : null;
 $writing_system         = isset( $_GET['writing_system'] ) ? sanitize_text_field( wp_unslash( $_GET['writing_system'] ) ) : '';
 $writing_system_term    = $writing_system ? get_term_by( 'slug', $writing_system, 'writing-system' ) : null;
 $archive_columns        = 5;
@@ -35,9 +36,9 @@ if ( $territory_post ) {
 		'term'           => '',
 		'link_out'       => '',
 	);
-} elseif ( $genealogy ) {
+} elseif ( $genealogy_term ) {
 	$params = array(
-		'title'          => $genealogy . ' linguistic family',
+		'title'          => $genealogy_term->name . ' linguistic family',
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
@@ -46,13 +47,13 @@ if ( $territory_post ) {
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
-		'meta_key'       => 'linguistic_genealogy',
-		'meta_value'     => $genealogy,
+		'meta_key'       => '',
+		'meta_value'     => '',
 		'selected_posts' => '',
 		'display_blank'  => 'true',
 		'exclude_self'   => 'false',
-		'taxonomy'       => '',
-		'term'           => '',
+		'taxonomy'       => 'linguistic-genealogy',
+		'term'           => $genealogy_term->slug,
 		'link_out'       => '',
 	);
 } elseif ( $writing_system_term ) {
