@@ -5,6 +5,46 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-21 (Tier 2 — Plugin hygiene + quick wins, partial)
+
+### Audit `integromat-connector` REST API exposure
+**Branch:** `chore/cc/delete-wt-form-and-plan-updates`
+**PR:** (pending)
+
+Read all plugin source files and queried the DB for opted-in fields.
+
+**Findings:**
+- v1.5.9 (Make Connector by Celonis s.r.o.) — third-party plugin; not tracked in git
+- Token (`iwc_api_key`, 32-char) is active in DB; no expiry; no rotation performed
+- Authentication: `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator-level access)
+- Guard scope: only protects core WP entities (posts/users/comments/tags/categories/media) on POST/PUT/DELETE; custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin
+- **No ACF fields or custom taxonomies are opted in** (`integromat_api_options_post` / `integromat_api_options_taxonomy` absent from DB)
+- Implication: Make.com writes raw `wp_postmeta` keys directly, bypassing ACF hooks and validation
+
+**Follow-on:** Audit Make.com scenarios (Tier 3) to inventory active workflows and determine which ACF fields need to be opted in for a production-quality integration.
+
+---
+
+### Delete wt-form plugin
+**Branch:** `chore/cc/delete-wt-form-and-plan-updates`
+**PR:** (pending)
+
+`wt-form` was a prototype download gate for the Revitalization Toolkit. Both its Airtable and Mailchimp integration methods began with `return;` and never ran. The `[wikitongues_form]` shortcode was confirmed absent from all published content. Plugin folder deleted.
+
+Also corrected the plan entry for `integromat-connector`: it is the official Make Connector plugin by Make.com (Celonis s.r.o.), not custom code. Active API token confirmed in DB. Plan updated from "Track in VCS" to "Audit REST API exposure".
+
+---
+
+### Gallery `link_out` param
+**Branch:** `feature/cc/gallery-link-out`
+**PR:** [#462](https://github.com/wikitongues/wikitongues.org/pull/462)
+
+Added `link_out` param to `custom_gallery` shortcode and `create_gallery_instance()`. When set, the `wt_sectionHeader` renders as `<a href="{link_out}">` instead of `<strong>`. URL passes through `esc_url()` at both the passthrough and render points. No behaviour change when param is empty.
+
+Part 2 (archive templates with `?territory=` / `?language=` filter params) is a follow-on — `archive-fellows.php`, `archive-languages.php`, and `archive-videos.php` do not yet exist.
+
+---
+
 ## 2026-02-21 (Tier 1 — Security foundation, partial)
 
 ### Secrets scanning

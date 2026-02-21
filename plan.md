@@ -25,8 +25,9 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
 
 - **[Plugins](#plugins)**
-  - [ ] Delete `wt-form` plugin
-  - [ ] Track `integromat-connector` in version control
+  - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
+  - [x] Audit `integromat-connector` REST API exposure
+  - [ ] Audit Make.com scenarios
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
@@ -44,7 +45,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
     - [x] PHPCS security sniffs ([archive](plan-archive.md))
         - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
     - [x] Secrets scanning ([archive](plan-archive.md))
-    - [ ] Security review of `integromat-connector`
+    - [x] Audit `integromat-connector` REST API exposure
+    - [ ] Audit Make.com scenarios
 
 - **[Roadmap](#roadmap)**
 
@@ -55,7 +57,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
 **Key dependency chain:**
-`Secrets scanning` → plugin VCS → plugin security reviews
+`Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit → production ACF integration
 `Stylus migration` + `Font Awesome replacement` + `Donors post type` → **Layer 4 visual baseline** (must all land before the E2E baseline is set)
 `Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
@@ -71,7 +73,7 @@ _No prerequisites. Unblocks all credential-sensitive work._
 ---
 
 ### Tier 2 — Plugin hygiene + infrastructure cleanup + quick wins
-_Parallel. Secrets scanning (Tier 1) required before `integromat-connector` enters VCS. `wt-form` deletion has no prerequisites (no live usage, no hardcoded credentials). Stylus, FA, and Donors have no hard deps but must land before the Layer 4 visual baseline (Tier 5)._
+_Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-party Make.com plugin (not custom code) — audited; no custom fields currently opted in. Stylus, FA, and Donors must land before the Layer 4 visual baseline (Tier 5)._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
@@ -83,11 +85,11 @@ _Parallel. Secrets scanning (Tier 1) required before `integromat-connector` ente
 
 ---
 
-### Tier 3 — Docker + security reviews + data integrity
-_Parallel. Docker unblocks testing Layers 3–4. Security reviews require plugins to be in VCS. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
+### Tier 3 — Docker + Make.com audit + data integrity
+_Parallel. Docker unblocks testing Layers 3–4. Make.com scenario audit maps the live sync workflows and is a prerequisite for the production-quality ACF integration. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
 
 - [ ] Dockerize project _(CSS/icon/Donors changes should be done first so Docker captures the final build)_
-- [ ] Security review of `integromat-connector`
+- [ ] Audit Make.com scenarios _(see Plugins section)_
 - [ ] Layer 5 — Data Integrity
 
 ---
@@ -198,15 +200,35 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
 
 ## Plugins
 
-- [ ] **Delete `wt-form` plugin**
-  **File:** `wp-content/plugins/wt-form/`
-  A prototype download gate for the Revitalization Toolkit — collects name and email, stores to a `form_submission` CPT, with stubs for Airtable and Mailchimp integration (both methods begin with `return;` and have never run). The `[wikitongues_form]` shortcode is not used on any published page. Fully superseded by download gateway Phase 5. Credentials are pulled from ACF options (not hardcoded), so no secrets risk.
-  **Goal:** Deactivate and delete the plugin folder. Can be done independently of secrets scanning. Do before the download gateway Phase 5 lands to avoid confusion between the two form systems.
+- [x] **Delete `wt-form` plugin** — done ([archive](plan-archive.md))
 
-- [ ] **Track `integromat-connector` in version control** when automation work resumes
-  **File:** `wp-content/plugins/integromat-connector/`
-  Currently excluded from git. Custom Make.com connector with API token auth. Not in active development; excluded from linting scope for now.
-  **Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review API token handling and REST endpoint security.
+- [x] **Audit `integromat-connector` REST API exposure**
+  **File:** `wp-content/plugins/integromat-connector/` (v1.5.9, Make Connector by Celonis s.r.o.)
+  Not custom code — managed via WP admin plugin updates; not tracked in git.
+
+  **Findings:**
+  - **Token:** Active (`iwc_api_key` confirmed in DB, 32-char alphanumeric). No expiry; no rotation has been performed. Token stored in `wp_site_options`.
+  - **Authentication model:** `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator). Guard only protects WP core entity endpoints (posts/users/comments/tags/categories/media) on POST/PUT/DELETE. Custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin, though WP's own auth still applies.
+  - **Custom fields exposed:** **None.** `integromat_api_options_post` and `integromat_api_options_taxonomy` do not exist in the DB — no ACF fields or custom taxonomies have been opted in.
+  - **Implication:** Make.com is currently writing to raw `wp_postmeta` keys directly rather than through the ACF REST API. This works but bypasses ACF hooks, validation, and field formatting.
+  - **Production-quality path:** Opt in the relevant ACF field keys in the integromat-connector admin settings (Settings → Make Connector → Posts tab), then update Make.com scenarios to read/write those fields as REST API fields rather than raw meta. Requires the Make.com scenario audit first to know which fields are in scope.
+
+- [ ] **Audit Make.com scenarios**
+  **Prerequisite:** integromat-connector audit (done above).
+  Make.com is confirmed live and writing to WordPress, but the active scenario inventory is unknown. This audit should be done in the Make.com dashboard.
+
+  **Goal:**
+  1. List all active scenarios and their triggers (Airtable webhook? Scheduled? Manual?)
+  2. For each scenario: which WordPress post types does it write to, and which fields (raw meta keys)?
+  3. Identify which of those fields are ACF-managed vs. plain `wp_postmeta`
+  4. Determine whether any scenario reads data back from WordPress (and which fields)
+  5. Document the data flow for the primary Airtable → WordPress language sync
+
+  **Production-quality follow-on (after audit):**
+  - Opt in the ACF field keys used by Make.com in the integromat-connector admin settings
+  - Update the Make.com scenarios to write via the REST field names rather than raw meta keys
+  - Rotate the `iwc_api_key` token; document rotation procedure
+  - Confirm custom post type write endpoints require authentication (currently Guard-scope gap for CPTs)
 
 ---
 
@@ -322,4 +344,5 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - [x] **PHPCS security sniffs** — runs on every PR via Layer 1
 - [ ] **WPScan in CI** — WPScan API is no longer free; deferred. Recommended replacement: install Patchstack or Wordfence on the production site for plugin/theme vulnerability monitoring without a paid API dependency.
 - [x] **Secrets scanning** — TruffleHog on every PR (pinned SHA v3.93.4); GitHub native secret scanning + push protection enabled on repo ([archive](plan-archive.md))
-- [ ] **Security review of `integromat-connector`** — when brought into version control (see Plugins)
+- [x] **Security review of `integromat-connector`** — audited (see Plugins section); not tracked in VCS as it is a third-party plugin
+- [ ] **Audit Make.com scenarios** — see Plugins section for scope and production-quality follow-on
