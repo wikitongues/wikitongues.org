@@ -5,6 +5,24 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-21 (Tier 1 — Security foundation, partial)
+
+### Secrets scanning
+**Branch:** `feature/cc/tier-1-security`
+**PR:** (pending)
+
+_Note: WPScan was planned for this tier but removed — the WPScan API is no longer free. Plugin/theme vulnerability monitoring deferred to a server-side tool (Patchstack or Wordfence)._
+
+Two-layer secrets scanning: GitHub-native for zero-maintenance push protection, TruffleHog as the PR gate.
+
+Changes:
+- **GitHub repository settings:** Native secret scanning and push protection enabled via API. Vulnerability alerts also enabled. Runs on every push; blocks pushes containing known credential patterns without any workflow required.
+- **`.github/workflows/security.yml`:** TruffleHog action (pinned to SHA `7c0734f` = v3.93.4) runs on every PR to main. `--only-verified` eliminates false positives. Scans PR diff only (base → head SHA).
+
+Notes: Update the SHA comment in the workflow when upgrading. One-time full history audit: `trufflehog git file://. --only-verified` run locally.
+
+---
+
 ## 2026-02-21
 
 ### Branch audit and cleanup

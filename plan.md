@@ -42,8 +42,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Layer 5 — Data Integrity, Phase 7
   - **[Security](#security)**
     - [x] PHPCS security sniffs ([archive](plan-archive.md))
-    - [ ] WPScan in CI
-    - [ ] Secrets scanning
+        - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
+    - [x] Secrets scanning ([archive](plan-archive.md))
     - [ ] Security review of `integromat-connector`
 
 - **[Roadmap](#roadmap)**
@@ -65,8 +65,8 @@ Logical implementation sequence across all plan items. Items within a tier can b
 ### Tier 1 — Security foundation
 _No prerequisites. Unblocks all credential-sensitive work._
 
-- [ ] Secrets scanning
-- [ ] WPScan in CI
+- [x] Secrets scanning ([archive](plan-archive.md))
+- [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
 
 ---
 
@@ -319,6 +319,6 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 ### Security
 
 - [x] **PHPCS security sniffs** — runs on every PR via Layer 1
-- [ ] **WPScan in CI** — check installed plugins/themes against known CVE database
-- [ ] **Secrets scanning** — ensure API keys and tokens never land in git history
+- [ ] **WPScan in CI** — WPScan API is no longer free; deferred. Recommended replacement: install Patchstack or Wordfence on the production site for plugin/theme vulnerability monitoring without a paid API dependency.
+- [x] **Secrets scanning** — TruffleHog on every PR (pinned SHA v3.93.4); GitHub native secret scanning + push protection enabled on repo ([archive](plan-archive.md))
 - [ ] **Security review of `integromat-connector`** — when brought into version control (see Plugins)

@@ -1,0 +1,24 @@
+name: Security
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  secrets-scan:
+    name: TruffleHog secrets scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Pinned to v3.93.4 — update SHA when upgrading
+      - name: TruffleHog scan
+        uses: trufflesecurity/trufflehog@7c0734f987ad0bb30ee8da210773b800ee2016d3
+        with:
+          path: ./
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          extra_args: --only-verified
