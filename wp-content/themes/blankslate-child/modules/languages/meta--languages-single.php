@@ -53,7 +53,7 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 	$iso_code             = get_field( 'iso_code' );
 	$glottocode           = get_field( 'glottocode' );
 	$nations_of_origin    = get_field( 'nations_of_origin' );
-	$writing_systems      = get_field( 'writing_systems' );
+	$writing_system_terms = get_the_terms( get_the_ID(), 'writing-system' );
 	$linguistic_genealogy = get_field( 'linguistic_genealogy' );
 	$egids                = get_field( 'egids_status' );
 	?>
@@ -101,7 +101,7 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 
 		</div>
 	<?php endif; ?>
-	<?php if ( $nations_of_origin || $writing_systems || $linguistic_genealogy || $egids ) : ?>
+	<?php if ( $nations_of_origin || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || $linguistic_genealogy || $egids ) : ?>
 		<div class="metadata" id="metadata">
 			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
 			<div class="mobile-accordion-content">
@@ -112,12 +112,16 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 					<p class="wt_text--label territories"><?php echo $territories_list; ?></p>
 				<?php endif; ?>
 
-				<?php if ( $writing_systems ) : ?>
+				<?php if ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) : ?>
 					<strong>Writing systems</strong>
 					<p class="wt_text--label">
-						<a href="<?php echo esc_url( add_query_arg( 'writing_system', rawurlencode( $writing_systems ), get_post_type_archive_link( 'languages' ) ) ); ?>">
-							<?php echo esc_html( $writing_systems ); ?>
-						</a>
+						<?php
+						$ws_links = array();
+						foreach ( $writing_system_terms as $ws_term ) {
+							$ws_links[] = '<a href="' . esc_url( add_query_arg( 'writing_system', $ws_term->slug, get_post_type_archive_link( 'languages' ) ) ) . '">' . esc_html( $ws_term->name ) . '</a>';
+						}
+						echo implode( ', ', $ws_links );
+						?>
 					</p>
 				<?php endif; ?>
 

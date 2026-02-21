@@ -345,6 +345,40 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    /includes/templates/*
    ```
 
+   ### Gallery instances
+
+   Every call to `create_gallery_instance()` across the theme. The `link_out` field must be present in every params array (set to `''` when unused); the plugin renders the "See all" button only when `link_out` is non-empty **and** `found_posts > posts_per_page`.
+
+   | File | Gallery title | Post type | `link_out` |
+   |------|--------------|-----------|------------|
+   | `single-territories.php` | Fellows from [territory] | fellows | `?territory=<slug>` → archive-fellows.php |
+   | `single-territories.php` | Languages of [territory] | languages | `?territory=<slug>` → archive-languages.php |
+   | `single-languages.php` | Other languages from [territory] | languages | `?territory=<slug>` → archive-languages.php |
+   | `modules/languages/single-languages__videos.php` | [Language] videos | videos | `?language=<slug>` → archive-videos.php |
+   | `modules/languages/single-languages__fellows.php` | [Language] Revitalization Projects | fellows | — |
+   | `modules/languages/single-languages__lexicons.php` | [Language] to other languages | lexicons | — |
+   | `modules/languages/single-languages__lexicons.php` | Other languages to [language] | lexicons | — |
+   | `modules/languages/single-languages__resources.php` | [Language] external resources | resources | — |
+   | `archive-fellows.php` | Fellows from [territory] (filtered) | fellows | — |
+   | `archive-fellows.php` | Fellows from [region] (filtered) | fellows | — |
+   | `archive-fellows.php` | Fellows (unfiltered) | fellows | `/revitalization/fellows` |
+   | `archive-languages.php` | Languages of [territory] | languages | — |
+   | `archive-languages.php` | [Genealogy] languages | languages | — |
+   | `archive-languages.php` | [Writing system] languages | languages | — |
+   | `archive-languages.php` | Languages (unfiltered) | languages | — |
+   | `archive-videos.php` | [Language] videos (filtered) | videos | — |
+   | `archive-videos.php` | Videos (unfiltered) | videos | — |
+   | `single-videos.php` | Other videos of [language] | videos | — |
+   | `single-fellows.php` | Other fellows from [year] | fellows | — |
+   | `taxonomy-region.php` | Fellows from [region] | fellows | `?region=<slug>` → archive-fellows.php |
+   | `taxonomy-region.php` | Territories in [region] | territories | — |
+   | `template-revitalization-fellows.php` | Fellows by cohort year | fellows | — |
+   | `taxonomy-fellow-category.php` | Fellows by category | fellows | — |
+   | `template-about-staff.php` | Explore careers | careers | — |
+   | `template-about-staff.php` | Explore other opportunities | careers | — |
+   | `template-giving-campaign-24.php` | [ACF: custom_gallery_title] | fellows | — |
+   | `modules/flexible-content/gallery-layout.php` | [ACF: custom_gallery_title] | [ACF type] | — |
+
 # Dependencies
 
 ## Font Awesome

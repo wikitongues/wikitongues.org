@@ -7,8 +7,8 @@ function wikitongues_custom_template_redirects() {
 
 	// Archive redirects
 	if ( is_post_type_archive( 'fellows' ) ) {
-		if ( isset( $_GET['territory'] ) ) {
-			return; // Serve archive-fellows.php with territory filter.
+		if ( isset( $_GET['territory'] ) || isset( $_GET['region'] ) ) {
+			return; // Serve archive-fellows.php with territory/region filter.
 		}
 		wp_redirect( home_url( '/revitalization/fellows', 'relative' ) );
 		exit;

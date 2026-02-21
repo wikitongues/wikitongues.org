@@ -58,6 +58,7 @@
 		'exclude_self'   => 'false',
 		'taxonomy'       => 'fellow-category',
 		'term'           => $category->slug,
+		'link_out'       => '',
 	);
 		echo create_gallery_instance( $params );
 	?>

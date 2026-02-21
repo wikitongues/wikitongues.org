@@ -40,6 +40,28 @@ function create_post_type_languages() {
 }
 
 // ====================
+// Register Writing System Taxonomy
+// ====================
+add_action( 'init', 'wt_register_writing_system_taxonomy' );
+function wt_register_writing_system_taxonomy() {
+	register_taxonomy(
+		'writing-system',
+		array( 'languages' ),
+		array(
+			'labels'             => array(
+				'name'          => __( 'Writing Systems' ),
+				'singular_name' => __( 'Writing System' ),
+			),
+			'hierarchical'       => false,
+			'public'             => true,
+			'show_in_rest'       => true,
+			'publicly_queryable' => false,
+			'rewrite'            => false,
+		)
+	);
+}
+
+// ====================
 // Manage Custom Columns
 // ====================
 // Add custom columns to the 'languages' post type

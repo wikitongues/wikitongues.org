@@ -45,7 +45,7 @@ function build_gallery_query_args( $atts = array() ) {
 			$compare_operator = 'LIKE';
 			if ( $atts['meta_key'] === 'fellow_language' ) {
 				$val_array = array_map( fn( $v ) => '"' . intval( $v ) . '"', $val_array );
-			} elseif ( in_array( $atts['meta_key'], array( 'nations_of_origin', 'linguistic_genealogy', 'writing_systems' ), true ) ) {
+			} elseif ( in_array( $atts['meta_key'], array( 'nations_of_origin', 'linguistic_genealogy' ), true ) ) {
 				$compare_operator = '=';
 			}
 
