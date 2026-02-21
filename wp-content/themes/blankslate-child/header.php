@@ -131,7 +131,7 @@
 						);
 					} elseif (
 							strpos( $template_slug, 'archive' ) !== false ||
-							is_post_type_archive( array( 'languages', 'fellows', 'territories' ) ) ||
+							is_post_type_archive( array( 'languages', 'videos', 'fellows', 'territories' ) ) ||
 							is_singular( array( 'languages', 'videos', 'territories' ) ) ||
 							is_tax( 'region' ) ||
 							is_search()
