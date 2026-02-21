@@ -38,6 +38,8 @@ npm install
 This provides:
 - `composer lint` — PHPCS with WordPress Coding Standards (PHP linting)
 - `composer lint:fix` — auto-fix PHPCS violations
+- `composer analyse` — PHPStan type-safety analysis
+- `composer test` — PHPUnit unit tests
 - `npm run lint:js` — ESLint on custom JS files
 - `npm run stylus:watch` — compile CSS on file change
 - `npm run stylus:build` — compile CSS once
@@ -236,6 +238,65 @@ For **pipeline import**, work with Make.com to create a scenario that keeps the 
 > **Important note:** For importing values that are post objects in airtable, 2 things are required:
 > The post type needs to have access to the rest controller class WT_REST_Posts_Controller 'rest_controller_class' => 'WT_REST_Posts_Controller'
 > AND the field keys on Make.com need to be prefixed with _WT_TMP_. This enables wordpress to intercept the update and handle associating the import with the appropriate post records.
+
+# Testing
+
+The project uses a layered testing strategy. All checks run automatically on every pull request targeting `main` via GitHub Actions.
+
+## Commands
+
+| Command | What it runs |
+|---------|-------------|
+| `composer lint` | PHPCS — WordPress Coding Standards (PHP style + security sniffs) |
+| `composer lint:fix` | PHPCBF — auto-fix PHPCS violations |
+| `composer analyse` | PHPStan — PHP type-safety analysis |
+| `composer test` | PHPUnit — unit tests |
+| `npm run lint:js` | ESLint — JavaScript style |
+
+## Layer 1 — Static Analysis
+
+**Tools:** PHPCS + WordPress Coding Standards, ESLint, PHPStan
+**Runs:** on every PR (`lint.yml`)
+
+- **PHPCS** enforces WordPress coding standards and catches basic security anti-patterns (unescaped output, direct DB queries). Run with `composer lint`; auto-fix with `composer lint:fix`.
+- **ESLint** checks custom JavaScript files. Run with `npm run lint:js`.
+- **PHPStan** performs type-safety analysis at **level 5** using [`szepeviktor/phpstan-wordpress`](https://github.com/szepeviktor/phpstan-wordpress) stubs for WordPress core functions. A baseline of pre-existing violations is maintained in `phpstan-baseline.neon`; CI fails only on _new_ violations. Run with `composer analyse`. Scope: `wp-content/themes/blankslate-child`, `wp-content/plugins/wt-gallery`, `wp-content/plugins/typeahead/typeahead.php`, and `tests/`.
+
+## Layer 2 — Unit Tests
+
+**Tools:** PHPUnit 9.6 + WP_Mock 1.1
+**Runs:** on every PR (`test.yml`)
+**Current count:** 58 tests, 91 assertions
+
+Test files live in `tests/unit/`; bootstrap at `tests/bootstrap.php`. Covers isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math:
+
+- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()`
+- `acf-helpers.php` → `wt_meta_value()`
+- `search-filter.php` → `searchfilter()` regex routing
+- `render_gallery_items.php` → `generate_gallery_pagination()`
+- `wt-gallery/helpers.php` → `getDomainFromUrl()`
+- `template-helpers.php` → `get_environment()`, `wt_prefix_the()`
+- `events-filter.php` → `format_event_date_with_proximity()`
+- `wt-gallery/includes/queries.php` → `build_gallery_query_args()`
+
+> **Note:** WP_Mock 1.x is locked to PHPUnit ^9.6 due to a Patchwork incompatibility with PHPUnit 10+. The forward path is to push WP API calls to function edges so the logic core needs no mocking, then migrate to PHPUnit 10+ incrementally. See [plan.md](plan.md) for details.
+
+## Security Scanning
+
+**Tool:** TruffleHog
+**Runs:** on every PR (`security.yml`)
+
+Scans each PR diff for verified secrets (API keys, credentials). The action is pinned to a specific commit SHA for supply-chain safety. GitHub native secret scanning and push protection are also enabled on the repository.
+
+## Future Layers
+
+| Layer | Tools | Status |
+|-------|-------|--------|
+| Layer 3 — Integration Tests | PHPUnit + `WP_UnitTestCase`, MySQL in Docker | Planned (Phase 5) |
+| Layer 4 — End-to-End & Visual Regression | Playwright | Planned (Phase 6) |
+| Layer 5 — Data Integrity | WP-CLI custom command | Planned (Phase 7) |
+
+See [plan.md](plan.md) for the full specification of each future layer.
 
 # CSS and Compiling Stylus
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
