@@ -25,7 +25,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
 
 - **[Plugins](#plugins)**
-  - [ ] Track `wt-form` in version control
+  - [ ] Delete `wt-form` plugin
   - [ ] Track `integromat-connector` in version control
 
 - **[Infrastructure](#infrastructure)**
@@ -44,7 +44,76 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
     - [x] PHPCS security sniffs ([archive](plan-archive.md))
     - [ ] WPScan in CI
     - [ ] Secrets scanning
-    - [ ] Security review of `wt-form` and `integromat-connector`
+    - [ ] Security review of `integromat-connector`
+
+- **[Roadmap](#roadmap)**
+
+---
+
+## Roadmap
+
+Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
+
+**Key dependency chain:**
+`Secrets scanning` → plugin VCS → plugin security reviews
+`Stylus migration` + `Font Awesome replacement` + `Donors post type` → **Layer 4 visual baseline** (must all land before the E2E baseline is set)
+`Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
+`Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
+
+---
+
+### Tier 1 — Security foundation
+_No prerequisites. Unblocks all credential-sensitive work._
+
+- [ ] Secrets scanning
+- [ ] WPScan in CI
+
+---
+
+### Tier 2 — Plugin hygiene + infrastructure cleanup + quick wins
+_Parallel. Secrets scanning (Tier 1) required before `integromat-connector` enters VCS. `wt-form` deletion has no prerequisites (no live usage, no hardcoded credentials). Stylus, FA, and Donors have no hard deps but must land before the Layer 4 visual baseline (Tier 5)._
+
+- [ ] Delete `wt-form` plugin _(no prerequisites — confirmed unused, credentials in ACF options not in files)_
+- [ ] Track `integromat-connector` in version control
+- [ ] Migrate from Stylus
+- [ ] Replace Font Awesome
+- [ ] Complete Donors post type
+- [ ] Gallery `link_out` param
+
+---
+
+### Tier 3 — Docker + security reviews + data integrity
+_Parallel. Docker unblocks testing Layers 3–4. Security reviews require plugins to be in VCS. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
+
+- [ ] Dockerize project _(CSS/icon/Donors changes should be done first so Docker captures the final build)_
+- [ ] Security review of `integromat-connector`
+- [ ] Layer 5 — Data Integrity
+
+---
+
+### Tier 4 — Integration tests + Airtable + gateway core
+_Parallel. Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results. Gateway Phases 0–5 have no external hard dependencies but secrets scanning must be done before any credential-adjacent code (Dropbox)._
+
+- [ ] Layer 3 — Integration Tests
+- [ ] Airtable reconciliation
+- [ ] Download gateway — Phases 0–5 _(scaffold, data model, primitives, endpoint, resource authoring, gate modes)_
+
+---
+
+### Tier 5 — Visual baseline + gateway completion + data migration
+_Layer 4 requires Docker + Stylus + FA + Donors all done. Gateway Phases 6–10 require Tier 1 secrets scanning and benefit from Layer 3. nations_of_origin migration requires Airtable reconciliation._
+
+- [ ] Layer 4 — End-to-End & Visual Regression _(locks the visual baseline; nothing that changes template output should land after this without a deliberate baseline update)_
+- [ ] Download gateway — Phases 6–10 _(Dropbox, GA4, reporting, retention, rollout)_
+- [ ] Migrate `nations_of_origin` _(intentionally deferred; see Backlog)_
+
+---
+
+### Tier 6 — Features requiring the visual baseline + performance monitoring
+_Maps introduces visual changes to high-traffic territory/region templates; Layer 4 regression coverage should be active first. Performance profiling (Playwright-based) also requires Docker + Layer 4._
+
+- [ ] Maps on territory templates
+- [ ] Performance profiling and monitoring
 
 ---
 
@@ -128,10 +197,10 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
 
 ## Plugins
 
-- [ ] **Track `wt-form` in version control** when feature work resumes
+- [ ] **Delete `wt-form` plugin**
   **File:** `wp-content/plugins/wt-form/`
-  Currently excluded from git. Plugin handles form submissions to Airtable and Mailchimp. Not actively used; excluded from linting scope for now.
-  **Goal:** Add to `.gitignore` allowlist, include in PHPCS scan, review security (form validation, API key handling).
+  A prototype download gate for the Revitalization Toolkit — collects name and email, stores to a `form_submission` CPT, with stubs for Airtable and Mailchimp integration (both methods begin with `return;` and have never run). The `[wikitongues_form]` shortcode is not used on any published page. Fully superseded by download gateway Phase 5. Credentials are pulled from ACF options (not hardcoded), so no secrets risk.
+  **Goal:** Deactivate and delete the plugin folder. Can be done independently of secrets scanning. Do before the download gateway Phase 5 lands to avoid confusion between the two form systems.
 
 - [ ] **Track `integromat-connector` in version control** when automation work resumes
   **File:** `wp-content/plugins/integromat-connector/`
@@ -252,4 +321,4 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - [x] **PHPCS security sniffs** — runs on every PR via Layer 1
 - [ ] **WPScan in CI** — check installed plugins/themes against known CVE database
 - [ ] **Secrets scanning** — ensure API keys and tokens never land in git history
-- [ ] **Security review of `wt-form` and `integromat-connector`** — when brought into version control (see Plugins)
+- [ ] **Security review of `integromat-connector`** — when brought into version control (see Plugins)
