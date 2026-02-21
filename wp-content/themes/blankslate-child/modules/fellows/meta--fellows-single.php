@@ -73,10 +73,12 @@ function generate_language_links( $fellow_language ) {
 			<section class="info">
 				<?php
 				if ( $fellow_territory ) {
-					$territories = is_array( $fellow_territory ) ? $fellow_territory : array( $fellow_territory );
+					$territories     = is_array( $fellow_territory ) ? $fellow_territory : array( $fellow_territory );
+					$territory_links = array();
 					foreach ( $territories as $terr ) {
-						echo '<p class="fellow-territory"><a href="' . esc_url( get_permalink( $terr->ID ) ) . '">' . esc_html( wt_prefix_the( $terr->post_title ) ) . '</a></p>';
+						$territory_links[] = '<a href="' . esc_url( get_permalink( $terr->ID ) ) . '">' . esc_html( wt_prefix_the( $terr->post_title ) ) . '</a>';
 					}
+					echo '<p class="fellow-territory">' . implode( ', ', $territory_links ) . '</p>';
 				}
 				echo '<p>' . esc_html( $page_banner['banner_copy'] ) . '</p>';
 				echo '<p class="categories">' . $category_names . '</p>';
