@@ -25,7 +25,7 @@
 			'exclude_self'   => 'true',
 			'taxonomy'       => '',
 			'term'           => '',
-			'link_out'       => home_url( '/videos/?language=' . get_post_field( 'post_name', get_the_ID() ), 'relative' ),
+			'link_out'       => add_query_arg( 'language', get_post_field( 'post_name', get_the_ID() ), get_post_type_archive_link( 'videos' ) ),
 		);
 		echo create_gallery_instance( $params );
 		?>

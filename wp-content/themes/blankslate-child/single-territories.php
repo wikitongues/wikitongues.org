@@ -47,7 +47,7 @@
 			'exclude_self'   => 'false',
 			'taxonomy'       => '',
 			'term'           => '',
-			'link_out'       => home_url( '/fellows/?territory=' . $territory_slug, 'relative' ),
+			'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'fellows' ) ),
 		);
 		echo create_gallery_instance( $fellows_params );
 	}
@@ -75,7 +75,7 @@
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
-		'link_out'       => home_url( '/languages/?territory=' . $territory_slug, 'relative' ),
+		'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
 	);
 	echo create_gallery_instance( $params );
 
