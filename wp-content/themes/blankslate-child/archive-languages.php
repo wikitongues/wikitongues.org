@@ -57,7 +57,7 @@ if ( $territory_post ) {
 	);
 } elseif ( $writing_system_term ) {
 	$params = array(
-		'title'          => 'Languages written in ' . $writing_system_term->name,
+		'title'          => strtolower( $writing_system_term->name ) === 'unwritten' ? 'Unwritten languages' : 'Languages written in ' . $writing_system_term->name,
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
