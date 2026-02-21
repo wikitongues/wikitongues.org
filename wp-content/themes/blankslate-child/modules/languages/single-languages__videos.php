@@ -10,7 +10,7 @@
 		$params = array(
 			'title'          => $title,
 			'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
-			'show_total'     => 'false',
+			'show_total'     => 'true',
 			'post_type'      => 'videos',
 			'custom_class'   => '',
 			'columns'        => 3,
@@ -25,6 +25,7 @@
 			'exclude_self'   => 'true',
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => add_query_arg( 'language', get_post_field( 'post_name', get_the_ID() ), get_post_type_archive_link( 'videos' ) ),
 		);
 		echo create_gallery_instance( $params );
 		?>

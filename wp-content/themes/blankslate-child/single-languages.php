@@ -6,9 +6,8 @@ function enqueue_mobile_accordion_script() {
 	}
 }
 
-$standard_name     = get_field( 'standard_name' );
-$language          = get_the_ID();
-$nations_of_origin = get_field( 'nations_of_origin' );
+$standard_name = get_field( 'standard_name' );
+$language      = get_the_ID();
 
 // ====================
 // Manage Language Page Titles
@@ -31,29 +30,37 @@ require 'modules/languages/single-languages__resources.php';
 echo '</main>';
 
 // ====================
-// Gallery
-// return empty if no nations of origin match
+// Gallery — other languages from the same territory
 // ====================
-$params = array(
-	'title'          => 'Other languages from ' . $nations_of_origin,
-	'subtitle'       => '',
-	'show_total'     => 'true',
-	'post_type'      => 'languages',
-	'custom_class'   => 'full',
-	'columns'        => 5,
-	'posts_per_page' => 5,
-	'orderby'        => 'rand',
-	'order'          => 'asc',
-	'pagination'     => 'true',
-	'meta_key'       => 'nations_of_origin',
-	'meta_value'     => $nations_of_origin,
-	'selected_posts' => '',
-	'display_blank'  => 'false',
-	'exclude_self'   => 'true',
-	'taxonomy'       => '',
-	'term'           => '',
-);
-echo create_gallery_instance( $params );
+$territories = get_field( 'territories' );
+if ( $territories ) {
+	$primary_territory = $territories[0];
+	$territory_slug    = $primary_territory->post_name;
+	$territory_name    = wt_prefix_the( $primary_territory->post_title );
+	$language_ids      = get_field( 'languages', $primary_territory->ID, false );
+	$selected          = $language_ids ? implode( ',', $language_ids ) : '';
+	$params            = array(
+		'title'          => 'Other languages from ' . $territory_name,
+		'subtitle'       => '',
+		'show_total'     => 'true',
+		'post_type'      => 'languages',
+		'custom_class'   => 'full',
+		'columns'        => 5,
+		'posts_per_page' => 5,
+		'orderby'        => 'rand',
+		'order'          => 'asc',
+		'pagination'     => 'true',
+		'meta_key'       => '',
+		'meta_value'     => '',
+		'selected_posts' => $selected,
+		'display_blank'  => 'false',
+		'exclude_self'   => 'true',
+		'taxonomy'       => '',
+		'term'           => '',
+		'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
+	);
+	echo create_gallery_instance( $params );
+}
 
 // other posts (revitalization projects, translation/etc, learning options) - add in later version
 

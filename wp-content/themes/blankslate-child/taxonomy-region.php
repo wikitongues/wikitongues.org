@@ -5,6 +5,7 @@ get_header();
 $current_region    = get_queried_object();
 $current_parent_id = $current_region->parent ?: $current_region->term_id;
 $territory         = wt_prefix_the( $current_region->name );
+$region_slug       = $current_region->slug;
 $is_continent      = ( 0 === $current_region->parent );
 
 // On continent pages, expand the query to include all child sub-region terms
@@ -92,6 +93,7 @@ if ( $territory_query->have_posts() ) :
 			'exclude_self'   => 'false',
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'fellows' ) ),
 		);
 		echo create_gallery_instance( $fellows_params );
 	}
@@ -126,6 +128,7 @@ if ( $territory_query->have_posts() ) :
 		'exclude_self'   => 'false',
 		'taxonomy'       => $gallery_taxonomy,
 		'term'           => $gallery_term,
+		'link_out'       => '',
 	);
 	echo create_gallery_instance( $params );
 

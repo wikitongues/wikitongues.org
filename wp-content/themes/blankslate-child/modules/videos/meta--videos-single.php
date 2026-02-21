@@ -96,34 +96,42 @@
 				$standard_name        = get_field( 'standard_name' );
 				$alternate_names      = get_field( 'alternate_names' );
 				$nations_of_origin    = get_field( 'nations_of_origin' );
-				$writing_systems      = get_field( 'writing_systems' );
+				$writing_system_terms = get_the_terms( get_the_ID(), 'writing-system' );
 				$linguistic_genealogy = get_field( 'linguistic_genealogy' );
 				?>
-				<strong class="wt_sectionHeader">About <a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
+				<strong class="wt_sectionHeader"><a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
 				<ul>
 				<?php if ( $nations_of_origin ) : ?>
 					<li>
-						<strong>Countries of origin</strong>
+						<p>Countries of origin</p>
 						<p class="wt_text--label">
 							<?php echo $nations_of_origin; ?>
 						</p>
 					</li>
 				<?php endif; ?>
 
-				<?php if ( $writing_systems ) : ?>
+				<?php if ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) : ?>
 					<li>
-						<strong>Writing systems</strong>
+						<p>Writing systems</p>
 						<p class="wt_text--label">
-							<?php echo $writing_systems; ?>
+							<?php
+							$ws_links = array();
+							foreach ( $writing_system_terms as $ws_term ) {
+								$ws_links[] = '<a href="' . esc_url( add_query_arg( 'writing_system', $ws_term->slug, get_post_type_archive_link( 'languages' ) ) ) . '">' . esc_html( $ws_term->name ) . '</a>';
+							}
+							echo implode( ', ', $ws_links );
+							?>
 						</p>
 					</li>
 				<?php endif; ?>
 
 				<?php if ( $linguistic_genealogy ) : ?>
 					<li>
-						<strong>Linguistic genealogy</strong>
+						<p>Linguistic genealogy</p>
 						<p class="wt_text--label">
-							<?php echo $linguistic_genealogy; ?>
+							<a href="<?php echo esc_url( add_query_arg( 'genealogy', rawurlencode( $linguistic_genealogy ), get_post_type_archive_link( 'languages' ) ) ); ?>">
+								<?php echo esc_html( $linguistic_genealogy ); ?>
+							</a>
 						</p>
 					</li>
 				<?php endif; ?>

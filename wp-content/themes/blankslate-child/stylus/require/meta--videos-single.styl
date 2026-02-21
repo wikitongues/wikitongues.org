@@ -13,25 +13,38 @@
 
 	strong
 		text--strong($black)
-		margin-bottom 4px
 		display block
 
 		&.wt_sectionHeader
-			margin-bottom 1.6rem
-			padding-bottom 12px
+
+			a
+				text--strong($blue())
 
 	p, a
 		text--body($black)
-		margin-bottom 1.6rem
+		margin-bottom 4px
 
 	ul
-		margin-top 1.5rem
+		margin-top .8rem
 
 		&.wt_meta__featured-languages
 			margin-top 3rem
+			>li
+				&:not(:last-of-type)
+					margin 0 0 16px
+					padding-bottom 16px
 
-		li
-			margin-bottom 1.6rem
+				ul
+					padding-left 8px
+					border-left 1px solid $border-color
+					li:not(:last-of-type)
+						margin-bottom 1.2rem
+
+			li
+				.wt_text--label
+					text--strong($black)
+					a
+						text--strong($blue())
 
 	a
 		text-decoration none
