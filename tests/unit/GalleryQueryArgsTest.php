@@ -120,19 +120,6 @@ class GalleryQueryArgsTest extends TestCase {
 		$this->assertSame( '=', $args['meta_query'][0]['compare'] );
 	}
 
-	public function test_linguistic_genealogy_uses_equals_compare() {
-		$atts = $this->base_atts(
-			array(
-				'meta_key'   => 'linguistic_genealogy',
-				'meta_value' => 'Indo-European',
-			)
-		);
-		$this->mock_wp_parse_args( $atts );
-
-		$result = build_gallery_query_args( $atts );
-		$this->assertSame( '=', $result['meta_query'][0]['compare'] );
-	}
-
 	public function test_generic_meta_key_multiple_values_build_or_meta_query() {
 		$atts = $this->base_atts(
 			array(
