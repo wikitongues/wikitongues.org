@@ -253,15 +253,24 @@ function custom_gallery( $atts ) {
 
 	// Labels come from WP post type objects and are already localised at registration; use a
 	// simple conditional rather than _n() to avoid passing dynamic strings to a translation function.
-	$label  = $count === 1 ? $singular : $plural;
-	$header = $atts['show_total'] === 'true'
-	? $atts['title'] . '<span>' . $count . ' ' . $label . '</span>'
-	: $atts['title'];
+	$label   = $count === 1 ? $singular : $plural;
+	$see_all = $atts['link_out'] ? '<a href="' . esc_url( $atts['link_out'] ) . '" class="wt_seeAll">see all</a>' : '';
+
+	if ( $atts['show_total'] === 'true' || $see_all ) {
+		$right = '<span class="wt_sectionHeader-meta">'
+			. ( $atts['show_total'] === 'true' ? '<span>' . $count . ' ' . $label . '</span>' : '' )
+			. $see_all
+			. '</span>';
+	} else {
+		$right = '';
+	}
+
+	$header = $atts['title'] . $right;
 
 	$output = '';
 	if ( $query->have_posts() || $atts['display_blank'] === 'true' ) {
 		$output  = '<div class="' . $classes . '">';
-		$output .= $atts['title'] ? ( $atts['link_out'] ? '<a href="' . esc_url( $atts['link_out'] ) . '" class="wt_sectionHeader">' . $header . '</a>' : '<strong class="wt_sectionHeader">' . $header . '</strong>' ) : '';
+		$output .= $atts['title'] ? '<strong class="wt_sectionHeader">' . $header . '</strong>' : '';
 		$output .= $atts['subtitle'] ? '<p class="wt_subtitle">' . $atts['subtitle'] . '</p>' : '';
 		if ( $query->have_posts() ) {
 			$output .= render_gallery_items( $query, $atts, $atts['gallery_id'], $paged, $data_attributes );
