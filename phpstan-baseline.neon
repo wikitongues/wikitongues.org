@@ -93,6 +93,16 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
+			path: wp-content/themes/blankslate-child/archive-languages.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/archive-videos.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
 			path: wp-content/themes/blankslate-child/events-page.php
 
 		-
