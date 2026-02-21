@@ -1,8 +1,10 @@
 <?php
 get_header();
 
-$language_slug = isset( $_GET['language'] ) ? sanitize_title( wp_unslash( $_GET['language'] ) ) : '';
-$language_post = $language_slug ? get_page_by_path( $language_slug, OBJECT, 'languages' ) : null;
+$language_slug          = isset( $_GET['language'] ) ? sanitize_title( wp_unslash( $_GET['language'] ) ) : '';
+$language_post          = $language_slug ? get_page_by_path( $language_slug, OBJECT, 'languages' ) : null;
+$archive_columns        = 5;
+$archive_posts_per_page = 100;
 
 echo '<main class="wt_archive-videos">';
 
@@ -18,8 +20,8 @@ if ( $language_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'videos',
-		'columns'        => 3,
-		'posts_per_page' => 9,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'date',
 		'order'          => 'desc',
 		'pagination'     => 'true',
@@ -30,6 +32,7 @@ if ( $language_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 } else {
 	$params = array(
@@ -37,8 +40,8 @@ if ( $language_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'videos',
-		'columns'        => 3,
-		'posts_per_page' => 9,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'date',
 		'order'          => 'desc',
 		'pagination'     => 'true',
@@ -49,6 +52,7 @@ if ( $language_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 }
 

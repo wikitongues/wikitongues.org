@@ -253,8 +253,9 @@ function custom_gallery( $atts ) {
 
 	// Labels come from WP post type objects and are already localised at registration; use a
 	// simple conditional rather than _n() to avoid passing dynamic strings to a translation function.
-	$label   = $count === 1 ? $singular : $plural;
-	$see_all = $atts['link_out'] ? '<a href="' . esc_url( $atts['link_out'] ) . '" class="wt_seeAll">see all</a>' : '';
+	$label    = $count === 1 ? $singular : $plural;
+	$link_out = $atts['link_out'] ? esc_url( $atts['link_out'] ) : '';
+	$see_all  = ( $count > (int) $atts['posts_per_page'] && $link_out ) ? '<a href="' . $link_out . '" class="wt_seeAll">See all</a>' : '';
 
 	if ( $atts['show_total'] === 'true' || $see_all ) {
 		$right = '<span class="wt_sectionHeader-meta">'

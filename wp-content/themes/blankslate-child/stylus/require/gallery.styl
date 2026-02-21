@@ -40,6 +40,7 @@ $aspect-ratio = 16/9
 		width 100%
 		display flex
 		justify-content space-between
+		align-items flex-end
 
 	.wt_sectionHeader-meta
 		display flex
@@ -49,13 +50,12 @@ $aspect-ratio = 16/9
 	.wt_seeAll
 		font-style normal
 		font-weight normal
-		font-size 1.2rem
-		color $blue()
-		text-decoration none
-		border 1px solid $blue()
 		border-radius 4px
-		padding 2px 8px
+		padding 8px 12px
 		white-space nowrap
+		margin 4px -12px -8px 0
+		cursor pointer
+		transition background-color .1s ease-in-out
 
 		&:hover
 			background $blue(10)
@@ -197,7 +197,7 @@ $aspect-ratio = 16/9
 						.thumbnail
 							margin -4px 0 -4px -4px
 							width calc(100% + 8px)
-							padding ((1/($aspect-ratio))*50)% 0// 16:9 aspect ratio
+							// padding ((1/($aspect-ratio))*50)% 0// 16:9 aspect ratio
 
 
 	&.videos,

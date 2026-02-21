@@ -73,6 +73,7 @@ if ( $fellow_id ) {
 		'exclude_self'   => 'true',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 	echo create_gallery_instance( $params );
 

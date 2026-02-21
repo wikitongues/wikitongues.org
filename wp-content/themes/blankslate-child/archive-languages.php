@@ -1,11 +1,12 @@
 <?php
 get_header();
 
-$territory_slug = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
-$territory_post = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
-$genealogy      = isset( $_GET['genealogy'] ) ? sanitize_text_field( wp_unslash( $_GET['genealogy'] ) ) : '';
-$writing_system = isset( $_GET['writing_system'] ) ? sanitize_text_field( wp_unslash( $_GET['writing_system'] ) ) : '';
-
+$territory_slug         = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
+$territory_post         = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
+$genealogy              = isset( $_GET['genealogy'] ) ? sanitize_text_field( wp_unslash( $_GET['genealogy'] ) ) : '';
+$writing_system         = isset( $_GET['writing_system'] ) ? sanitize_text_field( wp_unslash( $_GET['writing_system'] ) ) : '';
+$archive_columns        = 5;
+$archive_posts_per_page = 100;
 echo '<main class="wt_archive-languages">';
 
 if ( $territory_post ) {
@@ -19,8 +20,8 @@ if ( $territory_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
-		'columns'        => 4,
-		'posts_per_page' => 12,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
@@ -31,6 +32,7 @@ if ( $territory_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 } elseif ( $genealogy ) {
 	$params = array(
@@ -38,8 +40,8 @@ if ( $territory_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
-		'columns'        => 4,
-		'posts_per_page' => 12,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
@@ -50,6 +52,7 @@ if ( $territory_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 } elseif ( $writing_system ) {
 	$params = array(
@@ -57,8 +60,8 @@ if ( $territory_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
-		'columns'        => 4,
-		'posts_per_page' => 12,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
@@ -69,6 +72,7 @@ if ( $territory_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 } else {
 	$params = array(
@@ -76,8 +80,8 @@ if ( $territory_post ) {
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
-		'columns'        => 4,
-		'posts_per_page' => 12,
+		'columns'        => $archive_columns,
+		'posts_per_page' => $archive_posts_per_page,
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
@@ -88,6 +92,7 @@ if ( $territory_post ) {
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 }
 

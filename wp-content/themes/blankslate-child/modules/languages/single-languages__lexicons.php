@@ -31,6 +31,7 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 			'exclude_self'   => 'true',
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => '',
 		);
 		echo create_gallery_instance( $params );
 
@@ -52,6 +53,7 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 			'exclude_self'   => 'true',
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => '',
 		);
 		echo create_gallery_instance( $params );
 		?>

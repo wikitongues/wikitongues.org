@@ -106,6 +106,7 @@ $params = array(
 	'exclude_self'   => 'true',
 	'taxonomy'       => '',
 	'term'           => '',
+	'link_out'       => '',
 );
 echo create_gallery_instance( $params );
 
