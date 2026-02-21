@@ -93,6 +93,16 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
+			path: wp-content/themes/blankslate-child/archive-languages.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/archive-videos.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
 			path: wp-content/themes/blankslate-child/events-page.php
 
 		-
@@ -487,7 +497,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 12
+			count: 11
 			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
 
 		-
@@ -767,7 +777,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 8
+			count: 7
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-
@@ -852,7 +862,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 2
+			count: 3
 			path: wp-content/themes/blankslate-child/single-languages.php
 
 		-

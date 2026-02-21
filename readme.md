@@ -38,6 +38,8 @@ npm install
 This provides:
 - `composer lint` — PHPCS with WordPress Coding Standards (PHP linting)
 - `composer lint:fix` — auto-fix PHPCS violations
+- `composer analyse` — PHPStan type-safety analysis
+- `composer test` — PHPUnit unit tests
 - `npm run lint:js` — ESLint on custom JS files
 - `npm run stylus:watch` — compile CSS on file change
 - `npm run stylus:build` — compile CSS once
@@ -237,6 +239,65 @@ For **pipeline import**, work with Make.com to create a scenario that keeps the 
 > The post type needs to have access to the rest controller class WT_REST_Posts_Controller 'rest_controller_class' => 'WT_REST_Posts_Controller'
 > AND the field keys on Make.com need to be prefixed with _WT_TMP_. This enables wordpress to intercept the update and handle associating the import with the appropriate post records.
 
+# Testing
+
+The project uses a layered testing strategy. All checks run automatically on every pull request targeting `main` via GitHub Actions.
+
+## Commands
+
+| Command | What it runs |
+|---------|-------------|
+| `composer lint` | PHPCS — WordPress Coding Standards (PHP style + security sniffs) |
+| `composer lint:fix` | PHPCBF — auto-fix PHPCS violations |
+| `composer analyse` | PHPStan — PHP type-safety analysis |
+| `composer test` | PHPUnit — unit tests |
+| `npm run lint:js` | ESLint — JavaScript style |
+
+## Layer 1 — Static Analysis
+
+**Tools:** PHPCS + WordPress Coding Standards, ESLint, PHPStan
+**Runs:** on every PR (`lint.yml`)
+
+- **PHPCS** enforces WordPress coding standards and catches basic security anti-patterns (unescaped output, direct DB queries). Run with `composer lint`; auto-fix with `composer lint:fix`.
+- **ESLint** checks custom JavaScript files. Run with `npm run lint:js`.
+- **PHPStan** performs type-safety analysis at **level 5** using [`szepeviktor/phpstan-wordpress`](https://github.com/szepeviktor/phpstan-wordpress) stubs for WordPress core functions. A baseline of pre-existing violations is maintained in `phpstan-baseline.neon`; CI fails only on _new_ violations. Run with `composer analyse`. Scope: `wp-content/themes/blankslate-child`, `wp-content/plugins/wt-gallery`, `wp-content/plugins/typeahead/typeahead.php`, and `tests/`.
+
+## Layer 2 — Unit Tests
+
+**Tools:** PHPUnit 9.6 + WP_Mock 1.1
+**Runs:** on every PR (`test.yml`)
+**Current count:** 58 tests, 91 assertions
+
+Test files live in `tests/unit/`; bootstrap at `tests/bootstrap.php`. Covers isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math:
+
+- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()`
+- `acf-helpers.php` → `wt_meta_value()`
+- `search-filter.php` → `searchfilter()` regex routing
+- `render_gallery_items.php` → `generate_gallery_pagination()`
+- `wt-gallery/helpers.php` → `getDomainFromUrl()`
+- `template-helpers.php` → `get_environment()`, `wt_prefix_the()`
+- `events-filter.php` → `format_event_date_with_proximity()`
+- `wt-gallery/includes/queries.php` → `build_gallery_query_args()`
+
+> **Note:** WP_Mock 1.x is locked to PHPUnit ^9.6 due to a Patchwork incompatibility with PHPUnit 10+. The forward path is to push WP API calls to function edges so the logic core needs no mocking, then migrate to PHPUnit 10+ incrementally. See [plan.md](plan.md) for details.
+
+## Security Scanning
+
+**Tool:** TruffleHog
+**Runs:** on every PR (`security.yml`)
+
+Scans each PR diff for verified secrets (API keys, credentials). The action is pinned to a specific commit SHA for supply-chain safety. GitHub native secret scanning and push protection are also enabled on the repository.
+
+## Future Layers
+
+| Layer | Tools | Status |
+|-------|-------|--------|
+| Layer 3 — Integration Tests | PHPUnit + `WP_UnitTestCase`, MySQL in Docker | Planned (Phase 5) |
+| Layer 4 — End-to-End & Visual Regression | Playwright | Planned (Phase 6) |
+| Layer 5 — Data Integrity | WP-CLI custom command | Planned (Phase 7) |
+
+See [plan.md](plan.md) for the full specification of each future layer.
+
 # CSS and Compiling Stylus
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
 Stylus needs to be compiled into CSS before it is usable in HTML.
@@ -283,6 +344,40 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    /includes/render_gallery_items.php
    /includes/templates/*
    ```
+
+   ### Gallery instances
+
+   Every call to `create_gallery_instance()` across the theme. The `link_out` field must be present in every params array (set to `''` when unused); the plugin renders the "See all" button only when `link_out` is non-empty **and** `found_posts > posts_per_page`.
+
+   | File | Gallery title | Post type | `link_out` |
+   |------|--------------|-----------|------------|
+   | `single-territories.php` | Fellows from [territory] | fellows | `?territory=<slug>` → archive-fellows.php |
+   | `single-territories.php` | Languages of [territory] | languages | `?territory=<slug>` → archive-languages.php |
+   | `single-languages.php` | Other languages from [territory] | languages | `?territory=<slug>` → archive-languages.php |
+   | `modules/languages/single-languages__videos.php` | [Language] videos | videos | `?language=<slug>` → archive-videos.php |
+   | `modules/languages/single-languages__fellows.php` | [Language] Revitalization Projects | fellows | — |
+   | `modules/languages/single-languages__lexicons.php` | [Language] to other languages | lexicons | — |
+   | `modules/languages/single-languages__lexicons.php` | Other languages to [language] | lexicons | — |
+   | `modules/languages/single-languages__resources.php` | [Language] external resources | resources | — |
+   | `archive-fellows.php` | Fellows from [territory] (filtered) | fellows | — |
+   | `archive-fellows.php` | Fellows from [region] (filtered) | fellows | — |
+   | `archive-fellows.php` | Fellows (unfiltered) | fellows | `/revitalization/fellows` |
+   | `archive-languages.php` | Languages of [territory] | languages | — |
+   | `archive-languages.php` | [Genealogy] languages | languages | — |
+   | `archive-languages.php` | [Writing system] languages | languages | — |
+   | `archive-languages.php` | Languages (unfiltered) | languages | — |
+   | `archive-videos.php` | [Language] videos (filtered) | videos | — |
+   | `archive-videos.php` | Videos (unfiltered) | videos | — |
+   | `single-videos.php` | Other videos of [language] | videos | — |
+   | `single-fellows.php` | Other fellows from [year] | fellows | — |
+   | `taxonomy-region.php` | Fellows from [region] | fellows | `?region=<slug>` → archive-fellows.php |
+   | `taxonomy-region.php` | Territories in [region] | territories | — |
+   | `template-revitalization-fellows.php` | Fellows by cohort year | fellows | — |
+   | `taxonomy-fellow-category.php` | Fellows by category | fellows | — |
+   | `template-about-staff.php` | Explore careers | careers | — |
+   | `template-about-staff.php` | Explore other opportunities | careers | — |
+   | `template-giving-campaign-24.php` | [ACF: custom_gallery_title] | fellows | — |
+   | `modules/flexible-content/gallery-layout.php` | [ACF: custom_gallery_title] | [ACF type] | — |
 
 # Dependencies
 

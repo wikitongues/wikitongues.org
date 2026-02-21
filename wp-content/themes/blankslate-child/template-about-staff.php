@@ -81,6 +81,7 @@ $careers = array(
 	'exclude_self'   => 'true',
 	'taxonomy'       => 'career_type',
 	'term'           => 'Staff',
+	'link_out'       => '',
 );
 echo create_gallery_instance( $careers );
 
@@ -150,6 +151,7 @@ $otherOpportunities = array(
 	'exclude_self'   => 'true',
 	'taxonomy'       => 'career_type',
 	'term'           => 'Intern,Volunteer',
+	'link_out'       => '',
 );
 echo create_gallery_instance( $otherOpportunities );
 
