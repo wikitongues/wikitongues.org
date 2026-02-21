@@ -92,12 +92,12 @@
 			?>
 			<li>
 				<?php
-				$language_url         = get_the_permalink();
-				$standard_name        = get_field( 'standard_name' );
-				$alternate_names      = get_field( 'alternate_names' );
-				$nations_of_origin    = get_field( 'nations_of_origin' );
-				$writing_system_terms = get_the_terms( get_the_ID(), 'writing-system' );
-				$linguistic_genealogy = get_field( 'linguistic_genealogy' );
+				$language_url               = get_the_permalink();
+				$standard_name              = get_field( 'standard_name' );
+				$alternate_names            = get_field( 'alternate_names' );
+				$nations_of_origin          = get_field( 'nations_of_origin' );
+				$writing_system_terms       = get_the_terms( get_the_ID(), 'writing-system' );
+				$linguistic_genealogy_terms = get_the_terms( get_the_ID(), 'linguistic-genealogy' );
 				?>
 				<strong class="wt_sectionHeader"><a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
 				<ul>
@@ -125,13 +125,17 @@
 					</li>
 				<?php endif; ?>
 
-				<?php if ( $linguistic_genealogy ) : ?>
+				<?php if ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) : ?>
 					<li>
 						<p>Linguistic genealogy</p>
 						<p class="wt_text--label">
-							<a href="<?php echo esc_url( add_query_arg( 'genealogy', rawurlencode( $linguistic_genealogy ), get_post_type_archive_link( 'languages' ) ) ); ?>">
-								<?php echo esc_html( $linguistic_genealogy ); ?>
-							</a>
+							<?php
+							$lg_links = array();
+							foreach ( $linguistic_genealogy_terms as $lg_term ) {
+								$lg_links[] = '<a href="' . esc_url( add_query_arg( 'genealogy', $lg_term->slug, get_post_type_archive_link( 'languages' ) ) ) . '">' . esc_html( $lg_term->name ) . '</a>';
+							}
+							echo implode( ', ', $lg_links );
+							?>
 						</p>
 					</li>
 				<?php endif; ?>

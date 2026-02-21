@@ -65,11 +65,6 @@ function searchfilter( $query ) {
 							'compare' => 'LIKE',
 						),
 						array(
-							'key'     => 'linguistic_genealogy',
-							'value'   => $languages_search,
-							'compare' => '=',
-						),
-						array(
 							'key'     => 'video_title',
 							'value'   => $languages_search,
 							'compare' => 'LIKE',
