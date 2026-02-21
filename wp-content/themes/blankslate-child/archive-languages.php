@@ -5,6 +5,7 @@ $territory_slug         = isset( $_GET['territory'] ) ? sanitize_title( wp_unsla
 $territory_post         = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
 $genealogy              = isset( $_GET['genealogy'] ) ? sanitize_text_field( wp_unslash( $_GET['genealogy'] ) ) : '';
 $writing_system         = isset( $_GET['writing_system'] ) ? sanitize_text_field( wp_unslash( $_GET['writing_system'] ) ) : '';
+$writing_system_term    = $writing_system ? get_term_by( 'slug', $writing_system, 'writing-system' ) : null;
 $archive_columns        = 5;
 $archive_posts_per_page = 100;
 echo '<main class="wt_archive-languages">';
@@ -36,7 +37,7 @@ if ( $territory_post ) {
 	);
 } elseif ( $genealogy ) {
 	$params = array(
-		'title'          => $genealogy . ' languages',
+		'title'          => $genealogy . ' linguistic family',
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
@@ -54,9 +55,9 @@ if ( $territory_post ) {
 		'term'           => '',
 		'link_out'       => '',
 	);
-} elseif ( $writing_system ) {
+} elseif ( $writing_system_term ) {
 	$params = array(
-		'title'          => $writing_system . ' languages',
+		'title'          => 'Languages written in ' . $writing_system_term->name,
 		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
@@ -65,13 +66,13 @@ if ( $territory_post ) {
 		'orderby'        => 'title',
 		'order'          => 'asc',
 		'pagination'     => 'true',
-		'meta_key'       => 'writing_systems',
-		'meta_value'     => $writing_system,
+		'meta_key'       => '',
+		'meta_value'     => '',
 		'selected_posts' => '',
 		'display_blank'  => 'true',
 		'exclude_self'   => 'false',
-		'taxonomy'       => '',
-		'term'           => '',
+		'taxonomy'       => 'writing-system',
+		'term'           => $writing_system_term->slug,
 		'link_out'       => '',
 	);
 } else {

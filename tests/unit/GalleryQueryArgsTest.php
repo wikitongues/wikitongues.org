@@ -133,19 +133,6 @@ class GalleryQueryArgsTest extends TestCase {
 		$this->assertSame( '=', $result['meta_query'][0]['compare'] );
 	}
 
-	public function test_writing_systems_uses_equals_compare() {
-		$atts = $this->base_atts(
-			array(
-				'meta_key'   => 'writing_systems',
-				'meta_value' => 'Latin',
-			)
-		);
-		$this->mock_wp_parse_args( $atts );
-
-		$result = build_gallery_query_args( $atts );
-		$this->assertSame( '=', $result['meta_query'][0]['compare'] );
-	}
-
 	public function test_generic_meta_key_multiple_values_build_or_meta_query() {
 		$atts = $this->base_atts(
 			array(
