@@ -3,6 +3,8 @@ get_header();
 
 $territory_slug = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
 $territory_post = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
+$genealogy      = isset( $_GET['genealogy'] ) ? sanitize_text_field( wp_unslash( $_GET['genealogy'] ) ) : '';
+$writing_system = isset( $_GET['writing_system'] ) ? sanitize_text_field( wp_unslash( $_GET['writing_system'] ) ) : '';
 
 echo '<main class="wt_archive-languages">';
 
@@ -25,6 +27,44 @@ if ( $territory_post ) {
 		'meta_key'       => '',
 		'meta_value'     => '',
 		'selected_posts' => $selected,
+		'display_blank'  => 'true',
+		'exclude_self'   => 'false',
+		'taxonomy'       => '',
+		'term'           => '',
+	);
+} elseif ( $genealogy ) {
+	$params = array(
+		'title'          => $genealogy . ' languages',
+		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
+		'show_total'     => 'true',
+		'post_type'      => 'languages',
+		'columns'        => 4,
+		'posts_per_page' => 12,
+		'orderby'        => 'title',
+		'order'          => 'asc',
+		'pagination'     => 'true',
+		'meta_key'       => 'linguistic_genealogy',
+		'meta_value'     => $genealogy,
+		'selected_posts' => '',
+		'display_blank'  => 'true',
+		'exclude_self'   => 'false',
+		'taxonomy'       => '',
+		'term'           => '',
+	);
+} elseif ( $writing_system ) {
+	$params = array(
+		'title'          => $writing_system . ' languages',
+		'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
+		'show_total'     => 'true',
+		'post_type'      => 'languages',
+		'columns'        => 4,
+		'posts_per_page' => 12,
+		'orderby'        => 'title',
+		'order'          => 'asc',
+		'pagination'     => 'true',
+		'meta_key'       => 'writing_systems',
+		'meta_value'     => $writing_system,
+		'selected_posts' => '',
 		'display_blank'  => 'true',
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',

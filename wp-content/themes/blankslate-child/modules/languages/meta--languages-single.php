@@ -114,12 +114,20 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 
 				<?php if ( $writing_systems ) : ?>
 					<strong>Writing systems</strong>
-					<p class="wt_text--label"><?php echo esc_html( $writing_systems ); ?></p>
+					<p class="wt_text--label">
+						<a href="<?php echo esc_url( add_query_arg( 'writing_system', rawurlencode( $writing_systems ), get_post_type_archive_link( 'languages' ) ) ); ?>">
+							<?php echo esc_html( $writing_systems ); ?>
+						</a>
+					</p>
 				<?php endif; ?>
 
 				<?php if ( $linguistic_genealogy ) : ?>
 					<strong>Linguistic genealogy</strong>
-					<p class="wt_text--label"><?php echo esc_html( $linguistic_genealogy ); ?></p>
+					<p class="wt_text--label">
+						<a href="<?php echo esc_url( add_query_arg( 'genealogy', rawurlencode( $linguistic_genealogy ), get_post_type_archive_link( 'languages' ) ) ); ?>">
+							<?php echo esc_html( $linguistic_genealogy ); ?>
+						</a>
+					</p>
 				<?php endif; ?>
 
 				<?php if ( $egids ) : ?>
