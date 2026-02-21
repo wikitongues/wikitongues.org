@@ -145,6 +145,7 @@ function create_gallery_instance( $params ) {
 		'exclude_self'   => 'true',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => '',
 	);
 
 	$args = wp_parse_args( $params, $defaults );
@@ -168,6 +169,7 @@ function create_gallery_instance( $params ) {
 		'exclude_self="' . $args['exclude_self'] . '" ' .
 		'taxonomy="' . $args['taxonomy'] . '" ' .
 		'term="' . $args['term'] . '" ' .
+		'link_out="' . esc_url( $args['link_out'] ) . '" ' .
 		']'
 	);
 }
@@ -197,6 +199,7 @@ function custom_gallery( $atts ) {
 			'exclude_self'   => 'true', // define whether to show or hide the current post entry string true or false
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => '',
 		),
 		$atts,
 		'custom_gallery'
@@ -250,10 +253,19 @@ function custom_gallery( $atts ) {
 
 	// Labels come from WP post type objects and are already localised at registration; use a
 	// simple conditional rather than _n() to avoid passing dynamic strings to a translation function.
-	$label  = $count === 1 ? $singular : $plural;
-	$header = $atts['show_total'] === 'true'
-	? $atts['title'] . '<span>' . $count . ' ' . $label . '</span>'
-	: $atts['title'];
+	$label   = $count === 1 ? $singular : $plural;
+	$see_all = $atts['link_out'] ? '<a href="' . esc_url( $atts['link_out'] ) . '" class="wt_seeAll">see all</a>' : '';
+
+	if ( $atts['show_total'] === 'true' || $see_all ) {
+		$right = '<span class="wt_sectionHeader-meta">'
+			. ( $atts['show_total'] === 'true' ? '<span>' . $count . ' ' . $label . '</span>' : '' )
+			. $see_all
+			. '</span>';
+	} else {
+		$right = '';
+	}
+
+	$header = $atts['title'] . $right;
 
 	$output = '';
 	if ( $query->have_posts() || $atts['display_blank'] === 'true' ) {

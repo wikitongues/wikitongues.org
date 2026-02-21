@@ -1,5 +1,6 @@
 <?php
-	$territory_id = get_the_ID();
+	$territory_id   = get_the_ID();
+	$territory_slug = get_post_field( 'post_name', $territory_id );
 
 	get_header();
 	$territory = wt_prefix_the( get_the_title() );
@@ -46,6 +47,7 @@
 			'exclude_self'   => 'false',
 			'taxonomy'       => '',
 			'term'           => '',
+			'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'fellows' ) ),
 		);
 		echo create_gallery_instance( $fellows_params );
 	}
@@ -73,6 +75,7 @@
 		'exclude_self'   => 'false',
 		'taxonomy'       => '',
 		'term'           => '',
+		'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
 	);
 	echo create_gallery_instance( $params );
 

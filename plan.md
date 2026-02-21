@@ -17,7 +17,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Complete Donors post type
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
   - [ ] Maps on territory templates
-  - [ ] Gallery `link_out` param — filtered archive pages
+  - [x] Gallery `link_out` param — filtered archive pages
   - [ ] Download gateway plugin
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
@@ -78,6 +78,7 @@ _Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-par
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
 - [x] Gallery `link_out` param ([archive](plan-archive.md))
+- [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
 - [ ] Replace Font Awesome
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
@@ -124,7 +125,7 @@ _Maps introduces visual changes to high-traffic territory/region templates; Laye
 - [ ] **Dockerize project** for ease of contributor setup
 - [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
 - [ ] **Complete Donors post type** (in progress, stalled)
-- [ ] **Gallery `link_out` param — filtered archive pages**
+- [x] **Gallery `link_out` param — filtered archive pages**
   Gallery sections (e.g. "Fellows from the United States", "Languages from the United States", "English videos") should be linkable to a dedicated full-page listing showing all matching items with full pagination. Auto-generated — no editor action required.
 
   **Two parts:**
