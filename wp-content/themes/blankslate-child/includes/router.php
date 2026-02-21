@@ -7,11 +7,21 @@ function wikitongues_custom_template_redirects() {
 
 	// Archive redirects
 	if ( is_post_type_archive( 'fellows' ) ) {
+		if ( isset( $_GET['territory'] ) ) {
+			return; // Serve archive-fellows.php with territory filter.
+		}
 		wp_redirect( home_url( '/revitalization/fellows', 'relative' ) );
 		exit;
 	}
 
 	if ( is_post_type_archive( array( 'languages', 'videos', 'lexicons', 'resources', 'captions' ) ) ) {
+		if ( is_post_type_archive( 'languages' ) &&
+			( isset( $_GET['territory'] ) || isset( $_GET['genealogy'] ) || isset( $_GET['writing_system'] ) ) ) {
+			return; // Serve archive-languages.php with filter.
+		}
+		if ( is_post_type_archive( 'videos' ) && isset( $_GET['language'] ) ) {
+			return; // Serve archive-videos.php with language filter.
+		}
 		wp_redirect( home_url( '/archive', 'relative' ) );
 		exit;
 	}
