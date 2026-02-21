@@ -157,14 +157,16 @@
             "return_format": "object",
             "field_type": "multi_select",
             "allow_null": 1,
-            "allow_in_bindings": 0
+            "allow_in_bindings": 0,
+            "multiple": 0,
+            "bidirectional_target": []
         },
         {
-            "key": "field_614a2f573b681",
+            "key": "field_6810db1b101e5",
             "label": "Linguistic Genealogy",
-            "name": "linguistic_genealogy",
+            "name": "linguistic_genealogy_taxonomy",
             "aria-label": "",
-            "type": "text",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -173,12 +175,17 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "taxonomy": "linguistic-genealogy",
+            "add_term": 0,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "object",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
         },
         {
             "key": "field_64d679ec11f17",
@@ -462,6 +469,27 @@
             "bidirectional_target": []
         },
         {
+            "key": "field_614a2f573b681",
+            "label": "Linguistic Genealogy (legacy)",
+            "name": "linguistic_genealogy",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Legacy field — use Linguistic Genealogy taxonomy above.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_614b90d5d2667",
             "label": "Writing Systems (legacy)",
             "name": "writing_systems",
@@ -501,5 +529,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1771700100
+    "modified": 1771716263
 }

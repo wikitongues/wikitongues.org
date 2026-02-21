@@ -49,13 +49,13 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 		}
 	}
 
-	$alternate_names      = get_field( 'alternate_names' );
-	$iso_code             = get_field( 'iso_code' );
-	$glottocode           = get_field( 'glottocode' );
-	$nations_of_origin    = get_field( 'nations_of_origin' );
-	$writing_system_terms = get_the_terms( get_the_ID(), 'writing-system' );
-	$linguistic_genealogy = get_field( 'linguistic_genealogy' );
-	$egids                = get_field( 'egids_status' );
+	$alternate_names            = get_field( 'alternate_names' );
+	$iso_code                   = get_field( 'iso_code' );
+	$glottocode                 = get_field( 'glottocode' );
+	$nations_of_origin          = get_field( 'nations_of_origin' );
+	$writing_system_terms       = get_the_terms( get_the_ID(), 'writing-system' );
+	$linguistic_genealogy_terms = get_the_terms( get_the_ID(), 'linguistic-genealogy' );
+	$egids                      = get_field( 'egids_status' );
 	?>
 <div class="wt_meta--languages-single">
 	<h1>
@@ -101,7 +101,7 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 
 		</div>
 	<?php endif; ?>
-	<?php if ( $nations_of_origin || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || $linguistic_genealogy || $egids ) : ?>
+	<?php if ( $nations_of_origin || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>
 		<div class="metadata" id="metadata">
 			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
 			<div class="mobile-accordion-content">
@@ -125,12 +125,16 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 					</p>
 				<?php endif; ?>
 
-				<?php if ( $linguistic_genealogy ) : ?>
+				<?php if ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) : ?>
 					<strong>Linguistic genealogy</strong>
 					<p class="wt_text--label">
-						<a href="<?php echo esc_url( add_query_arg( 'genealogy', rawurlencode( $linguistic_genealogy ), get_post_type_archive_link( 'languages' ) ) ); ?>">
-							<?php echo esc_html( $linguistic_genealogy ); ?>
-						</a>
+						<?php
+						$lg_links = array();
+						foreach ( $linguistic_genealogy_terms as $lg_term ) {
+							$lg_links[] = '<a href="' . esc_url( add_query_arg( 'genealogy', $lg_term->slug, get_post_type_archive_link( 'languages' ) ) ) . '">' . esc_html( $lg_term->name ) . '</a>';
+						}
+						echo implode( ', ', $lg_links );
+						?>
 					</p>
 				<?php endif; ?>
 

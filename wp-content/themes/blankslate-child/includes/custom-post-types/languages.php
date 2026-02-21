@@ -40,6 +40,28 @@ function create_post_type_languages() {
 }
 
 // ====================
+// Register Linguistic Genealogy Taxonomy
+// ====================
+add_action( 'init', 'wt_register_linguistic_genealogy_taxonomy' );
+function wt_register_linguistic_genealogy_taxonomy() {
+	register_taxonomy(
+		'linguistic-genealogy',
+		array( 'languages' ),
+		array(
+			'labels'             => array(
+				'name'          => __( 'Linguistic Genealogies' ),
+				'singular_name' => __( 'Linguistic Genealogy' ),
+			),
+			'hierarchical'       => false,
+			'public'             => true,
+			'show_in_rest'       => true,
+			'publicly_queryable' => false,
+			'rewrite'            => false,
+		)
+	);
+}
+
+// ====================
 // Register Writing System Taxonomy
 // ====================
 add_action( 'init', 'wt_register_writing_system_taxonomy' );
