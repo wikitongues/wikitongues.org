@@ -59,6 +59,27 @@ class ACF_Fields {
 							'value'    => 'languages',
 						),
 					),
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'videos',
+						),
+					),
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'captions',
+						),
+					),
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'lexicons',
+						),
+					),
 				),
 				'menu_order'            => 100,
 				'position'              => 'side',
