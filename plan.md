@@ -10,21 +10,24 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Backlog](#backlog)**
   - [x] Convert plan.md to checklist format
-  - [ ] Dockerize project
   - [x] Audit and clean up stale branches ([archive](plan-archive.md))
-  - [ ] Airtable reconciliation (520+ records missing fields)
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
-  - [ ] Complete Donors post type
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
-  - [ ] Maps on territory templates
   - [x] Gallery `link_out` param — filtered archive pages
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
+  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
+  - [ ] Complete Donors post type
+  - [ ] Dockerize project
+  - [ ] Airtable reconciliation (520+ records missing fields)
+  - [ ] Maps on territory templates
   - [ ] Download gateway plugin
-- [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
+  - [ ] Resolve `class-wt-rest-posts-controller.php` duplication (root `includes/` vs theme `includes/`)
+  - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
+  - [ ] Reorganize theme `includes/` flat folder (24 files) into subdirectories by concern (e.g. `api/`, `admin/`, `taxonomies/`, `template/`, `integrations/`)
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
@@ -35,6 +38,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Migrate from Stylus
   - [ ] Replace Font Awesome
   - [ ] Performance profiling and monitoring
+  - [ ] Evaluate Bedrock for composer-managed WordPress installs
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -198,7 +202,21 @@ _Maps introduces visual changes to high-traffic territory/region templates; Laye
 
 ## Code Quality
 
-_All items complete. See [plan-archive.md](plan-archive.md)._
+_Previously completed items in [plan-archive.md](plan-archive.md)._
+
+- [ ] **Resolve `class-wt-rest-posts-controller.php` duplication**
+  The file exists in both `includes/` (root) and `wp-content/themes/blankslate-child/includes/`. One is the source of truth; the other should be removed or replaced with a `require`.
+
+- [ ] **Move root-level `includes/` into `wp-content/mu-plugins/` or the theme**
+  The root `includes/` directory is non-standard — WordPress has no awareness of it and files must be manually required somewhere (likely `functions.php`). Move to a must-use plugin (`wp-content/mu-plugins/`) if the code is site-wide, or into the theme's `includes/` if it is theme-specific. Resolve the duplication item above first.
+
+- [ ] **Reorganize theme `includes/` into subdirectories by concern**
+  Currently 24 flat files. Suggested grouping:
+  - `api/` — REST endpoints, controller
+  - `admin/` — admin helpers, batch operations
+  - `taxonomies/` — CPT and taxonomy registration
+  - `template/` — template helpers, router
+  - `integrations/` — import-captions, events filter, license handling
 
 ---
 
