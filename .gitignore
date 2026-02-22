@@ -33,6 +33,7 @@ wp-config.php
 !/wp-content/plugins/typeahead/
 !/wp-content/plugins/typeahead/build
 !/wp-content/plugins/wt-gallery/
+!/wp-content/plugins/wt-airtable-sync/
 
 # Uploads
 /wp-content/uploads/
@@ -59,6 +60,7 @@ ggstemp.html
 readme_backup.md
 temp/
 temp-captions/
+docs/
 transmit_sync_offset_2135232021
 /wp-content/backups-dup-pro/
 tool-sync-db-from-prod.sh
