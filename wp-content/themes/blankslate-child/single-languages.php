@@ -30,17 +30,44 @@ require 'modules/languages/single-languages__resources.php';
 echo '</main>';
 
 // ====================
-// Gallery — other languages from the same territory
+// Gallery — other languages from the same territory/territories
 // ====================
 $territories = get_field( 'territories' );
 if ( $territories ) {
-	$primary_territory = $territories[0];
-	$territory_slug    = $primary_territory->post_name;
-	$territory_name    = wt_prefix_the( $primary_territory->post_title );
-	$language_ids      = get_field( 'languages', $primary_territory->ID, false );
-	$selected          = $language_ids ? implode( ',', $language_ids ) : '';
-	$params            = array(
-		'title'          => 'Other languages from ' . $territory_name,
+	// Collect language IDs from every territory the current language belongs to.
+	$language_ids = array();
+	foreach ( $territories as $territory ) {
+		$ids = get_field( 'languages', $territory->ID, false );
+		if ( $ids ) {
+			$language_ids = array_merge( $language_ids, $ids );
+		}
+	}
+	$language_ids = array_unique( $language_ids );
+	$selected     = implode( ',', $language_ids );
+
+	// Build territory name list with Oxford comma (e.g. "Dominica, Saint Kitts and Nevis, and United Kingdom").
+	$territory_names = array_map(
+		function ( $t ) {
+			return wt_prefix_the( $t->post_title );
+		},
+		$territories
+	);
+	$territory_count = count( $territory_names );
+	if ( $territory_count === 1 ) {
+		$territory_label = $territory_names[0];
+	} elseif ( $territory_count === 2 ) {
+		$territory_label = $territory_names[0] . ' and ' . $territory_names[1];
+	} else {
+		$last            = array_pop( $territory_names );
+		$territory_label = implode( ', ', $territory_names ) . ', and ' . $last;
+	}
+	$gallery_title    = 'Other languages from ' . $territory_label;
+	$gallery_link_out = $territory_count === 1
+		? add_query_arg( 'territory', $territories[0]->post_name, get_post_type_archive_link( 'languages' ) )
+		: '';
+
+	$params = array(
+		'title'          => $gallery_title,
 		'subtitle'       => '',
 		'show_total'     => 'true',
 		'post_type'      => 'languages',
@@ -57,7 +84,7 @@ if ( $territories ) {
 		'exclude_self'   => 'true',
 		'taxonomy'       => '',
 		'term'           => '',
-		'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
+		'link_out'       => $gallery_link_out,
 	);
 	echo create_gallery_instance( $params );
 }
