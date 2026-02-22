@@ -26,23 +26,54 @@ class Sync_Controller {
 	/**
 	 * Process a sync payload for a given post type.
 	 *
+	 * When $dry_run is true the method performs all read-only steps (post
+	 * lookup, post_object resolution) but skips every write. It returns a
+	 * preview of the action and meta values that would have been written,
+	 * which lets callers validate Make.com payloads without touching the DB.
+	 *
 	 * @param string               $post_type WP CPT slug.
 	 * @param array<string, mixed> $payload   Decoded JSON body from the request.
 	 * @param array<string, mixed> $field_map CPT entry from config/field-maps.php.
+	 * @param bool                 $dry_run   When true, no writes are made.
 	 * @return array{status: string, action: string, post_id: int}|\WP_Error
 	 */
 	public function sync(
 		string $post_type,
 		array $payload,
-		array $field_map
+		array $field_map,
+		bool $dry_run = false
 	): array|\WP_Error {
 		$airtable_id = isset( $payload['airtable_id'] ) ? sanitize_text_field( (string) $payload['airtable_id'] ) : '';
 		$post_title  = isset( $payload['post_title'] ) ? sanitize_text_field( (string) $payload['post_title'] ) : '';
 		$post_status = isset( $payload['post_status'] ) ? sanitize_text_field( (string) $payload['post_status'] ) : 'publish';
 
-		// 1. Locate existing post.
+		// 1. Locate existing post (read-only — runs in both modes).
 		$post_id = $this->find_post( $post_type, $airtable_id, $post_title, $payload );
 		$action  = $post_id ? 'updated' : 'created';
+
+		if ( $dry_run ) {
+			$would_write = $this->preview_meta( $payload, $field_map );
+
+			if ( $airtable_id ) {
+				$would_write = array_merge(
+					array( self::AIRTABLE_ID_KEY => $airtable_id ),
+					$would_write
+				);
+			}
+
+			Logger::info(
+				sprintf( 'dry_run post_type=%s post_id=%d airtable_id=%s', $post_type, $post_id, $airtable_id )
+			);
+
+			return array(
+				'status'      => 'dry_run',
+				'action'      => $action,
+				'post_id'     => $post_id,
+				'post_title'  => $post_title,
+				'post_status' => $post_status,
+				'would_write' => $would_write,
+			);
+		}
 
 		// 2. Create or update the core WP post.
 		$post_id = $this->upsert_post( $post_id, $post_type, $post_title, $post_status );
@@ -228,6 +259,40 @@ class Sync_Controller {
 	// -------------------------------------------------------------------------
 	// Meta writes
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Resolve all mapped meta fields without writing anything.
+	 *
+	 * Runs the same value resolution as write_meta() — including post_object
+	 * title-to-ID lookups — and returns the resolved values keyed by meta_key.
+	 * Used by dry-run mode so callers can inspect exactly what would be written.
+	 *
+	 * @param array<string, mixed> $payload   Full request payload.
+	 * @param array<string, mixed> $field_map CPT field map from config/field-maps.php.
+	 * @return array<string, mixed> Resolved meta values keyed by meta_key.
+	 */
+	private function preview_meta( array $payload, array $field_map ): array {
+		$preview = array();
+
+		foreach ( $field_map as $payload_key => $field ) {
+			if ( ! isset( $payload[ $payload_key ] ) ) {
+				continue;
+			}
+
+			$raw_value = $payload[ $payload_key ];
+			$meta_key  = $field['meta_key'];
+			$acf_type  = $field['acf_type'] ?? null;
+			$cpt       = $field['post_type'] ?? null;
+
+			if ( 'post_object' === $acf_type && $cpt ) {
+				$preview[ $meta_key ] = Field_Resolver::resolve( $raw_value, $cpt );
+			} else {
+				$preview[ $meta_key ] = $raw_value;
+			}
+		}
+
+		return $preview;
+	}
 
 	/**
 	 * Write all mapped meta fields from the payload to the post.

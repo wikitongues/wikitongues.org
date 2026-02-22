@@ -76,6 +76,10 @@ class Sync_API {
 	 * post_type is validated here (after auth) so permission_callback always
 	 * runs first — a bad key gets 401 before any business logic is checked.
 	 *
+	 * Dry-run mode: send X-WT-Dry-Run: 1 to resolve and preview all field
+	 * writes without touching the database. Useful for validating Make.com
+	 * payloads against staging or production before cutover.
+	 *
 	 * @param \WP_REST_Request $request Incoming REST request.
 	 * @return \WP_REST_Response|\WP_Error
 	 */
@@ -101,7 +105,8 @@ class Sync_API {
 			);
 		}
 
-		$result = ( new Sync_Controller() )->sync( $post_type, $payload, $maps[ $post_type ] );
+		$dry_run = '1' === (string) $request->get_header( 'X-WT-Dry-Run' );
+		$result  = ( new Sync_Controller() )->sync( $post_type, $payload, $maps[ $post_type ], $dry_run );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
