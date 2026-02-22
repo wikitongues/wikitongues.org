@@ -22,6 +22,8 @@ define( 'WT_AIRTABLE_SYNC_FILE', __FILE__ );
 define( 'WT_AIRTABLE_SYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-logger.php';
+require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-field-resolver.php';
+require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-controller.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-api.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\activate' );

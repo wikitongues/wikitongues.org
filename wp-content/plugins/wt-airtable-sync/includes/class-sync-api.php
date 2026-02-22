@@ -7,9 +7,6 @@
  * Authentication: X-WT-Sync-Key header, compared in constant time against
  * the WT_SYNC_API_KEY constant defined in wp-config.php.
  *
- * Phase 0: endpoint authenticates and validates the post_type parameter, then
- * returns a 200 stub response. Upsert logic is implemented in Phase 1.
- *
  * @package WT\AirtableSync
  */
 
@@ -76,21 +73,17 @@ class Sync_API {
 	/**
 	 * Handle an authenticated sync request.
 	 *
-	 * Validates post_type here (after auth) so permission_callback always
+	 * post_type is validated here (after auth) so permission_callback always
 	 * runs first — a bad key gets 401 before any business logic is checked.
-	 *
-	 * Phase 1 will replace the stub response with upsert logic.
 	 *
 	 * @param \WP_REST_Request $request Incoming REST request.
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function handle_sync( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		$post_type = $request->get_param( 'post_type' );
-
 		$maps      = require WT_AIRTABLE_SYNC_DIR . 'config/field-maps.php';
-		$supported = array_keys( $maps );
 
-		if ( ! in_array( $post_type, $supported, true ) ) {
+		if ( ! isset( $maps[ $post_type ] ) ) {
 			return new \WP_Error(
 				'wt_sync_unsupported_post_type',
 				sprintf( 'No field map defined for post_type "%s".', $post_type ),
@@ -98,16 +91,22 @@ class Sync_API {
 			);
 		}
 
-		Logger::info( "Sync request received for post_type={$post_type}." );
+		$payload = $request->get_json_params();
 
-		// Phase 1 will replace this stub with upsert logic.
-		return new \WP_REST_Response(
-			array(
-				'status'    => 'ok',
-				'post_type' => $post_type,
-				'message'   => 'Phase 0 scaffold. Sync logic not yet implemented.',
-			),
-			200
-		);
+		if ( empty( $payload ) ) {
+			return new \WP_Error(
+				'wt_sync_empty_payload',
+				'Request body is empty or not valid JSON.',
+				array( 'status' => 400 )
+			);
+		}
+
+		$result = ( new Sync_Controller() )->sync( $post_type, $payload, $maps[ $post_type ] );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return new \WP_REST_Response( $result, 200 );
 	}
 }
