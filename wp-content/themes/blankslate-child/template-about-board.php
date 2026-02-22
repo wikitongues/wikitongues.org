@@ -23,40 +23,7 @@ foreach ( $board_members as $post ) {
 	$bio                = get_field( 'bio' );
 	$location           = get_field( 'contributor_location' );
 	$personal_languages = get_field( 'languages' );
-	$social_links       = array(
-		'email'     => array(
-			'url'  => get_field( 'email' ),
-			'icon' => 'envelope',
-		),
-		'facebook'  => array(
-			'url'  => get_field( 'facebook' ),
-			'icon' => 'square-facebook',
-		),
-		'instagram' => array(
-			'url'  => get_field( 'instagram' ),
-			'icon' => 'instagram',
-		),
-		'linkedin'  => array(
-			'url'  => get_field( 'linkedin' ),
-			'icon' => 'linkedin',
-		),
-		'tiktok'    => array(
-			'url'  => get_field( 'tiktok' ),
-			'icon' => 'tiktok',
-		),
-		'twitter'   => array(
-			'url'  => get_field( 'twitter' ),
-			'icon' => 'x-twitter',
-		),
-		'website'   => array(
-			'url'  => get_field( 'website' ),
-			'icon' => 'link',
-		),
-		'youtube'   => array(
-			'url'  => get_field( 'youtube' ),
-			'icon' => 'youtube',
-		),
-	);
+		$social_links   = wt_social_links();
 
 
 	// show board member module

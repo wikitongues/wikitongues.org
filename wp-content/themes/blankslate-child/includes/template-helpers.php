@@ -88,6 +88,52 @@ function wt_prefix_the( string $name ): string {
 }
 
 /**
+ * Build the standard social-links array for the current post in context.
+ *
+ * Each entry maps a platform key to ['url' => string|false, 'icon' => string].
+ * Pass the result to team-member--wide.php, team-member--grid.php, or
+ * meta--fellows-single.php as $social_links.
+ *
+ * @return array<string, array{url: string|false, icon: string}>
+ */
+function wt_social_links(): array {
+	return array(
+		'email'     => array(
+			'url'  => get_field( 'email' ),
+			'icon' => 'square-email',
+		),
+		'facebook'  => array(
+			'url'  => get_field( 'facebook' ),
+			'icon' => 'square-facebook',
+		),
+		'instagram' => array(
+			'url'  => get_field( 'instagram' ),
+			'icon' => 'instagram',
+		),
+		'linkedin'  => array(
+			'url'  => get_field( 'linkedin' ),
+			'icon' => 'linkedin',
+		),
+		'tiktok'    => array(
+			'url'  => get_field( 'tiktok' ),
+			'icon' => 'tiktok',
+		),
+		'twitter'   => array(
+			'url'  => get_field( 'twitter' ),
+			'icon' => 'x-twitter',
+		),
+		'website'   => array(
+			'url'  => get_field( 'website' ),
+			'icon' => 'link',
+		),
+		'youtube'   => array(
+			'url'  => get_field( 'youtube' ),
+			'icon' => 'youtube',
+		),
+	);
+}
+
+/**
  * Return an inline SVG icon by name.
  *
  * All icons are self-contained, aria-hidden, and sized at 1em so they inherit

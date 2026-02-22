@@ -23,40 +23,7 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 }
 log_data( $categories );
 // $category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
-$social_links               = array(
-	'email'     => array(
-		'url'  => get_field( 'email' ),
-		'icon' => 'square-email',
-	),
-	'facebook'  => array(
-		'url'  => get_field( 'facebook' ),
-		'icon' => 'square-facebook',
-	),
-	'instagram' => array(
-		'url'  => get_field( 'instagram' ),
-		'icon' => 'instagram',
-	),
-	'linkedin'  => array(
-		'url'  => get_field( 'linkedin' ),
-		'icon' => 'linkedin',
-	),
-	'tiktok'    => array(
-		'url'  => get_field( 'tiktok' ),
-		'icon' => 'tiktok',
-	),
-	'twitter'   => array(
-		'url'  => get_field( 'twitter' ),
-		'icon' => 'x-twitter',
-	),
-	'website'   => array(
-		'url'  => get_field( 'website' ),
-		'icon' => 'link',
-	),
-	'youtube'   => array(
-		'url'  => get_field( 'youtube' ),
-		'icon' => 'youtube',
-	),
-);
+$social_links               = wt_social_links();
 $revitalization_fellows_url = home_url( '/revitalization/fellows/?fellow_year=', 'relative' );
 $revitalization_fellows_url = add_query_arg( 'fellow_year', $fellow_year, $revitalization_fellows_url );
 
