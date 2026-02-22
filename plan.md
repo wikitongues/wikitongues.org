@@ -18,6 +18,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
   - [ ] Maps on territory templates
   - [x] Gallery `link_out` param — filtered archive pages
+  - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
+  - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
   - [ ] Download gateway plugin
 - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
@@ -79,6 +81,8 @@ _Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-par
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
 - [x] Gallery `link_out` param ([archive](plan-archive.md))
 - [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
+- [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
+- [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
 - [ ] Replace Font Awesome
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
@@ -285,6 +289,12 @@ Runs on every PR via GitHub Actions alongside PHPCS.
 - `wt-gallery/includes/queries.php` → `build_gallery_query_args()` (10 tests)
 
 **Expand over time:** any new function with non-trivial logic should ship with a unit test.
+
+**Deferred unit test candidates:**
+- **Territory name list formatter** — the Oxford-comma builder in `single-languages.php` (maps `$territories` → "Dominica, Saint Kitts and Nevis, and United Kingdom") has real edge-case risk (1 item / 2 items / 3+ items). If extracted into a named helper (e.g. `wt_format_list()`), it becomes a trivially testable pure function.
+- **`GalleryQueryArgsTest` regression guard** — an assertion that `linguistic_genealogy` is absent from the `in_array` exact-match list, mirroring the `writing_systems` removal test that was deleted with PR #467.
+- **Archive parameter resolution (`archive-languages.php`)** — deferred to Layer 3; mixes `$_GET`, `get_term_by()`, and `create_gallery_instance()` in a way that requires a running WP instance to test meaningfully.
+- **Template rendering (`single-languages.php`)** — deferred to Layer 4 (E2E); territory ID merging and gallery title logic are embedded in the template alongside `get_field()` calls.
 
 **Known constraints and upgrade path:**
 WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
