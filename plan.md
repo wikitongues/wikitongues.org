@@ -36,7 +36,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
-  - [ ] Replace Font Awesome
+  - [x] Replace Font Awesome ([archive](plan-archive.md))
   - [ ] Performance profiling and monitoring
   - [ ] Evaluate Bedrock for composer-managed WordPress installs _(Tier 2 — resolve before code quality cleanups)_
 
@@ -67,7 +67,7 @@ Logical implementation sequence across all plan items. Items within a tier can b
 `Make.com scenario audit` → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
 `Evaluate Bedrock` → code quality cleanups _(if not adopting Bedrock, file layout proceeds as-is; if adopting, A/B/C become moot)_
 `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-`Stylus migration` + `Font Awesome replacement` + `Donors post type` → `Docker` → **Layer 4 visual baseline**
+`Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
 `Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
 
@@ -92,7 +92,7 @@ _Parallel. Evaluate Bedrock first within this tier — the decision gates whethe
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
 - [ ] Evaluate Bedrock _(strategic decision only — no code; resolve first within this tier)_
 - [ ] Audit Make.com scenarios _(moved up from Tier 3; no hard deps; findings inform Airtable reconciliation scope)_
-- [ ] Replace Font Awesome
+- [x] Replace Font Awesome ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
 
@@ -273,9 +273,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
   **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
 
-- [ ] **Replace Font Awesome**
-  Font Awesome is loaded as an external dependency (CDN or npm package). It adds weight to every page load for a relatively small set of icons actually used. Replacing with inline SVGs or a purpose-built icon set (e.g. Heroicons, Phosphor) would reduce load time and remove the external CDN dependency.
-  **Goal:** Audit which FA icons are in use, replace with lightweight inline SVGs or a self-hosted sprite, remove the FA dependency entirely.
+- [x] **Replace Font Awesome** — done ([archive](plan-archive.md))
 
 - [ ] **Performance profiling and monitoring**
   No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
