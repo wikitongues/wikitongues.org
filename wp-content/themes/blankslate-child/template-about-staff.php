@@ -18,13 +18,13 @@ foreach ( $staff_members as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
 
-	$profile_picture      = get_field( 'profile_picture' );
-	$name                 = get_the_title();
-	$title                = get_field( 'leadership_title' );
-	$bio                  = get_field( 'bio' );
-	$location             = get_field( 'contributor_location' );
-	$personal_languages   = get_field( 'languages' );
-	$social_links 				= wt_social_links();
+	$profile_picture    = get_field( 'profile_picture' );
+	$name               = get_the_title();
+	$title              = get_field( 'leadership_title' );
+	$bio                = get_field( 'bio' );
+	$location           = get_field( 'contributor_location' );
+	$personal_languages = get_field( 'languages' );
+	$social_links       = wt_social_links();
 
 	// show board member module
 	include 'modules/team/team-member--wide.php';
@@ -59,11 +59,11 @@ echo '<h4>Interns and Volunteers</h4>	';
 if ( $interns_and_volunteers ) {
 	foreach ( $interns_and_volunteers as $post ) {
 		setup_postdata( $post );
-		$profile_picture      = get_field( 'profile_picture' );
-		$name                 = get_the_title();
-		$title                = get_field( 'leadership_title' );
-		$location             = get_field( 'contributor_location' );
-		$social_links 				= wt_social_links();
+		$profile_picture = get_field( 'profile_picture' );
+		$name            = get_the_title();
+		$title           = get_field( 'leadership_title' );
+		$location        = get_field( 'contributor_location' );
+		$social_links    = wt_social_links();
 		include 'modules/team/team-member--grid.php';
 	} wp_reset_postdata();
 }
