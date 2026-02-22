@@ -5,6 +5,63 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-22
+
+### Convert `writing_systems` to `writing-system` taxonomy
+**Branch:** `feature/cc/writing-system-taxonomy`
+**PR:** [#467](https://github.com/wikitongues/wikitongues.org/pull/467)
+
+Converted the `writing_systems` ACF text field (comma-separated values, e.g. "Latin, Arabic") to a proper WP taxonomy `writing-system`. The previous exact-match meta query (`writing_systems = 'Latin, Arabic'`) could never correctly filter a language that uses multiple writing systems.
+
+Changes:
+- **`languages.php`:** Registered `writing-system` taxonomy (`publicly_queryable: false`, `show_in_rest: true`)
+- **`acf-json/group_614a2f1facd00.json`:** Added `writing_system_taxonomy` ACF field (taxonomy type, multi-select, `save_terms/load_terms: 1`); renamed legacy text field to "Writing Systems (legacy)"; moved to bottom of field group
+- **`archive-languages.php`:** `?writing_system=<slug>` resolved via `get_term_by('slug', ..., 'writing-system')`; gallery params switch to `taxonomy`/`term`; title: "Languages written in {term}" (edge case: "Unwritten languages" when term name is "Unwritten")
+- **`meta--languages-single.php`:** Uses `get_the_terms(get_the_ID(), 'writing-system')`; terms rendered as comma-separated archive filter links
+- **`meta--videos-single.php`:** Same taxonomy lookup inside the `featured_languages` loop
+- **`queries.php`:** Removed `writing_systems` from exact-match `in_array` list
+- **`search-filter.php`:** Removed `writing_systems` meta clause
+- **`GalleryQueryArgsTest.php`:** Removed `test_writing_systems_uses_equals_compare`; test count: 58 → 57
+- **`phpstan-baseline.neon`:** Adjusted occurrence counts after removing `get_field()` calls
+- **`temp/migrate-writing-systems.php`** (gitignored): batch-paginated migration (50 posts/batch); splits comma-separated values; run with `wp eval-file ./temp/migrate-writing-systems.php --allow-root`
+
+Notes: Migration must be run on each environment after deploy. ACF field group sync in WP Admin required (JSON `modified` timestamp bumped above DB value to trigger sync UI).
+
+---
+
+### Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy
+**Branch:** `feature/cc/linguistic-genealogy-taxonomy`
+**PR:** [#471](https://github.com/wikitongues/wikitongues.org/pull/471)
+
+Same taxonomy migration pattern applied to `linguistic_genealogy`. Migration script adds a pre-pass to delete all existing `linguistic-genealogy` terms before re-migrating — required because genealogy values can also be comma-separated (e.g. "Indo-European, Slavic") and any prior run without splitting would have created merged terms.
+
+Changes:
+- **`languages.php`:** Registered `linguistic-genealogy` taxonomy (`publicly_queryable: false`, `show_in_rest: true`)
+- **`acf-json/group_614a2f1facd00.json`:** Added `linguistic_genealogy_taxonomy` field (taxonomy type, single-select); renamed legacy field to "Linguistic Genealogy (legacy)"; moved to bottom
+- **`archive-languages.php`:** `?genealogy=<slug>` resolved via `get_term_by('slug', ..., 'linguistic-genealogy')`; title: `{term->name} linguistic family`
+- **`meta--languages-single.php`:** `get_the_terms(get_the_ID(), 'linguistic-genealogy')`; rendered as comma-separated `?genealogy=<slug>` archive links
+- **`meta--videos-single.php`:** Same lookup inside `featured_languages` loop
+- **`queries.php`:** Removed `linguistic_genealogy` from exact-match list; only `nations_of_origin` remains
+- **`search-filter.php`:** Removed `linguistic_genealogy` meta clause
+- **`GalleryQueryArgsTest.php`:** Removed `test_linguistic_genealogy_uses_equals_compare`; test count: 57 → 56
+- **`phpstan-baseline.neon`:** Adjusted occurrence counts after removing `get_field()` calls
+- **`temp/migrate-linguistic-genealogy.php`** (gitignored): Step 1 deletes all existing terms; Step 2 batch-migrates splitting on commas; run with `wp eval-file ./temp/migrate-linguistic-genealogy.php --allow-root`
+
+Notes: Migration must be run on each environment after deploy. ACF field group sync required. `show_in_rest: true` means Make.com can write terms via the native WP REST API after the Make.com scenario audit — no custom endpoint needed.
+
+---
+
+### Single language page — multi-territory language gallery
+**Branch:** `fix/cc/multi-territory-language-gallery`
+**PR:** (pending)
+
+Fixed a regression in `single-languages.php` where the "Other languages from..." gallery only drew language IDs from the first territory (`$territories[0]`). For languages with multiple territories (e.g. English spanning US, UK, Australia), the gallery now collects and deduplicates language IDs from every associated territory.
+
+Changes:
+- **`single-languages.php`:** Replaced `$territories[0]`-only lookup with a loop over all territories, merging IDs and deduplicating with `array_unique()`. Gallery title built as an Oxford-comma list of territory names via `wt_prefix_the()` — one territory: "Other languages from the United States"; two: "Other languages from Dominica and Saint Kitts and Nevis"; three or more: "Other languages from Dominica, Saint Kitts and Nevis, and United Kingdom". `link_out` (see-all button) is set only for the single-territory case — a multi-territory gallery has no coherent single archive filter URL.
+
+---
+
 ## 2026-02-21 (Tier 2 — Plugin hygiene + quick wins, partial)
 
 ### Audit `integromat-connector` REST API exposure
