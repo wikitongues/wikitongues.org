@@ -22,12 +22,20 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [ ] Maps on territory templates
   - [ ] Download gateway plugin
+  - [ ] Territories archive
+  - [ ] Enhanced search results page
+  - [ ] Donation optimization (donor cards in galleries)
+  - [ ] Forms (report a problem, replace Airtable embeds)
+  - [ ] Better aliveness (dynamic homepage)
+  - [ ] Gamification (stamp rally / onboarding)
 
 - **[Code Quality](#code-quality)**
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
   - [ ] Resolve `class-wt-rest-posts-controller.php` duplication (root `includes/` vs theme `includes/`)
   - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
   - [ ] Reorganize theme `includes/` flat folder (24 files) into subdirectories by concern (e.g. `api/`, `admin/`, `taxonomies/`, `template/`, `integrations/`)
+  - [ ] Autoloader for CPTs/includes
+  - [ ] Archive template refactor
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
@@ -70,6 +78,12 @@ Logical implementation sequence across all plan items. Items within a tier can b
 `Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
 `Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
+`Donors CPT` → `Donation optimization`
+`Enhanced search results page` → Layer 4 visual baseline (Tier 6)
+`Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
+`Forms` (report/Airtable replace) → no hard deps; `Forms` (gate) → Download gateway Phase 5
+`Better aliveness` → before Layer 4 visual baseline (Tier 6)
+`Gamification` → Membership infrastructure (not yet scoped) → Tier 8+
 
 ---
 
@@ -95,6 +109,7 @@ _Parallel. Evaluate Bedrock first within this tier — the decision gates whethe
 - [x] Replace Font Awesome ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
+- [ ] Territories archive _(no hard deps; simple gallery-based archive, follows existing pattern)_
 
 ---
 
@@ -104,6 +119,9 @@ _Parallel tracks. Bedrock evaluation (Tier 2) must be resolved before A/B/C so t
 - [ ] Resolve `class-wt-rest-posts-controller.php` duplication _(root copies are orphaned — safe delete; theme copy is canonical)_
 - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
 - [ ] Reorganize theme `includes/` into subdirectories by concern _(after duplication and root move are resolved)_
+- [ ] Autoloader for CPTs/includes _(do as part of Reorganize includes)_
+- [ ] Archive template refactor _(before Docker so image captures refactored layout)_
+- [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
 
 ---
@@ -113,6 +131,9 @@ _Code quality refactors (Tier 3) must be done so Docker captures the final file 
 
 - [ ] Dockerize project
 - [ ] Download gateway — Phases 0–5 _(scaffold, data model, primitives, endpoint, resource authoring, gate modes)_
+- [ ] Donation optimization — phase 1: donor cards in galleries _(after Donors CPT + Docker)_
+- [ ] Forms — report a problem + replace Airtable embeds _(parallel to gateway Phases 0–5; no Docker dep for basic implementation)_
+- [ ] Better aliveness — dynamic homepage _(before Layer 4 visual baseline)_
 
 ---
 
@@ -138,6 +159,13 @@ _Maps introduces visual changes to high-traffic territory/region templates; Laye
 
 - [ ] Maps on territory templates
 - [ ] Performance profiling and monitoring
+
+---
+
+### Tier 8 — Membership-dependent features
+_Blocked on membership infrastructure (user accounts), which is not currently in scope. Write a spec before implementation._
+
+- [ ] Gamification _(stamp rally + onboarding; blocked on membership infrastructure — write spec first)_
 
 ---
 
@@ -211,6 +239,27 @@ _Maps introduces visual changes to high-traffic territory/region templates; Laye
   **Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
   **Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
 
+- [ ] **Territories archive**
+  `/territories/` has no dedicated archive page — falls through to a default WP archive or 404. A territories archive should list all territories in a browsable gallery, using `create_gallery_instance()` following the existing archive pattern. No hard prerequisites beyond the CPT existing (which it does).
+
+- [ ] **Enhanced search results page**
+  The current search results page is basic. Replace with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern. Adds meaningful discovery value.
+
+- [ ] **Donation optimization**
+  After the Donors CPT lands: (1) integrate donor cards into gallery instances on relevant pages (campaign pages, homepage); (2) `membership` — future phase where recurring donors receive profile features. Scope phase 1 only for now; membership is deferred until a separate spec is written.
+
+- [ ] **Forms**
+  Three sub-items:
+  - **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
+  - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms (Gravity Forms or custom REST endpoints)
+  - **Download gateway gate form** — already scoped in gateway Phase 5; not duplicated here
+
+- [ ] **Better aliveness**
+  The homepage feels static. Surface the most recently added/updated languages, latest videos, and rotate banners to reflect current campaigns. Identify which content signals are most meaningful (publication date? editor-curated featured flag?) and build the query logic. Assess JS vs. server-side rendering needs. Must land before Layer 4 visual baseline so the dynamic content is captured in screenshot comparisons.
+
+- [ ] **Gamification**
+  Stamp rally: users earn "stamps" for core actions (watch a video, add a language, share a page). Onboarding flow: guide new users/members through first actions. Matches the Wikitongues travel/documentation brand. **Hard dependency:** membership infrastructure (user accounts — not currently in scope). Write a separate spec before implementation. Deferred to Tier 8+.
+
 ---
 
 ## Code Quality
@@ -230,6 +279,13 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - `taxonomies/` — CPT and taxonomy registration
   - `template/` — template helpers, router
   - `integrations/` — import-captions, events filter, license handling
+
+- [ ] **Autoloader for CPTs/includes**
+  `includes/custom-post-types.php` manually `require_once`s 15 files. Every new CPT requires editing this orchestrator. Replace with a directory-scanning autoloader that automatically requires every `.php` file in `includes/custom-post-types/` — no manual step when adding new CPTs. Do as part of (or immediately after) the Reorganize includes item.
+
+- [ ] **Archive template refactor**
+  `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern (build args → `create_gallery_instance()` → handle filter params) with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach to reduce per-template repetition while keeping template-specific filter logic clear.
+  Note: `archive-donors.php` intentionally does NOT use `create_gallery_instance()` and is out of scope for this refactor.
 
 ---
 
