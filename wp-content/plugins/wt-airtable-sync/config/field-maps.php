@@ -130,7 +130,6 @@ return array(
 	// Airtable table: Oral Histories
 	//
 	// Omitted fields (require special handling beyond this endpoint's scope):
-	//   video_thumbnail_v2 — image attachment; requires media sideload.
 	//   metadata.width / metadata.height — ACF group sub-fields; write via
 	//     field key rather than field name (deferred to a future phase).
 	// -------------------------------------------------------------------------
@@ -199,6 +198,16 @@ return array(
 			'meta_key'  => 'youtube_link',
 			'acf'       => true,
 			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+
+		// ACF image field expects a WP attachment ID (integer).
+		// Make.com's Import Oral Histories scenario (Module 34) already creates/finds
+		// the attachment and sends the ID — no media sideload needed in this plugin.
+		'video_thumbnail_v2'     => array(
+			'meta_key'  => 'video_thumbnail_v2',
+			'acf'       => true,
+			'acf_type'  => 'image',
 			'post_type' => null,
 		),
 
