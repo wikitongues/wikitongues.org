@@ -25,6 +25,7 @@ require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-logger.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-field-resolver.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-controller.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-api.php';
+require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-acf-fields.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\activate' );
 register_deactivation_hook( __FILE__, __NAMESPACE__ . '\deactivate' );
@@ -73,3 +74,8 @@ add_action(
 		( new Sync_API() )->register_routes();
 	}
 );
+
+/**
+ * Register programmatic ACF field groups once ACF is ready.
+ */
+add_action( 'acf/init', __NAMESPACE__ . '\ACF_Fields::register' );
