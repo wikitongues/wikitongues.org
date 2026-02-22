@@ -27,8 +27,6 @@
  * Phase 1: languages only.
  * Phase 2: videos, captions, lexicons (this file).
  * Deferred: resources (Airtable/WP count mismatch — see docs/make-audit-findings.md F3).
- *           video_thumbnail_v2 (requires media sideload — out of scope for sync endpoint).
- *           metadata group sub-fields width/height (ACF group write requires field key, not name).
  *
  * @return array<string, array<string, array<string, mixed>>>
  */
@@ -130,8 +128,6 @@ return array(
 	// Airtable table: Oral Histories
 	//
 	// Omitted fields (require special handling beyond this endpoint's scope):
-	//   metadata.width / metadata.height — ACF group sub-fields; write via
-	//     field key rather than field name (deferred to a future phase).
 	// -------------------------------------------------------------------------
 
 	'videos'    => array(
@@ -208,6 +204,14 @@ return array(
 			'meta_key'  => 'video_thumbnail_v2',
 			'acf'       => true,
 			'acf_type'  => 'image',
+			'post_type' => null,
+		),
+		// ACF group field — payload must send an object: {"width": N, "height": N}.
+		// Make.com constructs this from the two separate Airtable fields (Width, Height).
+		'metadata'               => array(
+			'meta_key'  => 'metadata',
+			'acf'       => true,
+			'acf_type'  => 'group',
 			'post_type' => null,
 		),
 
