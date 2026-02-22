@@ -14,7 +14,7 @@
 		<?php if ( $partner_website ) : ?>
 			<li>
 				<a href="<?php echo $partner_website; ?>">
-					<i class="fa-regular fa-link"></i>
+					<?php echo wt_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -22,7 +22,7 @@
 		<?php if ( $partner_email ) : ?>
 			<li>
 				<a href="mailto:<?php echo $partner_email; ?>">
-					<i class="fa-solid fa-envelope"></i>
+					<?php echo wt_icon( 'envelope' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</a>
 			</li>
 		<?php endif; ?>

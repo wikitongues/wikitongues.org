@@ -8,7 +8,7 @@
 						<?php if ( $data['url'] ) : ?>
 								<li>
 										<a href="<?php echo esc_url( $data['url'] ); ?>">
-												<i class="<?php echo esc_attr( $data['icon'] ); ?>"></i>
+												<?php echo wt_icon( $data['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										</a>
 								</li>
 						<?php endif; ?>
