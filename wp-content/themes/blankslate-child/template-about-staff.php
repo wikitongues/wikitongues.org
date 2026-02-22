@@ -27,35 +27,35 @@ foreach ( $staff_members as $post ) {
 	$social_links       = array(
 		'email'     => array(
 			'url'  => get_field( 'email' ),
-			'icon' => 'fa-solid fa-envelope',
+			'icon' => 'envelope',
 		),
 		'facebook'  => array(
 			'url'  => get_field( 'facebook' ),
-			'icon' => 'fa-brands fa-square-facebook',
+			'icon' => 'square-facebook',
 		),
 		'instagram' => array(
 			'url'  => get_field( 'instagram' ),
-			'icon' => 'fa-brands fa-instagram',
+			'icon' => 'instagram',
 		),
 		'linkedin'  => array(
 			'url'  => get_field( 'linkedin' ),
-			'icon' => 'fa-brands fa-linkedin',
+			'icon' => 'linkedin',
 		),
 		'tiktok'    => array(
 			'url'  => get_field( 'tiktok' ),
-			'icon' => 'fa-brands fa-tiktok',
+			'icon' => 'tiktok',
 		),
 		'twitter'   => array(
 			'url'  => get_field( 'twitter' ),
-			'icon' => 'fa-brands fa-x-twitter',
+			'icon' => 'x-twitter',
 		),
 		'website'   => array(
 			'url'  => get_field( 'website' ),
-			'icon' => 'fa-solid fa-link',
+			'icon' => 'link',
 		),
 		'youtube'   => array(
 			'url'  => get_field( 'youtube' ),
-			'icon' => 'fa-brands fa-youtube',
+			'icon' => 'youtube',
 		),
 	);
 
@@ -99,35 +99,35 @@ if ( $interns_and_volunteers ) {
 		$social_links    = array(
 			'email'     => array(
 				'url'  => get_field( 'email' ),
-				'icon' => 'fa-solid fa-envelope',
+				'icon' => 'envelope',
 			),
 			'facebook'  => array(
 				'url'  => get_field( 'facebook' ),
-				'icon' => 'fa-brands fa-square-facebook',
+				'icon' => 'square-facebook',
 			),
 			'instagram' => array(
 				'url'  => get_field( 'instagram' ),
-				'icon' => 'fa-brands fa-instagram',
+				'icon' => 'instagram',
 			),
 			'linkedin'  => array(
 				'url'  => get_field( 'linkedin' ),
-				'icon' => 'fa-brands fa-linkedin',
+				'icon' => 'linkedin',
 			),
 			'tiktok'    => array(
 				'url'  => get_field( 'tiktok' ),
-				'icon' => 'fa-brands fa-tiktok',
+				'icon' => 'tiktok',
 			),
 			'twitter'   => array(
 				'url'  => get_field( 'twitter' ),
-				'icon' => 'fa-brands fa-x-twitter',
+				'icon' => 'x-twitter',
 			),
 			'website'   => array(
 				'url'  => get_field( 'website' ),
-				'icon' => 'fa-solid fa-link',
+				'icon' => 'link',
 			),
 			'youtube'   => array(
 				'url'  => get_field( 'youtube' ),
-				'icon' => 'fa-brands fa-youtube',
+				'icon' => 'youtube',
 			),
 		);
 		include 'modules/team/team-member--grid.php';
