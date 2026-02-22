@@ -5,6 +5,48 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-22 (Tier 2 — Plugin hygiene / security)
+
+### Audit Make.com scenarios
+**Branch:** n/a (documentation only)
+**Findings:** `docs/make-audit-findings.md`
+
+Conducted a full audit of all 14 Make.com scenarios by parsing exported JSON blueprints and cross-referencing against the WP codebase, live DB, and Airtable CSV exports.
+
+**Scenario inventory:**
+- 5 scenarios write to WordPress (daily scheduled Airtable poll → WP REST): `Import Languages`, `Import Captions`, `Import External Resources`, `Import Lexicons`, `Import Oral Histories`
+- 3 scenarios are Airtable-read-only subscenarios (`Submodule-Resolve Creators/Languages/Videos`)
+- 3 are non-WP operations (2× Dropbox folder/Paper doc creation, 1× GitHub Actions `repository_dispatch` for LOC Archival)
+- 1 is empty (no routes), 1 is an inactive prototype
+
+**Airtable → WP CPT mapping confirmed:**
+
+| Airtable table | WP CPT |
+|---|---|
+| Languages | `languages` |
+| Oral Histories | `videos` |
+| Oral History Captions | `captions` |
+| External Resources | `resources` |
+| Lexicons | `lexicons` |
+
+**Custom resolution architecture (`_WT_TMP_*` pattern):**
+Make.com cannot send WP post IDs for ACF `post_object` fields (it only knows Airtable identifiers). The existing integration works around this with a two-step pattern: Make.com writes `_WT_TMP_{field_name}` with the Airtable title string; `class-wt-rest-posts-controller.php` intercepts the REST request and `handle_post_object()` (`post-object-helpers.php`) resolves each title to a WP post ID via `get_page_by_title()`, then writes the real ACF field via `update_field()`. The staging key is never deleted, leaving ~2,900 dead rows in `wp_postmeta`.
+
+**Critical findings:**
+- **No `_airtable_record_id`** on any post (0 rows) — every upsert is by `post_title` search; a title change in Airtable silently creates a duplicate WP post
+- **`_WT_TMP_*` staging keys persist** — resolver runs but never calls `delete_post_meta`; accumulates dead rows on every sync
+- **`get_page_by_title()` deprecated** since WP 6.2; currently still works
+- **`writing_systems` and `linguistic_genealogy`** are still ACF text fields (not yet connected to their respective taxonomies); Make.com writes the text values; the taxonomies are separate
+- **`resources` CPT mismatch**: 907 WP posts vs 204 in Airtable export view — reconciliation required before syncing resources with `wt-airtable-sync`
+- **`video_thumbnail`** (legacy raw postmeta): confirmed dead in templates; `video_thumbnail_v2` (ACF image field) is the live field
+- `post_type` Airtable field values exactly match registered WP CPT slugs — no slug mismatch
+
+**Complete field map** (all 5 CPTs, all meta keys, ACF field types, transform strategy) documented in `docs/make-audit-findings.md` § 9. This is the direct input to `config/field-maps.php` in `wt-airtable-sync`.
+
+**Feeds into:** `wt-airtable-sync` plugin (next item in backlog).
+
+---
+
 ## 2026-02-22 (Tier 2 — Infrastructure cleanup)
 
 ### Replace Font Awesome with inline SVGs

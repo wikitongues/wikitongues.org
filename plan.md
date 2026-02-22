@@ -40,7 +40,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
   - [x] Audit `integromat-connector` REST API exposure
-  - [ ] Audit Make.com scenarios
+  - [x] Audit Make.com scenarios ([archive](plan-archive.md))
+  - [ ] `wt-airtable-sync` plugin (after audit)
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
@@ -71,8 +72,10 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
 **Key dependency chains:**
-`Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit → production ACF integration
-`Make.com scenario audit` → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
+`Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → production ACF integration
+`Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
+`Make.com audit` ✅ → `wt-airtable-sync field maps` ✅ → `wt-airtable-sync plugin`
+`wt-airtable-sync plugin` → retire integromat-connector write paths
 `Evaluate Bedrock` → code quality cleanups _(if not adopting Bedrock, file layout proceeds as-is; if adopting, A/B/C become moot)_
 `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
 `Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
@@ -105,7 +108,7 @@ _Parallel. Evaluate Bedrock first within this tier — the decision gates whethe
 - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
 - [ ] Evaluate Bedrock _(strategic decision only — no code; resolve first within this tier)_
-- [ ] Audit Make.com scenarios _(moved up from Tier 3; no hard deps; findings inform Airtable reconciliation scope)_
+- [x] Audit Make.com scenarios _(findings in `docs/make-audit-findings.md`; see archive)_
 - [x] Replace Font Awesome ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
@@ -123,6 +126,7 @@ _Parallel tracks. Bedrock evaluation (Tier 2) must be resolved before A/B/C so t
 - [ ] Archive template refactor _(before Docker so image captures refactored layout)_
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
+- [ ] `wt-airtable-sync` plugin _(audit done; Phase 0–1: scaffold + languages; Phase 2: videos/captions/lexicons; Phase 3: cleanup + cutover)_
 
 ---
 
@@ -304,30 +308,57 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - **Implication:** Make.com is currently writing to raw `wp_postmeta` keys directly rather than through the ACF REST API. This works but bypasses ACF hooks, validation, and field formatting.
   - **Production-quality path:** Opt in the relevant ACF field keys in the integromat-connector admin settings (Settings → Make Connector → Posts tab), then update Make.com scenarios to read/write those fields as REST API fields rather than raw meta. Requires the Make.com scenario audit first to know which fields are in scope.
 
-- [ ] **Audit Make.com scenarios**
-  **Prerequisite:** integromat-connector audit (done above).
-  Make.com is confirmed live and writing to WordPress, but the active scenario inventory is unknown. This audit should be done in the Make.com dashboard.
+- [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
+  Full findings in `docs/make-audit-findings.md`. 14 scenarios inventoried; 5 write to WordPress
+  (`languages`, `videos`, `captions`, `resources`, `lexicons` CPTs). Key findings:
+  - No `_airtable_record_id` — all upserts by title (fragile)
+  - `_WT_TMP_*` staging keys persist in `wp_postmeta` (never deleted after resolution)
+  - All meta keys confirmed ACF-managed except `video_thumbnail`, `metadata_width`, `metadata_height`
+  - `post_type` Airtable field values exactly match WP CPT slugs
+  - `resources` CPT has 907 WP posts vs 204 Airtable records — reconciliation required before syncing
+  - Complete field map drafted in `docs/make-audit-findings.md` § 9
 
-  **Goal:**
-  1. List all active scenarios and their triggers (Airtable webhook? Scheduled? Manual?)
-  2. For each scenario: which WordPress post types does it write to, and which fields (raw meta keys)?
-  3. Identify which of those fields are ACF-managed vs. plain `wp_postmeta`
-  4. Determine whether any scenario reads data back from WordPress (and which fields)
-  5. Document the data flow for the primary Airtable → WordPress language sync
+- [ ] **`wt-airtable-sync` plugin** _(audit complete; ready to build)_
+  Standalone WP plugin. Make.com becomes a dumb HTTP transport (Airtable record change →
+  POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`). WordPress owns
+  all field mapping, transformation, and ACF writes in code (`config/field-maps.php`).
+  Auth via `X-WT-Sync-Key` header + `WT_SYNC_API_KEY` constant in wp-config.php.
+  Upsert by `_airtable_record_id` postmeta; languages fallback to `iso_code` match.
+  Full field map in `docs/make-audit-findings.md` § 9.
 
-  **Production-quality follow-on (after audit):**
-  - Opt in the ACF field keys used by Make.com in the integromat-connector admin settings
-  - Update the Make.com scenarios to write via the REST field names rather than raw meta keys
-  - Rotate the `iwc_api_key` token; document rotation procedure
-  - Confirm custom post type write endpoints require authentication (currently Guard-scope gap for CPTs)
+  **Build sequence:**
+  - **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
+  - **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
+  - **WP-CLI backfill** — One-time command to stamp `_airtable_record_id` on all existing language posts before first live sync run
+  - **Make.com cutover (languages)** — Update Import Languages scenario to POST to new endpoint; run old + new in parallel briefly; disable old WP modules once verified
+  - **Phase 2** — Add `videos`, `captions`, `lexicons` to field map + endpoint routing (skip `resources` until count mismatch is resolved)
+  - **Phase 3** — `_WT_TMP_*` cleanup migration + retire remaining Make.com WP modules
+  - **Documentation** — `plan-archive.md` entry; README updated for external contributors (architecture, adding CPTs, key rotation, troubleshooting)
 
 ---
 
 ## Infrastructure
 
-- [ ] **Migrate from Stylus to a maintained CSS preprocessor** (PostCSS or Sass)
+- [ ] **Migrate from Stylus to a maintained CSS preprocessor**
   Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
-  **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
+
+  Two options are scoped below. Choose one before starting; they are mutually exclusive.
+
+  **Option A — Dart Sass** _(recommended near-term)_
+  Lowest-friction migration. Sass/SCSS syntax maps almost 1:1 to Stylus: variables, nesting, mixins, and functions carry over with minor adjustments (`@use`/`@forward` replace `@require`; Stylus color functions become Sass equivalents). Dart Sass ships as a standalone CLI — no bundler required. Same watch/build command pattern as today (`sass --watch ...`). Resolves all audit findings. No template changes required.
+  - Rename 42 `.styl` → `.scss`, adjust import syntax, update `package.json` scripts
+  - Replace `$blue(tint)` color function with Sass `color.adjust()` or `color.mix()`
+  - Drop `stylus` from `devDependencies`; add `sass`
+
+  **Option B — PostCSS + Vite** _(moderate investment; modern foundation)_
+  Introduces Vite as a build tool for both CSS and JS. PostCSS plugins (`postcss-nesting`, `postcss-preset-env`) provide Stylus-equivalent transforms; Stylus variables become CSS custom properties (which also integrate with WordPress `theme.json`). JS gets bundled, tree-shaken, and source-mapped — resolves the jQuery/bundling gap alongside CSS. Correct foundation if Tailwind is ever introduced for new components.
+  - Add `vite`, `postcss`, `postcss-nesting`, `postcss-preset-env` to `devDependencies`
+  - Convert Stylus variables to CSS custom properties; keep component file structure
+  - Replace 4 individually-enqueued JS files with a Vite-bundled entry point
+  - Update `wp_enqueue_style`/`wp_enqueue_script` calls to reference Vite output paths
+  - Larger scope than Option A; do not start while other Tier 2 items are in flight
+
+  _If Option A lands and the pipeline later needs modernizing, Option B can be adopted incrementally — Vite supports Sass natively._
 
 - [x] **Replace Font Awesome** — done ([archive](plan-archive.md))
 
@@ -444,4 +475,4 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - [ ] **WPScan in CI** — WPScan API is no longer free; deferred. Recommended replacement: install Patchstack or Wordfence on the production site for plugin/theme vulnerability monitoring without a paid API dependency.
 - [x] **Secrets scanning** — TruffleHog on every PR (pinned SHA v3.93.4); GitHub native secret scanning + push protection enabled on repo ([archive](plan-archive.md))
 - [x] **Security review of `integromat-connector`** — audited (see Plugins section); not tracked in VCS as it is a third-party plugin
-- [ ] **Audit Make.com scenarios** — see Plugins section for scope and production-quality follow-on
+- [x] **Audit Make.com scenarios** — done; see Plugins section and `docs/make-audit-findings.md`
