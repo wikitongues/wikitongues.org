@@ -281,6 +281,11 @@ parameters:
 			path: wp-content/themes/blankslate-child/includes/router.php
 
 		-
+			message: "#^Function get_field not found\\.$#"
+			count: 8
+			path: wp-content/themes/blankslate-child/includes/template-helpers.php
+
+		-
 			message: "#^Parameter \\#1 \\$search of function str_replace expects array\\|string, int given\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/includes/template-helpers.php
@@ -852,7 +857,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 17
+			count: 9
 			path: wp-content/themes/blankslate-child/single-fellows.php
 
 		-
@@ -877,7 +882,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 15
+			count: 7
 			path: wp-content/themes/blankslate-child/template-about-board.php
 
 		-
@@ -887,7 +892,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 27
+			count: 11
 			path: wp-content/themes/blankslate-child/template-about-staff.php
 
 		-

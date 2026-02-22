@@ -24,40 +24,7 @@ foreach ( $staff_members as $post ) {
 	$bio                = get_field( 'bio' );
 	$location           = get_field( 'contributor_location' );
 	$personal_languages = get_field( 'languages' );
-	$social_links       = array(
-		'email'     => array(
-			'url'  => get_field( 'email' ),
-			'icon' => 'fa-solid fa-envelope',
-		),
-		'facebook'  => array(
-			'url'  => get_field( 'facebook' ),
-			'icon' => 'fa-brands fa-square-facebook',
-		),
-		'instagram' => array(
-			'url'  => get_field( 'instagram' ),
-			'icon' => 'fa-brands fa-instagram',
-		),
-		'linkedin'  => array(
-			'url'  => get_field( 'linkedin' ),
-			'icon' => 'fa-brands fa-linkedin',
-		),
-		'tiktok'    => array(
-			'url'  => get_field( 'tiktok' ),
-			'icon' => 'fa-brands fa-tiktok',
-		),
-		'twitter'   => array(
-			'url'  => get_field( 'twitter' ),
-			'icon' => 'fa-brands fa-x-twitter',
-		),
-		'website'   => array(
-			'url'  => get_field( 'website' ),
-			'icon' => 'fa-solid fa-link',
-		),
-		'youtube'   => array(
-			'url'  => get_field( 'youtube' ),
-			'icon' => 'fa-brands fa-youtube',
-		),
-	);
+	$social_links       = wt_social_links();
 
 	// show board member module
 	include 'modules/team/team-member--wide.php';
@@ -96,40 +63,7 @@ if ( $interns_and_volunteers ) {
 		$name            = get_the_title();
 		$title           = get_field( 'leadership_title' );
 		$location        = get_field( 'contributor_location' );
-		$social_links    = array(
-			'email'     => array(
-				'url'  => get_field( 'email' ),
-				'icon' => 'fa-solid fa-envelope',
-			),
-			'facebook'  => array(
-				'url'  => get_field( 'facebook' ),
-				'icon' => 'fa-brands fa-square-facebook',
-			),
-			'instagram' => array(
-				'url'  => get_field( 'instagram' ),
-				'icon' => 'fa-brands fa-instagram',
-			),
-			'linkedin'  => array(
-				'url'  => get_field( 'linkedin' ),
-				'icon' => 'fa-brands fa-linkedin',
-			),
-			'tiktok'    => array(
-				'url'  => get_field( 'tiktok' ),
-				'icon' => 'fa-brands fa-tiktok',
-			),
-			'twitter'   => array(
-				'url'  => get_field( 'twitter' ),
-				'icon' => 'fa-brands fa-x-twitter',
-			),
-			'website'   => array(
-				'url'  => get_field( 'website' ),
-				'icon' => 'fa-solid fa-link',
-			),
-			'youtube'   => array(
-				'url'  => get_field( 'youtube' ),
-				'icon' => 'fa-brands fa-youtube',
-			),
-		);
+		$social_links    = wt_social_links();
 		include 'modules/team/team-member--grid.php';
 	} wp_reset_postdata();
 }

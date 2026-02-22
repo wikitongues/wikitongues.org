@@ -5,7 +5,27 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
-## 2026-02-22
+## 2026-02-22 (Tier 2 — Infrastructure cleanup)
+
+### Replace Font Awesome with inline SVGs
+**Branch:** `feature/cc/replace-font-awesome`
+**PR:** [#477](https://github.com/wikitongues/wikitongues.org/pull/477)
+
+Removed the Font Awesome Kit CDN script and replaced all 12 icons with self-hosted inline SVGs. Simultaneously extracted the fourfold-duplicated `$social_links` array into a `wt_social_links()` helper.
+
+Changes:
+- **`modules/page--head.php`:** Removed FA Kit `<script>` tag — eliminates the external CDN dependency and one blocking network round-trip per page load
+- **`includes/template-helpers.php`:** Added `wt_icon( string $name ): string` — returns a self-contained inline SVG for each of the 12 icons previously sourced from FA (`arrow-right-long`, `bars`, `envelope`, `instagram`, `link`, `linkedin`, `square-email`, `square-facebook`, `tiktok`, `x-twitter`, `xmark`, `youtube`). SVGs use `fill="currentColor"` and `width/height="1em"` to inherit text colour and font size from context. Added `wt_social_links(): array` — single source of truth for the 8-platform social link array; previously defined identically in four places across three files.
+- **`header.php`:** `fa-bars` / `fa-xmark` → `wt_icon()`
+- **`modules/banners/banner--alert.php`:** `fa-arrow-right-long` → `wt_icon()`
+- **`modules/team/team-member--partner.php`:** `fa-link` / `fa-envelope` → `wt_icon()`
+- **`modules/team/team-member--wide.php`, `team-member--grid.php`, `modules/fellows/meta--fellows-single.php`:** `<i class="...">` → `wt_icon( $data['icon'] )`
+- **`single-fellows.php`, `template-about-board.php`, `template-about-staff.php`:** `$social_links = wt_social_links()` replaces four inline array definitions; email icon normalised to `square-email` across board/staff (was `envelope`, inconsistent with brand-style social icons elsewhere)
+- **`phpstan-baseline.neon`:** Regenerated (423 errors) after `get_field()` calls moved from template files into `wt_social_links()`
+
+---
+
+## 2026-02-22 (Tier 2 — Data model improvements)
 
 ### Convert `writing_systems` to `writing-system` taxonomy
 **Branch:** `feature/cc/writing-system-taxonomy`

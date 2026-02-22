@@ -10,21 +10,24 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Backlog](#backlog)**
   - [x] Convert plan.md to checklist format
-  - [ ] Dockerize project
   - [x] Audit and clean up stale branches ([archive](plan-archive.md))
-  - [ ] Airtable reconciliation (520+ records missing fields)
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
-  - [ ] Complete Donors post type
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
-  - [ ] Maps on territory templates
   - [x] Gallery `link_out` param — filtered archive pages
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
+  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
+  - [ ] Complete Donors post type
+  - [ ] Dockerize project
+  - [ ] Airtable reconciliation (520+ records missing fields)
+  - [ ] Maps on territory templates
   - [ ] Download gateway plugin
-- [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
 
 - **[Code Quality](#code-quality)**
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
+  - [ ] Resolve `class-wt-rest-posts-controller.php` duplication (root `includes/` vs theme `includes/`)
+  - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
+  - [ ] Reorganize theme `includes/` flat folder (24 files) into subdirectories by concern (e.g. `api/`, `admin/`, `taxonomies/`, `template/`, `integrations/`)
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
@@ -33,8 +36,9 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus
-  - [ ] Replace Font Awesome
+  - [x] Replace Font Awesome ([archive](plan-archive.md))
   - [ ] Performance profiling and monitoring
+  - [ ] Evaluate Bedrock for composer-managed WordPress installs _(Tier 2 — resolve before code quality cleanups)_
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -58,24 +62,27 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
-**Key dependency chain:**
+**Key dependency chains:**
 `Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit → production ACF integration
-`Stylus migration` + `Font Awesome replacement` + `Donors post type` → **Layer 4 visual baseline** (must all land before the E2E baseline is set)
-`Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
+`Make.com scenario audit` → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
+`Evaluate Bedrock` → code quality cleanups _(if not adopting Bedrock, file layout proceeds as-is; if adopting, A/B/C become moot)_
+`Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
+`Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
+`Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
 
 ---
 
 ### Tier 1 — Security foundation
-_No prerequisites. Unblocks all credential-sensitive work._
+_No prerequisites. Unblocks all credential-sensitive work. Complete._
 
 - [x] Secrets scanning ([archive](plan-archive.md))
 - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
 
 ---
 
-### Tier 2 — Plugin hygiene + infrastructure cleanup + quick wins
-_Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-party Make.com plugin (not custom code) — audited; no custom fields currently opted in. Stylus, FA, and Donors must land before the Layer 4 visual baseline (Tier 5)._
+### Tier 2 — Strategic decision + visual infrastructure + plugin hygiene
+_Parallel. Evaluate Bedrock first within this tier — the decision gates whether code quality cleanups (Tier 3) proceed in their current form or become moot. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
@@ -83,41 +90,51 @@ _Parallel. `wt-form` has no prerequisites. `integromat-connector` is a third-par
 - [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
 - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-- [ ] Replace Font Awesome
+- [ ] Evaluate Bedrock _(strategic decision only — no code; resolve first within this tier)_
+- [ ] Audit Make.com scenarios _(moved up from Tier 3; no hard deps; findings inform Airtable reconciliation scope)_
+- [x] Replace Font Awesome ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
 
 ---
 
-### Tier 3 — Docker + Make.com audit + data integrity
-_Parallel. Docker unblocks testing Layers 3–4. Make.com scenario audit maps the live sync workflows and is a prerequisite for the production-quality ACF integration. Layer 5 runs against the live DB and needs no Docker, but should precede Airtable reconciliation._
+### Tier 3 — Code quality cleanup + data integrity baseline
+_Parallel tracks. Bedrock evaluation (Tier 2) must be resolved before A/B/C so the file layout decision is final. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
 
-- [ ] Dockerize project _(CSS/icon/Donors changes should be done first so Docker captures the final build)_
-- [ ] Audit Make.com scenarios _(see Plugins section)_
-- [ ] Layer 5 — Data Integrity
+- [ ] Resolve `class-wt-rest-posts-controller.php` duplication _(root copies are orphaned — safe delete; theme copy is canonical)_
+- [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
+- [ ] Reorganize theme `includes/` into subdirectories by concern _(after duplication and root move are resolved)_
+- [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
 
 ---
 
-### Tier 4 — Integration tests + Airtable + gateway core
-_Parallel. Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results. Gateway Phases 0–5 have no external hard dependencies but secrets scanning must be done before any credential-adjacent code (Dropbox)._
+### Tier 4 — Docker + gateway core
+_Code quality refactors (Tier 3) must be done so Docker captures the final file layout. Stylus, FA, and Donors (Tier 2) must be done so Docker captures the final CSS/icon/Donors state. Gateway Phases 0–5 can run in parallel with Docker setup — no mutual dependency._
 
-- [ ] Layer 3 — Integration Tests
-- [ ] Airtable reconciliation
+- [ ] Dockerize project
 - [ ] Download gateway — Phases 0–5 _(scaffold, data model, primitives, endpoint, resource authoring, gate modes)_
 
 ---
 
-### Tier 5 — Visual baseline + gateway completion + data migration
-_Layer 4 requires Docker + Stylus + FA + Donors all done. Gateway Phases 6–10 require Tier 1 secrets scanning and benefit from Layer 3. nations_of_origin migration requires Airtable reconciliation._
+### Tier 5 — Integration tests + Airtable reconciliation + gateway completion
+_Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results (Tier 3) and benefits from Make.com audit findings (Tier 2). Gateway Phases 6–10 require Phases 0–5._
+
+- [ ] Layer 3 — Integration Tests
+- [ ] Airtable reconciliation
+- [ ] Download gateway — Phases 6–10 _(Dropbox, GA4, reporting, retention, rollout)_
+
+---
+
+### Tier 6 — Visual baseline + data migration
+_Layer 4 requires Docker + Stylus + FA + Donors (all done by Tier 4). nations_of_origin migration requires Airtable reconciliation (Tier 5)._
 
 - [ ] Layer 4 — End-to-End & Visual Regression _(locks the visual baseline; nothing that changes template output should land after this without a deliberate baseline update)_
-- [ ] Download gateway — Phases 6–10 _(Dropbox, GA4, reporting, retention, rollout)_
 - [ ] Migrate `nations_of_origin` _(intentionally deferred; see Backlog)_
 
 ---
 
-### Tier 6 — Features requiring the visual baseline + performance monitoring
-_Maps introduces visual changes to high-traffic territory/region templates; Layer 4 regression coverage should be active first. Performance profiling (Playwright-based) also requires Docker + Layer 4._
+### Tier 7 — Features and monitoring requiring the visual baseline
+_Maps introduces visual changes to high-traffic territory/region templates; Layer 4 regression coverage must be active first. Performance profiling (Playwright-based) requires Docker + Layer 4._
 
 - [ ] Maps on territory templates
 - [ ] Performance profiling and monitoring
@@ -198,7 +215,21 @@ _Maps introduces visual changes to high-traffic territory/region templates; Laye
 
 ## Code Quality
 
-_All items complete. See [plan-archive.md](plan-archive.md)._
+_Previously completed items in [plan-archive.md](plan-archive.md)._
+
+- [ ] **Resolve `class-wt-rest-posts-controller.php` duplication**
+  The file exists in both `includes/` (root) and `wp-content/themes/blankslate-child/includes/`. One is the source of truth; the other should be removed or replaced with a `require`.
+
+- [ ] **Move root-level `includes/` into `wp-content/mu-plugins/` or the theme**
+  The root `includes/` directory is non-standard — WordPress has no awareness of it and files must be manually required somewhere (likely `functions.php`). Move to a must-use plugin (`wp-content/mu-plugins/`) if the code is site-wide, or into the theme's `includes/` if it is theme-specific. Resolve the duplication item above first.
+
+- [ ] **Reorganize theme `includes/` into subdirectories by concern**
+  Currently 24 flat files. Suggested grouping:
+  - `api/` — REST endpoints, controller
+  - `admin/` — admin helpers, batch operations
+  - `taxonomies/` — CPT and taxonomy registration
+  - `template/` — template helpers, router
+  - `integrations/` — import-captions, events filter, license handling
 
 ---
 
@@ -242,14 +273,16 @@ _All items complete. See [plan-archive.md](plan-archive.md)._
   Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
   **Goal:** Migrate to PostCSS or Sass. Resolves audit findings and improves long-term maintainability of the CSS build pipeline.
 
-- [ ] **Replace Font Awesome**
-  Font Awesome is loaded as an external dependency (CDN or npm package). It adds weight to every page load for a relatively small set of icons actually used. Replacing with inline SVGs or a purpose-built icon set (e.g. Heroicons, Phosphor) would reduce load time and remove the external CDN dependency.
-  **Goal:** Audit which FA icons are in use, replace with lightweight inline SVGs or a self-hosted sprite, remove the FA dependency entirely.
+- [x] **Replace Font Awesome** — done ([archive](plan-archive.md))
 
 - [ ] **Performance profiling and monitoring**
   No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
   **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
   **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
+
+- [ ] **Evaluate Bedrock for composer-managed WordPress** _(Tier 2 — resolve before code quality cleanups)_
+  Bedrock restructures a WordPress install so WP core and plugins are managed as Composer dependencies and excluded from git, with custom code (themes/plugins) as the only tracked artifacts. If adopted, the Code Quality cleanups (duplication fix, root includes move, reorganize) become moot in their current form since the file layout changes radically.
+  **Goal:** Assess fit for this project — cost of migration vs. long-term benefit. If the decision is "no," proceed with Code Quality cleanups in their current form. If "yes," scope the migration as a separate project.
 
 ---
 

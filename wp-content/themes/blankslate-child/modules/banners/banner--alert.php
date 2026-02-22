@@ -16,8 +16,8 @@ $banner_alert_button_text = get_field( 'banner_alert_button_text', 'options' );
 			<a class="wt_banner-alert__button--link" 
 				href="<?php echo $banner_alert_button_link; ?>" 
 				target="_blank" >
-				<?php echo $banner_alert_button_text; ?> 
-				<i class="fa-regular fa-arrow-right-long"></i>
+				<?php echo $banner_alert_button_text; ?>
+				<?php echo wt_icon( 'arrow-right-long' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</a>
 		</button>
 	</div>
