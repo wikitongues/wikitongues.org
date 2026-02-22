@@ -5,7 +5,69 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
-## 2026-02-22
+## 2026-02-22 (Tier 2 — Plugin hygiene / security)
+
+### Audit Make.com scenarios
+**Branch:** n/a (documentation only)
+**Findings:** `docs/make-audit-findings.md`
+
+Conducted a full audit of all 14 Make.com scenarios by parsing exported JSON blueprints and cross-referencing against the WP codebase, live DB, and Airtable CSV exports.
+
+**Scenario inventory:**
+- 5 scenarios write to WordPress (daily scheduled Airtable poll → WP REST): `Import Languages`, `Import Captions`, `Import External Resources`, `Import Lexicons`, `Import Oral Histories`
+- 3 scenarios are Airtable-read-only subscenarios (`Submodule-Resolve Creators/Languages/Videos`)
+- 3 are non-WP operations (2× Dropbox folder/Paper doc creation, 1× GitHub Actions `repository_dispatch` for LOC Archival)
+- 1 is empty (no routes), 1 is an inactive prototype
+
+**Airtable → WP CPT mapping confirmed:**
+
+| Airtable table | WP CPT |
+|---|---|
+| Languages | `languages` |
+| Oral Histories | `videos` |
+| Oral History Captions | `captions` |
+| External Resources | `resources` |
+| Lexicons | `lexicons` |
+
+**Custom resolution architecture (`_WT_TMP_*` pattern):**
+Make.com cannot send WP post IDs for ACF `post_object` fields (it only knows Airtable identifiers). The existing integration works around this with a two-step pattern: Make.com writes `_WT_TMP_{field_name}` with the Airtable title string; `class-wt-rest-posts-controller.php` intercepts the REST request and `handle_post_object()` (`post-object-helpers.php`) resolves each title to a WP post ID via `get_page_by_title()`, then writes the real ACF field via `update_field()`. The staging key is never deleted, leaving ~2,900 dead rows in `wp_postmeta`.
+
+**Critical findings:**
+- **No `_airtable_record_id`** on any post (0 rows) — every upsert is by `post_title` search; a title change in Airtable silently creates a duplicate WP post
+- **`_WT_TMP_*` staging keys persist** — resolver runs but never calls `delete_post_meta`; accumulates dead rows on every sync
+- **`get_page_by_title()` deprecated** since WP 6.2; currently still works
+- **`writing_systems` and `linguistic_genealogy`** are still ACF text fields (not yet connected to their respective taxonomies); Make.com writes the text values; the taxonomies are separate
+- **`resources` CPT mismatch**: 907 WP posts vs 204 in Airtable export view — reconciliation required before syncing resources with `wt-airtable-sync`
+- **`video_thumbnail`** (legacy raw postmeta): confirmed dead in templates; `video_thumbnail_v2` (ACF image field) is the live field
+- `post_type` Airtable field values exactly match registered WP CPT slugs — no slug mismatch
+
+**Complete field map** (all 5 CPTs, all meta keys, ACF field types, transform strategy) documented in `docs/make-audit-findings.md` § 9. This is the direct input to `config/field-maps.php` in `wt-airtable-sync`.
+
+**Feeds into:** `wt-airtable-sync` plugin (next item in backlog).
+
+---
+
+## 2026-02-22 (Tier 2 — Infrastructure cleanup)
+
+### Replace Font Awesome with inline SVGs
+**Branch:** `feature/cc/replace-font-awesome`
+**PR:** [#477](https://github.com/wikitongues/wikitongues.org/pull/477)
+
+Removed the Font Awesome Kit CDN script and replaced all 12 icons with self-hosted inline SVGs. Simultaneously extracted the fourfold-duplicated `$social_links` array into a `wt_social_links()` helper.
+
+Changes:
+- **`modules/page--head.php`:** Removed FA Kit `<script>` tag — eliminates the external CDN dependency and one blocking network round-trip per page load
+- **`includes/template-helpers.php`:** Added `wt_icon( string $name ): string` — returns a self-contained inline SVG for each of the 12 icons previously sourced from FA (`arrow-right-long`, `bars`, `envelope`, `instagram`, `link`, `linkedin`, `square-email`, `square-facebook`, `tiktok`, `x-twitter`, `xmark`, `youtube`). SVGs use `fill="currentColor"` and `width/height="1em"` to inherit text colour and font size from context. Added `wt_social_links(): array` — single source of truth for the 8-platform social link array; previously defined identically in four places across three files.
+- **`header.php`:** `fa-bars` / `fa-xmark` → `wt_icon()`
+- **`modules/banners/banner--alert.php`:** `fa-arrow-right-long` → `wt_icon()`
+- **`modules/team/team-member--partner.php`:** `fa-link` / `fa-envelope` → `wt_icon()`
+- **`modules/team/team-member--wide.php`, `team-member--grid.php`, `modules/fellows/meta--fellows-single.php`:** `<i class="...">` → `wt_icon( $data['icon'] )`
+- **`single-fellows.php`, `template-about-board.php`, `template-about-staff.php`:** `$social_links = wt_social_links()` replaces four inline array definitions; email icon normalised to `square-email` across board/staff (was `envelope`, inconsistent with brand-style social icons elsewhere)
+- **`phpstan-baseline.neon`:** Regenerated (423 errors) after `get_field()` calls moved from template files into `wt_social_links()`
+
+---
+
+## 2026-02-22 (Tier 2 — Data model improvements)
 
 ### Convert `writing_systems` to `writing-system` taxonomy
 **Branch:** `feature/cc/writing-system-taxonomy`

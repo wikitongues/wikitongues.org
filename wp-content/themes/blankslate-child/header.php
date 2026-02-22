@@ -106,10 +106,10 @@
 
 					<aside class="wt_header__mobile-buttons">
 						<button id="mobile-nav-open">
-							<i class="fa-solid fa-bars"></i>
+							<?php echo wt_icon( 'bars' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</button>
 						<button id="mobile-nav-close">
-							<i class="fa-solid fa-xmark"></i>
+							<?php echo wt_icon( 'xmark' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</button>
 					</aside>
 				</section>
