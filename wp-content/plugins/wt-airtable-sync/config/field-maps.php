@@ -25,7 +25,7 @@
  * payload; Field_Resolver::resolve() converts them to WP post IDs before writing.
  *
  * Phase 1: languages only.
- * Phase 2: videos, captions, lexicons.
+ * Phase 2: videos, captions, lexicons (this file).
  * Deferred: resources (Airtable/WP count mismatch — see docs/make-audit-findings.md F3).
  *
  * @return array<string, array<string, array<string, mixed>>>
@@ -118,6 +118,193 @@ return array(
 			'acf'       => true,
 			'acf_type'  => 'post_object',
 			'post_type' => 'resources',
+		),
+	),
+
+	// -------------------------------------------------------------------------
+	// videos
+	// -------------------------------------------------------------------------
+	// ACF field group: group_614b82766af00.json
+	// Airtable table: Oral Histories
+	//
+	// Omitted fields (require special handling beyond this endpoint's scope):
+	// -------------------------------------------------------------------------
+
+	'videos'    => array(
+
+		// --- Scalar fields ---
+
+		'video_title'            => array(
+			'meta_key'  => 'video_title',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		'video_description'      => array(
+			'meta_key'  => 'video_description',
+			'acf'       => true,
+			'acf_type'  => 'textarea',
+			'post_type' => null,
+		),
+		'video_license'          => array(
+			'meta_key'  => 'video_license',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		'license_link'           => array(
+			'meta_key'  => 'license_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+		'public_status'          => array(
+			'meta_key'  => 'public_status',
+			'acf'       => true,
+			'acf_type'  => 'select',
+			'post_type' => null,
+		),
+		'dropbox_link'           => array(
+			'meta_key'  => 'dropbox_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+		'wikimedia_commons_link' => array(
+			'meta_key'  => 'wikimedia_commons_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+		'youtube_publish_date'   => array(
+			'meta_key'  => 'youtube_publish_date',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		'youtube_id'             => array(
+			'meta_key'  => 'youtube_id',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		// ACF type is 'link' (stores url/title/target array), but Make.com sends
+		// a plain URL string. update_field() accepts a URL string for link fields.
+		'youtube_link'           => array(
+			'meta_key'  => 'youtube_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+
+		// ACF image field expects a WP attachment ID (integer).
+		// Make.com's Import Oral Histories scenario (Module 34) already creates/finds
+		// the attachment and sends the ID — no media sideload needed in this plugin.
+		'video_thumbnail_v2'     => array(
+			'meta_key'  => 'video_thumbnail_v2',
+			'acf'       => true,
+			'acf_type'  => 'image',
+			'post_type' => null,
+		),
+		// ACF group field — payload must send an object: {"width": N, "height": N}.
+		// Make.com constructs this from the two separate Airtable fields (Width, Height).
+		'metadata'               => array(
+			'meta_key'  => 'metadata',
+			'acf'       => true,
+			'acf_type'  => 'group',
+			'post_type' => null,
+		),
+
+		// --- post_object fields ---
+		// Confirmed from group_614b82766af00.json: featured_languages → languages CPT.
+
+		'featured_languages'     => array(
+			'meta_key'  => 'featured_languages',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'languages',
+		),
+	),
+
+	// -------------------------------------------------------------------------
+	// captions
+	// -------------------------------------------------------------------------
+	// ACF field group: group_677c053fbaada.json
+	// Airtable table: Oral History Captions
+	// -------------------------------------------------------------------------
+
+	'captions'  => array(
+
+		// --- Scalar fields ---
+
+		'creator'         => array(
+			'meta_key'  => 'creator',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		'file_url'        => array(
+			'meta_key'  => 'file_url',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+
+		// --- post_object fields ---
+		// Confirmed from group_677c053fbaada.json.
+
+		'source_video'    => array(
+			'meta_key'  => 'source_video',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'videos',
+		),
+		'source_language' => array(
+			'meta_key'  => 'source_language',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'languages',
+		),
+	),
+
+	// -------------------------------------------------------------------------
+	// lexicons
+	// -------------------------------------------------------------------------
+	// ACF field group: group_614b856757f84.json
+	// Airtable table: Lexicons
+	// -------------------------------------------------------------------------
+
+	'lexicons'  => array(
+
+		// --- Scalar fields ---
+
+		'dropbox_link'     => array(
+			'meta_key'  => 'dropbox_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+		'external_link'    => array(
+			'meta_key'  => 'external_link',
+			'acf'       => true,
+			'acf_type'  => 'url',
+			'post_type' => null,
+		),
+
+		// --- post_object fields ---
+		// Confirmed from group_614b856757f84.json: both targets → languages CPT.
+
+		'source_languages' => array(
+			'meta_key'  => 'source_languages',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'languages',
+		),
+		'target_languages' => array(
+			'meta_key'  => 'target_languages',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'languages',
 		),
 	),
 
