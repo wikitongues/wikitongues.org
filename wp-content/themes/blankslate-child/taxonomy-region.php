@@ -128,7 +128,7 @@ if ( $territory_query->have_posts() ) :
 		'exclude_self'   => 'false',
 		'taxonomy'       => $gallery_taxonomy,
 		'term'           => $gallery_term,
-		'link_out'       => '',
+		'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'territories' ) ),
 	);
 	echo create_gallery_instance( $params );
 
