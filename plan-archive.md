@@ -5,6 +5,28 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-02-28 (Tier 2 — Territories archive)
+
+### Territories archive
+**Branch:** `feature/cc/territories-archive`
+**PR:** [#491](https://github.com/wikitongues/wikitongues.org/pull/491)
+
+Implemented the territories archive page and wired it into existing region pages as a gallery link-out.
+
+**Changes:**
+- **`archive-territories.php`:** Replaced the `<h1>Nations Archive</h1>` placeholder with a proper gallery-based archive following the same pattern as `archive-languages`, `archive-fellows`, and `archive-videos`. Supports optional `?region=<slug>` filter param — maps directly to the `region` taxonomy so no extra WP_Query is needed. Title adapts: "Territories" (unfiltered) or "Territories of {Region}" (filtered). Relies on WP's default `include_children => true` for hierarchical taxonomies, so continent-level slugs (e.g. `?region=asia`) include sub-region territories.
+- **`taxonomy-region.php`:** Added `link_out` to the territories gallery params pointing to `get_post_type_archive_link('territories')` with `?region=<slug>`, matching the existing pattern used by the fellows gallery on the same template.
+- **`gallery-territories.php`:** Refactored the territory card template to fix an OOM issue on large-region archive pages. The original loaded all languages per territory (`posts_per_page=-1`) and called `get_field('speakers_recorded', ...)` on every language inside a `usort()` callback — O(n log n) ACF calls per card. For Asia (55 territories, some with 400+ languages) this exhausted the 128 MB memory limit. Replaced with two targeted queries: a count query (`posts_per_page=1`, `fields=ids`, reads `found_posts`) and a preview query (`posts_per_page=4`). The usort and shuffle were both no-ops (line 33 overwrote the sorted result with the original array) and were removed. Also added `esc_html()` to previously unescaped output.
+- **`archive.styl`:** Added `&-territories` to the archive selector group alongside `&-languages`, `&-videos`, `&-fellows`.
+- **`phpstan-baseline.neon`:** Reduced `get_field not found` suppression count for `gallery-territories.php` from 4 to 1, reflecting the removed usort/foreach calls.
+
+**Known issues logged in plan.md:**
+- `gallery-territories.php`: double query (count + preview can be merged into one), `$language_name` empty fallback missing, raw `post_title` used for video lookup instead of `get_the_title()`
+- `archive-territories.php`: `include_children` reliance is implicit — should be made explicit in query builder
+- `taxonomy-region.php`: fellows OR LIKE meta query is still OOM-prone on continent pages (separate backlog item)
+
+---
+
 ## 2026-02-22 (Tier 2 — Plugin hygiene / security)
 
 ### Audit Make.com scenarios

@@ -22,7 +22,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [ ] Maps on territory templates
   - [ ] Download gateway plugin
-  - [ ] Territories archive
+  - [x] Territories archive ([archive](plan-archive.md))
   - [ ] Enhanced search results page
   - [ ] Donation optimization (donor cards in galleries)
   - [ ] Forms (report a problem, replace Airtable embeds)
@@ -49,7 +49,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Migrate from Stylus
   - [x] Replace Font Awesome ([archive](plan-archive.md))
   - [ ] Performance profiling and monitoring
-  - [ ] Evaluate Bedrock for composer-managed WordPress installs _(Tier 2 — resolve before code quality cleanups)_
+  - [x] Evaluate Bedrock for composer-managed WordPress installs _(decision: No — see Infrastructure section)_
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -100,8 +100,8 @@ _No prerequisites. Unblocks all credential-sensitive work. Complete._
 
 ---
 
-### Tier 2 — Strategic decision + visual infrastructure + plugin hygiene
-_Parallel. Evaluate Bedrock first within this tier — the decision gates whether code quality cleanups (Tier 3) proceed in their current form or become moot. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
+### Tier 2 — Visual infrastructure + plugin hygiene
+_Parallel. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
@@ -109,17 +109,17 @@ _Parallel. Evaluate Bedrock first within this tier — the decision gates whethe
 - [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
 - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-- [ ] Evaluate Bedrock _(strategic decision only — no code; resolve first within this tier)_
+- [x] Evaluate Bedrock _(decision: **No**. GreenGeeks shared hosting blocks webroot relocation to `web/`; premium plugins can't be Composer-managed without Satispress; `.env` config benefit is achievable standalone via `vlucas/phpdotenv`. Code quality cleanups proceed in current form.)_
 - [x] Audit Make.com scenarios _(findings in `docs/make-audit-findings.md`; see archive)_
 - [x] Replace Font Awesome ([archive](plan-archive.md))
+- [x] Territories archive ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
-- [ ] Territories archive _(no hard deps; simple gallery-based archive, follows existing pattern)_
 
 ---
 
 ### Tier 3 — Code quality cleanup + data integrity baseline
-_Parallel tracks. Bedrock evaluation (Tier 2) must be resolved before A/B/C so the file layout decision is final. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
+_Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups proceed in current form. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
 
 - [ ] Resolve `class-wt-rest-posts-controller.php` duplication _(root copies are orphaned — safe delete; theme copy is canonical)_
 - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
@@ -244,9 +244,6 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 
   **Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
   **Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
-
-- [ ] **Territories archive**
-  `/territories/` has no dedicated archive page — falls through to a default WP archive or 404. A territories archive should list all territories in a browsable gallery, using `create_gallery_instance()` following the existing archive pattern. No hard prerequisites beyond the CPT existing (which it does).
 
 - [ ] **Enhanced search results page**
   The current search results page is basic. Replace with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern. Adds meaningful discovery value.
@@ -382,9 +379,10 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
   **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
 
-- [ ] **Evaluate Bedrock for composer-managed WordPress** _(Tier 2 — resolve before code quality cleanups)_
-  Bedrock restructures a WordPress install so WP core and plugins are managed as Composer dependencies and excluded from git, with custom code (themes/plugins) as the only tracked artifacts. If adopted, the Code Quality cleanups (duplication fix, root includes move, reorganize) become moot in their current form since the file layout changes radically.
-  **Goal:** Assess fit for this project — cost of migration vs. long-term benefit. If the decision is "no," proceed with Code Quality cleanups in their current form. If "yes," scope the migration as a separate project.
+- [x] **Evaluate Bedrock for composer-managed WordPress** _(decision: **No** — 2026-02-28)_
+  **Blocking factors:** (1) GreenGeeks shared hosting — cPanel's `public_html/` webroot can't be cleanly redirected to Bedrock's `web/` subdirectory without fragile symlink hacks; a clean adoption would require migrating to a VPS or managed host. (2) 14 of 17 plugins are untracked third-party/premium installs (ACF Pro, Duplicator, etc.) — getting these into Composer requires Satispress or per-vendor repos with license keys, adding significant ongoing maintenance overhead for marginal gain.
+  **Separable benefit:** The `.env`-based config (removing hardcoded secrets from `wp-config.php`) can be done standalone by adding `vlucas/phpdotenv` as a production Composer dependency. Worth doing independently as a low-risk improvement.
+  **Result:** Code quality cleanups (Tier 3) proceed in current form — duplication fix, root includes move, reorganize, autoloader all remain in scope as-is.
 
 ---
 
