@@ -28,6 +28,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Forms (report a problem, replace Airtable embeds)
   - [ ] Better aliveness (dynamic homepage)
   - [ ] Gamification (stamp rally / onboarding)
+  - [ ] Fellows meta query OOM on continent region pages (`taxonomy-region.php`)
 
 - **[Code Quality](#code-quality)**
   - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
@@ -36,6 +37,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Reorganize theme `includes/` flat folder (24 files) into subdirectories by concern (e.g. `api/`, `admin/`, `taxonomies/`, `template/`, `integrations/`)
   - [ ] Autoloader for CPTs/includes
   - [ ] Archive template refactor
+  - [ ] `gallery-territories.php` — merge double query + fix minor bugs
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
@@ -258,6 +260,9 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
   - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms (Gravity Forms or custom REST endpoints)
   - **Download gateway gate form** — already scoped in gateway Phase 5; not duplicated here
 
+- [ ] **Fellows meta query OOM on continent region pages** (`taxonomy-region.php`)
+  On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. The `/territories/?region=asia` archive OOM was resolved in PR #491 (separate path). Fix for this page: replace the per-territory LIKE loop with a `$wpdb` direct query or a JOIN-based approach that scales independently of territory count.
+
 - [ ] **Better aliveness**
   The homepage feels static. Surface the most recently added/updated languages, latest videos, and rotate banners to reflect current campaigns. Identify which content signals are most meaningful (publication date? editor-curated featured flag?) and build the query logic. Assess JS vs. server-side rendering needs. Must land before Layer 4 visual baseline so the dynamic content is captured in screenshot comparisons.
 
@@ -290,6 +295,16 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
 - [ ] **Archive template refactor**
   `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern (build args → `create_gallery_instance()` → handle filter params) with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach to reduce per-template repetition while keeping template-specific filter logic clear.
   Note: `archive-donors.php` intentionally does NOT use `create_gallery_instance()` and is out of scope for this refactor.
+
+- [ ] **`gallery-territories.php` — merge double query + fix minor bugs**
+  Four issues identified in the territory card template (`wt-gallery/includes/templates/gallery-territories.php`):
+  - **Double query** — a count query (`posts_per_page=1`, `fields=ids`) runs before a preview query (`posts_per_page=4`). Drop `no_found_rows=true` from the preview query and read `found_posts` from it directly, halving the query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page).
+  - **XSS** — `get_the_title()` in the `alt` attribute (line 48) is not escaped; should be `esc_attr( get_the_title() )`.
+  - **Blank label** — `get_field('standard_name', ...)` returns `null`/`false` when the field is unset; no fallback to `post_title` means the language label renders empty.
+  - **Filter bypass** — `$language_post->post_title` is used for the `get_videos_by_featured_language()` lookup instead of `get_the_title()`, bypassing the `the_title` filter chain. Low risk now but diverges from the rest of the codebase.
+
+- [ ] **`archive-territories.php` — make `include_children` behaviour explicit**
+  The `?region=<continent-slug>` filter path relies on WordPress defaulting `tax_query` to `include_children => true` for hierarchical taxonomies. This is correct and produces the expected result (all territories in Asia and its sub-regions), but the intent is implicit. If `build_gallery_query_args()` ever adds an explicit `include_children => false`, continent archive pages silently break. Either add an explicit `include_children => true` in the query builder for hierarchical taxonomy cases, or add a comment in `archive-territories.php` documenting the reliance.
 
 ---
 
@@ -413,8 +428,9 @@ Runs on every PR via GitHub Actions alongside PHPCS.
 **Deferred unit test candidates:**
 - **Territory name list formatter** — the Oxford-comma builder in `single-languages.php` (maps `$territories` → "Dominica, Saint Kitts and Nevis, and United Kingdom") has real edge-case risk (1 item / 2 items / 3+ items). If extracted into a named helper (e.g. `wt_format_list()`), it becomes a trivially testable pure function.
 - **`GalleryQueryArgsTest` regression guard** — an assertion that `linguistic_genealogy` is absent from the `in_array` exact-match list, mirroring the `writing_systems` removal test that was deleted with PR #467.
-- **Archive parameter resolution (`archive-languages.php`)** — deferred to Layer 3; mixes `$_GET`, `get_term_by()`, and `create_gallery_instance()` in a way that requires a running WP instance to test meaningfully.
+- **Archive parameter resolution (`archive-languages.php`, `archive-territories.php`)** — deferred to Layer 3; mixes `$_GET`, `get_term_by()`, and `create_gallery_instance()` in a way that requires a running WP instance to test meaningfully.
 - **Template rendering (`single-languages.php`)** — deferred to Layer 4 (E2E); territory ID merging and gallery title logic are embedded in the template alongside `get_field()` calls.
+- **`GalleryQueryArgsTest` — `include_children` for hierarchical taxonomies** — add an assertion that `tax_query` for the `region` taxonomy does not set `include_children => false`, documenting the intentional reliance on WP's default behaviour for the `archive-territories.php` continent filter path.
 
 **Known constraints and upgrade path:**
 WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
@@ -431,7 +447,7 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 **Covers templates indirectly:** tests the functions templates call, not the template files themselves
 **Requires:** MySQL test database in CI (Docker service)
 
-**Priority targets:** custom REST endpoints (`rest-endpoints.php`), `get_custom_gallery_query()` query logic, `searchfilter()` end-to-end with real WP_Query, CPT/taxonomy registration.
+**Priority targets:** custom REST endpoints (`rest-endpoints.php`), `get_custom_gallery_query()` query logic, `searchfilter()` end-to-end with real WP_Query, CPT/taxonomy registration, `archive-territories.php` `?region=` param resolution (including continent slug with child term expansion).
 
 ---
 
