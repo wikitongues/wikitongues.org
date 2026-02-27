@@ -13,7 +13,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Audit and clean up stale branches ([archive](plan-archive.md))
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
-  - [x] Gallery `link_out` param — filtered archive pages
+  - [x] Gallery `link_out` param — filtered archive pages ([archive](plan-archive.md))
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
   - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
@@ -41,7 +41,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
-  - [x] Audit `integromat-connector` REST API exposure
+  - [x] Audit `integromat-connector` REST API exposure ([archive](plan-archive.md))
   - [x] Audit Make.com scenarios ([archive](plan-archive.md))
   - [ ] `wt-airtable-sync` plugin (after audit)
 
@@ -49,7 +49,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Migrate from Stylus
   - [x] Replace Font Awesome ([archive](plan-archive.md))
   - [ ] Performance profiling and monitoring
-  - [x] Evaluate Bedrock for composer-managed WordPress installs _(decision: No — see Infrastructure section)_
+  - [x] Evaluate Bedrock for composer-managed WordPress installs ([archive](plan-archive.md))
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -78,7 +78,7 @@ Logical implementation sequence across all plan items. Items within a tier can b
 `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
 `Make.com audit` ✅ → `wt-airtable-sync field maps` ✅ → `wt-airtable-sync plugin`
 `wt-airtable-sync plugin` → retire integromat-connector write paths
-`Evaluate Bedrock` → code quality cleanups _(if not adopting Bedrock, file layout proceeds as-is; if adopting, A/B/C become moot)_
+~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
 `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
 `Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
@@ -180,21 +180,6 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 - [ ] **Dockerize project** for ease of contributor setup
 - [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
 - [ ] **Complete Donors post type** (in progress, stalled)
-- [x] **Gallery `link_out` param — filtered archive pages**
-  Gallery sections (e.g. "Fellows from the United States", "Languages from the United States", "English videos") should be linkable to a dedicated full-page listing showing all matching items with full pagination. Auto-generated — no editor action required.
-
-  **Two parts:**
-
-  1. **`wt-gallery` plugin — `link_out` param**: when `link_out` is set (a URL string), render the `wt_sectionHeader` as `<a href="{link_out}">` instead of plain text. No other gallery behaviour changes.
-
-  2. **Archive templates with filter params**: existing archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`) check for query-string filter params and apply them to the `WP_Query` or `WP_Query` args:
-     - `?territory=<slug>` on the fellows/languages archives → meta query filtering by territory
-     - `?language=<slug>` on the videos archive → tax query or meta query filtering by language
-     Callers (territory pages, language pages) pass the constructed URL as `link_out` when calling `create_gallery_instance()`.
-
-  **URL examples:** `/fellows/?territory=united-states`, `/languages/?territory=united-states`, `/videos/?language=eng`
-  No custom rewrite rules required — query params on existing archive templates.
-
 - [ ] **Maps on territory templates**
   Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
   **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
@@ -309,16 +294,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
 
 - [x] **Delete `wt-form` plugin** — done ([archive](plan-archive.md))
 
-- [x] **Audit `integromat-connector` REST API exposure**
-  **File:** `wp-content/plugins/integromat-connector/` (v1.5.9, Make Connector by Celonis s.r.o.)
-  Not custom code — managed via WP admin plugin updates; not tracked in git.
-
-  **Findings:**
-  - **Token:** Active (`iwc_api_key` confirmed in DB, 32-char alphanumeric). No expiry; no rotation has been performed. Token stored in `wp_site_options`.
-  - **Authentication model:** `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator). Guard only protects WP core entity endpoints (posts/users/comments/tags/categories/media) on POST/PUT/DELETE. Custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin, though WP's own auth still applies.
-  - **Custom fields exposed:** **None.** `integromat_api_options_post` and `integromat_api_options_taxonomy` do not exist in the DB — no ACF fields or custom taxonomies have been opted in.
-  - **Implication:** Make.com is currently writing to raw `wp_postmeta` keys directly rather than through the ACF REST API. This works but bypasses ACF hooks, validation, and field formatting.
-  - **Production-quality path:** Opt in the relevant ACF field keys in the integromat-connector admin settings (Settings → Make Connector → Posts tab), then update Make.com scenarios to read/write those fields as REST API fields rather than raw meta. Requires the Make.com scenario audit first to know which fields are in scope.
+- [x] **Audit `integromat-connector` REST API exposure** — done ([archive](plan-archive.md))
 
 - [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
   Full findings in `docs/make-audit-findings.md`. 14 scenarios inventoried; 5 write to WordPress
@@ -379,10 +355,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
   **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
 
-- [x] **Evaluate Bedrock for composer-managed WordPress** _(decision: **No** — 2026-02-28)_
-  **Blocking factors:** (1) GreenGeeks shared hosting — cPanel's `public_html/` webroot can't be cleanly redirected to Bedrock's `web/` subdirectory without fragile symlink hacks; a clean adoption would require migrating to a VPS or managed host. (2) 14 of 17 plugins are untracked third-party/premium installs (ACF Pro, Duplicator, etc.) — getting these into Composer requires Satispress or per-vendor repos with license keys, adding significant ongoing maintenance overhead for marginal gain.
-  **Separable benefit:** The `.env`-based config (removing hardcoded secrets from `wp-config.php`) can be done standalone by adding `vlucas/phpdotenv` as a production Composer dependency. Worth doing independently as a low-risk improvement.
-  **Result:** Code quality cleanups (Tier 3) proceed in current form — duplication fix, root includes move, reorganize, autoloader all remain in scope as-is.
+- [x] **Evaluate Bedrock for composer-managed WordPress** — decision: No ([archive](plan-archive.md))
 
 ---
 
