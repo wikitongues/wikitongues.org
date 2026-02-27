@@ -13,7 +13,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Audit and clean up stale branches ([archive](plan-archive.md))
   - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
   - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
-  - [x] Gallery `link_out` param — filtered archive pages
+  - [x] Gallery `link_out` param — filtered archive pages ([archive](plan-archive.md))
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
   - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
@@ -22,7 +22,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [ ] Maps on territory templates
   - [ ] Download gateway plugin
-  - [ ] Territories archive
+  - [x] Territories archive ([archive](plan-archive.md))
   - [ ] Enhanced search results page
   - [ ] Donation optimization (donor cards in galleries)
   - [ ] Forms (report a problem, replace Airtable embeds)
@@ -41,7 +41,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 
 - **[Plugins](#plugins)**
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
-  - [x] Audit `integromat-connector` REST API exposure
+  - [x] Audit `integromat-connector` REST API exposure ([archive](plan-archive.md))
   - [x] Audit Make.com scenarios ([archive](plan-archive.md))
   - [ ] `wt-airtable-sync` plugin (after audit)
 
@@ -49,7 +49,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] Migrate from Stylus
   - [x] Replace Font Awesome ([archive](plan-archive.md))
   - [ ] Performance profiling and monitoring
-  - [ ] Evaluate Bedrock for composer-managed WordPress installs _(Tier 2 — resolve before code quality cleanups)_
+  - [x] Evaluate Bedrock for composer-managed WordPress installs ([archive](plan-archive.md))
 
 - **[Testing Strategy](#testing-strategy)**
   - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
@@ -78,7 +78,7 @@ Logical implementation sequence across all plan items. Items within a tier can b
 `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
 `Make.com audit` ✅ → `wt-airtable-sync field maps` ✅ → `wt-airtable-sync plugin`
 `wt-airtable-sync plugin` → retire integromat-connector write paths
-`Evaluate Bedrock` → code quality cleanups _(if not adopting Bedrock, file layout proceeds as-is; if adopting, A/B/C become moot)_
+~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
 `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
 `Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
@@ -100,8 +100,8 @@ _No prerequisites. Unblocks all credential-sensitive work. Complete._
 
 ---
 
-### Tier 2 — Strategic decision + visual infrastructure + plugin hygiene
-_Parallel. Evaluate Bedrock first within this tier — the decision gates whether code quality cleanups (Tier 3) proceed in their current form or become moot. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
+### Tier 2 — Visual infrastructure + plugin hygiene
+_Parallel. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
@@ -109,17 +109,17 @@ _Parallel. Evaluate Bedrock first within this tier — the decision gates whethe
 - [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
 - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-- [ ] Evaluate Bedrock _(strategic decision only — no code; resolve first within this tier)_
+- [x] Evaluate Bedrock _(decision: **No**. GreenGeeks shared hosting blocks webroot relocation to `web/`; premium plugins can't be Composer-managed without Satispress; `.env` config benefit is achievable standalone via `vlucas/phpdotenv`. Code quality cleanups proceed in current form.)_
 - [x] Audit Make.com scenarios _(findings in `docs/make-audit-findings.md`; see archive)_
 - [x] Replace Font Awesome ([archive](plan-archive.md))
+- [x] Territories archive ([archive](plan-archive.md))
 - [ ] Complete Donors post type
 - [ ] Migrate from Stylus
-- [ ] Territories archive _(no hard deps; simple gallery-based archive, follows existing pattern)_
 
 ---
 
 ### Tier 3 — Code quality cleanup + data integrity baseline
-_Parallel tracks. Bedrock evaluation (Tier 2) must be resolved before A/B/C so the file layout decision is final. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
+_Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups proceed in current form. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
 
 - [ ] Resolve `class-wt-rest-posts-controller.php` duplication _(root copies are orphaned — safe delete; theme copy is canonical)_
 - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
@@ -180,21 +180,6 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 - [ ] **Dockerize project** for ease of contributor setup
 - [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
 - [ ] **Complete Donors post type** (in progress, stalled)
-- [x] **Gallery `link_out` param — filtered archive pages**
-  Gallery sections (e.g. "Fellows from the United States", "Languages from the United States", "English videos") should be linkable to a dedicated full-page listing showing all matching items with full pagination. Auto-generated — no editor action required.
-
-  **Two parts:**
-
-  1. **`wt-gallery` plugin — `link_out` param**: when `link_out` is set (a URL string), render the `wt_sectionHeader` as `<a href="{link_out}">` instead of plain text. No other gallery behaviour changes.
-
-  2. **Archive templates with filter params**: existing archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`) check for query-string filter params and apply them to the `WP_Query` or `WP_Query` args:
-     - `?territory=<slug>` on the fellows/languages archives → meta query filtering by territory
-     - `?language=<slug>` on the videos archive → tax query or meta query filtering by language
-     Callers (territory pages, language pages) pass the constructed URL as `link_out` when calling `create_gallery_instance()`.
-
-  **URL examples:** `/fellows/?territory=united-states`, `/languages/?territory=united-states`, `/videos/?language=eng`
-  No custom rewrite rules required — query params on existing archive templates.
-
 - [ ] **Maps on territory templates**
   Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
   **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
@@ -244,9 +229,6 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 
   **Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
   **Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
-
-- [ ] **Territories archive**
-  `/territories/` has no dedicated archive page — falls through to a default WP archive or 404. A territories archive should list all territories in a browsable gallery, using `create_gallery_instance()` following the existing archive pattern. No hard prerequisites beyond the CPT existing (which it does).
 
 - [ ] **Enhanced search results page**
   The current search results page is basic. Replace with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern. Adds meaningful discovery value.
@@ -312,16 +294,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
 
 - [x] **Delete `wt-form` plugin** — done ([archive](plan-archive.md))
 
-- [x] **Audit `integromat-connector` REST API exposure**
-  **File:** `wp-content/plugins/integromat-connector/` (v1.5.9, Make Connector by Celonis s.r.o.)
-  Not custom code — managed via WP admin plugin updates; not tracked in git.
-
-  **Findings:**
-  - **Token:** Active (`iwc_api_key` confirmed in DB, 32-char alphanumeric). No expiry; no rotation has been performed. Token stored in `wp_site_options`.
-  - **Authentication model:** `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator). Guard only protects WP core entity endpoints (posts/users/comments/tags/categories/media) on POST/PUT/DELETE. Custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin, though WP's own auth still applies.
-  - **Custom fields exposed:** **None.** `integromat_api_options_post` and `integromat_api_options_taxonomy` do not exist in the DB — no ACF fields or custom taxonomies have been opted in.
-  - **Implication:** Make.com is currently writing to raw `wp_postmeta` keys directly rather than through the ACF REST API. This works but bypasses ACF hooks, validation, and field formatting.
-  - **Production-quality path:** Opt in the relevant ACF field keys in the integromat-connector admin settings (Settings → Make Connector → Posts tab), then update Make.com scenarios to read/write those fields as REST API fields rather than raw meta. Requires the Make.com scenario audit first to know which fields are in scope.
+- [x] **Audit `integromat-connector` REST API exposure** — done ([archive](plan-archive.md))
 
 - [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
   Full findings in `docs/make-audit-findings.md`. 14 scenarios inventoried; 5 write to WordPress
@@ -382,9 +355,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
   **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
 
-- [ ] **Evaluate Bedrock for composer-managed WordPress** _(Tier 2 — resolve before code quality cleanups)_
-  Bedrock restructures a WordPress install so WP core and plugins are managed as Composer dependencies and excluded from git, with custom code (themes/plugins) as the only tracked artifacts. If adopted, the Code Quality cleanups (duplication fix, root includes move, reorganize) become moot in their current form since the file layout changes radically.
-  **Goal:** Assess fit for this project — cost of migration vs. long-term benefit. If the decision is "no," proceed with Code Quality cleanups in their current form. If "yes," scope the migration as a separate project.
+- [x] **Evaluate Bedrock for composer-managed WordPress** — decision: No ([archive](plan-archive.md))
 
 ---
 
