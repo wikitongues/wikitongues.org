@@ -57,7 +57,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 4
+			count: 1
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-territories.php
 
 		-
