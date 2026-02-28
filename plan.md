@@ -128,7 +128,7 @@ _Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups pro
 - [ ] Archive template refactor _(before Docker so image captures refactored layout)_
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
-- [ ] `wt-airtable-sync` plugin _(audit done; Phase 0–1: scaffold + languages; Phase 2: videos/captions/lexicons; Phase 3: cleanup + cutover)_
+- [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; languages running in parallel; video thumbnail blocker; Phase 3 not started)_
 
 ---
 
@@ -306,7 +306,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - `resources` CPT has 907 WP posts vs 204 Airtable records — reconciliation required before syncing
   - Complete field map drafted in `docs/make-audit-findings.md` § 9
 
-- [ ] **`wt-airtable-sync` plugin** _(audit complete; ready to build)_
+- [ ] **`wt-airtable-sync` plugin** _(Phases 0–2 shipped; cutover in progress; Phase 3 not started)_
   Standalone WP plugin. Make.com becomes a dumb HTTP transport (Airtable record change →
   POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`). WordPress owns
   all field mapping, transformation, and ACF writes in code (`config/field-maps.php`).
@@ -315,13 +315,16 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   Full field map in `docs/make-audit-findings.md` § 9.
 
   **Build sequence:**
-  - **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
-  - **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
-  - **WP-CLI backfill** — One-time command to stamp `_airtable_record_id` on all existing language posts before first live sync run
-  - **Make.com cutover (languages)** — Update Import Languages scenario to POST to new endpoint; run old + new in parallel briefly; disable old WP modules once verified
-  - **Phase 2** — Add `videos`, `captions`, `lexicons` to field map + endpoint routing (skip `resources` until count mismatch is resolved)
-  - **Phase 3** — `_WT_TMP_*` cleanup migration + retire remaining Make.com WP modules
-  - **Documentation** — `plan-archive.md` entry; README updated for external contributors (architecture, adding CPTs, key rotation, troubleshooting)
+  - [x] **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
+  - [x] **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
+  - [x] **WP-CLI backfill (languages)** — `_airtable_record_id` stamped on all existing language posts (completed 2026-02-23)
+  - [ ] **Make.com cutover (languages)** — Old and new scenarios running in parallel; disable old WP modules once new endpoint is verified stable
+  - [x] **Phase 2** — `videos`, `captions`, `lexicons` field maps + endpoint routing added (skip `resources` until count mismatch is resolved)
+    - Captions ✅ validated in Make.com; Lexicons ✅ validated in Make.com
+    - Videos ⚠️ **thumbnail upload blocked**: Make.com Module 34 (Import Oral Histories) fails to create the WP attachment before POSTing to the endpoint; plugin expects the ACF image field to receive a WP attachment ID (integer), but the ID is never created/passed. Fix is on the Make.com side (Module 34 must sideload the image and POST the resulting attachment ID).
+  - [ ] **WP-CLI backfill (videos, captions, lexicons)** — `_airtable_record_id` not yet stamped on existing posts for these CPTs; needed before upsert-by-id is reliable. Same CSV import pattern used for languages.
+  - [ ] **Phase 3** — `_WT_TMP_*` cleanup migration + retire remaining Make.com WP modules _(not started; unblocked once cutover for all CPTs is verified)_
+  - [ ] **Documentation** — `plan-archive.md` entry; README updated for external contributors (architecture, adding CPTs, key rotation, troubleshooting)
 
 ---
 
