@@ -178,7 +178,15 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 ## Backlog
 
 - [ ] **Dockerize project** for ease of contributor setup
-- [ ] **Airtable reconciliation** — 520+ language records missing essential fields. make.com syncs from Airtable without field guarantees; records arrive in WordPress incomplete. Rather than enforcing hard requirements at the WordPress layer, reconciliation should happen at the Airtable source: institute field requirements there and handle any divergence before sync.
+- [ ] **Airtable reconciliation** — Two known divergence directions:
+  1. **WP records missing fields** — 520+ language records arrived in WordPress incomplete (Make.com syncs without field guarantees). Reconciliation should happen at the Airtable source: institute field requirements there and handle divergence before sync.
+  2. **Airtable records missing from WP** — the `_airtable_record_id` backfill (2026-02-28, localhost pulled from production) revealed records that exist in Airtable but have no corresponding WP post. Title-match failures during the backfill are a proxy for this gap. Confirmed minimums as of 2026-02-28:
+     - Languages: 4 missing
+     - Videos: 9 missing
+     - Captions: 69 missing
+     - Lexicons: 137 missing
+
+     Note: some of these may be title mismatches rather than truly absent records (the importer matches by post title; a renamed or differently-formatted title would register as missing). A definitive count requires a direct Airtable API cross-check (see Layer 5).
 - [ ] **Complete Donors post type** (in progress, stalled)
 - [ ] **Maps on territory templates**
   Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
@@ -448,7 +456,7 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - No two published language posts share the same `standard_name` / `post_title`
 - No published language post has a blank `iso_code`
 - `post_name` (URL slug) matches `iso_code` for all published language posts — mismatch causes silent routing failures like the wblu/blu bug
-- (Future) Cross-check against Airtable API: every WordPress language record has a corresponding Airtable record
+- **Airtable → WP record gap** — cross-check each CPT against the Airtable API to identify records that exist in Airtable but have no corresponding WP post. The `_airtable_record_id` backfill (2026-02-28) revealed a title-match gap of at minimum: 4 languages, 9 videos, 69 captions, 137 lexicons. Some may be title mismatches rather than absent records; a definitive count requires the API cross-check. Output: list of Airtable record IDs with no matching `_airtable_record_id` in WP.
 
 **Implementation approach:**
 - WP-CLI command (`wp wt integrity check`) registered in a new `includes/cli/` file in the theme
