@@ -331,7 +331,31 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - [ ] **Make.com cutover (languages)** — Old and new scenarios running in parallel; disable old WP modules once new endpoint is verified stable
   - [x] **Phase 2** — `videos`, `captions`, `lexicons` field maps + endpoint routing added (skip `resources` until count mismatch is resolved)
     - Captions ✅ validated in Make.com; Lexicons ✅ validated in Make.com
-    - Videos ⚠️ **thumbnail upload blocked**: Make.com Module 34 (Import Oral Histories) fails to create the WP attachment before POSTing to the endpoint; plugin expects the ACF image field to receive a WP attachment ID (integer), but the ID is never created/passed. Fix is on the Make.com side (Module 34 must sideload the image and POST the resulting attachment ID).
+    - Videos ⚠️ **thumbnail upload blocked — investigation in progress (2026-02-28)**
+      The `wordpress:createMediaItem` Make.com module (WT Sync - Videos, Module 19) returns `{}` instead of the WP attachment object, so `{{19.ID}}` is undefined and `video_thumbnail_v2` is never written to the sync payload.
+
+      **What has been ruled out:**
+      - `wt-airtable-sync` plugin is not the cause — only hooks `rest_api_init` (route under `/wikitongues/v1/sync/`) and `acf/init`; no hooks on `rest_post_dispatch`, `/wp/v2/media`, or anything in the media upload path
+      - Make.com connection ("Production | wikitongues.org (wt_admin)") verifies successfully
+      - Module 19 rebuilt from scratch — same `{}` result
+      - Media IS being created on the server — both old (Import Oral Histories) and new (WT Sync - Videos) scenarios create the attachment file; the problem is the response not being returned to Make.com
+      - Separate blueprint issues catalogued (staging URL, dry-run header, dataStructure format, max records = 1) — these are independent of the `{}` response problem
+
+      **Current hypothesis:** WordPress creates the attachment (201) but returns an empty or malformed response body. Make.com receives no parseable JSON and emits `{}`. Likely causes in priority order:
+      1. Stray PHP output from another plugin or theme function during the REST lifecycle (one character before JSON breaks parsing)
+      2. A plugin hooking `rest_post_dispatch` and stripping or modifying the `/wp/v2/media` response
+      3. GreenGeeks server-level response filtering (mod_security, reverse proxy, or Cloudflare)
+
+      **Next diagnostic steps:**
+      - curl `/wp/v2/media` directly with `-D -` to see raw response headers + body — if full JSON comes back, issue is Make.com-side; if empty/garbled, issue is WordPress or hosting:
+        ```bash
+        curl -s -D - -X POST https://wikitongues.org/wp-json/wp/v2/media \
+          -H "Authorization: Basic $(echo -n 'wt_admin:APP_PASSWORD' | base64)" \
+          -H "Content-Type: image/png" \
+          -H "Content-Disposition: attachment; filename=test.png" \
+          --data-binary @/tmp/test.png
+        ```
+      - Enable WP debug logging on staging (`WP_DEBUG=true`, `WP_DEBUG_LOG=true`, `WP_DEBUG_DISPLAY=false` in wp-config.php), tail `wp-content/debug.log` while triggering a Make.com run
   - [ ] **WP-CLI backfill (videos, captions, lexicons)** — `_airtable_record_id` not yet stamped on existing posts for these CPTs; needed before upsert-by-id is reliable. Same CSV import pattern used for languages.
   - [ ] **Phase 3** — `_WT_TMP_*` cleanup migration + retire remaining Make.com WP modules _(not started; unblocked once cutover for all CPTs is verified)_
   - [ ] **Documentation** — `plan-archive.md` entry; README updated for external contributors (architecture, adding CPTs, key rotation, troubleshooting)
