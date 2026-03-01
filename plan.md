@@ -308,51 +308,8 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
 - [x] **Audit `integromat-connector` REST API exposure** — done ([archive](plan-archive.md))
 
 - [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
-  Full findings in `docs/make-audit-findings.md`. 14 scenarios inventoried; 5 write to WordPress
-  (`languages`, `videos`, `captions`, `resources`, `lexicons` CPTs). Key findings:
-  - No `_airtable_record_id` — all upserts by title (fragile)
-  - `_WT_TMP_*` staging keys persist in `wp_postmeta` (never deleted after resolution)
-  - All meta keys confirmed ACF-managed except `video_thumbnail`, `metadata_width`, `metadata_height`
-  - `post_type` Airtable field values exactly match WP CPT slugs
-  - `resources` CPT has 907 WP posts vs 204 Airtable records — reconciliation required before syncing
-  - Complete field map drafted in `docs/make-audit-findings.md` § 9
 
-- [ ] **`wt-airtable-sync` plugin** _(Phases 0–3 complete as of 2026-03-01; resources CPT deferred; see `docs/airtable-sync.md`)_
-  Standalone WP plugin. Make.com becomes a dumb HTTP transport (Airtable record change →
-  POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`). WordPress owns
-  all field mapping, transformation, and ACF writes in code (`config/field-maps.php`).
-  Auth via `X-WT-Sync-Key` header + `WT_SYNC_API_KEY` constant in wp-config.php.
-  Upsert by `_airtable_record_id` postmeta; languages fallback to `iso_code` match.
-  Full field map in `docs/make-audit-findings.md` § 9.
-
-  **Build sequence:**
-  - [x] **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
-  - [x] **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
-  - [x] **WP-CLI backfill (languages)** — `_airtable_record_id` stamped on all existing language posts (completed 2026-02-23)
-  - [x] **Make.com cutover (languages)** — New endpoint verified; old WP modules to be disabled
-  - [x] **Phase 2** — `videos`, `captions`, `lexicons` field maps + endpoint routing added (skip `resources` until count mismatch is resolved)
-    - Captions ✅; Lexicons ✅; Videos ✅ — all tested on staging and production (2026-03-01)
-
-      **Resolution (Videos thumbnail):** `wordpress:createMediaItem` returned `{}` after PHP 8.2 upgrade. Replaced with `http:MakeRequest` POST to `/wp/v2/media`, basicAuth Application Password, `contentType: custom` for raw binary body (cannot use `contentType: json` — buffer-to-string conversion error).
-
-      **Blueprint architecture (all four CPTs, 2026-03-01):**
-      - `util:SetVariables` in every scenario: `dry_run`, `wp_base_url`; `sync_key` in Make.com keychain
-      - Staging and production instances are separate scenarios (different `wp_base_url`, different keychains)
-      - Videos: `builtin:BasicRouter` — Route 1 (thumbnail exists): M25 download → M27 upload → M5 POST; Route 2 (no thumbnail): M29 POST with `video_thumbnail_v2: 0`. Always uploads fresh; no dedup search.
-      - Content-Disposition: `attachment; filename=thumbnail_{{lower(Identifier)}}.{{last(split(type; "/"))}}` — MIME-derived extension, lowercased identifier for predictable slug
-      - All four scenarios run on 15-minute schedule in production
-
-  - [x] **Make.com blueprint standardisation** — `util:SetVariables` added to all four blueprints; `sync_key` in keychain; staging and production instances separate
-  - [x] **WP-CLI backfill (videos, captions, lexicons)** — Run on production 2026-03-01. Results:
-    - Languages: 8088 stamped, 2 not found (`wyim`, `wyug` — absent from WP)
-    - Videos: 1853 stamped, 3 not stamped (2 are HTML-entity title encoding artifacts: `&#039;` vs `'`; 1 is a post-export new record — all will resolve on next Airtable modification)
-    - Captions: 257 stamped, 60 not found (absent from WP — will be created on next Airtable modification)
-    - Lexicons: 20 stamped, 130 not found (absent from WP — only 22 of 152 Airtable lexicon records have WP posts; remainder created on next modification)
-  - [x] **Phase 3** — `_WT_TMP_*` cleanup + retire old Make.com WP modules (2026-03-01):
-    - 3,376 `_WT_TMP_*` rows deleted from `wp_postmeta` (confirmed all had resolved real values first)
-    - Old Make.com v1 scenarios (integromat-connector write paths) disabled
-    - `post-object-helpers.php` (theme `includes/` and root `includes/`) is now dead code — remove as part of code quality cleanup
-  - [x] **Documentation** — `docs/airtable-sync.md` created (architecture, plugin, scenarios, field maps, troubleshooting, key rotation)
+- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete; production cutover 2026-03-01; `resources` CPT deferred ([docs](docs/airtable-sync.md), [archive](plan-archive.md))
 
 ---
 
