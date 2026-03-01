@@ -16,8 +16,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Gallery `link_out` param — filtered archive pages ([archive](plan-archive.md))
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
   - [ ] Complete Donors post type
+  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
   - [ ] Dockerize project
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [ ] Maps on territory templates
@@ -43,7 +43,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
   - [x] Audit `integromat-connector` REST API exposure ([archive](plan-archive.md))
   - [x] Audit Make.com scenarios ([archive](plan-archive.md))
-  - [ ] `wt-airtable-sync` plugin (after audit)
+  - [x] `wt-airtable-sync` plugin ([docs](docs/airtable-sync.md))
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus _(deferred to Tier 7 — requires Layer 4 visual baseline first)_
@@ -64,7 +64,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
         - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
     - [x] Secrets scanning ([archive](plan-archive.md))
     - [x] Audit `integromat-connector` REST API exposure
-    - [ ] Audit Make.com scenarios
+    - [x] Audit Make.com scenarios
 
 - **[Roadmap](#roadmap)**
 
@@ -75,21 +75,21 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
 **Key dependency chains:**
-`Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → production ACF integration
-`Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
-`Make.com audit` ✅ → `wt-airtable-sync field maps` ✅ → `wt-airtable-sync plugin`
-`wt-airtable-sync plugin` → retire integromat-connector write paths
-~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
-`Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred: visual baseline must be in place to catch CSS regressions from the preprocessor swap)_
-`Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
-`Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
-`Donors CPT` → `Donation optimization`
-`Enhanced search results page` → Layer 4 visual baseline (Tier 6)
-`Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
-`Forms` (report/Airtable replace) → no hard deps; `Forms` (gate) → Download gateway Phase 5
-`Better aliveness` → before Layer 4 visual baseline (Tier 6)
-`Gamification` → Membership infrastructure (not yet scoped) → Tier 8+
+
+- `Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → `wt-airtable-sync` ✅ → retire integromat-connector write paths ✅
+- `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
+- ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
+- `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
+- ~~`Font Awesome`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
+- `Donors CPT` → `Donation optimization`
+- `Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
+- `Docker` → `Layer 3` → gateway integration tests
+- `Docker` → `Layer 4` → maps, performance profiling
+- `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
+- `Enhanced search results page` → `Layer 4 visual baseline` (Tier 6)
+- `Better aliveness` → before `Layer 4 visual baseline` (Tier 6)
+- `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway Phase 5
+- `Gamification` → Membership infrastructure _(not in scope)_ → Tier 8+
 
 ---
 
@@ -115,6 +115,7 @@ _Parallel. Donors must land before Docker (Tier 4), which must land before the L
 - [x] Replace Font Awesome ([archive](plan-archive.md))
 - [x] Territories archive ([archive](plan-archive.md))
 - [ ] Complete Donors post type
+- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete (languages, videos, captions, lexicons); production cutover 2026-03-01; Slack notifications on all four scenarios; see [docs/airtable-sync.md](docs/airtable-sync.md)
 
 ---
 
@@ -128,7 +129,6 @@ _Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups pro
 - [ ] Archive template refactor _(before Docker so image captures refactored layout)_
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
-- [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; all four CPT blueprints tested on staging; cutover pending; Phase 3 not started)_
 - [ ] Staging environment data sync _(prerequisite for reliable staging tests; content divergence confirmed 2026-02-28)_
 
 ---
