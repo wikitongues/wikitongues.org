@@ -16,8 +16,8 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Gallery `link_out` param — filtered archive pages ([archive](plan-archive.md))
   - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
   - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
   - [ ] Complete Donors post type
+  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
   - [ ] Dockerize project
   - [ ] Airtable reconciliation (520+ records missing fields)
   - [ ] Maps on territory templates
@@ -43,7 +43,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
   - [x] Audit `integromat-connector` REST API exposure ([archive](plan-archive.md))
   - [x] Audit Make.com scenarios ([archive](plan-archive.md))
-  - [ ] `wt-airtable-sync` plugin (after audit)
+  - [x] `wt-airtable-sync` plugin ([docs](docs/airtable-sync.md))
 
 - **[Infrastructure](#infrastructure)**
   - [ ] Migrate from Stylus _(deferred to Tier 7 — requires Layer 4 visual baseline first)_
@@ -64,7 +64,7 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
         - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
     - [x] Secrets scanning ([archive](plan-archive.md))
     - [x] Audit `integromat-connector` REST API exposure
-    - [ ] Audit Make.com scenarios
+    - [x] Audit Make.com scenarios
 
 - **[Roadmap](#roadmap)**
 
@@ -75,21 +75,21 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
 Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
 
 **Key dependency chains:**
-`Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → production ACF integration
-`Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
-`Make.com audit` ✅ → `wt-airtable-sync field maps` ✅ → `wt-airtable-sync plugin`
-`wt-airtable-sync plugin` → retire integromat-connector write paths
-~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
-`Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred: visual baseline must be in place to catch CSS regressions from the preprocessor swap)_
-`Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
-`Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
-`Donors CPT` → `Donation optimization`
-`Enhanced search results page` → Layer 4 visual baseline (Tier 6)
-`Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
-`Forms` (report/Airtable replace) → no hard deps; `Forms` (gate) → Download gateway Phase 5
-`Better aliveness` → before Layer 4 visual baseline (Tier 6)
-`Gamification` → Membership infrastructure (not yet scoped) → Tier 8+
+
+- `Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → `wt-airtable-sync` ✅ → retire integromat-connector write paths ✅
+- `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
+- ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
+- `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
+- ~~`Font Awesome`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
+- `Donors CPT` → `Donation optimization`
+- `Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
+- `Docker` → `Layer 3` → gateway integration tests
+- `Docker` → `Layer 4` → maps, performance profiling
+- `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
+- `Enhanced search results page` → `Layer 4 visual baseline` (Tier 6)
+- `Better aliveness` → before `Layer 4 visual baseline` (Tier 6)
+- `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway Phase 5
+- `Gamification` → Membership infrastructure _(not in scope)_ → Tier 8+
 
 ---
 
@@ -115,6 +115,7 @@ _Parallel. Donors must land before Docker (Tier 4), which must land before the L
 - [x] Replace Font Awesome ([archive](plan-archive.md))
 - [x] Territories archive ([archive](plan-archive.md))
 - [ ] Complete Donors post type
+- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete (languages, videos, captions, lexicons); production cutover 2026-03-01; Slack notifications on all four scenarios; see [docs/airtable-sync.md](docs/airtable-sync.md)
 
 ---
 
@@ -128,7 +129,6 @@ _Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups pro
 - [ ] Archive template refactor _(before Docker so image captures refactored layout)_
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
-- [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; all four CPT blueprints tested on staging; cutover pending; Phase 3 not started)_
 - [ ] Staging environment data sync _(prerequisite for reliable staging tests; content divergence confirmed 2026-02-28)_
 
 ---
@@ -308,51 +308,8 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
 - [x] **Audit `integromat-connector` REST API exposure** — done ([archive](plan-archive.md))
 
 - [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
-  Full findings in `docs/make-audit-findings.md`. 14 scenarios inventoried; 5 write to WordPress
-  (`languages`, `videos`, `captions`, `resources`, `lexicons` CPTs). Key findings:
-  - No `_airtable_record_id` — all upserts by title (fragile)
-  - `_WT_TMP_*` staging keys persist in `wp_postmeta` (never deleted after resolution)
-  - All meta keys confirmed ACF-managed except `video_thumbnail`, `metadata_width`, `metadata_height`
-  - `post_type` Airtable field values exactly match WP CPT slugs
-  - `resources` CPT has 907 WP posts vs 204 Airtable records — reconciliation required before syncing
-  - Complete field map drafted in `docs/make-audit-findings.md` § 9
 
-- [ ] **`wt-airtable-sync` plugin** _(Phases 0–3 complete as of 2026-03-01; resources CPT deferred; see `docs/airtable-sync.md`)_
-  Standalone WP plugin. Make.com becomes a dumb HTTP transport (Airtable record change →
-  POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`). WordPress owns
-  all field mapping, transformation, and ACF writes in code (`config/field-maps.php`).
-  Auth via `X-WT-Sync-Key` header + `WT_SYNC_API_KEY` constant in wp-config.php.
-  Upsert by `_airtable_record_id` postmeta; languages fallback to `iso_code` match.
-  Full field map in `docs/make-audit-findings.md` § 9.
-
-  **Build sequence:**
-  - [x] **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
-  - [x] **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
-  - [x] **WP-CLI backfill (languages)** — `_airtable_record_id` stamped on all existing language posts (completed 2026-02-23)
-  - [x] **Make.com cutover (languages)** — New endpoint verified; old WP modules to be disabled
-  - [x] **Phase 2** — `videos`, `captions`, `lexicons` field maps + endpoint routing added (skip `resources` until count mismatch is resolved)
-    - Captions ✅; Lexicons ✅; Videos ✅ — all tested on staging and production (2026-03-01)
-
-      **Resolution (Videos thumbnail):** `wordpress:createMediaItem` returned `{}` after PHP 8.2 upgrade. Replaced with `http:MakeRequest` POST to `/wp/v2/media`, basicAuth Application Password, `contentType: custom` for raw binary body (cannot use `contentType: json` — buffer-to-string conversion error).
-
-      **Blueprint architecture (all four CPTs, 2026-03-01):**
-      - `util:SetVariables` in every scenario: `dry_run`, `wp_base_url`; `sync_key` in Make.com keychain
-      - Staging and production instances are separate scenarios (different `wp_base_url`, different keychains)
-      - Videos: `builtin:BasicRouter` — Route 1 (thumbnail exists): M25 download → M27 upload → M5 POST; Route 2 (no thumbnail): M29 POST with `video_thumbnail_v2: 0`. Always uploads fresh; no dedup search.
-      - Content-Disposition: `attachment; filename=thumbnail_{{lower(Identifier)}}.{{last(split(type; "/"))}}` — MIME-derived extension, lowercased identifier for predictable slug
-      - All four scenarios run on 15-minute schedule in production
-
-  - [x] **Make.com blueprint standardisation** — `util:SetVariables` added to all four blueprints; `sync_key` in keychain; staging and production instances separate
-  - [x] **WP-CLI backfill (videos, captions, lexicons)** — Run on production 2026-03-01. Results:
-    - Languages: 8088 stamped, 2 not found (`wyim`, `wyug` — absent from WP)
-    - Videos: 1853 stamped, 3 not stamped (2 are HTML-entity title encoding artifacts: `&#039;` vs `'`; 1 is a post-export new record — all will resolve on next Airtable modification)
-    - Captions: 257 stamped, 60 not found (absent from WP — will be created on next Airtable modification)
-    - Lexicons: 20 stamped, 130 not found (absent from WP — only 22 of 152 Airtable lexicon records have WP posts; remainder created on next modification)
-  - [x] **Phase 3** — `_WT_TMP_*` cleanup + retire old Make.com WP modules (2026-03-01):
-    - 3,376 `_WT_TMP_*` rows deleted from `wp_postmeta` (confirmed all had resolved real values first)
-    - Old Make.com v1 scenarios (integromat-connector write paths) disabled
-    - `post-object-helpers.php` (theme `includes/` and root `includes/`) is now dead code — remove as part of code quality cleanup
-  - [x] **Documentation** — `docs/airtable-sync.md` created (architecture, plugin, scenarios, field maps, troubleshooting, key rotation)
+- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete; production cutover 2026-03-01; `resources` CPT deferred ([docs](docs/airtable-sync.md), [archive](plan-archive.md))
 
 ---
 

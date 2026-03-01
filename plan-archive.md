@@ -5,6 +5,73 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-01 (Tier 2 — Plugin: wt-airtable-sync)
+
+### `wt-airtable-sync` plugin — Phases 0–3
+**Branches:** `feature/cc/wt-airtable-sync-phase-0-1`, `feature/cc/wt-airtable-sync-phase-2`, `feature/cc/wt-airtable-sync-dry-run`
+**PRs:** [#482](https://github.com/wikitongues/wikitongues.org/pull/482), [#486](https://github.com/wikitongues/wikitongues.org/pull/486), [#489](https://github.com/wikitongues/wikitongues.org/pull/489)
+**Production cutover:** 2026-03-01
+**Full documentation:** [`docs/airtable-sync.md`](docs/airtable-sync.md)
+
+Replaced the integromat-connector write paths with a standalone WordPress plugin that owns all field mapping, transformation, and ACF writes in code. Make.com is now a dumb HTTP transport: Airtable record change → POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`.
+
+#### Architecture
+
+- **Plugin:** `wp-content/plugins/wt-airtable-sync/`
+- **Auth:** `X-WT-Sync-Key` header matched against `WT_SYNC_API_KEY` constant in `wp-config.php`
+- **Upsert key:** `_airtable_record_id` postmeta; languages fall back to `iso_code` then `post_title`
+- **Field mapping:** `config/field-maps.php` — one entry per CPT; all ACF writes via `update_field()`
+- **Dry-run mode:** `?dry_run=1` param processes all logic, writes nothing, returns full diff; requires `WT_SYNC_API_KEY` auth
+- **Logging:** structured PHP error log entries per sync run
+
+#### CPTs synced
+
+| CPT | Status |
+|---|---|
+| `languages` | ✅ Live |
+| `videos` | ✅ Live |
+| `captions` | ✅ Live |
+| `lexicons` | ✅ Live |
+| `resources` | ⏸ Deferred — 907 WP posts vs 204 Airtable records; reconciliation required first |
+
+#### Make.com blueprint architecture
+
+Four production scenarios (one per CPT), each with a staging counterpart (separate `wp_base_url`, separate keychain):
+
+- **`util:SetVariables`** at the top of every scenario — centralises `dry_run`, `wp_base_url`; `sync_key` in Make.com keychain
+- **Languages / Captions / Lexicons:** linear — Airtable trigger → SetVariables → POST `/sync/{post_type}`
+- **Videos:** `builtin:BasicRouter` — Route 1 (thumbnail URL present): download thumbnail → upload to WP media library → POST with `video_thumbnail_v2: <media_id>`; Route 2 (no thumbnail): POST with `video_thumbnail_v2: 0`
+  - Media upload: `http:MakeRequest` POST to `/wp/v2/media`, Application Password basicAuth, `contentType: custom` for raw binary body
+  - `Content-Disposition: attachment; filename=thumbnail_{{lower(Identifier)}}.{{last(split(type; "/"))}}` — MIME-derived extension, lowercased identifier for predictable WP slug
+  - Always uploads fresh; no dedup search (dedup by slug was abandoned after observing that a changed thumbnail failed to update — slug matched old file)
+- All four scenarios run on **15-minute schedule** in production
+- **Slack notifications** on every run: `util:SetVariables` after the sync POST pre-computes `sync_status`, `sync_color`, `sync_env` as Make.com expressions (avoids quoting issues inside JSON Blocks); Block Kit header + fields section shows CPT, record count, environment, duration, and dry-run flag
+
+#### Key decisions
+
+- **No dedup search for media uploads.** The original design searched WP media library by slug before uploading; abandoned because (a) `rest_upload_sideload_error` — WordPress rejects uploads without a file extension in `Content-Disposition`; (b) even after fixing the extension, a changed Airtable thumbnail failed to update because the slug matched the old file. Decision: fresh upload on every run is acceptable; media library duplication is not the principal problem.
+- **`contentType: custom` for media upload.** `contentType: json` converts the binary buffer to a string, corrupting image data. Raw binary body requires `contentType: custom`.
+- **Staging and production as separate scenarios.** Simpler than a single scenario with environment switching; separate keychains prevent accidental cross-environment writes.
+
+#### WP-CLI backfill — `_airtable_record_id` (production, 2026-03-01)
+
+Stamped existing WP posts with their Airtable record IDs via CSV export + WP-CLI import script (`temp/importer/acf-importer.php`):
+
+| CPT | Stamped | Not found | Notes |
+|---|---|---|---|
+| Languages | 8,088 | 2 | `wyim`, `wyug` — absent from WP |
+| Videos | 1,853 | 3 | 2 are HTML-entity title encoding artifacts (`&#039;` vs `'`); 1 is a post-export new record — all resolve on next Airtable modification |
+| Captions | 257 | 60 | Absent from WP — created automatically on next Airtable modification |
+| Lexicons | 20 | 130 | Only 22 of 152 Airtable lexicon records have WP posts; remainder created on next modification |
+
+#### Phase 3 — cleanup and cutover (2026-03-01)
+
+- **`_WT_TMP_*` postmeta deleted:** 3,376 rows removed from `wp_postmeta`. Safety check confirmed all posts with `_WT_TMP_featured_languages` also had a resolved real `featured_languages` value before deletion.
+- **Old Make.com v1 scenarios disabled:** integromat-connector write paths retired.
+- **`post-object-helpers.php`** (`wp-content/themes/blankslate-child/includes/` and root `includes/`) is now dead code — `handle_post_object()` is no longer called by any active code path. Removal deferred to code quality cleanup (Tier 3).
+
+---
+
 ## 2026-02-28 (Tier 2 — Territories archive)
 
 ### Territories archive
