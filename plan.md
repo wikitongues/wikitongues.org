@@ -128,7 +128,7 @@ _Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups pro
 - [ ] Archive template refactor _(before Docker so image captures refactored layout)_
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
-- [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; languages running in parallel; video thumbnail blocker; Phase 3 not started)_
+- [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; all four CPT blueprints tested on staging; cutover pending; Phase 3 not started)_
 - [ ] Staging environment data sync _(prerequisite for reliable staging tests; content divergence confirmed 2026-02-28)_
 
 ---
@@ -182,13 +182,14 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 - [ ] **Dockerize project** for ease of contributor setup
 - [ ] **Airtable reconciliation** — Two known divergence directions:
   1. **WP records missing fields** — 520+ language records arrived in WordPress incomplete (Make.com syncs without field guarantees). Reconciliation should happen at the Airtable source: institute field requirements there and handle divergence before sync.
-  2. **Airtable records missing from WP** — the `_airtable_record_id` backfill (2026-02-28, localhost pulled from production) revealed records that exist in Airtable but have no corresponding WP post. Title-match failures during the backfill are a proxy for this gap. Confirmed minimums as of 2026-02-28:
-     - Languages: 4 missing
-     - Videos: 9 missing
-     - Captions: 69 missing
-     - Lexicons: 137 missing
+  2. **Airtable records missing from WP** — the `_airtable_record_id` backfill run on production (2026-03-01) confirmed the following gaps. "Not found" = title-match failure; some may be title format differences rather than truly absent posts, but most are genuinely absent. All absent records will be created automatically the next time Make.com triggers on a modification.
+     - Languages: 2 not found (`wyim`, `wyug`)
+     - Videos: 3 not stamped — 2 are HTML-entity encoding artifacts in the CSV (`&#039;` vs `'`; WP posts likely exist, will resolve on next sync); 1 is a post-export new record
+     - Captions: 60 not found (absent from WP)
+     - Lexicons: 130 of 152 not found — only 22 WP lexicon posts exist; the CPT is severely under-populated relative to Airtable
 
-     Note: some of these may be title mismatches rather than truly absent records (the importer matches by post title; a renamed or differently-formatted title would register as missing). A definitive count requires a direct Airtable API cross-check (see Layer 5).
+     To force-close the gap without waiting for organic Airtable modifications: bulk-touch the missing records in Airtable (e.g. update a non-critical field) to trigger the Make.com scenario and create the WP posts.
+  3. **Airtable table bloat** — Videos table has 188 fields, most computed or lookup. This is the technical debt to address during reconciliation. Correct architecture: resolve linked records in Make.com subscenarios (as Captions already does for Languages, Videos, Creators), then delete the Airtable computed columns. Do NOT add more Airtable lookup fields to support sync — migrate existing ones to subscenarios instead.
 - [ ] **Complete Donors post type** (in progress, stalled)
 - [ ] **Maps on territory templates**
   Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
@@ -316,7 +317,7 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - `resources` CPT has 907 WP posts vs 204 Airtable records — reconciliation required before syncing
   - Complete field map drafted in `docs/make-audit-findings.md` § 9
 
-- [ ] **`wt-airtable-sync` plugin** _(Phases 0–2 shipped; cutover in progress; Phase 3 not started)_
+- [ ] **`wt-airtable-sync` plugin** _(Phases 0–3 complete as of 2026-03-01; resources CPT deferred; see `docs/airtable-sync.md`)_
   Standalone WP plugin. Make.com becomes a dumb HTTP transport (Airtable record change →
   POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`). WordPress owns
   all field mapping, transformation, and ACF writes in code (`config/field-maps.php`).
@@ -328,37 +329,30 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   - [x] **Phase 0** — Plugin scaffold: namespace `wt_sync`, activation/deactivation hooks, `WT_SYNC_API_KEY` constant check, REST route registration stub, logging conventions
   - [x] **Phase 1** — `languages` sync: `config/field-maps.php` (languages entry), `POST /wp-json/wikitongues/v1/sync/languages`, `X-WT-Sync-Key` auth, upsert by `_airtable_record_id` → `iso_code` → title fallback, ACF post-object resolver (WP_Query, not deprecated `get_page_by_title()`), `update_field()` for ACF / `update_post_meta()` for raw keys
   - [x] **WP-CLI backfill (languages)** — `_airtable_record_id` stamped on all existing language posts (completed 2026-02-23)
-  - [ ] **Make.com cutover (languages)** — Old and new scenarios running in parallel; disable old WP modules once new endpoint is verified stable
+  - [x] **Make.com cutover (languages)** — New endpoint verified; old WP modules to be disabled
   - [x] **Phase 2** — `videos`, `captions`, `lexicons` field maps + endpoint routing added (skip `resources` until count mismatch is resolved)
-    - Captions ✅ validated in Make.com; Lexicons ✅ validated in Make.com
-    - Videos ⚠️ **thumbnail upload blocked — investigation in progress (2026-02-28)**
-      The `wordpress:createMediaItem` Make.com module (WT Sync - Videos, Module 19) returns `{}` instead of the WP attachment object, so `{{19.ID}}` is undefined and `video_thumbnail_v2` is never written to the sync payload.
+    - Captions ✅; Lexicons ✅; Videos ✅ — all tested on staging and production (2026-03-01)
 
-      **What has been ruled out:**
-      - `wt-airtable-sync` plugin is not the cause — only hooks `rest_api_init` (route under `/wikitongues/v1/sync/`) and `acf/init`; no hooks on `rest_post_dispatch`, `/wp/v2/media`, or anything in the media upload path
-      - Make.com connection ("Production | wikitongues.org (wt_admin)") verifies successfully
-      - Module 19 rebuilt from scratch — same `{}` result
-      - Media IS being created on the server — both old (Import Oral Histories) and new (WT Sync - Videos) scenarios create the attachment file; the problem is the response not being returned to Make.com
-      - Separate blueprint issues catalogued (staging URL, dry-run header, dataStructure format, max records = 1) — these are independent of the `{}` response problem
+      **Resolution (Videos thumbnail):** `wordpress:createMediaItem` returned `{}` after PHP 8.2 upgrade. Replaced with `http:MakeRequest` POST to `/wp/v2/media`, basicAuth Application Password, `contentType: custom` for raw binary body (cannot use `contentType: json` — buffer-to-string conversion error).
 
-      **Current hypothesis:** WordPress creates the attachment (201) but returns an empty or malformed response body. Make.com receives no parseable JSON and emits `{}`. Likely causes in priority order:
-      1. Stray PHP output from another plugin or theme function during the REST lifecycle (one character before JSON breaks parsing)
-      2. A plugin hooking `rest_post_dispatch` and stripping or modifying the `/wp/v2/media` response
-      3. GreenGeeks server-level response filtering (mod_security, reverse proxy, or Cloudflare)
+      **Blueprint architecture (all four CPTs, 2026-03-01):**
+      - `util:SetVariables` in every scenario: `dry_run`, `wp_base_url`; `sync_key` in Make.com keychain
+      - Staging and production instances are separate scenarios (different `wp_base_url`, different keychains)
+      - Videos: `builtin:BasicRouter` — Route 1 (thumbnail exists): M25 download → M27 upload → M5 POST; Route 2 (no thumbnail): M29 POST with `video_thumbnail_v2: 0`. Always uploads fresh; no dedup search.
+      - Content-Disposition: `attachment; filename=thumbnail_{{lower(Identifier)}}.{{last(split(type; "/"))}}` — MIME-derived extension, lowercased identifier for predictable slug
+      - All four scenarios run on 15-minute schedule in production
 
-      **Next diagnostic steps:**
-      - curl `/wp/v2/media` directly with `-D -` to see raw response headers + body — if full JSON comes back, issue is Make.com-side; if empty/garbled, issue is WordPress or hosting:
-        ```bash
-        curl -s -D - -X POST https://wikitongues.org/wp-json/wp/v2/media \
-          -H "Authorization: Basic $(echo -n 'wt_admin:APP_PASSWORD' | base64)" \
-          -H "Content-Type: image/png" \
-          -H "Content-Disposition: attachment; filename=test.png" \
-          --data-binary @/tmp/test.png
-        ```
-      - Enable WP debug logging on staging (`WP_DEBUG=true`, `WP_DEBUG_LOG=true`, `WP_DEBUG_DISPLAY=false` in wp-config.php), tail `wp-content/debug.log` while triggering a Make.com run
-  - [ ] **WP-CLI backfill (videos, captions, lexicons)** — `_airtable_record_id` not yet stamped on existing posts for these CPTs; needed before upsert-by-id is reliable. Same CSV import pattern used for languages.
-  - [ ] **Phase 3** — `_WT_TMP_*` cleanup migration + retire remaining Make.com WP modules _(not started; unblocked once cutover for all CPTs is verified)_
-  - [ ] **Documentation** — `plan-archive.md` entry; README updated for external contributors (architecture, adding CPTs, key rotation, troubleshooting)
+  - [x] **Make.com blueprint standardisation** — `util:SetVariables` added to all four blueprints; `sync_key` in keychain; staging and production instances separate
+  - [x] **WP-CLI backfill (videos, captions, lexicons)** — Run on production 2026-03-01. Results:
+    - Languages: 8088 stamped, 2 not found (`wyim`, `wyug` — absent from WP)
+    - Videos: 1853 stamped, 3 not stamped (2 are HTML-entity title encoding artifacts: `&#039;` vs `'`; 1 is a post-export new record — all will resolve on next Airtable modification)
+    - Captions: 257 stamped, 60 not found (absent from WP — will be created on next Airtable modification)
+    - Lexicons: 20 stamped, 130 not found (absent from WP — only 22 of 152 Airtable lexicon records have WP posts; remainder created on next modification)
+  - [x] **Phase 3** — `_WT_TMP_*` cleanup + retire old Make.com WP modules (2026-03-01):
+    - 3,376 `_WT_TMP_*` rows deleted from `wp_postmeta` (confirmed all had resolved real values first)
+    - Old Make.com v1 scenarios (integromat-connector write paths) disabled
+    - `post-object-helpers.php` (theme `includes/` and root `includes/`) is now dead code — remove as part of code quality cleanup
+  - [x] **Documentation** — `docs/airtable-sync.md` created (architecture, plugin, scenarios, field maps, troubleshooting, key rotation)
 
 ---
 
@@ -498,7 +492,7 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - No two published language posts share the same `standard_name` / `post_title`
 - No published language post has a blank `iso_code`
 - `post_name` (URL slug) matches `iso_code` for all published language posts — mismatch causes silent routing failures like the wblu/blu bug
-- **Airtable → WP record gap** — cross-check each CPT against the Airtable API to identify records that exist in Airtable but have no corresponding WP post. The `_airtable_record_id` backfill (2026-02-28) revealed a title-match gap of at minimum: 4 languages, 9 videos, 69 captions, 137 lexicons. Some may be title mismatches rather than absent records; a definitive count requires the API cross-check. Output: list of Airtable record IDs with no matching `_airtable_record_id` in WP.
+- **Airtable → WP record gap** — cross-check each CPT against the Airtable API to identify records that exist in Airtable but have no corresponding WP post. Production backfill (2026-03-01) confirmed: 2 languages, ~3 videos (likely encoding artifacts), 60 captions, 130 lexicons absent from WP. Absent records are created automatically on next Make.com trigger; to force-close the gap: bulk-touch the missing Airtable records. Some "not found" entries may be title-format mismatches rather than truly absent; a definitive count requires the Airtable API cross-check. Output: list of Airtable record IDs with no matching `_airtable_record_id` in WP.
 
 **Implementation approach:**
 - WP-CLI command (`wp wt integrity check`) registered in a new `includes/cli/` file in the theme
