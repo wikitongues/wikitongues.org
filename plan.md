@@ -46,8 +46,9 @@ Completed work is documented in [plan-archive.md](plan-archive.md).
   - [ ] `wt-airtable-sync` plugin (after audit)
 
 - **[Infrastructure](#infrastructure)**
-  - [ ] Migrate from Stylus
+  - [ ] Migrate from Stylus _(deferred to Tier 7 — requires Layer 4 visual baseline first)_
   - [x] Replace Font Awesome ([archive](plan-archive.md))
+  - [ ] Staging environment data sync
   - [ ] Performance profiling and monitoring
   - [x] Evaluate Bedrock for composer-managed WordPress installs ([archive](plan-archive.md))
 
@@ -80,7 +81,7 @@ Logical implementation sequence across all plan items. Items within a tier can b
 `wt-airtable-sync plugin` → retire integromat-connector write paths
 ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
 `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-`Stylus migration` + ~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline**
+~~`Font Awesome replacement`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred: visual baseline must be in place to catch CSS regressions from the preprocessor swap)_
 `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
 `Docker` → `Layer 3` → gateway integration tests | `Layer 4` → maps, performance profiling
 `Donors CPT` → `Donation optimization`
@@ -101,7 +102,7 @@ _No prerequisites. Unblocks all credential-sensitive work. Complete._
 ---
 
 ### Tier 2 — Visual infrastructure + plugin hygiene
-_Parallel. Stylus, FA, and Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
+_Parallel. Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Stylus migration is deferred to Tier 7 — visual regression coverage must exist before swapping the CSS preprocessor. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
 - [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
@@ -114,7 +115,6 @@ _Parallel. Stylus, FA, and Donors must land before Docker (Tier 4), which must l
 - [x] Replace Font Awesome ([archive](plan-archive.md))
 - [x] Territories archive ([archive](plan-archive.md))
 - [ ] Complete Donors post type
-- [ ] Migrate from Stylus
 
 ---
 
@@ -129,11 +129,12 @@ _Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups pro
 - [ ] Enhanced search results page _(no hard deps; parallel track)_
 - [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
 - [ ] `wt-airtable-sync` plugin _(Phases 0–2 shipped; languages running in parallel; video thumbnail blocker; Phase 3 not started)_
+- [ ] Staging environment data sync _(prerequisite for reliable staging tests; content divergence confirmed 2026-02-28)_
 
 ---
 
 ### Tier 4 — Docker + gateway core
-_Code quality refactors (Tier 3) must be done so Docker captures the final file layout. Stylus, FA, and Donors (Tier 2) must be done so Docker captures the final CSS/icon/Donors state. Gateway Phases 0–5 can run in parallel with Docker setup — no mutual dependency._
+_Code quality refactors (Tier 3) must be done so Docker captures the final file layout. FA and Donors (Tier 2) must be done so Docker captures the final icon/Donors state. Stylus migration is intentionally deferred to after Layer 4 — Docker does not need to capture the final CSS preprocessor state because the Stylus → Sass/PostCSS output diff will be validated by visual regression tests, not by the Docker image itself. Gateway Phases 0–5 can run in parallel with Docker setup — no mutual dependency._
 
 - [ ] Dockerize project
 - [ ] Download gateway — Phases 0–5 _(scaffold, data model, primitives, endpoint, resource authoring, gate modes)_
@@ -153,7 +154,7 @@ _Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results (Tier
 ---
 
 ### Tier 6 — Visual baseline + data migration
-_Layer 4 requires Docker + Stylus + FA + Donors (all done by Tier 4). nations_of_origin migration requires Airtable reconciliation (Tier 5)._
+_Layer 4 requires Docker + FA + Donors (all done by Tier 4). Stylus is intentionally not required here — the baseline is captured before the preprocessor migration so regressions introduced by the swap are caught in Tier 7. nations_of_origin migration requires Airtable reconciliation (Tier 5)._
 
 - [ ] Layer 4 — End-to-End & Visual Regression _(locks the visual baseline; nothing that changes template output should land after this without a deliberate baseline update)_
 - [ ] Migrate `nations_of_origin` _(intentionally deferred; see Backlog)_
@@ -161,8 +162,9 @@ _Layer 4 requires Docker + Stylus + FA + Donors (all done by Tier 4). nations_of
 ---
 
 ### Tier 7 — Features and monitoring requiring the visual baseline
-_Maps introduces visual changes to high-traffic territory/region templates; Layer 4 regression coverage must be active first. Performance profiling (Playwright-based) requires Docker + Layer 4._
+_All items here require Layer 4 regression coverage to be active. Maps and Stylus migration both introduce visual changes and must be validated against the established baseline. Performance profiling (Playwright-based) requires Docker + Layer 4._
 
+- [ ] Migrate from Stylus _(visual regression baseline from Tier 6 provides the safety net for this CSS preprocessor swap)_
 - [ ] Maps on territory templates
 - [ ] Performance profiling and monitoring
 
@@ -360,6 +362,22 @@ _Previously completed items in [plan-archive.md](plan-archive.md)._
   _If Option A lands and the pipeline later needs modernizing, Option B can be adopted incrementally — Vite supports Sass natively._
 
 - [x] **Replace Font Awesome** — done ([archive](plan-archive.md))
+
+- [ ] **Staging environment data sync**
+  Staging is not kept in sync with production data. As of 2026-02-28, staging is significantly behind: captions (257 vs 320), lexicons (29 vs 157), videos (1860 vs 1863), languages (8084 vs 8087). Any staging test against features that depend on content volume or specific records (wt-airtable-sync, Layer 3 integration tests, performance profiling) is unreliable until this is resolved.
+
+  **Goal:** a documented, repeatable process to restore staging DB from production on demand, with uploads directory optionally synced. Should be executable in under 15 minutes without manual fiddling.
+
+  **Approach (GreenGeeks shared hosting):**
+  - `mysqldump` production DB via SSH → transfer to staging → restore via `mysql` or WP-CLI (`wp db import`)
+  - Optionally `rsync wp-content/uploads/` from production to staging
+  - Run `wp search-replace production-url staging-url` after import to fix serialized URLs
+  - Document as a runbook in `docs/staging-sync.md`; no automation required initially — manual on-demand is sufficient
+
+  **Constraints:**
+  - GreenGeeks shared hosting — no Docker, no snapshot tooling
+  - `wp-content/uploads/` can be large; a full rsync may be slow; consider skipping and relying on production CDN URLs for media in staging
+  - Ensure staging `wp-config.php` has separate DB credentials and `WP_DEBUG` enabled before import
 
 - [ ] **Performance profiling and monitoring**
   No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
