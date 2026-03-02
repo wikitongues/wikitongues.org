@@ -60,7 +60,8 @@ ggstemp.html
 readme_backup.md
 temp/
 temp-captions/
-local_docs/
+docs/local_docs/*
+!docs/local_docs/.gitkeep
 transmit_sync_offset_2135232021
 /wp-content/backups-dup-pro/
 tool-sync-db-from-prod.sh
