@@ -78,7 +78,6 @@ Every scenario follows the same structural pattern:
 2. **SetVariables module** (`util:SetVariables`) — centralises per-environment config:
    - `dry_run` — `0` for live writes, `1` to preview without touching the DB
    - `wp_base_url` — full origin of the WordPress instance (e.g. `https://wikitongues.org`)
-   - `sync_key` is **not** in SetVariables — it lives in a Make.com keychain (API key type, header name `X-WT-Sync-Key`)
 3. **HTTP module(s)** — POST to `{{wp_base_url}}/wp-json/wikitongues/v1/sync/{post_type}` with JSON body.
 
 **Record limit (`maxRecords`):** Controls how many Airtable records are processed per run. Make.com uses a cursor — on each run it fetches up to `maxRecords` records modified after the last processed timestamp, then saves the new cursor. If more records have changed than the limit allows, they are processed in subsequent 15-minute runs. Languages is set to 100; other CPTs should be set to 50–100.
