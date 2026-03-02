@@ -1,7 +1,7 @@
 # Wikitongues – Technical Debt & Improvement Plan
 
 This file tracks known issues, deferred refactors, and planned improvements.
-Completed work: [plan-archive.md](plan-archive.md) | Testing strategy: [docs/testing-strategy.md](docs/testing-strategy.md)
+Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [docs/testing-strategy.md](docs/testing-strategy.md)
 
 ---
 
@@ -19,7 +19,7 @@ Phases are ordered by dependency. Items within a phase can be parallelized; phas
 
 - `Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → `wt-airtable-sync` ✅ → retire integromat-connector write paths ✅
 - `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
-- ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
+- ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](docs/plan-archive.md))_
 - `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
 - ~~`Font Awesome`~~ ✅ → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
 - `Donors CPT` _(Phase 6)_ → `Donation optimization`
@@ -38,10 +38,10 @@ Phases are ordered by dependency. Items within a phase can be parallelized; phas
 
 _No prerequisites. Unblocked all credential-sensitive work. Complete._
 
-- [x] Secrets scanning — TruffleHog on every PR + GitHub native push protection ([archive](plan-archive.md))
-- [x] PHPCS security sniffs — runs on every PR via static analysis ([archive](plan-archive.md))
-- [x] Audit `integromat-connector` REST API exposure — no ACF fields opted in; token active; Guard only covers WP core entities ([archive](plan-archive.md))
-- [x] Audit Make.com scenarios — findings in `docs/make-audit-findings.md` ([archive](plan-archive.md))
+- [x] Secrets scanning — TruffleHog on every PR + GitHub native push protection ([archive](docs/plan-archive.md))
+- [x] PHPCS security sniffs — runs on every PR via static analysis ([archive](docs/plan-archive.md))
+- [x] Audit `integromat-connector` REST API exposure — no ACF fields opted in; token active; Guard only covers WP core entities ([archive](docs/plan-archive.md))
+- [x] Audit Make.com scenarios — findings in `docs/make-audit-findings.md` ([archive](docs/plan-archive.md))
 - [ ] WPScan in CI _(deferred — API no longer free; use Patchstack or Wordfence on production instead)_
 
 ---
@@ -50,14 +50,14 @@ _No prerequisites. Unblocked all credential-sensitive work. Complete._
 
 _Complete._
 
-- [x] Delete `wt-form` plugin ([archive](plan-archive.md))
-- [x] Gallery `link_out` param + filtered archive pages ([archive](plan-archive.md))
-- [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
-- [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-- [x] Replace Font Awesome with inline SVGs ([archive](plan-archive.md))
-- [x] Territories archive ([archive](plan-archive.md))
-- [x] Evaluate Bedrock _(decision: No — GreenGeeks hosting blocks webroot relocation; see [archive](plan-archive.md))_
-- [x] `wt-airtable-sync` plugin — Phases 0–3 complete; production cutover 2026-03-01 ([docs](docs/airtable-sync.md), [archive](plan-archive.md))
+- [x] Delete `wt-form` plugin ([archive](docs/plan-archive.md))
+- [x] Gallery `link_out` param + filtered archive pages ([archive](docs/plan-archive.md))
+- [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](docs/plan-archive.md))
+- [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](docs/plan-archive.md))
+- [x] Replace Font Awesome with inline SVGs ([archive](docs/plan-archive.md))
+- [x] Territories archive ([archive](docs/plan-archive.md))
+- [x] Evaluate Bedrock _(decision: No — GreenGeeks hosting blocks webroot relocation; see [archive](docs/plan-archive.md))_
+- [x] `wt-airtable-sync` plugin — Phases 0–3 complete; production cutover 2026-03-01 ([docs](docs/airtable-sync.md), [archive](docs/plan-archive.md))
 
 ---
 

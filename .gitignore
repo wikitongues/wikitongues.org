@@ -55,6 +55,7 @@ vendor/
 .phpunit.result.cache
 
 # Misc
+.DS_Store
 .ftpquota
 ggstemp.html
 readme_backup.md
