@@ -1,78 +1,19 @@
 # Wikitongues – Technical Debt & Improvement Plan
 
 This file tracks known issues, deferred refactors, and planned improvements.
-Items are grouped by area and roughly ordered by priority within each group.
-Completed work is documented in [plan-archive.md](plan-archive.md).
+Completed work: [plan-archive.md](plan-archive.md) | Testing strategy: [docs/testing-strategy.md](docs/testing-strategy.md)
 
 ---
 
 ## Table of Contents
 
-- **[Backlog](#backlog)**
-  - [x] Convert plan.md to checklist format
-  - [x] Audit and clean up stale branches ([archive](plan-archive.md))
-  - [x] Fix w-prefixed language routing — wblu/blu ([archive](plan-archive.md))
-  - [x] Link Fellows to Territories and vice versa ([archive](plan-archive.md))
-  - [x] Gallery `link_out` param — filtered archive pages ([archive](plan-archive.md))
-  - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
-  - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-  - [ ] Complete Donors post type
-  - [ ] Migrate `nations_of_origin` on language posts from text → territories relationship field — intentionally deferred; `Also spoken in` (the `territories` ACF relationship field) serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the make.com sync, and backfilling data.
-  - [ ] Dockerize project
-  - [ ] Airtable reconciliation (520+ records missing fields)
-  - [ ] Maps on territory templates
-  - [ ] Download gateway plugin
-  - [x] Territories archive ([archive](plan-archive.md))
-  - [ ] Enhanced search results page
-  - [ ] Donation optimization (donor cards in galleries)
-  - [ ] Forms (report a problem, replace Airtable embeds)
-  - [ ] Better aliveness (dynamic homepage)
-  - [ ] Gamification (stamp rally / onboarding)
-  - [ ] Fellows meta query OOM on continent region pages (`taxonomy-region.php`)
-
-- **[Code Quality](#code-quality)**
-  - [x] Refactor raw SQL in `wt-gallery` ([archive](plan-archive.md))
-  - [ ] Resolve `class-wt-rest-posts-controller.php` duplication (root `includes/` vs theme `includes/`)
-  - [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
-  - [ ] Reorganize theme `includes/` flat folder (24 files) into subdirectories by concern (e.g. `api/`, `admin/`, `taxonomies/`, `template/`, `integrations/`)
-  - [ ] Autoloader for CPTs/includes
-  - [ ] Archive template refactor
-  - [ ] `gallery-territories.php` — merge double query + fix minor bugs
-
-- **[Plugins](#plugins)**
-  - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
-  - [x] Audit `integromat-connector` REST API exposure ([archive](plan-archive.md))
-  - [x] Audit Make.com scenarios ([archive](plan-archive.md))
-  - [x] `wt-airtable-sync` plugin ([docs](docs/airtable-sync.md))
-
-- **[Infrastructure](#infrastructure)**
-  - [ ] Migrate from Stylus _(deferred to Tier 7 — requires Layer 4 visual baseline first)_
-  - [x] Replace Font Awesome ([archive](plan-archive.md))
-  - [ ] Staging environment data sync
-  - [ ] Performance profiling and monitoring
-  - [x] Evaluate Bedrock for composer-managed WordPress installs ([archive](plan-archive.md))
-
-- **[Testing Strategy](#testing-strategy)**
-  - [x] Layer 1 — Static Analysis, Phase 2 ([archive](plan-archive.md))
-    - [x] PHPStan, Phase 4 ([archive](plan-archive.md))
-  - [x] Layer 2 — Unit Tests, Phase 3 ([archive](plan-archive.md))
-  - [ ] Layer 3 — Integration Tests, Phase 5
-  - [ ] Layer 4 — End-to-End & Visual Regression, Phase 6
-  - [ ] Layer 5 — Data Integrity, Phase 7
-  - **[Security](#security)**
-    - [x] PHPCS security sniffs ([archive](plan-archive.md))
-        - [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
-    - [x] Secrets scanning ([archive](plan-archive.md))
-    - [x] Audit `integromat-connector` REST API exposure
-    - [x] Audit Make.com scenarios
-
-- **[Roadmap](#roadmap)**
+- [Roadmap](#roadmap)
 
 ---
 
 ## Roadmap
 
-Logical implementation sequence across all plan items. Items within a tier can be parallelized; tiers should complete before the next begins. Detailed descriptions for each item are in the sections below.
+Phases are ordered by dependency. Items within a phase can be parallelized; phases should complete before the next begins.
 
 **Key dependency chains:**
 
@@ -80,390 +21,264 @@ Logical implementation sequence across all plan items. Items within a tier can b
 - `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
 - ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](plan-archive.md))_
 - `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-- ~~`Font Awesome`~~ ✅ + `Donors post type` → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
-- `Donors CPT` → `Donation optimization`
-- `Archive template refactor` + `Autoloader` → `Docker` (Tier 4)
+- ~~`Font Awesome`~~ ✅ → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
+- `Donors CPT` _(Phase 6)_ → `Donation optimization`
+- `Archive template refactor` + `Autoloader` → `Docker` (Phase 4)
 - `Docker` → `Layer 3` → gateway integration tests
 - `Docker` → `Layer 4` → maps, performance profiling
 - `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
-- `Enhanced search results page` → `Layer 4 visual baseline` (Tier 6)
-- `Better aliveness` → before `Layer 4 visual baseline` (Tier 6)
-- `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway Phase 5
-- `Gamification` → Membership infrastructure _(not in scope)_ → Tier 8+
+- `Enhanced search results page` → `Layer 4 visual baseline` (Phase 6)
+- `Better aliveness` → before `Layer 4 visual baseline` (Phase 6)
+- `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway sub-phase 5
+- `Gamification` → Membership infrastructure _(not in scope)_ → Phase 8+
 
 ---
 
-### Tier 1 — Security foundation
-_No prerequisites. Unblocks all credential-sensitive work. Complete._
+### Phase 1 — Security foundation ✅
 
-- [x] Secrets scanning ([archive](plan-archive.md))
-- [ ] WPScan in CI (deferred — API no longer free; use Patchstack or Wordfence)
+_No prerequisites. Unblocked all credential-sensitive work. Complete._
+
+- [x] Secrets scanning — TruffleHog on every PR + GitHub native push protection ([archive](plan-archive.md))
+- [x] PHPCS security sniffs — runs on every PR via static analysis ([archive](plan-archive.md))
+- [x] Audit `integromat-connector` REST API exposure — no ACF fields opted in; token active; Guard only covers WP core entities ([archive](plan-archive.md))
+- [x] Audit Make.com scenarios — findings in `docs/make-audit-findings.md` ([archive](plan-archive.md))
+- [ ] WPScan in CI _(deferred — API no longer free; use Patchstack or Wordfence on production instead)_
 
 ---
 
-### Tier 2 — Visual infrastructure + plugin hygiene
-_Parallel. Donors must land before Docker (Tier 4), which must land before the Layer 4 visual baseline. Stylus migration is deferred to Tier 7 — visual regression coverage must exist before swapping the CSS preprocessor. Make.com audit moved here (no hard deps) so findings are available before Airtable reconciliation in Tier 5._
+### Phase 2 — Visual infrastructure + plugin hygiene ✅
+
+_Complete._
 
 - [x] Delete `wt-form` plugin ([archive](plan-archive.md))
-- [x] Audit `integromat-connector` REST API exposure _(findings: no ACF fields opted in; token active; Guard only covers WP core entities — see Plugins section)_
-- [x] Gallery `link_out` param ([archive](plan-archive.md))
-- [x] Gallery `link_out` param — filtered archive pages (`archive-fellows.php`, `archive-languages.php`, `archive-videos.php`; `?territory=` / `?language=` filter params; "see all" button on section header)
+- [x] Gallery `link_out` param + filtered archive pages ([archive](plan-archive.md))
 - [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](plan-archive.md))
 - [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](plan-archive.md))
-- [x] Evaluate Bedrock _(decision: **No**. GreenGeeks shared hosting blocks webroot relocation to `web/`; premium plugins can't be Composer-managed without Satispress; `.env` config benefit is achievable standalone via `vlucas/phpdotenv`. Code quality cleanups proceed in current form.)_
-- [x] Audit Make.com scenarios _(findings in `docs/make-audit-findings.md`; see archive)_
-- [x] Replace Font Awesome ([archive](plan-archive.md))
+- [x] Replace Font Awesome with inline SVGs ([archive](plan-archive.md))
 - [x] Territories archive ([archive](plan-archive.md))
-- [ ] Complete Donors post type
-- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete (languages, videos, captions, lexicons); production cutover 2026-03-01; Slack notifications on all four scenarios; see [docs/airtable-sync.md](docs/airtable-sync.md)
+- [x] Evaluate Bedrock _(decision: No — GreenGeeks hosting blocks webroot relocation; see [archive](plan-archive.md))_
+- [x] `wt-airtable-sync` plugin — Phases 0–3 complete; production cutover 2026-03-01 ([docs](docs/airtable-sync.md), [archive](plan-archive.md))
 
 ---
 
-### Tier 3 — Code quality cleanup + data integrity baseline
-_Parallel tracks. Bedrock evaluation resolved (No) — code quality cleanups proceed in current form. A/B/C must complete before Docker (Tier 4) so the image captures the final structure. Layer 5 has no Docker dependency and runs against the live DB; completing it in this tier means results are ready for Airtable reconciliation in Tier 5._
+### Phase 3 — Code quality + data integrity baseline
 
-- [ ] Resolve `class-wt-rest-posts-controller.php` duplication _(root copies are orphaned — safe delete; theme copy is canonical)_
-- [ ] Move root-level `includes/` into `wp-content/mu-plugins/` or the theme
-- [ ] Reorganize theme `includes/` into subdirectories by concern _(after duplication and root move are resolved)_
-- [ ] Autoloader for CPTs/includes _(do as part of Reorganize includes)_
-- [ ] Archive template refactor _(before Docker so image captures refactored layout)_
-- [ ] Enhanced search results page _(no hard deps; parallel track)_
-- [ ] Layer 5 — Data Integrity _(parallel track; no Docker required)_
-- [ ] Staging environment data sync _(prerequisite for reliable staging tests; content divergence confirmed 2026-02-28)_
+_Parallel tracks. Code quality chain (A→E) must complete before Docker (Phase 4) so the image captures the final structure. F–L are independent parallel tracks._
+
+#### A. Resolve `class-wt-rest-posts-controller.php` duplication
+
+The file exists in both root `includes/` and `wp-content/themes/blankslate-child/includes/`. Root copy is orphaned — safe delete; theme copy is canonical.
+
+#### B. Move root-level `includes/`
+
+The root `includes/` directory is non-standard — WordPress has no awareness of it. Move to `wp-content/mu-plugins/` if the code is site-wide, or into the theme's `includes/` if theme-specific. Requires A first.
+
+#### C. Reorganize theme `includes/` into subdirectories by concern
+
+Currently 24 flat files. Suggested grouping:
+- `api/` — REST endpoints, controller
+- `admin/` — admin helpers, batch operations
+- `taxonomies/` — CPT and taxonomy registration
+- `template/` — template helpers, router
+- `integrations/` — import-captions, events filter, license handling
+
+#### D. Autoloader for CPTs/includes
+
+`includes/custom-post-types.php` manually `require_once`s 15 files. Replace with a directory-scanning autoloader. Do as part of, or immediately after, C.
+
+#### E. Archive template refactor _(before Docker)_
+
+`archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
+
+#### F. `gallery-territories.php` — merge double query + fix minor bugs
+
+- **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
+- **XSS** — `get_the_title()` in the `alt` attribute (line 48) not escaped; should be `esc_attr( get_the_title() )`
+- **Blank label** — `get_field('standard_name', ...)` returns null when unset; no fallback to `post_title`
+- **Filter bypass** — `$language_post->post_title` used for video lookup instead of `get_the_title()`
+
+#### G. `archive-territories.php` — make `include_children` behaviour explicit
+
+The `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add an explicit `include_children => true` in the query builder or a comment documenting the reliance — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
+
+#### H. `post-object-helpers.php` removal
+
+`wp-content/themes/blankslate-child/includes/post-object-helpers.php` and the root `includes/` copy are dead code — `handle_post_object()` is no longer called by any active code path since the integromat-connector write paths were retired (2026-03-01). Remove as part of B.
+
+#### I. Root-level file hygiene
+
+Loose temporary and one-off files have accumulated at the project root (e.g. testing scripts, migration files, ad hoc exports). Audit and remove stale root-level files as part of the code quality pass; document any that should be kept in `docs/` or moved to `temp/`.
+
+#### J. Fellows meta query OOM — `taxonomy-region.php`
+
+On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
+
+#### K. Layer 5 — Data Integrity _(parallel; no Docker required)_
+
+Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
+
+#### L. Staging environment data sync _(parallel)_
+
+Staging is significantly behind production as of 2026-02-28: captions (257 vs 320), lexicons (29 vs 157), videos (1860 vs 1863), languages (8084 vs 8087). Any staging test against content-dependent features is unreliable until resolved.
+
+**Approach (GreenGeeks shared hosting):**
+- `mysqldump` production DB via SSH → transfer to staging → `wp db import`
+- Optionally `rsync wp-content/uploads/` (large — consider relying on production CDN URLs for media in staging instead)
+- `wp search-replace production-url staging-url` after import to fix serialized URLs
+- Document as a runbook in `docs/staging-sync.md`; manual on-demand is sufficient initially
+
+#### M. Enhanced search results page _(parallel; no deps)_
+
+Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
 
 ---
 
-### Tier 4 — Docker + gateway core
-_Code quality refactors (Tier 3) must be done so Docker captures the final file layout. FA and Donors (Tier 2) must be done so Docker captures the final icon/Donors state. Stylus migration is intentionally deferred to after Layer 4 — Docker does not need to capture the final CSS preprocessor state because the Stylus → Sass/PostCSS output diff will be validated by visual regression tests, not by the Docker image itself. Gateway Phases 0–5 can run in parallel with Docker setup — no mutual dependency._
+### Phase 4 — Docker + gateway core
 
-- [ ] Dockerize project
-- [ ] Download gateway — Phases 0–5 _(scaffold, data model, primitives, endpoint, resource authoring, gate modes)_
-- [ ] Donation optimization — phase 1: donor cards in galleries _(after Donors CPT + Docker)_
-- [ ] Forms — report a problem + replace Airtable embeds _(parallel to gateway Phases 0–5; no Docker dep for basic implementation)_
-- [ ] Better aliveness — dynamic homepage _(before Layer 4 visual baseline)_
+_Phase 3 code quality chain (A–E) must complete before Docker so the image captures the final file layout. Stylus migration is deferred to Phase 7 — Docker does not need to capture the final CSS preprocessor state. Gateway sub-phases 0–5 can run in parallel with Docker setup._
+
+#### Dockerize project
+
+Containerize the WordPress install for contributor onboarding and CI-based integration/E2E tests. Must capture the post-Phase 3 file layout.
+
+#### Download gateway plugin — sub-phases 0–5
+
+Downloads currently go through unprotected direct file URLs or `force_download_file()` (proxy streaming, no logging, no auth). Goal: standalone plugin that logs every download, optionally gates access with a name/email modal, supports Dropbox-hosted assets via temporary API links, forwards events to GA4, and auto-anonymizes collected data.
+
+**Architectural decisions (resolved):**
+- Signed expiring redirect URLs — not proxy streaming; replaces `force_download_file()`
+- CPT strategy: use existing `resources` and `document_files` CPTs — records not yet populated, migration risk is low
+- Plugin namespace: `download-gateway` / prefix `dg_`
+
+**Schema additions:**
+- `wp_dg_people` — email_hash, email, name, consent fields, anonymization flags
+- `wp_dg_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
+- `wp_dg_webhook_delivery` — retry queue and dead-letter
+- `wp_dg_tokens` _(not in original spec — required)_ — one-time download tokens with expiry; needed by sub-phases 3 and 5
+
+**Sub-phases 0–5:**
+- **0** — Plugin scaffold: activation/deactivation/uninstall hooks, feature flag constant, settings page placeholder, logging conventions
+- **1** — Data model: create tables with indexes on activation; idempotent migrations
+- **2a** — Core primitives _(unblocks 3)_: PolicyResolver with precedence (per-resource → taxonomy → global), SettingsRepository, EventBus, DownloadEventRepository
+- **2b** — Form/gate primitives _(unblocks 5)_: FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
+- **2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
+- **3** — Download endpoint: `/dg/download/{token-or-post-id}`, `dg_vid` visitor cookie, click event logging, UTM/referrer capture, IP hashing, no-cache headers
+- **4** — Resource authoring: ACF fields on existing CPTs (file_url, storage_type, dropbox_path, version); metabox showing gateway URL; `[dg_download]` shortcode
+- **5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/dg/v1/gate`; person upsert; one-time token; nonce + rate limit + honeypot
+
+**Implementation notes:**
+- WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
+- Cache plugins must explicitly exclude `/dg/download/` — HTTP headers alone are not sufficient
+- `dg_vid` cookie: define whether set unconditionally or only after consent (GDPR/ePrivacy implications)
+- Dropbox credentials: store in `wp_options` with `autoload=no`; exclude from any REST API exposure
+- ACF fields: use `register_meta` or own ACF JSON within the plugin — do not depend on theme's `acf-json/`
+- EventBus: evaluate `do_action('dg/download/click', $event)` before introducing a custom bus class
+
+**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3, 5 (basic hard gate), 9 (retention). Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort), inline gate (keep modal only).
+
+**Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
+**Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
+
+#### Forms _(parallel to gateway sub-phases 0–5)_
+
+- **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
+- **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms or custom REST endpoints
+- _Download gateway gate form_ — already scoped in gateway sub-phase 5; not duplicated here
+
+#### Better aliveness — dynamic homepage _(before Phase 6 visual baseline)_
+
+The homepage feels static. Surface recently added/updated languages, latest videos, rotate banners for current campaigns. Identify content signals (publication date, editor-curated featured flag). Assess JS vs. server-side rendering. Must land before Layer 4 so dynamic content is captured in baseline screenshots.
 
 ---
 
-### Tier 5 — Integration tests + Airtable reconciliation + gateway completion
-_Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results (Tier 3) and benefits from Make.com audit findings (Tier 2). Gateway Phases 6–10 require Phases 0–5._
+### Phase 5 — Integration tests + Airtable reconciliation + gateway completion
 
-- [ ] Layer 3 — Integration Tests
-- [ ] Airtable reconciliation
-- [ ] Download gateway — Phases 6–10 _(Dropbox, GA4, reporting, retention, rollout)_
+_Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results (Phase 3). Gateway sub-phases 6–10 require sub-phases 0–5._
+
+#### Layer 3 — Integration Tests
+
+PHPUnit + `WP_UnitTestCase`. Catches hook/filter wiring, CPT registration, REST endpoint responses, DB reads/writes, query correctness. Requires MySQL test database in CI (Docker service). See [docs/testing-strategy.md](docs/testing-strategy.md) for priority targets.
+
+#### Airtable reconciliation
+
+Three known divergence directions:
+
+1. **WP records missing fields** — 520+ language records arrived incomplete. Reconciliation should happen at the Airtable source: institute field requirements and handle divergence before sync.
+2. **Airtable records missing from WP** — `_airtable_record_id` backfill (2026-03-01) confirmed gaps: 2 languages (`wyim`, `wyug`), ~3 videos (encoding artifacts), 60 captions, 130 lexicons. All absent records are created automatically on next Airtable modification. To force-close: bulk-touch missing records in Airtable.
+3. **Airtable table bloat** — Videos table has 188 fields, most computed or lookup. Correct architecture: resolve linked records in Make.com subscenarios (as Captions already does), then delete Airtable computed columns. Do NOT add more lookup fields — migrate existing ones to subscenarios instead.
+
+#### Download gateway — sub-phases 6–10
+
+- **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
+- **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
+- **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
+- **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button
+- **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
 
 ---
 
-### Tier 6 — Visual baseline + data migration
-_Layer 4 requires Docker + FA + Donors (all done by Tier 4). Stylus is intentionally not required here — the baseline is captured before the preprocessor migration so regressions introduced by the swap are caught in Tier 7. nations_of_origin migration requires Airtable reconciliation (Tier 5)._
+### Phase 6 — Visual baseline + data migration
 
-- [ ] Layer 4 — End-to-End & Visual Regression _(locks the visual baseline; nothing that changes template output should land after this without a deliberate baseline update)_
-- [ ] Migrate `nations_of_origin` _(intentionally deferred; see Backlog)_
+_Donors must land before the Layer 4 baseline is locked so Donors UI is captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration requires Airtable reconciliation (Phase 5)._
+
+#### Complete Donors post type
+
+Net new development — requires product definition and data input before implementation can begin. Build before Layer 4 baseline so Donors UI is included in screenshot comparisons.
+
+#### Donation optimization — donor cards in galleries
+
+After Donors CPT lands: integrate donor cards into gallery instances on relevant pages (campaign pages, homepage). Phase 2 (membership/recurring donors with profile features) is deferred pending a separate spec.
+
+#### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
+
+Playwright. Full user flows, JS behaviour, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs). Nothing that changes template output should land after this without a deliberate baseline update. See [docs/testing-strategy.md](docs/testing-strategy.md) for priority flows.
+
+#### Migrate `nations_of_origin`
+
+`Also spoken in` (the `territories` ACF relationship field) already serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the Make.com sync, and backfilling data. Intentionally deferred until Airtable reconciliation (Phase 5) provides a clean data baseline.
 
 ---
 
-### Tier 7 — Features and monitoring requiring the visual baseline
-_All items here require Layer 4 regression coverage to be active. Maps and Stylus migration both introduce visual changes and must be validated against the established baseline. Performance profiling (Playwright-based) requires Docker + Layer 4._
+### Phase 7 — Features and monitoring requiring the visual baseline
 
-- [ ] Migrate from Stylus _(visual regression baseline from Tier 6 provides the safety net for this CSS preprocessor swap)_
-- [ ] Maps on territory templates
-- [ ] Performance profiling and monitoring
+_All items here introduce visual changes or depend on Layer 4. Maps and Stylus must be validated against the established baseline. Performance profiling (Playwright-based) requires Docker + Layer 4._
+
+#### Migrate from Stylus
+
+Stylus is largely unmaintained. `npm audit` flags 3 high-severity findings (dev-only, no production impact). Choose one option before starting; they are mutually exclusive.
+
+**Option A — Dart Sass** _(recommended)_
+Sass/SCSS syntax maps almost 1:1 to Stylus. Dart Sass ships as a standalone CLI — same watch/build pattern as today. Resolves all audit findings. No template changes required.
+- Rename 42 `.styl` → `.scss`, adjust import syntax, update `package.json` scripts
+- Replace `$blue(tint)` color function with Sass `color.adjust()` or `color.mix()`
+- Drop `stylus`; add `sass`
+
+**Option B — PostCSS + Vite** _(larger investment; modern foundation)_
+Vite as build tool for both CSS and JS. PostCSS plugins provide Stylus-equivalent transforms; Stylus variables become CSS custom properties. JS gets bundled and tree-shaken — resolves the jQuery/bundling gap. Right foundation if Tailwind is ever introduced.
+- Add `vite`, `postcss`, `postcss-nesting`, `postcss-preset-env` to `devDependencies`
+- Convert Stylus variables to CSS custom properties; replace 4 individually-enqueued JS files with a Vite entry point
+- Larger scope — do not start while Phase 6 items are in flight
+
+_Option A can be adopted first; Option B can follow incrementally since Vite supports Sass natively._
+
+#### Maps on territory templates
+
+Territory and region pages would benefit from an embedded map. Applicable to `single-territories.php` and `taxonomy-region.php`. Evaluate Mapbox, Leaflet + OpenStreetMap, Google Maps Embed — ensure no API key is exposed client-side without restriction.
+
+#### Performance profiling and monitoring
+
+No visibility into page load times or query performance in production. Known risk areas: territory pages with large language counts (India: 403, China: 249, Brazil: 200, USA: 197); continent-level region pages aggregating many territories; `get_field()` returning full post objects on relationship fields at scale.
+
+**Goal:** Baseline measurements for key templates (language, territory, region, search); ongoing monitoring (New Relic, Query Monitor in staging, or GitHub Actions synthetic check); alert on regressions.
+
+**Quick win already done:** `get_field('languages', id, false)` on territory pages avoids hydrating hundreds of post objects.
 
 ---
 
-### Tier 8 — Membership-dependent features
+### Phase 8 — Membership-dependent features
+
 _Blocked on membership infrastructure (user accounts), which is not currently in scope. Write a spec before implementation._
 
-- [ ] Gamification _(stamp rally + onboarding; blocked on membership infrastructure — write spec first)_
+#### Gamification
 
----
-
-## Backlog
-
-- [ ] **Dockerize project** for ease of contributor setup
-- [ ] **Airtable reconciliation** — Two known divergence directions:
-  1. **WP records missing fields** — 520+ language records arrived in WordPress incomplete (Make.com syncs without field guarantees). Reconciliation should happen at the Airtable source: institute field requirements there and handle divergence before sync.
-  2. **Airtable records missing from WP** — the `_airtable_record_id` backfill run on production (2026-03-01) confirmed the following gaps. "Not found" = title-match failure; some may be title format differences rather than truly absent posts, but most are genuinely absent. All absent records will be created automatically the next time Make.com triggers on a modification.
-     - Languages: 2 not found (`wyim`, `wyug`)
-     - Videos: 3 not stamped — 2 are HTML-entity encoding artifacts in the CSV (`&#039;` vs `'`; WP posts likely exist, will resolve on next sync); 1 is a post-export new record
-     - Captions: 60 not found (absent from WP)
-     - Lexicons: 130 of 152 not found — only 22 WP lexicon posts exist; the CPT is severely under-populated relative to Airtable
-
-     To force-close the gap without waiting for organic Airtable modifications: bulk-touch the missing records in Airtable (e.g. update a non-critical field) to trigger the Make.com scenario and create the WP posts.
-  3. **Airtable table bloat** — Videos table has 188 fields, most computed or lookup. This is the technical debt to address during reconciliation. Correct architecture: resolve linked records in Make.com subscenarios (as Captions already does for Languages, Videos, Creators), then delete the Airtable computed columns. Do NOT add more Airtable lookup fields to support sync — migrate existing ones to subscenarios instead.
-- [ ] **Complete Donors post type** (in progress, stalled)
-- [ ] **Maps on territory templates**
-  Territory and region pages would benefit from an embedded map showing the geographic area. Applicable to both `single-territories.php` and `taxonomy-region.php`.
-  **Goal:** Evaluate map options (Mapbox, Leaflet + OpenStreetMap, Google Maps Embed); implement on territory and region templates; ensure no API key is exposed client-side without restriction.
-
-- [ ] **Download gateway plugin**
-  Downloads currently go through unprotected direct file URLs or `force_download_file()` (proxy streaming, no logging, no auth). The goal is a standalone plugin that logs every download, optionally gates access with a name/email modal, supports Dropbox-hosted assets via temporary API links, forwards events to GA4, and auto-anonymizes collected data.
-
-  **Full spec:** separate document provided to Claude Code. Summary below.
-
-  **Architectural decisions (resolved):**
-  - Signed expiring redirect URLs — not proxy streaming. Replaces the existing `force_download_file()` readfile approach.
-  - CPT strategy: use existing `resources` and `document_files` CPTs rather than introducing `dg_resource`. Records not yet populated so migration risk is low.
-  - Plugin namespace: `download-gateway` / prefix `dg_`.
-
-  **Schema additions (3 tables + 1 gap fix):**
-  - `wp_dg_people` — email_hash, email, name, consent fields, anonymization flags
-  - `wp_dg_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
-  - `wp_dg_webhook_delivery` — retry queue and dead-letter
-  - `wp_dg_tokens` (**not in original spec — required**) — one-time download tokens with expiry; needed by Phase 3 gate check and Phase 5 gate submission
-
-  **Phases:**
-  - **Phase 0** — Plugin scaffold: activation/deactivation/uninstall hooks, feature flag constant, settings page placeholder, logging conventions
-  - **Phase 1** — Data model: create tables with indexes on activation; idempotent migrations
-  - **Phase 2a** — Core primitives (unblocks Phase 3): PolicyResolver with precedence (per-resource → taxonomy → global), SettingsRepository, EventBus, DownloadEventRepository
-  - **Phase 2b** — Form/gate primitives (unblocks Phase 5): FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
-  - **Phase 2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
-  - **Phase 3** — Download endpoint: `/dg/download/{token-or-post-id}`, `dg_vid` visitor cookie, click event logging, UTM/referrer capture, IP hashing, no-cache headers
-  - **Phase 4** — Resource authoring: attach gateway fields to existing `resources`/`document_files` posts via ACF (file_url, storage_type, dropbox_path/share_id, version); metabox showing gateway URL; `[dg_download]` shortcode
-  - **Phase 5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/dg/v1/gate`; person upsert; one-time token returned; nonce + rate limit + honeypot
-  - **Phase 6** — Storage adapters + Dropbox: local/media/external adapters issue expiring tokenized redirects; Dropbox adapter calls `files/get_temporary_link`, caches result briefly, stores credentials in options with `autoload=no`
-  - **Phase 7** — GA4 forwarding: EventBus subscriber; client-side where possible; first-party log unaffected if GA4 blocked. Events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
-  - **Phase 8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
-  - **Phase 9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button
-  - **Phase 10** — Rollout: convert resources hub first, then top downloads; deprecate and remove `document-download-handler.php` `force_download_file()` once coverage is complete
-
-  **Cut lines (if scope must shrink):**
-  Must-have: Phase 0–3, Phase 5 (basic hard gate), Phase 9 (retention)
-  Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort single attempt), inline gate option (keep modal only)
-
-  **Implementation notes:**
-  - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
-  - Cache plugins (WP Rocket etc.) must explicitly exclude `/dg/download/` — HTTP headers alone are not sufficient
-  - `dg_vid` cookie: define whether it is set unconditionally or only after consent (GDPR/ePrivacy implications)
-  - Dropbox credentials: store in `wp_options` with `autoload=no`; ensure excluded from any REST API exposure
-  - ACF fields on plugin-registered CPT: use `register_meta` or own ACF JSON within the plugin — do not depend on theme's `acf-json/` directory
-  - EventBus: evaluate whether `do_action('dg/download/click', $event)` is sufficient before introducing a custom bus class
-
-  **Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
-  **Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
-
-- [ ] **Enhanced search results page**
-  The current search results page is basic. Replace with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern. Adds meaningful discovery value.
-
-- [ ] **Donation optimization**
-  After the Donors CPT lands: (1) integrate donor cards into gallery instances on relevant pages (campaign pages, homepage); (2) `membership` — future phase where recurring donors receive profile features. Scope phase 1 only for now; membership is deferred until a separate spec is written.
-
-- [ ] **Forms**
-  Three sub-items:
-  - **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
-  - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms (Gravity Forms or custom REST endpoints)
-  - **Download gateway gate form** — already scoped in gateway Phase 5; not duplicated here
-
-- [ ] **Fellows meta query OOM on continent region pages** (`taxonomy-region.php`)
-  On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. The `/territories/?region=asia` archive OOM was resolved in PR #491 (separate path). Fix for this page: replace the per-territory LIKE loop with a `$wpdb` direct query or a JOIN-based approach that scales independently of territory count.
-
-- [ ] **Better aliveness**
-  The homepage feels static. Surface the most recently added/updated languages, latest videos, and rotate banners to reflect current campaigns. Identify which content signals are most meaningful (publication date? editor-curated featured flag?) and build the query logic. Assess JS vs. server-side rendering needs. Must land before Layer 4 visual baseline so the dynamic content is captured in screenshot comparisons.
-
-- [ ] **Gamification**
-  Stamp rally: users earn "stamps" for core actions (watch a video, add a language, share a page). Onboarding flow: guide new users/members through first actions. Matches the Wikitongues travel/documentation brand. **Hard dependency:** membership infrastructure (user accounts — not currently in scope). Write a separate spec before implementation. Deferred to Tier 8+.
-
----
-
-## Code Quality
-
-_Previously completed items in [plan-archive.md](plan-archive.md)._
-
-- [ ] **Resolve `class-wt-rest-posts-controller.php` duplication**
-  The file exists in both `includes/` (root) and `wp-content/themes/blankslate-child/includes/`. One is the source of truth; the other should be removed or replaced with a `require`.
-
-- [ ] **Move root-level `includes/` into `wp-content/mu-plugins/` or the theme**
-  The root `includes/` directory is non-standard — WordPress has no awareness of it and files must be manually required somewhere (likely `functions.php`). Move to a must-use plugin (`wp-content/mu-plugins/`) if the code is site-wide, or into the theme's `includes/` if it is theme-specific. Resolve the duplication item above first.
-
-- [ ] **Reorganize theme `includes/` into subdirectories by concern**
-  Currently 24 flat files. Suggested grouping:
-  - `api/` — REST endpoints, controller
-  - `admin/` — admin helpers, batch operations
-  - `taxonomies/` — CPT and taxonomy registration
-  - `template/` — template helpers, router
-  - `integrations/` — import-captions, events filter, license handling
-
-- [ ] **Autoloader for CPTs/includes**
-  `includes/custom-post-types.php` manually `require_once`s 15 files. Every new CPT requires editing this orchestrator. Replace with a directory-scanning autoloader that automatically requires every `.php` file in `includes/custom-post-types/` — no manual step when adding new CPTs. Do as part of (or immediately after) the Reorganize includes item.
-
-- [ ] **Archive template refactor**
-  `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern (build args → `create_gallery_instance()` → handle filter params) with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach to reduce per-template repetition while keeping template-specific filter logic clear.
-  Note: `archive-donors.php` intentionally does NOT use `create_gallery_instance()` and is out of scope for this refactor.
-
-- [ ] **`gallery-territories.php` — merge double query + fix minor bugs**
-  Four issues identified in the territory card template (`wt-gallery/includes/templates/gallery-territories.php`):
-  - **Double query** — a count query (`posts_per_page=1`, `fields=ids`) runs before a preview query (`posts_per_page=4`). Drop `no_found_rows=true` from the preview query and read `found_posts` from it directly, halving the query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page).
-  - **XSS** — `get_the_title()` in the `alt` attribute (line 48) is not escaped; should be `esc_attr( get_the_title() )`.
-  - **Blank label** — `get_field('standard_name', ...)` returns `null`/`false` when the field is unset; no fallback to `post_title` means the language label renders empty.
-  - **Filter bypass** — `$language_post->post_title` is used for the `get_videos_by_featured_language()` lookup instead of `get_the_title()`, bypassing the `the_title` filter chain. Low risk now but diverges from the rest of the codebase.
-
-- [ ] **`archive-territories.php` — make `include_children` behaviour explicit**
-  The `?region=<continent-slug>` filter path relies on WordPress defaulting `tax_query` to `include_children => true` for hierarchical taxonomies. This is correct and produces the expected result (all territories in Asia and its sub-regions), but the intent is implicit. If `build_gallery_query_args()` ever adds an explicit `include_children => false`, continent archive pages silently break. Either add an explicit `include_children => true` in the query builder for hierarchical taxonomy cases, or add a comment in `archive-territories.php` documenting the reliance.
-
----
-
-## Plugins
-
-- [x] **Delete `wt-form` plugin** — done ([archive](plan-archive.md))
-
-- [x] **Audit `integromat-connector` REST API exposure** — done ([archive](plan-archive.md))
-
-- [x] **Audit Make.com scenarios** — done ([archive](plan-archive.md))
-
-- [x] **`wt-airtable-sync` plugin** — Phases 0–3 complete; production cutover 2026-03-01; `resources` CPT deferred ([docs](docs/airtable-sync.md), [archive](plan-archive.md))
-
----
-
-## Infrastructure
-
-- [ ] **Migrate from Stylus to a maintained CSS preprocessor**
-  Stylus is largely unmaintained. Its dependency chain (`glob@7` → `minimatch@3`) has known ReDoS vulnerabilities (dev-only, no production impact). `npm audit` flags 3 high-severity findings with no clean in-place fix.
-
-  Two options are scoped below. Choose one before starting; they are mutually exclusive.
-
-  **Option A — Dart Sass** _(recommended near-term)_
-  Lowest-friction migration. Sass/SCSS syntax maps almost 1:1 to Stylus: variables, nesting, mixins, and functions carry over with minor adjustments (`@use`/`@forward` replace `@require`; Stylus color functions become Sass equivalents). Dart Sass ships as a standalone CLI — no bundler required. Same watch/build command pattern as today (`sass --watch ...`). Resolves all audit findings. No template changes required.
-  - Rename 42 `.styl` → `.scss`, adjust import syntax, update `package.json` scripts
-  - Replace `$blue(tint)` color function with Sass `color.adjust()` or `color.mix()`
-  - Drop `stylus` from `devDependencies`; add `sass`
-
-  **Option B — PostCSS + Vite** _(moderate investment; modern foundation)_
-  Introduces Vite as a build tool for both CSS and JS. PostCSS plugins (`postcss-nesting`, `postcss-preset-env`) provide Stylus-equivalent transforms; Stylus variables become CSS custom properties (which also integrate with WordPress `theme.json`). JS gets bundled, tree-shaken, and source-mapped — resolves the jQuery/bundling gap alongside CSS. Correct foundation if Tailwind is ever introduced for new components.
-  - Add `vite`, `postcss`, `postcss-nesting`, `postcss-preset-env` to `devDependencies`
-  - Convert Stylus variables to CSS custom properties; keep component file structure
-  - Replace 4 individually-enqueued JS files with a Vite-bundled entry point
-  - Update `wp_enqueue_style`/`wp_enqueue_script` calls to reference Vite output paths
-  - Larger scope than Option A; do not start while other Tier 2 items are in flight
-
-  _If Option A lands and the pipeline later needs modernizing, Option B can be adopted incrementally — Vite supports Sass natively._
-
-- [x] **Replace Font Awesome** — done ([archive](plan-archive.md))
-
-- [ ] **Staging environment data sync**
-  Staging is not kept in sync with production data. As of 2026-02-28, staging is significantly behind: captions (257 vs 320), lexicons (29 vs 157), videos (1860 vs 1863), languages (8084 vs 8087). Any staging test against features that depend on content volume or specific records (wt-airtable-sync, Layer 3 integration tests, performance profiling) is unreliable until this is resolved.
-
-  **Goal:** a documented, repeatable process to restore staging DB from production on demand, with uploads directory optionally synced. Should be executable in under 15 minutes without manual fiddling.
-
-  **Approach (GreenGeeks shared hosting):**
-  - `mysqldump` production DB via SSH → transfer to staging → restore via `mysql` or WP-CLI (`wp db import`)
-  - Optionally `rsync wp-content/uploads/` from production to staging
-  - Run `wp search-replace production-url staging-url` after import to fix serialized URLs
-  - Document as a runbook in `docs/staging-sync.md`; no automation required initially — manual on-demand is sufficient
-
-  **Constraints:**
-  - GreenGeeks shared hosting — no Docker, no snapshot tooling
-  - `wp-content/uploads/` can be large; a full rsync may be slow; consider skipping and relying on production CDN URLs for media in staging
-  - Ensure staging `wp-config.php` has separate DB credentials and `WP_DEBUG` enabled before import
-
-- [ ] **Performance profiling and monitoring**
-  No visibility into page load times or query performance in production. Known risk areas already identified: territory pages with large language counts (India: 403 languages, China: 249, Brazil: 200, USA: 197) and continent-level region pages aggregating many territories. `get_field()` returning full post objects on relationship fields at scale is the primary pattern to watch.
-  **Goal:** Establish baseline load time measurements for key page templates (language, territory, region, search), set up ongoing monitoring (e.g. New Relic, Query Monitor in staging, or a lightweight GitHub Actions synthetic check), and alert on regressions.
-  **Quick wins already done:** `get_field('languages', id, false)` on territory pages to avoid hydrating hundreds of post objects.
-
-- [x] **Evaluate Bedrock for composer-managed WordPress** — decision: No ([archive](plan-archive.md))
-
----
-
-## Testing Strategy
-
-Goal: professional-grade coverage — no visual regressions, no behavior breakage, no security gaps.
-Coverage is built in layers, from fast/cheap to slow/comprehensive. Each phase depends on the one before it.
-
----
-
-### Layer 1 — Static Analysis ✅ (Phase 2, complete)
-**Tools:** PHPCS + WordPress Coding Standards, ESLint
-**Catches:** coding standards violations, basic security anti-patterns (unescaped output, direct DB queries), JS style issues
-**Runs:** on every PR via GitHub Actions
-
-**PHPStan ✅ (Phase 4, complete)**
-Type-safety analysis at level 5 with `szepeviktor/phpstan-wordpress` stubs. Baseline of
-pre-existing violations in `phpstan-baseline.neon`; CI fails only on new violations.
-Runs on every PR via GitHub Actions alongside PHPCS.
-
----
-
-### Layer 2 — Unit Tests ✅ (Phase 3, complete)
-**Tools:** PHPUnit 9.6 + WP_Mock 1.1
-**Catches:** regressions in isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math
-**Runs:** on every PR via GitHub Actions
-**Does not cover:** templates, DB queries, actual rendering, hook/filter wiring
-
-**Covered functions:**
-- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()`
-- `acf-helpers.php` → `wt_meta_value()`
-- `search-filter.php` → `searchfilter()` regex routing
-- `render_gallery_items.php` → `generate_gallery_pagination()`
-- `wt-gallery/helpers.php` → `getDomainFromUrl()`
-- `template-helpers.php` → `get_environment()`, `wt_prefix_the()`
-- `events-filter.php` → `format_event_date_with_proximity()`
-- `wt-gallery/includes/queries.php` → `build_gallery_query_args()` (10 tests)
-
-**Expand over time:** any new function with non-trivial logic should ship with a unit test.
-
-**Deferred unit test candidates:**
-- **Territory name list formatter** — the Oxford-comma builder in `single-languages.php` (maps `$territories` → "Dominica, Saint Kitts and Nevis, and United Kingdom") has real edge-case risk (1 item / 2 items / 3+ items). If extracted into a named helper (e.g. `wt_format_list()`), it becomes a trivially testable pure function.
-- **`GalleryQueryArgsTest` regression guard** — an assertion that `linguistic_genealogy` is absent from the `in_array` exact-match list, mirroring the `writing_systems` removal test that was deleted with PR #467.
-- **Archive parameter resolution (`archive-languages.php`, `archive-territories.php`)** — deferred to Layer 3; mixes `$_GET`, `get_term_by()`, and `create_gallery_instance()` in a way that requires a running WP instance to test meaningfully.
-- **Template rendering (`single-languages.php`)** — deferred to Layer 4 (E2E); territory ID merging and gallery title logic are embedded in the template alongside `get_field()` calls.
-- **`GalleryQueryArgsTest` — `include_children` for hierarchical taxonomies** — add an assertion that `tax_query` for the `region` taxonomy does not set `include_children => false`, documenting the intentional reliance on WP's default behaviour for the `archive-territories.php` continent filter path.
-
-**Known constraints and upgrade path:**
-WP_Mock 1.x uses [Patchwork](https://github.com/antecedent/patchwork) to redefine global PHP functions at runtime, which is fundamentally at odds with how PHPUnit 10+ works internally. As a result, the entire WordPress unit testing ecosystem (WP_Mock, Brain Monkey) is locked to PHPUnit ^9.6, which is in maintenance mode (security fixes only). PHPUnit 9.6 will reach end-of-life; PHPUnit 10+ is the present and future of PHP testing.
-
-The forward-looking exit from this constraint is not to wait for WP_Mock to catch up — it's to reduce the surface area of WP function mocking in the first place. Functions that receive `is_admin()` or `get_query_var()` results as arguments rather than calling them directly need no mocking at all and can be tested with plain PHPUnit against any version. The refactor direction is: **push WP API calls to the edges of functions**, keeping the logic core pure. This is both a testability improvement and a general architectural improvement (separation of concerns).
-
-As functions are refactored to be purer, WP_Mock can be removed from individual test classes incrementally. When WP_Mock is no longer needed by any test, we can upgrade to PHPUnit 10+ and drop the dependency entirely.
-
----
-
-### Layer 3 — Integration Tests (Phase 5, future)
-**Tools:** PHPUnit + `WP_UnitTestCase` (official WordPress test suite)
-**Catches:** hook/filter wiring, CPT registration, REST endpoint responses, DB reads/writes, query correctness
-**Covers templates indirectly:** tests the functions templates call, not the template files themselves
-**Requires:** MySQL test database in CI (Docker service)
-
-**Priority targets:** custom REST endpoints (`rest-endpoints.php`), `get_custom_gallery_query()` query logic, `searchfilter()` end-to-end with real WP_Query, CPT/taxonomy registration, `archive-territories.php` `?region=` param resolution (including continent slug with child term expansion).
-
----
-
-### Layer 4 — End-to-End & Visual Regression (Phase 6, future)
-**Tools:** Playwright
-**Catches:** full user flows (search a language, view a video, submit a form), JS behavior, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs)
-**This is the right layer for testing templates** — a real browser hits real page URLs; no WP internals to mock
-**Requires:** running WP instance in CI (Docker Compose with WP + MySQL + seeded content)
-
-**Priority flows:** language search (ISO / glottocode / generic term), language page render, video page render, gallery pagination, admin-restricted pages return 403.
-
-**Visual regression:** screenshot baseline per key page template; diff on every PR. Catches CSS/layout changes that behavior assertions miss.
-
----
-
-### Layer 5 — Data Integrity (Phase 7, future)
-**Tools:** WP-CLI custom command, server cron or GitHub Actions scheduled workflow
-**Catches:** duplicate iso_codes/standard_names (root cause of the wblu/blu routing bug), missing required ACF fields, slug/iso_code mismatches, records that would cause routing or display failures
-**Runs:** weekly scheduled job; logs results; reports violations (log file + optional GitHub issue or admin notice)
-**Does not replace:** Airtable reconciliation (see Backlog) — complements it by catching problems that slip through to WordPress
-
-**Priority checks:**
-- No two published language posts share the same `iso_code` ACF value
-- No two published language posts share the same `standard_name` / `post_title`
-- No published language post has a blank `iso_code`
-- `post_name` (URL slug) matches `iso_code` for all published language posts — mismatch causes silent routing failures like the wblu/blu bug
-- **Airtable → WP record gap** — cross-check each CPT against the Airtable API to identify records that exist in Airtable but have no corresponding WP post. Production backfill (2026-03-01) confirmed: 2 languages, ~3 videos (likely encoding artifacts), 60 captions, 130 lexicons absent from WP. Absent records are created automatically on next Make.com trigger; to force-close the gap: bulk-touch the missing Airtable records. Some "not found" entries may be title-format mismatches rather than truly absent; a definitive count requires the Airtable API cross-check. Output: list of Airtable record IDs with no matching `_airtable_record_id` in WP.
-
-**Implementation approach:**
-- WP-CLI command (`wp wt integrity check`) registered in a new `includes/cli/` file in the theme
-- Command queries the DB directly via `$wpdb`, outputs a structured report (pass/fail per check, count of violations, sample offending records)
-- Server cron runs weekly: `wp wt integrity check >> /path/to/integrity.log 2>&1`
-- GitHub Actions `schedule` workflow (weekly) can SSH to staging and run the command, posting results as a job summary
-- Violations do not block deploys — this is a monitoring/alerting layer, not a gate
-
----
-
-### Security
-
-- [x] **PHPCS security sniffs** — runs on every PR via Layer 1
-- [ ] **WPScan in CI** — WPScan API is no longer free; deferred. Recommended replacement: install Patchstack or Wordfence on the production site for plugin/theme vulnerability monitoring without a paid API dependency.
-- [x] **Secrets scanning** — TruffleHog on every PR (pinned SHA v3.93.4); GitHub native secret scanning + push protection enabled on repo ([archive](plan-archive.md))
-- [x] **Security review of `integromat-connector`** — audited (see Plugins section); not tracked in VCS as it is a third-party plugin
-- [x] **Audit Make.com scenarios** — done; see Plugins section and `docs/make-audit-findings.md`
+Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure. Write a separate spec before implementation.
