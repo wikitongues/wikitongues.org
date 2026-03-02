@@ -4,6 +4,8 @@
 - .gitignore
 - readme.md
 - plan.md
+- plan-archive.md
+- docs/
 - temp/
 - vendor/
 - node_modules/
