@@ -63,61 +63,13 @@ _Complete._
 
 ### Phase 3 — Code quality + data integrity baseline
 
-_Parallel tracks. Code quality chain (A→E) must complete before Docker (Phase 4) so the image captures the final structure. F–L are independent parallel tracks._
+_Code quality chain (1→5) must complete before Docker (Phase 4) so the image captures the final structure. Parallel tracks (6–10) have no ordering constraint relative to each other or the chain._
 
-#### A. Resolve `class-wt-rest-posts-controller.php` duplication
+#### 1. ~~Resolve `class-wt-rest-posts-controller.php` duplication~~ ✅
 
-The file exists in both root `includes/` and `wp-content/themes/blankslate-child/includes/`. Root copy is orphaned — safe delete; theme copy is canonical.
+Root copy was orphaned — deleted. Theme copy is canonical.
 
-#### B. Move root-level `includes/`
-
-The root `includes/` directory is non-standard — WordPress has no awareness of it. Move to `wp-content/mu-plugins/` if the code is site-wide, or into the theme's `includes/` if theme-specific. Requires A first.
-
-#### C. Reorganize theme `includes/` into subdirectories by concern
-
-Currently 24 flat files. Suggested grouping:
-- `api/` — REST endpoints, controller
-- `admin/` — admin helpers, batch operations
-- `taxonomies/` — CPT and taxonomy registration
-- `template/` — template helpers, router
-- `integrations/` — import-captions, events filter, license handling
-
-#### D. Autoloader for CPTs/includes
-
-`includes/custom-post-types.php` manually `require_once`s 15 files. Replace with a directory-scanning autoloader. Do as part of, or immediately after, C.
-
-#### E. Archive template refactor _(before Docker)_
-
-`archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
-
-#### F. `gallery-territories.php` — merge double query + fix minor bugs
-
-- **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
-- **XSS** — `get_the_title()` in the `alt` attribute (line 48) not escaped; should be `esc_attr( get_the_title() )`
-- **Blank label** — `get_field('standard_name', ...)` returns null when unset; no fallback to `post_title`
-- **Filter bypass** — `$language_post->post_title` used for video lookup instead of `get_the_title()`
-
-#### G. `archive-territories.php` — make `include_children` behaviour explicit
-
-The `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add an explicit `include_children => true` in the query builder or a comment documenting the reliance — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
-
-#### H. `post-object-helpers.php` removal
-
-`wp-content/themes/blankslate-child/includes/post-object-helpers.php` and the root `includes/` copy are dead code — `handle_post_object()` is no longer called by any active code path since the integromat-connector write paths were retired (2026-03-01). Remove as part of B.
-
-#### I. Root-level file hygiene
-
-Loose temporary and one-off files have accumulated at the project root (e.g. testing scripts, migration files, ad hoc exports). Audit and remove stale root-level files as part of the code quality pass; document any that should be kept in `docs/` or moved to `temp/`.
-
-#### J. Fellows meta query OOM — `taxonomy-region.php`
-
-On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
-
-#### K. Layer 5 — Data Integrity _(parallel; no Docker required)_
-
-Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
-
-#### L. Staging environment data sync _(parallel)_
+#### 2. Staging environment data sync _(do first — unblocks reliable staging tests for items 3–5)_
 
 Staging is significantly behind production as of 2026-02-28: captions (257 vs 320), lexicons (29 vs 157), videos (1860 vs 1863), languages (8084 vs 8087). Any staging test against content-dependent features is unreliable until resolved.
 
@@ -127,7 +79,53 @@ Staging is significantly behind production as of 2026-02-28: captions (257 vs 32
 - `wp search-replace production-url staging-url` after import to fix serialized URLs
 - Document as a runbook in `docs/staging-sync.md`; manual on-demand is sufficient initially
 
-#### M. Enhanced search results page _(parallel; no deps)_
+#### 3. Remove dead code + clear root `includes/` _(combines former B + H)_
+
+`handle_post_object()` and `set_post_object_field()` in `post-object-helpers.php` are dead — the integromat-connector write paths were retired 2026-03-01 and `_WT_TMP_` fields cleaned up. Full removal chain:
+
+- Delete `post-object-helpers.php` (both copies: root `includes/` and theme `includes/`)
+- Strip `create_item()` / `update_item()` overrides and `require_once` from `class-wt-rest-posts-controller.php`; the now-empty subclass can be deleted entirely
+- Remove `'rest_controller_class' => 'WT_REST_Posts_Controller'` from all 7 CPT registrations (`languages`, `videos`, `captions`, `territories`, `lexicons`, `partners`, `resources`)
+- Remove `require_once 'includes/class-wt-rest-posts-controller.php'` from `functions.php`
+- Delete now-empty root `includes/` directory
+
+#### 4. Reorganize theme `includes/` into subdirectories + autoloader _(combines former C + D)_
+
+Currently 24 flat files. Reorganize into subdirectories by concern and replace the manual `require_once` list in `functions.php` with a directory-scanning autoloader in one pass:
+- `api/` — REST endpoints, controller
+- `admin/` — admin helpers, batch operations
+- `taxonomies/` — CPT and taxonomy registration
+- `template/` — template helpers, router
+- `integrations/` — import-captions, events filter, license handling
+
+#### 5. Archive template refactor _(before Docker)_
+
+`archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
+
+#### 6. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
+
+**`gallery-territories.php`:**
+- **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
+- **XSS** — `get_the_title()` in the `alt` attribute not escaped; should be `esc_attr( get_the_title() )`
+- **Blank label** — `get_field('standard_name', ...)` returns null when unset; no fallback to `post_title`
+- **Filter bypass** — `$language_post->post_title` used for video lookup instead of `get_the_title()`
+
+**`archive-territories.php`:**
+- `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add explicit `include_children => true` or a comment — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
+
+#### 7. Fellows meta query OOM — `taxonomy-region.php`
+
+On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
+
+#### 8. Root-level file hygiene _(parallel)_
+
+`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining: full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain.
+
+#### 9. Layer 5 — Data Integrity _(parallel; no Docker required)_
+
+Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
+
+#### 10. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
 
