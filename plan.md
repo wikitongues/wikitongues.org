@@ -117,9 +117,9 @@ Currently 24 flat files. Reorganize into subdirectories by concern and replace t
 
 On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
 
-#### 8. ~~Root-level file hygiene~~ ✅
+#### 8. Root-level file hygiene _(parallel)_
 
-`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established. (PRs #498–500)
+`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining: full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain.
 
 #### 9. Layer 5 — Data Integrity _(parallel; no Docker required)_
 
