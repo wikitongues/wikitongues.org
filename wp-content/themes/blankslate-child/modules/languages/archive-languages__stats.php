@@ -40,16 +40,16 @@ if ( false === $stats ) {
 	$language_ids   = $materials_query->posts;
 
 	// 2. Total materials: all published videos + lexicons + resources.
-	$video_count    = (int) wp_count_posts( 'videos' )->publish;
-	$lexicon_count  = (int) wp_count_posts( 'lexicons' )->publish;
-	$resource_count = (int) wp_count_posts( 'resources' )->publish;
+	$video_count     = (int) wp_count_posts( 'videos' )->publish;
+	$lexicon_count   = (int) wp_count_posts( 'lexicons' )->publish;
+	$resource_count  = (int) wp_count_posts( 'resources' )->publish;
 	$total_materials = $video_count + $lexicon_count + $resource_count;
 
 	$total_languages = (int) wp_count_posts( 'languages' )->publish;
 
 	// 3. Nations: distinct territory IDs from qualifying languages,
 	// validated against actual published territory posts to exclude stale IDs.
-	$all_territory_ids  = get_posts(
+	$all_territory_ids   = get_posts(
 		array(
 			'post_type'      => 'territories',
 			'post_status'    => 'publish',
@@ -58,7 +58,7 @@ if ( false === $stats ) {
 			'no_found_rows'  => true,
 		)
 	);
-	$total_territories  = count( $all_territory_ids );
+	$total_territories   = count( $all_territory_ids );
 	$valid_territory_set = array_flip( $all_territory_ids );
 
 	$matched_territories = array();
@@ -100,7 +100,7 @@ $nations_pct   = ( $total_territories > 0 ) ? round( $nations_count / $total_ter
 <section class="wt_archive-languages__stats">
 	<div class="wt_archive-languages__stats-item">
 		<strong><?php echo number_format( $language_count ); ?> languages</strong>
-		<span>over <?php echo esc_html( $languages_pct ); ?>% of every language in the world</span>
+		<span>over <?php echo esc_html( (string) $languages_pct ); ?>% of every language in the world</span>
 	</div>
 	<div class="wt_archive-languages__stats-item">
 		<strong><?php echo number_format( $total_materials ); ?> resources</strong>
@@ -108,6 +108,6 @@ $nations_pct   = ( $total_territories > 0 ) ? round( $nations_count / $total_ter
 	</div>
 	<div class="wt_archive-languages__stats-item">
 		<strong><?php echo number_format( $nations_count ); ?> nations</strong>
-		<span>our work extends over <?php echo esc_html( $nations_pct ); ?>% of the world</span>
+		<span>our work extends over <?php echo esc_html( (string) $nations_pct ); ?>% of the world</span>
 	</div>
 </section>

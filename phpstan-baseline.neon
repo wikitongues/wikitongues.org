@@ -502,6 +502,11 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/languages/archive-languages__stats.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
 			count: 10
 			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
 
