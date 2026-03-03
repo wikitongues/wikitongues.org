@@ -200,6 +200,20 @@ function update_custom_fields_counts( $post_id ) {
 	}
 }
 
+// ====================
+// Invalidate Archive Stats Transient
+// ====================
+add_action( 'save_post', 'wt_invalidate_archive_stats' );
+function wt_invalidate_archive_stats( $post_id ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	$watched = array( 'languages', 'videos', 'lexicons', 'resources', 'territories' );
+	if ( in_array( get_post_type( $post_id ), $watched, true ) ) {
+		delete_transient( 'wt_archive_stats' );
+	}
+}
+
 add_action( 'save_post_languages', 'update_custom_fields_counts_on_save' );
 function update_custom_fields_counts_on_save( $post_id ) {
 	// Check if batch update is currently in progress
