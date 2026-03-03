@@ -162,7 +162,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 3
+			count: 5
 			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
 
 		-

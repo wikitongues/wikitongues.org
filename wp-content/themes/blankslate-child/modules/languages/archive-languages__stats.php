@@ -5,39 +5,23 @@
 $stats = get_transient( 'wt_archive_stats' );
 
 if ( false === $stats ) {
-	// 1. Languages with at least one video, lexicon, or external resource.
-	$materials_query = new WP_Query(
-		array(
-			'post_type'      => 'languages',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-			'meta_query'     => array(
-				'relation' => 'OR',
-				array(
-					'key'     => 'speakers_recorded_count',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'NUMERIC',
-				),
-				array(
-					'key'     => 'lexicons_count',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'NUMERIC',
-				),
-				array(
-					'key'     => 'external_resources_count',
-					'value'   => 0,
-					'compare' => '>',
-					'type'    => 'NUMERIC',
-				),
-			),
-		)
+	global $wpdb;
+
+	// 1. Languages with at least one video, lexicon (source or target), or external resource.
+	// Queries raw ACF field meta values directly — avoids reliance on stale count metas.
+	// The REGEXP matches any non-empty serialized PHP array (a:1:{...} or more).
+	$language_ids = $wpdb->get_col(
+		"SELECT DISTINCT p.ID
+		FROM {$wpdb->posts} p
+		INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+		WHERE p.post_type = 'languages'
+		AND p.post_status = 'publish'
+		AND pm.meta_key IN ('speakers_recorded', 'lexicon_source', 'lexicon_target', 'external_resources')
+		AND pm.meta_value REGEXP '^a:[1-9][0-9]*:'"
 	);
 
-	$language_count = $materials_query->found_posts;
-	$language_ids   = $materials_query->posts;
+	$language_ids   = $language_ids ?: array();
+	$language_count = count( $language_ids );
 
 	// 2. Total materials: all published videos + lexicons + resources.
 	$video_count     = (int) wp_count_posts( 'videos' )->publish;

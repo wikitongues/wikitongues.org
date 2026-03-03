@@ -109,10 +109,16 @@ function fill_languages_custom_columns( $column, $post_id ) {
 			break;
 
 		case 'speakers_recorded':
-		case 'lexicons':
 		case 'external_resources':
 			$field = get_field( $column, $post_id );
 			$count = is_array( $field ) ? count( $field ) : ( ( $field instanceof WP_Post ) ? 1 : 0 );
+			echo esc_html( $count );
+			break;
+
+		case 'lexicons':
+			$source = get_field( 'lexicon_source', $post_id );
+			$target = get_field( 'lexicon_target', $post_id );
+			$count  = ( is_array( $source ) ? count( $source ) : 0 ) + ( is_array( $target ) ? count( $target ) : 0 );
 			echo esc_html( $count );
 			break;
 	}
@@ -184,17 +190,23 @@ function update_custom_fields_counts( $post_id ) {
 		return;
 	}
 
-	$fields = array( 'speakers_recorded', 'lexicons', 'external_resources' );
+	$fields = array( 'speakers_recorded', 'lexicon_source', 'lexicon_target', 'external_resources' );
+
+	$lexicons_total = 0;
 
 	foreach ( $fields as $field ) {
 		$value = get_field( $field, $post_id );
-
 		$count = is_array( $value ) ? count( $value ) : ( ( ! empty( $value ) ) ? 1 : 0 );
-
 		update_post_meta( $post_id, "{$field}_count", $count );
+
+		if ( 'lexicon_source' === $field || 'lexicon_target' === $field ) {
+			$lexicons_total += $count;
+		}
 	}
 
-	// Conditional logging
+	// Combined count used for admin column sorting.
+	update_post_meta( $post_id, 'lexicons_count', $lexicons_total );
+
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		error_log( "Updated counts for post ID: $post_id" );
 	}
@@ -214,30 +226,14 @@ function wt_invalidate_archive_stats( $post_id ) {
 	}
 }
 
-add_action( 'save_post_languages', 'update_custom_fields_counts_on_save' );
+// acf/save_post fires after ACF has written all field values, so get_field() returns
+// the newly saved data. This replaces the previous save_post_languages hook which
+// checked $_POST['acf'][$field_name] — a check that never matched because ACF keys
+// POST data by field key, not field name.
+add_action( 'acf/save_post', 'update_custom_fields_counts_on_save' );
 function update_custom_fields_counts_on_save( $post_id ) {
-	// Check if batch update is currently in progress
 	if ( ! empty( $GLOBALS['batch_update_in_progress'] ) ) {
 		return;
 	}
-
-	// Check if this is an autosave or a revision.
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-
-	// Check if relevant fields have changed
-	$fields         = array( 'speakers_recorded', 'lexicons', 'external_resources' );
-	$fields_changed = false;
-
-	foreach ( $fields as $field ) {
-		if ( isset( $_POST['acf'][ $field ] ) ) {
-			$fields_changed = true;
-			break;
-		}
-	}
-
-	if ( $fields_changed ) {
-		update_custom_fields_counts( $post_id );
-	}
+	update_custom_fields_counts( $post_id );
 }
