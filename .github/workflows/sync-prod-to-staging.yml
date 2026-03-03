@@ -39,17 +39,44 @@ jobs:
             mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' ${{ secrets.STAGING_DB_NAME }} < ${{ env.DUMP_PATH }}
           "
 
+      - name: Verify import — confirm published posts exist
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            count=\$(mysql -u ${{ secrets.STAGING_DB_USER }} -p'${{ secrets.STAGING_DB_PASS }}' ${{ secrets.STAGING_DB_NAME }} -sN -e \"SELECT COUNT(*) FROM wp_posts WHERE post_status='publish';\") &&
+            echo \"Published posts after import: \$count\" &&
+            [ \"\$count\" -gt 0 ] || { echo 'ERROR: No published posts found — import likely failed or dump was empty'; exit 1; }
+          "
+
       - name: Sync uploads from prod to staging
         run: |
           ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
             rsync -av --delete ~/public_html/wp-content/uploads/ ~/public_html/staging.wikitongues.org/wp-content/uploads/
           "
 
-      - name: Run WP-CLI search-replace on staging
+      - name: Search-replace https prod URLs
         run: |
           ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
             cd ~/public_html/staging.wikitongues.org &&
             wp search-replace 'https://wikitongues.org' 'https://staging.wikitongues.org' --skip-columns=guid --allow-root
+          "
+
+      - name: Search-replace http prod URLs
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            cd ~/public_html/staging.wikitongues.org &&
+            wp search-replace 'http://wikitongues.org' 'https://staging.wikitongues.org' --skip-columns=guid --allow-root
+          "
+
+      - name: Verify search-replace — confirm staging URLs in siteurl and home
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            cd ~/public_html/staging.wikitongues.org &&
+            siteurl=\$(wp option get siteurl --allow-root) &&
+            home=\$(wp option get home --allow-root) &&
+            echo \"siteurl: \$siteurl\" &&
+            echo \"home:    \$home\" &&
+            echo \"\$siteurl\" | grep -q 'staging.wikitongues.org' || { echo 'ERROR: siteurl still points to prod after search-replace'; exit 1; } &&
+            echo \"\$home\" | grep -q 'staging.wikitongues.org' || { echo 'ERROR: home still points to prod after search-replace'; exit 1; }
           "
 
       - name: Notify Slack on success
