@@ -112,14 +112,14 @@ function fill_languages_custom_columns( $column, $post_id ) {
 		case 'external_resources':
 			$field = get_field( $column, $post_id );
 			$count = is_array( $field ) ? count( $field ) : ( ( $field instanceof WP_Post ) ? 1 : 0 );
-			echo esc_html( $count );
+			echo esc_html( (string) $count );
 			break;
 
 		case 'lexicons':
 			$source = get_field( 'lexicon_source', $post_id );
 			$target = get_field( 'lexicon_target', $post_id );
 			$count  = ( is_array( $source ) ? count( $source ) : 0 ) + ( is_array( $target ) ? count( $target ) : 0 );
-			echo esc_html( $count );
+			echo esc_html( (string) $count );
 			break;
 	}
 }

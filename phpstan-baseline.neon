@@ -166,11 +166,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
 
 		-
-			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int\\<0, max\\> given\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
-
-		-
 			message: "#^Undefined variable\\: \\$partner_link$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
