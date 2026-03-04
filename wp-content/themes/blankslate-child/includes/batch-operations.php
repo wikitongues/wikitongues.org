@@ -120,7 +120,7 @@ function batch_update_admin_menu() {
 		'batch_update_admin_page'
 	);
 }
-add_action( 'admin_menu', 'batch_update_admin_menu' );
+// add_action( 'admin_menu', 'batch_update_admin_menu' );
 
 // ====================
 // Build Admin Page Interface
