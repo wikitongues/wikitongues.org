@@ -9,9 +9,16 @@
  * written by this group — the Sync_Controller stamps the value directly via
  * update_post_meta() using the AIRTABLE_ID_KEY constant.
  *
- * Also registers an ACF options subpage ("Airtable Sync") under the main ACF
- * options menu, with fields for the Airtable base ID and per-CPT table IDs.
- * These values are used to generate direct record links on post edit screens.
+ * Also renders a "View in Airtable" link below the record ID field. The link
+ * is built from the "Admin: Airtable Links" ACF options page (group_69a8bc1fac0cc),
+ * which is UI-defined and synced via acf-json. Field structure:
+ *
+ *   airtable_table_configurations (group)
+ *     base_id (text)
+ *     languages (group) → table_id, view_id
+ *     videos   (group) → table_id, view_id
+ *     captions (group) → table_id, view_id
+ *     lexicons (group) → table_id, view_id
  *
  * @package WT\AirtableSync
  */
@@ -20,11 +27,8 @@ namespace WT\AirtableSync;
 
 class ACF_Fields {
 
-	/** Slug for the ACF options subpage. */
-	const OPTIONS_PAGE_SLUG = 'wt-airtable-sync-settings';
-
 	/**
-	 * Register local field groups and the options subpage with ACF.
+	 * Register local field groups with ACF.
 	 *
 	 * Called on acf/init — do nothing if ACF is not active.
 	 */
@@ -33,113 +37,9 @@ class ACF_Fields {
 			return;
 		}
 
-		self::register_options_page();
-		self::register_settings_fields();
 		self::register_record_id_field();
 
 		add_action( 'acf/render_field/key=field_wt_airtable_record_id', array( __CLASS__, 'render_record_link' ) );
-	}
-
-	/**
-	 * Register the Airtable Sync options subpage under the ACF options menu.
-	 */
-	private static function register_options_page(): void {
-		if ( ! function_exists( 'acf_add_options_sub_page' ) ) {
-			return;
-		}
-
-		acf_add_options_sub_page(
-			array(
-				'page_title'  => 'Airtable Sync',
-				'menu_title'  => 'Airtable Sync',
-				'menu_slug'   => self::OPTIONS_PAGE_SLUG,
-				'parent_slug' => 'acf-options',
-				'capability'  => 'manage_options',
-			)
-		);
-	}
-
-	/**
-	 * Register the settings field group on the options subpage.
-	 *
-	 * Stores: Airtable base ID and per-CPT table IDs.
-	 * Read via: get_field( 'wt_airtable_base_id', 'option' ) etc.
-	 */
-	private static function register_settings_fields(): void {
-		acf_add_local_field_group(
-			array(
-				'key'                   => 'group_wt_airtable_sync_settings',
-				'title'                 => 'Airtable Table Configuration',
-				'fields'                => array(
-					array(
-						'key'          => 'field_wt_airtable_base_id',
-						'label'        => 'Base ID',
-						'name'         => 'wt_airtable_base_id',
-						'type'         => 'text',
-						'instructions' => 'Found in your Airtable URL: airtable.com/{baseId}/...',
-						'required'     => 0,
-						'wrapper'      => array(
-							'width' => '',
-							'class' => 'code',
-							'id'    => '',
-						),
-						'placeholder'  => 'appXXXXXXXXXXXXXX',
-					),
-					array(
-						'key'          => 'field_wt_airtable_table_id_languages',
-						'label'        => 'Table ID — Languages',
-						'name'         => 'wt_airtable_table_id_languages',
-						'type'         => 'text',
-						'instructions' => '',
-						'required'     => 0,
-						'placeholder'  => 'tblXXXXXXXXXXXXXX',
-					),
-					array(
-						'key'          => 'field_wt_airtable_table_id_videos',
-						'label'        => 'Table ID — Videos (Oral Histories)',
-						'name'         => 'wt_airtable_table_id_videos',
-						'type'         => 'text',
-						'instructions' => '',
-						'required'     => 0,
-						'placeholder'  => 'tblXXXXXXXXXXXXXX',
-					),
-					array(
-						'key'          => 'field_wt_airtable_table_id_captions',
-						'label'        => 'Table ID — Captions (Oral History Captions)',
-						'name'         => 'wt_airtable_table_id_captions',
-						'type'         => 'text',
-						'instructions' => '',
-						'required'     => 0,
-						'placeholder'  => 'tblXXXXXXXXXXXXXX',
-					),
-					array(
-						'key'          => 'field_wt_airtable_table_id_lexicons',
-						'label'        => 'Table ID — Lexicons',
-						'name'         => 'wt_airtable_table_id_lexicons',
-						'type'         => 'text',
-						'instructions' => '',
-						'required'     => 0,
-						'placeholder'  => 'tblXXXXXXXXXXXXXX',
-					),
-				),
-				'location'              => array(
-					array(
-						array(
-							'param'    => 'options_page',
-							'operator' => '==',
-							'value'    => self::OPTIONS_PAGE_SLUG,
-						),
-					),
-				),
-				'menu_order'            => 0,
-				'position'              => 'normal',
-				'style'                 => 'default',
-				'label_placement'       => 'left',
-				'instruction_placement' => 'label',
-				'active'                => true,
-				'description'           => 'Airtable IDs used to generate direct record links on post edit screens.',
-			)
-		);
 	}
 
 	/**
@@ -246,7 +146,11 @@ class ACF_Fields {
 	/**
 	 * Build a direct Airtable record URL for a given CPT and record ID.
 	 *
-	 * Returns null if the base ID or table ID is not yet configured, or if
+	 * Reads from the "Admin: Airtable Links" ACF options page (group_69a8bc1fac0cc).
+	 * URL format: airtable.com/{baseId}/{tableId}/{viewId}/{recordId}
+	 * (view segment omitted when view_id is not configured).
+	 *
+	 * Returns null if the base ID or table ID is not configured, or if
 	 * the post type is not one of the four synced types.
 	 *
 	 * @param string $post_type WP CPT slug.
@@ -258,23 +162,34 @@ class ACF_Fields {
 			return null;
 		}
 
-		$base_id = (string) get_field( 'wt_airtable_base_id', 'option' );
-
-		$table_field_map = array(
-			'languages' => 'wt_airtable_table_id_languages',
-			'videos'    => 'wt_airtable_table_id_videos',
-			'captions'  => 'wt_airtable_table_id_captions',
-			'lexicons'  => 'wt_airtable_table_id_lexicons',
-		);
-
-		if ( ! isset( $table_field_map[ $post_type ] ) ) {
+		$supported = array( 'languages', 'videos', 'captions', 'lexicons' );
+		if ( ! in_array( $post_type, $supported, true ) ) {
 			return null;
 		}
 
-		$table_id = (string) get_field( $table_field_map[ $post_type ], 'option' );
+		$config = get_field( 'airtable_table_configurations', 'option' );
+		if ( ! is_array( $config ) ) {
+			return null;
+		}
+
+		$base_id  = (string) ( $config['base_id'] ?? '' );
+		$cpt_cfg  = $config[ $post_type ] ?? array();
+		$table_id = (string) ( $cpt_cfg['table_id'] ?? '' );
 
 		if ( ! $base_id || ! $table_id ) {
 			return null;
+		}
+
+		$view_id = (string) ( $cpt_cfg['view_id'] ?? '' );
+
+		if ( $view_id ) {
+			return sprintf(
+				'https://airtable.com/%s/%s/%s/%s',
+				rawurlencode( $base_id ),
+				rawurlencode( $table_id ),
+				rawurlencode( $view_id ),
+				rawurlencode( $record_id )
+			);
 		}
 
 		return sprintf(
