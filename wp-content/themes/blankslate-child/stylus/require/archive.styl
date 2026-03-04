@@ -18,4 +18,31 @@ body
 						text--strong($black)
 						font-size 1.6rem
 
+.wt_archive-languages
+	&__stats
+		display flex
+		gap 3.2rem
+		padding 4rem 1.6rem
+		max-width $content
+		margin 0 auto
+
+		&-item
+			flex 1
+			display flex
+			flex-direction column
+			gap 0.8rem
+
+			strong
+				text--header($black)
+				font-size 4rem
+				line-height 1
+
+			span
+				text--body($black)
+				font-size 1.6rem
+
+	@media all and (max-width: $mobile)
+		&__stats
+			flex-direction column
+
 // @media all and (max-width:$mobile)

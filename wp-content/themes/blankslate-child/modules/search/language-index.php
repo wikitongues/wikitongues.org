@@ -261,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Prevent page jump by inserting a placeholder of equal height.
 	// ========================================
 	const nav = document.getElementById("language-nav");
-	let navOffsetTop = nav.offsetTop;
 
 	// Get the original nav offset and height.
 	const offsetElements = [
@@ -279,22 +278,45 @@ document.addEventListener("DOMContentLoaded", function () {
 		return total;
 	}
 
-	let totalOffsetHeight = calculateTotalOffsetHeight(offsetElements);
-	let totalSearchHeight = calculateTotalOffsetHeight(searchElements);
-
-	let navOffset = navOffsetTop - totalOffsetHeight;
-
 	const navHeight = nav.offsetHeight;
 	const navPlaceholder = document.createElement("div");
 	navPlaceholder.className = "nav-placeholder";
 	navPlaceholder.style.height = `${navHeight}px`;
 
+	// Returns the nav's true document-relative top regardless of whether it is
+	// currently position:fixed. When fixed, nav.offsetTop is near-zero, so we
+	// read from the placeholder (which stays in normal flow) instead.
+	function getNavDocumentTop() {
+		if (nav.parentNode && nav.parentNode.contains(navPlaceholder)) {
+			return navPlaceholder.offsetTop;
+		}
+		return nav.offsetTop;
+	}
+
+	let totalOffsetHeight = calculateTotalOffsetHeight(offsetElements);
+	let totalSearchHeight = calculateTotalOffsetHeight(searchElements);
+	let navOffsetTop = getNavDocumentTop();
+	let navOffset = navOffsetTop - totalOffsetHeight;
+
+	// Correct any stale fixed state after all resources (fonts, images) have loaded.
+	window.addEventListener("load", function() {
+		totalOffsetHeight = calculateTotalOffsetHeight(offsetElements);
+		navOffsetTop      = getNavDocumentTop();
+		navOffset         = navOffsetTop - totalOffsetHeight;
+		if (window.pageYOffset < navOffset) {
+			if (nav.parentNode.contains(navPlaceholder)) {
+				nav.parentNode.removeChild(navPlaceholder);
+			}
+			nav.classList.remove("fixed");
+		}
+	});
+
 	// ------------------------------
 	// Window Resize: Watch the window size for height changes.
 	// ------------------------------
 	window.addEventListener("resize", function() {
-		navOffsetTop = nav.offsetTop;
-		navOffset = navOffsetTop - totalOffsetHeight;
+		navOffsetTop = getNavDocumentTop();
+		navOffset    = navOffsetTop - totalOffsetHeight;
 	});
 
 	window.addEventListener("scroll", function() {
@@ -319,8 +341,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function updateNavOffset() {
 		totalSearchHeight = calculateTotalOffsetHeight(searchElements);
-		navOffsetTop = nav.offsetTop;
-		navOffset = navOffsetTop - totalOffsetHeight;
+		navOffsetTop      = getNavDocumentTop();
+		navOffset         = navOffsetTop - totalOffsetHeight;
 	}
 
 	if (window.ResizeObserver && searchbar) {

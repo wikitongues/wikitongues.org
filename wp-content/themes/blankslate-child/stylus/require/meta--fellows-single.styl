@@ -1,13 +1,30 @@
+// Dark mode variables
+// $background = $black
+// $copy = $parchment
+// $links = $copy
+// $language-hover = blend(rgba($blue(10), .1), $black)
+// $positioning = 4.8rem 0
+
+// Light mode variables
+$background = $parchment
+$copy = $black
+$links = $blue()
+$language-hover = $blue(10)
+$positioning = 4px 0 4.8rem
+
 .wt_fellow__meta
-	width 90%
-	max-width $content
-	margin 0 auto 4.8rem
+	width 100%
+	background $background
+	padding $positioning
+	margin-bottom 2.4rem
 
 	.head
+		width 90%
+		max-width $content
+		margin 0 auto
 		display flex
-		width 100%
 		align-items flex-end
-		margin-bottom 4.8rem
+		color $copy
 
 		div.image,
 		div.name
@@ -30,70 +47,64 @@
 			height 100%
 
 			h3
-				text--header($black)
+				text--header(inherit)
 				margin-bottom 1.6rem
 
 		.info
 			display flex
 			flex-direction column
 			gap 1.6rem
-			text--body($black)
+			text--body(inherit)
 
-			.languages
-				margin-left -8px
+			.meta-info
+				display grid
+				grid-template-columns 2fr 1fr
+				gap 1.6rem
 
-				a.language
-					color $blue()
-					border-bottom 2px solid $blue()
-					text-decoration none
-					display flex
-					padding 4px 12px
-					float left
-					align-items flex-end
-					width fit-content
-					margin-left 8px
-					border-radius 4px 4px 0 0
-
-					&:hover
-						background $blue(10)
-
-					&:first-of-type
-						margin-left 0
-
-					span.identifier, p
-						float left
-						line-height 2
-
-					span.identifier
-						color $blue()
-						font-weight 800
-						flex initial
-						min-width initial
-						margin-right 1rem
-
+				span
+					margin 0
 					p
-						line-height 2
+						white-space nowrap
+					a
+						display block
+						white-space nowrap
+						text--strong($links) // a
+						line-height 4rem
 
-						span.identifier, p
-							color $parchment
+						&:hover
+							text-decoration underline
 
-			p.categories,
-			p.fellow-territory
-				font-weight bold
+						&.language
+							border-bottom 2px solid
+							border-bottom-color inherit
+							text-decoration none
+							display flex
+							padding 4px 12px
+							float left
+							align-items flex-end
+							margin-left -12px
+							border-radius 4px 4px 0 0
+							width 100%
 
-				a
-					text--strong($blue()) // a
-					text-decoration none
+							&:hover
+								background $language-hover
 
-					&:hover
-						text-decoration underline
+							span.identifier, p
+								float left
+								line-height 2
 
-			a.cohort
-				text--strong($blue()) // a
-				text-decoration none
+							span.identifier
+								color inherit
+								font-weight 800
+								flex initial
+								min-width initial
+								margin-right 1rem
 
-				&:hover
-						text-decoration underline
+							p
+								line-height 2
+
+								span.identifier, p
+									color $links
 
 	article
 		margin-bottom 1.6rem
@@ -118,22 +129,24 @@
 	&--social
 		ul
 			li
+				color inherit
 				margin-left 8px
 				float left
 
 				a
 					font-size $socialIcon
-					anchor($blue(),4px)
+					anchor($links,4px)
+					color $links
 
-	&--links
-		ul
-			list-style initial
+.wt_fellow__meta--links
+	ul
+		list-style initial
 
-			li
-				margin .1rem 1.6rem .1rem 2rem
+		li
+			margin .1rem 1.6rem .1rem 2rem
 
-				a
-					anchor($blue(),2px)
+			a
+				anchor($blue(),2px)
 
 @media all and (max-width:$mobile)
 	.wt_fellow__meta

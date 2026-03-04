@@ -50,9 +50,6 @@ if ( empty( $class ) || strpos( $class, 'full' ) !== false ) {
 	echo '<div class="details">';
 	echo '<h5 class="name">' . $title . '</h5>';
 	echo '<div class="fellow-metadata">';
-	if ( substr( $output_name, -7 ) !== 'anguage' ) {
-		$output_name .= ' Language';
-	}
 	echo '<h5 class="language">' . $output_name . '</h5>';
 	echo '<p>' . $category_names . '</p>';
 	echo '<span><p>' . $location . '</p><p>' . $fellow_year . '</p></span>';
