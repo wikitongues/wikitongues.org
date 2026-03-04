@@ -5,6 +5,127 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-01 (Tier 2 — Plugin: wt-airtable-sync)
+
+### `wt-airtable-sync` plugin — Phases 0–3
+**Branches:** `feature/cc/wt-airtable-sync-phase-0-1`, `feature/cc/wt-airtable-sync-phase-2`, `feature/cc/wt-airtable-sync-dry-run`
+**PRs:** [#482](https://github.com/wikitongues/wikitongues.org/pull/482), [#486](https://github.com/wikitongues/wikitongues.org/pull/486), [#489](https://github.com/wikitongues/wikitongues.org/pull/489)
+**Production cutover:** 2026-03-01
+**Full documentation:** [`docs/airtable-sync.md`](docs/airtable-sync.md)
+
+Replaced the integromat-connector write paths with a standalone WordPress plugin that owns all field mapping, transformation, and ACF writes in code. Make.com is now a dumb HTTP transport: Airtable record change → POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`.
+
+#### Architecture
+
+- **Plugin:** `wp-content/plugins/wt-airtable-sync/`
+- **Auth:** `X-WT-Sync-Key` header matched against `WT_SYNC_API_KEY` constant in `wp-config.php`
+- **Upsert key:** `_airtable_record_id` postmeta; languages fall back to `iso_code` then `post_title`
+- **Field mapping:** `config/field-maps.php` — one entry per CPT; all ACF writes via `update_field()`
+- **Dry-run mode:** `?dry_run=1` param processes all logic, writes nothing, returns full diff; requires `WT_SYNC_API_KEY` auth
+- **Logging:** structured PHP error log entries per sync run
+
+#### CPTs synced
+
+| CPT | Status |
+|---|---|
+| `languages` | ✅ Live |
+| `videos` | ✅ Live |
+| `captions` | ✅ Live |
+| `lexicons` | ✅ Live |
+| `resources` | ⏸ Deferred — 907 WP posts vs 204 Airtable records; reconciliation required first |
+
+#### Make.com blueprint architecture
+
+Four production scenarios (one per CPT), each with a staging counterpart (separate `wp_base_url`, separate keychain):
+
+- **`util:SetVariables`** at the top of every scenario — centralises `dry_run`, `wp_base_url`; `sync_key` in Make.com keychain
+- **Languages / Captions / Lexicons:** linear — Airtable trigger → SetVariables → POST `/sync/{post_type}`
+- **Videos:** `builtin:BasicRouter` — Route 1 (thumbnail URL present): download thumbnail → upload to WP media library → POST with `video_thumbnail_v2: <media_id>`; Route 2 (no thumbnail): POST with `video_thumbnail_v2: 0`
+  - Media upload: `http:MakeRequest` POST to `/wp/v2/media`, Application Password basicAuth, `contentType: custom` for raw binary body
+  - `Content-Disposition: attachment; filename=thumbnail_{{lower(Identifier)}}.{{last(split(type; "/"))}}` — MIME-derived extension, lowercased identifier for predictable WP slug
+  - Always uploads fresh; no dedup search (dedup by slug was abandoned after observing that a changed thumbnail failed to update — slug matched old file)
+- All four scenarios run on **15-minute schedule** in production
+- **Slack notifications** on every run: `util:SetVariables` after the sync POST pre-computes `sync_status`, `sync_color`, `sync_env` as Make.com expressions (avoids quoting issues inside JSON Blocks); Block Kit header + fields section shows CPT, record count, environment, duration, and dry-run flag
+
+#### Key decisions
+
+- **No dedup search for media uploads.** The original design searched WP media library by slug before uploading; abandoned because (a) `rest_upload_sideload_error` — WordPress rejects uploads without a file extension in `Content-Disposition`; (b) even after fixing the extension, a changed Airtable thumbnail failed to update because the slug matched the old file. Decision: fresh upload on every run is acceptable; media library duplication is not the principal problem.
+- **`contentType: custom` for media upload.** `contentType: json` converts the binary buffer to a string, corrupting image data. Raw binary body requires `contentType: custom`.
+- **Staging and production as separate scenarios.** Simpler than a single scenario with environment switching; separate keychains prevent accidental cross-environment writes.
+
+#### WP-CLI backfill — `_airtable_record_id` (production, 2026-03-01)
+
+Stamped existing WP posts with their Airtable record IDs via CSV export + WP-CLI import script (`temp/importer/acf-importer.php`):
+
+| CPT | Stamped | Not found | Notes |
+|---|---|---|---|
+| Languages | 8,088 | 2 | `wyim`, `wyug` — absent from WP |
+| Videos | 1,853 | 3 | 2 are HTML-entity title encoding artifacts (`&#039;` vs `'`); 1 is a post-export new record — all resolve on next Airtable modification |
+| Captions | 257 | 60 | Absent from WP — created automatically on next Airtable modification |
+| Lexicons | 20 | 130 | Only 22 of 152 Airtable lexicon records have WP posts; remainder created on next modification |
+
+#### Phase 3 — cleanup and cutover (2026-03-01)
+
+- **`_WT_TMP_*` postmeta deleted:** 3,376 rows removed from `wp_postmeta`. Safety check confirmed all posts with `_WT_TMP_featured_languages` also had a resolved real `featured_languages` value before deletion.
+- **Old Make.com v1 scenarios disabled:** integromat-connector write paths retired.
+- **`post-object-helpers.php`** (`wp-content/themes/blankslate-child/includes/` and root `includes/`) is now dead code — `handle_post_object()` is no longer called by any active code path. Removal deferred to code quality cleanup (Tier 3).
+
+---
+
+## 2026-02-28 (Tier 2 — Territories archive)
+
+### Territories archive
+**Branch:** `feature/cc/territories-archive`
+**PR:** [#491](https://github.com/wikitongues/wikitongues.org/pull/491)
+
+Implemented the territories archive page and wired it into existing region pages as a gallery link-out.
+
+**Changes:**
+- **`archive-territories.php`:** Replaced the `<h1>Nations Archive</h1>` placeholder with a proper gallery-based archive following the same pattern as `archive-languages`, `archive-fellows`, and `archive-videos`. Supports optional `?region=<slug>` filter param — maps directly to the `region` taxonomy so no extra WP_Query is needed. Title adapts: "Territories" (unfiltered) or "Territories of {Region}" (filtered). Relies on WP's default `include_children => true` for hierarchical taxonomies, so continent-level slugs (e.g. `?region=asia`) include sub-region territories.
+- **`taxonomy-region.php`:** Added `link_out` to the territories gallery params pointing to `get_post_type_archive_link('territories')` with `?region=<slug>`, matching the existing pattern used by the fellows gallery on the same template.
+- **`gallery-territories.php`:** Refactored the territory card template to fix an OOM issue on large-region archive pages. The original loaded all languages per territory (`posts_per_page=-1`) and called `get_field('speakers_recorded', ...)` on every language inside a `usort()` callback — O(n log n) ACF calls per card. For Asia (55 territories, some with 400+ languages) this exhausted the 128 MB memory limit. Replaced with two targeted queries: a count query (`posts_per_page=1`, `fields=ids`, reads `found_posts`) and a preview query (`posts_per_page=4`). The usort and shuffle were both no-ops (line 33 overwrote the sorted result with the original array) and were removed. Also added `esc_html()` to previously unescaped output.
+- **`archive.styl`:** Added `&-territories` to the archive selector group alongside `&-languages`, `&-videos`, `&-fellows`.
+- **`phpstan-baseline.neon`:** Reduced `get_field not found` suppression count for `gallery-territories.php` from 4 to 1, reflecting the removed usort/foreach calls.
+
+**Known issues logged in plan.md:**
+- `gallery-territories.php`: double query (count + preview can be merged into one), `$language_name` empty fallback missing, raw `post_title` used for video lookup instead of `get_the_title()`
+- `archive-territories.php`: `include_children` reliance is implicit — should be made explicit in query builder
+- `taxonomy-region.php`: fellows OR LIKE meta query is still OOM-prone on continent pages (separate backlog item)
+
+---
+
+## 2026-02-28 (Tier 2 — Infrastructure decision)
+
+### Evaluate Bedrock for composer-managed WordPress
+**Type:** Strategic decision — no code changes
+
+Decision: **No.**
+
+**Blocking factors:**
+- GreenGeeks shared hosting — cPanel's `public_html/` webroot can't be cleanly redirected to Bedrock's `web/` subdirectory without fragile symlink hacks; a clean adoption would require migrating to a VPS or managed host.
+- 14 of 17 plugins are untracked third-party/premium installs (ACF Pro, Duplicator, etc.) — getting these into Composer requires Satispress or per-vendor repos with license keys, adding significant ongoing maintenance overhead for marginal gain.
+
+**Separable benefit retained:** The `.env`-based config (removing hardcoded secrets from `wp-config.php`) can be done standalone by adding `vlucas/phpdotenv` as a production Composer dependency. Worth doing independently.
+
+**Result:** Code quality cleanups (Tier 3) proceed in current form — duplication fix, root includes move, reorganize, autoloader all remain in scope as-is.
+
+---
+
+## 2026-02-22 (Tier 2 — Gallery features)
+
+### Gallery `link_out` param — filtered archive pages
+**Branch:** `feature/cc/gallery-link-out` (follow-on to PR [#462](https://github.com/wikitongues/wikitongues.org/pull/462))
+
+Part 2 of the `link_out` feature: archive templates with query-string filter params and `link_out` wiring on territory/language/region pages.
+
+Changes:
+- **`archive-fellows.php`:** `?territory=<slug>` resolves via `get_page_by_path()` to a territory post; builds a meta query for `fellow_territory` to filter fellows by territory. `?region=<slug>` resolves via `get_term_by()` to a region term; expands to child terms for continent-level pages; aggregates fellows via OR LIKE meta query across territory IDs.
+- **`archive-languages.php`:** `?territory=<slug>` filters languages via `selected_posts` from `get_field('languages', territory_id, false)`. `?genealogy=<slug>` filters via `taxonomy/term` on `linguistic-genealogy`. `?writing_system=<slug>` filters via `taxonomy/term` on `writing-system`.
+- **`archive-videos.php`:** `?language=<slug>` resolves via `get_page_by_path()` to a language post; filters videos via `meta_key=featured_languages` / `meta_value=post_id`.
+- **`single-territories.php`**, **`taxonomy-region.php`**, **`single-languages.php`**: `link_out` URLs passed to `create_gallery_instance()` on relevant gallery sections, constructing filtered archive URLs via `add_query_arg()` and `get_post_type_archive_link()`.
+
+---
+
 ## 2026-02-22 (Tier 2 — Plugin hygiene / security)
 
 ### Audit Make.com scenarios

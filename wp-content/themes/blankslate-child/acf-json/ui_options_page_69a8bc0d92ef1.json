@@ -1,15 +1,15 @@
 {
-    "key": "ui_options_page_66e03a8346748",
-    "title": "General Options",
+    "key": "ui_options_page_69a8bc0d92ef1",
+    "title": "Airtable Links",
     "active": true,
     "menu_order": 0,
-    "page_title": "General Options",
-    "menu_slug": "general",
+    "page_title": "Airtable Links",
+    "menu_slug": "airtable-links",
     "parent_slug": "acf-options",
-    "advanced_configuration": 1,
+    "advanced_configuration": 0,
     "icon_url": "",
     "menu_title": "",
-    "position": 0,
+    "position": "",
     "redirect": false,
     "description": "",
     "menu_icon": [],
@@ -19,5 +19,5 @@
     "data_storage": "options",
     "post_id": "",
     "autoload": 0,
-    "modified": 1772664950
+    "modified": 1772666533
 }

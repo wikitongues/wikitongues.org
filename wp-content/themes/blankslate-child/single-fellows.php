@@ -17,12 +17,11 @@ if ( $categories && ! is_wp_error( $categories ) ) {
 			$category_links[] = '<a href="' . esc_url( $cat_link ) . '">' . esc_html( $cat->name ) . '</a>';
 		}
 	}
-	$category_names = implode( ', ', $category_links );
+	$category_names = implode( '', $category_links );
 } else {
 	$category_names = '';
 }
 log_data( $categories );
-// $category_names = implode(', ', array_map('esc_html', wp_list_pluck($categories, 'name')));
 $social_links               = wt_social_links();
 $revitalization_fellows_url = home_url( '/revitalization/fellows/?fellow_year=', 'relative' );
 $revitalization_fellows_url = add_query_arg( 'fellow_year', $fellow_year, $revitalization_fellows_url );
