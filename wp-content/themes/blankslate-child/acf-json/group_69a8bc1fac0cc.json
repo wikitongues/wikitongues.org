@@ -287,13 +287,6 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "airtable-link"
-            }
-        ],
-        [
-            {
-                "param": "options_page",
-                "operator": "==",
                 "value": "airtable-links"
             }
         ]
@@ -308,5 +301,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1772666545
+    "modified": 1772666629
 }

@@ -32,7 +32,7 @@ parameters:
 
 		-
 			message: "#^Variable \\$output_name might not be defined\\.$#"
-			count: 3
+			count: 1
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-fellows.php
 
 		-
@@ -357,21 +357,6 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
-
-		-
-			message: "#^Function get_sub_field not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
-
-		-
-			message: "#^Function have_rows not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
-
-		-
-			message: "#^Function the_row not found\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/fellows/meta--fellows-single.php
 
