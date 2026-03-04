@@ -72,43 +72,33 @@ function generate_language_links( $fellow_language ) {
 			<?php endif; ?>
 			<section class="info">
 				<?php
+				echo '<p>' . esc_html( $page_banner['banner_copy'] ) . '</p>';
+
+				echo '<div class="meta-info">';
 				if ( $fellow_territory ) {
 					$territories     = is_array( $fellow_territory ) ? $fellow_territory : array( $fellow_territory );
 					$territory_links = array();
 					foreach ( $territories as $terr ) {
 						$territory_links[] = '<a href="' . esc_url( get_permalink( $terr->ID ) ) . '">' . esc_html( wt_prefix_the( $terr->post_title ) ) . '</a>';
 					}
-					echo '<p class="fellow-territory">' . implode( ', ', $territory_links ) . '</p>';
+					echo '<span class="fellow-territory"><p>Based in</p>' . implode( ', ', $territory_links ) . '</span>';
 				}
-				echo '<p>' . esc_html( $page_banner['banner_copy'] ) . '</p>';
-				echo '<p class="categories">' . $category_names . '</p>';
+
 				if ( $fellow_year ) {
-					echo '<a class="cohort" href="' . $revitalization_fellows_url . '">' . esc_html( $fellow_year ) . ' cohort</a>';
+					echo '<span class="fellow-cohort"><p>Cohort</p><a class="cohort" href="' . $revitalization_fellows_url . '">' . esc_html( $fellow_year ) . ' cohort</a></span>';
 				}
 
 				$lang_output = generate_language_links( $fellow_language );
+				echo '<span class="languages"><p>Working on</p>' . $lang_output . '</span>';
 
-				echo '<span class="languages">' . $lang_output . '</span>';
+				echo '<span class="categories"><p>Category</p>' . $category_names . '</span>';
+
+
+
+
+				echo '</div>';
 				?>
 			</section>
 		</div>
 	</section>
-
-	<?php if ( have_rows( 'custom_links' ) ) : ?>
-	<article class="wt_fellow__meta--links">
-		<strong>Links</strong><br/>
-		<ul>
-		<?php
-		while ( have_rows( 'custom_links' ) ) :
-			the_row();
-			?>
-			<li>
-				<a href="<?php echo get_sub_field( 'link_url' ); ?>">
-					<?php echo get_sub_field( 'link_name' ); ?>
-				</a>
-			</li>
-		<?php endwhile; ?>
-		</ul>
-	</article>
-	<?php endif; ?>
 </section>
