@@ -55,8 +55,8 @@ function custom_reorder_admin_menu( array $menu_order ): array {
 		'edit.php?post_type=document_files',  // Document Files
 		'wt-section-admin',                   // ── Admin ────────────────────────
 		'edit.php?post_type=acf-field-group', // ACF
-		// 'batch-update',                       // Batch Update
-		'airtable-link',                       // Options (first child determines parent slug)
+		// 'batch-update',                    // Batch Update
+		'airtable-links',                     // Options (first child determines parent slug)
 		'custom-search',                      // Options (fallback if custom-search is first child)
 		'plugins.php',                        // Plugins
 		'integromat',                         // Make
