@@ -152,128 +152,128 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 5
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/documents.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/fellows.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 5
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/languages.php
-
-		-
-			message: "#^Undefined variable\\: \\$partner_link$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
-
-		-
-			message: "#^Undefined variable\\: \\$partner_logo$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
-
-		-
-			message: "#^Undefined variable\\: \\$partner_name$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/partners.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/videos.php
-
-		-
-			message: "#^Call to function is_wp_error\\(\\) with int\\<0, max\\> will always evaluate to false\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^Call to static method add_command\\(\\) on an unknown class WP_CLI\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^Call to static method error\\(\\) on an unknown class WP_CLI\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^Call to static method success\\(\\) on an unknown class WP_CLI\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^Function update_field not found\\.$#"
-			count: 4
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^is_wp_error\\(int\\<0, max\\>\\) will always evaluate to false\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/custom-post-types/wp-cli-import.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
 			count: 10
-			path: wp-content/themes/blankslate-child/includes/document-download-handler.php
+			path: wp-content/themes/blankslate-child/includes/integrations/document-download-handler.php
 
 		-
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/document-download-handler.php
+			path: wp-content/themes/blankslate-child/includes/integrations/document-download-handler.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/events-filter.php
+			path: wp-content/themes/blankslate-child/includes/integrations/events-filter.php
 
 		-
 			message: "#^Call to function is_wp_error\\(\\) with int\\<0, max\\> will always evaluate to false\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
 
 		-
 			message: "#^Call to static method add_command\\(\\) on an unknown class WP_CLI\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
 
 		-
 			message: "#^Call to static method error\\(\\) on an unknown class WP_CLI\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
 
 		-
 			message: "#^Call to static method success\\(\\) on an unknown class WP_CLI\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
 
 		-
 			message: "#^Function update_field not found\\.$#"
 			count: 4
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
 
 		-
 			message: "#^is_wp_error\\(int\\<0, max\\>\\) will always evaluate to false\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/import-captions.php
+			path: wp-content/themes/blankslate-child/includes/integrations/import-captions.php
+
+		-
+			message: "#^Call to function is_wp_error\\(\\) with int\\<0, max\\> will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^Call to static method add_command\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^Call to static method error\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^Call to static method success\\(\\) on an unknown class WP_CLI\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 4
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^is_wp_error\\(int\\<0, max\\>\\) will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/wp-cli-import.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 5
+			path: wp-content/themes/blankslate-child/includes/taxonomies/documents.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/taxonomies/fellows.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 5
+			path: wp-content/themes/blankslate-child/includes/taxonomies/languages.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_link$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_logo$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
+
+		-
+			message: "#^Undefined variable\\: \\$partner_name$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/taxonomies/videos.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 3
-			path: wp-content/themes/blankslate-child/includes/router.php
+			path: wp-content/themes/blankslate-child/includes/template/router.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 8
-			path: wp-content/themes/blankslate-child/includes/template-helpers.php
+			path: wp-content/themes/blankslate-child/includes/template/template-helpers.php
 
 		-
 			message: "#^Parameter \\#1 \\$search of function str_replace expects array\\|string, int given\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/includes/template-helpers.php
+			path: wp-content/themes/blankslate-child/includes/template/template-helpers.php
 
 		-
 			message: "#^Function get_field not found\\.$#"

@@ -3,17 +3,17 @@
 add_action( 'init', 'create_faq_cpt' );
 function create_faq_cpt() {
 	$labels = array(
-		'name'           => __( 'FAQs', 'textdomain' ),
-		'singular_name'  => __( 'FAQ', 'textdomain' ),
-		'menu_name'      => __( 'FAQs', 'textdomain' ),
-		'name_admin_bar' => __( 'FAQ', 'textdomain' ),
-		'add_new'        => __( 'Add New', 'textdomain' ),
-		'add_new_item'   => __( 'Add New FAQ', 'textdomain' ),
-		'new_item'       => __( 'New FAQ', 'textdomain' ),
-		'edit_item'      => __( 'Edit FAQ', 'textdomain' ),
-		'view_item'      => __( 'View FAQ', 'textdomain' ),
-		'all_items'      => __( 'All FAQs', 'textdomain' ),
-		'search_items'   => __( 'Search FAQs', 'textdomain' ),
+		'name'           => __( 'FAQs', 'faq' ),
+		'singular_name'  => __( 'FAQ', 'faq' ),
+		'menu_name'      => __( 'FAQs', 'faq' ),
+		'name_admin_bar' => __( 'FAQ', 'faq' ),
+		'add_new'        => __( 'Add New', 'faq' ),
+		'add_new_item'   => __( 'Add New FAQ', 'faq' ),
+		'new_item'       => __( 'New FAQ', 'faq' ),
+		'edit_item'      => __( 'Edit FAQ', 'faq' ),
+		'view_item'      => __( 'View FAQ', 'faq' ),
+		'all_items'      => __( 'All FAQs', 'faq' ),
+		'search_items'   => __( 'Search FAQs', 'faq' ),
 	);
 
 	$args = array(
@@ -33,17 +33,17 @@ function create_faq_cpt() {
 add_action( 'init', 'create_faq_category_taxonomy' );
 function create_faq_category_taxonomy() {
 	$labels = array(
-		'name'              => __( 'FAQ Categories', 'textdomain' ),
-		'singular_name'     => __( 'FAQ Category', 'textdomain' ),
-		'search_items'      => __( 'Search FAQ Categories', 'textdomain' ),
-		'all_items'         => __( 'All FAQ Categories', 'textdomain' ),
-		'parent_item'       => __( 'Parent FAQ Category', 'textdomain' ),
-		'parent_item_colon' => __( 'Parent FAQ Category:', 'textdomain' ),
-		'edit_item'         => __( 'Edit FAQ Category', 'textdomain' ),
-		'update_item'       => __( 'Update FAQ Category', 'textdomain' ),
-		'add_new_item'      => __( 'Add New FAQ Category', 'textdomain' ),
-		'new_item_name'     => __( 'New FAQ Category Name', 'textdomain' ),
-		'menu_name'         => __( 'FAQ Categories', 'textdomain' ),
+		'name'              => __( 'FAQ Categories', 'faq' ),
+		'singular_name'     => __( 'FAQ Category', 'faq' ),
+		'search_items'      => __( 'Search FAQ Categories', 'faq' ),
+		'all_items'         => __( 'All FAQ Categories', 'faq' ),
+		'parent_item'       => __( 'Parent FAQ Category', 'faq' ),
+		'parent_item_colon' => __( 'Parent FAQ Category:', 'faq' ),
+		'edit_item'         => __( 'Edit FAQ Category', 'faq' ),
+		'update_item'       => __( 'Update FAQ Category', 'faq' ),
+		'add_new_item'      => __( 'Add New FAQ Category', 'faq' ),
+		'new_item_name'     => __( 'New FAQ Category Name', 'faq' ),
+		'menu_name'         => __( 'FAQ Categories', 'faq' ),
 	);
 
 	$args = array(
@@ -72,7 +72,7 @@ function custom_faq_column( $column, $post_id ) {
 		case 'faq_category':
 				$terms = get_the_term_list( $post_id, 'faq_category', '', ', ', '' );
 			if ( is_string( $terms ) ) {
-					echo $terms;
+					echo wp_kses_post( $terms );
 			} else {
 					echo '—';
 			}
@@ -133,7 +133,7 @@ function faq_shortcode( $atts ) {
 		while ( $faqs->have_posts() ) {
 				$faqs->the_post();
 				echo '<div class="faq">';
-				echo '<h3 class="faq-question">' . get_the_title() . '</h3>';
+				echo '<h3 class="faq-question">' . esc_html( get_the_title() ) . '</h3>';
 				echo '<div class="faq-answer">' . apply_filters( 'the_content', get_the_content() ) . '</div>';
 				echo '</div>';
 		}

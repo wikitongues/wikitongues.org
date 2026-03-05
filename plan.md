@@ -24,6 +24,7 @@ Phases are ordered by dependency. Items within a phase can be parallelized; phas
 - ~~`Font Awesome`~~ ✅ → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
 - `Donors CPT` _(Phase 6)_ → `Donation optimization`
 - `Archive template refactor` + `Autoloader` → `Docker` (Phase 4)
+- `PHPStan baseline reduction` → zero suppressions before `Layer 3` (Phase 5)
 - `Docker` → `Layer 3` → gateway integration tests
 - `Docker` → `Layer 4` → maps, performance profiling
 - `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
@@ -86,11 +87,22 @@ Currently 24 flat files. Reorganize into subdirectories by concern and replace t
 - `template/` — template helpers, router
 - `integrations/` — import-captions, events filter, license handling
 
-#### 5. Archive template refactor _(before Docker)_
+#### 5. CPT/taxonomy file consistency refactor _(follows reorganize-includes)_
+
+After moving all CPT files to `includes/taxonomies/`, a cross-file audit found several inconsistencies:
+
+- **Security:** `faq.php` — `echo $terms` unescaped in column handler (XSS); `get_the_title()` unescaped in shortcode output. `documents.php` — `->post_title` accessed on return value of `get_field()` without null check (fatal if field empty).
+- **Pattern:** `careers.php` uses a class instead of plain functions; has dead `register_acf_fields()` method (never hooked); textdomain is `'textdomain'`.
+- **Missing args:** `fellows.php` missing `show_in_rest`; missing `is_main_query()` guard in orderby callback; has commented-out block. `reports.php` missing `show_in_rest`.
+- **Redundant:** `reports.php` and `team.php` both call `register_taxonomy_for_object_type()` AND pass `'taxonomies'` arg — pick one (keep `register_taxonomy_for_object_type()` to match languages/videos).
+- **i18n:** `blogs.php` uses bare strings with no `__()` wrapping; `events.php` and `faq.php` use `'textdomain'` instead of the CPT slug.
+- **Wrong comment:** `events.php` comment says "Register Custom Post Type for FAQs".
+
+#### 6. Archive template refactor _(before Docker)_
 
 `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
 
-#### 6. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
+#### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
 
 **`gallery-territories.php`:**
 - **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
@@ -123,6 +135,24 @@ Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/t
 #### 11. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
+
+---
+
+### Phase 3b — PHPStan baseline reduction _(concurrent with Phase 3 and beyond)_
+
+The baseline introduced with PHPStan (PR #435) suppressed 400+ pre-existing violations. CI only catches new regressions — existing debt is frozen unless actively reduced. This phase is not a single pass; it runs alongside other work: when a file is already being touched for a refactor, fix its suppressed errors in the same PR. Regenerate the baseline after each batch.
+
+**Strategy:** fix by file cluster, not by error type. Each batch should be scoped to files already being modified so the diff stays coherent and reviewable.
+
+**Batches (in order of when the files are likely to be touched):**
+
+- **Batch 1 — `taxonomies/`** — CPT/taxonomy consistency refactor (Phase 3 item 5) touches these files; fix their baseline suppressions in the same PR
+- **Batch 2 — `template/` and `integrations/`** — fix during or after archive template refactor (Phase 3 item 6)
+- **Batch 3 — templates (`single-*.php`, `archive-*.php`, `taxonomy-*.php`)** — fix during Layer 4 prep; these files accumulate the most `get_field not found` suppressions
+- **Batch 4 — modules (`modules/`)** — fix during Layer 4 visual baseline work
+- **Batch 5 — residual** — whatever remains after Batches 1–4; target zero baseline before Phase 5 integration tests so PHPStan runs clean with no suppressions
+
+**Goal:** zero entries in `phpstan-baseline.neon` before Phase 5. New code after that point must pass PHPStan without suppression.
 
 ---
 
