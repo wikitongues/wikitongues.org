@@ -1,7 +1,6 @@
 <?php
 require_once 'includes/router.php';
 require_once 'includes/enqueue-scripts.php';
-require_once 'includes/class-wt-rest-posts-controller.php';
 require_once 'includes/custom-post-types.php';
 require_once 'includes/menus.php';
 require_once 'includes/search-filter.php';

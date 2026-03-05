@@ -6,7 +6,7 @@ function create_post_type_videos() {
 	register_post_type(
 		'videos',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Videos', 'video' ),
 				'singular_name'      => __( 'Video', 'video' ),
 				'add_new'            => __( 'Add New', 'video' ),
@@ -20,18 +20,17 @@ function create_post_type_videos() {
 				'not_found'          => __( 'No Videos found', 'video' ),
 				'not_found_in_trash' => __( 'No Videos found in Trash', 'video' ),
 			),
-			'public'                => true,
-			'hierarchical'          => true,
-			'menu_icon'             => 'dashicons-video-alt3',
-			'has_archive'           => true,
-			'supports'              => array(
+			'public'       => true,
+			'hierarchical' => true,
+			'menu_icon'    => 'dashicons-video-alt3',
+			'has_archive'  => true,
+			'supports'     => array(
 				'title',
 				'excerpt',
 				'thumbnail',
 			),
-			'can_export'            => true,
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'can_export'   => true,
+			'show_in_rest' => true,
 		)
 	);
 }
