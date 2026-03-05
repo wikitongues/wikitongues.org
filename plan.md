@@ -105,18 +105,22 @@ Currently 24 flat files. Reorganize into subdirectories by concern and replace t
 
 On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
 
-#### 8. Root-level file hygiene _(parallel)_
+#### 8. Fellows ACF field audit _(parallel)_
+
+Audit which ACF fields on the `fellows` CPT are actually read by templates (`single-fellows.php`, `modules/fellows/meta--fellows-single.php`, `archive-fellows.php`, `template-revitalization-fellows.php`) and which are unused. Remove or deprecate unused fields.
+
+#### 10. Root-level file hygiene _(parallel)_
 
 `plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining:
 
 - Full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain
 - `npm audit` — `inflight@1.0.6` and `glob@7.2.3` flagged as deprecated/vulnerable in deploy logs; both are transitive dev dependencies of the Stylus toolchain. Address by updating or replacing the Stylus build dependency (overlaps with Phase 7 Stylus migration)
 
-#### 9. Layer 5 — Data Integrity _(parallel; no Docker required)_
+#### 11. Layer 5 — Data Integrity _(parallel; no Docker required)_
 
 Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
 
-#### 10. Enhanced search results page _(parallel; no deps)_
+#### 12. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
 
