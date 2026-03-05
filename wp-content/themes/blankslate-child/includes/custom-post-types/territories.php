@@ -8,7 +8,7 @@ function create_post_type_territories() {
 		register_post_type(
 			'territories',
 			array(
-				'labels'                => array(
+				'labels'       => array(
 					'name'               => __( 'Territories', 'territories' ),
 					'singular_name'      => __( 'Territory', 'territories' ),
 					'add_new'            => __( 'Add New', 'territories' ),
@@ -22,21 +22,20 @@ function create_post_type_territories() {
 					'not_found'          => __( 'No Territories found', 'territories' ),
 					'not_found_in_trash' => __( 'No Territory items found in Trash', 'territories' ),
 				),
-				'public'                => true,
-				'hierarchical'          => false,
-				'menu_icon'             => 'dashicons-admin-site-alt3',
-				'has_archive'           => 'territories',
-				'rewrite'               => array( 'slug' => 'territories/%region%' ),
-				'supports'              => array(
+				'public'       => true,
+				'hierarchical' => false,
+				'menu_icon'    => 'dashicons-admin-site-alt3',
+				'has_archive'  => 'territories',
+				'rewrite'      => array( 'slug' => 'territories/%region%' ),
+				'supports'     => array(
 					'title',
 					'editor',
 					'thumbnail',
 					'excerpt',
 				),
-				'can_export'            => true,
-				'show_in_rest'          => true,
-				'rest_controller_class' => 'WT_REST_Posts_Controller',
-				'taxonomies'            => array(
+				'can_export'   => true,
+				'show_in_rest' => true,
+				'taxonomies'   => array(
 					'region',
 				),
 

@@ -67,17 +67,11 @@ _Code quality chain (1→5) must complete before Docker (Phase 4) so the image c
 
 #### 1. ~~Resolve `class-wt-rest-posts-controller.php` duplication~~ ✅
 
-Root copy was orphaned — deleted. Theme copy is canonical.
+Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining cleanup is item 3 below.
 
-#### 2. Staging environment data sync _(do first — unblocks reliable staging tests for items 3–5)_
+#### 2. ~~Staging environment data sync~~ ✅
 
-Staging is significantly behind production as of 2026-02-28: captions (257 vs 320), lexicons (29 vs 157), videos (1860 vs 1863), languages (8084 vs 8087). Any staging test against content-dependent features is unreliable until resolved.
-
-**Approach (GreenGeeks shared hosting):**
-- `mysqldump` production DB via SSH → transfer to staging → `wp db import`
-- Optionally `rsync wp-content/uploads/` (large — consider relying on production CDN URLs for media in staging instead)
-- `wp search-replace production-url staging-url` after import to fix serialized URLs
-- Document as a runbook in `docs/staging-sync.md`; manual on-demand is sufficient initially
+Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
 
 #### 3. Remove dead code + clear root `includes/` _(combines former B + H)_
 
@@ -119,7 +113,10 @@ On continent-level region pages (e.g. `/territories/asia`), the fellows gallery 
 
 #### 8. Root-level file hygiene _(parallel)_
 
-`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining: full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain.
+`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining:
+
+- Full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain
+- `npm audit` — `inflight@1.0.6` and `glob@7.2.3` flagged as deprecated/vulnerable in deploy logs; both are transitive dev dependencies of the Stylus toolchain. Address by updating or replacing the Stylus build dependency (overlaps with Phase 7 Stylus migration)
 
 #### 9. Layer 5 — Data Integrity _(parallel; no Docker required)_
 

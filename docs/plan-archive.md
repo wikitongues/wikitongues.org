@@ -5,6 +5,115 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-05 (Tier 3 — Phase 3 item 2)
+
+### Phase 3 item 2 — Staging environment data sync
+**Branch:** `chore/cc/staging-sync-runbook`
+**PR:** [#518](https://github.com/wikitongues/wikitongues.org/pull/518)
+
+Completed the staging sync setup with a runbook at [`docs/staging-sync.md`](staging-sync.md).
+
+The automated pipeline was already in place via two workflows:
+- `backup-prod-db.yml` — runs every Monday 03:00 UTC; dumps production DB to `~/public_html/tmp/prod_dump.sql`; automatically triggers the sync via repository dispatch
+- `sync-prod-to-staging.yml` — imports dump, rsyncs uploads, runs URL search-replace (http + https), verifies `siteurl`/`home` point to staging
+
+The runbook documents manual trigger options, what each step does, post-sync caveats (ACF options, Make.com staging isolation, wp-config safety), and troubleshooting for common failure modes.
+
+---
+
+## 2026-03-05 (Tier 3 — Phase 3 item 1 + Infrastructure + Features)
+
+### Phase 3 item 1 — Delete orphaned root `class-wt-rest-posts-controller.php`
+**Branch:** `chore/cc/phase-3-item-a`
+**PR:** [#501](https://github.com/wikitongues/wikitongues.org/pull/501)
+
+Deleted the orphaned copy of `class-wt-rest-posts-controller.php` from the root `includes/` directory. The theme copy at `wp-content/themes/blankslate-child/includes/class-wt-rest-posts-controller.php` is canonical. The root copy had diverged and was not being loaded by anything. Remaining cleanup (stripping the now-dead `create_item()`/`update_item()` overrides from the theme copy, removing `WT_REST_Posts_Controller` from CPT registrations, and deleting the empty root `includes/` directory) is tracked as Phase 3 item 3.
+
+---
+
+### Deploy workflow fixes
+**Branch:** `chore/cc/deploy-workflow-fixes`, `chore/cc/mirror-staging-deploy-workflow`
+**PRs:** [#503](https://github.com/wikitongues/wikitongues.org/pull/503), [#511](https://github.com/wikitongues/wikitongues.org/pull/511)
+
+Four fixes applied to `deploy-production.yml`, then mirrored to `deploy-staging.yaml`:
+
+- **`npm install` → `npm ci`** — strict lockfile install, consistent with `lint.yml`
+- **Remove `StrictHostKeyChecking=no`** — `ssh-keyscan` already populates `known_hosts`; bypassing the check made that step pointless
+- **Remove redundant `Clean up known hosts` step** — Actions runners are ephemeral; step was a no-op
+- **Post-deploy health check** — `curl` the homepage after rsync; fails the job if non-200, surfacing broken deploys immediately
+- **Slack notifications** — `:rocket:` on success, `:rotating_light:` on failure with a link to the run log
+
+---
+
+### Staging sync workflow — verification steps
+**Branch:** `chore/cc/staging-sync-verification`
+**PR:** [#509](https://github.com/wikitongues/wikitongues.org/pull/509)
+
+Added a post-import verification step to `sync-prod-to-staging.yml` that runs `wp post list` counts for all four synced CPTs after the DB import and logs them to confirm parity with production. Runbook documentation (`docs/staging-sync.md`) is still outstanding.
+
+---
+
+### Archive stats section
+**Branch:** `feature/cc/archive-stats-section`
+**PR:** [#504](https://github.com/wikitongues/wikitongues.org/pull/504)
+
+Added a three-stat strip to `/archive` between the search bar and the language index.
+
+**Stats shown:**
+- Languages with at least one material (video, lexicon, or resource)
+- Total materials (videos + lexicons + resources)
+- Nations represented (cross-referenced against published territory posts)
+
+Each stat shows a count, a label, and a percentage subtitle relative to total records.
+
+**Implementation:**
+- `archive-languages__stats.php` — new module; queries computed via `$wpdb` direct queries for accuracy
+- Results cached in a 6-hour transient (`wt_archive_stats`); invalidated on `save_post` for languages, videos, lexicons, resources, and territories
+- `archive.styl` — new `.archive-stats` block styles; responsive stack on mobile
+- `template-archive-home.php` — module included between search bar and language index
+
+**Also bundled in this PR:**
+- Fellows meta redesign (`meta--fellows-single.php`, `meta--fellows-single.styl`, `single-fellows.php`, `gallery-fellows.php`) — visual refresh of the fellows single page meta block
+- Sticky nav fix — use placeholder `offsetTop` when nav is fixed to prevent layout jump
+- ACF count meta fixes — switched stale transient-backed counts (`_language_video_count`, `_language_lexicon_count`, `_language_fellows_count`) to live `$wpdb` queries; fixed hook to fire on all post types; fixed lexicons field name
+
+---
+
+### Airtable record links + admin menu reorganization
+**Branch:** `feature/cc/airtable-record-links`
+**PRs:** [#505](https://github.com/wikitongues/wikitongues.org/pull/505), [#506](https://github.com/wikitongues/wikitongues.org/pull/506)
+
+#### Airtable record links
+
+Added a "View in Airtable" button to the sidebar of every Languages, Videos, Captions, and Lexicons post edit screen. The button only renders when the post has an `_airtable_record_id` value and the options page is configured.
+
+**Configuration:** A new "Airtable Link" ACF options page (UI-defined, synced via `acf-json/`) stores:
+- `airtable_table_configurations` (group)
+  - `base_id`
+  - Per-CPT groups (`languages`, `videos`, `captions`, `lexicons`), each with `table_id` and `view_id`
+
+URL format: `airtable.com/{baseId}/{tableId}/{viewId}/{recordId}` (view segment omitted if not configured).
+
+`class-acf-fields.php` was refactored to remove programmatic options page registration; the field group is now fully UI-defined and loaded from `acf-json/`.
+
+**Files:**
+- `wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php` — stripped to read-only record ID field + `render_record_link()` + `get_record_url()`
+- `wp-content/themes/blankslate-child/acf-json/group_69a8bc1fac0cc.json` — new field group
+- `wp-content/themes/blankslate-child/acf-json/ui_options_page_69a8bc0d92ef1.json` — new options page
+
+#### Admin menu reorganization
+
+Rewrote `admin-helpers.php` to reorganize the WordPress admin sidebar with semantic section headers and visual nesting.
+
+**Changes:**
+- Five non-navigable section headers registered via `add_menu_page()` with `__return_null`: **Archive**, **People**, **Publishing**, **Documents**, **Admin** (positions 91–95)
+- `wt-menu-section` CSS class applied to section headers; styled as uppercase category labels (non-clickable via `pointer-events: none` + JS `href` removal)
+- Full explicit menu order covering all CPTs
+- Menu icons hidden; indentation added for visual nesting under section headers
+- Duplicate CPT list-view submenu items and all "Add New" submenu entries removed
+
+---
+
 ## 2026-03-01 (Tier 2 — Plugin: wt-airtable-sync)
 
 ### `wt-airtable-sync` plugin — Phases 0–3
