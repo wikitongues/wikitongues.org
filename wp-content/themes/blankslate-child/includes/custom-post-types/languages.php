@@ -9,7 +9,7 @@ function create_post_type_languages() {
 	register_post_type(
 		'languages',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Languages', 'language' ),
 				'singular_name'      => __( 'Language', 'language' ),
 				'add_new'            => __( 'Add New', 'language' ),
@@ -23,18 +23,17 @@ function create_post_type_languages() {
 				'not_found'          => __( 'No Languages found', 'language' ),
 				'not_found_in_trash' => __( 'No language Items found in Trash', 'language' ),
 			),
-			'public'                => true,
-			'hierarchical'          => true,
-			'menu_icon'             => 'dashicons-translation',
-			'has_archive'           => true,
-			'supports'              => array(
+			'public'       => true,
+			'hierarchical' => true,
+			'menu_icon'    => 'dashicons-translation',
+			'has_archive'  => true,
+			'supports'     => array(
 				'title',
 				'thumbnail',
 				'excerpt',
 			),
-			'can_export'            => true,
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'can_export'   => true,
+			'show_in_rest' => true,
 		)
 	);
 }

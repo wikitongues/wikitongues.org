@@ -6,7 +6,7 @@ function create_post_type_partners() {
 	register_post_type(
 		'partners',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Partners', 'partner' ),
 				'singular_name'      => __( 'Partner', 'partner' ),
 				'add_new'            => __( 'Add New', 'partner' ),
@@ -20,20 +20,19 @@ function create_post_type_partners() {
 				'not_found'          => __( 'No Partners found', 'partner' ),
 				'not_found_in_trash' => __( 'No Partners found in Trash', 'partner' ),
 			),
-			'public'                => true,
-			'hierarchical'          => true,
-			'menu_icon'             => 'dashicons-heart',
-			'has_archive'           => true,
-			'supports'              => array(
+			'public'       => true,
+			'hierarchical' => true,
+			'menu_icon'    => 'dashicons-heart',
+			'has_archive'  => true,
+			'supports'     => array(
 				'title',
 			),
-			'can_export'            => true,
-			'taxonomies'            => array(
+			'can_export'   => true,
+			'taxonomies'   => array(
 				'post_tag',
 				'category',
 			),
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'show_in_rest' => true,
 		)
 	);
 }
