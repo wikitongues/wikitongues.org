@@ -32,7 +32,9 @@ After moving all CPT files to `includes/taxonomies/`, cross-file audit and fixes
 - Fixed textdomains: `blogs.php` wrapped bare strings in `__()`, `events.php`/`faq.php` changed `'textdomain'` to CPT slug
 - Fixed wrong comment in `events.php` ("Register Custom Post Type for FAQs")
 - Added `taxonomies` key to `reports.php` to match other CPT registrations
-- Remaining security items (XSS in `faq.php`, null-deref in `documents.php`) tracked as separate work
+- Fixed XSS in `faq.php`: column handler uses `wp_kses_post()`, shortcode uses `esc_html( get_the_title() )`
+- Fixed null-deref in `documents.php`: `->post_title` access guarded with ternary on `get_field()` return
+- Added `show_in_rest` and `is_main_query()` guard to `fellows.php`
 
 ---
 
