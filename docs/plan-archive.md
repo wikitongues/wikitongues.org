@@ -5,6 +5,37 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-05 (Phase 3 items 4–5)
+
+### Phase 3 item 4 — Reorganize theme `includes/` into subdirectories + autoloader
+**Branch:** `chore/cc/reorganize-includes`
+**PR:** [#529](https://github.com/wikitongues/wikitongues.org/pull/529)
+
+Reorganized the flat `includes/` directory (24 files) into subdirectories by concern and replaced the manual `require_once` list in `functions.php` with a directory-scanning autoloader:
+
+- `admin/` — `admin-helpers.php`, `batch-operations.php`
+- `api/` — `rest-endpoints.php`
+- `integrations/` — `acf-helpers.php`, `document-download-handler.php`, `events-filter.php`
+- `taxonomies/` — all CPT/taxonomy registration files (moved from `custom-post-types/`)
+- `template/` — `enqueue-scripts.php`, `menus.php`, `router.php`, `search-filter.php`, `template-helpers.php`
+
+Also deleted one-time migration tools now superseded by Make.com: `import-captions.php` (+ its 44 unit tests) and `wp-cli-import.php`. Removed stale PHPStan baseline entries for both deleted files.
+
+### Phase 3 item 5 — CPT/taxonomy file consistency refactor
+**Branch:** `chore/cc/reorganize-includes`
+**PR:** [#529](https://github.com/wikitongues/wikitongues.org/pull/529)
+
+After moving all CPT files to `includes/taxonomies/`, cross-file audit and fixes:
+
+- Created missing CPT files: `blogs.php`, `careers.php`, `events.php` (previously inlined in `functions.php`)
+- Refactored `careers.php` from a class to plain functions; removed dead `register_acf_fields()` method
+- Fixed textdomains: `blogs.php` wrapped bare strings in `__()`, `events.php`/`faq.php` changed `'textdomain'` to CPT slug
+- Fixed wrong comment in `events.php` ("Register Custom Post Type for FAQs")
+- Added `taxonomies` key to `reports.php` to match other CPT registrations
+- Remaining security items (XSS in `faq.php`, null-deref in `documents.php`) tracked as separate work
+
+---
+
 ## 2026-03-05 (Phase 3 items 2–3 + Infrastructure + Features)
 
 ### Phase 3 item 3 — Remove dead post-object-helpers / REST controller chain

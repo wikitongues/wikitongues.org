@@ -78,25 +78,16 @@ Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. R
 
 Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller.php`, removed `rest_controller_class` from 7 CPTs, cleared root `includes/` directory (PR #520).
 
-#### 4. Reorganize theme `includes/` into subdirectories + autoloader _(combines former C + D)_
+#### 4. ~~Reorganize theme `includes/` into subdirectories + autoloader~~ ✅
 
-Currently 24 flat files. Reorganize into subdirectories by concern and replace the manual `require_once` list in `functions.php` with a directory-scanning autoloader in one pass:
-- `api/` — REST endpoints, controller
-- `admin/` — admin helpers, batch operations
-- `taxonomies/` — CPT and taxonomy registration
-- `template/` — template helpers, router
-- `integrations/` — import-captions, events filter, license handling
+See [archive](docs/plan-archive.md) (PR #529).
 
-#### 5. CPT/taxonomy file consistency refactor _(follows reorganize-includes)_
+#### 5. ~~CPT/taxonomy file consistency refactor~~ ✅ _(partial — security items below outstanding)_
 
-After moving all CPT files to `includes/taxonomies/`, a cross-file audit found several inconsistencies:
+Pattern, i18n, and structural issues resolved (PR #529). Remaining:
 
 - **Security:** `faq.php` — `echo $terms` unescaped in column handler (XSS); `get_the_title()` unescaped in shortcode output. `documents.php` — `->post_title` accessed on return value of `get_field()` without null check (fatal if field empty).
-- **Pattern:** `careers.php` uses a class instead of plain functions; has dead `register_acf_fields()` method (never hooked); textdomain is `'textdomain'`.
-- **Missing args:** `fellows.php` missing `show_in_rest`; missing `is_main_query()` guard in orderby callback; has commented-out block. `reports.php` missing `show_in_rest`.
-- **Redundant:** `reports.php` and `team.php` both call `register_taxonomy_for_object_type()` AND pass `'taxonomies'` arg — pick one (keep `register_taxonomy_for_object_type()` to match languages/videos).
-- **i18n:** `blogs.php` uses bare strings with no `__()` wrapping; `events.php` and `faq.php` use `'textdomain'` instead of the CPT slug.
-- **Wrong comment:** `events.php` comment says "Register Custom Post Type for FAQs".
+- **Missing args:** `fellows.php` missing `show_in_rest`; missing `is_main_query()` guard in orderby callback; has commented-out block.
 
 #### 6. Archive template refactor _(before Docker)_
 
