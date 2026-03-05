@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_69a8cf1e45f96",
+    "title": "Global: Fellowship",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Global: Fellowship",
+    "menu_slug": "global-fellowship",
+    "parent_slug": "edit.php?post_type=fellows",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "Fellowship Settings",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1772671763
+}

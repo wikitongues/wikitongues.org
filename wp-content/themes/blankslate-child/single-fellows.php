@@ -46,6 +46,19 @@ echo wpautop( wp_kses_post( $fellow_bio ) );
 echo wpautop( wp_kses_post( get_the_content() ) );
 echo '</div>';
 require 'modules/editorial-content.php';
+echo '<div class="main-content">';
+$display_about           = get_field( 'display_about', 'option' );
+$fellowship_about        = get_field( 'fellowship_about', 'option' );
+$fellowship_about_header = get_field( 'fellowship_about_header', 'option' );
+if ( $display_about && $fellowship_about ) {
+	echo '<div class="fellowship-about">';
+	echo '<strong class="wt_sectionHeader">' . esc_html( $fellowship_about_header ) . '</strong>';
+	echo wp_kses_post( $fellowship_about );
+	echo '</div>';
+}
+echo '</div>';
+// require 'modules/editorial-content.php';
+
 
 ?>
 <div class="custom-gallery full">
