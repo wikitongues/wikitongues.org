@@ -1,19 +1,19 @@
 <?php
-// Register Custom Post Type for FAQs
+// Register Custom Post Type for Events
 add_action( 'init', 'create_events_cpt' );
 function create_events_cpt() {
 	$labels = array(
-		'name'           => __( 'Events', 'textdomain' ),
-		'singular_name'  => __( 'Event', 'textdomain' ),
-		'menu_name'      => __( 'Events', 'textdomain' ),
-		'name_admin_bar' => __( 'Event', 'textdomain' ),
-		'add_new'        => __( 'Add New', 'textdomain' ),
-		'add_new_item'   => __( 'Add New Event', 'textdomain' ),
-		'new_item'       => __( 'New Event', 'textdomain' ),
-		'edit_item'      => __( 'Edit Event', 'textdomain' ),
-		'view_item'      => __( 'View Event', 'textdomain' ),
-		'all_items'      => __( 'All Events', 'textdomain' ),
-		'search_items'   => __( 'Search Events', 'textdomain' ),
+		'name'           => __( 'Events', 'events' ),
+		'singular_name'  => __( 'Event', 'events' ),
+		'menu_name'      => __( 'Events', 'events' ),
+		'name_admin_bar' => __( 'Event', 'events' ),
+		'add_new'        => __( 'Add New', 'events' ),
+		'add_new_item'   => __( 'Add New Event', 'events' ),
+		'new_item'       => __( 'New Event', 'events' ),
+		'edit_item'      => __( 'Edit Event', 'events' ),
+		'view_item'      => __( 'View Event', 'events' ),
+		'all_items'      => __( 'All Events', 'events' ),
+		'search_items'   => __( 'Search Events', 'events' ),
 	);
 
 	$args = array(
