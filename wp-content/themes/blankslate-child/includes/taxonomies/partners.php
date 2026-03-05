@@ -56,7 +56,7 @@ function partner_shortcode( $atts ) {
 	);
 
 	$args = array(
-		'post_type'      => 'partner',
+		'post_type'      => 'partners',
 		'posts_per_page' => -1,
 		'orderby'        => 'menu_order',
 		'order'          => 'ASC',
@@ -85,10 +85,12 @@ function partner_shortcode( $atts ) {
 			echo '<ul>';
 		while ( $partners->have_posts() ) {
 				$partners->the_post();
+				$partner_name      = esc_html( get_the_title() );
+				$partner_link      = esc_url( get_field( 'partner_website' ) );
+				$partner_logo_data = get_field( 'partner_logo' );
+				$partner_logo_url  = esc_url( is_array( $partner_logo_data ) ? $partner_logo_data['url'] : '' );
 				echo '<li class="partner">';
-				echo '<a href="' . $partner_link . '"><img src="' . $partner_logo . '" title="' . $partner_name . '" alt="' . $partner_name . '"></a>';
-				// echo '<h3 class="partner-question">' . get_the_title() . '</h3>';
-				// echo '<div class="partner-answer">' . apply_filters('the_content', get_the_content()) . '</div>';
+				echo '<a href="' . $partner_link . '"><img src="' . $partner_logo_url . '" title="' . $partner_name . '" alt="' . $partner_name . '"></a>';
 				echo '</li>';
 		}
 			echo '</ul>';

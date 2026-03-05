@@ -82,12 +82,9 @@ Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller
 
 See [archive](docs/plan-archive.md) (PR #529).
 
-#### 5. ~~CPT/taxonomy file consistency refactor~~ ✅ _(partial — security items below outstanding)_
+#### 5. ~~CPT/taxonomy file consistency refactor~~ ✅
 
-Pattern, i18n, and structural issues resolved (PR #529). Remaining:
-
-- **Security:** `faq.php` — `echo $terms` unescaped in column handler (XSS); `get_the_title()` unescaped in shortcode output. `documents.php` — `->post_title` accessed on return value of `get_field()` without null check (fatal if field empty).
-- **Missing args:** `fellows.php` missing `show_in_rest`; missing `is_main_query()` guard in orderby callback; has commented-out block.
+See [archive](docs/plan-archive.md) (PR #529).
 
 #### 6. Archive template refactor _(before Docker)_
 
