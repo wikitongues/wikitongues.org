@@ -32,10 +32,7 @@ function create_post_type_fellows() {
 				'thumbnail',
 			),
 			'can_export'   => true,
-		// 'taxonomies' => array(
-		//     'post_tag',
-		//     'category'
-		// )
+			'show_in_rest' => true,
 		)
 	);
 }
@@ -48,7 +45,7 @@ function add_fellows_custom_columns( $columns ) {
 	unset( $columns['date'] );
 	$columns['fellow_year']     = __( 'Year', 'fellows' );
 	$columns['fellow_language'] = __( 'Language', 'fellows' );
-	$columns['fellow_category'] = __( 'Category', 'textdomain' );
+	$columns['fellow_category'] = __( 'Category', 'fellows' );
 	return $columns;
 }
 add_filter( 'manage_fellows_posts_columns', 'add_fellows_custom_columns' );
@@ -96,8 +93,8 @@ add_filter( 'manage_edit-fellows_sortable_columns', 'make_fellows_columns_sortab
 
 // Modify the query to sort by custom fields
 function fellows_custom_column_orderby( $query ) {
-	if ( ! is_admin() ) {
-			return;
+	if ( ! is_admin() || ! $query->is_main_query() ) {
+		return;
 	}
 
 	$orderby = $query->get( 'orderby' );
