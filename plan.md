@@ -69,25 +69,13 @@ _Code quality chain (1→5) must complete before Docker (Phase 4) so the image c
 
 Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining cleanup is item 3 below.
 
-#### 2. Staging environment data sync _(do first — unblocks reliable staging tests for items 3–5)_
+#### 2. Staging environment data sync ✅
 
-Workflow `sync-prod-to-staging.yml` now includes post-import count verification (PR #509). Runbook documentation (`docs/staging-sync.md`) is still outstanding.
+Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook at `docs/staging-sync.md` (PR #518).
 
-**Approach (GreenGeeks shared hosting):**
-- `mysqldump` production DB via SSH → transfer to staging → `wp db import`
-- Optionally `rsync wp-content/uploads/` (large — consider relying on production CDN URLs for media in staging instead)
-- `wp search-replace production-url staging-url` after import to fix serialized URLs
-- Document as a runbook in `docs/staging-sync.md`; manual on-demand is sufficient initially
+#### 3. Remove dead code + clear root `includes/` ✅
 
-#### 3. Remove dead code + clear root `includes/` _(combines former B + H)_
-
-`handle_post_object()` and `set_post_object_field()` in `post-object-helpers.php` are dead — the integromat-connector write paths were retired 2026-03-01 and `_WT_TMP_` fields cleaned up. Full removal chain:
-
-- Delete `post-object-helpers.php` (both copies: root `includes/` and theme `includes/`)
-- Strip `create_item()` / `update_item()` overrides and `require_once` from `class-wt-rest-posts-controller.php`; the now-empty subclass can be deleted entirely
-- Remove `'rest_controller_class' => 'WT_REST_Posts_Controller'` from all 7 CPT registrations (`languages`, `videos`, `captions`, `territories`, `lexicons`, `partners`, `resources`)
-- Remove `require_once 'includes/class-wt-rest-posts-controller.php'` from `functions.php`
-- Delete now-empty root `includes/` directory
+Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller.php`, removed `rest_controller_class` from 7 CPTs, cleared root `includes/` directory (PR #520).
 
 #### 4. Reorganize theme `includes/` into subdirectories + autoloader _(combines former C + D)_
 
