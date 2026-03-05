@@ -50,7 +50,7 @@ function fill_document_files_custom_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'parent_download':
 			$document_files = get_field( $column, $post_id );
-			echo esc_html( $document_files->post_title );
+			echo esc_html( $document_files ? $document_files->post_title : '' );
 			break;
 
 		case 'version':
@@ -65,7 +65,7 @@ function fill_document_files_custom_columns( $column, $post_id ) {
 
 		case 'language':
 			$language = get_field( $column, $post_id );
-			echo esc_html( $language->post_title );
+			echo esc_html( $language ? $language->post_title : '' );
 			break;
 
 		case 'format':

@@ -29,10 +29,6 @@ function create_post_type_team() {
 				'thumbnail',
 			),
 			'can_export'   => true,
-			'taxonomies'   => array(
-				'post_tag',
-				'category',
-			),
 			'show_in_rest' => true,
 		)
 	);
