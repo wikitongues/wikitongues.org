@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Compile Stylus
         run: npm run stylus:build
@@ -40,7 +40,36 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy via rsync
-        run: rsync -avz -e "ssh -o StrictHostKeyChecking=no" --filter='merge .rsync-filter' . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}
+        run: rsync -avz -e "ssh" --filter='merge .rsync-filter' . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}
 
-      - name: Clean up known hosts
-        run: rm -f ~/.ssh/known_hosts
+      - name: Health check — confirm homepage returns 200
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" https://wikitongues.org)
+          echo "Homepage status: $status"
+          [ "$status" -eq 200 ] || { echo "ERROR: Homepage returned $status after deploy"; exit 1; }
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: Production deploy complete.",
+              "username": "GitHub Actions",
+              "icon_emoji": ":rocket:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": ":x: *Production deploy failed!*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View logs>",
+              "username": "GitHub Actions",
+              "icon_emoji": ":rotating_light:"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
