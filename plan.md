@@ -69,15 +69,9 @@ _Code quality chain (1→5) must complete before Docker (Phase 4) so the image c
 
 Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining cleanup is item 3 below.
 
-#### 2. Staging environment data sync _(do first — unblocks reliable staging tests for items 3–5)_
+#### 2. ~~Staging environment data sync~~ ✅
 
-Workflow `sync-prod-to-staging.yml` now includes post-import count verification (PR #509). Runbook documentation (`docs/staging-sync.md`) is still outstanding.
-
-**Approach (GreenGeeks shared hosting):**
-- `mysqldump` production DB via SSH → transfer to staging → `wp db import`
-- Optionally `rsync wp-content/uploads/` (large — consider relying on production CDN URLs for media in staging instead)
-- `wp search-replace production-url staging-url` after import to fix serialized URLs
-- Document as a runbook in `docs/staging-sync.md`; manual on-demand is sufficient initially
+Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
 
 #### 3. Remove dead code + clear root `includes/` _(combines former B + H)_
 
