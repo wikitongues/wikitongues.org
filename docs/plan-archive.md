@@ -5,7 +5,25 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
-## 2026-03-05 (Tier 3 — Phase 3 item 2)
+## 2026-03-05 (Phase 3 items 2–3 + Infrastructure + Features)
+
+### Phase 3 item 3 — Remove dead post-object-helpers / REST controller chain
+**Branch:** `chore/cc/remove-dead-post-object-helpers`
+**PR:** [#520](https://github.com/wikitongues/wikitongues.org/pull/520)
+
+Deleted the dead code chain left behind from the old Make.com v1 (Integromat) write path, retired 2026-03-01:
+
+- Deleted `wp-content/themes/blankslate-child/includes/class-wt-rest-posts-controller.php`
+- Deleted `wp-content/themes/blankslate-child/includes/post-object-helpers.php`
+- Deleted `includes/post-object-helpers.php` (orphaned root copy)
+- Removed `'rest_controller_class' => 'WT_REST_Posts_Controller'` from all 7 CPT registrations (languages, videos, captions, territories, lexicons, partners, resources). WordPress now uses the default `WP_REST_Posts_Controller`.
+- Removed `require_once 'includes/class-wt-rest-posts-controller.php'` from `functions.php`
+- Deleted the now-empty root `includes/` directory and removed its entry from `phpcs.xml`
+- Regenerated `phpstan-baseline.neon` to remove 2 stale entries
+
+**Why it was dead:** `handle_post_object()` was only triggered by `_WT_TMP_*` fields in REST request bodies. All 3,376 such rows were deleted from `wp_postmeta` on 2026-03-01 when Make.com v1 scenarios were disabled.
+
+---
 
 ### Phase 3 item 2 — Staging environment data sync
 **Branch:** `chore/cc/staging-sync-runbook`

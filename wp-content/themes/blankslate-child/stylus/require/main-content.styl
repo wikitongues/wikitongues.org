@@ -33,6 +33,12 @@
 			text--body($blue())
 			anchor($blue(),2px)
 
+	pre
+		font-family monospace
+		color inherit
+		margin-bottom 0.8rem
+		margin-left -1.6rem
+
 	ul
 		text--body($black)
 		padding 0
@@ -63,7 +69,14 @@
 				margin-bottom 0
 
 	&.wt_single-videos__embed
-		margin-bottom 0
+		max-width none
+		width 100%
+		border-radius 0
+
+		h6
+			max-width $content
+			margin auto
+			padding 0 0 32px 0
 
 	>div,
 	img
