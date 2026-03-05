@@ -9,7 +9,7 @@ function create_post_type_resources() {
 	register_post_type(
 		'resources',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Resources', 'resource' ),
 				'singular_name'      => __( 'Resource', 'resource' ),
 				'add_new'            => __( 'Add New', 'resource' ),
@@ -23,23 +23,22 @@ function create_post_type_resources() {
 				'not_found'          => __( 'No Resources found', 'resource' ),
 				'not_found_in_trash' => __( 'No Resources found in Trash', 'resource' ),
 			),
-			'public'                => true,
-			'hierarchical'          => true,
-			'menu_icon'             => 'dashicons-format-quote',
-			'has_archive'           => true,
-			'supports'              => array(
+			'public'       => true,
+			'hierarchical' => true,
+			'menu_icon'    => 'dashicons-format-quote',
+			'has_archive'  => true,
+			'supports'     => array(
 				'title',
 				'editor',
 				'excerpt',
 				// 'thumbnail'
 			),
-			'can_export'            => true,
-			'taxonomies'            => array(
+			'can_export'   => true,
+			'taxonomies'   => array(
 				'post_tag',
 				'category',
 			),
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'show_in_rest' => true,
 		)
 	);
 }

@@ -6,7 +6,7 @@ function create_post_type_lexicons() {
 	register_post_type(
 		'lexicons',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Lexicons', 'lexicons' ),
 				'singular_name'      => __( 'Lexicon', 'lexicon' ),
 				'add_new'            => __( 'Add New', 'lexicon' ),
@@ -20,23 +20,22 @@ function create_post_type_lexicons() {
 				'not_found'          => __( 'No Lexicons found', 'lexicon' ),
 				'not_found_in_trash' => __( 'No Lexicon found in Trash', 'lexicon' ),
 			),
-			'public'                => true,
-			'hierarchical'          => true,
-			'menu_icon'             => 'dashicons-format-status',
-			'has_archive'           => true,
-			'supports'              => array(
+			'public'       => true,
+			'hierarchical' => true,
+			'menu_icon'    => 'dashicons-format-status',
+			'has_archive'  => true,
+			'supports'     => array(
 				'title',
 				'editor',
 				'excerpt',
 				'thumbnail',
 			),
-			'can_export'            => true,
-			'taxonomies'            => array(
+			'can_export'   => true,
+			'taxonomies'   => array(
 				'post_tag',
 				'category',
 			),
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'show_in_rest' => true,
 		)
 	);
 }

@@ -6,7 +6,7 @@ function create_post_type_captions() {
 	register_post_type(
 		'captions',
 		array(
-			'labels'                => array(
+			'labels'       => array(
 				'name'               => __( 'Captions', 'caption' ),
 				'singular_name'      => __( 'Caption', 'caption' ),
 				'add_new'            => __( 'Add New', 'caption' ),
@@ -20,11 +20,10 @@ function create_post_type_captions() {
 				'not_found'          => __( 'No Captions found', 'caption' ),
 				'not_found_in_trash' => __( 'No Captions found in Trash', 'caption' ),
 			),
-			'public'                => true,
-			'supports'              => array( 'title', 'custom-fields' ),
-			'has_archive'           => true,
-			'show_in_rest'          => true,
-			'rest_controller_class' => 'WT_REST_Posts_Controller',
+			'public'       => true,
+			'supports'     => array( 'title', 'custom-fields' ),
+			'has_archive'  => true,
+			'show_in_rest' => true,
 		)
 	);
 }

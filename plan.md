@@ -69,9 +69,9 @@ _Code quality chain (1→5) must complete before Docker (Phase 4) so the image c
 
 Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining cleanup is item 3 below.
 
-#### 2. Staging environment data sync ✅
+#### 2. ~~Staging environment data sync~~ ✅
 
-Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook at `docs/staging-sync.md` (PR #518).
+Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
 
 #### 3. Remove dead code + clear root `includes/` ✅
 
@@ -109,18 +109,18 @@ On continent-level region pages (e.g. `/territories/asia`), the fellows gallery 
 
 Audit which ACF fields on the `fellows` CPT are actually read by templates (`single-fellows.php`, `modules/fellows/meta--fellows-single.php`, `archive-fellows.php`, `template-revitalization-fellows.php`) and which are unused. Remove or deprecate unused fields.
 
-#### 10. Root-level file hygiene _(parallel)_
+#### 9. Root-level file hygiene _(parallel)_
 
 `plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining:
 
 - Full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain
 - `npm audit` — `inflight@1.0.6` and `glob@7.2.3` flagged as deprecated/vulnerable in deploy logs; both are transitive dev dependencies of the Stylus toolchain. Address by updating or replacing the Stylus build dependency (overlaps with Phase 7 Stylus migration)
 
-#### 11. Layer 5 — Data Integrity _(parallel; no Docker required)_
+#### 10. Layer 5 — Data Integrity _(parallel; no Docker required)_
 
 Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
 
-#### 12. Enhanced search results page _(parallel; no deps)_
+#### 11. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
 

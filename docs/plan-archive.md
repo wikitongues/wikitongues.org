@@ -25,6 +25,20 @@ Deleted the dead code chain left behind from the old Make.com v1 (Integromat) wr
 
 ---
 
+### Phase 3 item 2 — Staging environment data sync
+**Branch:** `chore/cc/staging-sync-runbook`
+**PR:** [#518](https://github.com/wikitongues/wikitongues.org/pull/518)
+
+Completed the staging sync setup with a runbook at [`docs/staging-sync.md`](staging-sync.md).
+
+The automated pipeline was already in place via two workflows:
+- `backup-prod-db.yml` — runs every Monday 03:00 UTC; dumps production DB to `~/public_html/tmp/prod_dump.sql`; automatically triggers the sync via repository dispatch
+- `sync-prod-to-staging.yml` — imports dump, rsyncs uploads, runs URL search-replace (http + https), verifies `siteurl`/`home` point to staging
+
+The runbook documents manual trigger options, what each step does, post-sync caveats (ACF options, Make.com staging isolation, wp-config safety), and troubleshooting for common failure modes.
+
+---
+
 ## 2026-03-05 (Tier 3 — Phase 3 item 1 + Infrastructure + Features)
 
 ### Phase 3 item 1 — Delete orphaned root `class-wt-rest-posts-controller.php`
