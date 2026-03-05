@@ -29,6 +29,7 @@ function create_post_type_reports() {
 			),
 			'can_export'   => true,
 			'show_in_rest' => true,
+			'taxonomies'   => array( 'post_tag', 'category' ),
 		)
 	);
 }
