@@ -5,7 +5,6 @@ WP_Mock::bootstrap();
 
 require_once __DIR__ . '/unit/FakeQuery.php';
 
-require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/import-captions.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_gallery_items.php';
