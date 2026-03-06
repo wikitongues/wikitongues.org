@@ -100,6 +100,8 @@ See [archive](docs/plan-archive.md) (PR #529).
 
 `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
 
+**PHPDoc array shapes** — `wt_gallery_params()` now carries full `@param`/`@return` array shape annotations (PHPStan + IDE autocomplete). Evaluate applying this pattern consistently to other helper functions across the project: `wt_social_links()`, `wt_archive_params()` callers, any function accepting or returning a structured array. Goal: callers should never need to open a function definition to know its contract.
+
 #### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
 
 **`gallery-territories.php`:**

@@ -83,8 +83,46 @@ function html5wp_pagination() {
  * is filled in automatically. Used by every create_gallery_instance() call
  * site across the theme.
  *
- * @param array $overrides Keys to override from the defaults.
- * @return array Full params array suitable for create_gallery_instance().
+ * @param array{
+ *   title?:          string,
+ *   subtitle?:       string,
+ *   show_total?:     string,
+ *   post_type?:      string,
+ *   custom_class?:   string,
+ *   columns?:        int,
+ *   posts_per_page?: int,
+ *   orderby?:        string,
+ *   order?:          string,
+ *   pagination?:     string,
+ *   meta_key?:       string,
+ *   meta_value?:     string|int,
+ *   selected_posts?: string,
+ *   display_blank?:  string,
+ *   exclude_self?:   string,
+ *   taxonomy?:       string,
+ *   term?:           string,
+ *   link_out?:       string,
+ * } $overrides Keys to override from the defaults.
+ * @return array{
+ *   title:          string,
+ *   subtitle:       string,
+ *   show_total:     string,
+ *   post_type:      string,
+ *   custom_class:   string,
+ *   columns:        int,
+ *   posts_per_page: int,
+ *   orderby:        string,
+ *   order:          string,
+ *   pagination:     string,
+ *   meta_key:       string,
+ *   meta_value:     string|int,
+ *   selected_posts: string,
+ *   display_blank:  string,
+ *   exclude_self:   string,
+ *   taxonomy:       string,
+ *   term:           string,
+ *   link_out:       string,
+ * } Full params array suitable for create_gallery_instance().
  */
 function wt_gallery_params( array $overrides ): array {
 	return array_merge(

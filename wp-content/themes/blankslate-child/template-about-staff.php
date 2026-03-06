@@ -40,6 +40,7 @@ $careers = wt_gallery_params(
 		'posts_per_page' => 3,
 		'orderby'        => 'rand',
 		'pagination'     => 'false',
+		'show_total'     => 'false',
 		'exclude_self'   => 'true',
 		'taxonomy'       => 'career_type',
 		'term'           => 'Staff',
