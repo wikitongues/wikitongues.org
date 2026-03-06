@@ -9,7 +9,8 @@
 		setup_postdata( $post );
 		?>
 		<?php
-		$testimonial_image     = get_field( 'fellow_headshot' );
+		$fellow_banner         = get_field( 'fellow_banner' );
+		$testimonial_image     = $fellow_banner['banner_image']['url'] ?? '';
 		$testimonial_copy      = get_field( 'fellow_testimonial' );
 		$first_name            = get_field( 'first_name' );
 		$last_name             = get_field( 'last_name' );
@@ -18,7 +19,7 @@
 		$testimonial_link_back = get_field( 'testimonial_link_back' );
 		?>
 		<li class="wt_testimonial">
-			<?php echo '<div class="wt_testimonial__image" role="img"' . 'style="background-image:url(' . wp_get_attachment_url( $testimonial_image ) . ');" alt="' . $testimonial_name . '" title="Wikitongues Fellow ' . $testimonial_name . '"></div>'; ?>
+			<?php echo '<div class="wt_testimonial__image" role="img" style="background-image:url(' . esc_url( $testimonial_image ) . ');" alt="' . esc_attr( $testimonial_name ) . '" title="Wikitongues Fellow ' . esc_attr( $testimonial_name ) . '"></div>'; ?>
 			<div class="wt_testimonial__copy">
 				<p>
 					<span><?php echo $testimonial_copy; ?></span>

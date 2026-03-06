@@ -105,9 +105,9 @@ See [archive](docs/plan-archive.md) (PR #536).
 See [archive](docs/plan-archive.md) (PR #538).
 
 
-#### 8. Fellows ACF field audit _(parallel)_
+#### ~~8. Fellows ACF field audit~~ ✅
 
-Audit which ACF fields on the `fellows` CPT are actually read by templates (`single-fellows.php`, `modules/fellows/meta--fellows-single.php`, `archive-fellows.php`, `template-revitalization-fellows.php`) and which are unused. Remove or deprecate unused fields.
+See [archive](docs/plan-archive.md) (PR #541).
 
 #### 9. Root-level file hygiene _(parallel)_
 
