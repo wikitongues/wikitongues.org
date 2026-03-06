@@ -22,6 +22,17 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-07 (Phase 3 item 9)
+
+### Phase 3 item 9 — Root-level file hygiene
+**PRs:** [#498](https://github.com/wikitongues/wikitongues.org/pull/498)–[#500](https://github.com/wikitongues/wikitongues.org/pull/500), [#542](https://github.com/wikitongues/wikitongues.org/pull/542)
+
+- `plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500)
+- Untracked stale files audit: working tree clean, no orphaned scripts or exports found
+- `npm audit fix` resolved `ajv` (moderate ReDoS) and `minimatch` (high ReDoS) — both transitive dev deps of the Stylus toolchain; Stylus build verified clean after fix (PR #542)
+
+---
+
 ## 2026-03-06 (Phase 3 item 8)
 
 ### Phase 3 item 8 — Fellows ACF field audit

@@ -109,12 +109,9 @@ See [archive](docs/plan-archive.md) (PR #538).
 
 See [archive](docs/plan-archive.md) (PR #541).
 
-#### 9. Root-level file hygiene _(parallel)_
+#### ~~9. Root-level file hygiene~~ ✅
 
-`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining:
-
-- Full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain
-- `npm audit` — `inflight@1.0.6` and `glob@7.2.3` flagged as deprecated/vulnerable in deploy logs; both are transitive dev dependencies of the Stylus toolchain. Address by updating or replacing the Stylus build dependency (overlaps with Phase 7 Stylus migration)
+See [archive](docs/plan-archive.md) (PRs #498–500, #542).
 
 #### 10. Layer 5 — Data Integrity _(parallel; no Docker required)_
 
