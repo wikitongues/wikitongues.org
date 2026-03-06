@@ -76,9 +76,10 @@ function build_gallery_query_args( $atts = array() ) {
 	} elseif ( ! empty( $atts['taxonomy'] ) && ! empty( $atts['term'] ) ) {
 		$args['tax_query'] = array(
 			array(
-				'taxonomy' => $atts['taxonomy'],
-				'field'    => 'slug',
-				'terms'    => $atts['term'],
+				'taxonomy'         => $atts['taxonomy'],
+				'field'            => 'slug',
+				'terms'            => $atts['term'],
+				'include_children' => true, // explicit: continent slugs must include child regions
 			),
 		);
 	}
