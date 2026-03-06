@@ -7,25 +7,20 @@
 			$title_name .= ' language';
 		}
 			$title  = $title_name . ' external resources';
-			$params = array(
-				'title'          => $title,
-				'subtitle'       => 'Wikitongues indexes language resources from across the internet.',
-				'show_total'     => 'false',
-				'post_type'      => 'resources',
-				'custom_class'   => '',
-				'columns'        => 3,
-				'posts_per_page' => 6,
-				'orderby'        => 'date',
-				'order'          => 'asc',
-				'pagination'     => 'true',
-				'meta_key'       => 'resource_language',
-				'meta_value'     => $language,
-				'selected_posts' => '',
-				'display_blank'  => 'true',
-				'exclude_self'   => 'true',
-				'taxonomy'       => '',
-				'term'           => '',
-				'link_out'       => '',
+			$params = wt_gallery_params(
+				array(
+					'title'          => $title,
+					'subtitle'       => 'Wikitongues indexes language resources from across the internet.',
+					'post_type'      => 'resources',
+					'show_total'     => 'false',
+					'columns'        => 3,
+					'posts_per_page' => 6,
+					'orderby'        => 'date',
+					'meta_key'       => 'resource_language',
+					'meta_value'     => $language,
+					'display_blank'  => 'true',
+					'exclude_self'   => 'true',
+				)
 			);
 			echo create_gallery_instance( $params );
 			?>

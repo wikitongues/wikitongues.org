@@ -1,12 +1,10 @@
 <?php
 get_header();
 
-$territory_slug         = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
-$territory_post         = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
-$region_slug            = isset( $_GET['region'] ) ? sanitize_title( wp_unslash( $_GET['region'] ) ) : '';
-$region_term            = $region_slug ? get_term_by( 'slug', $region_slug, 'region' ) : null;
-$archive_columns        = 5;
-$archive_posts_per_page = 100;
+$territory_slug = isset( $_GET['territory'] ) ? sanitize_title( wp_unslash( $_GET['territory'] ) ) : '';
+$territory_post = $territory_slug ? get_page_by_path( $territory_slug, OBJECT, 'territories' ) : null;
+$region_slug    = isset( $_GET['region'] ) ? sanitize_title( wp_unslash( $_GET['region'] ) ) : '';
+$region_term    = $region_slug ? get_term_by( 'slug', $region_slug, 'region' ) : null;
 
 echo '<main class="wt_archive-fellows">';
 
@@ -32,44 +30,21 @@ if ( $territory_post ) {
 	if ( $fellows_query->have_posts() ) {
 		$fellow_ids = wp_list_pluck( $fellows_query->posts, 'ID' );
 		wp_reset_postdata();
-		$params = array(
-			'title'          => 'Fellows from ' . $territory_name,
-			'subtitle'       => '',
-			'show_total'     => 'true',
-			'post_type'      => 'fellows',
-			'columns'        => $archive_columns,
-			'posts_per_page' => $archive_posts_per_page,
-			'orderby'        => 'title',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => '',
-			'meta_value'     => '',
-			'selected_posts' => implode( ',', $fellow_ids ),
-			'display_blank'  => 'false',
-			'exclude_self'   => 'false',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => '',
+		$params = wt_gallery_params(
+			array(
+				'title'          => 'Fellows from ' . $territory_name,
+				'post_type'      => 'fellows',
+				'selected_posts' => implode( ',', $fellow_ids ),
+			)
 		);
 	} else {
-		$params = array(
-			'title'          => 'Fellows from ' . $territory_name,
-			'subtitle'       => '',
-			'show_total'     => 'true',
-			'post_type'      => 'fellows',
-			'columns'        => $archive_columns,
-			'posts_per_page' => $archive_posts_per_page,
-			'orderby'        => 'title',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => '',
-			'meta_value'     => '',
-			'selected_posts' => '-1',
-			'display_blank'  => 'true',
-			'exclude_self'   => 'false',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => '',
+		$params = wt_gallery_params(
+			array(
+				'title'          => 'Fellows from ' . $territory_name,
+				'post_type'      => 'fellows',
+				'selected_posts' => '-1',
+				'display_blank'  => 'true',
+			)
 		);
 	}
 	echo create_gallery_instance( $params );
@@ -127,89 +102,43 @@ if ( $territory_post ) {
 		if ( $region_fellows_query->have_posts() ) {
 			$fellow_ids = wp_list_pluck( $region_fellows_query->posts, 'ID' );
 			wp_reset_postdata();
-			$params = array(
-				'title'          => 'Fellows from ' . $region_name,
-				'subtitle'       => '',
-				'show_total'     => 'true',
-				'post_type'      => 'fellows',
-				'columns'        => $archive_columns,
-				'posts_per_page' => $archive_posts_per_page,
-				'orderby'        => 'title',
-				'order'          => 'asc',
-				'pagination'     => 'true',
-				'meta_key'       => '',
-				'meta_value'     => '',
-				'selected_posts' => implode( ',', $fellow_ids ),
-				'display_blank'  => 'false',
-				'exclude_self'   => 'false',
-				'taxonomy'       => '',
-				'term'           => '',
-				'link_out'       => '',
+			$params = wt_gallery_params(
+				array(
+					'title'          => 'Fellows from ' . $region_name,
+					'post_type'      => 'fellows',
+					'selected_posts' => implode( ',', $fellow_ids ),
+				)
 			);
 		} else {
 			wp_reset_postdata();
-			$params = array(
-				'title'          => 'Fellows from ' . $region_name,
-				'subtitle'       => '',
-				'show_total'     => 'true',
-				'post_type'      => 'fellows',
-				'columns'        => $archive_columns,
-				'posts_per_page' => $archive_posts_per_page,
-				'orderby'        => 'title',
-				'order'          => 'asc',
-				'pagination'     => 'true',
-				'meta_key'       => '',
-				'meta_value'     => '',
-				'selected_posts' => '-1',
-				'display_blank'  => 'true',
-				'exclude_self'   => 'false',
-				'taxonomy'       => '',
-				'term'           => '',
-				'link_out'       => '',
+			$params = wt_gallery_params(
+				array(
+					'title'          => 'Fellows from ' . $region_name,
+					'post_type'      => 'fellows',
+					'selected_posts' => '-1',
+					'display_blank'  => 'true',
+				)
 			);
 		}
 	} else {
 		wp_reset_postdata();
-		$params = array(
-			'title'          => 'Fellows from ' . $region_name,
-			'subtitle'       => '',
-			'show_total'     => 'true',
-			'post_type'      => 'fellows',
-			'columns'        => $archive_columns,
-			'posts_per_page' => $archive_posts_per_page,
-			'orderby'        => 'title',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => '',
-			'meta_value'     => '',
-			'selected_posts' => '-1',
-			'display_blank'  => 'true',
-			'exclude_self'   => 'false',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => '',
+		$params = wt_gallery_params(
+			array(
+				'title'          => 'Fellows from ' . $region_name,
+				'post_type'      => 'fellows',
+				'selected_posts' => '-1',
+				'display_blank'  => 'true',
+			)
 		);
 	}
 	echo create_gallery_instance( $params );
 } else {
-	$params = array(
-		'title'          => 'Fellows',
-		'subtitle'       => '',
-		'show_total'     => 'true',
-		'post_type'      => 'fellows',
-		'columns'        => $archive_columns,
-		'posts_per_page' => $archive_posts_per_page,
-		'orderby'        => 'title',
-		'order'          => 'asc',
-		'pagination'     => 'true',
-		'meta_key'       => '',
-		'meta_value'     => '',
-		'selected_posts' => '',
-		'display_blank'  => 'false',
-		'exclude_self'   => 'false',
-		'taxonomy'       => '',
-		'term'           => '',
-		'link_out'       => home_url( '/revitalization/fellows', 'relative' ),
+	$params = wt_gallery_params(
+		array(
+			'title'     => 'Fellows',
+			'post_type' => 'fellows',
+			'link_out'  => home_url( '/revitalization/fellows', 'relative' ),
+		)
 	);
 	echo create_gallery_instance( $params );
 }

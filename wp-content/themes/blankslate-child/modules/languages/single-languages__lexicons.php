@@ -13,47 +13,35 @@ $title = $title_name . ' dictionaries, phrase books, and other lexicons';
 	</div>
 	<?php
 		// Gallery
-		$params = array(
-			'title'          => "{$standard_name} to other languages",
-			'subtitle'       => '',
-			'show_total'     => 'false',
-			'post_type'      => 'lexicons',
-			'custom_class'   => '',
-			'columns'        => 3,
-			'posts_per_page' => 6,
-			'orderby'        => 'date',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => 'source_languages',
-			'meta_value'     => $language,
-			'selected_posts' => '',
-			'display_blank'  => 'true',
-			'exclude_self'   => 'true',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => '',
+		$params = wt_gallery_params(
+			array(
+				'title'          => "{$standard_name} to other languages",
+				'post_type'      => 'lexicons',
+				'show_total'     => 'false',
+				'columns'        => 3,
+				'posts_per_page' => 6,
+				'orderby'        => 'date',
+				'meta_key'       => 'source_languages',
+				'meta_value'     => $language,
+				'display_blank'  => 'true',
+				'exclude_self'   => 'true',
+			)
 		);
 		echo create_gallery_instance( $params );
 
-		$params = array(
-			'title'          => "Other languages to {$standard_name}",
-			'subtitle'       => '',
-			'show_total'     => 'false',
-			'post_type'      => 'lexicons',
-			'custom_class'   => '',
-			'columns'        => 3,
-			'posts_per_page' => 6,
-			'orderby'        => 'date',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => 'target_languages',
-			'meta_value'     => $language,
-			'selected_posts' => '',
-			'display_blank'  => 'true',
-			'exclude_self'   => 'true',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => '',
+		$params = wt_gallery_params(
+			array(
+				'title'          => "Other languages to {$standard_name}",
+				'post_type'      => 'lexicons',
+				'show_total'     => 'false',
+				'columns'        => 3,
+				'posts_per_page' => 6,
+				'orderby'        => 'date',
+				'meta_key'       => 'target_languages',
+				'meta_value'     => $language,
+				'display_blank'  => 'true',
+				'exclude_self'   => 'true',
+			)
 		);
 		echo create_gallery_instance( $params );
 		?>

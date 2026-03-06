@@ -181,17 +181,7 @@ parameters:
 			path: wp-content/themes/blankslate-child/includes/taxonomies/languages.php
 
 		-
-			message: "#^Undefined variable\\: \\$partner_link$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
-
-		-
-			message: "#^Undefined variable\\: \\$partner_logo$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
-
-		-
-			message: "#^Undefined variable\\: \\$partner_name$#"
+			message: "#^Function get_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/includes/taxonomies/partners.php
 

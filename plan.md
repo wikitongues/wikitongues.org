@@ -8,6 +8,16 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 ## Table of Contents
 
 - [Roadmap](#roadmap)
+- [~~Phase 1~~](#phase-1--security-foundation-)
+- [~~Phase 2~~](#phase-2--visual-infrastructure--plugin-hygiene-)
+- [Phase 3](#phase-3--code-quality--data-integrity-baseline)
+- [Phase 3b](#phase-3b--phpstan-baseline-reduction-)
+- [Phase 4](#phase-4--docker--gateway-core)
+- [Phase 5](#phase-5--integration-tests--airtable-reconciliation--gateway-completion)
+- [Phase 6](#phase-6--visual-baseline--data-migration)
+- [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
+- [Phase 8](#phase-8--membership-dependent-features)
+- [Backlog](#backlog--known-issues-no-active-fix-timeline)
 
 ---
 
@@ -74,33 +84,23 @@ Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining
 
 Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
 
-#### 3. Remove dead code + clear root `includes/` ✅
+#### 3. ~~Remove dead code + clear root `includes/`~~ ✅
 
 Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller.php`, removed `rest_controller_class` from 7 CPTs, cleared root `includes/` directory (PR #520).
 
-#### 4. Reorganize theme `includes/` into subdirectories + autoloader _(combines former C + D)_
+#### 4. ~~Reorganize theme `includes/` into subdirectories + autoloader~~ ✅
 
-Currently 24 flat files. Reorganize into subdirectories by concern and replace the manual `require_once` list in `functions.php` with a directory-scanning autoloader in one pass:
-- `api/` — REST endpoints, controller
-- `admin/` — admin helpers, batch operations
-- `taxonomies/` — CPT and taxonomy registration
-- `template/` — template helpers, router
-- `integrations/` — import-captions, events filter, license handling
+See [archive](docs/plan-archive.md) (PR #529).
 
-#### 5. CPT/taxonomy file consistency refactor _(follows reorganize-includes)_
+#### 5. ~~CPT/taxonomy file consistency refactor~~ ✅
 
-After moving all CPT files to `includes/taxonomies/`, a cross-file audit found several inconsistencies:
-
-- **Security:** `faq.php` — `echo $terms` unescaped in column handler (XSS); `get_the_title()` unescaped in shortcode output. `documents.php` — `->post_title` accessed on return value of `get_field()` without null check (fatal if field empty).
-- **Pattern:** `careers.php` uses a class instead of plain functions; has dead `register_acf_fields()` method (never hooked); textdomain is `'textdomain'`.
-- **Missing args:** `fellows.php` missing `show_in_rest`; missing `is_main_query()` guard in orderby callback; has commented-out block. `reports.php` missing `show_in_rest`.
-- **Redundant:** `reports.php` and `team.php` both call `register_taxonomy_for_object_type()` AND pass `'taxonomies'` arg — pick one (keep `register_taxonomy_for_object_type()` to match languages/videos).
-- **i18n:** `blogs.php` uses bare strings with no `__()` wrapping; `events.php` and `faq.php` use `'textdomain'` instead of the CPT slug.
-- **Wrong comment:** `events.php` comment says "Register Custom Post Type for FAQs".
+See [archive](docs/plan-archive.md) (PR #529).
 
 #### 6. Archive template refactor _(before Docker)_
 
 `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
+
+**PHPDoc array shapes** — `wt_gallery_params()` now carries full `@param`/`@return` array shape annotations (PHPStan + IDE autocomplete). Evaluate applying this pattern consistently to other helper functions across the project: `wt_social_links()`, `wt_archive_params()` callers, any function accepting or returning a structured array. Goal: callers should never need to open a function definition to know its contract.
 
 #### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
 
@@ -113,9 +113,6 @@ After moving all CPT files to `includes/taxonomies/`, a cross-file audit found s
 **`archive-territories.php`:**
 - `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add explicit `include_children => true` or a comment — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
 
-#### 7. Fellows meta query OOM — `taxonomy-region.php`
-
-On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
 
 #### 8. Fellows ACF field audit _(parallel)_
 
@@ -135,6 +132,58 @@ Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/t
 #### 11. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
+
+#### 12. Airtable sync — Slack change notifications _(parallel; no deps)_
+
+Two-part feature: plugin returns a field-level diff in the sync response; Make.com posts a Slack message when the diff is non-empty or a new record is created.
+
+**Part 1 — Plugin: changed-fields diff in sync response**
+
+Add a diff step to `Sync_Controller::sync()` in `wt-airtable-sync`:
+
+1. Before writing, read the current stored value of each mapped field via `get_field()` / `get_post_meta()`.
+2. After resolving incoming values (same logic as `write_meta()`), compare old vs new.
+3. Exclude fields where old and new are identical — no write-without-change noise.
+4. Return a `changed` key in the live-write response alongside the existing fields:
+
+```json
+{
+  "status": "ok",
+  "action": "updated",
+  "post_id": 12345,
+  "post_title": "Polynesian",
+  "changed": {
+    "public_status": { "old": "draft", "new": "publish" },
+    "featured_languages": { "old": [42], "new": [42, 87] }
+  }
+}
+```
+
+For `created` records, `changed` lists all written values with `"old": null`. `video_thumbnail_v2` (attachment ID) is excluded from the diff — its changes are implicit when the thumbnail module runs.
+
+**Part 2 — Make.com: Slack module with human-readable diff**
+
+Add a Slack module at the end of each scenario, after the sync POST:
+
+- **Gate:** only fire when `action == "created"` OR `changed` is non-empty. Skip entirely on unchanged updates.
+- **post_object resolution:** `changed` values for relationship fields are WP post IDs. Use a "Resolve WP Post" subscenario (see below) to convert them to titles before formatting the message.
+- **Message format:** `[Videos] Updated "Polynesian" — public_status: draft → publish | featured_languages: added "English"`
+- **Channel:** configurable in each scenario's SetVariables module (same pattern as `wp_base_url`).
+
+**"Resolve WP Post" subscenario pattern**
+
+Mirrors the Captions subscenarios that resolve Airtable linked record IDs. Instead of calling Airtable, call the standard WP REST API:
+
+```
+GET {{wp_base_url}}/wp-json/wp/v2/{post_type}/{id}?_fields=id,title
+```
+
+No custom endpoint required — the built-in WP REST API already exposes this. One subscenario per target CPT (languages, videos, etc.) or a single generic one parameterised by `post_type` + `id`. The auth keychain used for media uploads (basicAuth) is reused — no new credentials needed.
+
+**Scope boundaries:**
+- Only scalar text fields and resolved post_object titles in the notification — no binary/attachment diffs.
+- `video_thumbnail_v2` excluded from diff display.
+- Staging and production scenario instances each notify their own channel (same per-environment convention as `wp_base_url`).
 
 ---
 
@@ -305,3 +354,9 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 #### Gamification
 
 Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure. Write a separate spec before implementation.
+
+---
+
+### Backlog — known issues, no active fix timeline
+
+- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
