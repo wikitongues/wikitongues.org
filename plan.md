@@ -96,22 +96,13 @@ See [archive](docs/plan-archive.md) (PR #529).
 
 See [archive](docs/plan-archive.md) (PR #529).
 
-#### 6. Archive template refactor _(before Docker)_
+#### ~~6. Archive template refactor~~ ✅
 
-`archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
+See [archive](docs/plan-archive.md) (PR #536).
 
-**PHPDoc array shapes** — `wt_gallery_params()` now carries full `@param`/`@return` array shape annotations (PHPStan + IDE autocomplete). Evaluate applying this pattern consistently to other helper functions across the project: `wt_social_links()`, `wt_archive_params()` callers, any function accepting or returning a structured array. Goal: callers should never need to open a function definition to know its contract.
+#### ~~7. `gallery-territories.php` + `archive-territories.php` fixes~~ ✅
 
-#### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
-
-**`gallery-territories.php`:**
-- **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
-- **XSS** — `get_the_title()` in the `alt` attribute not escaped; should be `esc_attr( get_the_title() )`
-- **Blank label** — `get_field('standard_name', ...)` returns null when unset; no fallback to `post_title`
-- **Filter bypass** — `$language_post->post_title` used for video lookup instead of `get_the_title()`
-
-**`archive-territories.php`:**
-- `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add explicit `include_children => true` or a comment — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
+See [archive](docs/plan-archive.md) (PR #538).
 
 
 #### 8. Fellows ACF field audit _(parallel)_
