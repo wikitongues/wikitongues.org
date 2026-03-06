@@ -101,9 +101,6 @@ See [archive](docs/plan-archive.md) (PR #529).
 **`archive-territories.php`:**
 - `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add explicit `include_children => true` or a comment — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
 
-#### 7. Fellows meta query OOM — `taxonomy-region.php`
-
-On continent-level region pages (e.g. `/territories/asia`), the fellows gallery builds an OR `meta_query` with a LIKE clause for every territory ID in the continent. Asia has 55+ territories, generating a query large enough to exhaust the 128 MB memory limit. Fix: replace the per-territory LIKE loop with a `$wpdb` direct query or JOIN-based approach that scales independently of territory count. (The `/territories/?region=asia` archive OOM was resolved separately in PR #491.)
 
 #### 8. Fellows ACF field audit _(parallel)_
 
@@ -283,6 +280,12 @@ No visibility into page load times or query performance in production. Known ris
 **Goal:** Baseline measurements for key templates (language, territory, region, search); ongoing monitoring (New Relic, Query Monitor in staging, or GitHub Actions synthetic check); alert on regressions.
 
 **Quick win already done:** `get_field('languages', id, false)` on territory pages avoids hydrating hundreds of post objects.
+
+---
+
+### Backlog — known issues, no active fix timeline
+
+- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
 
 ---
 
