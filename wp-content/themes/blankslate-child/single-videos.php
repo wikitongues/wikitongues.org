@@ -71,25 +71,19 @@ echo '<main class="wt_single-videos__content">';
 	echo '</section>';
 
 	// Gallery
-	$params = array(
-		'title'          => 'Other videos of ' . $language_names,
-		'subtitle'       => '',
-		'show_total'     => 'false',
-		'post_type'      => 'videos',
-		'custom_class'   => 'full',
-		'columns'        => 5,
-		'posts_per_page' => 5,
-		'orderby'        => 'rand',
-		'order'          => 'asc',
-		'pagination'     => 'false',
-		'meta_key'       => 'featured_languages',
-		'meta_value'     => $language_ids_string,
-		'selected_posts' => '',
-		'display_blank'  => 'false',
-		'exclude_self'   => 'true',
-		'taxonomy'       => '',
-		'term'           => '',
-		'link_out'       => '',
+	$params = wt_gallery_params(
+		array(
+			'title'          => 'Other videos of ' . $language_names,
+			'post_type'      => 'videos',
+			'custom_class'   => 'full',
+			'show_total'     => 'false',
+			'posts_per_page' => 5,
+			'orderby'        => 'rand',
+			'pagination'     => 'false',
+			'meta_key'       => 'featured_languages',
+			'meta_value'     => $language_ids_string,
+			'exclude_self'   => 'true',
+		)
 	);
 	echo create_gallery_instance( $params );
 
