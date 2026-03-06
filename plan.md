@@ -133,6 +133,58 @@ Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/t
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
 
+#### 12. Airtable sync — Slack change notifications _(parallel; no deps)_
+
+Two-part feature: plugin returns a field-level diff in the sync response; Make.com posts a Slack message when the diff is non-empty or a new record is created.
+
+**Part 1 — Plugin: changed-fields diff in sync response**
+
+Add a diff step to `Sync_Controller::sync()` in `wt-airtable-sync`:
+
+1. Before writing, read the current stored value of each mapped field via `get_field()` / `get_post_meta()`.
+2. After resolving incoming values (same logic as `write_meta()`), compare old vs new.
+3. Exclude fields where old and new are identical — no write-without-change noise.
+4. Return a `changed` key in the live-write response alongside the existing fields:
+
+```json
+{
+  "status": "ok",
+  "action": "updated",
+  "post_id": 12345,
+  "post_title": "Polynesian",
+  "changed": {
+    "public_status": { "old": "draft", "new": "publish" },
+    "featured_languages": { "old": [42], "new": [42, 87] }
+  }
+}
+```
+
+For `created` records, `changed` lists all written values with `"old": null`. `video_thumbnail_v2` (attachment ID) is excluded from the diff — its changes are implicit when the thumbnail module runs.
+
+**Part 2 — Make.com: Slack module with human-readable diff**
+
+Add a Slack module at the end of each scenario, after the sync POST:
+
+- **Gate:** only fire when `action == "created"` OR `changed` is non-empty. Skip entirely on unchanged updates.
+- **post_object resolution:** `changed` values for relationship fields are WP post IDs. Use a "Resolve WP Post" subscenario (see below) to convert them to titles before formatting the message.
+- **Message format:** `[Videos] Updated "Polynesian" — public_status: draft → publish | featured_languages: added "English"`
+- **Channel:** configurable in each scenario's SetVariables module (same pattern as `wp_base_url`).
+
+**"Resolve WP Post" subscenario pattern**
+
+Mirrors the Captions subscenarios that resolve Airtable linked record IDs. Instead of calling Airtable, call the standard WP REST API:
+
+```
+GET {{wp_base_url}}/wp-json/wp/v2/{post_type}/{id}?_fields=id,title
+```
+
+No custom endpoint required — the built-in WP REST API already exposes this. One subscenario per target CPT (languages, videos, etc.) or a single generic one parameterised by `post_type` + `id`. The auth keychain used for media uploads (basicAuth) is reused — no new credentials needed.
+
+**Scope boundaries:**
+- Only scalar text fields and resolved post_object titles in the notification — no binary/attachment diffs.
+- `video_thumbnail_v2` excluded from diff display.
+- Staging and production scenario instances each notify their own channel (same per-environment convention as `wp_base_url`).
+
 ---
 
 ### Phase 3b — PHPStan baseline reduction _(concurrent with Phase 3 and beyond)_
