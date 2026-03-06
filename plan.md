@@ -74,7 +74,7 @@ Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining
 
 Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
 
-#### 3. Remove dead code + clear root `includes/` ✅
+#### 3. ~~Remove dead code + clear root `includes/`~~ ✅
 
 Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller.php`, removed `rest_controller_class` from 7 CPTs, cleared root `includes/` directory (PR #520).
 
