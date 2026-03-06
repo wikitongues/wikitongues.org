@@ -40,13 +40,6 @@ get_header();
 
 require 'modules/fellows/meta--fellows-single.php';
 
-$fellow_bio = get_field( 'fellow_bio' );
-if ( $fellow_bio || get_the_content() ) {
-	echo '<div class="main-content">';
-	echo wpautop( wp_kses_post( $fellow_bio ) );
-	echo wpautop( wp_kses_post( get_the_content() ) );
-	echo '</div>';
-}
 require 'modules/editorial-content.php';
 $display_about           = get_field( 'display_about', 'option' );
 $fellowship_about        = get_field( 'fellowship_about', 'option' );

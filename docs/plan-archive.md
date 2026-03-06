@@ -22,6 +22,23 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-06 (Phase 3 item 8)
+
+### Phase 3 item 8 — Fellows ACF field audit
+**Branch:** `chore/cc/fellows-acf-audit`
+**PR:** [#541](https://github.com/wikitongues/wikitongues.org/pull/541)
+
+Audited all 23 ACF fields on the `fellows` CPT against all templates that read them. Findings:
+
+- **Removed `fellow_headshot`** (image) — duplicated by `fellow_banner.banner_image`; `carousel--testimonial.php` updated to read from `fellow_banner` instead, with `esc_attr()` and `esc_url()` fixes
+- **Removed `fellow_bio`** (textarea) — content migrated to editorial content blocks (`text_layout`); removed the `get_field('fellow_bio')` block from `single-fellows.php`
+- **Removed `fellow_collaborators`** (post_object) — no PHP reads anywhere; unused
+- **Removed `custom_links`** (repeater) — no PHP reads anywhere; unused
+- **Social links group reverted** — attempted to group the 8 social link fields; reverted after confirming ACF group fields cause existing postmeta data to become inaccessible without a DB migration
+- All 19 remaining fields confirmed active and in use
+
+---
+
 ## 2026-03-06 (Phase 3 item 7)
 
 ### Phase 3 item 7 — `gallery-territories.php` + `archive-territories.php` fixes
