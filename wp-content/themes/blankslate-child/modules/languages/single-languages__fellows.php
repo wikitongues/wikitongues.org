@@ -34,28 +34,23 @@ if ( $fellows ) :
 			$title_name .= ' language';
 		}
 			$title  = $title_name . ' Revitalization Projects';
-			$params = array(
-				'title'          => $title,
-				'subtitle'       => 'The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects.',
-				'show_total'     => 'false',
-				'post_type'      => 'fellows',
-				'custom_class'   => 'display',
-				'columns'        => 1,
-				'posts_per_page' => 1,
-				'orderby'        => 'date',
-				'order'          => 'asc',
-				'pagination'     => 'true',
-				'meta_key'       => 'fellow_language',
-				'meta_value'     => $language,
-				'selected_posts' => '',
-				'display_blank'  => 'false',
-				'exclude_self'   => 'true',
-				'taxonomy'       => '',
-				'term'           => '',
-				'link_out'       => '',
+			$params = wt_gallery_params(
+				array(
+					'title'          => $title,
+					'subtitle'       => 'The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects.',
+					'post_type'      => 'fellows',
+					'custom_class'   => 'display',
+					'show_total'     => 'false',
+					'columns'        => 1,
+					'posts_per_page' => 1,
+					'orderby'        => 'date',
+					'meta_key'       => 'fellow_language',
+					'meta_value'     => $language,
+					'exclude_self'   => 'true',
+				)
 			);
 			echo create_gallery_instance( $params );
-			?>
+		?>
 
 	</div>
 <?php endif; ?>

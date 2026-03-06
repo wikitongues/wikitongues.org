@@ -77,6 +77,42 @@ function html5wp_pagination() {
 }
 
 /**
+ * Build a gallery params array with sensible defaults.
+ *
+ * Callers pass only the keys that differ from the defaults; everything else
+ * is filled in automatically. Used by every create_gallery_instance() call
+ * site across the theme.
+ *
+ * @param array $overrides Keys to override from the defaults.
+ * @return array Full params array suitable for create_gallery_instance().
+ */
+function wt_gallery_params( array $overrides ): array {
+	return array_merge(
+		array(
+			'title'          => '',
+			'subtitle'       => '',
+			'show_total'     => 'true',
+			'post_type'      => '',
+			'custom_class'   => '',
+			'columns'        => 5,
+			'posts_per_page' => 100,
+			'orderby'        => 'title',
+			'order'          => 'asc',
+			'pagination'     => 'true',
+			'meta_key'       => '',
+			'meta_value'     => '',
+			'selected_posts' => '',
+			'display_blank'  => 'false',
+			'exclude_self'   => 'false',
+			'taxonomy'       => '',
+			'term'           => '',
+			'link_out'       => '',
+		),
+		$overrides
+	);
+}
+
+/**
  * Prefix a territory or region name with "The" where grammatically required.
  *
  * @param string $name Territory or region name.

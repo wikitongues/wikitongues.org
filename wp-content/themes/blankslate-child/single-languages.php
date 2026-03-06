@@ -66,25 +66,17 @@ if ( $territories ) {
 		? add_query_arg( 'territory', $territories[0]->post_name, get_post_type_archive_link( 'languages' ) )
 		: '';
 
-	$params = array(
-		'title'          => $gallery_title,
-		'subtitle'       => '',
-		'show_total'     => 'true',
-		'post_type'      => 'languages',
-		'custom_class'   => 'full',
-		'columns'        => 5,
-		'posts_per_page' => 5,
-		'orderby'        => 'rand',
-		'order'          => 'asc',
-		'pagination'     => 'true',
-		'meta_key'       => '',
-		'meta_value'     => '',
-		'selected_posts' => $selected,
-		'display_blank'  => 'false',
-		'exclude_self'   => 'true',
-		'taxonomy'       => '',
-		'term'           => '',
-		'link_out'       => $gallery_link_out,
+	$params = wt_gallery_params(
+		array(
+			'title'          => $gallery_title,
+			'post_type'      => 'languages',
+			'custom_class'   => 'full',
+			'posts_per_page' => 5,
+			'orderby'        => 'rand',
+			'selected_posts' => $selected,
+			'exclude_self'   => 'true',
+			'link_out'       => $gallery_link_out,
+		)
 	);
 	echo create_gallery_instance( $params );
 }

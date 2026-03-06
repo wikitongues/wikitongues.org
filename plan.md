@@ -8,6 +8,16 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 ## Table of Contents
 
 - [Roadmap](#roadmap)
+- [~~Phase 1~~](#phase-1--security-foundation-)
+- [~~Phase 2~~](#phase-2--visual-infrastructure--plugin-hygiene-)
+- [Phase 3](#phase-3--code-quality--data-integrity-baseline)
+- [Phase 3b](#phase-3b--phpstan-baseline-reduction-)
+- [Phase 4](#phase-4--docker--gateway-core)
+- [Phase 5](#phase-5--integration-tests--airtable-reconciliation--gateway-completion)
+- [Phase 6](#phase-6--visual-baseline--data-migration)
+- [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
+- [Phase 8](#phase-8--membership-dependent-features)
+- [Backlog](#backlog--known-issues-no-active-fix-timeline)
 
 ---
 
@@ -283,12 +293,6 @@ No visibility into page load times or query performance in production. Known ris
 
 ---
 
-### Backlog — known issues, no active fix timeline
-
-- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
-
----
-
 ### Phase 8 — Membership-dependent features
 
 _Blocked on membership infrastructure (user accounts), which is not currently in scope. Write a spec before implementation._
@@ -296,3 +300,9 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 #### Gamification
 
 Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure. Write a separate spec before implementation.
+
+---
+
+### Backlog — known issues, no active fix timeline
+
+- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)

@@ -69,25 +69,20 @@ if ( $display_about && $fellowship_about ) {
 </div>
 <?php
 // Gallery
-$params = array(
-	'title'          => '',
-	'subtitle'       => '',
-	'show_total'     => 'false',
-	'post_type'      => 'fellows',
-	'custom_class'   => 'full',
-	'columns'        => 4,
-	'posts_per_page' => 4,
-	'orderby'        => 'rand',
-	'order'          => '',
-	'pagination'     => 'false',
-	'meta_key'       => 'fellow_year',
-	'meta_value'     => $fellow_year,
-	'selected_posts' => '',
-	'display_blank'  => 'false',
-	'exclude_self'   => 'true',
-	'taxonomy'       => '',
-	'term'           => '',
-	'link_out'       => '',
+$params = wt_gallery_params(
+	array(
+		'post_type'      => 'fellows',
+		'custom_class'   => 'full',
+		'show_total'     => 'false',
+		'columns'        => 4,
+		'posts_per_page' => 4,
+		'orderby'        => 'rand',
+		'order'          => '',
+		'pagination'     => 'false',
+		'meta_key'       => 'fellow_year',
+		'meta_value'     => $fellow_year,
+		'exclude_self'   => 'true',
+	)
 );
 echo create_gallery_instance( $params );
 

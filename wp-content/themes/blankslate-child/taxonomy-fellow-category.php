@@ -40,25 +40,19 @@
 <div class="archive-content">
 
 	<?php
-	$params = array(
-		'title'          => '',
-		'subtitle'       => '',
-		'show_total'     => 'false',
-		'post_type'      => 'fellows',
-		'custom_class'   => 'full',
-		'columns'        => 4,
-		'posts_per_page' => '50',
-		'orderby'        => 'year',
-		'order'          => 'desc',
-		'pagination'     => 'true',
-		'meta_key'       => '',
-		'meta_value'     => '',
-		'selected_posts' => '',
-		'display_blank'  => 'true',
-		'exclude_self'   => 'false',
-		'taxonomy'       => 'fellow-category',
-		'term'           => $category->slug,
-		'link_out'       => '',
+	$params = wt_gallery_params(
+		array(
+			'post_type'      => 'fellows',
+			'custom_class'   => 'full',
+			'show_total'     => 'false',
+			'columns'        => 4,
+			'posts_per_page' => 50,
+			'orderby'        => 'year',
+			'order'          => 'desc',
+			'display_blank'  => 'true',
+			'taxonomy'       => 'fellow-category',
+			'term'           => $category->slug,
+		)
 	);
 		echo create_gallery_instance( $params );
 	?>
