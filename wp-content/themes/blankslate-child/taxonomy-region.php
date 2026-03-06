@@ -75,25 +75,15 @@ if ( $territory_query->have_posts() ) :
 	if ( $fellows_query->have_posts() ) {
 		$fellow_ids = wp_list_pluck( $fellows_query->posts, 'ID' );
 		wp_reset_postdata();
-		$fellows_params = array(
-			'title'          => 'Fellows from ' . $territory,
-			'subtitle'       => '',
-			'show_total'     => 'true',
-			'post_type'      => 'fellows',
-			'custom_class'   => '',
-			'columns'        => 3,
-			'posts_per_page' => 3,
-			'orderby'        => 'title',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => '',
-			'meta_value'     => '',
-			'selected_posts' => implode( ',', $fellow_ids ),
-			'display_blank'  => 'false',
-			'exclude_self'   => 'false',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'fellows' ) ),
+		$fellows_params = wt_gallery_params(
+			array(
+				'title'          => 'Fellows from ' . $territory,
+				'post_type'      => 'fellows',
+				'columns'        => 3,
+				'posts_per_page' => 3,
+				'selected_posts' => implode( ',', $fellow_ids ),
+				'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'fellows' ) ),
+			)
 		);
 		echo create_gallery_instance( $fellows_params );
 	}
@@ -110,25 +100,18 @@ if ( $territory_query->have_posts() ) :
 		$gallery_term     = '';
 	}
 
-	$params = array(
-		'title'          => 'Territories in ' . $territory,
-		'subtitle'       => '',
-		'show_total'     => 'true',
-		'post_type'      => 'territories',
-		'custom_class'   => '',
-		'columns'        => 3,
-		'posts_per_page' => 9,
-		'orderby'        => 'title',
-		'order'          => 'asc',
-		'pagination'     => 'true',
-		'meta_key'       => '',
-		'meta_value'     => '',
-		'selected_posts' => $selected_posts,
-		'display_blank'  => 'true',
-		'exclude_self'   => 'false',
-		'taxonomy'       => $gallery_taxonomy,
-		'term'           => $gallery_term,
-		'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'territories' ) ),
+	$params = wt_gallery_params(
+		array(
+			'title'          => 'Territories in ' . $territory,
+			'post_type'      => 'territories',
+			'columns'        => 3,
+			'posts_per_page' => 9,
+			'selected_posts' => $selected_posts,
+			'display_blank'  => 'true',
+			'taxonomy'       => $gallery_taxonomy,
+			'term'           => $gallery_term,
+			'link_out'       => add_query_arg( 'region', $region_slug, get_post_type_archive_link( 'territories' ) ),
+		)
 	);
 	echo create_gallery_instance( $params );
 

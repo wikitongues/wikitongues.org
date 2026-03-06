@@ -7,25 +7,20 @@
 		$title_name .= ' language';
 	}
 		$title  = $title_name . ' videos';
-		$params = array(
-			'title'          => $title,
-			'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
-			'show_total'     => 'true',
-			'post_type'      => 'videos',
-			'custom_class'   => '',
-			'columns'        => 3,
-			'posts_per_page' => 6,
-			'orderby'        => 'date',
-			'order'          => 'asc',
-			'pagination'     => 'true',
-			'meta_key'       => 'featured_languages',
-			'meta_value'     => get_the_ID(),
-			'selected_posts' => '',
-			'display_blank'  => 'true',
-			'exclude_self'   => 'true',
-			'taxonomy'       => '',
-			'term'           => '',
-			'link_out'       => add_query_arg( 'language', get_post_field( 'post_name', get_the_ID() ), get_post_type_archive_link( 'videos' ) ),
+		$params = wt_gallery_params(
+			array(
+				'title'          => $title,
+				'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
+				'post_type'      => 'videos',
+				'columns'        => 3,
+				'posts_per_page' => 6,
+				'orderby'        => 'date',
+				'meta_key'       => 'featured_languages',
+				'meta_value'     => get_the_ID(),
+				'display_blank'  => 'true',
+				'exclude_self'   => 'true',
+				'link_out'       => add_query_arg( 'language', get_post_field( 'post_name', get_the_ID() ), get_post_type_archive_link( 'videos' ) ),
+			)
 		);
 		echo create_gallery_instance( $params );
 		?>

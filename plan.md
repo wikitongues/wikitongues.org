@@ -8,6 +8,16 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 ## Table of Contents
 
 - [Roadmap](#roadmap)
+- [~~Phase 1~~](#phase-1--security-foundation-)
+- [~~Phase 2~~](#phase-2--visual-infrastructure--plugin-hygiene-)
+- [Phase 3](#phase-3--code-quality--data-integrity-baseline)
+- [Phase 3b](#phase-3b--phpstan-baseline-reduction-)
+- [Phase 4](#phase-4--docker--gateway-core)
+- [Phase 5](#phase-5--integration-tests--airtable-reconciliation--gateway-completion)
+- [Phase 6](#phase-6--visual-baseline--data-migration)
+- [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
+- [Phase 8](#phase-8--membership-dependent-features)
+- [Backlog](#backlog--known-issues-no-active-fix-timeline)
 
 ---
 
@@ -90,6 +100,8 @@ See [archive](docs/plan-archive.md) (PR #529).
 
 `archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
 
+**PHPDoc array shapes** — `wt_gallery_params()` now carries full `@param`/`@return` array shape annotations (PHPStan + IDE autocomplete). Evaluate applying this pattern consistently to other helper functions across the project: `wt_social_links()`, `wt_archive_params()` callers, any function accepting or returning a structured array. Goal: callers should never need to open a function definition to know its contract.
+
 #### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
 
 **`gallery-territories.php`:**
@@ -120,6 +132,58 @@ Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/t
 #### 11. Enhanced search results page _(parallel; no deps)_
 
 Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
+
+#### 12. Airtable sync — Slack change notifications _(parallel; no deps)_
+
+Two-part feature: plugin returns a field-level diff in the sync response; Make.com posts a Slack message when the diff is non-empty or a new record is created.
+
+**Part 1 — Plugin: changed-fields diff in sync response**
+
+Add a diff step to `Sync_Controller::sync()` in `wt-airtable-sync`:
+
+1. Before writing, read the current stored value of each mapped field via `get_field()` / `get_post_meta()`.
+2. After resolving incoming values (same logic as `write_meta()`), compare old vs new.
+3. Exclude fields where old and new are identical — no write-without-change noise.
+4. Return a `changed` key in the live-write response alongside the existing fields:
+
+```json
+{
+  "status": "ok",
+  "action": "updated",
+  "post_id": 12345,
+  "post_title": "Polynesian",
+  "changed": {
+    "public_status": { "old": "draft", "new": "publish" },
+    "featured_languages": { "old": [42], "new": [42, 87] }
+  }
+}
+```
+
+For `created` records, `changed` lists all written values with `"old": null`. `video_thumbnail_v2` (attachment ID) is excluded from the diff — its changes are implicit when the thumbnail module runs.
+
+**Part 2 — Make.com: Slack module with human-readable diff**
+
+Add a Slack module at the end of each scenario, after the sync POST:
+
+- **Gate:** only fire when `action == "created"` OR `changed` is non-empty. Skip entirely on unchanged updates.
+- **post_object resolution:** `changed` values for relationship fields are WP post IDs. Use a "Resolve WP Post" subscenario (see below) to convert them to titles before formatting the message.
+- **Message format:** `[Videos] Updated "Polynesian" — public_status: draft → publish | featured_languages: added "English"`
+- **Channel:** configurable in each scenario's SetVariables module (same pattern as `wp_base_url`).
+
+**"Resolve WP Post" subscenario pattern**
+
+Mirrors the Captions subscenarios that resolve Airtable linked record IDs. Instead of calling Airtable, call the standard WP REST API:
+
+```
+GET {{wp_base_url}}/wp-json/wp/v2/{post_type}/{id}?_fields=id,title
+```
+
+No custom endpoint required — the built-in WP REST API already exposes this. One subscenario per target CPT (languages, videos, etc.) or a single generic one parameterised by `post_type` + `id`. The auth keychain used for media uploads (basicAuth) is reused — no new credentials needed.
+
+**Scope boundaries:**
+- Only scalar text fields and resolved post_object titles in the notification — no binary/attachment diffs.
+- `video_thumbnail_v2` excluded from diff display.
+- Staging and production scenario instances each notify their own channel (same per-environment convention as `wp_base_url`).
 
 ---
 
@@ -283,12 +347,6 @@ No visibility into page load times or query performance in production. Known ris
 
 ---
 
-### Backlog — known issues, no active fix timeline
-
-- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
-
----
-
 ### Phase 8 — Membership-dependent features
 
 _Blocked on membership infrastructure (user accounts), which is not currently in scope. Write a spec before implementation._
@@ -296,3 +354,9 @@ _Blocked on membership infrastructure (user accounts), which is not currently in
 #### Gamification
 
 Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure. Write a separate spec before implementation.
+
+---
+
+### Backlog — known issues, no active fix timeline
+
+- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)

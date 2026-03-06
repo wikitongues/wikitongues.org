@@ -47,25 +47,19 @@ require 'modules/banners/banner--main.php';
 		$post_ids = implode( ',', wp_list_pluck( $custom_posts['custom_gallery_posts'], 'ID' ) );
 	}
 	// Gallery
-	$params = array(
-		'title'          => get_sub_field( 'custom_gallery_title' ),
-		'subtitle'       => '',
-		'show_total'     => 'false',
-		'post_type'      => 'fellows',
-		'custom_class'   => 'custom fundraiser',
-		'columns'        => 1,
-		'posts_per_page' => 5,
-		'orderby'        => 'rand',
-		'order'          => 'asc',
-		'pagination'     => 'false',
-		'meta_key'       => '',
-		'meta_value'     => '',
-		'selected_posts' => esc_attr( $post_ids ),
-		'display_blank'  => 'false',
-		'exclude_self'   => 'true',
-		'taxonomy'       => '',
-		'term'           => '',
-		'link_out'       => '',
+	$params = wt_gallery_params(
+		array(
+			'title'          => get_sub_field( 'custom_gallery_title' ),
+			'post_type'      => 'fellows',
+			'custom_class'   => 'custom fundraiser',
+			'show_total'     => 'false',
+			'columns'        => 1,
+			'posts_per_page' => 5,
+			'orderby'        => 'rand',
+			'pagination'     => 'false',
+			'selected_posts' => esc_attr( $post_ids ),
+			'exclude_self'   => 'true',
+		)
 	);
 	echo create_gallery_instance( $params );
 	?>
