@@ -182,7 +182,7 @@ body
 				&>a
 					color $blue()
 
-		#menu-main-menu>li
+		.menu > li
 			position relative
 			margin-left 1.6rem
 			button--secondary($parchment, $blue())
@@ -192,14 +192,14 @@ body
 			padding 0
 			z-index 0
 
-			&.current_page_item,
-			&.current-menu-item,
-			&.current_page_parent
-				pointer-events none
+			// &.current_page_item,
+			// &.current-menu-item,
+			// &.current_page_parent
+			// 	// pointer-events none
 
-				> a
-					font-weight bold
-					cursor default
+			// 	> a
+			// 		font-weight bold
+			// 		cursor default
 
 			&>a // button--small is designed for a elements not li
 				text-decoration none
@@ -213,18 +213,19 @@ body
 
 			&.menu-item-has-children
 				&:hover
-					&:not(.current_page_parent)
-						> .sub-menu
+					// &:not(.current_page_parent)
+					> .sub-menu
+						display block
+						&.show
 							display block
-							&.show
-								display block
 
 		.sub-menu
 			display none
 			position absolute
 			top 40px
 			left 0
-			width 100%
+			min-width 100%
+			width max-content
 			padding 8px 0
 			text-align left
 			box-shadow 0 0 100px rgba(0,0,0,.05)
