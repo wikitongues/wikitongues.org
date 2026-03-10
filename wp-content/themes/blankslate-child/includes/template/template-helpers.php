@@ -1,5 +1,72 @@
 <?php
 // Determine the environment
+function wt_get_archive_stats() {
+	$stats = get_transient( 'wt_archive_stats' );
+	if ( false !== $stats ) {
+		return $stats;
+	}
+
+	global $wpdb;
+
+	$language_ids = $wpdb->get_col(
+		"SELECT DISTINCT p.ID
+		FROM {$wpdb->posts} p
+		INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+		WHERE p.post_type = 'languages'
+		AND p.post_status = 'publish'
+		AND pm.meta_key IN ('speakers_recorded', 'lexicon_source', 'lexicon_target', 'external_resources')
+		AND pm.meta_value REGEXP '^a:[1-9][0-9]*:'"
+	);
+
+	$language_ids   = $language_ids ?: array();
+	$language_count = count( $language_ids );
+
+	$video_count     = (int) wp_count_posts( 'videos' )->publish;
+	$lexicon_count   = (int) wp_count_posts( 'lexicons' )->publish;
+	$resource_count  = (int) wp_count_posts( 'resources' )->publish;
+	$total_materials = $video_count + $lexicon_count + $resource_count;
+
+	$total_languages = (int) wp_count_posts( 'languages' )->publish;
+
+	$all_territory_ids   = get_posts(
+		array(
+			'post_type'      => 'territories',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	$total_territories   = count( $all_territory_ids );
+	$valid_territory_set = array_flip( $all_territory_ids );
+
+	$matched_territories = array();
+	foreach ( $language_ids as $lang_id ) {
+		$territories = get_field( 'territories', $lang_id, false );
+		if ( ! is_array( $territories ) ) {
+			$territories = ! empty( $territories ) ? array( $territories ) : array();
+		}
+		foreach ( $territories as $tid ) {
+			$tid = (int) $tid;
+			if ( isset( $valid_territory_set[ $tid ] ) ) {
+				$matched_territories[ $tid ] = true;
+			}
+		}
+	}
+	$nations_count = count( $matched_territories );
+
+	$stats = array(
+		'language_count'    => $language_count,
+		'total_materials'   => $total_materials,
+		'nations_count'     => $nations_count,
+		'total_languages'   => $total_languages,
+		'total_territories' => $total_territories,
+	);
+
+	set_transient( 'wt_archive_stats', $stats, 6 * HOUR_IN_SECONDS );
+	return $stats;
+}
+
 function get_environment() {
 	if ( strpos( $_SERVER['HTTP_HOST'], 'localhost' ) !== false ) {
 			return 'localhost';

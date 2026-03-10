@@ -1,5 +1,8 @@
 $aspect-ratio = 1.185185185
-.page-template-template-giving-campaign-24
+
+
+
+.page-template-template-donate
 	.content
 		max-width $content
 		margin 0 auto 64px
@@ -44,7 +47,7 @@ $aspect-ratio = 1.185185185
 
 		.stats
 			display flex
-			justify-content space-evenly
+			justify-content space-between
 			margin 64px 0 128px
 
 			li
@@ -127,3 +130,11 @@ $aspect-ratio = 1.185185185
 
 							p
 								text--body($black)
+
+	iframe
+		margin-bottom 6rem
+
+@media all and ( max-width: $mobile )
+	.page-template-template-donate
+		iframe
+			margin-bottom 4.5rem

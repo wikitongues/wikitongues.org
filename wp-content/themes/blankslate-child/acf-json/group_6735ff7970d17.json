@@ -227,7 +227,7 @@
             {
                 "param": "post_template",
                 "operator": "==",
-                "value": "template-giving-campaign-24.php"
+                "value": "template-donate.php"
             }
         ]
     ],
@@ -240,5 +240,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1731598192
+    "display_title": "",
+    "modified": 1773159843
 }

@@ -108,6 +108,11 @@ function wikitongues_custom_template_redirects() {
 		}
 	}
 
+	if ( is_404() && $request_path === '2024-fundraiser' ) {
+		wp_redirect( home_url( '/donate', 'relative' ), 301 );
+		exit;
+	}
+
 	if ( is_singular( 'partners' ) ) {
 		wp_redirect( home_url( '/', 'relative' ) );
 		exit;
