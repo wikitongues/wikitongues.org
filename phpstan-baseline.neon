@@ -197,7 +197,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 8
+			count: 9
 			path: wp-content/themes/blankslate-child/includes/template/template-helpers.php
 
 		-
@@ -399,11 +399,6 @@ parameters:
 			message: "#^Function get_sub_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/flexible-content/video-layout.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/languages/archive-languages__stats.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
@@ -813,17 +808,22 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 4
-			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+			path: wp-content/themes/blankslate-child/template-donate.php
 
 		-
 			message: "#^Function get_sub_field not found\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+			path: wp-content/themes/blankslate-child/template-donate.php
 
 		-
 			message: "#^Variable \\$post_ids might not be defined\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/template-giving-campaign-24.php
+			path: wp-content/themes/blankslate-child/template-donate.php
+
+		-
+			message: "#^Variable \\$wp might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-donate.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
