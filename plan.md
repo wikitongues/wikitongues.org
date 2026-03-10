@@ -289,6 +289,33 @@ Net new development — requires product definition and data input before implem
 
 After Donors CPT lands: integrate donor cards into gallery instances on relevant pages (campaign pages, homepage). Phase 2 (membership/recurring donors with profile features) is deferred pending a separate spec.
 
+#### FundraiseUp campaign management via ACF _(before Layer 4 — banner changes must be captured in baseline)_
+
+Move all FundraiseUp configuration out of hardcoded PHP into a new ACF options page ("Fundraising"), and add an admin-driven campaign banner slot.
+
+**Three deliverables:**
+
+**1. ACF options page + field group**
+
+New "Fundraising" options page under General. Two sections:
+
+- _Default campaign_ — `fundraiseup_org_id` (text), `default_element_id` (text), `default_campaign_id` (text). Replaces the hardcoded org ID in `page--head.php` and element/campaign IDs in `single-fellows.php` and `meta--languages-single.php`.
+- _Active campaign_ — `active_campaign_status` (select: disabled / active / scheduled), `active_campaign_label` (text, admin-only), `active_campaign_id` (text), `active_campaign_element_id` (text), `active_campaign_start` (date_picker), `active_campaign_end` (date_picker), and an `active_campaign_banner` group (see deliverable 3).
+
+**2. `wt_active_campaign()` helper**
+
+New function in `template-helpers.php`. Returns the active point-in-time campaign data if status is `active`, or if status is `scheduled` and today falls within start/end dates; otherwise returns the default campaign. All templates consume this single function — no IDs hardcoded anywhere.
+
+**3. Campaign banner module + header integration**
+
+`active_campaign_banner` group fields: `show_banner` (true_false), `heading` (text), `body` (textarea), `cta_label` (text), `variant` (select: standard / urgent), `display_scope` (checkbox: all / home / archive / singles).
+
+New `banner--campaign.php` module. `header.php` gains two ordered banner slots: campaign banner (if active + `show_banner` + scope matches), then the existing alert banner. The two slots serve distinct purposes — campaign banner is fundraising-specific; alert banner remains for general announcements.
+
+**What this enables:** campaign launches and banner copy changes require no deploy. EOY campaigns, point-in-time drives, and future raises are managed entirely from admin.
+
+**Dependency note:** no Docker dependency; can start independently. Must land before Layer 4 so banner UI is captured in visual baseline.
+
 #### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
 
 Playwright. Full user flows, JS behaviour, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs). Nothing that changes template output should land after this without a deliberate baseline update. See [docs/testing-strategy.md](docs/testing-strategy.md) for priority flows.

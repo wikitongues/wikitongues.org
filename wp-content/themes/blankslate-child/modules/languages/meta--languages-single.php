@@ -157,5 +157,5 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 		?>
 		</ul>
 	</div>
-	<button href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</button>
+	<a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta">Support Language Revitalization</a>
 </div>
