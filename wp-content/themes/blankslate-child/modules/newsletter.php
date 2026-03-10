@@ -10,7 +10,7 @@
 	<div id="mc_embed_signup">
 		<label for="mce-EMAIL">Your email</label>
 		<?php
-			echo '<form onsubmit="return gtag_report_conversion();" action="https://wikitongues.us9.list-manage.com/subscribe/post?u=' . $user . '&amp;id=' . $id . '" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="novalidate">'
+			echo '<form action="https://wikitongues.us9.list-manage.com/subscribe/post?u=' . $user . '&amp;id=' . $id . '" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="novalidate">'
 		?>
 			<div id="mc_embed_signup_scroll">
 				<div class="mc-field-group">
