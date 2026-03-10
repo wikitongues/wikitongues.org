@@ -5,6 +5,68 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
+## 2026-03-06 (Phase 3 item 6)
+
+### Phase 3 item 6 — Archive template refactor + `wt_gallery_params()` helper
+**Branch:** `refactor/cc/archive-template-helper`
+**PR:** [#536](https://github.com/wikitongues/wikitongues.org/pull/536)
+
+- Added `wt_gallery_params( array $overrides ): array` to `template-helpers.php` — merges caller-provided keys with a full set of defaults so callers only specify what differs
+- Renamed `wt_archive_params()` → `wt_gallery_params()` and added `custom_class` to defaults
+- Expanded usage from 4 archive files to all 26 `create_gallery_instance()` call sites across 18 files — eliminates 17–19 key boilerplate arrays throughout the theme
+- Added full `@param`/`@return` PHPDoc array shape annotations — PHPStan enforces valid keys and types; Intelephense provides hover docs for all 18 params
+- Fixed `posts_per_page: '50'` (string) → `50` (int) in `taxonomy-fellow-category.php`
+- Fixed `show_total` missing/incorrect in `template-about-staff.php`
+- Added `docs/gallery-inventory.csv` + `docs/gallery-inventory-main.csv` inventorying every gallery's effective settings before and after
+- Added `.vscode/extensions.json` recommending PHP Intelephense for contributors
+
+---
+
+## 2026-03-07 (Phase 3 item 9)
+
+### Phase 3 item 9 — Root-level file hygiene
+**PRs:** [#498](https://github.com/wikitongues/wikitongues.org/pull/498)–[#500](https://github.com/wikitongues/wikitongues.org/pull/500), [#542](https://github.com/wikitongues/wikitongues.org/pull/542)
+
+- `plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500)
+- Untracked stale files audit: working tree clean, no orphaned scripts or exports found
+- `npm audit fix` resolved `ajv` (moderate ReDoS) and `minimatch` (high ReDoS) — both transitive dev deps of the Stylus toolchain; Stylus build verified clean after fix (PR #542)
+
+---
+
+## 2026-03-06 (Phase 3 item 8)
+
+### Phase 3 item 8 — Fellows ACF field audit
+**Branch:** `chore/cc/fellows-acf-audit`
+**PR:** [#541](https://github.com/wikitongues/wikitongues.org/pull/541)
+
+Audited all 23 ACF fields on the `fellows` CPT against all templates that read them. Findings:
+
+- **Removed `fellow_headshot`** (image) — duplicated by `fellow_banner.banner_image`; `carousel--testimonial.php` updated to read from `fellow_banner` instead, with `esc_attr()` and `esc_url()` fixes
+- **Removed `fellow_bio`** (textarea) — content migrated to editorial content blocks (`text_layout`); removed the `get_field('fellow_bio')` block from `single-fellows.php`
+- **Removed `fellow_collaborators`** (post_object) — no PHP reads anywhere; unused
+- **Removed `custom_links`** (repeater) — no PHP reads anywhere; unused
+- **Social links group reverted** — attempted to group the 8 social link fields; reverted after confirming ACF group fields cause existing postmeta data to become inaccessible without a DB migration
+- All 19 remaining fields confirmed active and in use
+
+---
+
+## 2026-03-06 (Phase 3 item 7)
+
+### Phase 3 item 7 — `gallery-territories.php` + `archive-territories.php` fixes
+**Branch:** `fix/cc/territories-gallery-fixes`
+**PR:** [#538](https://github.com/wikitongues/wikitongues.org/pull/538)
+
+All four `gallery-territories.php` bugs were already fixed in the plugin prior to this PR:
+- Double query (no_found_rows) — already removed; `found_posts` read from single query
+- XSS in alt attribute — already uses `esc_attr( get_the_title() )`
+- Blank label — already uses `get_field('standard_name', ...) ?: get_the_title()`
+- Filter bypass — already uses `get_the_title()` for video lookup
+
+Remaining fix applied in this PR:
+- Added explicit `'include_children' => true` to the `tax_query` built in `build_gallery_query_args()` (`wt-gallery/includes/queries.php`) — WP already defaults to `true` but making it explicit prevents a silent regression if the query builder is ever changed
+
+---
+
 ## 2026-03-05 (Phase 3 items 4–5)
 
 ### Phase 3 item 4 — Reorganize theme `includes/` into subdirectories + autoloader

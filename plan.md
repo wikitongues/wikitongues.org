@@ -96,34 +96,22 @@ See [archive](docs/plan-archive.md) (PR #529).
 
 See [archive](docs/plan-archive.md) (PR #529).
 
-#### 6. Archive template refactor _(before Docker)_
+#### ~~6. Archive template refactor~~ ✅
 
-`archive-languages.php`, `archive-fellows.php`, `archive-videos.php` share a structural pattern with boilerplate repeated across files. Evaluate a shared archive helper or declarative config approach. `archive-donors.php` intentionally does NOT use `create_gallery_instance()` — out of scope.
+See [archive](docs/plan-archive.md) (PR #536).
 
-**PHPDoc array shapes** — `wt_gallery_params()` now carries full `@param`/`@return` array shape annotations (PHPStan + IDE autocomplete). Evaluate applying this pattern consistently to other helper functions across the project: `wt_social_links()`, `wt_archive_params()` callers, any function accepting or returning a structured array. Goal: callers should never need to open a function definition to know its contract.
+#### ~~7. `gallery-territories.php` + `archive-territories.php` fixes~~ ✅
 
-#### 7. `gallery-territories.php` + `archive-territories.php` fixes _(combines former F + G)_
-
-**`gallery-territories.php`:**
-- **Double query** — drop `no_found_rows=true` from the preview query and read `found_posts` directly; halves query count per card (55 cards × 1 saved query = 55 fewer SQL calls on the Asia archive page)
-- **XSS** — `get_the_title()` in the `alt` attribute not escaped; should be `esc_attr( get_the_title() )`
-- **Blank label** — `get_field('standard_name', ...)` returns null when unset; no fallback to `post_title`
-- **Filter bypass** — `$language_post->post_title` used for video lookup instead of `get_the_title()`
-
-**`archive-territories.php`:**
-- `?region=<continent-slug>` filter relies on WP defaulting `tax_query` to `include_children => true`. Add explicit `include_children => true` or a comment — if `build_gallery_query_args()` ever adds an explicit `false`, continent archive pages silently break.
+See [archive](docs/plan-archive.md) (PR #538).
 
 
-#### 8. Fellows ACF field audit _(parallel)_
+#### ~~8. Fellows ACF field audit~~ ✅
 
-Audit which ACF fields on the `fellows` CPT are actually read by templates (`single-fellows.php`, `modules/fellows/meta--fellows-single.php`, `archive-fellows.php`, `template-revitalization-fellows.php`) and which are unused. Remove or deprecate unused fields.
+See [archive](docs/plan-archive.md) (PR #541).
 
-#### 9. Root-level file hygiene _(parallel)_
+#### ~~9. Root-level file hygiene~~ ✅
 
-`plan-archive.md` moved to `docs/`; `.DS_Store` gitignored; `docs/local_docs/` structure established (PRs #498–500). Remaining:
-
-- Full audit of locally present but untracked stale files (testing scripts, migration files, ad hoc exports) — remove or document any that remain
-- `npm audit` — `inflight@1.0.6` and `glob@7.2.3` flagged as deprecated/vulnerable in deploy logs; both are transitive dev dependencies of the Stylus toolchain. Address by updating or replacing the Stylus build dependency (overlaps with Phase 7 Stylus migration)
+See [archive](docs/plan-archive.md) (PRs #498–500, #542).
 
 #### 10. Layer 5 — Data Integrity _(parallel; no Docker required)_
 
@@ -300,6 +288,33 @@ Net new development — requires product definition and data input before implem
 #### Donation optimization — donor cards in galleries
 
 After Donors CPT lands: integrate donor cards into gallery instances on relevant pages (campaign pages, homepage). Phase 2 (membership/recurring donors with profile features) is deferred pending a separate spec.
+
+#### FundraiseUp campaign management via ACF _(before Layer 4 — banner changes must be captured in baseline)_
+
+Move all FundraiseUp configuration out of hardcoded PHP into a new ACF options page ("Fundraising"), and add an admin-driven campaign banner slot.
+
+**Three deliverables:**
+
+**1. ACF options page + field group**
+
+New "Fundraising" options page under General. Two sections:
+
+- _Default campaign_ — `fundraiseup_org_id` (text), `default_element_id` (text), `default_campaign_id` (text). Replaces the hardcoded org ID in `page--head.php` and element/campaign IDs in `single-fellows.php` and `meta--languages-single.php`.
+- _Active campaign_ — `active_campaign_status` (select: disabled / active / scheduled), `active_campaign_label` (text, admin-only), `active_campaign_id` (text), `active_campaign_element_id` (text), `active_campaign_start` (date_picker), `active_campaign_end` (date_picker), and an `active_campaign_banner` group (see deliverable 3).
+
+**2. `wt_active_campaign()` helper**
+
+New function in `template-helpers.php`. Returns the active point-in-time campaign data if status is `active`, or if status is `scheduled` and today falls within start/end dates; otherwise returns the default campaign. All templates consume this single function — no IDs hardcoded anywhere.
+
+**3. Campaign banner module + header integration**
+
+`active_campaign_banner` group fields: `show_banner` (true_false), `heading` (text), `body` (textarea), `cta_label` (text), `variant` (select: standard / urgent), `display_scope` (checkbox: all / home / archive / singles).
+
+New `banner--campaign.php` module. `header.php` gains two ordered banner slots: campaign banner (if active + `show_banner` + scope matches), then the existing alert banner. The two slots serve distinct purposes — campaign banner is fundraising-specific; alert banner remains for general announcements.
+
+**What this enables:** campaign launches and banner copy changes require no deploy. EOY campaigns, point-in-time drives, and future raises are managed entirely from admin.
+
+**Dependency note:** no Docker dependency; can start independently. Must land before Layer 4 so banner UI is captured in visual baseline.
 
 #### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
 

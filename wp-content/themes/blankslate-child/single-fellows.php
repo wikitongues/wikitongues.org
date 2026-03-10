@@ -27,7 +27,7 @@ $revitalization_fellows_url = home_url( '/revitalization/fellows/?fellow_year=',
 $revitalization_fellows_url = add_query_arg( 'fellow_year', $fellow_year, $revitalization_fellows_url );
 
 $current_slug     = add_query_arg( array(), $wp->request );
-$fundraising_link = home_url( "{$current_slug}/?element=XESPGTCJ&form=FUNQMUDJDGQ", 'relative' );
+$fundraising_link = home_url( "{$current_slug}/?element=XESPGTCJ&form=FUNFLYUUBYT", 'relative' );
 
 // ====================
 // Manage Fellows Page Titles
@@ -40,13 +40,6 @@ get_header();
 
 require 'modules/fellows/meta--fellows-single.php';
 
-$fellow_bio = get_field( 'fellow_bio' );
-if ( $fellow_bio || get_the_content() ) {
-	echo '<div class="main-content">';
-	echo wpautop( wp_kses_post( $fellow_bio ) );
-	echo wpautop( wp_kses_post( get_the_content() ) );
-	echo '</div>';
-}
 require 'modules/editorial-content.php';
 $display_about           = get_field( 'display_about', 'option' );
 $fellowship_about        = get_field( 'fellowship_about', 'option' );
