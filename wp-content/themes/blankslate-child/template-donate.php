@@ -1,6 +1,6 @@
 <?php
 
-/* Template name: Giving Campaign 24 */
+/* Template name: Donate */
 
 // header
 get_header();
@@ -9,31 +9,42 @@ get_header();
 $page_banner       = get_field( 'banner' );
 $impact_photo      = get_field( 'impact_photo' );
 $fundraising_photo = get_field( 'fundraising_photo' );
-$fundraising_link  = home_url( '/2024-fundraiser/?element=XESPGTCJ&form=FUNQMUDJDGQ', 'relative' );
+$current_slug      = add_query_arg( array(), $wp->request );
+$fundraising_link  = home_url( "{$current_slug}/?element=XESPGTCJ&form=FUNFLYUUBYT", 'relative' );
 
 require 'modules/banners/banner--main.php';
+
+// Stats — same source as /archive
+$stats                 = wt_get_archive_stats();
+$languages_documented  = (int) $stats['language_count'];
+$nations_impacted      = (int) $stats['nations_count'];
+$total_languages       = (int) $stats['total_languages'];
+$total_territories     = (int) $stats['total_territories'];
+$languages_revitalized = (int) wp_count_posts( 'fellows' )->publish;
+$languages_pct         = ( $total_languages > 0 ) ? round( $languages_documented / $total_languages * 100 ) : 0;
+$nations_pct           = ( $total_territories > 0 ) ? round( $nations_impacted / $total_territories * 100 ) : 0;
 ?>
 
 <div class="content">
-	<h4>Can you help us grow?</h4>
-	<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link; ?>">Donate Now</a><a href="<?php echo $fundraising_link; ?>">Or set up automatic monthly donations</a></div>
+	<h4>Every language deserves to be heard.</h4>
+	<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link; ?>">Set up monthly giving</a><a href="<?php echo $fundraising_link; ?>">Donate Now</a></div>
 
 	<ul class="stats">
 		<li>
-			<h1>45</h1>
-			<p>Languages Revitalized</p>
+			<h1><?php echo number_format( $languages_revitalized ); ?> initiatives</h1>
+			<p>active community revitalization projects</p>
 		</li>
 		<li>
-			<h1>838</h1>
-			<p>Languages Documented</p>
+			<h1><?php echo number_format( $languages_documented ); ?> languages</h1>
+			<p>over <?php echo esc_html( (string) $languages_pct ); ?>% of every language in the world</p>
 		</li>
 		<li>
-			<h1>178</h1>
-			<p>Nations Impacted</p>
+			<h1><?php echo number_format( $nations_impacted ); ?> nations</h1>
+			<p>our work extends over <?php echo esc_html( (string) $nations_pct ); ?>% of the world</p>
 		</li>
 	</ul>
 	<h4>What Our Impact Looks Like</h4>
-	<p>Through our Language Revitalization Fellowship, we help language activists identify and implement their communities’ linguistic needs, supplementing their work with micro-grants, in-kind services, and volunteer labor. Wikitongues fellows grow their languages with arts and culture programs, mother-tongue education, and technology.</p>
+	<p>Through our Language Revitalization Fellowship, we help language activists identify and implement their communities' linguistic needs, supplementing their work with micro-grants, in-kind services, and volunteer labor. Wikitongues fellows grow their languages with arts and culture programs, mother-tongue education, and technology.</p>
 
 	<?php
 		echo '<div class="image" style="background-image:url(' . esc_url( $impact_photo['url'] ) . ');" alt="' . get_the_title() . '"></div>';
@@ -72,7 +83,7 @@ require 'modules/banners/banner--main.php';
 		<section class="secondary">
 			<div class="option">
 				<strong>Monthly Giving</strong>
-				<p>Want to grow your impact impact? Become a monthly supporter and help us give stable support to language activists worldwide.</p>
+				<p>Want to grow your impact? Become a monthly supporter and help us give stable support to language activists worldwide.</p>
 				<a class="cta" href="<?php echo $fundraising_link; ?>">Schedule monthly donation</a>
 			</div>
 			<div class="option">
