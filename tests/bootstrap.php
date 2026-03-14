@@ -26,6 +26,9 @@ require_once __DIR__ . '/unit/FakeQuery.php';
 require_once GATEWAY_DIR . 'includes/class-logger.php';
 require_once GATEWAY_DIR . 'includes/class-ip-hasher.php';
 require_once GATEWAY_DIR . 'includes/class-token-repository.php';
+require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
 
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';

@@ -37,6 +37,9 @@ require_once GATEWAY_DIR . 'includes/class-schema.php';
 require_once GATEWAY_DIR . 'includes/class-activator.php';
 require_once GATEWAY_DIR . 'includes/class-settings-repository.php';
 require_once GATEWAY_DIR . 'includes/class-token-repository.php';
+require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
 require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-event-bus.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
@@ -66,3 +69,6 @@ add_action(
 );
 
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
+
+// Register file resolvers for supported post types.
+FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
