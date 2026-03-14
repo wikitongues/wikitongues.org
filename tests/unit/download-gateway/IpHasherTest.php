@@ -45,33 +45,33 @@ class IpHasherTest extends TestCase {
 	// --- hash_from_server() ---
 
 	public function test_hash_from_server_uses_remote_addr(): void {
-		$server = [ 'REMOTE_ADDR' => '10.0.0.1' ];
+		$server = array( 'REMOTE_ADDR' => '10.0.0.1' );
 		$this->assertSame( IpHasher::hash( '10.0.0.1' ), IpHasher::hash_from_server( $server ) );
 	}
 
 	public function test_hash_from_server_prefers_x_forwarded_for(): void {
-		$server = [
+		$server = array(
 			'REMOTE_ADDR'          => '10.0.0.1',
 			'HTTP_X_FORWARDED_FOR' => '203.0.113.5',
-		];
+		);
 		$this->assertSame( IpHasher::hash( '203.0.113.5' ), IpHasher::hash_from_server( $server ) );
 	}
 
 	public function test_hash_from_server_takes_first_forwarded_ip(): void {
-		$server = [ 'HTTP_X_FORWARDED_FOR' => '203.0.113.5, 10.0.0.2, 10.0.0.3' ];
+		$server = array( 'HTTP_X_FORWARDED_FOR' => '203.0.113.5, 10.0.0.2, 10.0.0.3' );
 		$this->assertSame( IpHasher::hash( '203.0.113.5' ), IpHasher::hash_from_server( $server ) );
 	}
 
 	public function test_hash_from_server_falls_back_when_forwarded_is_empty(): void {
-		$server = [
+		$server = array(
 			'REMOTE_ADDR'          => '10.0.0.1',
 			'HTTP_X_FORWARDED_FOR' => '',
-		];
+		);
 		$this->assertSame( IpHasher::hash( '10.0.0.1' ), IpHasher::hash_from_server( $server ) );
 	}
 
 	public function test_hash_from_server_handles_missing_keys(): void {
-		$result = IpHasher::hash_from_server( [] );
+		$result = IpHasher::hash_from_server( array() );
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result );
 	}
 }

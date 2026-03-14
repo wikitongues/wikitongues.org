@@ -15,9 +15,9 @@ class DownloadControllerTest extends TestCase {
 		$this->controller = new DownloadController();
 
 		// Sanitization functions used by DownloadEventRepository::log().
-		WP_Mock::userFunction( 'sanitize_key', [ 'return_arg' => 0 ] );
-		WP_Mock::userFunction( 'sanitize_text_field', [ 'return_arg' => 0 ] );
-		WP_Mock::userFunction( 'esc_url_raw', [ 'return_arg' => 0 ] );
+		WP_Mock::userFunction( 'sanitize_key', array( 'return_arg' => 0 ) );
+		WP_Mock::userFunction( 'sanitize_text_field', array( 'return_arg' => 0 ) );
+		WP_Mock::userFunction( 'esc_url_raw', array( 'return_arg' => 0 ) );
 	}
 
 	// -------------------------------------------------------------------------
@@ -42,7 +42,7 @@ class DownloadControllerTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_resolve_returns_404_when_no_resolver_for_post_type(): void {
-		WP_Mock::userFunction( 'get_post_type', [ 'return' => 'videos' ] );
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'videos' ) );
 
 		$result = $this->controller->resolve( '42' );
 		$this->assertInstanceOf( \WP_Error::class, $result );
@@ -52,9 +52,9 @@ class DownloadControllerTest extends TestCase {
 	public function test_resolve_returns_403_when_policy_is_hard(): void {
 		FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
 
-		WP_Mock::userFunction( 'get_post_type', [ 'return' => 'document_files' ] );
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'document_files' ) );
 		// PolicyResolver tier 1: per-resource meta returns 'hard'.
-		WP_Mock::userFunction( 'get_post_meta', [ 'return' => 'hard' ] );
+		WP_Mock::userFunction( 'get_post_meta', array( 'return' => 'hard' ) );
 
 		$result = $this->controller->resolve( '42' );
 		$this->assertInstanceOf( \WP_Error::class, $result );
@@ -66,13 +66,16 @@ class DownloadControllerTest extends TestCase {
 
 		$this->mock_policy_none();
 		$this->mock_wpdb_inserts( 3 ); // token + click event + redirect event
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
-		WP_Mock::userFunction( 'get_post_type', [ 'return' => 'document_files' ] );
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => 'https://example.com/uploads/doc.pdf',
-		] );
-		WP_Mock::userFunction( 'do_action', [ 'return' => null ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'document_files' ) );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => 'https://example.com/uploads/doc.pdf',
+			)
+		);
+		WP_Mock::userFunction( 'do_action', array( 'return' => null ) );
 
 		$result = $this->controller->resolve( '42' );
 		$this->assertSame( 'https://example.com/uploads/doc.pdf', $result );
@@ -83,13 +86,16 @@ class DownloadControllerTest extends TestCase {
 
 		$this->mock_policy_none();
 		$this->mock_wpdb_inserts( 2 ); // token + click event; redirect not reached (resolver returns null)
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
-		WP_Mock::userFunction( 'get_post_type', [ 'return' => 'document_files' ] );
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => false, // ACF field empty
-		] );
-		WP_Mock::userFunction( 'do_action', [ 'return' => null ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'document_files' ) );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => false, // ACF field empty
+			)
+		);
+		WP_Mock::userFunction( 'do_action', array( 'return' => null ) );
 
 		$result = $this->controller->resolve( '42' );
 		$this->assertInstanceOf( \WP_Error::class, $result );
@@ -157,23 +163,26 @@ class DownloadControllerTest extends TestCase {
 		$row->post_id    = 42;
 		$row->visitor_id = str_repeat( 'b', 32 );
 
-		$wpdb              = Mockery::mock( 'wpdb' );
-		$wpdb->prefix      = 'wp_';
-		$wpdb->insert_id   = 1;
-		$wpdb->last_error  = '';
+		$wpdb             = Mockery::mock( 'wpdb' );
+		$wpdb->prefix     = 'wp_';
+		$wpdb->insert_id  = 1;
+		$wpdb->last_error = '';
 		$wpdb->shouldReceive( 'prepare' )->andReturn( 'SQL' );
 		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $row );
 		$wpdb->shouldReceive( 'update' )->once()->andReturn( 1 );   // mark_used
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );   // redirect event
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
-		WP_Mock::userFunction( 'get_post_type', [ 'return' => 'document_files' ] );
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => 'https://example.com/uploads/doc.pdf',
-		] );
-		WP_Mock::userFunction( 'do_action', [ 'return' => null ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'document_files' ) );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => 'https://example.com/uploads/doc.pdf',
+			)
+		);
+		WP_Mock::userFunction( 'do_action', array( 'return' => null ) );
 
 		$result = $this->controller->resolve( str_repeat( 'a', 64 ) );
 		$this->assertSame( 'https://example.com/uploads/doc.pdf', $result );
@@ -185,19 +194,19 @@ class DownloadControllerTest extends TestCase {
 
 	private function mock_policy_none(): void {
 		// PolicyResolver tier 1: per-resource meta — empty, fall through.
-		WP_Mock::userFunction( 'get_post_meta', [ 'return' => '' ] );
+		WP_Mock::userFunction( 'get_post_meta', array( 'return' => '' ) );
 		// PolicyResolver tier 2: taxonomy terms — none, fall through.
-		WP_Mock::userFunction( 'get_object_taxonomies', [ 'return' => [] ] );
+		WP_Mock::userFunction( 'get_object_taxonomies', array( 'return' => array() ) );
 		// PolicyResolver tier 3: global option — 'none'.
-		WP_Mock::userFunction( 'get_option', [ 'return' => 'none' ] );
+		WP_Mock::userFunction( 'get_option', array( 'return' => 'none' ) );
 	}
 
 	private function mock_wpdb_inserts( int $times ): void {
-		$wpdb              = Mockery::mock( 'wpdb' );
-		$wpdb->prefix      = 'wp_';
-		$wpdb->last_error  = '';
-		$wpdb->insert_id   = 1;
+		$wpdb             = Mockery::mock( 'wpdb' );
+		$wpdb->prefix     = 'wp_';
+		$wpdb->last_error = '';
+		$wpdb->insert_id  = 1;
 		$wpdb->shouldReceive( 'insert' )->times( $times )->andReturn( 1 );
-		$GLOBALS['wpdb']   = $wpdb;
+		$GLOBALS['wpdb'] = $wpdb;
 	}
 }

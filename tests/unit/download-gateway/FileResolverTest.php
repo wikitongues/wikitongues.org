@@ -16,40 +16,55 @@ class FileResolverTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_resolve_returns_url_string_from_acf(): void {
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => 'https://example.com/uploads/doc.pdf',
-		] );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => 'https://example.com/uploads/doc.pdf',
+			)
+		);
 
 		$resolver = new DocumentFileResolver();
 		$this->assertSame( 'https://example.com/uploads/doc.pdf', $resolver->resolve( 42 ) );
 	}
 
 	public function test_resolve_extracts_url_from_acf_array_format(): void {
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => [ 'url' => 'https://example.com/uploads/doc.pdf', 'filename' => 'doc.pdf' ],
-		] );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => array(
+					'url'      => 'https://example.com/uploads/doc.pdf',
+					'filename' => 'doc.pdf',
+				),
+			)
+		);
 
 		$resolver = new DocumentFileResolver();
 		$this->assertSame( 'https://example.com/uploads/doc.pdf', $resolver->resolve( 42 ) );
 	}
 
 	public function test_resolve_returns_null_when_field_is_empty(): void {
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => false,
-		] );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => false,
+			)
+		);
 
 		$resolver = new DocumentFileResolver();
 		$this->assertNull( $resolver->resolve( 42 ) );
 	}
 
 	public function test_resolve_returns_null_when_array_has_no_url_key(): void {
-		WP_Mock::userFunction( 'get_field', [
-			'args'   => [ 'file', 42 ],
-			'return' => [ 'filename' => 'doc.pdf' ], // malformed — no 'url' key
-		] );
+		WP_Mock::userFunction(
+			'get_field',
+			array(
+				'args'   => array( 'file', 42 ),
+				'return' => array( 'filename' => 'doc.pdf' ), // malformed — no 'url' key
+			)
+		);
 
 		$resolver = new DocumentFileResolver();
 		$this->assertNull( $resolver->resolve( 42 ) );
@@ -74,19 +89,25 @@ class FileResolverTest extends TestCase {
 	}
 
 	public function test_for_post_returns_null_when_post_not_found(): void {
-		WP_Mock::userFunction( 'get_post_type', [
-			'args'   => [ 99 ],
-			'return' => false,
-		] );
+		WP_Mock::userFunction(
+			'get_post_type',
+			array(
+				'args'   => array( 99 ),
+				'return' => false,
+			)
+		);
 
 		$this->assertNull( FileResolverRegistry::for_post( 99 ) );
 	}
 
 	public function test_for_post_returns_null_when_no_resolver_for_post_type(): void {
-		WP_Mock::userFunction( 'get_post_type', [
-			'args'   => [ 42 ],
-			'return' => 'videos',
-		] );
+		WP_Mock::userFunction(
+			'get_post_type',
+			array(
+				'args'   => array( 42 ),
+				'return' => 'videos',
+			)
+		);
 
 		$this->assertNull( FileResolverRegistry::for_post( 42 ) );
 	}
@@ -95,10 +116,13 @@ class FileResolverTest extends TestCase {
 		$resolver = new DocumentFileResolver();
 		FileResolverRegistry::register( 'document_files', $resolver );
 
-		WP_Mock::userFunction( 'get_post_type', [
-			'args'   => [ 42 ],
-			'return' => 'document_files',
-		] );
+		WP_Mock::userFunction(
+			'get_post_type',
+			array(
+				'args'   => array( 42 ),
+				'return' => 'document_files',
+			)
+		);
 
 		$this->assertSame( $resolver, FileResolverRegistry::for_post( 42 ) );
 	}

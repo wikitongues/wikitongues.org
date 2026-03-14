@@ -1,6 +1,81 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Access to an undefined property Mockery\\\\MockInterface\\:\\:\\$insert_id\\.$#"
+			count: 2
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Access to an undefined property Mockery\\\\MockInterface\\:\\:\\$last_error\\.$#"
+			count: 2
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Access to an undefined property Mockery\\\\MockInterface\\:\\:\\$prefix\\.$#"
+			count: 5
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 9
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:times\\(\\)\\.$#"
+			count: 1
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Access to an undefined property Mockery\\\\MockInterface\\:\\:\\$prefix\\.$#"
+			count: 7
+			path: tests/unit/download-gateway/TokenRepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 10
+			path: tests/unit/download-gateway/TokenRepositoryTest.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/download-gateway.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/download-gateway.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/admin/class-settings-page.php
+
+		-
+			message: "#^Ternary operator condition is always false\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/admin/class-settings-page.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/class-document-file-resolver.php
+
+		-
+			message: "#^Function acf_add_local_field_group not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php
+
+		-
+			message: "#^Constant WT_AIRTABLE_SYNC_DIR not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-sync-api.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/includes/helpers.php

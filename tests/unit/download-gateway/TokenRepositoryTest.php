@@ -66,7 +66,7 @@ class TokenRepositoryTest extends TestCase {
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
 
 		$token = TokenRepository::create( 42 );
 
@@ -85,7 +85,7 @@ class TokenRepositoryTest extends TestCase {
 			->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
 
 		$token = TokenRepository::create( 99 );
 
@@ -133,7 +133,7 @@ class TokenRepositoryTest extends TestCase {
 		$wpdb->shouldReceive( 'update' )->once()->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
 
 		$this->assertTrue( TokenRepository::mark_used( 'sometoken' ) );
 	}
@@ -144,7 +144,7 @@ class TokenRepositoryTest extends TestCase {
 		$wpdb->shouldReceive( 'update' )->once()->andReturn( false );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
 
 		$this->assertFalse( TokenRepository::mark_used( 'sometoken' ) );
 	}
@@ -160,7 +160,7 @@ class TokenRepositoryTest extends TestCase {
 		$wpdb->shouldReceive( 'query' )->once()->andReturn( 5 );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', [ 'return' => '2026-03-14 12:00:00' ] );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
 
 		$this->assertSame( 5, TokenRepository::purge_expired() );
 	}
