@@ -36,6 +36,7 @@ require_once GATEWAY_DIR . 'includes/class-logger.php';
 require_once GATEWAY_DIR . 'includes/class-schema.php';
 require_once GATEWAY_DIR . 'includes/class-activator.php';
 require_once GATEWAY_DIR . 'includes/class-settings-repository.php';
+require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-event-bus.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';

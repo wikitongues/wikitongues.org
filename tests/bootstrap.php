@@ -25,6 +25,7 @@ require_once __DIR__ . '/unit/FakeQuery.php';
 // Gateway plugin classes.
 require_once GATEWAY_DIR . 'includes/class-logger.php';
 require_once GATEWAY_DIR . 'includes/class-ip-hasher.php';
+require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';
