@@ -49,6 +49,8 @@ require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-acf-fields.php';
 require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
 require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
+require_once GATEWAY_DIR . 'includes/class-people-repository.php';
+require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
@@ -83,7 +85,41 @@ add_action(
 		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
 		if ( GATEWAY_ENABLED ) {
 			( new DownloadController() )->register_routes();
+			( new GateController() )->register_routes();
 		}
+	}
+);
+
+add_action(
+	'wp_enqueue_scripts',
+	function (): void {
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
+		if ( ! GATEWAY_ENABLED ) {
+			return;
+		}
+		// @phpstan-ignore-next-line (unreachable only in static analysis — runtime value differs)
+		wp_enqueue_style(
+			'gateway-modal',
+			plugins_url( 'assets/css/gateway-modal.css', GATEWAY_FILE ),
+			[],
+			GATEWAY_VERSION
+		);
+		wp_enqueue_script(
+			'gateway-modal',
+			plugins_url( 'assets/js/gateway-modal.js', GATEWAY_FILE ),
+			[],
+			GATEWAY_VERSION,
+			true
+		);
+		wp_localize_script(
+			'gateway-modal',
+			'gatewaySettings',
+			[
+				'nonce'        => wp_create_nonce( 'gateway_gate' ),
+				'apiUrl'       => rest_url( GATEWAY_REST_NAMESPACE . '/gate' ),
+				'downloadBase' => rest_url( GATEWAY_REST_NAMESPACE . '/download' ),
+			]
+		);
 	}
 );
 

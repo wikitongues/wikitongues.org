@@ -16,6 +16,21 @@ parameters:
 			path: tests/unit/download-gateway/TokenRepositoryTest.php
 
 		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 13
+			path: tests/unit/download-gateway/PeopleRepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 5
+			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:twice\\(\\)\\.$#"
+			count: 1
+			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/download-gateway/includes/class-document-file-resolver.php

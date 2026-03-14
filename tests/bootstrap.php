@@ -36,6 +36,8 @@ require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-event-bus.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
 require_once GATEWAY_DIR . 'includes/class-download-controller.php';
+require_once GATEWAY_DIR . 'includes/class-people-repository.php';
+require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';

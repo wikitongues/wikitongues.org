@@ -1,0 +1,113 @@
+/* Gateway modal — download gate UI */
+
+#gateway-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba( 0, 0, 0, 0.55 );
+	z-index: 9999;
+	align-items: center;
+	justify-content: center;
+}
+
+#gateway-overlay.is-open {
+	display: flex;
+}
+
+#gateway-modal {
+	position: relative;
+	background: #fff;
+	border-radius: 4px;
+	padding: 2rem;
+	width: min( 420px, 92vw );
+	box-shadow: 0 8px 32px rgba( 0, 0, 0, 0.18 );
+}
+
+#gateway-modal-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+}
+
+#gateway-modal-desc {
+	margin: 0 0 1.25rem;
+	font-size: 0.875rem;
+	color: #555;
+}
+
+#gateway-form label {
+	display: block;
+	font-size: 0.875rem;
+	font-weight: 600;
+	margin: 0.75rem 0 0.25rem;
+}
+
+#gateway-form label.gateway-consent {
+	font-weight: 400;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.4rem;
+	margin-top: 1rem;
+}
+
+#gateway-form input[type="text"],
+#gateway-form input[type="email"] {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.45rem 0.6rem;
+	border: 1px solid #bbb;
+	border-radius: 3px;
+	font-size: 0.9rem;
+}
+
+#gateway-error {
+	min-height: 1.25rem;
+	margin: 0.75rem 0 0;
+	font-size: 0.875rem;
+	color: #c00;
+}
+
+.gateway-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+#gateway-submit {
+	padding: 0.6rem 1rem;
+	background: #1a1a1a;
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	font-size: 0.9rem;
+	cursor: pointer;
+}
+
+#gateway-submit:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+#gateway-skip {
+	background: none;
+	border: none;
+	color: #555;
+	font-size: 0.8rem;
+	cursor: pointer;
+	text-decoration: underline;
+	padding: 0;
+	text-align: left;
+}
+
+#gateway-close {
+	position: absolute;
+	top: 0.75rem;
+	right: 0.75rem;
+	background: none;
+	border: none;
+	font-size: 1.25rem;
+	line-height: 1;
+	cursor: pointer;
+	color: #888;
+	padding: 0.25rem 0.4rem;
+}
