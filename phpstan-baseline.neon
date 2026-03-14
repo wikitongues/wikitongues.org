@@ -1,6 +1,41 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 9
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:times\\(\\)\\.$#"
+			count: 1
+			path: tests/unit/download-gateway/DownloadControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 10
+			path: tests/unit/download-gateway/TokenRepositoryTest.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/class-document-file-resolver.php
+
+		-
+			message: "#^Function acf_add_local_field_group not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php
+
+		-
+			message: "#^Constant WT_AIRTABLE_SYNC_DIR not found\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-airtable-sync/includes/class-sync-api.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/includes/helpers.php

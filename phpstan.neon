@@ -8,6 +8,8 @@ parameters:
     paths:
         - wp-content/themes/blankslate-child
         - wp-content/plugins/wt-gallery
+        - wp-content/plugins/wt-airtable-sync
+        - wp-content/plugins/download-gateway
         - wp-content/plugins/typeahead/typeahead.php
         - tests
     excludePaths:
