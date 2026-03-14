@@ -15,6 +15,7 @@ class Activator {
 	public static function activate(): void {
 		self::check_requirements();
 		update_option( 'dg_version', DG_VERSION );
+		Schema::create_tables();
 		Logger::info( 'Plugin activated (v' . DG_VERSION . ').' );
 	}
 

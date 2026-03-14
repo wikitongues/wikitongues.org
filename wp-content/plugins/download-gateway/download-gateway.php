@@ -33,6 +33,7 @@ if ( ! defined( 'DG_ENABLED' ) ) {
 }
 
 require_once DG_DIR . 'includes/class-logger.php';
+require_once DG_DIR . 'includes/class-schema.php';
 require_once DG_DIR . 'includes/class-activator.php';
 require_once DG_DIR . 'includes/admin/class-settings-page.php';
 
