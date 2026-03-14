@@ -35,6 +35,10 @@ if ( ! defined( 'GATEWAY_ENABLED' ) ) {
 require_once GATEWAY_DIR . 'includes/class-logger.php';
 require_once GATEWAY_DIR . 'includes/class-schema.php';
 require_once GATEWAY_DIR . 'includes/class-activator.php';
+require_once GATEWAY_DIR . 'includes/class-settings-repository.php';
+require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-event-bus.php';
+require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
