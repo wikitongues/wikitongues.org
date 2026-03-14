@@ -21,6 +21,7 @@ if ( ! defined( 'GATEWAY_ENABLED' ) ) {
 }
 
 require_once __DIR__ . '/unit/FakeQuery.php';
+require_once __DIR__ . '/unit/WP_Error.php';
 
 // Gateway plugin classes.
 require_once GATEWAY_DIR . 'includes/class-logger.php';
@@ -29,6 +30,12 @@ require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
+require_once GATEWAY_DIR . 'includes/class-visitor-id.php';
+require_once GATEWAY_DIR . 'includes/class-settings-repository.php';
+require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-event-bus.php';
+require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
+require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';

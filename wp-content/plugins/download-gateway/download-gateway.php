@@ -40,6 +40,8 @@ require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
+require_once GATEWAY_DIR . 'includes/class-visitor-id.php';
+require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-policy-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-event-bus.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
@@ -69,6 +71,15 @@ add_action(
 );
 
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
+
+add_action(
+	'rest_api_init',
+	function (): void {
+		if ( GATEWAY_ENABLED ) {
+			( new DownloadController() )->register_routes();
+		}
+	}
+);
 
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
