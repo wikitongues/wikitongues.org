@@ -2,8 +2,8 @@
 /**
  * Activator — handles plugin activation and deactivation lifecycle.
  *
- * Activation checks environment requirements and seeds the plugin version option.
- * Sub-phase 1 will extend activate() to create DB tables.
+ * Activation checks environment requirements, seeds the plugin version option,
+ * and creates all custom DB tables via Schema::create_tables().
  *
  * @package WT\DownloadGateway
  */
@@ -14,9 +14,9 @@ class Activator {
 
 	public static function activate(): void {
 		self::check_requirements();
-		update_option( 'dg_version', DG_VERSION );
+		update_option( 'gateway_version', GATEWAY_VERSION );
 		Schema::create_tables();
-		Logger::info( 'Plugin activated (v' . DG_VERSION . ').' );
+		Logger::info( 'Plugin activated (v' . GATEWAY_VERSION . ').' );
 	}
 
 	public static function deactivate(): void {
@@ -36,7 +36,7 @@ class Activator {
 
 		if ( ! empty( $errors ) ) {
 			// Deactivate and show errors — wp_die() is appropriate in activation context.
-			deactivate_plugins( plugin_basename( DG_FILE ) );
+			deactivate_plugins( plugin_basename( GATEWAY_FILE ) );
 			wp_die(
 				'<strong>Download Gateway could not be activated:</strong><ul><li>'
 				. implode( '</li><li>', array_map( 'esc_html', $errors ) )

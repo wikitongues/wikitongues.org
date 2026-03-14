@@ -31,15 +31,15 @@ class Settings_Page {
 		<div class="wrap">
 			<h1>Download Gateway</h1>
 			<p>
-				Version <?php echo esc_html( DG_VERSION ); ?>
+				Version <?php echo esc_html( GATEWAY_VERSION ); ?>
 				&nbsp;&mdash;&nbsp;
-				Status: <strong><?php echo DG_ENABLED ? '<span style="color:#0a0;">Enabled</span>' : '<span style="color:#a00;">Disabled</span>'; ?></strong>
+				Status: <strong><?php echo GATEWAY_ENABLED ? '<span style="color:#0a0;">Enabled</span>' : '<span style="color:#a00;">Disabled</span>'; ?></strong>
 			</p>
-			<?php if ( ! DG_ENABLED ) : ?>
+			<?php if ( ! GATEWAY_ENABLED ) : ?>
 			<div class="notice notice-warning inline">
 				<p>
 					The gateway is not yet intercepting downloads.
-					Add <code>define( 'DG_ENABLED', true );</code> to <code>wp-config.php</code> to enable it.
+					Add <code>define( 'GATEWAY_ENABLED', true );</code> to <code>wp-config.php</code> to enable it.
 				</p>
 			</div>
 			<?php endif; ?>

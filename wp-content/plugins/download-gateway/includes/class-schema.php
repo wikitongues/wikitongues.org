@@ -8,10 +8,10 @@
  *
  * Table overview:
  *
- *   wp_dg_tokens          — one-time signed download tokens (sub-phases 3, 5)
- *   wp_dg_people          — email-known visitors captured via the gate (sub-phase 5)
- *   wp_dg_download_events — every download lifecycle event (sub-phase 3+)
- *   wp_dg_webhook_delivery — outbound webhook retry queue (sub-phase 2c)
+ *   wp_gateway_tokens          — one-time signed download tokens (sub-phases 3, 5)
+ *   wp_gateway_people          — email-known visitors captured via the gate (sub-phase 5)
+ *   wp_gateway_download_events — every download lifecycle event (sub-phase 3+)
+ *   wp_gateway_webhook_delivery — outbound webhook retry queue (sub-phase 2c)
  *
  * @package WT\DownloadGateway
  */
@@ -21,7 +21,7 @@ namespace WT\DownloadGateway;
 class Schema {
 
 	/** Option key that stores the installed schema version. */
-	const VERSION_OPTION = 'dg_schema_version';
+	const VERSION_OPTION = 'gateway_schema_version';
 
 	/** Bump this when the schema changes to trigger a migration. */
 	const SCHEMA_VERSION = 1;
@@ -34,14 +34,14 @@ class Schema {
 		$charset = $wpdb->get_charset_collate();
 
 		/*
-		 * wp_dg_tokens
+		 * wp_gateway_tokens
 		 *
 		 * One record per download token issued. Tokens are single-use and
 		 * short-lived. `used_at` is set on redemption; expired unused tokens
 		 * are pruned by a scheduled job (sub-phase 9).
 		 */
 		dbDelta(
-			"CREATE TABLE {$wpdb->prefix}dg_tokens (
+			"CREATE TABLE {$wpdb->prefix}gateway_tokens (
 				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 				token VARCHAR(64) NOT NULL,
 				post_id BIGINT UNSIGNED NOT NULL,
@@ -58,7 +58,7 @@ class Schema {
 		);
 
 		/*
-		 * wp_dg_people
+		 * wp_gateway_people
 		 *
 		 * One record per email-known visitor. Email and name are nullable so
 		 * they can be nulled out by the retention job without deleting the row
@@ -67,7 +67,7 @@ class Schema {
 		 * and lookup without requiring plaintext storage.
 		 */
 		dbDelta(
-			"CREATE TABLE {$wpdb->prefix}dg_people (
+			"CREATE TABLE {$wpdb->prefix}gateway_people (
 				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 				email_hash VARCHAR(64) NOT NULL,
 				email VARCHAR(255) DEFAULT NULL,
@@ -84,7 +84,7 @@ class Schema {
 		);
 
 		/*
-		 * wp_dg_download_events
+		 * wp_gateway_download_events
 		 *
 		 * One record per lifecycle event in the download funnel:
 		 *   click       — user clicked a download link (token issued)
@@ -97,7 +97,7 @@ class Schema {
 		 * client-side and forwarded with the token request.
 		 */
 		dbDelta(
-			"CREATE TABLE {$wpdb->prefix}dg_download_events (
+			"CREATE TABLE {$wpdb->prefix}gateway_download_events (
 				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 				post_id BIGINT UNSIGNED NOT NULL,
 				post_type VARCHAR(50) NOT NULL,
@@ -123,7 +123,7 @@ class Schema {
 		);
 
 		/*
-		 * wp_dg_webhook_delivery
+		 * wp_gateway_webhook_delivery
 		 *
 		 * Outbound webhook retry queue. Each row represents one delivery attempt
 		 * for a download event payload to a configured endpoint. Status transitions:
@@ -132,7 +132,7 @@ class Schema {
 		 *   failed  → dead       (max attempts exceeded)
 		 */
 		dbDelta(
-			"CREATE TABLE {$wpdb->prefix}dg_webhook_delivery (
+			"CREATE TABLE {$wpdb->prefix}gateway_webhook_delivery (
 				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 				event_id BIGINT UNSIGNED NOT NULL,
 				endpoint_url VARCHAR(2083) NOT NULL,
@@ -158,10 +158,10 @@ class Schema {
 
 		// Drop in reverse dependency order (events reference people; tokens reference both).
 		$tables = [
-			"{$wpdb->prefix}dg_webhook_delivery",
-			"{$wpdb->prefix}dg_download_events",
-			"{$wpdb->prefix}dg_tokens",
-			"{$wpdb->prefix}dg_people",
+			"{$wpdb->prefix}gateway_webhook_delivery",
+			"{$wpdb->prefix}gateway_download_events",
+			"{$wpdb->prefix}gateway_tokens",
+			"{$wpdb->prefix}gateway_people",
 		];
 
 		foreach ( $tables as $table ) {

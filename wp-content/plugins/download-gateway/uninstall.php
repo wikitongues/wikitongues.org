@@ -2,10 +2,9 @@
 /**
  * Uninstall — runs when the plugin is deleted via the WP admin.
  *
- * Sub-phase 0: removes the version option seeded on activation.
- * Sub-phase 1 will extend this to drop DB tables (wp_dg_people,
- * wp_dg_download_events, wp_dg_webhook_delivery, wp_dg_tokens)
- * after confirming the operator has exported any data they need.
+ * Removes all gateway options and drops all custom DB tables.
+ * Tables dropped: wp_gateway_people, wp_gateway_download_events,
+ * wp_gateway_webhook_delivery, wp_gateway_tokens.
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -13,17 +12,17 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Bootstrap only what's needed for Schema and Logger — avoid a full WP load.
-define( 'DG_VERSION', '0.1.0' );
-define( 'DG_FILE', __FILE__ );
-define( 'DG_DIR', plugin_dir_path( __FILE__ ) );
-define( 'DG_REST_NAMESPACE', 'gateway/v1' );
+define( 'GATEWAY_VERSION', '0.1.0' );
+define( 'GATEWAY_FILE', __FILE__ );
+define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
+define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
 
-if ( ! defined( 'DG_ENABLED' ) ) {
-	define( 'DG_ENABLED', false );
+if ( ! defined( 'GATEWAY_ENABLED' ) ) {
+	define( 'GATEWAY_ENABLED', false );
 }
 
-require_once DG_DIR . 'includes/class-logger.php';
-require_once DG_DIR . 'includes/class-schema.php';
+require_once GATEWAY_DIR . 'includes/class-logger.php';
+require_once GATEWAY_DIR . 'includes/class-schema.php';
 
 \WT\DownloadGateway\Schema::drop_tables();
-delete_option( 'dg_version' );
+delete_option( 'gateway_version' );
