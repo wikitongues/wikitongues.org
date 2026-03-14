@@ -10,7 +10,6 @@ $page_banner       = get_field( 'banner' );
 $impact_photo      = get_field( 'impact_photo' );
 $fundraising_photo = get_field( 'fundraising_photo' );
 $current_slug      = add_query_arg( array(), $wp->request );
-$fundraising_link  = home_url( "{$current_slug}/?element=XESPGTCJ&form=FUNFLYUUBYT", 'relative' );
 
 require 'modules/banners/banner--main.php';
 
@@ -27,7 +26,7 @@ $nations_pct           = ( $total_territories > 0 ) ? round( $nations_impacted /
 
 <div class="content">
 	<h4>Every language deserves to be heard.</h4>
-	<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link; ?>">Set up monthly giving</a><a href="<?php echo $fundraising_link; ?>">Donate Now</a></div>
+	<div class="cta-group"><a class="cta" href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="donate-page-top-recurring">Set up monthly giving</a><a href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="donate-page-top-single">Donate Now</a></div>
 
 	<ul class="stats">
 		<li>
@@ -76,7 +75,7 @@ $nations_pct           = ( $total_territories > 0 ) ? round( $nations_impacted /
 	?>
 	<div class="donations-button-group">
 		<h4>Make a Lasting Impact</h4>
-		<div class="cta-group"><a class="cta" href="<?php echo $fundraising_link; ?>">Donate Now</a><a href="<?php echo $fundraising_link; ?>">Or set up automatic monthly donations</a></div>
+		<div class="cta-group"><a class="cta" href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="donate-page-middle-single">Donate Now</a><a href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="donate-page-middle-recurring">Or set up automatic monthly donations</a></div>
 		<?php
 			echo '<div class="image" style="background-image:url(' . esc_url( $fundraising_photo['url'] ) . ');" alt="' . get_the_title() . '"></div>';
 		?>
@@ -84,7 +83,7 @@ $nations_pct           = ( $total_territories > 0 ) ? round( $nations_impacted /
 			<div class="option">
 				<strong>Monthly Giving</strong>
 				<p>Want to grow your impact? Become a monthly supporter and help us give stable support to language activists worldwide.</p>
-				<a class="cta" href="<?php echo $fundraising_link; ?>">Schedule monthly donation</a>
+				<a class="cta" href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="donate-page-bottom">Schedule monthly donation</a>
 			</div>
 			<div class="option">
 				<strong>Share Our Campaign</strong>

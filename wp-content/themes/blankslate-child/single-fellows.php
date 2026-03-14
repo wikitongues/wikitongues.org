@@ -25,9 +25,7 @@ log_data( $categories );
 $social_links               = wt_social_links();
 $revitalization_fellows_url = home_url( '/revitalization/fellows/?fellow_year=', 'relative' );
 $revitalization_fellows_url = add_query_arg( 'fellow_year', $fellow_year, $revitalization_fellows_url );
-
-$current_slug     = add_query_arg( array(), $wp->request );
-$fundraising_link = home_url( "{$current_slug}/?element=XESPGTCJ&form=FUNFLYUUBYT", 'relative' );
+$current_slug               = add_query_arg( array(), $wp->request );
 
 // ====================
 // Manage Fellows Page Titles
@@ -52,13 +50,11 @@ if ( $display_about && $fellowship_about ) {
 	echo '</div>';
 	echo '</div>';
 }
-// require 'modules/editorial-content.php';
-
 
 ?>
 <div class="custom-gallery full">
 	<strong class="wt_sectionHeader"><?php echo 'Other fellows from <a href="' . esc_url( $revitalization_fellows_url ) . '">' . $fellow_year; ?></a></strong>
-	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link; ?>" data-cta-location="fellow-gallery">Support a revitalization project.</a></p>
+	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="https://wikitongues.donorsupport.co/-/XTRAFEBU" data-cta-location="fellow-gallery">Support a revitalization project.</a></p>
 </div>
 <?php
 // Gallery
