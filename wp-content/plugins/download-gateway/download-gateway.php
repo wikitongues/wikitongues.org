@@ -115,6 +115,7 @@ add_action(
 			'gatewaySettings',
 			[
 				'nonce'        => wp_create_nonce( 'gateway_gate' ),
+				'restNonce'    => wp_create_nonce( 'wp_rest' ),
 				'apiUrl'       => rest_url( GATEWAY_REST_NAMESPACE . '/gate' ),
 				'downloadBase' => rest_url( GATEWAY_REST_NAMESPACE . '/download' ),
 			]

@@ -166,7 +166,10 @@
 		fetch( gatewaySettings.apiUrl, {
 			method:      'POST',
 			credentials: 'same-origin',
-			headers:     { 'Content-Type': 'application/x-www-form-urlencoded' },
+			headers:     {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'X-WP-Nonce':   gatewaySettings.restNonce,
+			},
 			body:        body.toString(),
 		} )
 			.then( function ( res ) { return res.json().then( function ( data ) { return { ok: res.ok, data: data }; } ); } )
