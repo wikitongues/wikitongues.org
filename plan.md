@@ -214,37 +214,40 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 
 **Architectural decisions (resolved):**
 - Signed expiring redirect URLs — not proxy streaming; replaces `force_download_file()`
-- CPT strategy: use existing `resources` and `document_files` CPTs — records not yet populated, migration risk is low
+- CPT strategy: `documents` + `document_files` (existing, in active use); `resources` CPT not used
+- Downloadable unit is the leaf node (`document_files` post, `videos` post, etc.) — selection UI stays in theme templates; gateway is post-type-agnostic
 - Plugin namespace: `download-gateway` / prefix `gateway_`
+- `FileResolverRegistry` maps post types to `FileResolver` implementations; `DocumentFileResolver` handles `document_files` via ACF `file` field; future types (videos, captions) register the same interface
 
 **Schema additions:**
 - `wp_gateway_people` — email_hash, email, name, consent fields, anonymization flags
 - `wp_gateway_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
 - `wp_gateway_webhook_delivery` — retry queue and dead-letter
-- `wp_gateway_tokens` _(not in original spec — required)_ — one-time download tokens with expiry; needed by sub-phases 3 and 5
+- `wp_gateway_tokens` — one-time download tokens with expiry; needed by sub-phases 3 and 5
 
 **Sub-phases 0–5:**
-- **0** — Plugin scaffold: activation/deactivation/uninstall hooks, feature flag constant, settings page placeholder, logging conventions
-- **1** — Data model: create tables with indexes on activation; idempotent migrations
-- **2a** — Core primitives _(unblocks 3)_: PolicyResolver with precedence (per-resource → taxonomy → global), SettingsRepository, EventBus, DownloadEventRepository
+- [x] **0** — Plugin scaffold: activation/deactivation/uninstall hooks, `GATEWAY_ENABLED` feature flag, settings page placeholder, Logger (PR #560)
+- [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
+- [x] **2a** — Core primitives: `PolicyResolver` (per-resource → taxonomy → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
 - **2b** — Form/gate primitives _(unblocks 5)_: FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
 - **2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
-- **3** — Download endpoint: `/gateway/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click event logging, UTM/referrer capture, IP hashing, no-cache headers
-- **4** — Resource authoring: ACF fields on existing CPTs (file_url, storage_type, dropbox_path, version); metabox showing gateway URL; `[gateway_download]` shortcode
+- [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
+- **4** — Resource authoring: ACF fields on `document_files` and other CPTs (gate_policy override, storage_type); metabox showing gateway URL; `[gateway_download]` shortcode
 - **5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/gateway/v1/gate`; person upsert; one-time token; nonce + rate limit + honeypot
 
 **Implementation notes:**
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
 - Cache plugins must explicitly exclude `/gateway/download/` — HTTP headers alone are not sufficient
-- `gateway_vid` cookie: define whether set unconditionally or only after consent (GDPR/ePrivacy implications)
+- `gateway_vid` cookie is set unconditionally on first download; GDPR/ePrivacy implications TBD before gate launch
 - Dropbox credentials: store in `wp_options` with `autoload=no`; exclude from any REST API exposure
-- ACF fields: use `register_meta` or own ACF JSON within the plugin — do not depend on theme's `acf-json/`
-- EventBus: evaluate `do_action('gateway/download/click', $event)` before introducing a custom bus class
+- ACF fields: own ACF JSON within the plugin — do not depend on theme's `acf-json/`
+- EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
+- Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
 
-**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3, 5 (basic hard gate), 9 (retention). Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort), inline gate (keep modal only).
+**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate), 9 (retention). Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort), inline gate (keep modal only).
 
-**Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
-**Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
+**Testing targets (unit):** ✅ IpHasher (12), TokenRepository (12), FileResolverRegistry + DocumentFileResolver (11), VisitorId (8), DownloadController::resolve() (10) — 53 tests total
+**Testing targets (integration):** endpoint logs and redirects ✅ (manual), gate submission yields one-time token, Dropbox temporary link generation
 
 #### Forms _(parallel to gateway sub-phases 0–5)_
 
