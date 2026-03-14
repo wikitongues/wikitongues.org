@@ -58,7 +58,7 @@ if ( $display_about && $fellowship_about ) {
 ?>
 <div class="custom-gallery full">
 	<strong class="wt_sectionHeader"><?php echo 'Other fellows from <a href="' . esc_url( $revitalization_fellows_url ) . '">' . $fellow_year; ?></a></strong>
-	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link; ?>">Support a revitalization project.</a></p>
+	<p>The Wikitongues Fellowship is an accelerator program where activists can learn from a network of revitalization projects. <a href="<?php echo $fundraising_link; ?>" data-cta-location="fellow-gallery">Support a revitalization project.</a></p>
 </div>
 <?php
 // Gallery
