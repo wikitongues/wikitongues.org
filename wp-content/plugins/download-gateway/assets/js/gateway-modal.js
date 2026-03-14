@@ -120,8 +120,9 @@
 		closeBtn.addEventListener( 'click', closeModal );
 
 		skipBtn.addEventListener( 'click', function () {
+			var url = currentDirectUrl;
 			closeModal();
-			redirect( currentDirectUrl );
+			redirect( url );
 		} );
 
 		form.addEventListener( 'submit', function ( e ) {
@@ -163,9 +164,10 @@
 		} );
 
 		fetch( gatewaySettings.apiUrl, {
-			method:  'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body:    body.toString(),
+			method:      'POST',
+			credentials: 'same-origin',
+			headers:     { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body:        body.toString(),
 		} )
 			.then( function ( res ) { return res.json().then( function ( data ) { return { ok: res.ok, data: data }; } ); } )
 			.then( function ( result ) {
@@ -174,13 +176,14 @@
 					showError( result.data.message || 'Something went wrong. Please try again.' );
 					return;
 				}
+				var directUrl = currentDirectUrl;
 				closeModal();
 				var token = result.data.token;
 				if ( token ) {
 					redirect( gatewaySettings.downloadBase + '/' + token );
 				} else {
 					// Honeypot hit — silently redirect to direct URL
-					redirect( currentDirectUrl );
+					redirect( directUrl );
 				}
 			} )
 			.catch( function () {
