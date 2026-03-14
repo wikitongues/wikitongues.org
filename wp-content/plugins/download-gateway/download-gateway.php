@@ -58,6 +58,7 @@ register_deactivation_hook( __FILE__, __NAMESPACE__ . '\Activator::deactivate' )
 add_action(
 	'admin_notices',
 	function (): void {
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
 		if ( ! GATEWAY_ENABLED ) {
 			$screen = get_current_screen();
 			if ( $screen && str_contains( $screen->id, 'download-gateway' ) ) {
@@ -76,6 +77,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
 add_action(
 	'rest_api_init',
 	function (): void {
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
 		if ( GATEWAY_ENABLED ) {
 			( new DownloadController() )->register_routes();
 		}

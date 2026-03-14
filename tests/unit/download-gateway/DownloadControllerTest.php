@@ -107,6 +107,7 @@ class DownloadControllerTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_resolve_returns_410_when_token_not_found(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
@@ -125,6 +126,7 @@ class DownloadControllerTest extends TestCase {
 		$row->post_id    = 42;
 		$row->visitor_id = null;
 
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
@@ -143,6 +145,7 @@ class DownloadControllerTest extends TestCase {
 		$row->post_id    = 42;
 		$row->visitor_id = null;
 
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
@@ -163,6 +166,7 @@ class DownloadControllerTest extends TestCase {
 		$row->post_id    = 42;
 		$row->visitor_id = str_repeat( 'b', 32 );
 
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb             = Mockery::mock( 'wpdb' );
 		$wpdb->prefix     = 'wp_';
 		$wpdb->insert_id  = 1;
@@ -202,6 +206,7 @@ class DownloadControllerTest extends TestCase {
 	}
 
 	private function mock_wpdb_inserts( int $times ): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb             = Mockery::mock( 'wpdb' );
 		$wpdb->prefix     = 'wp_';
 		$wpdb->last_error = '';

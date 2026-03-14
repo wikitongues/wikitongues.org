@@ -33,8 +33,10 @@ class Settings_Page {
 			<p>
 				Version <?php echo esc_html( GATEWAY_VERSION ); ?>
 				&nbsp;&mdash;&nbsp;
+				<?php // @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php) ?>
 				Status: <strong><?php echo GATEWAY_ENABLED ? '<span style="color:#0a0;">Enabled</span>' : '<span style="color:#a00;">Disabled</span>'; ?></strong>
 			</p>
+			<?php // @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php) ?>
 			<?php if ( ! GATEWAY_ENABLED ) : ?>
 			<div class="notice notice-warning inline">
 				<p>

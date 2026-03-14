@@ -61,6 +61,7 @@ class TokenRepositoryTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_create_returns_64_char_hex_token(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
@@ -74,6 +75,7 @@ class TokenRepositoryTest extends TestCase {
 	}
 
 	public function test_create_inserts_into_correct_table(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'insert' )
@@ -97,6 +99,7 @@ class TokenRepositoryTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_find_by_token_returns_null_when_not_found(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
@@ -112,6 +115,7 @@ class TokenRepositoryTest extends TestCase {
 		$row->used_at    = null;
 		$row->expires_at = '2099-01-01 00:00:00';
 
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
@@ -128,6 +132,7 @@ class TokenRepositoryTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_mark_used_returns_true_on_success(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'update' )->once()->andReturn( 1 );
@@ -139,6 +144,7 @@ class TokenRepositoryTest extends TestCase {
 	}
 
 	public function test_mark_used_returns_false_on_failure(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'update' )->once()->andReturn( false );
@@ -154,6 +160,7 @@ class TokenRepositoryTest extends TestCase {
 	// -------------------------------------------------------------------------
 
 	public function test_purge_expired_returns_row_count(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
 		$wpdb         = Mockery::mock( 'wpdb' );
 		$wpdb->prefix = 'wp_';
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'DELETE_SQL' );
