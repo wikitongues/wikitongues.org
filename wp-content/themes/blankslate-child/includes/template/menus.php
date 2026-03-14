@@ -56,3 +56,15 @@ function wt_highlight_menu_items( $classes, $item ) {
 	return $classes;
 }
 add_filter( 'nav_menu_css_class', 'wt_highlight_menu_items', 10, 2 );
+
+add_filter(
+	'nav_menu_link_attributes',
+	function ( $atts, $item ) {
+		if ( strpos( $item->url, 'donorsupport.co' ) !== false ) {
+			$atts['data-cta-location'] = 'nav';
+		}
+		return $atts;
+	},
+	10,
+	2
+);
