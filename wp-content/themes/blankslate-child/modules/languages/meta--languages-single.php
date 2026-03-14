@@ -157,5 +157,5 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 		?>
 		</ul>
 	</div>
-	<a href="https://abdbdjge.donorsupport.co/-/XTRAFEBU" class="donate-cta" data-cta-location="language-meta">Support Language Revitalization</a>
+	<a href="https://wikitongues.donorsupport.co/-/XTRAFEBU" class="donate-cta" data-cta-location="language-meta">Support Language Revitalization</a>
 </div>
