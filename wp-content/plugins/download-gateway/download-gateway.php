@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Download Gateway
+ * Plugin Name:       Wikitongues Download Gateway
  * Plugin URI:        https://github.com/wikitongues/wikitongues.org
  * Description:       Signed download tokens, optional email gate, download event logging, and GA4 forwarding for all downloadable resources (document files, videos, captions, and future types).
  * Version:           0.1.0
