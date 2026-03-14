@@ -46,6 +46,9 @@ require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
 require_once GATEWAY_DIR . 'includes/class-download-controller.php';
+require_once GATEWAY_DIR . 'includes/class-acf-fields.php';
+require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
+require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
@@ -86,3 +89,7 @@ add_action(
 
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
+
+add_action( 'acf/init', __NAMESPACE__ . '\Acf_Fields::register' );
+add_action( 'add_meta_boxes', __NAMESPACE__ . '\Resource_Metabox::register' );
+Download_Shortcode::register();
