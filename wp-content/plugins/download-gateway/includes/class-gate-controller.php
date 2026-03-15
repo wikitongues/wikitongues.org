@@ -53,7 +53,8 @@ class GateController {
 			(string) ( $request->get_param( 'nonce' ) ?? '' ),
 			(string) ( $request->get_param( '_hp' ) ?? '' ),
 			$_COOKIE,
-			$_SERVER
+			$_SERVER,
+			(string) ( $request->get_param( '_passthrough' ) ?? '' )
 		);
 
 		if ( is_wp_error( $result ) ) {
@@ -88,7 +89,8 @@ class GateController {
 		string $nonce,
 		string $honeypot,
 		array $cookies = [],
-		array $server = []
+		array $server = [],
+		string $passthrough = ''
 	): array|\WP_Error {
 
 		// Honeypot — bots fill hidden fields; silently succeed.
@@ -114,6 +116,12 @@ class GateController {
 		if ( $post_id <= 0 ) {
 			return new \WP_Error( 'invalid_post_id', 'Invalid resource.', [ 'status' => 400 ] );
 		}
+
+		// Passthrough — returning visitor with gateway_gated cookie skips the form.
+		if ( '' !== $passthrough ) {
+			return $this->handle_passthrough( $passthrough, $post_id, $cookies );
+		}
+
 		if ( ! is_email( $email ) ) {
 			return new \WP_Error( 'invalid_email', 'A valid email address is required.', [ 'status' => 400 ] );
 		}
@@ -132,6 +140,37 @@ class GateController {
 		$visitor_id = VisitorId::from_cookies( $cookies );
 		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, $person_id );
 
-		return [ 'token' => $token ];
+		return [ 'token' => $token, 'person_id' => $person_id ];
+	}
+
+	/**
+	 * Handle a passthrough submission from a returning visitor.
+	 *
+	 * Verifies the person still exists (not anonymized), then issues a token.
+	 * Returns 410 if the person was anonymized so the JS can fall back to the
+	 * gate form, prompting the visitor to re-submit their details.
+	 *
+	 * @param string              $passthrough Person ID from the gateway_gated cookie.
+	 * @param int                 $post_id     Post ID of the resource.
+	 * @param array<string,mixed> $cookies     Cookie values.
+	 * @return array<string,mixed>|\WP_Error
+	 */
+	private function handle_passthrough( string $passthrough, int $post_id, array $cookies ): array|\WP_Error {
+		$person_id = (int) $passthrough;
+
+		if ( $person_id <= 0 ) {
+			return new \WP_Error( 'invalid_passthrough', 'Invalid session.', [ 'status' => 400 ] );
+		}
+
+		$person = PeopleRepository::find_by_id( $person_id );
+		if ( null === $person ) {
+			// Person was anonymized or never existed — JS will show the gate form.
+			return new \WP_Error( 'passthrough_expired', 'Session expired. Please complete the form.', [ 'status' => 410 ] );
+		}
+
+		$visitor_id = VisitorId::from_cookies( $cookies );
+		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, (int) $person->id );
+
+		return [ 'token' => $token, 'person_id' => (int) $person->id ];
 	}
 }

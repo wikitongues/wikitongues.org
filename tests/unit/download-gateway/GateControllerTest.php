@@ -121,6 +121,98 @@ class GateControllerTest extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'token', $result );
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result['token'] );
+		$this->assertArrayHasKey( 'person_id', $result );
+	}
+
+	// -------------------------------------------------------------------------
+	// Passthrough path
+	// -------------------------------------------------------------------------
+
+	public function test_submit_passthrough_returns_token_for_valid_person(): void {
+		$person     = new stdClass();
+		$person->id = 1;
+
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
+		$wpdb             = Mockery::mock( 'wpdb' );
+		$wpdb->prefix     = 'wp_';
+		$wpdb->insert_id  = 1;
+		$wpdb->last_error = '';
+		// find_by_id: prepare + get_row
+		// token create: insert
+		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $person );
+		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
+		$GLOBALS['wpdb'] = $wpdb;
+
+		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
+		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
+		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-15 10:00:00' ) );
+
+		$result = $this->controller->submit(
+			42,
+			'',
+			'',
+			false,
+			'valid-nonce',
+			'',
+			array(),
+			array( 'REMOTE_ADDR' => '10.0.0.1' ),
+			'1'
+		);
+
+		$this->assertIsArray( $result );
+		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result['token'] );
+		$this->assertSame( 1, $result['person_id'] );
+	}
+
+	public function test_submit_passthrough_returns_410_when_person_not_found(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
+		$wpdb         = Mockery::mock( 'wpdb' );
+		$wpdb->prefix = 'wp_';
+		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( null );
+		$GLOBALS['wpdb'] = $wpdb;
+
+		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
+		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
+		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
+
+		$result = $this->controller->submit(
+			42,
+			'',
+			'',
+			false,
+			'valid-nonce',
+			'',
+			array(),
+			array( 'REMOTE_ADDR' => '10.0.0.1' ),
+			'99'
+		);
+
+		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertSame( 410, $result->get_error_data()['status'] );
+	}
+
+	public function test_submit_passthrough_returns_400_for_invalid_person_id(): void {
+		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
+		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
+		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
+
+		$result = $this->controller->submit(
+			42,
+			'',
+			'',
+			false,
+			'valid-nonce',
+			'',
+			array(),
+			array( 'REMOTE_ADDR' => '10.0.0.1' ),
+			'0'
+		);
+
+		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertSame( 400, $result->get_error_data()['status'] );
 	}
 
 	public function test_submit_returns_500_on_db_error(): void {

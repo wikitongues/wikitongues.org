@@ -80,6 +80,30 @@ class PeopleRepository {
 	}
 
 	/**
+	 * Find a non-anonymized person by ID.
+	 *
+	 * Used by the passthrough path to verify the gateway_gated cookie value
+	 * still corresponds to an active (non-anonymized) person record.
+	 *
+	 * @param int $person_id Person ID.
+	 * @return object|null
+	 */
+	public static function find_by_id( int $person_id ): ?object {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'gateway_people';
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE id = %d AND is_anonymized = 0",
+				$person_id
+			)
+		);
+
+		return $row ?: null;
+	}
+
+	/**
 	 * Find a non-anonymized person by email address.
 	 *
 	 * @param string $email Raw email address.
