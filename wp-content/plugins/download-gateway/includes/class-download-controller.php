@@ -29,9 +29,13 @@ class DownloadController {
 				'callback'            => [ $this, 'handle' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
-					'id' => [
+					'id'     => [
 						'required'          => true,
 						'validate_callback' => fn( $v ) => is_string( $v ) && strlen( $v ) > 0,
+					],
+					'format' => [
+						'required'          => false,
+						'validate_callback' => fn( $v ) => in_array( $v, [ 'json' ], true ),
 					],
 				],
 			]
@@ -39,16 +43,21 @@ class DownloadController {
 	}
 
 	/**
-	 * REST callback — resolves the download and sends a 302 redirect.
+	 * REST callback — resolves the download, then either sends a 302 redirect
+	 * (default) or returns JSON {url} when ?format=json is requested.
 	 *
-	 * Not unit-tested: this method's only job is to call resolve() and
-	 * redirect. All business logic lives in resolve().
+	 * The JSON format is used by the JS modal to avoid leaving an intermediate
+	 * token URL in the browser's history stack.
+	 *
+	 * Not unit-tested: this method's only job is to call resolve() and respond.
+	 * All business logic lives in resolve().
 	 *
 	 * @param \WP_REST_Request $request
-	 * @return never|\WP_Error
+	 * @return \WP_REST_Response|\WP_Error
 	 */
-	public function handle( \WP_REST_Request $request ): \WP_Error {
+	public function handle( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		$id     = $request->get_param( 'id' );
+		$format = (string) ( $request->get_param( 'format' ) ?? '' );
 		$result = $this->resolve( $id, $_COOKIE, $_SERVER );
 
 		if ( is_wp_error( $result ) ) {
@@ -57,6 +66,10 @@ class DownloadController {
 
 		$visitor_id = VisitorId::from_cookies( $_COOKIE ) ?? VisitorId::generate();
 		VisitorId::set_cookie( $visitor_id );
+
+		if ( 'json' === $format ) {
+			return new \WP_REST_Response( [ 'url' => $result ], 200 );
+		}
 
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
 		header( 'Pragma: no-cache' );
