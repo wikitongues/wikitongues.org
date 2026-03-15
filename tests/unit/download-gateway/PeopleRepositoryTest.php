@@ -41,9 +41,9 @@ class PeopleRepositoryTest extends TestCase {
 
 	public function test_upsert_inserts_new_person_and_returns_id(): void {
 		/** @var \Mockery\MockInterface&\wpdb $wpdb */
-		$wpdb             = Mockery::mock( 'wpdb' );
-		$wpdb->prefix     = 'wp_';
-		$wpdb->insert_id  = 7;
+		$wpdb            = Mockery::mock( 'wpdb' );
+		$wpdb->prefix    = 'wp_';
+		$wpdb->insert_id = 7;
 		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
 		$wpdb->shouldReceive( 'get_var' )->once()->andReturn( null );
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
