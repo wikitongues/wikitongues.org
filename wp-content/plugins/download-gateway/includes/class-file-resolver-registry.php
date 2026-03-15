@@ -68,6 +68,15 @@ class FileResolverRegistry {
 	}
 
 	/**
+	 * Return all registered post type slugs.
+	 *
+	 * @return string[]
+	 */
+	public static function registered_post_types(): array {
+		return array_keys( self::$resolvers );
+	}
+
+	/**
 	 * Clear all registered resolvers.
 	 *
 	 * For use in tests only — allows each test to start from a clean registry.

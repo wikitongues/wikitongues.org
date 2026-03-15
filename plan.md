@@ -229,11 +229,11 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **0** — Plugin scaffold: activation/deactivation/uninstall hooks, `GATEWAY_ENABLED` feature flag, settings page placeholder, Logger (PR #560)
 - [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
 - [x] **2a** — Core primitives: `PolicyResolver` (per-resource → taxonomy → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
-- **2b** — Form/gate primitives _(unblocks 5)_: FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
+- [x] **2b** — Collapsed into sub-phase 5: PeopleRepository, GateController, rate limiter (transients), honeypot, modal UI
 - **2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
 - [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
-- **4** — Resource authoring: ACF fields on `document_files` and other CPTs (gate_policy override, storage_type); metabox showing gateway URL; `[gateway_download]` shortcode
-- **5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/gateway/v1/gate`; person upsert; one-time token; nonce + rate limit + honeypot
+- [x] **4** — Resource authoring: ACF gate policy override field (per-resource, via `acf_add_local_field_group()`), metabox showing gateway URL + shortcode snippet, `[gateway_download]` shortcode. All three validated on localhost.
+- [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot. All policy permutations validated on localhost.
 
 **Implementation notes:**
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
