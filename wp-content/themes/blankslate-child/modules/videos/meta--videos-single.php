@@ -45,7 +45,7 @@
 						},
 						$source_languages
 					);
-					$label = implode( ', ', array_filter( $caption_language_names ) );
+					$label                  = implode( ', ', array_filter( $caption_language_names ) );
 				} else {
 					$label = 'Unknown Language';
 				}
