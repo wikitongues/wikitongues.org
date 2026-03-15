@@ -10,9 +10,10 @@
 		?>
 
 		<?php
-		// Get captions linked to this video
+		// Get captions linked to this video.
+		// source_video is an ACF post_object field but the sync stores the value
+		// as a serialized array, so we match against the serialized form with LIKE.
 		$video_id = get_the_ID();
-
 		$captions = get_posts(
 			array(
 				'post_type'      => 'captions',
@@ -20,39 +21,44 @@
 				'meta_query'     => array(
 					array(
 						'key'     => 'source_video',
-						'value'   => $video_id,
-						'compare' => '=',
+						'value'   => '"' . $video_id . '"',
+						'compare' => 'LIKE',
 					),
 				),
 			)
 		);
 
 		if ( $captions ) {
-			echo '<section>';
-			echo '<strong>Available captions</strong>';
-			echo '<ul>';
+			$caption_items = '';
 			foreach ( $captions as $caption ) {
-					$file_url         = get_field( 'file_url', $caption->ID );
-					$source_languages = get_field( 'source_language', $caption->ID ); // array of WP_Posts
+				$file_url         = get_field( 'file_url', $caption->ID );
+				$source_languages = get_field( 'source_language', $caption->ID ); // array of WP_Posts
+
+				if ( ! $file_url ) {
+					continue;
+				}
 
 				if ( is_array( $source_languages ) && ! empty( $source_languages ) ) {
-						$caption_language_names = array_map(
-							function ( $lang_post ) {
-								return get_field( 'standard_name', $lang_post->ID );
-							},
-							$source_languages
-						);
-
-						$label = implode( ', ', array_filter( $caption_language_names ) ); // avoid null values
+					$caption_language_names = array_map(
+						function ( $lang_post ) {
+							return get_field( 'standard_name', $lang_post->ID );
+						},
+						$source_languages
+					);
+					$label                  = implode( ', ', array_filter( $caption_language_names ) );
 				} else {
-						$label = 'Unknown Language';
+					$label = 'Unknown Language';
 				}
-				if ( $file_url ) {
-						echo '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
-				}
+
+				$caption_items .= '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
 			}
-			echo '</ul>';
-			echo '</section>';
+
+			if ( $caption_items ) {
+				echo '<section>';
+				echo '<strong>Available captions</strong>';
+				echo '<ul>' . $caption_items . '</ul>';
+				echo '</section>';
+			}
 		}
 		?>
 
