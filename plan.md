@@ -218,42 +218,60 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - Downloadable unit is the leaf node (`document_files` post, `videos` post, etc.) — selection UI stays in theme templates; gateway is post-type-agnostic
 - Plugin namespace: `download-gateway` / prefix `gateway_`
 - `FileResolverRegistry` maps post types to `FileResolver` implementations; `DocumentFileResolver` handles `document_files` via ACF `file` field; future types (videos, captions) register the same interface
+- **Policy model:** four values — `disabled` (link hidden entirely) | `none` | `soft` | `hard`. Three-tier resolution: per-record (`_gateway_gate_policy`) → per-CPT (`gateway_cpt_policy_{post_type}`) → global (`gateway_global_gate_policy`). First non-`inherit` value wins. Templates receive `disabled` as a signal to suppress the download affordance entirely.
+- **Intake forms:** resource-specific fields collected as modal step 2 (before redirect) when defined for a CPT. Fields registered via `gateway_intake_fields` PHP filter — not ACF. Gateway plugin renders whatever fields are declared; theme/CPT code owns the field definitions. Intake payload stored in `wp_gateway_intake_responses` and forwarded to external systems via WebhookDispatcher (sub-phase 2c).
 
 **Schema additions:**
 - `wp_gateway_people` — email_hash, email, name, consent fields, anonymization flags
 - `wp_gateway_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
 - `wp_gateway_webhook_delivery` — retry queue and dead-letter
 - `wp_gateway_tokens` — one-time download tokens with expiry; needed by sub-phases 3 and 5
+- `wp_gateway_intake_responses` — per-person, per-post intake payload (JSON blob); sub-phase 5b
 
-**Sub-phases 0–5:**
+**Sub-phases:**
 - [x] **0** — Plugin scaffold: activation/deactivation/uninstall hooks, `GATEWAY_ENABLED` feature flag, settings page placeholder, Logger (PR #560)
 - [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
-- [x] **2a** — Core primitives: `PolicyResolver` (per-resource → taxonomy → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
+- [x] **2a** — Core primitives: `PolicyResolver` (per-resource → per-CPT → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
 - [x] **2b** — Collapsed into sub-phase 5: PeopleRepository, GateController, rate limiter (transients), honeypot, modal UI
-- **2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
+- **2c** — WebhookDispatcher: HTTP delivery with retry + dead-letter queue against `wp_gateway_webhook_delivery`; motivated by intake response forwarding to Make.com/Airtable (sub-phase 5b)
 - [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
-- [x] **4** — Resource authoring: ACF gate policy override field (per-resource, via `acf_add_local_field_group()`), metabox showing gateway URL + shortcode snippet, `[gateway_download]` shortcode. All three validated on localhost.
-- [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot. All policy permutations validated on localhost.
+- [x] **4** — Resource authoring: native WP metabox (gate policy select + file URL + shortcode snippet), `[gateway_download]` shortcode. All three validated on localhost. (PR #561)
+- [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
+- **5b** — Policy model expansion + intake form infrastructure:
+  - Extend `PolicyResolver` to 3-tier resolution (add per-CPT tier); add `disabled` as a policy value
+  - `SettingsRepository::get_cpt_policy()` + `update_cpt_policy()`
+  - Settings page: per-CPT policy rows (populated from `FileResolverRegistry::registered_post_types()`); admin table listing all posts with non-`inherit` policy overrides (post title, post type, current override value) for at-a-glance audit
+  - `Download_Shortcode`: suppress output when policy resolves to `disabled`
+  - `gateway_intake_fields` PHP filter; multi-step modal JS (step 2 rendered from `gatewaySettings.intakeSteps[postType]`)
+  - `wp_gateway_intake_responses` table; `POST /gateway/v1/intake` endpoint; `GateController` accepts + forwards `intake` payload
+- **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
+- **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
+- **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
+- **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button
+- **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
 
 **Implementation notes:**
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
 - Cache plugins must explicitly exclude `/gateway/download/` — HTTP headers alone are not sufficient
 - `gateway_vid` cookie is set unconditionally on first download; GDPR/ePrivacy implications TBD before gate launch
 - Dropbox credentials: store in `wp_options` with `autoload=no`; exclude from any REST API exposure
-- ACF fields: own ACF JSON within the plugin — do not depend on theme's `acf-json/`
 - EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
 - Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
+- Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
 
-**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate), 9 (retention). Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort), inline gate (keep modal only).
+**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate) ✅, 9 (retention). Cut first: per-CPT policy UI (keep global only), admin charts (keep CSV only), webhook retries (keep best-effort), intake forms (keep modal step 1 only).
 
 **Testing targets (unit):** ✅ IpHasher (12), TokenRepository (12), FileResolverRegistry + DocumentFileResolver (11), VisitorId (8), DownloadController::resolve() (10) — 53 tests total
 **Testing targets (integration):** endpoint logs and redirects ✅ (manual), gate submission yields one-time token, Dropbox temporary link generation
 
-#### Forms _(parallel to gateway sub-phases 0–5)_
+#### Forms _(parallel to gateway sub-phases)_
 
 - **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
 - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms or custom REST endpoints
 - _Download gateway gate form_ — already scoped in gateway sub-phase 5; not duplicated here
+- _Resource-specific intake forms_ — scoped in gateway sub-phase 5b; implemented as modal step 2 via `gateway_intake_fields` filter, not a standalone form system
+
+**Forms approach:** all forms (gate, intake, support, feedback, contact) are custom REST endpoints + minimal PHP-defined markup. No forms plugin dependency — the forms are simple enough that a plugin adds overhead without benefit. Field definitions live in code (PHP filter or direct markup), not in ACF or a form builder admin UI.
 
 #### Better aliveness — dynamic homepage _(before Phase 6 visual baseline)_
 
