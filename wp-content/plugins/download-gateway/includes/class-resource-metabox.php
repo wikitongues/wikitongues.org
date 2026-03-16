@@ -48,7 +48,7 @@ class Resource_Metabox {
 			return;
 		}
 
-		$allowed = array( '', 'none', 'soft', 'hard' );
+		$allowed = array_merge( array( '' ), SettingsRepository::allowed_override_values() );
 		$value   = isset( $_POST['_gateway_gate_policy'] )
 			? sanitize_key( $_POST['_gateway_gate_policy'] )
 			: '';
@@ -68,10 +68,11 @@ class Resource_Metabox {
 		?>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Gate policy</p>
 		<select name="_gateway_gate_policy" style="width:100%;margin-bottom:10px;">
-			<option value=""  <?php selected( $policy, '' ); ?>>Inherit (use global default)</option>
-			<option value="none" <?php selected( $policy, 'none' ); ?>>None — direct redirect</option>
-			<option value="soft" <?php selected( $policy, 'soft' ); ?>>Soft gate — skippable prompt</option>
-			<option value="hard" <?php selected( $policy, 'hard' ); ?>>Hard gate — email required</option>
+			<option value=""       <?php selected( $policy, '' ); ?>>Inherit (use CPT / global default)</option>
+			<option value="none"     <?php selected( $policy, 'none' ); ?>>None — direct redirect</option>
+			<option value="soft"     <?php selected( $policy, 'soft' ); ?>>Soft gate — skippable prompt</option>
+			<option value="hard"     <?php selected( $policy, 'hard' ); ?>>Hard gate — email required</option>
+			<option value="disabled" <?php selected( $policy, 'disabled' ); ?>>Disabled — hide download link</option>
 		</select>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Download URL</p>
 		<input

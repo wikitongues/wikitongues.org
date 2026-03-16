@@ -2,8 +2,12 @@
 /**
  * Settings_Page — admin UI for the download gateway.
  *
- * Settings → Download Gateway. Exposes the global gate policy, the data
- * retention window, and a manual run-now button for the retention job.
+ * Settings → Download Gateway. Exposes:
+ *   - Global gate policy (site-wide fallback)
+ *   - Per-CPT gate policy (one row per registered post type)
+ *   - Data retention window
+ *   - Manual run-now button for the retention job
+ *   - Audit table of all per-resource policy overrides
  *
  * @package WT\DownloadGateway
  */
@@ -39,17 +43,27 @@ class Settings_Page {
 			return;
 		}
 
-		$allowed = array( 'none', 'soft', 'hard' );
-		$policy  = isset( $_POST[ SettingsRepository::OPTION_GLOBAL_GATE_POLICY ] )
+		// Global gate policy.
+		$global_policy = isset( $_POST[ SettingsRepository::OPTION_GLOBAL_GATE_POLICY ] )
 			? sanitize_key( $_POST[ SettingsRepository::OPTION_GLOBAL_GATE_POLICY ] )
 			: SettingsRepository::DEFAULT_GLOBAL_GATE_POLICY;
 
-		if ( ! in_array( $policy, $allowed, true ) ) {
-			$policy = SettingsRepository::DEFAULT_GLOBAL_GATE_POLICY;
+		if ( ! in_array( $global_policy, SettingsRepository::concrete_policies(), true ) ) {
+			$global_policy = SettingsRepository::DEFAULT_GLOBAL_GATE_POLICY;
 		}
 
-		update_option( SettingsRepository::OPTION_GLOBAL_GATE_POLICY, $policy );
+		update_option( SettingsRepository::OPTION_GLOBAL_GATE_POLICY, $global_policy );
 
+		// Per-CPT policies.
+		/** This filter is documented in Settings_Page::render(). */
+		$post_types = (array) apply_filters( 'gateway_policy_post_types', FileResolverRegistry::registered_post_types() );
+		foreach ( $post_types as $post_type ) {
+			$key   = 'gateway_cpt_policy_' . $post_type;
+			$value = isset( $_POST[ $key ] ) ? sanitize_key( $_POST[ $key ] ) : SettingsRepository::POLICY_INHERIT;
+			SettingsRepository::update_cpt_policy( $post_type, $value );
+		}
+
+		// Data retention.
 		$retention_months = isset( $_POST[ SettingsRepository::OPTION_RETENTION_MONTHS ] )
 			? (int) $_POST[ SettingsRepository::OPTION_RETENTION_MONTHS ]
 			: SettingsRepository::DEFAULT_RETENTION_MONTHS;
@@ -93,6 +107,71 @@ class Settings_Page {
 		exit;
 	}
 
+	/**
+	 * Query wp_postmeta for all posts with a non-empty per-resource policy override.
+	 *
+	 * @return array<int,array{post_id:int,post_title:string,post_type:string,policy:string}>
+	 */
+	private static function get_override_audit_rows(): array {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT pm.post_id, p.post_title, p.post_type, pm.meta_value AS policy
+				 FROM {$wpdb->postmeta} pm
+				 INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+				 WHERE pm.meta_key = %s
+				   AND pm.meta_value != ''
+				   AND pm.meta_value != %s
+				 ORDER BY p.post_type, p.post_title",
+				PolicyResolver::META_KEY,
+				SettingsRepository::POLICY_INHERIT
+			)
+		);
+
+		if ( ! $rows ) {
+			return array();
+		}
+
+		$result = array();
+		foreach ( $rows as $row ) {
+			$result[] = array(
+				'post_id'    => (int) $row->post_id,
+				'post_title' => (string) $row->post_title,
+				'post_type'  => (string) $row->post_type,
+				'policy'     => (string) $row->policy,
+			);
+		}
+		return $result;
+	}
+
+	/** Render a human-readable policy label. */
+	private static function policy_label( string $policy ): string {
+		$labels = array(
+			SettingsRepository::POLICY_NONE     => 'None',
+			SettingsRepository::POLICY_SOFT     => 'Soft gate',
+			SettingsRepository::POLICY_HARD     => 'Hard gate',
+			SettingsRepository::POLICY_DISABLED => 'Disabled',
+			SettingsRepository::POLICY_INHERIT  => 'Inherit',
+		);
+		return $labels[ $policy ] ?? esc_html( $policy );
+	}
+
+	/** Render a <select> for a policy field. */
+	private static function policy_select( string $name, string $current, bool $include_inherit = true ): void {
+		echo '<select name="' . esc_attr( $name ) . '">';
+		if ( $include_inherit ) {
+			echo '<option value="' . esc_attr( SettingsRepository::POLICY_INHERIT ) . '" ' . selected( $current, SettingsRepository::POLICY_INHERIT, false ) . '>Inherit</option>';
+		}
+		echo '<option value="none" ' . selected( $current, 'none', false ) . '>None — direct redirect</option>';
+		echo '<option value="soft" ' . selected( $current, 'soft', false ) . '>Soft gate — skippable prompt</option>';
+		echo '<option value="hard" ' . selected( $current, 'hard', false ) . '>Hard gate — email required</option>';
+		echo '<option value="disabled" ' . selected( $current, 'disabled', false ) . '>Disabled — hide download link</option>';
+		echo '</select>';
+	}
+
 	public static function render(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
@@ -106,6 +185,17 @@ class Settings_Page {
 		$current_policy           = SettingsRepository::get_global_gate_policy();
 		$current_retention_months = SettingsRepository::get_retention_months();
 		$last_run                 = get_option( RetentionJob::OPTION_LAST_RUN, null );
+		/**
+		 * Filters the post types shown in the per-CPT policy settings table.
+		 *
+		 * By default includes all post types with a registered FileResolver.
+		 * Add additional CPTs here before their FileResolver is built so that
+		 * policy can be configured in advance.
+		 *
+		 * @param string[] $post_types Array of post type slugs.
+		 */
+		$post_types = (array) apply_filters( 'gateway_policy_post_types', FileResolverRegistry::registered_post_types() );
+		$audit_rows = self::get_override_audit_rows();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$retention_result = isset( $_GET['retention_result'] ) ? (int) $_GET['retention_result'] : null;
 		?>
@@ -130,23 +220,31 @@ class Settings_Page {
 			<form method="post">
 				<?php wp_nonce_field( self::NONCE_ACTION, self::NONCE_FIELD ); ?>
 
+				<h2 class="title">Gate policy</h2>
+				<p>
+					Policies resolve in order: per-resource override → per-CPT default → global default.<br />
+					<em>Disabled</em> hides the download link entirely. <em>Inherit</em> falls through to the next tier.
+				</p>
+
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row">
-							<label for="gateway_global_gate_policy">Global gate policy</label>
-						</th>
+						<th scope="row">Global default</th>
 						<td>
-							<select name="<?php echo esc_attr( SettingsRepository::OPTION_GLOBAL_GATE_POLICY ); ?>" id="gateway_global_gate_policy">
-								<option value="none" <?php selected( $current_policy, 'none' ); ?>>None — direct redirect, no gate</option>
-								<option value="soft" <?php selected( $current_policy, 'soft' ); ?>>Soft gate — skippable email prompt</option>
-								<option value="hard" <?php selected( $current_policy, 'hard' ); ?>>Hard gate — email required</option>
-							</select>
-							<p class="description">
-								Site-wide default. Individual resources can override this via the
-								<strong>Download Gateway</strong> metabox in the post editor.
-							</p>
+							<?php self::policy_select( SettingsRepository::OPTION_GLOBAL_GATE_POLICY, $current_policy, false ); ?>
+							<p class="description">Site-wide fallback when no per-CPT or per-resource override is set.</p>
 						</td>
 					</tr>
+
+					<?php foreach ( $post_types as $post_type ) : ?>
+						<?php $cpt_policy = SettingsRepository::get_cpt_policy( $post_type ) ?? SettingsRepository::POLICY_INHERIT; ?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $post_type ); ?></th>
+						<td>
+							<?php self::policy_select( 'gateway_cpt_policy_' . $post_type, $cpt_policy ); ?>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+
 					<tr>
 						<th scope="row">
 							<label for="gateway_retention_months">Data retention</label>
@@ -171,6 +269,37 @@ class Settings_Page {
 
 				<?php submit_button( 'Save settings' ); ?>
 			</form>
+
+			<hr />
+
+			<h2>Per-resource overrides</h2>
+
+			<?php if ( empty( $audit_rows ) ) : ?>
+			<p>No per-resource policy overrides are set. All resources use their CPT or global default.</p>
+			<?php else : ?>
+			<table class="widefat striped" style="max-width:700px;">
+				<thead>
+					<tr>
+						<th>Post</th>
+						<th>Type</th>
+						<th>Policy</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $audit_rows as $row ) : ?>
+					<tr>
+						<td>
+							<a href="<?php echo esc_url( get_edit_post_link( $row['post_id'] ) ); ?>">
+								<?php echo esc_html( $row['post_title'] ?: '(no title)' ); ?>
+							</a>
+						</td>
+						<td><?php echo esc_html( $row['post_type'] ); ?></td>
+						<td><?php echo esc_html( self::policy_label( $row['policy'] ) ); ?></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<?php endif; ?>
 
 			<hr />
 

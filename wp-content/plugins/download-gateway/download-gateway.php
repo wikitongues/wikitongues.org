@@ -128,6 +128,19 @@ add_action(
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
 
+/*
+ * Expose videos and captions in per-CPT policy settings before their
+ * FileResolvers are built (sub-phase 6 — Dropbox adapter).
+ * Remove these entries once VideoFileResolver and CaptionFileResolver
+ * are registered above — they will appear automatically at that point.
+ */
+add_filter(
+	'gateway_policy_post_types',
+	function ( array $types ): array {
+		return array_unique( array_merge( $types, array( 'videos', 'captions' ) ) );
+	}
+);
+
 add_action(
 	RetentionJob::CRON_HOOK,
 	function (): void {
