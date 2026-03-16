@@ -17,12 +17,12 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 13
+			count: 17
 			path: tests/unit/download-gateway/PeopleRepositoryTest.php
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 5
+			count: 10
 			path: tests/unit/download-gateway/GateControllerTest.php
 
 		-

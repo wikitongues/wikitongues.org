@@ -129,4 +129,34 @@ class PeopleRepositoryTest extends TestCase {
 
 		$this->assertNull( $result );
 	}
+
+	// -------------------------------------------------------------------------
+	// find_by_id()
+	// -------------------------------------------------------------------------
+
+	public function test_find_by_id_returns_row_when_found(): void {
+		$row       = new stdClass();
+		$row->id   = 5;
+		$row->name = 'Jane Doe';
+
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
+		$wpdb         = Mockery::mock( 'wpdb' );
+		$wpdb->prefix = 'wp_';
+		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $row );
+		$GLOBALS['wpdb'] = $wpdb;
+
+		$this->assertSame( $row, PeopleRepository::find_by_id( 5 ) );
+	}
+
+	public function test_find_by_id_returns_null_when_not_found(): void {
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
+		$wpdb         = Mockery::mock( 'wpdb' );
+		$wpdb->prefix = 'wp_';
+		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( null );
+		$GLOBALS['wpdb'] = $wpdb;
+
+		$this->assertNull( PeopleRepository::find_by_id( 999 ) );
+	}
 }
