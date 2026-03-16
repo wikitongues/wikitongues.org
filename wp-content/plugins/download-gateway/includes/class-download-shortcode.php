@@ -38,8 +38,13 @@ class Download_Shortcode {
 			return '<!-- gateway_download: missing or invalid id -->';
 		}
 
-		$url    = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
 		$policy = PolicyResolver::resolve( $post_id );
+
+		if ( SettingsRepository::POLICY_DISABLED === $policy ) {
+			return '';
+		}
+
+		$url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
 
 		return sprintf(
 			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s">%s</a>',

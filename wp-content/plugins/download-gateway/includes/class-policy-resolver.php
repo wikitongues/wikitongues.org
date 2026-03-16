@@ -1,21 +1,20 @@
 <?php
 /**
- * PolicyResolver — determines the gate policy for a downloadable post.
+ * PolicyResolver — determines the effective gate policy for a downloadable post.
  *
  * Precedence (highest to lowest):
  *   1. Per-resource postmeta  (_gateway_gate_policy on the post itself)
- *   2. Taxonomy-level default (term meta — wired but inactive until sub-phase 4
- *                              adds ACF fields; resolve() skips this tier if no
- *                              registered taxonomy returns a value)
+ *   2. Per-CPT default        (gateway_cpt_policy_{post_type} option)
  *   3. Global site default    (SettingsRepository::get_global_gate_policy())
  *
- * Return value is always one of: 'none', 'soft', 'hard'.
+ * Each tier returns null to signal "no override here — fall through to the
+ * next tier". The global tier always returns a concrete value.
  *
- * Usage:
- *   $policy = PolicyResolver::resolve( $post_id );
- *   // 'none' → issue token, no gate
- *   // 'soft' → show skippable gate modal
- *   // 'hard' → email required before token is issued
+ * Return value is one of: 'none' | 'soft' | 'hard' | 'disabled'.
+ * - 'disabled' means the download affordance should be hidden entirely.
+ * - 'none'     means issue a token with no gate.
+ * - 'soft'     means show a skippable gate modal.
+ * - 'hard'     means email is required before a token is issued.
  *
  * @package WT\DownloadGateway
  */
@@ -31,7 +30,7 @@ class PolicyResolver {
 	 * Resolve the effective gate policy for a given post ID.
 	 *
 	 * @param int $post_id Post ID of the downloadable item.
-	 * @return string 'none'|'soft'|'hard'
+	 * @return string 'none'|'soft'|'hard'|'disabled'
 	 */
 	public static function resolve( int $post_id ): string {
 		// Tier 1 — per-resource override.
@@ -41,11 +40,11 @@ class PolicyResolver {
 			return $per_resource;
 		}
 
-		// Tier 2 — taxonomy default.
-		$taxonomy = self::resolve_taxonomy( $post_id );
-		if ( null !== $taxonomy ) {
-			Logger::debug( "PolicyResolver: taxonomy policy '{$taxonomy}' for post {$post_id}." );
-			return $taxonomy;
+		// Tier 2 — per-CPT default.
+		$per_cpt = self::resolve_per_cpt( $post_id );
+		if ( null !== $per_cpt ) {
+			Logger::debug( "PolicyResolver: per-CPT policy '{$per_cpt}' for post {$post_id}." );
+			return $per_cpt;
 		}
 
 		// Tier 3 — global default.
@@ -63,45 +62,28 @@ class PolicyResolver {
 	 */
 	private static function resolve_per_resource( int $post_id ): ?string {
 		$value = get_post_meta( $post_id, self::META_KEY, true );
-		return self::validate_policy( $value );
+		return self::validate_concrete( $value );
 	}
 
 	/**
-	 * Returns a taxonomy-level policy if any registered taxonomy on this post
-	 * has a gateway_gate_policy term meta value set, or null to fall through.
-	 *
-	 * Currently inactive — no taxonomy has gateway gate meta set until sub-phase 4
-	 * ACF fields are added. The tier is wired here so precedence is correct from
-	 * the start; no code changes needed in sub-phase 4 beyond writing the term meta.
+	 * Returns the per-CPT policy if set for this post's type, or null to fall through.
 	 */
-	private static function resolve_taxonomy( int $post_id ): ?string {
-		$post_type  = get_post_type( $post_id );
-		$taxonomies = get_object_taxonomies( $post_type );
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$terms = get_the_terms( $post_id, $taxonomy );
-			if ( ! $terms || is_wp_error( $terms ) ) {
-				continue;
-			}
-			foreach ( $terms as $term ) {
-				$value = get_term_meta( $term->term_id, 'gateway_gate_policy', true );
-				$valid = self::validate_policy( $value );
-				if ( null !== $valid ) {
-					return $valid;
-				}
-			}
+	private static function resolve_per_cpt( int $post_id ): ?string {
+		$post_type = get_post_type( $post_id );
+		if ( ! $post_type ) {
+			return null;
 		}
-
-		return null;
+		return SettingsRepository::get_cpt_policy( $post_type );
 	}
 
 	/**
-	 * Returns the value if it is a valid policy string, or null otherwise.
+	 * Returns the value if it is a concrete policy string, or null otherwise.
 	 *
-	 * @param mixed $value Raw value from postmeta or term meta.
+	 * @param mixed $value Raw value from postmeta or options.
 	 */
-	private static function validate_policy( mixed $value ): ?string {
-		$valid = array( SettingsRepository::POLICY_NONE, SettingsRepository::POLICY_SOFT, SettingsRepository::POLICY_HARD );
-		return ( is_string( $value ) && in_array( $value, $valid, true ) ) ? $value : null;
+	private static function validate_concrete( mixed $value ): ?string {
+		return ( is_string( $value ) && in_array( $value, SettingsRepository::concrete_policies(), true ) )
+			? $value
+			: null;
 	}
 }
