@@ -1,0 +1,96 @@
+<?php
+/**
+ * IntakeController — handles intake form submissions (modal step 2).
+ *
+ * Registers POST /wp-json/gateway/v1/intake. The testable logic lives in
+ * submit() — same pattern as GateController.
+ *
+ * Intake is supplementary: a failed save does not block the download. The
+ * endpoint returns a success response regardless so the JS always proceeds
+ * to the download redirect.
+ *
+ * Field definitions are registered via the `gateway_intake_fields` PHP filter
+ * in theme or CPT-specific code. The controller stores whatever key-value
+ * responses the JS sends — it does not validate field shape, only sanitizes.
+ *
+ * @package WT\DownloadGateway
+ */
+
+namespace WT\DownloadGateway;
+
+class IntakeController {
+
+	public function register_routes(): void {
+		register_rest_route(
+			GATEWAY_REST_NAMESPACE,
+			'/intake',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'handle' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	/**
+	 * REST callback — not unit tested.
+	 *
+	 * @param \WP_REST_Request $request Incoming REST request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function handle( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
+		$responses = $request->get_param( 'responses' );
+		if ( ! is_array( $responses ) ) {
+			$responses = array();
+		}
+
+		$result = $this->submit(
+			(int) ( $request->get_param( 'post_id' ) ?? 0 ),
+			(int) ( $request->get_param( 'person_id' ) ?? 0 ),
+			(string) ( $request->get_param( 'nonce' ) ?? '' ),
+			$responses
+		);
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return new \WP_REST_Response( array( 'success' => true ), 200 );
+	}
+
+	/**
+	 * Process an intake submission. Returns true on success, WP_Error on failure.
+	 *
+	 * @param int                  $post_id   Post ID of the downloaded resource.
+	 * @param int                  $person_id Person ID from wp_gateway_people.
+	 * @param string               $nonce     WP nonce value.
+	 * @param array<string,string> $responses Key-value map of field responses.
+	 * @return true|\WP_Error
+	 */
+	public function submit( int $post_id, int $person_id, string $nonce, array $responses ): bool|\WP_Error {
+		if ( ! wp_verify_nonce( $nonce, 'gateway_gate' ) ) {
+			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', array( 'status' => 403 ) );
+		}
+
+		if ( $post_id <= 0 || $person_id <= 0 ) {
+			return new \WP_Error( 'invalid_params', 'Invalid parameters.', array( 'status' => 400 ) );
+		}
+
+		$post_type = get_post_type( $post_id );
+		if ( ! $post_type ) {
+			return new \WP_Error( 'invalid_post', 'Post not found.', array( 'status' => 404 ) );
+		}
+
+		// Sanitize all response values — keys and scalar strings only.
+		$sanitized = array();
+		foreach ( $responses as $key => $value ) {
+			$sanitized[ sanitize_key( (string) $key ) ] = sanitize_text_field( (string) $value );
+		}
+
+		if ( ! IntakeRepository::save( $person_id, $post_id, $post_type, $sanitized ) ) {
+			return new \WP_Error( 'db_error', 'Could not save intake response.', array( 'status' => 500 ) );
+		}
+
+		return true;
+	}
+}

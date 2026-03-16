@@ -237,19 +237,8 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
 - [x] **4** — Resource authoring: native WP metabox (gate policy select + file URL + shortcode snippet), `[gateway_download]` shortcode. All three validated on localhost. (PR #561)
 - [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
-- **5b-i** — Policy model expansion _(in progress)_:
-  - Replace taxonomy tier with per-CPT tier in `PolicyResolver`; add `disabled` as a policy value (hides download affordance entirely)
-  - `SettingsRepository::get_cpt_policy()` + `update_cpt_policy()`; `concrete_policies()` + `allowed_override_values()` helpers
-  - `gateway_policy_post_types` filter — defaults to `FileResolverRegistry::registered_post_types()`; videos + captions added via filter until their FileResolvers land in sub-phase 6 (remove filter entries at that point)
-  - Settings page: per-CPT policy rows; admin audit table of all posts with non-inherit per-resource overrides
-  - `Download_Shortcode`: return empty string when policy resolves to `disabled`
-  - `Resource_Metabox`: add `disabled` option; update inherit label to "Inherit (use CPT / global default)"
-- **5b-ii** — Intake form infrastructure:
-  - `wp_gateway_intake_responses` table; bump schema version
-  - `gateway_intake_fields` PHP filter; fields registered in theme/CPT code; gateway plugin is field-agnostic
-  - `IntakeController`: `POST /gateway/v1/intake`; stores response blob per person+post
-  - `wp_localize_script`: add `intakeSteps[postType]` payload
-  - Multi-step modal JS: step 2 rendered from `gatewaySettings.intakeSteps[postType]` (only shown when fields are defined for the CPT)
+- [x] **5b-i** — Policy model expansion: per-CPT tier, `disabled` value, settings UI audit table, shortcode + metabox updates. (PR #566)
+- [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
 - **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check

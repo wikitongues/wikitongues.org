@@ -44,13 +44,15 @@ class Download_Shortcode {
 			return '';
 		}
 
-		$url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
+		$url       = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
+		$post_type = get_post_type( $post_id ) ?: '';
 
 		return sprintf(
-			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s">%s</a>',
+			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s" data-post-type="%s">%s</a>',
 			esc_url( $url ),
 			$post_id,
 			esc_attr( $policy ),
+			esc_attr( $post_type ),
 			esc_html( $atts['label'] )
 		);
 	}
