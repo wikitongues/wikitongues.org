@@ -103,7 +103,18 @@ class GateController {
 			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', [ 'status' => 403 ] );
 		}
 
-		// Rate limiting by IP hash.
+		// Field validation.
+		if ( $post_id <= 0 ) {
+			return new \WP_Error( 'invalid_post_id', 'Invalid resource.', [ 'status' => 400 ] );
+		}
+
+		// Passthrough — returning visitor with gateway_gated cookie skips the form.
+		// Bypasses rate limiting: passthrough is cookie-gated and low-risk.
+		if ( '' !== $passthrough ) {
+			return $this->handle_passthrough( $passthrough, $post_id, $cookies );
+		}
+
+		// Rate limiting by IP hash — applies to new form submissions only.
 		$ip_hash  = IpHasher::hash_from_server( $server );
 		$rate_key = 'gw_rate_' . substr( $ip_hash, 0, 28 );
 		$count    = (int) get_transient( $rate_key );
@@ -111,16 +122,6 @@ class GateController {
 			return new \WP_Error( 'rate_limited', 'Too many requests. Please try again later.', [ 'status' => 429 ] );
 		}
 		set_transient( $rate_key, $count + 1, self::RATE_WINDOW );
-
-		// Field validation.
-		if ( $post_id <= 0 ) {
-			return new \WP_Error( 'invalid_post_id', 'Invalid resource.', [ 'status' => 400 ] );
-		}
-
-		// Passthrough — returning visitor with gateway_gated cookie skips the form.
-		if ( '' !== $passthrough ) {
-			return $this->handle_passthrough( $passthrough, $post_id, $cookies );
-		}
 
 		if ( ! is_email( $email ) ) {
 			return new \WP_Error( 'invalid_email', 'A valid email address is required.', [ 'status' => 400 ] );

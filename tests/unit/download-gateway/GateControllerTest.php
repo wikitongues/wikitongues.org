@@ -52,8 +52,6 @@ class GateControllerTest extends TestCase {
 
 	public function test_submit_returns_400_for_invalid_post_id(): void {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
-		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
-		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
 
 		$result = $this->controller->submit( 0, 'user@example.com', 'Jane', true, 'valid-nonce', '', array(), array( 'REMOTE_ADDR' => '10.0.0.1' ) );
 		$this->assertInstanceOf( \WP_Error::class, $result );
