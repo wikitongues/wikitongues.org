@@ -50,6 +50,8 @@ require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
 require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
 require_once GATEWAY_DIR . 'includes/class-people-repository.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
+require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
+require_once GATEWAY_DIR . 'includes/class-intake-controller.php';
 require_once GATEWAY_DIR . 'includes/class-retention-job.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
@@ -80,6 +82,21 @@ add_action(
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
 add_action( 'admin_init', __NAMESPACE__ . '\Settings_Page::handle_run_now_action' );
 
+/*
+ * Auto-upgrade the DB schema when the plugin is updated.
+ * create_tables() uses dbDelta() so it is safe to run on every load when
+ * the version check passes — it only adds missing tables/columns.
+ */
+add_action(
+	'plugins_loaded',
+	function (): void {
+		$installed = (int) get_option( Schema::VERSION_OPTION, 0 );
+		if ( $installed < Schema::SCHEMA_VERSION ) {
+			Schema::create_tables();
+		}
+	}
+);
+
 add_action(
 	'rest_api_init',
 	function (): void {
@@ -87,6 +104,7 @@ add_action(
 		if ( GATEWAY_ENABLED ) {
 			( new DownloadController() )->register_routes();
 			( new GateController() )->register_routes();
+			( new IntakeController() )->register_routes();
 		}
 	}
 );
@@ -112,6 +130,28 @@ add_action(
 			GATEWAY_VERSION,
 			true
 		);
+		/**
+		 * Filters intake field definitions for the download modal step 2.
+		 *
+		 * Return an array keyed by post type slug. Each value is an array of
+		 * field definition arrays with keys:
+		 *   key      — machine name (used as the response key in the DB)
+		 *   label    — human-readable label
+		 *   type     — text | textarea | select | radio | checkbox
+		 *   options  — assoc array of value => label (select / radio only)
+		 *   required — bool (currently informational; JS does not enforce)
+		 *
+		 * Example:
+		 *   add_filter( 'gateway_intake_fields', function( $fields ) {
+		 *       $fields['document_files'] = array(
+		 *           array( 'key' => 'use_case', 'label' => 'How will you use this?',
+		 *                  'type' => 'select', 'options' => array( 'research' => 'Research' ) ),
+		 *       );
+		 *       return $fields;
+		 *   } );
+		 *
+		 * @param array<string,array<int,array<string,mixed>>> $fields Empty by default.
+		 */
 		wp_localize_script(
 			'gateway-modal',
 			'gatewaySettings',
@@ -120,6 +160,8 @@ add_action(
 				'restNonce'    => wp_create_nonce( 'wp_rest' ),
 				'apiUrl'       => rest_url( GATEWAY_REST_NAMESPACE . '/gate' ),
 				'downloadBase' => rest_url( GATEWAY_REST_NAMESPACE . '/download' ),
+				'intakeUrl'    => rest_url( GATEWAY_REST_NAMESPACE . '/intake' ),
+				'intakeSteps'  => (array) apply_filters( 'gateway_intake_fields', array() ),
 			)
 		);
 	}

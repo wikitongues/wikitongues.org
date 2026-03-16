@@ -8,10 +8,11 @@
  *
  * Table overview:
  *
- *   wp_gateway_tokens          — one-time signed download tokens (sub-phases 3, 5)
- *   wp_gateway_people          — email-known visitors captured via the gate (sub-phase 5)
- *   wp_gateway_download_events — every download lifecycle event (sub-phase 3+)
- *   wp_gateway_webhook_delivery — outbound webhook retry queue (sub-phase 2c)
+ *   wp_gateway_tokens            — one-time signed download tokens (sub-phases 3, 5)
+ *   wp_gateway_people            — email-known visitors captured via the gate (sub-phase 5)
+ *   wp_gateway_download_events   — every download lifecycle event (sub-phase 3+)
+ *   wp_gateway_webhook_delivery  — outbound webhook retry queue (sub-phase 2c)
+ *   wp_gateway_intake_responses  — per-person, per-post intake form payloads (sub-phase 5b-ii)
  *
  * @package WT\DownloadGateway
  */
@@ -24,7 +25,7 @@ class Schema {
 	const VERSION_OPTION = 'gateway_schema_version';
 
 	/** Bump this when the schema changes to trigger a migration. */
-	const SCHEMA_VERSION = 1;
+	const SCHEMA_VERSION = 2;
 
 	public static function create_tables(): void {
 		global $wpdb;
@@ -146,6 +147,28 @@ class Schema {
 				KEY event_id (event_id),
 				KEY status (status),
 				KEY next_attempt_at (next_attempt_at)
+			) $charset;"
+		);
+
+		/*
+		 * wp_gateway_intake_responses
+		 *
+		 * One record per intake form submission. The `responses` column is a
+		 * JSON blob whose shape is defined by the `gateway_intake_fields` filter
+		 * — the schema stores it opaquely so the table never needs to change
+		 * when field definitions change.
+		 */
+		dbDelta(
+			"CREATE TABLE {$wpdb->prefix}gateway_intake_responses (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				person_id BIGINT UNSIGNED NOT NULL,
+				post_id BIGINT UNSIGNED NOT NULL,
+				post_type VARCHAR(50) NOT NULL,
+				responses LONGTEXT NOT NULL,
+				created_at DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY person_id (person_id),
+				KEY post_id (post_id)
 			) $charset;"
 		);
 
