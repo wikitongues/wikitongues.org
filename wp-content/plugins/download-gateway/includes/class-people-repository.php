@@ -41,6 +41,7 @@ class PeopleRepository {
 
 		$existing_id = $wpdb->get_var(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"SELECT id FROM {$table} WHERE email_hash = %s AND is_anonymized = 0",
 				$email_hash
 			)
@@ -49,27 +50,27 @@ class PeopleRepository {
 		if ( null !== $existing_id ) {
 			$wpdb->update(
 				$table,
-				[
-					'name'               => sanitize_text_field( $name ),
-					'consent_download'   => $consent_download ? 1 : 0,
-					'consent_marketing'  => $consent_marketing ? 1 : 0,
-				],
-				[ 'id' => (int) $existing_id ]
+				array(
+					'name'              => sanitize_text_field( $name ),
+					'consent_download'  => $consent_download ? 1 : 0,
+					'consent_marketing' => $consent_marketing ? 1 : 0,
+				),
+				array( 'id' => (int) $existing_id )
 			);
 			return (int) $existing_id;
 		}
 
 		$result = $wpdb->insert(
 			$table,
-			[
-				'email_hash'         => $email_hash,
-				'email'              => sanitize_email( $email ),
-				'name'               => sanitize_text_field( $name ),
-				'consent_download'   => $consent_download ? 1 : 0,
-				'consent_marketing'  => $consent_marketing ? 1 : 0,
-				'is_anonymized'      => 0,
-				'created_at'         => current_time( 'mysql' ),
-			]
+			array(
+				'email_hash'        => $email_hash,
+				'email'             => sanitize_email( $email ),
+				'name'              => sanitize_text_field( $name ),
+				'consent_download'  => $consent_download ? 1 : 0,
+				'consent_marketing' => $consent_marketing ? 1 : 0,
+				'is_anonymized'     => 0,
+				'created_at'        => current_time( 'mysql' ),
+			)
 		);
 
 		if ( false === $result ) {
@@ -95,6 +96,7 @@ class PeopleRepository {
 
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"SELECT * FROM {$table} WHERE id = %d AND is_anonymized = 0",
 				$person_id
 			)
@@ -117,6 +119,7 @@ class PeopleRepository {
 
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"SELECT * FROM {$table} WHERE email_hash = %s AND is_anonymized = 0",
 				$email_hash
 			)

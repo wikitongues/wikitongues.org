@@ -25,10 +25,10 @@ namespace WT\DownloadGateway;
 class DownloadEventRepository {
 
 	// Valid event_type values — mirrors the schema comment in class-schema.php.
-	const EVENT_CLICK        = 'click';
-	const EVENT_GATE_VIEW    = 'gate_view';
-	const EVENT_GATE_SUBMIT  = 'gate_submit';
-	const EVENT_REDIRECT     = 'redirect';
+	const EVENT_CLICK       = 'click';
+	const EVENT_GATE_VIEW   = 'gate_view';
+	const EVENT_GATE_SUBMIT = 'gate_submit';
+	const EVENT_REDIRECT    = 'redirect';
 
 	/**
 	 * Insert a download event row.
@@ -58,22 +58,22 @@ class DownloadEventRepository {
 			return false;
 		}
 
-		$row = [
+		$row = array(
 			'post_id'      => (int) $data['post_id'],
 			'post_type'    => sanitize_key( $data['post_type'] ),
 			'event_type'   => sanitize_key( $data['event_type'] ),
-			'visitor_id'   => isset( $data['visitor_id'] )   ? sanitize_text_field( $data['visitor_id'] )   : null,
-			'person_id'    => isset( $data['person_id'] )    ? (int) $data['person_id']                     : null,
-			'storage_type' => isset( $data['storage_type'] ) ? sanitize_key( $data['storage_type'] )        : null,
-			'ip_hash'      => isset( $data['ip_hash'] )      ? sanitize_text_field( $data['ip_hash'] )      : null,
-			'utm_source'   => isset( $data['utm_source'] )   ? sanitize_text_field( $data['utm_source'] )   : null,
-			'utm_medium'   => isset( $data['utm_medium'] )   ? sanitize_text_field( $data['utm_medium'] )   : null,
+			'visitor_id'   => isset( $data['visitor_id'] ) ? sanitize_text_field( $data['visitor_id'] ) : null,
+			'person_id'    => isset( $data['person_id'] ) ? (int) $data['person_id'] : null,
+			'storage_type' => isset( $data['storage_type'] ) ? sanitize_key( $data['storage_type'] ) : null,
+			'ip_hash'      => isset( $data['ip_hash'] ) ? sanitize_text_field( $data['ip_hash'] ) : null,
+			'utm_source'   => isset( $data['utm_source'] ) ? sanitize_text_field( $data['utm_source'] ) : null,
+			'utm_medium'   => isset( $data['utm_medium'] ) ? sanitize_text_field( $data['utm_medium'] ) : null,
 			'utm_campaign' => isset( $data['utm_campaign'] ) ? sanitize_text_field( $data['utm_campaign'] ) : null,
-			'utm_term'     => isset( $data['utm_term'] )     ? sanitize_text_field( $data['utm_term'] )     : null,
-			'utm_content'  => isset( $data['utm_content'] )  ? sanitize_text_field( $data['utm_content'] )  : null,
-			'referrer'     => isset( $data['referrer'] )     ? esc_url_raw( $data['referrer'] )             : null,
+			'utm_term'     => isset( $data['utm_term'] ) ? sanitize_text_field( $data['utm_term'] ) : null,
+			'utm_content'  => isset( $data['utm_content'] ) ? sanitize_text_field( $data['utm_content'] ) : null,
+			'referrer'     => isset( $data['referrer'] ) ? esc_url_raw( $data['referrer'] ) : null,
 			'created_at'   => current_time( 'mysql' ),
-		];
+		);
 
 		$result = $wpdb->insert( $wpdb->prefix . 'gateway_download_events', $row );
 

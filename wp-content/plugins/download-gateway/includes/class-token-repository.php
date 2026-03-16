@@ -36,14 +36,14 @@ class TokenRepository {
 
 		$wpdb->insert(
 			$wpdb->prefix . 'gateway_tokens',
-			[
+			array(
 				'token'      => $token,
 				'post_id'    => $post_id,
 				'visitor_id' => $visitor_id,
 				'person_id'  => $person_id,
 				'expires_at' => gmdate( 'Y-m-d H:i:s', time() + $ttl_seconds ),
 				'created_at' => current_time( 'mysql' ),
-			]
+			)
 		);
 
 		Logger::debug( "Token created for post_id={$post_id}." );
@@ -62,6 +62,7 @@ class TokenRepository {
 
 		$table = $wpdb->prefix . 'gateway_tokens';
 		$row   = $wpdb->get_row(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE token = %s", $token )
 		);
 
@@ -79,8 +80,8 @@ class TokenRepository {
 
 		$result = $wpdb->update(
 			$wpdb->prefix . 'gateway_tokens',
-			[ 'used_at' => current_time( 'mysql' ) ],
-			[ 'token'   => $token ]
+			array( 'used_at' => current_time( 'mysql' ) ),
+			array( 'token' => $token )
 		);
 
 		return false !== $result;
@@ -118,6 +119,7 @@ class TokenRepository {
 		$table  = $wpdb->prefix . 'gateway_tokens';
 		$result = $wpdb->query(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"DELETE FROM {$table} WHERE expires_at < %s AND used_at IS NULL",
 				current_time( 'mysql' )
 			)

@@ -25,7 +25,7 @@ class Resource_Metabox {
 		add_meta_box(
 			'gateway_resource',
 			'Download Gateway',
-			[ self::class, 'render' ],
+			array( self::class, 'render' ),
 			$post_types,
 			'side',
 			'default'
@@ -48,7 +48,7 @@ class Resource_Metabox {
 			return;
 		}
 
-		$allowed = [ '', 'none', 'soft', 'hard' ];
+		$allowed = array( '', 'none', 'soft', 'hard' );
 		$value   = isset( $_POST['_gateway_gate_policy'] )
 			? sanitize_key( $_POST['_gateway_gate_policy'] )
 			: '';

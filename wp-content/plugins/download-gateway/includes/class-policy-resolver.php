@@ -101,7 +101,7 @@ class PolicyResolver {
 	 * @param mixed $value Raw value from postmeta or term meta.
 	 */
 	private static function validate_policy( mixed $value ): ?string {
-		$valid = [ SettingsRepository::POLICY_NONE, SettingsRepository::POLICY_SOFT, SettingsRepository::POLICY_HARD ];
+		$valid = array( SettingsRepository::POLICY_NONE, SettingsRepository::POLICY_SOFT, SettingsRepository::POLICY_HARD );
 		return ( is_string( $value ) && in_array( $value, $valid, true ) ) ? $value : null;
 	}
 }

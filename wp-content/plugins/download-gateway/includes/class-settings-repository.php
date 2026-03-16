@@ -35,7 +35,7 @@ class SettingsRepository {
 	 */
 	public static function get_global_gate_policy(): string {
 		$value = get_option( self::OPTION_GLOBAL_GATE_POLICY, self::DEFAULT_GLOBAL_GATE_POLICY );
-		return in_array( $value, [ self::POLICY_NONE, self::POLICY_SOFT, self::POLICY_HARD ], true )
+		return in_array( $value, array( self::POLICY_NONE, self::POLICY_SOFT, self::POLICY_HARD ), true )
 			? $value
 			: self::DEFAULT_GLOBAL_GATE_POLICY;
 	}
