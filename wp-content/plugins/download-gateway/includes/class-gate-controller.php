@@ -30,11 +30,11 @@ class GateController {
 		register_rest_route(
 			GATEWAY_REST_NAMESPACE,
 			'/gate',
-			[
+			array(
 				'methods'             => 'POST',
-				'callback'            => [ $this, 'handle' ],
+				'callback'            => array( $this, 'handle' ),
 				'permission_callback' => '__return_true',
-			]
+			)
 		);
 	}
 
@@ -88,24 +88,24 @@ class GateController {
 		bool $consent_download,
 		string $nonce,
 		string $honeypot,
-		array $cookies = [],
-		array $server = [],
+		array $cookies = array(),
+		array $server = array(),
 		string $passthrough = ''
 	): array|\WP_Error {
 
 		// Honeypot — bots fill hidden fields; silently succeed.
 		if ( '' !== $honeypot ) {
-			return [ 'token' => null ];
+			return array( 'token' => null );
 		}
 
 		// Nonce verification.
 		if ( ! wp_verify_nonce( $nonce, 'gateway_gate' ) ) {
-			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', [ 'status' => 403 ] );
+			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', array( 'status' => 403 ) );
 		}
 
 		// Field validation.
 		if ( $post_id <= 0 ) {
-			return new \WP_Error( 'invalid_post_id', 'Invalid resource.', [ 'status' => 400 ] );
+			return new \WP_Error( 'invalid_post_id', 'Invalid resource.', array( 'status' => 400 ) );
 		}
 
 		// Passthrough — returning visitor with gateway_gated cookie skips the form.
@@ -119,29 +119,32 @@ class GateController {
 		$rate_key = 'gw_rate_' . substr( $ip_hash, 0, 28 );
 		$count    = (int) get_transient( $rate_key );
 		if ( $count >= self::RATE_LIMIT ) {
-			return new \WP_Error( 'rate_limited', 'Too many requests. Please try again later.', [ 'status' => 429 ] );
+			return new \WP_Error( 'rate_limited', 'Too many requests. Please try again later.', array( 'status' => 429 ) );
 		}
 		set_transient( $rate_key, $count + 1, self::RATE_WINDOW );
 
 		if ( ! is_email( $email ) ) {
-			return new \WP_Error( 'invalid_email', 'A valid email address is required.', [ 'status' => 400 ] );
+			return new \WP_Error( 'invalid_email', 'A valid email address is required.', array( 'status' => 400 ) );
 		}
 		$name = trim( $name );
 		if ( '' === $name ) {
-			return new \WP_Error( 'invalid_name', 'Your name is required.', [ 'status' => 400 ] );
+			return new \WP_Error( 'invalid_name', 'Your name is required.', array( 'status' => 400 ) );
 		}
 
 		// Upsert person.
 		$person_id = PeopleRepository::upsert( $email, $name, $consent_download );
 		if ( false === $person_id ) {
-			return new \WP_Error( 'db_error', 'Could not save your information. Please try again.', [ 'status' => 500 ] );
+			return new \WP_Error( 'db_error', 'Could not save your information. Please try again.', array( 'status' => 500 ) );
 		}
 
 		// Create one-time download token tied to this person.
 		$visitor_id = VisitorId::from_cookies( $cookies );
 		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, $person_id );
 
-		return [ 'token' => $token, 'person_id' => $person_id ];
+		return array(
+			'token'     => $token,
+			'person_id' => $person_id,
+		);
 	}
 
 	/**
@@ -160,18 +163,21 @@ class GateController {
 		$person_id = (int) $passthrough;
 
 		if ( $person_id <= 0 ) {
-			return new \WP_Error( 'invalid_passthrough', 'Invalid session.', [ 'status' => 400 ] );
+			return new \WP_Error( 'invalid_passthrough', 'Invalid session.', array( 'status' => 400 ) );
 		}
 
 		$person = PeopleRepository::find_by_id( $person_id );
 		if ( null === $person ) {
 			// Person was anonymized or never existed — JS will show the gate form.
-			return new \WP_Error( 'passthrough_expired', 'Session expired. Please complete the form.', [ 'status' => 410 ] );
+			return new \WP_Error( 'passthrough_expired', 'Session expired. Please complete the form.', array( 'status' => 410 ) );
 		}
 
 		$visitor_id = VisitorId::from_cookies( $cookies );
 		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, (int) $person->id );
 
-		return [ 'token' => $token, 'person_id' => (int) $person->id ];
+		return array(
+			'token'     => $token,
+			'person_id' => (int) $person->id,
+		);
 	}
 }

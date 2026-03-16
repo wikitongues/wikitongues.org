@@ -33,7 +33,7 @@ class EventBus {
 	 * @param string $event   Short event name, e.g. 'download/click'.
 	 * @param array  $payload Arbitrary data passed to listeners.
 	 */
-	public static function dispatch( string $event, array $payload = [] ): void {
+	public static function dispatch( string $event, array $payload = array() ): void {
 		do_action( self::HOOK_PREFIX . $event, $payload );
 	}
 

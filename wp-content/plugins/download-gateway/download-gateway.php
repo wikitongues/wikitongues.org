@@ -50,6 +50,7 @@ require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
 require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
 require_once GATEWAY_DIR . 'includes/class-people-repository.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
+require_once GATEWAY_DIR . 'includes/class-retention-job.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
@@ -100,31 +101,38 @@ add_action(
 		wp_enqueue_style(
 			'gateway-modal',
 			plugins_url( 'assets/css/gateway-modal.css', GATEWAY_FILE ),
-			[],
+			array(),
 			GATEWAY_VERSION
 		);
 		wp_enqueue_script(
 			'gateway-modal',
 			plugins_url( 'assets/js/gateway-modal.js', GATEWAY_FILE ),
-			[],
+			array(),
 			GATEWAY_VERSION,
 			true
 		);
 		wp_localize_script(
 			'gateway-modal',
 			'gatewaySettings',
-			[
+			array(
 				'nonce'        => wp_create_nonce( 'gateway_gate' ),
 				'restNonce'    => wp_create_nonce( 'wp_rest' ),
 				'apiUrl'       => rest_url( GATEWAY_REST_NAMESPACE . '/gate' ),
 				'downloadBase' => rest_url( GATEWAY_REST_NAMESPACE . '/download' ),
-			]
+			)
 		);
 	}
 );
 
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
+
+add_action(
+	RetentionJob::CRON_HOOK,
+	function (): void {
+		RetentionJob::anonymize();
+	}
+);
 
 add_action( 'add_meta_boxes', __NAMESPACE__ . '\Resource_Metabox::register' );
 add_action( 'save_post', __NAMESPACE__ . '\Resource_Metabox::save' );

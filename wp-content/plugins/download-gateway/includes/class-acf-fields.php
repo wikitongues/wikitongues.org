@@ -27,7 +27,13 @@ class Acf_Fields {
 		}
 
 		$location = array_map(
-			fn( string $pt ) => array( array( 'param' => 'post_type', 'operator' => '==', 'value' => $pt ) ),
+			fn( string $pt ) => array(
+				array(
+					'param'    => 'post_type',
+					'operator' => '==',
+					'value'    => $pt,
+				),
+			),
 			$post_types
 		);
 

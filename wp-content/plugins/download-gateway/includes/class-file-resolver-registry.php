@@ -22,7 +22,7 @@ namespace WT\DownloadGateway;
 class FileResolverRegistry {
 
 	/** @var array<string, FileResolver> post_type → resolver map */
-	private static array $resolvers = [];
+	private static array $resolvers = array();
 
 	/**
 	 * Register a resolver for a post type.
@@ -82,6 +82,6 @@ class FileResolverRegistry {
 	 * For use in tests only — allows each test to start from a clean registry.
 	 */
 	public static function reset(): void {
-		self::$resolvers = [];
+		self::$resolvers = array();
 	}
 }

@@ -157,12 +157,12 @@ class Schema {
 		global $wpdb;
 
 		// Drop in reverse dependency order (events reference people; tokens reference both).
-		$tables = [
+		$tables = array(
 			"{$wpdb->prefix}gateway_webhook_delivery",
 			"{$wpdb->prefix}gateway_download_events",
 			"{$wpdb->prefix}gateway_tokens",
 			"{$wpdb->prefix}gateway_people",
-		];
+		);
 
 		foreach ( $tables as $table ) {
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared

@@ -16,15 +16,17 @@ class Activator {
 		self::check_requirements();
 		update_option( 'gateway_version', GATEWAY_VERSION );
 		Schema::create_tables();
+		RetentionJob::schedule();
 		Logger::info( 'Plugin activated (v' . GATEWAY_VERSION . ').' );
 	}
 
 	public static function deactivate(): void {
+		RetentionJob::unschedule();
 		Logger::info( 'Plugin deactivated.' );
 	}
 
 	private static function check_requirements(): void {
-		$errors = [];
+		$errors = array();
 
 		if ( version_compare( PHP_VERSION, '8.2', '<' ) ) {
 			$errors[] = 'Download Gateway requires PHP 8.2 or higher. Current version: ' . PHP_VERSION;
@@ -42,7 +44,7 @@ class Activator {
 				. implode( '</li><li>', array_map( 'esc_html', $errors ) )
 				. '</li></ul>',
 				'Plugin Activation Error',
-				[ 'back_link' => true ]
+				array( 'back_link' => true )
 			);
 		}
 	}

@@ -63,13 +63,13 @@ class VisitorId {
 		setcookie(
 			self::COOKIE_NAME,
 			$visitor_id,
-			[
+			array(
 				'expires'  => time() + self::COOKIE_TTL,
 				'path'     => '/',
 				'secure'   => is_ssl(),
 				'httponly' => true,
 				'samesite' => 'Lax',
-			]
+			)
 		);
 	}
 }
