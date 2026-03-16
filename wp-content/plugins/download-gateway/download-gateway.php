@@ -78,6 +78,7 @@ add_action(
 );
 
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
+add_action( 'admin_init', __NAMESPACE__ . '\Settings_Page::handle_run_now_action' );
 
 add_action(
 	'rest_api_init',

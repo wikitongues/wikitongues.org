@@ -62,18 +62,21 @@ class Settings_Page {
 	}
 
 	/**
-	 * Run the retention job immediately and redirect back with a status param.
+	 * Handle the run-now POST on admin_init — fires before any output so
+	 * wp_safe_redirect() can send the Location header cleanly.
+	 *
+	 * Hooked in download-gateway.php via add_action( 'admin_init', ... ).
 	 */
-	private static function handle_run_now(): void {
-		if (
-			! isset( $_POST[ self::NONCE_FIELD_RUN_NOW ] ) ||
-			! wp_verify_nonce( sanitize_key( $_POST[ self::NONCE_FIELD_RUN_NOW ] ), self::NONCE_ACTION_RUN_NOW )
-		) {
+	public static function handle_run_now_action(): void {
+		if ( ! isset( $_POST[ self::NONCE_FIELD_RUN_NOW ] ) ) {
 			return;
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
+		if (
+			! wp_verify_nonce( sanitize_key( $_POST[ self::NONCE_FIELD_RUN_NOW ] ), self::NONCE_ACTION_RUN_NOW )
+			|| ! current_user_can( 'manage_options' )
+		) {
+			wp_die( 'Unauthorized.', 403 );
 		}
 
 		$count = RetentionJob::anonymize();
@@ -93,11 +96,6 @@ class Settings_Page {
 	public static function render(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
-		}
-
-		// Handle run-now before any output — it redirects on success.
-		if ( isset( $_POST[ self::NONCE_FIELD_RUN_NOW ] ) ) {
-			self::handle_run_now();
 		}
 
 		// Handle settings form submission.
