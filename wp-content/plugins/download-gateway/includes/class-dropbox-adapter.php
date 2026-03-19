@@ -100,12 +100,13 @@ class DropboxAdapter {
 			$access_token
 		);
 
-		if ( null === $result || ! isset( $result['path_lower'] ) ) {
+		// Team accounts return 'id' (e.g. "id:abc123") instead of 'path_lower'.
+		// files/get_temporary_link accepts both formats as the path parameter.
+		$path = $result['path_lower'] ?? $result['id'] ?? null;
+		if ( null === $path ) {
 			Logger::error( "DropboxAdapter: failed to resolve shared URL to path: {$shared_url}." );
 			return null;
 		}
-
-		$path = $result['path_lower'];
 		set_transient( $path_key, $path, 7 * DAY_IN_SECONDS );
 		return $path;
 	}
