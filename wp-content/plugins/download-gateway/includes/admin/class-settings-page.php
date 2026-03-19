@@ -217,6 +217,15 @@ class Settings_Page {
 			</div>
 			<?php endif; ?>
 
+			<h2 class="title">Dropbox integration</h2>
+			<?php if ( SettingsRepository::dropbox_configured() ) : ?>
+			<p class="description">&#10003; Dropbox credentials found in wp-config.php. Test by downloading a video.</p>
+			<?php else : ?>
+			<p class="description">&#10007; Dropbox not configured &mdash; define <code>GATEWAY_DROPBOX_APP_KEY</code>, <code>GATEWAY_DROPBOX_APP_SECRET</code>, and <code>GATEWAY_DROPBOX_REFRESH_TOKEN</code> in wp-config.php.</p>
+			<?php endif; ?>
+
+			<hr />
+
 			<form method="post">
 				<?php wp_nonce_field( self::NONCE_ACTION, self::NONCE_FIELD ); ?>
 

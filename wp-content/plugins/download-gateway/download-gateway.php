@@ -44,6 +44,9 @@ require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
 require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-dropbox-adapter.php';
+require_once GATEWAY_DIR . 'includes/class-video-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-caption-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
 require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
@@ -169,19 +172,8 @@ add_action(
 
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
-
-/*
- * Expose videos and captions in per-CPT policy settings before their
- * FileResolvers are built (sub-phase 6 — Dropbox adapter).
- * Remove these entries once VideoFileResolver and CaptionFileResolver
- * are registered above — they will appear automatically at that point.
- */
-add_filter(
-	'gateway_policy_post_types',
-	function ( array $types ): array {
-		return array_unique( array_merge( $types, array( 'videos', 'captions' ) ) );
-	}
-);
+FileResolverRegistry::register( 'videos', new VideoFileResolver() );
+FileResolverRegistry::register( 'captions', new CaptionFileResolver() );
 
 add_action(
 	RetentionJob::CRON_HOOK,

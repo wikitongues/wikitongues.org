@@ -46,6 +46,16 @@ parameters:
 			path: wp-content/plugins/download-gateway/includes/class-document-file-resolver.php
 
 		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/class-video-file-resolver.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/class-caption-file-resolver.php
+
+		-
 			message: "#^Function acf_add_local_field_group not found\\.$#"
 			count: 1
 			path: wp-content/plugins/wt-airtable-sync/includes/class-acf-fields.php
