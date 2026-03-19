@@ -309,4 +309,43 @@ class DropboxAdapterTest extends TestCase {
 		$result  = $adapter->get_temporary_link( self::SHARED_URL );
 		$this->assertNull( $result );
 	}
+
+	public function test_get_temporary_link_falls_back_to_direct_url_when_temp_link_unavailable(): void {
+		// files/get_temporary_link returns 409 for Dropbox team folder files.
+		// Adapter should fall back to a dl=1 direct download URL.
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'args'   => array( DropboxAdapter::TRANSIENT_ACCESS_TOKEN ),
+				'return' => self::TOKEN,
+			)
+		);
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'args'   => array( 'gateway_dbx_path_' . md5( self::SHARED_URL ) ),
+				'return' => self::FILE_PATH,
+			)
+		);
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'args'   => array( 'gateway_dbx_link_' . md5( self::FILE_PATH ) ),
+				'return' => false,
+			)
+		);
+
+		// files/get_temporary_link returns 409.
+		WP_Mock::userFunction( 'wp_remote_post', array( 'return' => array( 'response' => array( 'code' => 409 ) ) ) );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code', array( 'return' => 409 ) );
+		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
+
+		$adapter = new DropboxAdapter( 'key', 'secret', 'refresh' );
+		$result  = $adapter->get_temporary_link( self::SHARED_URL );
+
+		// Should return a dl=1 direct download URL derived from the shared URL.
+		$this->assertIsString( $result );
+		$this->assertStringContainsString( 'dl=1', $result );
+		$this->assertStringNotContainsString( 'dl=0', $result );
+	}
 }

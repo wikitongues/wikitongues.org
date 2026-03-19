@@ -74,13 +74,38 @@ class DropboxAdapter {
 		);
 
 		if ( null === $result || ! isset( $result['link'] ) ) {
-			Logger::error( "DropboxAdapter: failed to get temporary link for path: {$file_path}." );
-			return null;
+			// files/get_temporary_link returns 409 for Dropbox team folder files.
+			// Fall back to a direct download URL derived from the shared link.
+			// The rlkey parameter remains, so the URL is not freely guessable.
+			$link = $this->direct_download_url( $shared_url );
+			Logger::info( "DropboxAdapter: temporary link unavailable for {$file_path}; using direct download URL." );
+			set_transient( $link_key, $link, 7 * DAY_IN_SECONDS );
+			return $link;
 		}
 
 		$link = $result['link'];
 		set_transient( $link_key, $link, (int) round( 3.5 * HOUR_IN_SECONDS ) );
 		return $link;
+	}
+
+	/**
+	 * Constructs a direct download URL from a Dropbox shared link.
+	 *
+	 * Forces dl=1 (direct download) and strips the st= session token, which is
+	 * user-specific and not required for direct access. The rlkey is preserved.
+	 */
+	private function direct_download_url( string $shared_url ): string {
+		$parts = parse_url( $shared_url );
+		parse_str( $parts['query'] ?? '', $params );
+		$params['dl'] = '1';
+		unset( $params['st'] );
+		return sprintf(
+			'%s://%s%s?%s',
+			$parts['scheme'] ?? 'https',
+			$parts['host'] ?? '',
+			$parts['path'] ?? '',
+			http_build_query( $params )
+		);
 	}
 
 	/**
