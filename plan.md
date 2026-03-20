@@ -239,7 +239,8 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
 - [x] **5b-i** — Policy model expansion: per-CPT tier, `disabled` value, settings UI audit table, shortcode + metabox updates. (PR #566)
 - [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
-- **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
+- **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped)
+- [x] **6** — Dropbox storage adapters: `DropboxAdapter` (OAuth2 refresh token flow, `sharing/get_shared_link_metadata` → `files/get_temporary_link`, 3-level transient cache), `VideoFileResolver`, `CaptionFileResolver`. Credentials via `wp-config.php` constants (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`). Wikimedia Commons links gated via JS-only `data-file-url` redirect (no server file resolution). Modal UX: loading spinner while token resolves, AbortController on dismiss, close button always visible. Validated locally for videos, captions, and Wikimedia links.
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
 - [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
@@ -249,7 +250,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
 - Cache plugins must explicitly exclude `/gateway/download/` — HTTP headers alone are not sufficient
 - `gateway_vid` cookie is set unconditionally on first download; GDPR/ePrivacy implications TBD before gate launch
-- Dropbox credentials: store in `wp_options` with `autoload=no`; exclude from any REST API exposure
+- Dropbox credentials: defined as PHP constants in `wp-config.php` (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`); never stored in the database
 - EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
 - Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
 - Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
@@ -331,7 +332,7 @@ Three known divergence directions:
 
 #### Download gateway — sub-phases 6–10
 
-- **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
+- [x] **6** — Dropbox storage adapters (see Phase 4 entry for details)
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
 - [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)

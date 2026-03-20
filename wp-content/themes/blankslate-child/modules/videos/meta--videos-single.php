@@ -87,10 +87,16 @@
 			if ( $has_dropbox || $has_wikimedia ) {
 				echo '<ul>';
 
+				$gateway_active = shortcode_exists( 'gateway_download' );
+				$video_policy   = 'none';
+				$video_disabled = false;
+				if ( $gateway_active ) {
+					$video_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $video_id );
+					$video_disabled = ( $video_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
+				}
+
 				if ( $has_dropbox ) {
-					if ( shortcode_exists( 'gateway_download' ) ) {
-						$video_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $video_id );
-						$video_disabled = ( $video_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
+					if ( $gateway_active ) {
 						if ( ! $video_disabled ) {
 							$video_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $video_id );
 							echo '<li><a href="' . esc_url( $video_dl_url ) . '" class="gateway-download-link"'
@@ -103,9 +109,18 @@
 					}
 				}
 
-				// Wikimedia Commons files are publicly accessible; link directly.
+				// Wikimedia Commons: gate fires (visitor data captured) but JS redirects
+				// directly to the public URL — no server-side file resolution needed.
 				if ( $has_wikimedia ) {
-					echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+					if ( $gateway_active && ! $video_disabled ) {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" class="gateway-download-link"'
+							. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
+							. ' data-policy="' . esc_attr( $video_policy ) . '"'
+							. ' data-post-type="videos"'
+							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '">Wikimedia Commons (.webm)</a></li>';
+					} else {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+					}
 				}
 
 				echo '</ul>';

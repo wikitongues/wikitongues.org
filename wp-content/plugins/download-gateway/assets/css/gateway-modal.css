@@ -127,3 +127,29 @@
 	color: #888;
 	padding: 0.25em 0.4em;
 }
+
+/* Loading step */
+#gateway-loading-container {
+	text-align: center;
+	padding: 1.5em 0;
+}
+
+#gateway-loading-container p {
+	margin: 0.75em 0 0;
+	color: var(--color-black);
+	font-size: 0.9em;
+}
+
+.gateway-spinner {
+	display: inline-block;
+	width: 36px;
+	height: 36px;
+	border: 3px solid var(--color-blue-20);
+	border-top-color: var(--color-blue);
+	border-radius: 50%;
+	animation: gateway-spin 0.75s linear infinite;
+}
+
+@keyframes gateway-spin {
+	to { transform: rotate( 360deg ); }
+}
