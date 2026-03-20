@@ -61,26 +61,6 @@ require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
 register_deactivation_hook( __FILE__, __NAMESPACE__ . '\Activator::deactivate' );
 
-/**
- * Show an admin notice when GATEWAY_ENABLED is false so the site operator knows
- * the gateway is installed but not yet intercepting downloads.
- */
-add_action(
-	'admin_notices',
-	function (): void {
-		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
-		if ( ! GATEWAY_ENABLED ) {
-			$screen = get_current_screen();
-			if ( $screen && str_contains( $screen->id, 'download-gateway' ) ) {
-				echo '<div class="notice notice-warning"><p>';
-				echo '<strong>Download Gateway:</strong> ';
-				echo 'The gateway is currently <strong>disabled</strong>. ';
-				echo 'Add <code>define( \'GATEWAY_ENABLED\', true );</code> to <code>wp-config.php</code> to activate download interception.';
-				echo '</p></div>';
-			}
-		}
-	}
-);
 
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
 add_action( 'admin_init', __NAMESPACE__ . '\Settings_Page::handle_run_now_action' );
