@@ -24,6 +24,12 @@ class Download_Shortcode {
 	 * @param array<string,string>|string $atts
 	 */
 	public static function render( $atts ): string {
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
+		if ( ! GATEWAY_ENABLED ) {
+			return '';
+		}
+
+		// @phpstan-ignore-next-line (unreachable only in static analysis — runtime value differs)
 		$atts = shortcode_atts(
 			array(
 				'id'    => '',
@@ -36,11 +42,6 @@ class Download_Shortcode {
 		$post_id = (int) $atts['id'];
 		if ( $post_id <= 0 ) {
 			return '<!-- gateway_download: missing or invalid id -->';
-		}
-
-		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
-		if ( ! GATEWAY_ENABLED ) {
-			return '';
 		}
 
 		$policy = PolicyResolver::resolve( $post_id );

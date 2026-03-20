@@ -13,7 +13,17 @@ parameters:
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
 			count: 10
-			path: tests/unit/download-gateway/TokenRepositoryTest.php
+			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:twice\\(\\)\\.$#"
+			count: 1
+			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 2
+			path: tests/unit/download-gateway/IntakeControllerTest.php
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
@@ -22,23 +32,18 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 10
-			path: tests/unit/download-gateway/GateControllerTest.php
-
-		-
-			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
 			count: 6
 			path: tests/unit/download-gateway/RetentionJobTest.php
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 2
-			path: tests/unit/download-gateway/IntakeControllerTest.php
+			count: 10
+			path: tests/unit/download-gateway/TokenRepositoryTest.php
 
 		-
-			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:twice\\(\\)\\.$#"
+			message: "#^Function get_field not found\\.$#"
 			count: 1
-			path: tests/unit/download-gateway/GateControllerTest.php
+			path: wp-content/plugins/download-gateway/includes/class-caption-file-resolver.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
@@ -49,11 +54,6 @@ parameters:
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/download-gateway/includes/class-video-file-resolver.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/plugins/download-gateway/includes/class-caption-file-resolver.php
 
 		-
 			message: "#^Function acf_add_local_field_group not found\\.$#"
@@ -753,6 +753,26 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 6
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Left side of && is always false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 2
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-

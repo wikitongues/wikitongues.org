@@ -50,7 +50,7 @@
 					$label = 'Unknown Language';
 				}
 
-				if ( shortcode_exists( 'gateway_download' ) ) {
+				if ( shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED ) {
 					// Render via gateway so the download is logged and gated per policy.
 					// Build the anchor inline to safely handle language names with apostrophes.
 					$caption_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $caption->ID );
@@ -87,7 +87,7 @@
 			if ( $has_dropbox || $has_wikimedia ) {
 				echo '<ul>';
 
-				$gateway_active = shortcode_exists( 'gateway_download' );
+				$gateway_active = shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED;
 				$video_policy   = 'none';
 				$video_disabled = false;
 				if ( $gateway_active ) {
