@@ -27,7 +27,9 @@ class RetentionJob {
 	/**
 	 * Anonymize person records older than the configured retention window.
 	 *
-	 * Nulls `email` and `name`, sets `is_anonymized = 1` and `anonymized_at`
+	 * Nulls `email` and `name`, rewrites `email_hash` to `anon-{id}` (prevents
+	 * the UNIQUE constraint from blocking re-registration with the same address),
+	 * sets `is_anonymized = 1` and `anonymized_at`
 	 * for all non-anonymized records whose `created_at` falls before the
 	 * retention cutoff. Returns the number of records anonymized.
 	 *
@@ -43,7 +45,9 @@ class RetentionJob {
 		$sql = $wpdb->prepare(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			"UPDATE {$table}
-			 SET email = NULL, name = NULL, is_anonymized = 1, anonymized_at = %s
+			 SET email = NULL, name = NULL,
+			     email_hash = CONCAT( 'anon-', id ),
+			     is_anonymized = 1, anonymized_at = %s
 			 WHERE is_anonymized = 0
 			   AND created_at < DATE_SUB( %s, INTERVAL %d MONTH )",
 			$now,
