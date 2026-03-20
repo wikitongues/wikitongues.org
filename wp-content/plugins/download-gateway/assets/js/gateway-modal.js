@@ -20,8 +20,9 @@
 	}
 
 	function setCookie( name, value, days ) {
-		var expiry = days ? '; expires=' + new Date( Date.now() + days * 864e5 ).toUTCString() : '';
-		document.cookie = name + '=' + encodeURIComponent( value ) + expiry + '; path=/; SameSite=Lax';
+		var expiry  = days ? '; expires=' + new Date( Date.now() + days * 864e5 ).toUTCString() : '';
+		var secure  = location.protocol === 'https:' ? '; Secure' : '';
+		document.cookie = name + '=' + encodeURIComponent( value ) + expiry + '; path=/; SameSite=Lax' + secure;
 	}
 
 	// -------------------------------------------------------------------------

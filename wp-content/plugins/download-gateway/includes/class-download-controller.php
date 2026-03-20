@@ -114,6 +114,9 @@ class DownloadController {
 		if ( SettingsRepository::POLICY_HARD === $policy ) {
 			return new \WP_Error( 'gate_required', 'Email address required to download this resource.', array( 'status' => 403 ) );
 		}
+		if ( SettingsRepository::POLICY_DISABLED === $policy ) {
+			return new \WP_Error( 'not_found', 'This resource is not available for download.', array( 'status' => 404 ) );
+		}
 
 		$visitor_id = VisitorId::from_cookies( $cookies ) ?? VisitorId::generate();
 		$token_str  = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id );
