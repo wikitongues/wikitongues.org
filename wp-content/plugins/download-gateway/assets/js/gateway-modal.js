@@ -216,7 +216,7 @@
 			if ( e.target !== overlay ) { return; }
 			if ( pendingToken !== null ) {
 				finishDownload( pendingToken, pendingDirectUrl );
-			} else if ( skipBtn.style.display !== 'none' ) {
+			} else {
 				closeModal();
 			}
 		} );
@@ -365,9 +365,9 @@
 		} else if ( token ) {
 			proceedToDownload( token, directUrl, isExternal );
 		} else {
-			// Honeypot hit — silently redirect to direct URL.
+			// Honeypot hit — close silently, no redirect (token is null so
+			// there is no valid download URL to send a bot to anyway).
 			closeModal();
-			redirect( directUrl );
 		}
 	}
 
