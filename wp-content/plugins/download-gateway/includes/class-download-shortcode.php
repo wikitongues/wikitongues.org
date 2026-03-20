@@ -38,6 +38,11 @@ class Download_Shortcode {
 			return '<!-- gateway_download: missing or invalid id -->';
 		}
 
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
+		if ( ! GATEWAY_ENABLED ) {
+			return '';
+		}
+
 		$policy = PolicyResolver::resolve( $post_id );
 
 		if ( SettingsRepository::POLICY_DISABLED === $policy ) {
