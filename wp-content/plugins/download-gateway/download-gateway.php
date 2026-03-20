@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GATEWAY_VERSION', '0.1.8' );
+define( 'GATEWAY_VERSION', '0.1.9' );
 define( 'GATEWAY_FILE', __FILE__ );
 define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
@@ -52,6 +52,7 @@ require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
 require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
 require_once GATEWAY_DIR . 'includes/class-people-repository.php';
+require_once GATEWAY_DIR . 'includes/class-person-cookie.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';

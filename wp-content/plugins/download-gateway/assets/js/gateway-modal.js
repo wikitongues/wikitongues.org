@@ -20,9 +20,8 @@
 	}
 
 	function setCookie( name, value, days ) {
-		var expires = new Date( Date.now() + days * 864e5 ).toUTCString();
-		document.cookie = name + '=' + encodeURIComponent( value ) +
-			'; expires=' + expires + '; path=/; SameSite=Lax';
+		var expiry = days ? '; expires=' + new Date( Date.now() + days * 864e5 ).toUTCString() : '';
+		document.cookie = name + '=' + encodeURIComponent( value ) + expiry + '; path=/; SameSite=Lax';
 	}
 
 	// -------------------------------------------------------------------------
@@ -143,7 +142,7 @@
 
 	// Pending state — populated when gate passes and intake step is active.
 	var pendingToken          = null;
-	var pendingPersonId       = null;
+	var pendingPersonCookie   = null;
 	var pendingPostId         = null;
 	var pendingPostType       = null;
 	var pendingDirectUrl      = null;
@@ -189,12 +188,12 @@
 	}
 
 	function clearPending() {
-		pendingToken      = null;
-		pendingPersonId   = null;
-		pendingPostId     = null;
-		pendingPostType   = null;
-		pendingDirectUrl  = null;
-		pendingIsExternal = false;
+		pendingToken        = null;
+		pendingPersonCookie = null;
+		pendingPostId       = null;
+		pendingPostType     = null;
+		pendingDirectUrl    = null;
+		pendingIsExternal   = false;
 	}
 
 	function setLoading( loading ) {
@@ -303,10 +302,10 @@
 					showError( result.data.message || 'Something went wrong. Please try again.' );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_id, 30 );
+				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
 				proceedAfterGate(
 					result.data.token,
-					result.data.person_id,
+					result.data.person_cookie,
 					currentPostId,
 					currentPostType,
 					currentDirectUrl,
@@ -351,16 +350,16 @@
 	 * If the post type has intake fields registered via the gateway_intake_fields
 	 * filter, show step 2. Otherwise download immediately.
 	 */
-	function proceedAfterGate( token, personId, postId, postType, directUrl, isExternal ) {
+	function proceedAfterGate( token, personCookie, postId, postType, directUrl, isExternal ) {
 		var steps = gatewaySettings.intakeSteps &&
 		            gatewaySettings.intakeSteps[ postType ];
 		if ( token && steps && steps.length ) {
-			pendingToken      = token;
-			pendingPersonId   = personId;
-			pendingPostId     = postId;
-			pendingPostType   = postType;
-			pendingDirectUrl  = directUrl;
-			pendingIsExternal = !! isExternal;
+			pendingToken        = token;
+			pendingPersonCookie = personCookie;
+			pendingPostId       = postId;
+			pendingPostType     = postType;
+			pendingDirectUrl    = directUrl;
+			pendingIsExternal   = !! isExternal;
 			showIntakeStep( steps );
 		} else if ( token ) {
 			proceedToDownload( token, directUrl, isExternal );
@@ -447,10 +446,10 @@
 	}
 
 	function handleIntakeSubmit() {
-		var token     = pendingToken;
-		var personId  = pendingPersonId;
-		var postId    = pendingPostId;
-		var directUrl = pendingDirectUrl;
+		var token        = pendingToken;
+		var personCookie = pendingPersonCookie;
+		var postId       = pendingPostId;
+		var directUrl    = pendingDirectUrl;
 
 		// Collect responses from intake form fields.
 		var responses = {};
@@ -474,10 +473,10 @@
 				'X-WP-Nonce':   gatewaySettings.restNonce,
 			},
 			body: JSON.stringify( {
-				post_id:   postId,
-				person_id: personId,
-				nonce:     gatewaySettings.nonce,
-				responses: responses,
+				post_id:       postId,
+				person_cookie: personCookie,
+				nonce:         gatewaySettings.nonce,
+				responses:     responses,
 			} ),
 		} )
 			.then( function () {
@@ -521,10 +520,10 @@
 	 * Falls back to the modal if the server rejects the passthrough
 	 * (e.g. person was anonymized).
 	 */
-	function doSilentPassthrough( postId, policy, personId, directUrl, postType, isExternal ) {
+	function doSilentPassthrough( postId, policy, personCookie, directUrl, postType, isExternal ) {
 		var body = new URLSearchParams( {
 			post_id:      postId,
-			_passthrough: personId,
+			_passthrough: personCookie,
 			nonce:        gatewaySettings.nonce,
 			_hp:          '',
 		} );
@@ -545,7 +544,7 @@
 					openModal( postId, policy, directUrl, postType, isExternal );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_id, 30 );
+				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
 				proceedToDownload( result.data.token, directUrl, isExternal );
 			} )
 			.catch( function () {
@@ -568,11 +567,11 @@
 
 		e.preventDefault();
 
-		var isExternal = !! link.dataset.fileUrl;
-		var directUrl  = link.dataset.fileUrl || link.href;
-		var personId   = getCookie( 'gateway_gated' );
-		if ( personId ) {
-			doSilentPassthrough( link.dataset.postId, policy, personId, directUrl, link.dataset.postType, isExternal );
+		var isExternal   = !! link.dataset.fileUrl;
+		var directUrl    = link.dataset.fileUrl || link.href;
+		var personCookie = getCookie( 'gateway_gated' );
+		if ( personCookie ) {
+			doSilentPassthrough( link.dataset.postId, policy, personCookie, directUrl, link.dataset.postType, isExternal );
 		} else {
 			openModal( link.dataset.postId, policy, directUrl, link.dataset.postType, isExternal );
 		}

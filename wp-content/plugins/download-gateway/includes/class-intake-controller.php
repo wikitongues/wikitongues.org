@@ -46,7 +46,7 @@ class IntakeController {
 
 		$result = $this->submit(
 			(int) ( $request->get_param( 'post_id' ) ?? 0 ),
-			(int) ( $request->get_param( 'person_id' ) ?? 0 ),
+			(string) ( $request->get_param( 'person_cookie' ) ?? '' ),
 			(string) ( $request->get_param( 'nonce' ) ?? '' ),
 			$responses
 		);
@@ -61,18 +61,19 @@ class IntakeController {
 	/**
 	 * Process an intake submission. Returns true on success, WP_Error on failure.
 	 *
-	 * @param int                  $post_id   Post ID of the downloaded resource.
-	 * @param int                  $person_id Person ID from wp_gateway_people.
-	 * @param string               $nonce     WP nonce value.
-	 * @param array<string,string> $responses Key-value map of field responses.
+	 * @param int                  $post_id       Post ID of the downloaded resource.
+	 * @param string               $person_cookie HMAC-signed cookie value from gateway_gated.
+	 * @param string               $nonce         WP nonce value.
+	 * @param array<string,string> $responses     Key-value map of field responses.
 	 * @return true|\WP_Error
 	 */
-	public function submit( int $post_id, int $person_id, string $nonce, array $responses ): bool|\WP_Error {
+	public function submit( int $post_id, string $person_cookie, string $nonce, array $responses ): bool|\WP_Error {
 		if ( ! wp_verify_nonce( $nonce, 'gateway_gate' ) ) {
 			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', array( 'status' => 403 ) );
 		}
 
-		if ( $post_id <= 0 || $person_id <= 0 ) {
+		$person_id = PersonCookie::verify( $person_cookie );
+		if ( $post_id <= 0 || false === $person_id ) {
 			return new \WP_Error( 'invalid_params', 'Invalid parameters.', array( 'status' => 400 ) );
 		}
 

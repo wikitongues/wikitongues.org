@@ -2,6 +2,7 @@
 
 use WP_Mock\Tools\TestCase;
 use WT\DownloadGateway\IntakeController;
+use WT\DownloadGateway\PersonCookie;
 
 class IntakeControllerTest extends TestCase {
 
@@ -22,7 +23,7 @@ class IntakeControllerTest extends TestCase {
 	public function test_submit_returns_403_for_invalid_nonce(): void {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => false ) );
 
-		$result = $this->controller->submit( 42, 7, 'bad-nonce', array() );
+		$result = $this->controller->submit( 42, PersonCookie::sign( 7 ), 'bad-nonce', array() );
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 403, $result->get_error_data()['status'] );
 	}
@@ -30,15 +31,16 @@ class IntakeControllerTest extends TestCase {
 	public function test_submit_returns_400_for_invalid_post_id(): void {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
 
-		$result = $this->controller->submit( 0, 7, 'valid-nonce', array() );
+		$result = $this->controller->submit( 0, PersonCookie::sign( 7 ), 'valid-nonce', array() );
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 400, $result->get_error_data()['status'] );
 	}
 
-	public function test_submit_returns_400_for_invalid_person_id(): void {
+	public function test_submit_returns_400_for_invalid_person_cookie(): void {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
 
-		$result = $this->controller->submit( 42, 0, 'valid-nonce', array() );
+		// Unsigned / tampered cookie — PersonCookie::verify() returns false.
+		$result = $this->controller->submit( 42, 'tampered-value', 'valid-nonce', array() );
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 400, $result->get_error_data()['status'] );
 	}
@@ -47,7 +49,7 @@ class IntakeControllerTest extends TestCase {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
 		WP_Mock::userFunction( 'get_post_type', array( 'return' => false ) );
 
-		$result = $this->controller->submit( 42, 7, 'valid-nonce', array() );
+		$result = $this->controller->submit( 42, PersonCookie::sign( 7 ), 'valid-nonce', array() );
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 404, $result->get_error_data()['status'] );
 	}
@@ -68,7 +70,7 @@ class IntakeControllerTest extends TestCase {
 		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-16 10:00:00' ) );
 		WP_Mock::userFunction( 'wp_json_encode', array( 'return' => '{}' ) );
 
-		$result = $this->controller->submit( 42, 7, 'valid-nonce', array() );
+		$result = $this->controller->submit( 42, PersonCookie::sign( 7 ), 'valid-nonce', array() );
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 500, $result->get_error_data()['status'] );
 	}
@@ -94,7 +96,7 @@ class IntakeControllerTest extends TestCase {
 
 		$result = $this->controller->submit(
 			42,
-			7,
+			PersonCookie::sign( 7 ),
 			'valid-nonce',
 			array( 'use_case' => 'research' )
 		);

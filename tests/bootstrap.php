@@ -4,6 +4,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 WP_Mock::bootstrap();
 
 // Gateway plugin constants — required before any gateway class is included.
+if ( ! defined( 'NONCE_KEY' ) ) {
+	define( 'NONCE_KEY', 'test-nonce-key-for-phpunit-do-not-use-in-production' );
+}
 if ( ! defined( 'GATEWAY_VERSION' ) ) {
 	define( 'GATEWAY_VERSION', '0.1.0' );
 }
@@ -37,6 +40,7 @@ require_once GATEWAY_DIR . 'includes/class-event-bus.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
 require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-people-repository.php';
+require_once GATEWAY_DIR . 'includes/class-person-cookie.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';

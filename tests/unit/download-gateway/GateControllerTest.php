@@ -2,6 +2,7 @@
 
 use WP_Mock\Tools\TestCase;
 use WT\DownloadGateway\GateController;
+use WT\DownloadGateway\PersonCookie;
 use WT\DownloadGateway\PeopleRepository;
 
 class GateControllerTest extends TestCase {
@@ -119,7 +120,8 @@ class GateControllerTest extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'token', $result );
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result['token'] );
-		$this->assertArrayHasKey( 'person_id', $result );
+		$this->assertArrayHasKey( 'person_cookie', $result );
+		$this->assertMatchesRegularExpression( '/^\d+\.[0-9a-f]{64}$/', $result['person_cookie'] );
 	}
 
 	// -------------------------------------------------------------------------
@@ -156,12 +158,13 @@ class GateControllerTest extends TestCase {
 			'',
 			array(),
 			array( 'REMOTE_ADDR' => '10.0.0.1' ),
-			'1'
+			PersonCookie::sign( 1 )
 		);
 
 		$this->assertIsArray( $result );
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result['token'] );
-		$this->assertSame( 1, $result['person_id'] );
+		$this->assertArrayHasKey( 'person_cookie', $result );
+		$this->assertSame( PersonCookie::sign( 1 ), $result['person_cookie'] );
 	}
 
 	public function test_submit_passthrough_returns_410_when_person_not_found(): void {
@@ -185,18 +188,19 @@ class GateControllerTest extends TestCase {
 			'',
 			array(),
 			array( 'REMOTE_ADDR' => '10.0.0.1' ),
-			'99'
+			PersonCookie::sign( 99 )
 		);
 
 		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertSame( 410, $result->get_error_data()['status'] );
 	}
 
-	public function test_submit_passthrough_returns_400_for_invalid_person_id(): void {
+	public function test_submit_passthrough_returns_400_for_invalid_cookie(): void {
 		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
 		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
 		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
 
+		// Unsigned / tampered cookie value — PersonCookie::verify() returns false.
 		$result = $this->controller->submit(
 			42,
 			'',
@@ -206,7 +210,7 @@ class GateControllerTest extends TestCase {
 			'',
 			array(),
 			array( 'REMOTE_ADDR' => '10.0.0.1' ),
-			'0'
+			'tampered-value'
 		);
 
 		$this->assertInstanceOf( \WP_Error::class, $result );
