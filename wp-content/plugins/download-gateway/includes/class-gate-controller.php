@@ -138,31 +138,33 @@ class GateController {
 		}
 
 		// Create one-time download token tied to this person.
-		$visitor_id = VisitorId::from_cookies( $cookies );
-		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, $person_id );
+		$visitor_id    = VisitorId::from_cookies( $cookies );
+		$token         = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, $person_id );
+		$person_cookie = PersonCookie::sign( $person_id );
 
 		return array(
-			'token'     => $token,
-			'person_id' => $person_id,
+			'token'         => $token,
+			'person_cookie' => $person_cookie,
 		);
 	}
 
 	/**
 	 * Handle a passthrough submission from a returning visitor.
 	 *
-	 * Verifies the person still exists (not anonymized), then issues a token.
-	 * Returns 410 if the person was anonymized so the JS can fall back to the
-	 * gate form, prompting the visitor to re-submit their details.
+	 * Verifies the HMAC-signed cookie, confirms the person still exists
+	 * (not anonymized), then issues a token. Returns 400 for a tampered/
+	 * invalid cookie. Returns 410 if the person was anonymized so the JS
+	 * can fall back to the gate form.
 	 *
-	 * @param string              $passthrough Person ID from the gateway_gated cookie.
+	 * @param string              $passthrough Signed cookie value from gateway_gated.
 	 * @param int                 $post_id     Post ID of the resource.
 	 * @param array<string,mixed> $cookies     Cookie values.
 	 * @return array<string,mixed>|\WP_Error
 	 */
 	private function handle_passthrough( string $passthrough, int $post_id, array $cookies ): array|\WP_Error {
-		$person_id = (int) $passthrough;
+		$person_id = PersonCookie::verify( $passthrough );
 
-		if ( $person_id <= 0 ) {
+		if ( false === $person_id ) {
 			return new \WP_Error( 'invalid_passthrough', 'Invalid session.', array( 'status' => 400 ) );
 		}
 
@@ -172,12 +174,13 @@ class GateController {
 			return new \WP_Error( 'passthrough_expired', 'Session expired. Please complete the form.', array( 'status' => 410 ) );
 		}
 
-		$visitor_id = VisitorId::from_cookies( $cookies );
-		$token      = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, (int) $person->id );
+		$visitor_id    = VisitorId::from_cookies( $cookies );
+		$token         = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, (int) $person->id );
+		$person_cookie = PersonCookie::sign( (int) $person->id );
 
 		return array(
-			'token'     => $token,
-			'person_id' => (int) $person->id,
+			'token'         => $token,
+			'person_cookie' => $person_cookie,
 		);
 	}
 }

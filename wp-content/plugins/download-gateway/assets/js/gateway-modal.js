@@ -20,9 +20,9 @@
 	}
 
 	function setCookie( name, value, days ) {
-		var expires = new Date( Date.now() + days * 864e5 ).toUTCString();
-		document.cookie = name + '=' + encodeURIComponent( value ) +
-			'; expires=' + expires + '; path=/; SameSite=Lax';
+		var expiry  = days ? '; expires=' + new Date( Date.now() + days * 864e5 ).toUTCString() : '';
+		var secure  = location.protocol === 'https:' ? '; Secure' : '';
+		document.cookie = name + '=' + encodeURIComponent( value ) + expiry + '; path=/; SameSite=Lax' + secure;
 	}
 
 	// -------------------------------------------------------------------------
@@ -50,6 +50,7 @@
 	var modal, overlay, gateContainer, form, nameField, emailField, consentField,
 		honeypotField, errorMsg, submitBtn, skipBtn, closeBtn;
 	var intakeContainer, intakeForm, intakeErrorMsg, intakeSubmitBtn, intakeSkipBtn;
+	var loadingContainer;
 
 	function buildModal() {
 		overlay = document.createElement( 'div' );
@@ -99,7 +100,13 @@
 				'<button id="gateway-intake-submit" type="button">Submit &amp; Download</button>' +
 				'<button id="gateway-intake-skip" type="button">Skip &amp; Download</button>' +
 			'</div>' +
-			'</div>';
+			'</div>' +
+
+		// ── Step 3: loading state (shown while resolving download URL) ──────────────
+		'<div id="gateway-loading-container" style="display:none">' +
+		'<div class="gateway-spinner" aria-hidden="true"></div>' +
+		'<p>Preparing your download…</p>' +
+		'</div>';
 
 		overlay.appendChild( modal );
 		document.body.appendChild( overlay );
@@ -122,63 +129,72 @@
 		intakeErrorMsg  = document.getElementById( 'gateway-intake-error' );
 		intakeSubmitBtn = document.getElementById( 'gateway-intake-submit' );
 		intakeSkipBtn   = document.getElementById( 'gateway-intake-skip' );
+		loadingContainer = document.getElementById( 'gateway-loading-container' );
 	}
 
 	// -------------------------------------------------------------------------
 	// Modal open / close
 	// -------------------------------------------------------------------------
 
-	var currentPostId    = null;
-	var currentPostType  = null;
-	var currentDirectUrl = null;
+	var currentPostId      = null;
+	var currentPostType    = null;
+	var currentDirectUrl   = null;
+	var currentIsExternal  = false;
 
 	// Pending state — populated when gate passes and intake step is active.
-	var pendingToken     = null;
-	var pendingPersonId  = null;
-	var pendingPostId    = null;
-	var pendingPostType  = null;
-	var pendingDirectUrl = null;
+	var pendingToken          = null;
+	var pendingPersonCookie   = null;
+	var pendingPostId         = null;
+	var pendingPostType       = null;
+	var pendingDirectUrl      = null;
+	var pendingIsExternal     = false;
 
-	function openModal( postId, policy, directUrl, postType ) {
+	function openModal( postId, policy, directUrl, postType, isExternal ) {
 		if ( ! modal ) {
 			buildModal();
 			attachModalEvents();
 		}
 
-		currentPostId    = postId;
-		currentPostType  = postType || '';
-		currentDirectUrl = directUrl;
+		currentPostId     = postId;
+		currentPostType   = postType || '';
+		currentDirectUrl  = directUrl;
+		currentIsExternal = !! isExternal;
 
 		// Reset to gate step.
-		errorMsg.textContent          = '';
+		errorMsg.textContent           = '';
 		form.reset();
 		setLoading( false );
-		gateContainer.style.display   = '';
-		intakeContainer.style.display = 'none';
+		gateContainer.style.display    = '';
+		intakeContainer.style.display  = 'none';
+		loadingContainer.style.display = 'none';
 		clearPending();
 
-		// Skip / close only shown for soft gate.
+		// Skip shown for soft gate only; close always available.
 		skipBtn.style.display  = policy === 'soft' ? '' : 'none';
-		closeBtn.style.display = policy === 'soft' ? '' : 'none';
+		closeBtn.style.display = '';
 
 		overlay.classList.add( 'is-open' );
 		nameField.focus();
 	}
 
 	function closeModal() {
-		overlay.classList.remove( 'is-open' );
-		currentPostId    = null;
-		currentPostType  = null;
-		currentDirectUrl = null;
+		if ( overlay ) {
+			overlay.classList.remove( 'is-open' );
+		}
+		currentPostId     = null;
+		currentPostType   = null;
+		currentDirectUrl  = null;
+		currentIsExternal = false;
 		clearPending();
 	}
 
 	function clearPending() {
-		pendingToken     = null;
-		pendingPersonId  = null;
-		pendingPostId    = null;
-		pendingPostType  = null;
-		pendingDirectUrl = null;
+		pendingToken        = null;
+		pendingPersonCookie = null;
+		pendingPostId       = null;
+		pendingPostType     = null;
+		pendingDirectUrl    = null;
+		pendingIsExternal   = false;
 	}
 
 	function setLoading( loading ) {
@@ -200,7 +216,7 @@
 			if ( e.target !== overlay ) { return; }
 			if ( pendingToken !== null ) {
 				finishDownload( pendingToken, pendingDirectUrl );
-			} else if ( skipBtn.style.display !== 'none' ) {
+			} else {
 				closeModal();
 			}
 		} );
@@ -232,14 +248,10 @@
 
 		// Intake skip: proceed to download without saving intake responses.
 		intakeSkipBtn.addEventListener( 'click', function () {
-			var token = pendingToken;
-			var url   = pendingDirectUrl;
-			closeModal();
-			if ( token ) {
-				downloadViaToken( token, url );
-			} else {
-				redirect( url );
-			}
+			var token      = pendingToken;
+			var url        = pendingDirectUrl;
+			var isExternal = pendingIsExternal;
+			proceedToDownload( token, url, isExternal );
 		} );
 	}
 
@@ -291,13 +303,14 @@
 					showError( result.data.message || 'Something went wrong. Please try again.' );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_id, 30 );
+				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
 				proceedAfterGate(
 					result.data.token,
-					result.data.person_id,
+					result.data.person_cookie,
 					currentPostId,
 					currentPostType,
-					currentDirectUrl
+					currentDirectUrl,
+					currentIsExternal
 				);
 			} )
 			.catch( function () {
@@ -310,29 +323,51 @@
 	// After-gate routing
 	// -------------------------------------------------------------------------
 
+	function showLoadingStep() {
+		gateContainer.style.display    = 'none';
+		intakeContainer.style.display  = 'none';
+		loadingContainer.style.display = '';
+	}
+
+	/**
+	 * Route to the file after gate or passthrough.
+	 *
+	 * External links (data-file-url, e.g. Wikimedia Commons) redirect directly —
+	 * the gate already captured the visitor; no token consumption needed.
+	 * Internal gateway downloads consume the token via the REST endpoint.
+	 */
+	function proceedToDownload( token, directUrl, isExternal ) {
+		if ( isExternal || ! token ) {
+			closeModal();
+			redirect( directUrl );
+		} else {
+			downloadViaToken( token );
+		}
+	}
+
 	/**
 	 * Decide what happens after a successful gate submission.
 	 *
 	 * If the post type has intake fields registered via the gateway_intake_fields
 	 * filter, show step 2. Otherwise download immediately.
 	 */
-	function proceedAfterGate( token, personId, postId, postType, directUrl ) {
+	function proceedAfterGate( token, personCookie, postId, postType, directUrl, isExternal ) {
 		var steps = gatewaySettings.intakeSteps &&
 		            gatewaySettings.intakeSteps[ postType ];
 		if ( token && steps && steps.length ) {
-			pendingToken     = token;
-			pendingPersonId  = personId;
-			pendingPostId    = postId;
-			pendingPostType  = postType;
-			pendingDirectUrl = directUrl;
+			pendingToken        = token;
+			pendingPersonCookie = personCookie;
+			pendingPostId       = postId;
+			pendingPostType     = postType;
+			pendingDirectUrl    = directUrl;
+			pendingIsExternal   = !! isExternal;
 			showIntakeStep( steps );
 		} else if ( token ) {
-			closeModal();
-			downloadViaToken( token, directUrl );
+			proceedToDownload( token, directUrl, isExternal );
 		} else {
-			// Honeypot hit — silently redirect to direct URL.
+			// Honeypot hit — close silently, no redirect (token is null so
+			// there is no valid download URL to send a bot to anyway).
 			closeModal();
-			redirect( directUrl );
 		}
 	}
 
@@ -412,10 +447,10 @@
 	}
 
 	function handleIntakeSubmit() {
-		var token     = pendingToken;
-		var personId  = pendingPersonId;
-		var postId    = pendingPostId;
-		var directUrl = pendingDirectUrl;
+		var token        = pendingToken;
+		var personCookie = pendingPersonCookie;
+		var postId       = pendingPostId;
+		var directUrl    = pendingDirectUrl;
 
 		// Collect responses from intake form fields.
 		var responses = {};
@@ -439,10 +474,10 @@
 				'X-WP-Nonce':   gatewaySettings.restNonce,
 			},
 			body: JSON.stringify( {
-				post_id:   postId,
-				person_id: personId,
-				nonce:     gatewaySettings.nonce,
-				responses: responses,
+				post_id:       postId,
+				person_cookie: personCookie,
+				nonce:         gatewaySettings.nonce,
+				responses:     responses,
 			} ),
 		} )
 			.then( function () {
@@ -458,12 +493,7 @@
 	 * Close the modal and trigger the download. Called after intake submit or skip.
 	 */
 	function finishDownload( token, directUrl ) {
-		closeModal();
-		if ( token ) {
-			downloadViaToken( token, directUrl );
-		} else {
-			redirect( directUrl );
-		}
+		proceedToDownload( token, directUrl, pendingIsExternal );
 	}
 
 	// -------------------------------------------------------------------------
@@ -475,29 +505,14 @@
 	}
 
 	/**
-	 * Consume a download token and navigate directly to the resolved file URL.
-	 *
-	 * Fetches the token endpoint with ?format=json so the server marks the token
-	 * as used and returns the file URL as JSON rather than a 302 redirect. This
-	 * avoids leaving an intermediate token URL in the browser's history stack.
-	 * Falls back to a direct token-URL navigation if the JSON request fails.
-	 *
-	 * @param {string} token    64-char hex download token.
-	 * @param {string} fallback URL to navigate to if the JSON request fails.
+	 * Navigate to the token URL; the server issues a 302 to the file host.
+	 * Chrome intercepts Content-Disposition: attachment without leaving the page.
+	 * Safari follows the redirect and briefly navigates to the file host before
+	 * the download starts — accepted limitation, file still downloads.
 	 */
-	function downloadViaToken( token, fallback ) {
-		fetch( gatewaySettings.downloadBase + '/' + token + '?format=json', {
-			method:      'GET',
-			credentials: 'same-origin',
-			headers:     { 'X-WP-Nonce': gatewaySettings.restNonce },
-		} )
-			.then( function ( res ) { return res.json().then( function ( data ) { return { ok: res.ok, data: data }; } ); } )
-			.then( function ( result ) {
-				redirect( result.ok && result.data.url ? result.data.url : fallback );
-			} )
-			.catch( function () {
-				redirect( fallback );
-			} );
+	function downloadViaToken( token ) {
+		closeModal();
+		redirect( gatewaySettings.downloadBase + '/' + token );
 	}
 
 	/**
@@ -506,10 +521,10 @@
 	 * Falls back to the modal if the server rejects the passthrough
 	 * (e.g. person was anonymized).
 	 */
-	function doSilentPassthrough( postId, policy, personId, directUrl, postType ) {
+	function doSilentPassthrough( postId, policy, personCookie, directUrl, postType, isExternal ) {
 		var body = new URLSearchParams( {
 			post_id:      postId,
-			_passthrough: personId,
+			_passthrough: personCookie,
 			nonce:        gatewaySettings.nonce,
 			_hp:          '',
 		} );
@@ -527,15 +542,15 @@
 			.then( function ( result ) {
 				if ( ! result.ok ) {
 					// Passthrough rejected — show gate form.
-					openModal( postId, policy, directUrl, postType );
+					openModal( postId, policy, directUrl, postType, isExternal );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_id, 30 );
-				downloadViaToken( result.data.token, directUrl );
+				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
+				proceedToDownload( result.data.token, directUrl, isExternal );
 			} )
 			.catch( function () {
 				// Network error — fall back to modal.
-				openModal( postId, policy, directUrl, postType );
+				openModal( postId, policy, directUrl, postType, isExternal );
 			} );
 	}
 
@@ -553,11 +568,13 @@
 
 		e.preventDefault();
 
-		var personId = getCookie( 'gateway_gated' );
-		if ( personId ) {
-			doSilentPassthrough( link.dataset.postId, policy, personId, link.href, link.dataset.postType );
+		var isExternal   = !! link.dataset.fileUrl;
+		var directUrl    = link.dataset.fileUrl || link.href;
+		var personCookie = getCookie( 'gateway_gated' );
+		if ( personCookie ) {
+			doSilentPassthrough( link.dataset.postId, policy, personCookie, directUrl, link.dataset.postType, isExternal );
 		} else {
-			openModal( link.dataset.postId, policy, link.href, link.dataset.postType );
+			openModal( link.dataset.postId, policy, directUrl, link.dataset.postType, isExternal );
 		}
 	} );
 }() );

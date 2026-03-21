@@ -13,17 +13,22 @@ parameters:
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
 			count: 10
-			path: tests/unit/download-gateway/TokenRepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 17
-			path: tests/unit/download-gateway/PeopleRepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 10
 			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:twice\\(\\)\\.$#"
+			count: 1
+			path: tests/unit/download-gateway/GateControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 2
+			path: tests/unit/download-gateway/IntakeControllerTest.php
+
+		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 13
+			path: tests/unit/download-gateway/PeopleRepositoryTest.php
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
@@ -32,18 +37,23 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
-			count: 2
-			path: tests/unit/download-gateway/IntakeControllerTest.php
+			count: 10
+			path: tests/unit/download-gateway/TokenRepositoryTest.php
 
 		-
-			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:twice\\(\\)\\.$#"
+			message: "#^Function get_field not found\\.$#"
 			count: 1
-			path: tests/unit/download-gateway/GateControllerTest.php
+			path: wp-content/plugins/download-gateway/includes/class-caption-file-resolver.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/download-gateway/includes/class-document-file-resolver.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/plugins/download-gateway/includes/class-video-file-resolver.php
 
 		-
 			message: "#^Function acf_add_local_field_group not found\\.$#"
@@ -746,8 +756,28 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-
-			message: "#^Variable \\$dropbox_link might not be defined\\.$#"
+			message: "#^If condition is always false\\.$#"
 			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Left side of && is always false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
+
+		-
+			message: "#^Variable \\$dropbox_link might not be defined\\.$#"
+			count: 1
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-
@@ -768,11 +798,6 @@ parameters:
 		-
 			message: "#^Variable \\$video_license_url might not be defined\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
-
-		-
-			message: "#^Variable \\$wikimedia_commons_link might not be defined\\.$#"
-			count: 2
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-

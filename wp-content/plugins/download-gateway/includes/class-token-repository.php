@@ -42,7 +42,7 @@ class TokenRepository {
 				'visitor_id' => $visitor_id,
 				'person_id'  => $person_id,
 				'expires_at' => gmdate( 'Y-m-d H:i:s', time() + $ttl_seconds ),
-				'created_at' => current_time( 'mysql' ),
+				'created_at' => gmdate( 'Y-m-d H:i:s' ),
 			)
 		);
 
@@ -80,7 +80,7 @@ class TokenRepository {
 
 		$result = $wpdb->update(
 			$wpdb->prefix . 'gateway_tokens',
-			array( 'used_at' => current_time( 'mysql' ) ),
+			array( 'used_at' => gmdate( 'Y-m-d H:i:s' ) ),
 			array( 'token' => $token )
 		);
 
@@ -121,7 +121,7 @@ class TokenRepository {
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"DELETE FROM {$table} WHERE expires_at < %s AND used_at IS NULL",
-				current_time( 'mysql' )
+				gmdate( 'Y-m-d H:i:s' )
 			)
 		);
 

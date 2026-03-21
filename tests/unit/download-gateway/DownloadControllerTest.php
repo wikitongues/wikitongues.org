@@ -61,6 +61,18 @@ class DownloadControllerTest extends TestCase {
 		$this->assertSame( 403, $result->get_error_data()['status'] );
 	}
 
+	public function test_resolve_returns_404_when_policy_is_disabled(): void {
+		FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
+
+		WP_Mock::userFunction( 'get_post_type', array( 'return' => 'document_files' ) );
+		// PolicyResolver tier 1: per-resource meta returns 'disabled'.
+		WP_Mock::userFunction( 'get_post_meta', array( 'return' => 'disabled' ) );
+
+		$result = $this->controller->resolve( '42' );
+		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertSame( 404, $result->get_error_data()['status'] );
+	}
+
 	public function test_resolve_returns_file_url_for_valid_post_id(): void {
 		FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
 

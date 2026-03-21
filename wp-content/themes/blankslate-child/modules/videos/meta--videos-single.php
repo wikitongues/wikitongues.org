@@ -50,7 +50,22 @@
 					$label = 'Unknown Language';
 				}
 
-				$caption_items .= '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
+				if ( shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED ) {
+					// Render via gateway so the download is logged and gated per policy.
+					// Build the anchor inline to safely handle language names with apostrophes.
+					$caption_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $caption->ID );
+					$caption_disabled = ( $caption_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
+					if ( ! $caption_disabled ) {
+						$caption_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $caption->ID );
+						$caption_items .= '<li><a href="' . esc_url( $caption_dl_url ) . '" class="gateway-download-link"'
+							. ' data-post-id="' . esc_attr( (string) $caption->ID ) . '"'
+							. ' data-policy="' . esc_attr( $caption_policy ) . '"'
+							. ' data-post-type="captions">'
+							. esc_html( $label ) . ' (.srt)</a></li>';
+					}
+				} else {
+					$caption_items .= '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
+				}
 			}
 
 			if ( $caption_items ) {
@@ -66,19 +81,50 @@
 		<strong>Video file downloads</strong>
 		<?php
 		if ( $public_status === 'Public' ) {
-			if ( ( $dropbox_link && $dropbox_link !== 'none' ) || $wikimedia_commons_link ) {
+			$has_dropbox   = $dropbox_link && $dropbox_link !== 'none';
+			$has_wikimedia = ! empty( $wikimedia_commons_link );
+
+			if ( $has_dropbox || $has_wikimedia ) {
 				echo '<ul>';
-				if ( $dropbox_link && $dropbox_link !== 'none' ) {
-					echo '<li><a href="' . $dropbox_link . '" target="_blank">Dropbox (.mp4)</a></li>';
+
+				$gateway_active = shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED;
+				$video_policy   = 'none';
+				$video_disabled = false;
+				if ( $gateway_active ) {
+					$video_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $video_id );
+					$video_disabled = ( $video_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
 				}
 
-				if ( $wikimedia_commons_link ) {
-					echo '<li><a href="' . $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+				if ( $has_dropbox ) {
+					if ( $gateway_active ) {
+						if ( ! $video_disabled ) {
+							$video_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $video_id );
+							echo '<li><a href="' . esc_url( $video_dl_url ) . '" class="gateway-download-link"'
+								. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
+								. ' data-policy="' . esc_attr( $video_policy ) . '"'
+								. ' data-post-type="videos">Dropbox (.mp4)</a></li>';
+						}
+					} else {
+						echo '<li><a href="' . esc_url( $dropbox_link ) . '" target="_blank">Dropbox (.mp4)</a></li>';
+					}
 				}
+
+				// Wikimedia Commons: gate fires (visitor data captured) but JS redirects
+				// directly to the public URL — no server-side file resolution needed.
+				if ( $has_wikimedia ) {
+					if ( $gateway_active && ! $video_disabled ) {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" class="gateway-download-link"'
+							. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
+							. ' data-policy="' . esc_attr( $video_policy ) . '"'
+							. ' data-post-type="videos"'
+							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '">Wikimedia Commons (.webm)</a></li>';
+					} else {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+					}
+				}
+
 				echo '</ul>';
-			}
-
-			if ( ( $dropbox_link === 'none' || ! $dropbox_link ) && ! $wikimedia_commons_link ) {
+			} else {
 				echo '<p>File downloads are currently unavailable for this video.</p>';
 			}
 		} elseif ( $public_status === 'Processing' ) {

@@ -24,6 +24,12 @@ class Download_Shortcode {
 	 * @param array<string,string>|string $atts
 	 */
 	public static function render( $atts ): string {
+		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
+		if ( ! GATEWAY_ENABLED ) {
+			return '';
+		}
+
+		// @phpstan-ignore-next-line (unreachable only in static analysis — runtime value differs)
 		$atts = shortcode_atts(
 			array(
 				'id'    => '',

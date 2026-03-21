@@ -106,29 +106,6 @@ class PeopleRepository {
 	}
 
 	/**
-	 * Find a non-anonymized person by email address.
-	 *
-	 * @param string $email Raw email address.
-	 * @return object|null
-	 */
-	public static function find_by_email( string $email ): ?object {
-		global $wpdb;
-
-		$table      = $wpdb->prefix . 'gateway_people';
-		$email_hash = self::hash_email( $email );
-
-		$row = $wpdb->get_row(
-			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT * FROM {$table} WHERE email_hash = %s AND is_anonymized = 0",
-				$email_hash
-			)
-		);
-
-		return $row ?: null;
-	}
-
-	/**
 	 * Hash an email address for storage and lookup.
 	 *
 	 * @param string $email Raw email address.

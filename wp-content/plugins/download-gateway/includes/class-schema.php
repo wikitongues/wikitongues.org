@@ -181,6 +181,7 @@ class Schema {
 
 		// Drop in reverse dependency order (events reference people; tokens reference both).
 		$tables = array(
+			"{$wpdb->prefix}gateway_intake_responses",
 			"{$wpdb->prefix}gateway_webhook_delivery",
 			"{$wpdb->prefix}gateway_download_events",
 			"{$wpdb->prefix}gateway_tokens",

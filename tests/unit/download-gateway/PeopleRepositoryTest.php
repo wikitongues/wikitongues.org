@@ -97,40 +97,6 @@ class PeopleRepositoryTest extends TestCase {
 	}
 
 	// -------------------------------------------------------------------------
-	// find_by_email()
-	// -------------------------------------------------------------------------
-
-	public function test_find_by_email_returns_row_when_found(): void {
-		$row             = new stdClass();
-		$row->id         = 5;
-		$row->email_hash = PeopleRepository::hash_email( 'user@example.com' );
-
-		/** @var \Mockery\MockInterface&\wpdb $wpdb */
-		$wpdb         = Mockery::mock( 'wpdb' );
-		$wpdb->prefix = 'wp_';
-		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
-		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $row );
-		$GLOBALS['wpdb'] = $wpdb;
-
-		$result = PeopleRepository::find_by_email( 'user@example.com' );
-
-		$this->assertSame( $row, $result );
-	}
-
-	public function test_find_by_email_returns_null_when_not_found(): void {
-		/** @var \Mockery\MockInterface&\wpdb $wpdb */
-		$wpdb         = Mockery::mock( 'wpdb' );
-		$wpdb->prefix = 'wp_';
-		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
-		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( null );
-		$GLOBALS['wpdb'] = $wpdb;
-
-		$result = PeopleRepository::find_by_email( 'nobody@example.com' );
-
-		$this->assertNull( $result );
-	}
-
-	// -------------------------------------------------------------------------
 	// find_by_id()
 	// -------------------------------------------------------------------------
 

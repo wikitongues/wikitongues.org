@@ -87,8 +87,6 @@ class TokenRepositoryTest extends TestCase {
 			->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 
-		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-14 12:00:00' ) );
-
 		$token = TokenRepository::create( 99 );
 
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $token );

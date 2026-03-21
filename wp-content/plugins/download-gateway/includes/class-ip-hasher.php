@@ -48,25 +48,16 @@ class IpHasher {
 	}
 
 	/**
-	 * Extracts and hashes the best available client IP from a server array.
+	 * Extracts and hashes the client IP from REMOTE_ADDR.
 	 *
-	 * Checks X-Forwarded-For first (leftmost address = original client),
-	 * falling back to REMOTE_ADDR. Only use X-Forwarded-For if your server
-	 * is behind a trusted reverse proxy — there is no forgery protection here.
+	 * X-Forwarded-For is intentionally ignored: on shared hosting there is no
+	 * trusted reverse proxy, so accepting XFF would allow any caller to supply
+	 * an arbitrary header and bypass rate limiting.
 	 *
 	 * @param array $server $_SERVER superglobal or equivalent.
 	 * @return string 64-character hex hash, or hash of empty string if no IP found.
 	 */
 	public static function hash_from_server( array $server ): string {
-		if ( ! empty( $server['HTTP_X_FORWARDED_FOR'] ) ) {
-			// X-Forwarded-For may be a comma-separated list; take the first.
-			$forwarded = explode( ',', $server['HTTP_X_FORWARDED_FOR'] );
-			$ip        = trim( $forwarded[0] );
-			if ( '' !== $ip ) {
-				return self::hash( $ip );
-			}
-		}
-
 		return self::hash( (string) ( $server['REMOTE_ADDR'] ?? '' ) );
 	}
 }

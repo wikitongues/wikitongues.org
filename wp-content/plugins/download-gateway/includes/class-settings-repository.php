@@ -91,6 +91,33 @@ class SettingsRepository {
 		}
 	}
 
+	// -------------------------------------------------------------------------
+	// Dropbox credentials — read-only accessors for wp-config.php constants.
+	// No write methods: credentials are managed in wp-config.php, not the DB.
+	// -------------------------------------------------------------------------
+
+	/** Returns the Dropbox app key from GATEWAY_DROPBOX_APP_KEY, or empty string. */
+	public static function get_dropbox_app_key(): string {
+		return defined( 'GATEWAY_DROPBOX_APP_KEY' ) ? GATEWAY_DROPBOX_APP_KEY : '';
+	}
+
+	/** Returns the Dropbox app secret from GATEWAY_DROPBOX_APP_SECRET, or empty string. */
+	public static function get_dropbox_app_secret(): string {
+		return defined( 'GATEWAY_DROPBOX_APP_SECRET' ) ? GATEWAY_DROPBOX_APP_SECRET : '';
+	}
+
+	/** Returns the Dropbox refresh token from GATEWAY_DROPBOX_REFRESH_TOKEN, or empty string. */
+	public static function get_dropbox_refresh_token(): string {
+		return defined( 'GATEWAY_DROPBOX_REFRESH_TOKEN' ) ? GATEWAY_DROPBOX_REFRESH_TOKEN : '';
+	}
+
+	/** Returns true when all three Dropbox constants are defined and non-empty. */
+	public static function dropbox_configured(): bool {
+		return self::get_dropbox_app_key() !== ''
+			&& self::get_dropbox_app_secret() !== ''
+			&& self::get_dropbox_refresh_token() !== '';
+	}
+
 	/**
 	 * Returns how many months before a person record is anonymized.
 	 */

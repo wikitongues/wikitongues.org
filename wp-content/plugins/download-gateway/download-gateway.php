@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GATEWAY_VERSION', '0.1.0' );
+define( 'GATEWAY_VERSION', '0.1.10' );
 define( 'GATEWAY_FILE', __FILE__ );
 define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
@@ -44,11 +44,15 @@ require_once GATEWAY_DIR . 'includes/class-token-repository.php';
 require_once GATEWAY_DIR . 'includes/class-download-event-repository.php';
 require_once GATEWAY_DIR . 'includes/interface-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-document-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-dropbox-adapter.php';
+require_once GATEWAY_DIR . 'includes/class-video-file-resolver.php';
+require_once GATEWAY_DIR . 'includes/class-caption-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-file-resolver-registry.php';
 require_once GATEWAY_DIR . 'includes/class-download-controller.php';
 require_once GATEWAY_DIR . 'includes/class-resource-metabox.php';
 require_once GATEWAY_DIR . 'includes/class-download-shortcode.php';
 require_once GATEWAY_DIR . 'includes/class-people-repository.php';
+require_once GATEWAY_DIR . 'includes/class-person-cookie.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';
@@ -58,26 +62,6 @@ require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
 register_deactivation_hook( __FILE__, __NAMESPACE__ . '\Activator::deactivate' );
 
-/**
- * Show an admin notice when GATEWAY_ENABLED is false so the site operator knows
- * the gateway is installed but not yet intercepting downloads.
- */
-add_action(
-	'admin_notices',
-	function (): void {
-		// @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php)
-		if ( ! GATEWAY_ENABLED ) {
-			$screen = get_current_screen();
-			if ( $screen && str_contains( $screen->id, 'download-gateway' ) ) {
-				echo '<div class="notice notice-warning"><p>';
-				echo '<strong>Download Gateway:</strong> ';
-				echo 'The gateway is currently <strong>disabled</strong>. ';
-				echo 'Add <code>define( \'GATEWAY_ENABLED\', true );</code> to <code>wp-config.php</code> to activate download interception.';
-				echo '</p></div>';
-			}
-		}
-	}
-);
 
 add_action( 'admin_menu', __NAMESPACE__ . '\Settings_Page::register' );
 add_action( 'admin_init', __NAMESPACE__ . '\Settings_Page::handle_run_now_action' );
@@ -169,19 +153,8 @@ add_action(
 
 // Register file resolvers for supported post types.
 FileResolverRegistry::register( 'document_files', new DocumentFileResolver() );
-
-/*
- * Expose videos and captions in per-CPT policy settings before their
- * FileResolvers are built (sub-phase 6 — Dropbox adapter).
- * Remove these entries once VideoFileResolver and CaptionFileResolver
- * are registered above — they will appear automatically at that point.
- */
-add_filter(
-	'gateway_policy_post_types',
-	function ( array $types ): array {
-		return array_unique( array_merge( $types, array( 'videos', 'captions' ) ) );
-	}
-);
+FileResolverRegistry::register( 'videos', new VideoFileResolver() );
+FileResolverRegistry::register( 'captions', new CaptionFileResolver() );
 
 add_action(
 	RetentionJob::CRON_HOOK,
