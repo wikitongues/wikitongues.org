@@ -67,16 +67,16 @@
 
 			// ── Step 1: gate form ──────────────────────────────────────────
 			'<div id="gateway-gate-container">' +
-			'<h2 id="gateway-modal-title">Download this resource</h2>' +
-			'<p id="gateway-modal-desc">Share your name and email to download. Wikitongues will occasionally send you updates about our work \u2014 you can unsubscribe at any time.</p>' +
+			'<h2 id="gateway-modal-title">Download and support the archive</h2>' +
+			'<p id="gateway-modal-desc">This material is part of a global effort to preserve and share human language<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.</p>' +
 			'<form id="gateway-form" novalidate>' +
-				'<label for="gateway-name">Name <span aria-hidden="true">*</span></label>' +
+				'<label for="gateway-name">Name<span aria-hidden="true">*</span></label>' +
 				'<input id="gateway-name" name="name" type="text" autocomplete="name" required />' +
-				'<label for="gateway-email">Email <span aria-hidden="true">*</span></label>' +
+				'<label for="gateway-email">Email<span aria-hidden="true">*</span></label>' +
 				'<input id="gateway-email" name="email" type="email" autocomplete="email" required />' +
 				'<label class="gateway-consent">' +
-					'<input id="gateway-consent" name="consent_download" type="checkbox" />' +
-					' I agree to receive occasional updates from Wikitongues' +
+					'<input id="gateway-consent" name="consent_download" type="checkbox" checked=true/>' +
+					'Receive updates on new languages and resources' +
 				'</label>' +
 				// Honeypot — hidden from real users
 				'<div style="display:none" aria-hidden="true">' +
