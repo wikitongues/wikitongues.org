@@ -6,6 +6,7 @@
   <file>wp-content/themes/blankslate-child</file>
   <file>wp-content/plugins/wt-gallery</file>
   <file>wp-content/plugins/typeahead/typeahead.php</file>
+  <file>wp-content/plugins/download-gateway</file>
   <file>tests</file>
 
   <!-- Exclusions -->

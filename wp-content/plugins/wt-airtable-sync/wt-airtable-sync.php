@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       WT Airtable Sync
+ * Plugin Name:       Wikitongues Airtable Sync
  * Plugin URI:        https://github.com/wikitongues/wikitongues.org
  * Description:       HTTP transport layer for Airtable → WordPress content sync. Make.com POSTs raw Airtable payloads; this plugin owns all field mapping, relationship resolution, and ACF writes in code.
  * Version:           0.1.0

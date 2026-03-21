@@ -10,9 +10,10 @@
 		?>
 
 		<?php
-		// Get captions linked to this video
+		// Get captions linked to this video.
+		// source_video is an ACF post_object field but the sync stores the value
+		// as a serialized array, so we match against the serialized form with LIKE.
 		$video_id = get_the_ID();
-
 		$captions = get_posts(
 			array(
 				'post_type'      => 'captions',
@@ -20,39 +21,59 @@
 				'meta_query'     => array(
 					array(
 						'key'     => 'source_video',
-						'value'   => $video_id,
-						'compare' => '=',
+						'value'   => '"' . $video_id . '"',
+						'compare' => 'LIKE',
 					),
 				),
 			)
 		);
 
 		if ( $captions ) {
-			echo '<section>';
-			echo '<strong>Available captions</strong>';
-			echo '<ul>';
+			$caption_items = '';
 			foreach ( $captions as $caption ) {
-					$file_url         = get_field( 'file_url', $caption->ID );
-					$source_languages = get_field( 'source_language', $caption->ID ); // array of WP_Posts
+				$file_url         = get_field( 'file_url', $caption->ID );
+				$source_languages = get_field( 'source_language', $caption->ID ); // array of WP_Posts
+
+				if ( ! $file_url ) {
+					continue;
+				}
 
 				if ( is_array( $source_languages ) && ! empty( $source_languages ) ) {
-						$caption_language_names = array_map(
-							function ( $lang_post ) {
-								return get_field( 'standard_name', $lang_post->ID );
-							},
-							$source_languages
-						);
-
-						$label = implode( ', ', array_filter( $caption_language_names ) ); // avoid null values
+					$caption_language_names = array_map(
+						function ( $lang_post ) {
+							return get_field( 'standard_name', $lang_post->ID );
+						},
+						$source_languages
+					);
+					$label                  = implode( ', ', array_filter( $caption_language_names ) );
 				} else {
-						$label = 'Unknown Language';
+					$label = 'Unknown Language';
 				}
-				if ( $file_url ) {
-						echo '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
+
+				if ( shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED ) {
+					// Render via gateway so the download is logged and gated per policy.
+					// Build the anchor inline to safely handle language names with apostrophes.
+					$caption_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $caption->ID );
+					$caption_disabled = ( $caption_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
+					if ( ! $caption_disabled ) {
+						$caption_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $caption->ID );
+						$caption_items .= '<li><a href="' . esc_url( $caption_dl_url ) . '" class="gateway-download-link"'
+							. ' data-post-id="' . esc_attr( (string) $caption->ID ) . '"'
+							. ' data-policy="' . esc_attr( $caption_policy ) . '"'
+							. ' data-post-type="captions">'
+							. esc_html( $label ) . ' (.srt)</a></li>';
+					}
+				} else {
+					$caption_items .= '<li><a href="' . esc_url( $file_url ) . '" target="_blank">' . esc_html( $label ) . ' (.srt)</a></li>';
 				}
 			}
-			echo '</ul>';
-			echo '</section>';
+
+			if ( $caption_items ) {
+				echo '<section>';
+				echo '<strong>Available captions</strong>';
+				echo '<ul>' . $caption_items . '</ul>';
+				echo '</section>';
+			}
 		}
 		?>
 
@@ -60,19 +81,50 @@
 		<strong>Video file downloads</strong>
 		<?php
 		if ( $public_status === 'Public' ) {
-			if ( ( $dropbox_link && $dropbox_link !== 'none' ) || $wikimedia_commons_link ) {
+			$has_dropbox   = $dropbox_link && $dropbox_link !== 'none';
+			$has_wikimedia = ! empty( $wikimedia_commons_link );
+
+			if ( $has_dropbox || $has_wikimedia ) {
 				echo '<ul>';
-				if ( $dropbox_link && $dropbox_link !== 'none' ) {
-					echo '<li><a href="' . $dropbox_link . '" target="_blank">Dropbox (.mp4)</a></li>';
+
+				$gateway_active = shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED;
+				$video_policy   = 'none';
+				$video_disabled = false;
+				if ( $gateway_active ) {
+					$video_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $video_id );
+					$video_disabled = ( $video_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
 				}
 
-				if ( $wikimedia_commons_link ) {
-					echo '<li><a href="' . $wikimedia_commons_link . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+				if ( $has_dropbox ) {
+					if ( $gateway_active ) {
+						if ( ! $video_disabled ) {
+							$video_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $video_id );
+							echo '<li><a href="' . esc_url( $video_dl_url ) . '" class="gateway-download-link"'
+								. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
+								. ' data-policy="' . esc_attr( $video_policy ) . '"'
+								. ' data-post-type="videos">Dropbox (.mp4)</a></li>';
+						}
+					} else {
+						echo '<li><a href="' . esc_url( $dropbox_link ) . '" target="_blank">Dropbox (.mp4)</a></li>';
+					}
 				}
+
+				// Wikimedia Commons: gate fires (visitor data captured) but JS redirects
+				// directly to the public URL — no server-side file resolution needed.
+				if ( $has_wikimedia ) {
+					if ( $gateway_active && ! $video_disabled ) {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" class="gateway-download-link"'
+							. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
+							. ' data-policy="' . esc_attr( $video_policy ) . '"'
+							. ' data-post-type="videos"'
+							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '">Wikimedia Commons (.webm)</a></li>';
+					} else {
+						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
+					}
+				}
+
 				echo '</ul>';
-			}
-
-			if ( ( $dropbox_link === 'none' || ! $dropbox_link ) && ! $wikimedia_commons_link ) {
+			} else {
 				echo '<p>File downloads are currently unavailable for this video.</p>';
 			}
 		} elseif ( $public_status === 'Processing' ) {
