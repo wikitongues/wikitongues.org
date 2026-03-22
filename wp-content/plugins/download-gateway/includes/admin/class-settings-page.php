@@ -73,6 +73,44 @@ class Settings_Page {
 		}
 
 		update_option( SettingsRepository::OPTION_RETENTION_MONTHS, $retention_months );
+
+		// Intake — global set.
+		/** This filter is documented in download-gateway.php. */
+		$registered_sets    = array_keys( (array) apply_filters( 'gateway_intake_fields', array() ) );
+		$allowed_set_values = array_merge( array( 'none' ), $registered_sets );
+
+		$global_intake_set = isset( $_POST[ SettingsRepository::OPTION_GLOBAL_INTAKE_SET ] )
+			? sanitize_key( $_POST[ SettingsRepository::OPTION_GLOBAL_INTAKE_SET ] )
+			: 'none';
+		if ( ! in_array( $global_intake_set, $allowed_set_values, true ) ) {
+			$global_intake_set = 'none';
+		}
+		update_option( SettingsRepository::OPTION_GLOBAL_INTAKE_SET, $global_intake_set );
+
+		// Intake — global always.
+		$global_intake_always = ! empty( $_POST[ SettingsRepository::OPTION_GLOBAL_INTAKE_ALWAYS ] ) ? '1' : '0';
+		update_option( SettingsRepository::OPTION_GLOBAL_INTAKE_ALWAYS, $global_intake_always );
+
+		// Intake — per-CPT set and always.
+		foreach ( $post_types as $post_type ) {
+			$set_key   = SettingsRepository::OPTION_CPT_INTAKE_SET_PREFIX . $post_type;
+			$set_value = isset( $_POST[ $set_key ] ) ? sanitize_key( $_POST[ $set_key ] ) : '';
+			// Empty = inherit (delete option); otherwise validate against allowed.
+			if ( '' !== $set_value && ! in_array( $set_value, $allowed_set_values, true ) ) {
+				$set_value = '';
+			}
+			SettingsRepository::update_cpt_intake_set( $post_type, $set_value );
+
+			$always_key   = SettingsRepository::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type;
+			$always_value = isset( $_POST[ $always_key ] ) ? sanitize_key( $_POST[ $always_key ] ) : '';
+			if ( '1' === $always_value ) {
+				SettingsRepository::update_cpt_intake_always( $post_type, true );
+			} elseif ( '0' === $always_value ) {
+				SettingsRepository::update_cpt_intake_always( $post_type, false );
+			} else {
+				SettingsRepository::update_cpt_intake_always( $post_type, null );
+			}
+		}
 	}
 
 	/**
@@ -159,6 +197,30 @@ class Settings_Page {
 		return $labels[ $policy ] ?? esc_html( $policy );
 	}
 
+	/** Render a <select> for an intake set field. */
+	private static function intake_set_select( string $name, string $current, array $registered_sets, bool $include_inherit = true ): void {
+		echo '<select name="' . esc_attr( $name ) . '">';
+		if ( $include_inherit ) {
+			echo '<option value="" ' . selected( $current, '', false ) . '>Inherit</option>';
+		}
+		echo '<option value="none" ' . selected( $current, 'none', false ) . '>None — no intake form</option>';
+		foreach ( $registered_sets as $set_name ) {
+			echo '<option value="' . esc_attr( $set_name ) . '" ' . selected( $current, $set_name, false ) . '>' . esc_html( $set_name ) . '</option>';
+		}
+		echo '</select>';
+	}
+
+	/** Render a <select> for the intake always-show field. */
+	private static function intake_always_select( string $name, string $current, bool $include_inherit = true ): void {
+		echo '<select name="' . esc_attr( $name ) . '">';
+		if ( $include_inherit ) {
+			echo '<option value="" ' . selected( $current, '', false ) . '>Inherit</option>';
+		}
+		echo '<option value="0" ' . selected( $current, '0', false ) . '>No — first download only</option>';
+		echo '<option value="1" ' . selected( $current, '1', false ) . '>Yes — every session</option>';
+		echo '</select>';
+	}
+
 	/** Render a <select> for a policy field. */
 	private static function policy_select( string $name, string $current, bool $include_inherit = true ): void {
 		echo '<select name="' . esc_attr( $name ) . '">';
@@ -184,7 +246,11 @@ class Settings_Page {
 
 		$current_policy           = SettingsRepository::get_global_gate_policy();
 		$current_retention_months = SettingsRepository::get_retention_months();
-		$last_run                 = get_option( RetentionJob::OPTION_LAST_RUN, null );
+		/** This filter is documented in download-gateway.php. */
+		$registered_sets       = array_keys( (array) apply_filters( 'gateway_intake_fields', array() ) );
+		$current_intake_set    = SettingsRepository::get_global_intake_set();
+		$current_intake_always = SettingsRepository::get_global_intake_always() ? '1' : '0';
+		$last_run              = get_option( RetentionJob::OPTION_LAST_RUN, null );
 		/**
 		 * Filters the post types shown in the per-CPT policy settings table.
 		 *
@@ -253,10 +319,56 @@ class Settings_Page {
 						</td>
 					</tr>
 					<?php endforeach; ?>
+				</table>
 
+				<h2 class="title">Intake forms</h2>
+				<p>
+					Intake forms are an optional step 2 shown after the gate, collecting supplementary information.
+					Field sets are registered via the <code>gateway_intake_fields</code> PHP filter.
+					<?php if ( empty( $registered_sets ) ) : ?>
+					<br /><em>No intake field sets are currently registered.</em>
+					<?php endif; ?>
+				</p>
+
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row">Global default set</th>
+						<td>
+							<?php self::intake_set_select( SettingsRepository::OPTION_GLOBAL_INTAKE_SET, $current_intake_set, $registered_sets, false ); ?>
+							<p class="description">Fallback intake set when no per-CPT or per-resource override is set.</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Show on repeat downloads (global)</th>
+						<td>
+							<?php self::intake_always_select( SettingsRepository::OPTION_GLOBAL_INTAKE_ALWAYS, $current_intake_always, false ); ?>
+							<p class="description">When set to "Yes", the intake form also appears for returning visitors downloading again within the same session.</p>
+						</td>
+					</tr>
+
+					<?php foreach ( $post_types as $post_type ) : ?>
+						<?php
+						$cpt_intake_set    = SettingsRepository::get_cpt_intake_set( $post_type ) ?? '';
+						$cpt_intake_always = SettingsRepository::get_cpt_intake_always( $post_type );
+						$cpt_always_value  = null === $cpt_intake_always ? '' : ( $cpt_intake_always ? '1' : '0' );
+						?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $post_type ); ?></th>
+						<td>
+							<?php self::intake_set_select( SettingsRepository::OPTION_CPT_INTAKE_SET_PREFIX . $post_type, $cpt_intake_set, $registered_sets ); ?>
+							&nbsp;
+							<?php self::intake_always_select( SettingsRepository::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type, $cpt_always_value ); ?>
+							<p class="description">Set &nbsp;/&nbsp; Always show</p>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</table>
+
+				<h2 class="title">Data retention</h2>
+				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row">
-							<label for="gateway_retention_months">Data retention</label>
+							<label for="gateway_retention_months">Retention window</label>
 						</th>
 						<td>
 							<input

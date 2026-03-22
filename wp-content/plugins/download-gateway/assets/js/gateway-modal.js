@@ -3,7 +3,7 @@
 	'use strict';
 
 	// gatewaySettings is localized by PHP:
-	//   { nonce, restNonce, apiUrl, downloadBase, intakeUrl, intakeSteps }
+	//   { nonce, restNonce, apiUrl, downloadBase, intakeUrl, intakeSets }
 	if ( typeof gatewaySettings === 'undefined' ) {
 		return;
 	}
@@ -68,7 +68,7 @@
 			// ── Step 1: gate form ──────────────────────────────────────────
 			'<div id="gateway-gate-container">' +
 			'<h2 id="gateway-modal-title">Download and support the archive</h2>' +
-			'<p id="gateway-modal-desc">This material is part of a global effort to preserve and share human language<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.</p>' +
+			'<p id="gateway-modal-desc">This material is part of a global effort to preserve and share human language.<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.</p>' +
 			'<form id="gateway-form" novalidate>' +
 				'<label for="gateway-name">Name<span aria-hidden="true">*</span></label>' +
 				'<input id="gateway-name" name="name" type="text" autocomplete="name" required />' +
@@ -140,6 +140,8 @@
 	var currentPostType    = null;
 	var currentDirectUrl   = null;
 	var currentIsExternal  = false;
+	var currentIntakeSet   = '';
+	var currentIntakeAlways = false;
 
 	// Pending state — populated when gate passes and intake step is active.
 	var pendingToken          = null;
@@ -149,16 +151,18 @@
 	var pendingDirectUrl      = null;
 	var pendingIsExternal     = false;
 
-	function openModal( postId, policy, directUrl, postType, isExternal ) {
+	function openModal( postId, policy, directUrl, postType, isExternal, intakeSet, intakeAlways ) {
 		if ( ! modal ) {
 			buildModal();
 			attachModalEvents();
 		}
 
-		currentPostId     = postId;
-		currentPostType   = postType || '';
-		currentDirectUrl  = directUrl;
-		currentIsExternal = !! isExternal;
+		currentPostId       = postId;
+		currentPostType     = postType || '';
+		currentDirectUrl    = directUrl;
+		currentIsExternal   = !! isExternal;
+		currentIntakeSet    = intakeSet    || '';
+		currentIntakeAlways = !! intakeAlways;
 
 		// Reset to gate step.
 		errorMsg.textContent           = '';
@@ -181,10 +185,12 @@
 		if ( overlay ) {
 			overlay.classList.remove( 'is-open' );
 		}
-		currentPostId     = null;
-		currentPostType   = null;
-		currentDirectUrl  = null;
-		currentIsExternal = false;
+		currentPostId       = null;
+		currentPostType     = null;
+		currentDirectUrl    = null;
+		currentIsExternal   = false;
+		currentIntakeSet    = '';
+		currentIntakeAlways = false;
 		clearPending();
 	}
 
@@ -303,7 +309,7 @@
 					showError( result.data.message || 'Something went wrong. Please try again.' );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
+				setCookie( 'gateway_gated', result.data.person_cookie, 0 );
 				proceedAfterGate(
 					result.data.token,
 					result.data.person_cookie,
@@ -352,16 +358,17 @@
 	 * filter, show step 2. Otherwise download immediately.
 	 */
 	function proceedAfterGate( token, personCookie, postId, postType, directUrl, isExternal ) {
-		var steps = gatewaySettings.intakeSteps &&
-		            gatewaySettings.intakeSteps[ postType ];
-		if ( token && steps && steps.length ) {
+		var fields = currentIntakeSet &&
+		             gatewaySettings.intakeSets &&
+		             gatewaySettings.intakeSets[ currentIntakeSet ];
+		if ( token && fields && fields.length ) {
 			pendingToken        = token;
 			pendingPersonCookie = personCookie;
 			pendingPostId       = postId;
 			pendingPostType     = postType;
 			pendingDirectUrl    = directUrl;
 			pendingIsExternal   = !! isExternal;
-			showIntakeStep( steps );
+			showIntakeStep( fields );
 		} else if ( token ) {
 			proceedToDownload( token, directUrl, isExternal );
 		} else {
@@ -521,7 +528,7 @@
 	 * Falls back to the modal if the server rejects the passthrough
 	 * (e.g. person was anonymized).
 	 */
-	function doSilentPassthrough( postId, policy, personCookie, directUrl, postType, isExternal ) {
+	function doSilentPassthrough( postId, policy, personCookie, directUrl, postType, isExternal, intakeSet, intakeAlways ) {
 		var body = new URLSearchParams( {
 			post_id:      postId,
 			_passthrough: personCookie,
@@ -542,15 +549,45 @@
 			.then( function ( result ) {
 				if ( ! result.ok ) {
 					// Passthrough rejected — show gate form.
-					openModal( postId, policy, directUrl, postType, isExternal );
+					openModal( postId, policy, directUrl, postType, isExternal, intakeSet, intakeAlways );
 					return;
 				}
-				setCookie( 'gateway_gated', result.data.person_cookie, 30 );
-				proceedToDownload( result.data.token, directUrl, isExternal );
+				setCookie( 'gateway_gated', result.data.person_cookie, 0 );
+
+				// If intakeAlways is set and a field set is configured, show intake
+				// step even for passthrough (repeat) downloads.
+				var fields = intakeAlways && intakeSet &&
+				             gatewaySettings.intakeSets &&
+				             gatewaySettings.intakeSets[ intakeSet ];
+				if ( fields && fields.length && ! isExternal ) {
+					if ( ! modal ) {
+						buildModal();
+						attachModalEvents();
+					}
+					currentPostId       = postId;
+					currentPostType     = postType || '';
+					currentDirectUrl    = directUrl;
+					currentIsExternal   = false;
+					currentIntakeSet    = intakeSet;
+					currentIntakeAlways = true;
+					pendingToken        = result.data.token;
+					pendingPersonCookie = result.data.person_cookie;
+					pendingPostId       = postId;
+					pendingPostType     = postType;
+					pendingDirectUrl    = directUrl;
+					pendingIsExternal   = false;
+					errorMsg.textContent           = '';
+					gateContainer.style.display    = 'none';
+					loadingContainer.style.display = 'none';
+					overlay.classList.add( 'is-open' );
+					showIntakeStep( gatewaySettings.intakeSets[ intakeSet ] );
+				} else {
+					proceedToDownload( result.data.token, directUrl, isExternal );
+				}
 			} )
 			.catch( function () {
 				// Network error — fall back to modal.
-				openModal( postId, policy, directUrl, postType, isExternal );
+				openModal( postId, policy, directUrl, postType, isExternal, intakeSet, intakeAlways );
 			} );
 	}
 
@@ -570,11 +607,13 @@
 
 		var isExternal   = !! link.dataset.fileUrl;
 		var directUrl    = link.dataset.fileUrl || link.href;
+		var intakeSet    = link.dataset.intakeSet    || '';
+		var intakeAlways = link.dataset.intakeAlways === '1';
 		var personCookie = getCookie( 'gateway_gated' );
 		if ( personCookie ) {
-			doSilentPassthrough( link.dataset.postId, policy, personCookie, directUrl, link.dataset.postType, isExternal );
+			doSilentPassthrough( link.dataset.postId, policy, personCookie, directUrl, link.dataset.postType, isExternal, intakeSet, intakeAlways );
 		} else {
-			openModal( link.dataset.postId, policy, directUrl, link.dataset.postType, isExternal );
+			openModal( link.dataset.postId, policy, directUrl, link.dataset.postType, isExternal, intakeSet, intakeAlways );
 		}
 	} );
 }() );

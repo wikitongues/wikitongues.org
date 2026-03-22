@@ -58,13 +58,34 @@ class Resource_Metabox {
 		}
 
 		update_post_meta( $post_id, '_gateway_gate_policy', $value );
+
+		// Intake set — free-form set name, 'none', 'inherit', or empty.
+		$intake_set = isset( $_POST['_gateway_intake_set'] )
+			? sanitize_key( $_POST['_gateway_intake_set'] )
+			: 'inherit';
+		update_post_meta( $post_id, IntakeResolver::META_KEY_SET, $intake_set );
+
+		// Intake always — '1', '0', or 'inherit'.
+		$intake_always_allowed = array( '1', '0', 'inherit' );
+		$intake_always         = isset( $_POST['_gateway_intake_always'] )
+			? sanitize_key( $_POST['_gateway_intake_always'] )
+			: 'inherit';
+		if ( ! in_array( $intake_always, $intake_always_allowed, true ) ) {
+			$intake_always = 'inherit';
+		}
+		update_post_meta( $post_id, IntakeResolver::META_KEY_ALWAYS, $intake_always );
 	}
 
 	public static function render( \WP_Post $post ): void {
 		wp_nonce_field( self::NONCE_ACTION, self::NONCE_FIELD );
 
-		$policy = (string) get_post_meta( $post->ID, '_gateway_gate_policy', true );
-		$url    = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post->ID );
+		$policy        = (string) get_post_meta( $post->ID, '_gateway_gate_policy', true );
+		$intake_set    = (string) get_post_meta( $post->ID, IntakeResolver::META_KEY_SET, true );
+		$intake_always = (string) get_post_meta( $post->ID, IntakeResolver::META_KEY_ALWAYS, true );
+		$url           = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post->ID );
+
+		/** This filter is documented in download-gateway.php. */
+		$registered_sets = array_keys( (array) apply_filters( 'gateway_intake_fields', array() ) );
 		?>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Gate policy</p>
 		<select name="_gateway_gate_policy" style="width:100%;margin-bottom:10px;">
@@ -73,6 +94,20 @@ class Resource_Metabox {
 			<option value="soft"     <?php selected( $policy, 'soft' ); ?>>Soft gate — skippable prompt</option>
 			<option value="hard"     <?php selected( $policy, 'hard' ); ?>>Hard gate — email required</option>
 			<option value="disabled" <?php selected( $policy, 'disabled' ); ?>>Disabled — hide download link</option>
+		</select>
+		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Intake form</p>
+		<select name="_gateway_intake_set" style="width:100%;margin-bottom:6px;">
+			<option value="inherit" <?php selected( $intake_set, 'inherit' ); ?>>Inherit (use CPT / global default)</option>
+			<option value="none"    <?php selected( $intake_set, 'none' ); ?>>None — no intake form</option>
+			<?php foreach ( $registered_sets as $set_name ) : ?>
+			<option value="<?php echo esc_attr( $set_name ); ?>" <?php selected( $intake_set, $set_name ); ?>><?php echo esc_html( $set_name ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Show intake on repeat downloads</p>
+		<select name="_gateway_intake_always" style="width:100%;margin-bottom:10px;">
+			<option value="inherit" <?php selected( $intake_always, 'inherit' ); ?>>Inherit (use CPT / global default)</option>
+			<option value="0"       <?php selected( $intake_always, '0' ); ?>>No — first download only</option>
+			<option value="1"       <?php selected( $intake_always, '1' ); ?>>Yes — every session</option>
 		</select>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Download URL</p>
 		<input
