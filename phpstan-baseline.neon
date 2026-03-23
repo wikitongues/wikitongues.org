@@ -41,6 +41,11 @@ parameters:
 			path: tests/unit/download-gateway/TokenRepositoryTest.php
 
 		-
+			message: "#^Call to an undefined method Mockery\\\\ExpectationInterface\\|Mockery\\\\HigherOrderMessage\\:\\:once\\(\\)\\.$#"
+			count: 18
+			path: tests/unit/download-gateway/WebhookDispatcherTest.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/download-gateway/includes/class-caption-file-resolver.php

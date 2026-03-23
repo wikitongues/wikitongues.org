@@ -264,14 +264,14 @@ class WebhookDispatcherTest extends TestCase {
 	}
 
 	/**
-	 * @return array<int,array{0:int,1:int}>
+	 * @return array<string,array{int,int}>
 	 */
 	public static function backoff_delay_provider(): array {
 		return array(
-			'attempt 1 → 60s'   => array( 0, 60 ),
-			'attempt 2 → 300s'  => array( 1, 300 ),
-			'attempt 3 → 1800s' => array( 2, 1800 ),
-			'attempt 4 → 7200s' => array( 3, 7200 ),
+			'attempt 1 - 60s'   => array( 0, 60 ),
+			'attempt 2 - 300s'  => array( 1, 300 ),
+			'attempt 3 - 1800s' => array( 2, 1800 ),
+			'attempt 4 - 7200s' => array( 3, 7200 ),
 		);
 	}
 }
