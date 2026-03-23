@@ -18,6 +18,7 @@ class SettingsRepository {
 	const OPTION_RETENTION_MONTHS     = 'gateway_retention_months';
 	const OPTION_GLOBAL_INTAKE_SET    = 'gateway_global_intake_set';
 	const OPTION_GLOBAL_INTAKE_ALWAYS = 'gateway_global_intake_always';
+	const OPTION_WEBHOOK_ENDPOINT     = 'gateway_webhook_endpoint';
 
 	/** Option key pattern for per-CPT policy. Sprintf with post_type. */
 	const OPTION_CPT_POLICY_PREFIX        = 'gateway_cpt_policy_';
@@ -193,6 +194,31 @@ class SettingsRepository {
 		return self::get_dropbox_app_key() !== ''
 			&& self::get_dropbox_app_secret() !== ''
 			&& self::get_dropbox_refresh_token() !== '';
+	}
+
+	// -------------------------------------------------------------------------
+	// Webhook endpoint.
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Returns the configured webhook endpoint URL, or empty string if not set.
+	 */
+	public static function get_webhook_endpoint(): string {
+		return (string) get_option( self::OPTION_WEBHOOK_ENDPOINT, '' );
+	}
+
+	/**
+	 * Persist the webhook endpoint URL.
+	 * Pass empty string to clear the setting.
+	 *
+	 * @param string $url Webhook endpoint URL.
+	 */
+	public static function update_webhook_endpoint( string $url ): void {
+		if ( '' === $url ) {
+			delete_option( self::OPTION_WEBHOOK_ENDPOINT );
+		} else {
+			update_option( self::OPTION_WEBHOOK_ENDPOINT, $url );
+		}
 	}
 
 	/**

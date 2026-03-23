@@ -17,11 +17,13 @@ class Activator {
 		update_option( 'gateway_version', GATEWAY_VERSION );
 		Schema::create_tables();
 		RetentionJob::schedule();
+		WebhookDispatcher::schedule();
 		Logger::info( 'Plugin activated (v' . GATEWAY_VERSION . ').' );
 	}
 
 	public static function deactivate(): void {
 		RetentionJob::unschedule();
+		WebhookDispatcher::unschedule();
 		Logger::info( 'Plugin deactivated.' );
 	}
 

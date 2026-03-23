@@ -137,6 +137,24 @@ class GateController {
 			return new \WP_Error( 'db_error', 'Could not save your information. Please try again.', array( 'status' => 500 ) );
 		}
 
+		// Enqueue person webhook if an endpoint is configured.
+		$endpoint = SettingsRepository::get_webhook_endpoint();
+		if ( '' !== $endpoint && filter_var( $endpoint, FILTER_VALIDATE_URL ) ) {
+			WebhookDispatcher::enqueue(
+				$person_id,
+				$endpoint,
+				array(
+					'type'             => 'person',
+					'person_id'        => $person_id,
+					'name'             => $name,
+					'email'            => $email,
+					'email_hash'       => hash( 'sha256', strtolower( trim( $email ) ) ),
+					'consent_download' => $consent_download,
+					'created_at'       => current_time( 'mysql' ),
+				)
+			);
+		}
+
 		// Create one-time download token tied to this person.
 		$visitor_id    = VisitorId::from_cookies( $cookies );
 		$token         = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, $person_id );

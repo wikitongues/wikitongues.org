@@ -58,6 +58,7 @@ require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-retention-job.php';
+require_once GATEWAY_DIR . 'includes/class-webhook-dispatcher.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
@@ -161,6 +162,26 @@ add_action(
 	RetentionJob::CRON_HOOK,
 	function (): void {
 		RetentionJob::anonymize();
+	}
+);
+
+add_filter(
+	'cron_schedules',
+	function ( array $schedules ): array {
+		if ( ! isset( $schedules['every_5_minutes'] ) ) {
+			$schedules['every_5_minutes'] = array(
+				'interval' => 300,
+				'display'  => 'Every 5 minutes',
+			);
+		}
+		return $schedules;
+	}
+);
+
+add_action(
+	WebhookDispatcher::CRON_HOOK,
+	function (): void {
+		WebhookDispatcher::dispatch_pending();
 	}
 );
 

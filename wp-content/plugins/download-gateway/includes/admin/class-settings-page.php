@@ -63,6 +63,12 @@ class Settings_Page {
 			SettingsRepository::update_cpt_policy( $post_type, $value );
 		}
 
+		// Webhook endpoint.
+		$webhook_endpoint = isset( $_POST[ SettingsRepository::OPTION_WEBHOOK_ENDPOINT ] )
+			? esc_url_raw( trim( (string) $_POST[ SettingsRepository::OPTION_WEBHOOK_ENDPOINT ] ) )
+			: '';
+		SettingsRepository::update_webhook_endpoint( $webhook_endpoint );
+
 		// Data retention.
 		$retention_months = isset( $_POST[ SettingsRepository::OPTION_RETENTION_MONTHS ] )
 			? (int) $_POST[ SettingsRepository::OPTION_RETENTION_MONTHS ]
@@ -388,7 +394,35 @@ class Settings_Page {
 					</tr>
 				</table>
 
-				<?php submit_button( 'Save settings' ); ?>
+				<h2 class="title">Integrations</h2>
+				<p>
+					Webhook events are sent to a single endpoint for all three event types
+					(<code>person</code>, <code>download</code>, <code>intake</code>).
+					Leave blank to disable webhook delivery.
+				</p>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row">
+							<label for="gateway_webhook_endpoint">Webhook endpoint URL</label>
+						</th>
+						<td>
+							<input
+								type="url"
+								name="<?php echo esc_attr( SettingsRepository::OPTION_WEBHOOK_ENDPOINT ); ?>"
+								id="gateway_webhook_endpoint"
+								value="<?php echo esc_attr( SettingsRepository::get_webhook_endpoint() ); ?>"
+								placeholder="https://hook.make.com/…"
+								style="width:420px;"
+							/>
+							<p class="description">
+								Receives <code>person</code>, <code>download</code>, and <code>intake</code> events.
+								Deliveries are retried up to 5 times with exponential backoff.
+							</p>
+						</td>
+					</tr>
+				</table>
+
+			<?php submit_button( 'Save settings' ); ?>
 			</form>
 
 			<hr />
