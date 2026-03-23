@@ -66,7 +66,7 @@
 			'<button id="gateway-close" aria-label="Close">&times;</button>' +
 
 			// ── Step 1: gate form ──────────────────────────────────────────
-			'<div id="gateway-gate-container">' +
+			'<div id="gateway-gate-container" class="gateway-container gate">' +
 			'<h2 id="gateway-modal-title">Download and support the archive</h2>' +
 			'<p id="gateway-modal-desc">This material is part of a global effort to preserve and share human language.<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.</p>' +
 			'<form id="gateway-form" novalidate>' +
@@ -91,7 +91,7 @@
 			'</div>' +
 
 			// ── Step 2: intake form (hidden until gate passes) ─────────────
-			'<div id="gateway-intake-container" style="display:none">' +
+			'<div id="gateway-intake-container" class="gateway-container intake" style="display:none">' +
 			'<h2 id="gateway-intake-title">One more thing</h2>' +
 			'<p id="gateway-intake-desc">Help us understand how you\'ll use this resource. This is optional.</p>' +
 			'<form id="gateway-intake-form" novalidate></form>' +

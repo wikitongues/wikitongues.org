@@ -35,7 +35,8 @@
 	font-family: var(--font-sans);
 }
 
-#gateway-modal-title {
+#gateway-modal-title,
+#gateway-intake-title {
 	font-size: 2em;
 	color: var(--color-black);
 	font-family: var(--font-sans);
@@ -44,30 +45,25 @@
 	margin-bottom: 16px;
 }
 
-#gateway-modal-desc {
+#gateway-modal-desc,
+#gateway-intake-desc {
 	margin: 0 0 1.5rem;
 	color: var(--color-black);
 }
 
-#gateway-form label {
+/* ── Shared container styles ─────────────────────────────────────────── */
+
+.gateway-container label {
 	display: block;
 	font-size: 1.75em;
 	margin: 0.75em 0 0.25em;
 	color: var(--color-black);
 }
 
-#gateway-form label.gateway-consent {
-	display: flex;
-	gap: 0.5em;
-	margin: 2em 0;
-}
-
-#gateway-form label.gateway-consent input[type="checkbox"] {
-	margin: 0;
-}
-
-#gateway-form input[type="text"],
-#gateway-form input[type="email"] {
+.gateway-container input[type="text"],
+.gateway-container input[type="email"],
+.gateway-container select,
+.gateway-container textarea {
 	width: 100%;
 	box-sizing: border-box;
 	padding: 0.6em;
@@ -78,16 +74,64 @@
 	color: var(--color-black);
 }
 
-#gateway-form input:focus {
+.gateway-container input:focus,
+.gateway-container select:focus,
+.gateway-container textarea:focus {
 	outline: none;
 	border-color: var(--color-blue);
 	background-color: var(--color-blue-10);
 }
 
-#gateway-error {
+/* Radio / checkbox groups */
+.gateway-container fieldset {
+	border: none;
+	padding: 0;
+	margin: 0.75em 0 0;
+}
+
+.gateway-container legend {
+	font-size: 1.75em;
+	margin-bottom: 0.25em;
+	color: var(--color-black);
+	font-weight: normal;
+	padding: 0;
+}
+
+.gateway-intake-option {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5em;
+	margin: 0.4em 0;
+	font-size: 1.75em;
+	color: var(--color-black);
+	cursor: pointer;
+}
+
+.gateway-intake-option input {
+	margin-top: 0.2em;
+	flex-shrink: 0;
+}
+
+/* Error messages */
+#gateway-error,
+#gateway-intake-error {
 	margin: 0.75em 0 0;
 	color: #c00;
 }
+
+/* ── Gate-specific ───────────────────────────────────────────────────── */
+
+.gateway-container.gate label.gateway-consent {
+	display: flex;
+	gap: 0.5em;
+	margin: 2em 0;
+}
+
+.gateway-container.gate label.gateway-consent input[type="checkbox"] {
+	margin: 0;
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────── */
 
 .gateway-actions {
 	display: flex;
@@ -95,7 +139,8 @@
 	margin-top: 1em;
 }
 
-#gateway-submit {
+#gateway-submit,
+#gateway-intake-submit {
 	padding: 1em;
 	background: var(--color-blue);
 	color: var(--color-parchment);
@@ -104,12 +149,14 @@
 	cursor: pointer;
 }
 
-#gateway-submit:disabled {
+#gateway-submit:disabled,
+#gateway-intake-submit:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
-#gateway-skip {
+#gateway-skip,
+#gateway-intake-skip {
 	background: none;
 	border: none;
 	color: var(--color-blue);
@@ -122,7 +169,9 @@
 	border-radius: 4px;
 	margin-top: 4px;
 }
-#gateway-skip:hover {
+
+#gateway-skip:hover,
+#gateway-intake-skip:hover {
 	background: #e1d9e4;
 	mix-blend-mode: darken;
 }
@@ -147,7 +196,8 @@
 	mix-blend-mode: darken;
 }
 
-/* Loading step */
+/* ── Loading step ────────────────────────────────────────────────────── */
+
 #gateway-loading-container {
 	text-align: center;
 	padding: 1.5em 0;
