@@ -5,3 +5,8 @@ foreach ( $includes_dirs as $dir ) {
 		require_once $file;
 	}
 }
+
+// Module-level hook registrations (e.g. intake field sets).
+foreach ( glob( __DIR__ . '/modules/*/intake.php' ) as $file ) {
+	require_once $file;
+}

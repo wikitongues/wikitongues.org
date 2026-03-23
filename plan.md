@@ -444,6 +444,19 @@ The CPT creates the data model and public-facing profile URL (`/creators/jane-do
 
 ---
 
+#### Video state UI _(before Layer 4 — affects visual baseline)_
+
+The current video single template handles `Processing` and `Private` states with plain text messages and no affordances. Four gaps to close:
+
+- **Audio-only** — videos that are audio recordings have no video file; the thumbnail logic should detect this and show an audio-appropriate placeholder instead of a broken or absent video frame
+- **Processing** — currently shows a static message; add a "Notify me when ready" affordance (email capture, probably via the gateway people table or a lightweight subscribe endpoint)
+- **Private** — currently shows a static message; add a "Request access" affordance (sends a message to the archive team or logs a request)
+- **Thumbnail fallback logic** — audit the current thumbnail display logic across all four states (Public, Audio, Processing, Private) and define a consistent visual treatment for each
+
+**Dependency note:** No Docker dependency. Must land before Layer 4 so all state variants are captured in visual baseline screenshots.
+
+---
+
 #### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
 
 Playwright. Full user flows, JS behaviour, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs). Nothing that changes template output should land after this without a deliberate baseline update. See [docs/testing-strategy.md](docs/testing-strategy.md) for priority flows.
