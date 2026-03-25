@@ -254,6 +254,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
 - Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
 - Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
+- **Donation approach (2026-03-25):** no donation ask in the modal. Post-download email follow-up via Mailchimp, triggered by the `intake` webhook event (Make.com automation). Personalized by `use_case` tag — a researcher and a language speaker receive different messages. Rationale: user has already received the file (maximum gratitude moment); modal is already two steps; email is A/B-testable without code changes.
 
 **Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate) ✅, 9 (retention). Cut first: per-CPT policy UI (keep global only), admin charts (keep CSV only), webhook retries (keep best-effort), intake forms (keep modal step 1 only).
 
