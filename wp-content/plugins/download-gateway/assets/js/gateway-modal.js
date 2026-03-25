@@ -210,7 +210,7 @@
 		// Required asterisks: show only for hard gate.
 		var requiredSpans = gateContainer.querySelectorAll( '.gateway-required' );
 		for ( var i = 0; i < requiredSpans.length; i++ ) {
-			requiredSpans[ i ].style.display = policy === 'hard' ? '' : 'none';
+			requiredSpans[ i ].style.display = policy === 'hard' ? 'inline' : 'none';
 		}
 
 		// Button label and skip mode.
