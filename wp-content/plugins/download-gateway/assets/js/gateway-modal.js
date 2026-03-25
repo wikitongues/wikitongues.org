@@ -9,6 +9,20 @@
 	}
 
 	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
+
+	var RESOURCE_LABELS = {
+		videos:         'oral history',
+		captions:       'caption file',
+		document_files: 'document',
+	};
+
+	// Fields in the intake step shown only to first-time visitors.
+	// Returning visitors (gateway_gated cookie present → passthrough) skip these.
+	var PERSON_LEVEL_KEYS = [ 'community', 'organization' ];
+
+	// -------------------------------------------------------------------------
 	// Cookie helpers
 	// -------------------------------------------------------------------------
 
@@ -48,8 +62,8 @@
 	// -------------------------------------------------------------------------
 
 	var modal, overlay, gateContainer, form, nameField, emailField, consentField,
-		honeypotField, errorMsg, submitBtn, skipBtn, closeBtn;
-	var intakeContainer, intakeForm, intakeErrorMsg, intakeSubmitBtn, intakeSkipBtn;
+		honeypotField, errorMsg, submitBtn, closeBtn, modalDesc;
+	var intakeContainer, intakeForm, intakeErrorMsg, intakeSubmitBtn;
 	var loadingContainer;
 
 	function buildModal() {
@@ -63,50 +77,59 @@
 		modal.id = 'gateway-modal';
 
 		modal.innerHTML =
-			'<button id="gateway-close" aria-label="Close">&times;</button>' +
+			// ── Header band ───────────────────────────────────────────────
+			'<div id="gateway-modal-header">' +
+				'<h2 id="gateway-modal-title" class="gateway-modal-title">Download and support the archive</h2>' +
+				'<button id="gateway-close" aria-label="Close">&times;</button>' +
+			'</div>' +
+
+			// ── Modal body ─────────────────────────────────────────────────
+			'<div class="gateway-modal-body">' +
 
 			// ── Step 1: gate form ──────────────────────────────────────────
 			'<div id="gateway-gate-container" class="gateway-container gate">' +
-			'<h2 id="gateway-modal-title">Download and support the archive</h2>' +
-			'<p id="gateway-modal-desc">This material is part of a global effort to preserve and share human language.<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.</p>' +
+			'<p id="gateway-modal-desc" class="gateway-modal-desc"></p>' +
 			'<form id="gateway-form" novalidate>' +
-				'<label for="gateway-name">Name<span aria-hidden="true">*</span></label>' +
-				'<input id="gateway-name" name="name" type="text" autocomplete="name" required />' +
-				'<label for="gateway-email">Email<span aria-hidden="true">*</span></label>' +
+				'<label for="gateway-name">Name<span class="gateway-required" aria-hidden="true"> *</span></label>' +
+				'<input id="gateway-name" name="name" type="text" autocomplete="name" required class="gateway-name-input" />' +
+				'<label for="gateway-email">Email<span class="gateway-required" aria-hidden="true"> *</span></label>' +
 				'<input id="gateway-email" name="email" type="email" autocomplete="email" required />' +
-				'<label class="gateway-consent">' +
-					'<input id="gateway-consent" name="consent_download" type="checkbox" checked=true/>' +
-					'Receive updates on new languages and resources' +
-				'</label>' +
+				'<div class="gateway-consent-section">' +
+					'<p class="gateway-consent-heading">Stay in touch</p>' +
+					'<label class="gateway-consent-row">' +
+						'<input id="gateway-consent" name="consent_download" type="checkbox" checked />' +
+						'<span class="gateway-custom-checkbox"></span>' +
+						'Receive updates on new languages and resources' +
+					'</label>' +
+				'</div>' +
 				// Honeypot — hidden from real users
 				'<div style="display:none" aria-hidden="true">' +
 					'<input id="gateway-hp" name="_hp" type="text" tabindex="-1" autocomplete="off" />' +
 				'</div>' +
 				'<p id="gateway-error" role="alert" aria-live="assertive"></p>' +
 				'<div class="gateway-actions">' +
-					'<button id="gateway-submit" type="submit">Download</button>' +
-					'<button id="gateway-skip" type="button">Download without sharing</button>' +
+					'<button id="gateway-submit" type="submit" disabled>Download</button>' +
 				'</div>' +
 			'</form>' +
 			'</div>' +
 
 			// ── Step 2: intake form (hidden until gate passes) ─────────────
 			'<div id="gateway-intake-container" class="gateway-container intake" style="display:none">' +
-			'<h2 id="gateway-intake-title">One more thing</h2>' +
-			'<p id="gateway-intake-desc">Help us understand how you\'ll use this resource. This is optional.</p>' +
+			'<p id="gateway-intake-desc" class="gateway-intake-desc">Help us understand how you\'ll use this resource. This is optional.</p>' +
 			'<form id="gateway-intake-form" novalidate></form>' +
 			'<p id="gateway-intake-error" role="alert" aria-live="assertive"></p>' +
 			'<div class="gateway-actions">' +
-				'<button id="gateway-intake-submit" type="button">Submit &amp; Download</button>' +
-				'<button id="gateway-intake-skip" type="button">Skip &amp; Download</button>' +
+				'<button id="gateway-intake-submit" type="button">Download</button>' +
 			'</div>' +
 			'</div>' +
 
-		// ── Step 3: loading state (shown while resolving download URL) ──────────────
-		'<div id="gateway-loading-container" style="display:none">' +
-		'<div class="gateway-spinner" aria-hidden="true"></div>' +
-		'<p>Preparing your download…</p>' +
-		'</div>';
+			// ── Step 3: loading state (shown while resolving download URL) ──
+			'<div id="gateway-loading-container" style="display:none">' +
+				'<div class="gateway-spinner" aria-hidden="true"></div>' +
+				'<p>Preparing your download\u2026</p>' +
+			'</div>' +
+
+			'</div>'; // .gateway-modal-body
 
 		overlay.appendChild( modal );
 		document.body.appendChild( overlay );
@@ -120,15 +143,14 @@
 		honeypotField = document.getElementById( 'gateway-hp' );
 		errorMsg      = document.getElementById( 'gateway-error' );
 		submitBtn     = document.getElementById( 'gateway-submit' );
-		skipBtn       = document.getElementById( 'gateway-skip' );
 		closeBtn      = document.getElementById( 'gateway-close' );
+		modalDesc     = document.getElementById( 'gateway-modal-desc' );
 
 		// Intake step
-		intakeContainer = document.getElementById( 'gateway-intake-container' );
-		intakeForm      = document.getElementById( 'gateway-intake-form' );
-		intakeErrorMsg  = document.getElementById( 'gateway-intake-error' );
-		intakeSubmitBtn = document.getElementById( 'gateway-intake-submit' );
-		intakeSkipBtn   = document.getElementById( 'gateway-intake-skip' );
+		intakeContainer  = document.getElementById( 'gateway-intake-container' );
+		intakeForm       = document.getElementById( 'gateway-intake-form' );
+		intakeErrorMsg   = document.getElementById( 'gateway-intake-error' );
+		intakeSubmitBtn  = document.getElementById( 'gateway-intake-submit' );
 		loadingContainer = document.getElementById( 'gateway-loading-container' );
 	}
 
@@ -136,12 +158,16 @@
 	// Modal open / close
 	// -------------------------------------------------------------------------
 
-	var currentPostId      = null;
-	var currentPostType    = null;
-	var currentDirectUrl   = null;
-	var currentIsExternal  = false;
-	var currentIntakeSet   = '';
+	var currentPostId       = null;
+	var currentPostType     = null;
+	var currentDirectUrl    = null;
+	var currentIsExternal   = false;
+	var currentIntakeSet    = '';
 	var currentIntakeAlways = false;
+	var currentPolicy       = '';
+
+	// True after a successful silent passthrough; false for new gate submissions.
+	var isPassthrough = false;
 
 	// Pending state — populated when gate passes and intake step is active.
 	var pendingToken          = null;
@@ -157,26 +183,46 @@
 			attachModalEvents();
 		}
 
+		isPassthrough       = false;
 		currentPostId       = postId;
 		currentPostType     = postType || '';
 		currentDirectUrl    = directUrl;
 		currentIsExternal   = !! isExternal;
 		currentIntakeSet    = intakeSet    || '';
 		currentIntakeAlways = !! intakeAlways;
+		currentPolicy       = policy || '';
 
 		// Reset to gate step.
 		errorMsg.textContent           = '';
 		form.reset();
-		setLoading( false );
 		gateContainer.style.display    = '';
 		intakeContainer.style.display  = 'none';
 		loadingContainer.style.display = 'none';
 		clearPending();
 
-		// Skip shown for soft gate only; close always available.
-		skipBtn.style.display  = policy === 'soft' ? '' : 'none';
-		closeBtn.style.display = '';
+		// Description copy per resource type.
+		var typeLabel = RESOURCE_LABELS[ currentPostType ] || 'resource';
+		modalDesc.innerHTML =
+			'This ' + typeLabel + ' is part of a global effort to preserve and share human language.' +
+			'<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.';
 
+		// Required asterisks: show only for hard gate.
+		var requiredSpans = gateContainer.querySelectorAll( '.gateway-required' );
+		for ( var i = 0; i < requiredSpans.length; i++ ) {
+			requiredSpans[ i ].style.display = policy === 'hard' ? '' : 'none';
+		}
+
+		// Button label: "Next" when intake exists, "Download" otherwise.
+		var hasIntake = currentIntakeSet &&
+		                gatewaySettings.intakeSets &&
+		                gatewaySettings.intakeSets[ currentIntakeSet ] &&
+		                gatewaySettings.intakeSets[ currentIntakeSet ].length;
+		submitBtn.textContent = hasIntake ? 'Next' : 'Download';
+
+		// Enable/disable based on policy + intake (re-validates on each keystroke).
+		validateGateForm();
+
+		closeBtn.style.display = '';
 		overlay.classList.add( 'is-open' );
 		nameField.focus();
 	}
@@ -191,6 +237,7 @@
 		currentIsExternal   = false;
 		currentIntakeSet    = '';
 		currentIntakeAlways = false;
+		currentPolicy       = '';
 		clearPending();
 	}
 
@@ -203,9 +250,36 @@
 		pendingIsExternal   = false;
 	}
 
+	/**
+	 * Enable/disable the gate submit button.
+	 *
+	 * Rules:
+	 *  - Intake defined        → require name + email regardless of policy.
+	 *  - Hard gate, no intake  → require name + email.
+	 *  - Soft/none, no intake  → always enabled.
+	 */
+	function validateGateForm() {
+		if ( ! nameField ) { return; }
+		var name     = nameField.value.trim();
+		var email    = emailField.value.trim();
+		var hasIntake = currentIntakeSet &&
+		                gatewaySettings.intakeSets &&
+		                gatewaySettings.intakeSets[ currentIntakeSet ] &&
+		                gatewaySettings.intakeSets[ currentIntakeSet ].length;
+
+		if ( hasIntake || currentPolicy === 'hard' ) {
+			submitBtn.disabled = ! ( name && email );
+		} else {
+			submitBtn.disabled = false;
+		}
+	}
+
 	function setLoading( loading ) {
-		submitBtn.disabled    = loading;
-		submitBtn.textContent = loading ? 'Downloading\u2026' : 'Download';
+		if ( loading ) {
+			submitBtn.disabled = true;
+		} else {
+			validateGateForm();
+		}
 	}
 
 	function showError( msg ) {
@@ -236,29 +310,19 @@
 			}
 		} );
 
-		// Gate skip: download without sharing.
-		skipBtn.addEventListener( 'click', function () {
-			var url = currentDirectUrl;
-			closeModal();
-			redirect( url );
-		} );
-
 		// Gate form submit.
 		form.addEventListener( 'submit', function ( e ) {
 			e.preventDefault();
 			handleGateSubmit();
 		} );
 
-		// Intake submit.
-		intakeSubmitBtn.addEventListener( 'click', handleIntakeSubmit );
+		// Re-validate on each keystroke so the button enables as soon as both
+		// name and email are non-empty.
+		nameField.addEventListener( 'input', validateGateForm );
+		emailField.addEventListener( 'input', validateGateForm );
 
-		// Intake skip: proceed to download without saving intake responses.
-		intakeSkipBtn.addEventListener( 'click', function () {
-			var token      = pendingToken;
-			var url        = pendingDirectUrl;
-			var isExternal = pendingIsExternal;
-			proceedToDownload( token, url, isExternal );
-		} );
+		// Intake download button.
+		intakeSubmitBtn.addEventListener( 'click', handleIntakeSubmit );
 	}
 
 	// -------------------------------------------------------------------------
@@ -266,6 +330,8 @@
 	// -------------------------------------------------------------------------
 
 	function handleGateSubmit() {
+		isPassthrough = false;
+
 		var name    = nameField.value.trim();
 		var email   = emailField.value.trim();
 		var consent = consentField.checked;
@@ -336,11 +402,10 @@
 	}
 
 	/**
-	 * Route to the file after gate or passthrough.
-	 *
-	 * External links (data-file-url, e.g. Wikimedia Commons) redirect directly —
-	 * the gate already captured the visitor; no token consumption needed.
-	 * Internal gateway downloads consume the token via the REST endpoint.
+	 * Navigate to the token URL; the server issues a 302 to the file host.
+	 * Chrome intercepts Content-Disposition: attachment without leaving the page.
+	 * Safari follows the redirect and briefly navigates to the file host before
+	 * the download starts — accepted limitation, file still downloads.
 	 */
 	function proceedToDownload( token, directUrl, isExternal ) {
 		if ( isExternal || ! token ) {
@@ -372,8 +437,7 @@
 		} else if ( token ) {
 			proceedToDownload( token, directUrl, isExternal );
 		} else {
-			// Honeypot hit — close silently, no redirect (token is null so
-			// there is no valid download URL to send a bot to anyway).
+			// Honeypot hit — close silently, no redirect.
 			closeModal();
 		}
 	}
@@ -383,10 +447,20 @@
 	// -------------------------------------------------------------------------
 
 	function showIntakeStep( fields ) {
-		intakeForm.innerHTML          = buildIntakeFieldsHtml( fields );
+		// For returning visitors (passthrough), hide person-level fields.
+		var visibleFields = fields.filter( function ( field ) {
+			return ! ( isPassthrough && PERSON_LEVEL_KEYS.indexOf( field.key ) !== -1 );
+		} );
+
+		// Skip step 2 entirely when no visible fields remain.
+		if ( visibleFields.length === 0 ) {
+			finishDownload( pendingToken, pendingDirectUrl );
+			return;
+		}
+
+		intakeForm.innerHTML          = buildIntakeFieldsHtml( visibleFields );
 		intakeErrorMsg.textContent    = '';
 		intakeSubmitBtn.disabled      = false;
-		intakeSubmitBtn.textContent   = 'Submit & Download';
 		gateContainer.style.display   = 'none';
 		intakeContainer.style.display = '';
 		var firstInput = intakeForm.querySelector( 'input, textarea, select' );
@@ -423,7 +497,8 @@
 					if ( Object.prototype.hasOwnProperty.call( opts, optKey ) ) {
 						html +=
 							'<label class="gateway-intake-option">' +
-							'<input type="' + type + '" name="' + escAttr( key ) + '" value="' + escAttr( optKey ) + '" /> ' +
+							'<input type="' + type + '" name="' + escAttr( key ) + '" value="' + escAttr( optKey ) + '" />' +
+							'<span class="gateway-custom-' + type + '"></span>' +
 							escHtml( opts[ optKey ] ) +
 							'</label>';
 					}
@@ -435,7 +510,7 @@
 					html += '<textarea id="' + escAttr( id ) + '" name="' + escAttr( key ) + '"></textarea>';
 				} else if ( type === 'select' ) {
 					html += '<select id="' + escAttr( id ) + '" name="' + escAttr( key ) + '">';
-					html += '<option value="">\u2014 Select \u2014</option>';
+					html += '<option value="">Select</option>';
 					opts = field.options || {};
 					for ( optKey in opts ) {
 						if ( Object.prototype.hasOwnProperty.call( opts, optKey ) ) {
@@ -469,9 +544,8 @@
 			responses[ el.name ] = el.value;
 		}
 
-		intakeSubmitBtn.disabled    = true;
-		intakeSubmitBtn.textContent = 'Saving\u2026';
-		intakeErrorMsg.textContent  = '';
+		intakeSubmitBtn.disabled   = true;
+		intakeErrorMsg.textContent = '';
 
 		fetch( gatewaySettings.intakeUrl, {
 			method:      'POST',
@@ -497,7 +571,7 @@
 	}
 
 	/**
-	 * Close the modal and trigger the download. Called after intake submit or skip.
+	 * Close the modal and trigger the download. Called after intake submit.
 	 */
 	function finishDownload( token, directUrl ) {
 		proceedToDownload( token, directUrl, pendingIsExternal );
@@ -511,12 +585,6 @@
 		window.location.href = url;
 	}
 
-	/**
-	 * Navigate to the token URL; the server issues a 302 to the file host.
-	 * Chrome intercepts Content-Disposition: attachment without leaving the page.
-	 * Safari follows the redirect and briefly navigates to the file host before
-	 * the download starts — accepted limitation, file still downloads.
-	 */
 	function downloadViaToken( token ) {
 		closeModal();
 		redirect( gatewaySettings.downloadBase + '/' + token );
@@ -552,6 +620,7 @@
 					openModal( postId, policy, directUrl, postType, isExternal, intakeSet, intakeAlways );
 					return;
 				}
+				isPassthrough = true;
 				setCookie( 'gateway_gated', result.data.person_cookie, 0 );
 
 				// If intakeAlways is set and a field set is configured, show intake
@@ -570,6 +639,7 @@
 					currentIsExternal   = false;
 					currentIntakeSet    = intakeSet;
 					currentIntakeAlways = true;
+					currentPolicy       = policy || '';
 					pendingToken        = result.data.token;
 					pendingPersonCookie = result.data.person_cookie;
 					pendingPostId       = postId;
