@@ -166,8 +166,9 @@
 	var currentIntakeAlways = false;
 	var currentPolicy       = '';
 
-	// True after a successful silent passthrough; false for new gate submissions.
-	var isPassthrough = false;
+	// Person-level fields (community, organization) already answered in a prior
+	// intake. Populated from the passthrough response; reset on new gate submissions.
+	var completedPersonFields = [];
 
 	// Pending state — populated when gate passes and intake step is active.
 	var pendingToken          = null;
@@ -183,8 +184,8 @@
 			attachModalEvents();
 		}
 
-		isPassthrough       = false;
-		currentPostId       = postId;
+		completedPersonFields = [];
+		currentPostId         = postId;
 		currentPostType     = postType || '';
 		currentDirectUrl    = directUrl;
 		currentIsExternal   = !! isExternal;
@@ -291,23 +292,15 @@
 	// -------------------------------------------------------------------------
 
 	function attachModalEvents() {
-		// Close on overlay click — in intake step this finishes the download.
+		// Close on overlay click — always abort, never trigger download.
 		overlay.addEventListener( 'click', function ( e ) {
 			if ( e.target !== overlay ) { return; }
-			if ( pendingToken !== null ) {
-				finishDownload( pendingToken, pendingDirectUrl );
-			} else {
-				closeModal();
-			}
+			closeModal();
 		} );
 
-		// Close button — in intake step this finishes the download.
+		// Close button — always abort, never trigger download.
 		closeBtn.addEventListener( 'click', function () {
-			if ( pendingToken !== null ) {
-				finishDownload( pendingToken, pendingDirectUrl );
-			} else {
-				closeModal();
-			}
+			closeModal();
 		} );
 
 		// Gate form submit.
@@ -330,7 +323,7 @@
 	// -------------------------------------------------------------------------
 
 	function handleGateSubmit() {
-		isPassthrough = false;
+		completedPersonFields = [];
 
 		var name    = nameField.value.trim();
 		var email   = emailField.value.trim();
@@ -447,9 +440,9 @@
 	// -------------------------------------------------------------------------
 
 	function showIntakeStep( fields ) {
-		// For returning visitors (passthrough), hide person-level fields.
+		// Hide person-level fields only if the visitor has answered them before.
 		var visibleFields = fields.filter( function ( field ) {
-			return ! ( isPassthrough && PERSON_LEVEL_KEYS.indexOf( field.key ) !== -1 );
+			return completedPersonFields.indexOf( field.key ) === -1;
 		} );
 
 		// Skip step 2 entirely when no visible fields remain.
@@ -620,7 +613,7 @@
 					openModal( postId, policy, directUrl, postType, isExternal, intakeSet, intakeAlways );
 					return;
 				}
-				isPassthrough = true;
+				completedPersonFields = result.data.completed_person_fields || [];
 				setCookie( 'gateway_gated', result.data.person_cookie, 0 );
 
 				// If intakeAlways is set and a field set is configured, show intake
