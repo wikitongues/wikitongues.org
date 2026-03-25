@@ -115,7 +115,6 @@
 
 			// ── Step 2: intake form (hidden until gate passes) ─────────────
 			'<div id="gateway-intake-container" class="gateway-container intake" style="display:none">' +
-			'<p id="gateway-intake-desc" class="gateway-intake-desc">Help us understand how you\'ll use this resource. This is optional.</p>' +
 			'<form id="gateway-intake-form" novalidate></form>' +
 			'<p id="gateway-intake-error" role="alert" aria-live="assertive"></p>' +
 			'<div class="gateway-actions">' +
@@ -165,6 +164,7 @@
 	var currentIntakeSet    = '';
 	var currentIntakeAlways = false;
 	var currentPolicy       = '';
+	var currentIsSkip       = false; // true when soft gate + intake defined
 
 	// Person-level fields (community, organization) already answered in a prior
 	// intake. Populated from the passthrough response; reset on new gate submissions.
@@ -213,12 +213,19 @@
 			requiredSpans[ i ].style.display = policy === 'hard' ? '' : 'none';
 		}
 
-		// Button label: "Next" when intake exists, "Download" otherwise.
+		// Button label and skip mode.
 		var hasIntake = currentIntakeSet &&
 		                gatewaySettings.intakeSets &&
 		                gatewaySettings.intakeSets[ currentIntakeSet ] &&
 		                gatewaySettings.intakeSets[ currentIntakeSet ].length;
-		submitBtn.textContent = hasIntake ? 'Next' : 'Download';
+		currentIsSkip = ( currentPolicy === 'soft' ) && !! hasIntake;
+		if ( currentIsSkip ) {
+			submitBtn.textContent = 'Skip';
+		} else if ( hasIntake ) {
+			submitBtn.textContent = 'Next';
+		} else {
+			submitBtn.textContent = 'Download';
+		}
 
 		// Enable/disable based on policy + intake (re-validates on each keystroke).
 		validateGateForm();
@@ -255,12 +262,17 @@
 	 * Enable/disable the gate submit button.
 	 *
 	 * Rules:
-	 *  - Intake defined        → require name + email regardless of policy.
-	 *  - Hard gate, no intake  → require name + email.
-	 *  - Soft/none, no intake  → always enabled.
+	 *  - Skip mode (soft + intake)  → always enabled.
+	 *  - Intake defined             → require name + email.
+	 *  - Hard gate, no intake       → require name + email.
+	 *  - Soft/none, no intake       → always enabled.
 	 */
 	function validateGateForm() {
 		if ( ! nameField ) { return; }
+		if ( currentIsSkip ) {
+			submitBtn.disabled = false;
+			return;
+		}
 		var name     = nameField.value.trim();
 		var email    = emailField.value.trim();
 		var hasIntake = currentIntakeSet &&
@@ -323,6 +335,14 @@
 	// -------------------------------------------------------------------------
 
 	function handleGateSubmit() {
+		// Soft gate + intake: skip button downloads directly without capturing data.
+		if ( currentIsSkip ) {
+			var skipUrl = currentDirectUrl;
+			closeModal();
+			redirect( skipUrl );
+			return;
+		}
+
 		completedPersonFields = [];
 
 		var name    = nameField.value.trim();
