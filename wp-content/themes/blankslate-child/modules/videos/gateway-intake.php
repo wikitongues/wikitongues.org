@@ -28,10 +28,10 @@ add_filter(
 				'label'   => 'Are you a member of the Wikitongues community?',
 				'type'    => 'radio',
 				'options' => array(
-					'speaker'      => 'Yes — I\'m a speaker or learner of this language',
-					'contributor'  => 'Yes — I contribute to Wikitongues',
-					'discovering'  => 'No — I\'m discovering endangered languages',
-					'professional' => 'No — I work with language data professionally',
+					'speaker'      => 'I\'m a speaker or learner of this language',
+					'contributor'  => 'I contribute to Wikitongues',
+					'discovering'  => 'I\'m discovering endangered languages',
+					'professional' => 'No. I work with language data professionally',
 				),
 			),
 		);

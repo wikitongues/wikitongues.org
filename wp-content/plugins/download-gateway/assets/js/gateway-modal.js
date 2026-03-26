@@ -210,7 +210,7 @@
 		var typeLabel = RESOURCE_LABELS[ currentPostType ] || 'resource';
 		modalDesc.innerHTML =
 			'This ' + typeLabel + ' is part of a global effort to preserve and share human language.' +
-			'&nbsp; Add your name to support the archive and receive updates on new languages, stories, and tools.';
+			'<br/> Add your name to support the archive and receive updates on new languages, stories, and tools.';
 
 		// Required asterisks and aria-required: hard gate only.
 		var isHard = policy === 'hard';

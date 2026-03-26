@@ -240,7 +240,7 @@
 /* ── Consent section ─────────────────────────────────────────────────── */
 
 .gateway-consent-section {
-	margin: 1.5em 0 2em;
+	margin: 1.5em 0 1em;
 }
 
 .gateway-consent-heading {
@@ -263,6 +263,9 @@
 .gateway-actions {
 	display: flex;
 	flex-direction: column;
+	margin-top: 1em;
+	float: left;
+	width: 100%;
 }
 
 #gateway-submit,

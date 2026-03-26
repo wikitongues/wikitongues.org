@@ -15,12 +15,12 @@ add_filter(
 				'label'   => 'How will you use this resource?',
 				'type'    => 'select',
 				'options' => array(
-					'research'      => 'Personal or academic research',
-					'teaching'      => 'Teaching or curriculum development',
-					'advocacy'      => 'Advocacy or policy work',
-					'grant_writing' => 'Grant writing or institutional reporting',
-					'personal'      => 'Personal interest',
-					'other'         => 'Other',
+					'research'    => 'Personal or academic research',
+					'teaching'    => 'Teaching or curriculum development',
+					'documentary' => 'Documentary or journalism',
+					'advocacy'    => 'Advocacy or policy work',
+					'personal'    => 'Personal interest',
+					'other'       => 'Other',
 				),
 			),
 			array(
@@ -33,10 +33,10 @@ add_filter(
 				'label'   => 'Are you a member of the Wikitongues community?',
 				'type'    => 'radio',
 				'options' => array(
-					'speaker'      => 'Yes — I\'m a speaker or learner of this language',
-					'contributor'  => 'Yes — I contribute to Wikitongues',
-					'discovering'  => 'No — I\'m discovering endangered languages',
-					'professional' => 'No — I work with language data professionally',
+					'speaker'      => 'I\'m a speaker or learner of this language',
+					'contributor'  => 'I contribute to Wikitongues',
+					'discovering'  => 'I\'m discovering endangered languages',
+					'professional' => 'No. I work with language data professionally',
 				),
 			),
 		);
