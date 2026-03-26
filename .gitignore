@@ -57,6 +57,7 @@ vendor/
 
 # Misc
 .DS_Store
+.obsidian/
 .ftpquota
 ggstemp.html
 readme_backup.md
