@@ -27,7 +27,7 @@
 #gateway-modal {
 	position: relative;
 	background: var(--color-parchment);
-	border-radius: 4px;
+	border-radius: 8px;
 	overflow: hidden;
 	width: min( 430px, 92vw );
 	box-shadow: 0 8px 32px rgba( 0, 0, 0, 0.18 );
@@ -38,7 +38,7 @@
 /* ── Header band ─────────────────────────────────────────────────────── */
 
 #gateway-modal-header {
-	background: var(--color-blue);
+	background: var(--color-black);
 	padding: 1.5em 2em;
 	display: flex;
 	align-items: center;
@@ -75,16 +75,16 @@
 /* ── Modal body ───────────────────────────────────────────────────────── */
 
 .gateway-modal-body {
-	padding: 2em;
+	padding: 3em;
 }
 
 /* ── Description ──────────────────────────────────────────────────────── */
 
 .gateway-modal-desc,
 .gateway-intake-desc {
-	margin: 0 0 1.5em;
+	/* margin: 0 0 1.5em; */
 	color: var(--color-black);
-	font-size: 1.75em;
+	font-size: 2em;
 	line-height: 1.5;
 }
 
@@ -95,10 +95,15 @@
 
 /* ── Shared container styles ─────────────────────────────────────────── */
 
+.gateway-container {
+	display: grid;
+	row-gap: 3em;
+}
+
 .gateway-container label {
 	display: block;
 	font-size: 1.75em;
-	margin: 0.75em 0 0.25em;
+	/* margin: 0.75em 0 0.25em; */
 	color: var(--color-black);
 }
 
@@ -111,16 +116,18 @@
 	padding: 0.6em;
 	border: none;
 	border-bottom: 2px solid var(--color-blue-20);
+	border-radius: 4px 4px 0 0;
 	background-color: transparent;
+	margin-bottom: 0.5em;
 	font-size: 2em;
-	color: var(--color-black);
+	cursor: pointer;
+	color: var(--color-blue);
 }
 
 /* Name field: always-on blue underline — comes after the general rule to win */
-.gateway-container input.gateway-name-input,
+/* .gateway-container input.gateway-name-input,
 .gateway-container input.gateway-name-input:focus {
-	border-bottom-color: var(--color-blue);
-}
+} */
 
 .gateway-container input:focus,
 .gateway-container select:focus,
@@ -128,6 +135,7 @@
 	outline: none;
 	border-color: var(--color-blue);
 	background-color: var(--color-blue-10);
+	border-bottom-color: var(--color-blue);
 }
 
 /* Radio / checkbox groups */
@@ -167,16 +175,22 @@
 	cursor: pointer;
 }
 
-/* Custom radio circle */
-.gateway-custom-radio {
+.gateway-custom-radio,
+.gateway-custom-checkbox {
 	display: inline-flex;
 	flex-shrink: 0;
-	width: 1.1em;
-	height: 1.1em;
-	border: 2px solid var(--color-blue);
-	border-radius: 50%;
+	width: 1em;
+	height: 1em;
+	border: 2px solid var(--color-parchment);
+	outline: 2px solid var(--color-blue);
 	background: transparent;
 	transition: background 0.15s;
+}
+
+/* Custom radio circle */
+.gateway-custom-radio {
+	border-radius: 50%;
+	margin: 0 1em -2px 0;
 }
 
 .gateway-intake-option input[type="radio"]:checked + .gateway-custom-radio {
@@ -185,33 +199,14 @@
 
 /* Custom checkbox square */
 .gateway-custom-checkbox {
-	display: inline-flex;
-	flex-shrink: 0;
-	width: 1.1em;
-	height: 1.1em;
-	border: 2px solid var(--color-blue);
 	border-radius: 2px;
-	background: transparent;
+	margin: 0 .5em -2px 0;
 	position: relative;
-	transition: background 0.15s;
 }
 
 .gateway-intake-option input[type="checkbox"]:checked + .gateway-custom-checkbox,
 .gateway-consent-row input[type="checkbox"]:checked + .gateway-custom-checkbox {
 	background: var(--color-blue);
-}
-
-.gateway-intake-option input[type="checkbox"]:checked + .gateway-custom-checkbox::after,
-.gateway-consent-row input[type="checkbox"]:checked + .gateway-custom-checkbox::after {
-	content: '';
-	position: absolute;
-	left: 50%;
-	top: 45%;
-	transform: translate( -50%, -50% ) rotate( 45deg );
-	width: 0.3em;
-	height: 0.55em;
-	border-right: 2px solid var(--color-parchment);
-	border-bottom: 2px solid var(--color-parchment);
 }
 
 /* Error messages */
@@ -225,12 +220,11 @@
 /* ── Consent section ─────────────────────────────────────────────────── */
 
 .gateway-consent-section {
-	margin: 2em 0 0;
+	margin: 1.5em 0 2em;
 }
 
 .gateway-consent-heading {
-	font-size: 1.75em;
-	font-weight: 600;
+	font-size: 2em;
 	color: var(--color-black);
 	margin: 0 0 0.5em;
 }
@@ -249,7 +243,6 @@
 .gateway-actions {
 	display: flex;
 	flex-direction: column;
-	margin-top: 1.5em;
 }
 
 #gateway-submit,
@@ -268,6 +261,16 @@
 	background: var(--color-blue-20);
 	color: var(--color-blue);
 	cursor: not-allowed;
+}
+
+#gateway-skip {
+	background: none;
+	border: none;
+	color: var(--color-blue);
+	cursor: pointer;
+	font-size: 2em;
+	padding: 0.75em 0 0;
+	text-align: center;
 }
 
 /* ── Loading step ────────────────────────────────────────────────────── */

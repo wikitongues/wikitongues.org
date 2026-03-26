@@ -62,7 +62,7 @@
 	// -------------------------------------------------------------------------
 
 	var modal, overlay, gateContainer, form, nameField, emailField, consentField,
-		honeypotField, errorMsg, submitBtn, closeBtn, modalDesc;
+		honeypotField, errorMsg, submitBtn, skipBtn, closeBtn, modalDesc;
 	var intakeContainer, intakeForm, intakeErrorMsg, intakeSubmitBtn;
 	var loadingContainer;
 
@@ -109,6 +109,7 @@
 				'<p id="gateway-error" role="alert" aria-live="assertive"></p>' +
 				'<div class="gateway-actions">' +
 					'<button id="gateway-submit" type="submit" disabled>Download</button>' +
+					'<button id="gateway-skip" type="button" style="display:none">Skip and download</button>' +
 				'</div>' +
 			'</form>' +
 			'</div>' +
@@ -142,6 +143,7 @@
 		honeypotField = document.getElementById( 'gateway-hp' );
 		errorMsg      = document.getElementById( 'gateway-error' );
 		submitBtn     = document.getElementById( 'gateway-submit' );
+		skipBtn       = document.getElementById( 'gateway-skip' );
 		closeBtn      = document.getElementById( 'gateway-close' );
 		modalDesc     = document.getElementById( 'gateway-modal-desc' );
 
@@ -164,7 +166,6 @@
 	var currentIntakeSet    = '';
 	var currentIntakeAlways = false;
 	var currentPolicy       = '';
-	var currentIsSkip       = false; // true when soft gate + intake defined
 
 	// Person-level fields (community, organization) already answered in a prior
 	// intake. Populated from the passthrough response; reset on new gate submissions.
@@ -205,7 +206,7 @@
 		var typeLabel = RESOURCE_LABELS[ currentPostType ] || 'resource';
 		modalDesc.innerHTML =
 			'This ' + typeLabel + ' is part of a global effort to preserve and share human language.' +
-			'<br/><br/>Add your name to support the archive and receive updates on new languages, stories, and tools.';
+			'&nbsp; Add your name to support the archive and receive updates on new languages, stories, and tools.';
 
 		// Required asterisks: show only for hard gate.
 		var requiredSpans = gateContainer.querySelectorAll( '.gateway-required' );
@@ -213,19 +214,14 @@
 			requiredSpans[ i ].style.display = policy === 'hard' ? 'inline' : 'none';
 		}
 
-		// Button label and skip mode.
+		// Button labels and secondary skip button.
 		var hasIntake = currentIntakeSet &&
 		                gatewaySettings.intakeSets &&
 		                gatewaySettings.intakeSets[ currentIntakeSet ] &&
 		                gatewaySettings.intakeSets[ currentIntakeSet ].length;
-		currentIsSkip = ( currentPolicy === 'soft' ) && !! hasIntake;
-		if ( currentIsSkip ) {
-			submitBtn.textContent = 'Skip';
-		} else if ( hasIntake ) {
-			submitBtn.textContent = 'Next';
-		} else {
-			submitBtn.textContent = 'Download';
-		}
+		submitBtn.textContent    = hasIntake ? 'Next' : 'Download';
+		// Skip shown for soft gate + intake only.
+		skipBtn.style.display    = ( policy === 'soft' && hasIntake ) ? '' : 'none';
 
 		// Enable/disable based on policy + intake (re-validates on each keystroke).
 		validateGateForm();
@@ -262,17 +258,12 @@
 	 * Enable/disable the gate submit button.
 	 *
 	 * Rules:
-	 *  - Skip mode (soft + intake)  → always enabled.
-	 *  - Intake defined             → require name + email.
-	 *  - Hard gate, no intake       → require name + email.
-	 *  - Soft/none, no intake       → always enabled.
+	 *  - Intake defined        → require name + email regardless of policy.
+	 *  - Hard gate, no intake  → require name + email.
+	 *  - Soft/none, no intake  → always enabled.
 	 */
 	function validateGateForm() {
 		if ( ! nameField ) { return; }
-		if ( currentIsSkip ) {
-			submitBtn.disabled = false;
-			return;
-		}
 		var name     = nameField.value.trim();
 		var email    = emailField.value.trim();
 		var hasIntake = currentIntakeSet &&
@@ -321,6 +312,13 @@
 			handleGateSubmit();
 		} );
 
+		// Skip — soft gate only; download directly without capturing visitor data.
+		skipBtn.addEventListener( 'click', function () {
+			var url = currentDirectUrl;
+			closeModal();
+			redirect( url );
+		} );
+
 		// Re-validate on each keystroke so the button enables as soon as both
 		// name and email are non-empty.
 		nameField.addEventListener( 'input', validateGateForm );
@@ -335,14 +333,6 @@
 	// -------------------------------------------------------------------------
 
 	function handleGateSubmit() {
-		// Soft gate + intake: skip button downloads directly without capturing data.
-		if ( currentIsSkip ) {
-			var skipUrl = currentDirectUrl;
-			closeModal();
-			redirect( skipUrl );
-			return;
-		}
-
 		completedPersonFields = [];
 
 		var name    = nameField.value.trim();
@@ -523,7 +513,7 @@
 					html += '<textarea id="' + escAttr( id ) + '" name="' + escAttr( key ) + '"></textarea>';
 				} else if ( type === 'select' ) {
 					html += '<select id="' + escAttr( id ) + '" name="' + escAttr( key ) + '">';
-					html += '<option value="">Select</option>';
+					html += '<option value="" disabled selected>Select</option>';
 					opts = field.options || {};
 					for ( optKey in opts ) {
 						if ( Object.prototype.hasOwnProperty.call( opts, optKey ) ) {
