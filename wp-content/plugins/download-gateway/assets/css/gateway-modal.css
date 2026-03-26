@@ -63,12 +63,18 @@
 	line-height: 1;
 	cursor: pointer;
 	color: var(--color-parchment);
-	padding: 0 0 0 0.25em;
+	padding: 1px 0.25em;
 	flex-shrink: 0;
 	opacity: 0.8;
+	border-radius: 4px;
 }
 
 #gateway-close:hover {
+	opacity: 1;
+}
+
+#gateway-close:focus {
+	outline: 1px solid var(--color-parchment);
 	opacity: 1;
 }
 
@@ -184,7 +190,7 @@
 	border: 2px solid var(--color-parchment);
 	outline: 2px solid var(--color-blue);
 	background: transparent;
-	transition: background 0.15s;
+	transition: all 0.15s ease-in-out;
 }
 
 /* Custom radio circle */
@@ -195,6 +201,11 @@
 
 .gateway-intake-option input[type="radio"]:checked + .gateway-custom-radio {
 	background: var(--color-blue);
+}
+
+.gateway-intake-option input[type="radio"]:focus-visible + .gateway-custom-radio {
+	outline: 2px solid var(--color-blue);
+	outline-offset: 2px;
 }
 
 /* Custom checkbox square */
@@ -209,12 +220,21 @@
 	background: var(--color-blue);
 }
 
-/* Error messages */
+.gateway-intake-option input[type="checkbox"]:focus-visible + .gateway-custom-checkbox,
+.gateway-consent-row input[type="checkbox"]:focus-visible + .gateway-custom-checkbox {
+	outline: 4px solid var(--color-blue);
+}
+
+/* Error messages — hidden when empty so they occupy no space */
 #gateway-error,
 #gateway-intake-error {
-	margin: 0.75em 0 0;
 	font-size: 1.75em;
 	color: #c00;
+}
+
+#gateway-error:empty,
+#gateway-intake-error:empty {
+	display: none;
 }
 
 /* ── Consent section ─────────────────────────────────────────────────── */
@@ -254,6 +274,7 @@
 	border-radius: 4px;
 	cursor: pointer;
 	font-size: 2em;
+	transition: all 0.15s ease-in-out;
 }
 
 #gateway-submit:disabled,
@@ -261,6 +282,12 @@
 	background: var(--color-blue-20);
 	color: var(--color-blue);
 	cursor: not-allowed;
+}
+
+#gateway-submit:focus,
+#gateway-intake-submit:focus {
+	outline: 2px solid var(--color-blue);
+	outline-offset: 2px;
 }
 
 #gateway-skip {

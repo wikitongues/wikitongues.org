@@ -124,7 +124,7 @@
 			'</div>' +
 
 			// ── Step 3: loading state (shown while resolving download URL) ──
-			'<div id="gateway-loading-container" style="display:none">' +
+			'<div id="gateway-loading-container" role="status" aria-live="polite" style="display:none">' +
 				'<div class="gateway-spinner" aria-hidden="true"></div>' +
 				'<p>Preparing your download\u2026</p>' +
 			'</div>' +
@@ -167,6 +167,9 @@
 	var currentIntakeAlways = false;
 	var currentPolicy       = '';
 
+	// Element focused before the modal opened — restored when it closes.
+	var lastFocusedElement  = null;
+
 	// Person-level fields (community, organization) already answered in a prior
 	// intake. Populated from the passthrough response; reset on new gate submissions.
 	var completedPersonFields = [];
@@ -185,6 +188,7 @@
 			attachModalEvents();
 		}
 
+		lastFocusedElement    = document.activeElement || null;
 		completedPersonFields = [];
 		currentPostId         = postId;
 		currentPostType     = postType || '';
@@ -208,11 +212,14 @@
 			'This ' + typeLabel + ' is part of a global effort to preserve and share human language.' +
 			'&nbsp; Add your name to support the archive and receive updates on new languages, stories, and tools.';
 
-		// Required asterisks: show only for hard gate.
+		// Required asterisks and aria-required: hard gate only.
+		var isHard = policy === 'hard';
 		var requiredSpans = gateContainer.querySelectorAll( '.gateway-required' );
 		for ( var i = 0; i < requiredSpans.length; i++ ) {
-			requiredSpans[ i ].style.display = policy === 'hard' ? 'inline' : 'none';
+			requiredSpans[ i ].style.display = isHard ? 'inline' : 'none';
 		}
+		nameField.setAttribute( 'aria-required', isHard ? 'true' : 'false' );
+		emailField.setAttribute( 'aria-required', isHard ? 'true' : 'false' );
 
 		// Button labels and secondary skip button.
 		var hasIntake = currentIntakeSet &&
@@ -243,6 +250,11 @@
 		currentIntakeAlways = false;
 		currentPolicy       = '';
 		clearPending();
+		// Return focus to wherever the user was before opening the modal.
+		if ( lastFocusedElement && typeof lastFocusedElement.focus === 'function' ) {
+			lastFocusedElement.focus();
+		}
+		lastFocusedElement = null;
 	}
 
 	function clearPending() {
@@ -294,7 +306,50 @@
 	// Event wiring
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Return focusable elements within the modal that are currently visible
+	 * (i.e. no ancestor has display:none set as an inline style).
+	 */
+	function getFocusableElements() {
+		var candidates = modal.querySelectorAll(
+			'button:not([disabled]), input:not([tabindex="-1"]), select, textarea, [tabindex]:not([tabindex="-1"])'
+		);
+		return Array.prototype.filter.call( candidates, function ( el ) {
+			var node = el.parentElement;
+			while ( node && node !== modal ) {
+				if ( node.style.display === 'none' ) { return false; }
+				node = node.parentElement;
+			}
+			return true;
+		} );
+	}
+
 	function attachModalEvents() {
+		// Escape closes the modal; Tab is trapped inside.
+		document.addEventListener( 'keydown', function ( e ) {
+			if ( ! overlay || ! overlay.classList.contains( 'is-open' ) ) { return; }
+
+			if ( e.key === 'Escape' ) {
+				e.preventDefault();
+				closeModal();
+				return;
+			}
+
+			if ( e.key === 'Tab' ) {
+				var focusable = getFocusableElements();
+				if ( focusable.length === 0 ) { return; }
+				var first = focusable[ 0 ];
+				var last  = focusable[ focusable.length - 1 ];
+				if ( e.shiftKey && document.activeElement === first ) {
+					e.preventDefault();
+					last.focus();
+				} else if ( ! e.shiftKey && document.activeElement === last ) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+		} );
+
 		// Close on overlay click — always abort, never trigger download.
 		overlay.addEventListener( 'click', function ( e ) {
 			if ( e.target !== overlay ) { return; }
