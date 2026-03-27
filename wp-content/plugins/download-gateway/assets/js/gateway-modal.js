@@ -23,6 +23,15 @@
 	var PERSON_LEVEL_KEYS = [ 'community', 'organization' ];
 
 	// -------------------------------------------------------------------------
+	// Analytics helpers
+	// -------------------------------------------------------------------------
+
+	function pushEvent( payload ) {
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push( payload );
+	}
+
+	// -------------------------------------------------------------------------
 	// Cookie helpers
 	// -------------------------------------------------------------------------
 
@@ -165,7 +174,9 @@
 	var currentIsExternal   = false;
 	var currentIntakeSet    = '';
 	var currentIntakeAlways = false;
-	var currentPolicy       = '';
+	var currentPolicy         = '';
+	var currentLanguageSlug   = null;
+	var currentDownloadSource = '';
 
 	// Element focused before the modal opened — restored when it closes.
 	var lastFocusedElement  = null;
@@ -247,8 +258,10 @@
 		currentDirectUrl    = null;
 		currentIsExternal   = false;
 		currentIntakeSet    = '';
-		currentIntakeAlways = false;
-		currentPolicy       = '';
+		currentIntakeAlways   = false;
+		currentPolicy         = '';
+		currentLanguageSlug   = null;
+		currentDownloadSource = '';
 		clearPending();
 		// Return focus to wherever the user was before opening the modal.
 		if ( lastFocusedElement && typeof lastFocusedElement.focus === 'function' ) {
@@ -434,6 +447,15 @@
 					return;
 				}
 				setCookie( 'gateway_gated', result.data.person_cookie, 0 );
+				pushEvent( {
+					event:            'resource_download_gate_submit',
+					post_id:          currentPostId,
+					post_type:        currentPostType,
+					policy:           currentPolicy,
+					language_slug:    currentLanguageSlug,
+					download_source:  currentDownloadSource,
+					consent_download: consent,
+				} );
 				proceedAfterGate(
 					result.data.token,
 					result.data.person_cookie,
@@ -466,6 +488,14 @@
 	 * the download starts — accepted limitation, file still downloads.
 	 */
 	function proceedToDownload( token, directUrl, isExternal ) {
+		pushEvent( {
+			event:           'resource_download_redirect',
+			post_id:         pendingPostId || currentPostId,
+			post_type:       pendingPostType || currentPostType,
+			policy:          currentPolicy,
+			language_slug:   currentLanguageSlug,
+			download_source: currentDownloadSource,
+		} );
 		if ( isExternal || ! token ) {
 			closeModal();
 			redirect( directUrl );
@@ -725,13 +755,28 @@
 			return;
 		}
 
-		var policy = link.dataset.policy;
+		var policy       = link.dataset.policy;
+		var languageSlug = link.dataset.languageSlug || null;
+		var dlSource     = link.dataset.downloadSource || '';
+
+		pushEvent( {
+			event:           'resource_download_click',
+			post_id:         link.dataset.postId,
+			post_type:       link.dataset.postType,
+			policy:          policy,
+			language_slug:   languageSlug,
+			download_source: dlSource,
+		} );
+
 		if ( ! policy || policy === 'none' ) {
 			// No gate — let browser follow the link naturally.
 			return;
 		}
 
 		e.preventDefault();
+
+		currentLanguageSlug   = languageSlug;
+		currentDownloadSource = dlSource;
 
 		var isExternal   = !! link.dataset.fileUrl;
 		var directUrl    = link.dataset.fileUrl || link.href;
