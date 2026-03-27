@@ -42,4 +42,43 @@ class IntakeRepository {
 
 		return $wpdb->insert_id;
 	}
+
+	/**
+	 * Return which of $keys the person has answered in at least one prior intake.
+	 *
+	 * Responses are stored as a JSON blob; each row is decoded and checked for
+	 * key presence. Short-circuits once all $keys are accounted for.
+	 *
+	 * @param int      $person_id Person ID from wp_gateway_people.
+	 * @param string[] $keys      Field keys to check, e.g. ['community','organization'].
+	 * @return string[]           Subset of $keys found non-empty in any prior response.
+	 */
+	public static function get_answered_keys( int $person_id, array $keys ): array {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT responses FROM {$wpdb->prefix}gateway_intake_responses WHERE person_id = %d",
+				$person_id
+			)
+		);
+
+		$answered = array();
+		foreach ( $rows as $row ) {
+			$data = json_decode( $row->responses, true );
+			if ( ! is_array( $data ) ) {
+				continue;
+			}
+			foreach ( $keys as $key ) {
+				if ( ! empty( $data[ $key ] ) && ! in_array( $key, $answered, true ) ) {
+					$answered[] = $key;
+				}
+			}
+			if ( count( $answered ) === count( $keys ) ) {
+				break;
+			}
+		}
+
+		return $answered;
+	}
 }

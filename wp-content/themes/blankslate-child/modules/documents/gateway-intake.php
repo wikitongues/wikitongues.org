@@ -1,15 +1,15 @@
 <?php
 /**
- * Intake field set: captions
+ * Intake field set: documents
  *
- * Registered as the 'captions' named set for the gateway_intake_fields filter.
- * Assign this set to the captions CPT via Gateway > Settings > Intake forms.
+ * Registered as the 'documents' named set for the gateway_intake_fields filter.
+ * Assign this set to the documents CPT via Gateway > Settings > Intake forms.
  */
 
 add_filter(
 	'gateway_intake_fields',
 	function ( array $sets ): array {
-		$sets['captions'] = array(
+		$sets['documents'] = array(
 			array(
 				'key'     => 'use_case',
 				'label'   => 'How will you use this resource?',
@@ -24,14 +24,19 @@ add_filter(
 				),
 			),
 			array(
+				'key'   => 'organization',
+				'label' => 'Are you affiliated with an organization? (optional)',
+				'type'  => 'text',
+			),
+			array(
 				'key'     => 'community',
 				'label'   => 'Are you a member of the Wikitongues community?',
 				'type'    => 'radio',
 				'options' => array(
-					'speaker'      => 'Yes — I\'m a speaker or learner of this language',
-					'contributor'  => 'Yes — I contribute to Wikitongues',
-					'discovering'  => 'No — I\'m discovering endangered languages',
-					'professional' => 'No — I work with language data professionally',
+					'speaker'      => 'I\'m a speaker or learner of this language',
+					'contributor'  => 'I contribute to Wikitongues',
+					'discovering'  => 'I\'m discovering endangered languages',
+					'professional' => 'No. I work with language data professionally',
 				),
 			),
 		);
