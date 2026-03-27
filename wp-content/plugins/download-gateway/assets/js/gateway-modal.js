@@ -246,6 +246,13 @@
 
 		closeBtn.style.display = '';
 		overlay.classList.add( 'is-open' );
+		pushEvent( {
+			event:         'resource_download_gate_open',
+			post_id:       currentPostId,
+			post_type:     currentPostType,
+			policy:        currentPolicy,
+			language_slug: currentLanguageSlug,
+		} );
 		nameField.focus();
 	}
 
