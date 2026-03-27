@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GATEWAY_VERSION', '0.1.11' );
+define( 'GATEWAY_VERSION', '0.1.12' );
 define( 'GATEWAY_FILE', __FILE__ );
 define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
