@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GATEWAY_VERSION', '0.1.10' );
+define( 'GATEWAY_VERSION', '0.1.11' );
 define( 'GATEWAY_FILE', __FILE__ );
 define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
@@ -56,7 +56,9 @@ require_once GATEWAY_DIR . 'includes/class-person-cookie.php';
 require_once GATEWAY_DIR . 'includes/class-gate-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';
+require_once GATEWAY_DIR . 'includes/class-intake-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-retention-job.php';
+require_once GATEWAY_DIR . 'includes/class-webhook-dispatcher.php';
 require_once GATEWAY_DIR . 'includes/admin/class-settings-page.php';
 
 register_activation_hook( __FILE__, __NAMESPACE__ . '\Activator::activate' );
@@ -115,10 +117,10 @@ add_action(
 			true
 		);
 		/**
-		 * Filters intake field definitions for the download modal step 2.
+		 * Filters named intake field set definitions for the download modal step 2.
 		 *
-		 * Return an array keyed by post type slug. Each value is an array of
-		 * field definition arrays with keys:
+		 * Return an array keyed by set name. Each value is an array of field
+		 * definition arrays with keys:
 		 *   key      — machine name (used as the response key in the DB)
 		 *   label    — human-readable label
 		 *   type     — text | textarea | select | radio | checkbox
@@ -126,15 +128,15 @@ add_action(
 		 *   required — bool (currently informational; JS does not enforce)
 		 *
 		 * Example:
-		 *   add_filter( 'gateway_intake_fields', function( $fields ) {
-		 *       $fields['document_files'] = array(
+		 *   add_filter( 'gateway_intake_fields', function( $sets ) {
+		 *       $sets['standard'] = array(
 		 *           array( 'key' => 'use_case', 'label' => 'How will you use this?',
 		 *                  'type' => 'select', 'options' => array( 'research' => 'Research' ) ),
 		 *       );
-		 *       return $fields;
+		 *       return $sets;
 		 *   } );
 		 *
-		 * @param array<string,array<int,array<string,mixed>>> $fields Empty by default.
+		 * @param array<string,array<int,array<string,mixed>>> $sets Empty by default.
 		 */
 		wp_localize_script(
 			'gateway-modal',
@@ -145,7 +147,7 @@ add_action(
 				'apiUrl'       => rest_url( GATEWAY_REST_NAMESPACE . '/gate' ),
 				'downloadBase' => rest_url( GATEWAY_REST_NAMESPACE . '/download' ),
 				'intakeUrl'    => rest_url( GATEWAY_REST_NAMESPACE . '/intake' ),
-				'intakeSteps'  => (array) apply_filters( 'gateway_intake_fields', array() ),
+				'intakeSets'   => (array) apply_filters( 'gateway_intake_fields', array() ),
 			)
 		);
 	}
@@ -160,6 +162,26 @@ add_action(
 	RetentionJob::CRON_HOOK,
 	function (): void {
 		RetentionJob::anonymize();
+	}
+);
+
+add_filter(
+	'cron_schedules',
+	function ( array $schedules ): array {
+		if ( ! isset( $schedules['every_5_minutes'] ) ) {
+			$schedules['every_5_minutes'] = array(
+				'interval' => 300,
+				'display'  => 'Every 5 minutes',
+			);
+		}
+		return $schedules;
+	}
+);
+
+add_action(
+	WebhookDispatcher::CRON_HOOK,
+	function (): void {
+		WebhookDispatcher::dispatch_pending();
 	}
 );
 

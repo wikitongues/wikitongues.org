@@ -163,8 +163,9 @@ class DownloadController {
 		}
 
 		$visitor_id = $row->visitor_id ?? VisitorId::from_cookies( $cookies );
+		$person_id  = isset( $row->person_id ) ? (int) $row->person_id : null;
 
-		return $this->get_file_url( (int) $row->post_id, $resolver, $visitor_id, $token, $server );
+		return $this->get_file_url( (int) $row->post_id, $resolver, $visitor_id, $token, $server, $person_id );
 	}
 
 	private function get_file_url(
@@ -172,7 +173,8 @@ class DownloadController {
 		FileResolver $resolver,
 		?string $visitor_id,
 		string $token_str,
-		array $server
+		array $server,
+		?int $person_id = null
 	): string|\WP_Error {
 		$url = $resolver->resolve( $post_id );
 		if ( null === $url ) {
@@ -180,16 +182,36 @@ class DownloadController {
 			return new \WP_Error( 'file_not_found', 'File could not be resolved.', array( 'status' => 404 ) );
 		}
 
-		DownloadEventRepository::log(
+		$post_type = (string) get_post_type( $post_id );
+		$event_id  = DownloadEventRepository::log(
 			array(
 				'post_id'      => $post_id,
-				'post_type'    => get_post_type( $post_id ),
+				'post_type'    => $post_type,
 				'event_type'   => DownloadEventRepository::EVENT_REDIRECT,
 				'visitor_id'   => $visitor_id,
+				'person_id'    => $person_id,
 				'storage_type' => $resolver->storage_type(),
 				'ip_hash'      => IpHasher::hash_from_server( $server ),
 			)
 		);
+
+		// Enqueue download webhook if an endpoint is configured.
+		$endpoint = SettingsRepository::get_webhook_endpoint();
+		if ( '' !== $endpoint && filter_var( $endpoint, FILTER_VALIDATE_URL ) ) {
+			WebhookDispatcher::enqueue(
+				(int) $event_id,
+				$endpoint,
+				array(
+					'type'       => 'download',
+					'event_id'   => (int) $event_id,
+					'person_id'  => $person_id,
+					'post_id'    => $post_id,
+					'post_type'  => $post_type,
+					'policy'     => PolicyResolver::resolve( $post_id ),
+					'created_at' => current_time( 'mysql' ),
+				)
+			);
+		}
 
 		EventBus::dispatch(
 			'download/redirect',

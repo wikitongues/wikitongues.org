@@ -239,7 +239,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
 - [x] **5b-i** — Policy model expansion: per-CPT tier, `disabled` value, settings UI audit table, shortcode + metabox updates. (PR #566)
 - [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
-- **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped)
+- [x] **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped). (PR #572)
 - [x] **6** — Dropbox storage adapters: `DropboxAdapter` (OAuth2 refresh token flow, `sharing/get_shared_link_metadata` → `files/get_temporary_link`, 3-level transient cache), `VideoFileResolver`, `CaptionFileResolver`. Credentials via `wp-config.php` constants (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`). Wikimedia Commons links gated via JS-only `data-file-url` redirect (no server file resolution). Modal UX: loading spinner while token resolves, AbortController on dismiss, close button always visible. Validated locally for videos, captions, and Wikimedia links.
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
@@ -254,6 +254,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
 - Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
 - Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
+- **Donation approach (2026-03-25):** no donation ask in the modal. Post-download email follow-up via Mailchimp, triggered by the `intake` webhook event (Make.com automation). Personalized by `use_case` tag — a researcher and a language speaker receive different messages. Rationale: user has already received the file (maximum gratitude moment); modal is already two steps; email is A/B-testable without code changes.
 
 **Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate) ✅, 9 (retention). Cut first: per-CPT policy UI (keep global only), admin charts (keep CSV only), webhook retries (keep best-effort), intake forms (keep modal step 1 only).
 
@@ -342,7 +343,7 @@ Three known divergence directions:
 
 ### Phase 6 — Visual baseline + data migration
 
-_Donors must land before the Layer 4 baseline is locked so Donors UI is captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration requires Airtable reconciliation (Phase 5)._
+_All new CPTs and templates (Donors, Creator, Collections) must land before the Layer 4 baseline is locked so their pages are captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration and Creator CPT backfill require Airtable reconciliation (Phase 5)._
 
 #### Complete Donors post type
 
@@ -384,6 +385,78 @@ New `banner--campaign.php` module. `header.php` gains two ordered banner slots: 
 **What this enables:** campaign launches and banner copy changes require no deploy. EOY campaigns, point-in-time drives, and future raises are managed entirely from admin.
 
 **Dependency note:** no Docker dependency; can start independently. Must land before Layer 4 so banner UI is captured in visual baseline.
+
+#### Video collections _(before Layer 4 — collection pages must be captured in baseline)_
+
+Editorial groupings that cut across the video archive for storytelling purposes — videos recorded by a specific person, videos belonging to a named project (Jewish Languages Project), videos from a given mission trip or recording expedition.
+
+**Data model:**
+
+New `collections` CPT with its own archive and single templates. Fields:
+- `title` — display name of the collection
+- `description` — editorial context (textarea)
+- `featured_image` — cover image for the collection card
+- `videos` — ACF relationship field to the `videos` CPT (multi-select, ordered)
+- `collection_type` — taxonomy or select: `person` / `project` / `expedition` / `other`
+
+Collections appear on:
+- A new `/collections/` archive page (gallery of collection cards)
+- Individual collection pages (`/collections/jewish-languages-project/`) listing the member videos
+- Optionally: a "Part of" affordance on `single-videos.php` linking back to the collection(s) the video belongs to
+
+**Airtable sync:** Not required at launch — collections are editorially curated in WordPress. If collections map to existing Airtable structures later, a sync route can be added.
+
+**Dependency note:** No Docker dependency; no Airtable reconciliation required. Must land before Layer 4 so collection archive and single templates are included in visual baseline screenshots.
+
+---
+
+#### Creator CPT _(before Layer 4 — creator pages must be captured in baseline)_
+
+Creators already exist as a table in Airtable and are referenced on video and caption records. Bringing them into WordPress as a first-class CPT enables creator archive and profile pages, creates a named entity to link to collections and download gateway data, and is a direct precursor to a user account system.
+
+**Data model:**
+
+New `creators` CPT synced from Airtable via Make.com (same pattern as languages, videos, captions).
+
+Core fields (sourced from Airtable):
+- `name` — display name
+- `bio` — short biography
+- `profile_image` — headshot or avatar
+- `languages` — relationship to `languages` CPT (languages they speak / have documented)
+- `videos` — relationship to `videos` CPT (videos they recorded or appear in)
+- `location` — country or region
+
+WordPress-side additions:
+- `_airtable_record_id` — sync key (same pattern as all other synced CPTs)
+- `user_id` — nullable FK to `wp_users`; empty until Phase 8 membership links an account to the creator record
+
+**Make.com sync:**
+
+Add a Creators blueprint following the established pattern (Airtable webhook → WP REST sync endpoint). Linked record resolution (languages, videos) follows the subscenario pattern used by Captions.
+
+**WordPress archive and templates:**
+- `/creators/` archive — gallery of creator cards
+- `single-creators.php` — profile page: bio, languages documented, video gallery
+
+**Why before membership:**
+The CPT creates the data model and public-facing profile URL (`/creators/jane-doe/`) without requiring authentication. Phase 8 membership links a WP user account to an existing creator record via `user_id` — it does not create the record from scratch. This ordering avoids a Phase 8 data migration.
+
+**Dependency note:** Airtable reconciliation (Phase 5) should run first so creator records are clean before backfilling. Must land before Layer 4 so creator archive and single templates are included in visual baseline.
+
+---
+
+#### Video state UI _(before Layer 4 — affects visual baseline)_
+
+The current video single template handles `Processing` and `Private` states with plain text messages and no affordances. Four gaps to close:
+
+- **Audio-only** — videos that are audio recordings have no video file; the thumbnail logic should detect this and show an audio-appropriate placeholder instead of a broken or absent video frame
+- **Processing** — currently shows a static message; add a "Notify me when ready" affordance (email capture, probably via the gateway people table or a lightweight subscribe endpoint)
+- **Private** — currently shows a static message; add a "Request access" affordance (sends a message to the archive team or logs a request)
+- **Thumbnail fallback logic** — audit the current thumbnail display logic across all four states (Public, Audio, Processing, Private) and define a consistent visual treatment for each
+
+**Dependency note:** No Docker dependency. Must land before Layer 4 so all state variants are captured in visual baseline screenshots.
+
+---
 
 #### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
 

@@ -81,8 +81,9 @@ class IntakeControllerTest extends TestCase {
 
 	public function test_submit_returns_true_on_success(): void {
 		/** @var \Mockery\MockInterface&\wpdb $wpdb */
-		$wpdb         = Mockery::mock( 'wpdb' );
-		$wpdb->prefix = 'wp_';
+		$wpdb            = Mockery::mock( 'wpdb' );
+		$wpdb->prefix    = 'wp_';
+		$wpdb->insert_id = 7;
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 

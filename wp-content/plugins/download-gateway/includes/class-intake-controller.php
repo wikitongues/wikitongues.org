@@ -88,8 +88,28 @@ class IntakeController {
 			$sanitized[ sanitize_key( (string) $key ) ] = sanitize_text_field( (string) $value );
 		}
 
-		if ( ! IntakeRepository::save( $person_id, $post_id, $post_type, $sanitized ) ) {
+		$intake_id = IntakeRepository::save( $person_id, $post_id, $post_type, $sanitized );
+		if ( false === $intake_id ) {
 			return new \WP_Error( 'db_error', 'Could not save intake response.', array( 'status' => 500 ) );
+		}
+
+		// Enqueue intake webhook if an endpoint is configured.
+		$endpoint = SettingsRepository::get_webhook_endpoint();
+		if ( '' !== $endpoint && filter_var( $endpoint, FILTER_VALIDATE_URL ) ) {
+			$intake_set = IntakeResolver::resolve( $post_id )['set'];
+			WebhookDispatcher::enqueue(
+				(int) $intake_id,
+				$endpoint,
+				array(
+					'type'       => 'intake',
+					'person_id'  => $person_id,
+					'post_id'    => $post_id,
+					'post_type'  => $post_type,
+					'intake_set' => $intake_set,
+					'responses'  => $sanitized,
+					'created_at' => current_time( 'mysql' ),
+				)
+			);
 		}
 
 		return true;

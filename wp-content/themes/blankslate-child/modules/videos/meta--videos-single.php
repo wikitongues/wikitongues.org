@@ -56,11 +56,14 @@
 					$caption_policy   = \WT\DownloadGateway\PolicyResolver::resolve( $caption->ID );
 					$caption_disabled = ( $caption_policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
 					if ( ! $caption_disabled ) {
+						$caption_intake = \WT\DownloadGateway\IntakeResolver::resolve( $caption->ID );
 						$caption_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $caption->ID );
 						$caption_items .= '<li><a href="' . esc_url( $caption_dl_url ) . '" class="gateway-download-link"'
 							. ' data-post-id="' . esc_attr( (string) $caption->ID ) . '"'
 							. ' data-policy="' . esc_attr( $caption_policy ) . '"'
-							. ' data-post-type="captions">'
+							. ' data-post-type="captions"'
+							. ' data-intake-set="' . esc_attr( $caption_intake['set'] ) . '"'
+							. ' data-intake-always="' . ( $caption_intake['always'] ? '1' : '0' ) . '">'
 							. esc_html( $label ) . ' (.srt)</a></li>';
 					}
 				} else {
@@ -98,11 +101,14 @@
 				if ( $has_dropbox ) {
 					if ( $gateway_active ) {
 						if ( ! $video_disabled ) {
+							$video_intake = \WT\DownloadGateway\IntakeResolver::resolve( $video_id );
 							$video_dl_url = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $video_id );
 							echo '<li><a href="' . esc_url( $video_dl_url ) . '" class="gateway-download-link"'
 								. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
 								. ' data-policy="' . esc_attr( $video_policy ) . '"'
-								. ' data-post-type="videos">Dropbox (.mp4)</a></li>';
+								. ' data-post-type="videos"'
+								. ' data-intake-set="' . esc_attr( $video_intake['set'] ) . '"'
+								. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '">Dropbox (.mp4)</a></li>';
 						}
 					} else {
 						echo '<li><a href="' . esc_url( $dropbox_link ) . '" target="_blank">Dropbox (.mp4)</a></li>';
@@ -113,11 +119,14 @@
 				// directly to the public URL — no server-side file resolution needed.
 				if ( $has_wikimedia ) {
 					if ( $gateway_active && ! $video_disabled ) {
+						$video_intake = \WT\DownloadGateway\IntakeResolver::resolve( $video_id );
 						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" class="gateway-download-link"'
 							. ' data-post-id="' . esc_attr( (string) $video_id ) . '"'
 							. ' data-policy="' . esc_attr( $video_policy ) . '"'
 							. ' data-post-type="videos"'
-							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '">Wikimedia Commons (.webm)</a></li>';
+							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '"'
+							. ' data-intake-set="' . esc_attr( $video_intake['set'] ) . '"'
+							. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '">Wikimedia Commons (.webm)</a></li>';
 					} else {
 						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
 					}

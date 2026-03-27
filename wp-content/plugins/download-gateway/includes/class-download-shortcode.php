@@ -52,13 +52,16 @@ class Download_Shortcode {
 
 		$url       = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
 		$post_type = get_post_type( $post_id ) ?: '';
+		$intake    = IntakeResolver::resolve( $post_id );
 
 		return sprintf(
-			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s" data-post-type="%s">%s</a>',
+			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s" data-post-type="%s" data-intake-set="%s" data-intake-always="%s">%s</a>',
 			esc_url( $url ),
 			$post_id,
 			esc_attr( $policy ),
 			esc_attr( $post_type ),
+			esc_attr( $intake['set'] ),
+			$intake['always'] ? '1' : '0',
 			esc_html( $atts['label'] )
 		);
 	}

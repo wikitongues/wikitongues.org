@@ -14,11 +14,16 @@ namespace WT\DownloadGateway;
 class SettingsRepository {
 
 	// Option keys.
-	const OPTION_GLOBAL_GATE_POLICY = 'gateway_global_gate_policy';
-	const OPTION_RETENTION_MONTHS   = 'gateway_retention_months';
+	const OPTION_GLOBAL_GATE_POLICY   = 'gateway_global_gate_policy';
+	const OPTION_RETENTION_MONTHS     = 'gateway_retention_months';
+	const OPTION_GLOBAL_INTAKE_SET    = 'gateway_global_intake_set';
+	const OPTION_GLOBAL_INTAKE_ALWAYS = 'gateway_global_intake_always';
+	const OPTION_WEBHOOK_ENDPOINT     = 'gateway_webhook_endpoint';
 
 	/** Option key pattern for per-CPT policy. Sprintf with post_type. */
-	const OPTION_CPT_POLICY_PREFIX = 'gateway_cpt_policy_';
+	const OPTION_CPT_POLICY_PREFIX        = 'gateway_cpt_policy_';
+	const OPTION_CPT_INTAKE_SET_PREFIX    = 'gateway_cpt_intake_set_';
+	const OPTION_CPT_INTAKE_ALWAYS_PREFIX = 'gateway_cpt_intake_always_';
 
 	// Valid gate policy values (concrete — used as effective resolved values).
 	const POLICY_NONE     = 'none';
@@ -92,6 +97,79 @@ class SettingsRepository {
 	}
 
 	// -------------------------------------------------------------------------
+	// Intake form settings.
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Returns the site-wide default intake field set name, or 'none'.
+	 */
+	public static function get_global_intake_set(): string {
+		return (string) get_option( self::OPTION_GLOBAL_INTAKE_SET, 'none' );
+	}
+
+	/**
+	 * Returns the per-CPT intake field set name, or null if not set (inherit).
+	 *
+	 * @param string $post_type WordPress post type slug.
+	 * @return string|null Set name / 'none', or null to inherit.
+	 */
+	public static function get_cpt_intake_set( string $post_type ): ?string {
+		$value = get_option( self::OPTION_CPT_INTAKE_SET_PREFIX . $post_type, '' );
+		return '' !== $value ? (string) $value : null;
+	}
+
+	/**
+	 * Persist a per-CPT intake set override.
+	 * Pass empty string to delete the override and inherit from global.
+	 *
+	 * @param string $post_type WordPress post type slug.
+	 * @param string $set_name  Set name, 'none', or '' to clear.
+	 */
+	public static function update_cpt_intake_set( string $post_type, string $set_name ): void {
+		if ( '' === $set_name ) {
+			delete_option( self::OPTION_CPT_INTAKE_SET_PREFIX . $post_type );
+		} else {
+			update_option( self::OPTION_CPT_INTAKE_SET_PREFIX . $post_type, $set_name );
+		}
+	}
+
+	/**
+	 * Returns the site-wide always-show-on-passthrough flag.
+	 */
+	public static function get_global_intake_always(): bool {
+		return '1' === (string) get_option( self::OPTION_GLOBAL_INTAKE_ALWAYS, '0' );
+	}
+
+	/**
+	 * Returns the per-CPT always-show flag, or null if not set (inherit).
+	 *
+	 * @param string $post_type WordPress post type slug.
+	 * @return bool|null
+	 */
+	public static function get_cpt_intake_always( string $post_type ): ?bool {
+		$value = get_option( self::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type, '' );
+		if ( '' === $value ) {
+			return null;
+		}
+		return '1' === (string) $value;
+	}
+
+	/**
+	 * Persist a per-CPT always-show override.
+	 * Pass null to delete the override and inherit from global.
+	 *
+	 * @param string    $post_type WordPress post type slug.
+	 * @param bool|null $always    True, false, or null to clear.
+	 */
+	public static function update_cpt_intake_always( string $post_type, ?bool $always ): void {
+		if ( null === $always ) {
+			delete_option( self::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type );
+		} else {
+			update_option( self::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type, $always ? '1' : '0' );
+		}
+	}
+
+	// -------------------------------------------------------------------------
 	// Dropbox credentials — read-only accessors for wp-config.php constants.
 	// No write methods: credentials are managed in wp-config.php, not the DB.
 	// -------------------------------------------------------------------------
@@ -116,6 +194,31 @@ class SettingsRepository {
 		return self::get_dropbox_app_key() !== ''
 			&& self::get_dropbox_app_secret() !== ''
 			&& self::get_dropbox_refresh_token() !== '';
+	}
+
+	// -------------------------------------------------------------------------
+	// Webhook endpoint.
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Returns the configured webhook endpoint URL, or empty string if not set.
+	 */
+	public static function get_webhook_endpoint(): string {
+		return (string) get_option( self::OPTION_WEBHOOK_ENDPOINT, '' );
+	}
+
+	/**
+	 * Persist the webhook endpoint URL.
+	 * Pass empty string to clear the setting.
+	 *
+	 * @param string $url Webhook endpoint URL.
+	 */
+	public static function update_webhook_endpoint( string $url ): void {
+		if ( '' === $url ) {
+			delete_option( self::OPTION_WEBHOOK_ENDPOINT );
+		} else {
+			update_option( self::OPTION_WEBHOOK_ENDPOINT, $url );
+		}
 	}
 
 	/**
