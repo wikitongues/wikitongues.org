@@ -196,9 +196,15 @@ class GateController {
 		$token         = TokenRepository::create( $post_id, TokenRepository::TTL_DEFAULT, $visitor_id, (int) $person->id );
 		$person_cookie = PersonCookie::sign( (int) $person->id );
 
+		$answered = IntakeRepository::get_answered_keys(
+			(int) $person->id,
+			array( 'community', 'organization' )
+		);
+
 		return array(
-			'token'         => $token,
-			'person_cookie' => $person_cookie,
+			'token'                   => $token,
+			'person_cookie'           => $person_cookie,
+			'completed_person_fields' => $answered,
 		);
 	}
 }

@@ -138,9 +138,11 @@ class GateControllerTest extends TestCase {
 		$wpdb->insert_id  = 1;
 		$wpdb->last_error = '';
 		// find_by_id: prepare + get_row
+		// get_answered_keys: prepare + get_results
 		// token create: insert
-		$wpdb->shouldReceive( 'prepare' )->once()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'prepare' )->twice()->andReturn( 'SELECT_SQL' );
 		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $person );
+		$wpdb->shouldReceive( 'get_results' )->once()->andReturn( array() );
 		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
 		$GLOBALS['wpdb'] = $wpdb;
 
@@ -165,6 +167,46 @@ class GateControllerTest extends TestCase {
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]{64}$/', $result['token'] );
 		$this->assertArrayHasKey( 'person_cookie', $result );
 		$this->assertSame( PersonCookie::sign( 1 ), $result['person_cookie'] );
+	}
+
+	public function test_submit_passthrough_includes_completed_person_fields(): void {
+		$person     = new stdClass();
+		$person->id = 7;
+
+		$intake_row            = new stdClass();
+		$intake_row->responses = '{"community":"speaker","use_case":"research"}';
+
+		/** @var \Mockery\MockInterface&\wpdb $wpdb */
+		$wpdb             = Mockery::mock( 'wpdb' );
+		$wpdb->prefix     = 'wp_';
+		$wpdb->insert_id  = 7;
+		$wpdb->last_error = '';
+		$wpdb->shouldReceive( 'prepare' )->twice()->andReturn( 'SELECT_SQL' );
+		$wpdb->shouldReceive( 'get_row' )->once()->andReturn( $person );
+		$wpdb->shouldReceive( 'get_results' )->once()->andReturn( array( $intake_row ) );
+		$wpdb->shouldReceive( 'insert' )->once()->andReturn( 1 );
+		$GLOBALS['wpdb'] = $wpdb;
+
+		WP_Mock::userFunction( 'wp_verify_nonce', array( 'return' => 1 ) );
+		WP_Mock::userFunction( 'get_transient', array( 'return' => 0 ) );
+		WP_Mock::userFunction( 'set_transient', array( 'return' => true ) );
+		WP_Mock::userFunction( 'current_time', array( 'return' => '2026-03-15 10:00:00' ) );
+
+		$result = $this->controller->submit(
+			42,
+			'',
+			'',
+			false,
+			'valid-nonce',
+			'',
+			array(),
+			array( 'REMOTE_ADDR' => '10.0.0.1' ),
+			PersonCookie::sign( 7 )
+		);
+
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'completed_person_fields', $result );
+		$this->assertSame( array( 'community' ), $result['completed_person_fields'] );
 	}
 
 	public function test_submit_passthrough_returns_410_when_person_not_found(): void {

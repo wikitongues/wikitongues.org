@@ -244,6 +244,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
 - [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
+  - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) to be deployed.
 - **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
 
 **Implementation notes:**
