@@ -32,8 +32,10 @@ class Download_Shortcode {
 		// @phpstan-ignore-next-line (unreachable only in static analysis — runtime value differs)
 		$atts = shortcode_atts(
 			array(
-				'id'    => '',
-				'label' => 'Download',
+				'id'            => '',
+				'label'         => 'Download',
+				'source'        => '',
+				'language_slug' => '',
 			),
 			$atts,
 			'gateway_download'
@@ -50,18 +52,29 @@ class Download_Shortcode {
 			return '';
 		}
 
-		$url       = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
-		$post_type = get_post_type( $post_id ) ?: '';
-		$intake    = IntakeResolver::resolve( $post_id );
+		$url           = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $post_id );
+		$post_type     = get_post_type( $post_id ) ?: '';
+		$intake        = IntakeResolver::resolve( $post_id );
+		$source        = sanitize_key( $atts['source'] );
+		$language_slug = sanitize_key( $atts['language_slug'] );
+
+		$extra = '';
+		if ( '' !== $source ) {
+			$extra .= ' data-download-source="' . esc_attr( $source ) . '"';
+		}
+		if ( '' !== $language_slug ) {
+			$extra .= ' data-language-slug="' . esc_attr( $language_slug ) . '"';
+		}
 
 		return sprintf(
-			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s" data-post-type="%s" data-intake-set="%s" data-intake-always="%s">%s</a>',
+			'<a href="%s" class="gateway-download-link" data-post-id="%d" data-policy="%s" data-post-type="%s" data-intake-set="%s" data-intake-always="%s"%s>%s</a>',
 			esc_url( $url ),
 			$post_id,
 			esc_attr( $policy ),
 			esc_attr( $post_type ),
 			esc_attr( $intake['set'] ),
 			$intake['always'] ? '1' : '0',
+			$extra,
 			esc_html( $atts['label'] )
 		);
 	}
