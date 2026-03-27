@@ -46,6 +46,7 @@ require_once GATEWAY_DIR . 'includes/class-intake-repository.php';
 require_once GATEWAY_DIR . 'includes/class-intake-controller.php';
 require_once GATEWAY_DIR . 'includes/class-intake-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-retention-job.php';
+require_once GATEWAY_DIR . 'includes/class-webhook-dispatcher.php';
 require_once GATEWAY_DIR . 'includes/class-dropbox-adapter.php';
 require_once GATEWAY_DIR . 'includes/class-video-file-resolver.php';
 require_once GATEWAY_DIR . 'includes/class-caption-file-resolver.php';

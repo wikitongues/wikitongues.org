@@ -20,9 +20,9 @@ class IntakeRepository {
 	 * @param int                  $post_id   Post ID of the downloaded resource.
 	 * @param string               $post_type Post type slug.
 	 * @param array<string,string> $responses Key-value map of sanitized field responses.
-	 * @return bool True on success, false on DB error.
+	 * @return int|false Inserted row ID on success, false on DB error.
 	 */
-	public static function save( int $person_id, int $post_id, string $post_type, array $responses ): bool {
+	public static function save( int $person_id, int $post_id, string $post_type, array $responses ): int|false {
 		global $wpdb;
 
 		$result = $wpdb->insert(
@@ -36,6 +36,10 @@ class IntakeRepository {
 			)
 		);
 
-		return false !== $result;
+		if ( false === $result ) {
+			return false;
+		}
+
+		return $wpdb->insert_id;
 	}
 }
