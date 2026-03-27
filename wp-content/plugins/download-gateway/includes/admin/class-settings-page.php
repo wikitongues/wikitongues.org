@@ -195,8 +195,8 @@ class Settings_Page {
 	private static function policy_label( string $policy ): string {
 		$labels = array(
 			SettingsRepository::POLICY_NONE     => 'None',
-			SettingsRepository::POLICY_SOFT     => 'Soft gate',
-			SettingsRepository::POLICY_HARD     => 'Hard gate',
+			SettingsRepository::POLICY_SOFT     => 'Skippable',
+			SettingsRepository::POLICY_HARD     => 'Required',
 			SettingsRepository::POLICY_DISABLED => 'Disabled',
 			SettingsRepository::POLICY_INHERIT  => 'Inherit',
 		);
