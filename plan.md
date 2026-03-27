@@ -3,6 +3,10 @@
 This file tracks known issues, deferred refactors, and planned improvements.
 Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [docs/testing-strategy.md](docs/testing-strategy.md)
 
+**Companion documents (authoritative for sequencing and analytics):**
+- Product roadmap: `wikitongues-product-roadmap.md` — impact-first sequencing overrides the dependency-ordered phasing below where they conflict
+- Analytics strategy: `wikitongues-analytics-strategy.md` — defines GA4/GTM instrumentation, key metrics, and reporting cadence
+
 ---
 
 ## Table of Contents
@@ -23,7 +27,7 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 
 ## Roadmap
 
-Phases are ordered by dependency. Items within a phase can be parallelized; phases should complete before the next begins.
+Phases are ordered by dependency. Items within a phase can be parallelized. **Note:** The product roadmap (`wikitongues-product-roadmap.md`) sequences work by impact rather than dependency. Where the two conflict, the roadmap's sequencing wins — several items below (download gateway sub-phases 0–5, FundraiseUp ACF, Donors CPT) ship ahead of their plan.md phase gates. This document remains the authoritative source for technical specs and dependency chains; the roadmap is authoritative for what ships when.
 
 **Key dependency chains:**
 
@@ -32,16 +36,17 @@ Phases are ordered by dependency. Items within a phase can be parallelized; phas
 - ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](docs/plan-archive.md))_
 - `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
 - ~~`Font Awesome`~~ ✅ → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
-- `Donors CPT` _(Phase 6)_ → `Donation optimization`
+- `Donors CPT` _(Phase 6)_ → `Donation optimization` _(roadmap: Track 1B, ships in Phase 1 ahead of Layer 4)_
 - `Archive template refactor` + `Autoloader` → `Docker` (Phase 4)
 - `PHPStan baseline reduction` → zero suppressions before `Layer 3` (Phase 5)
 - `Docker` → `Layer 3` → gateway integration tests
 - `Docker` → `Layer 4` → maps, performance profiling
 - `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
-- `Enhanced search results page` → `Layer 4 visual baseline` (Phase 6)
-- `Better aliveness` → before `Layer 4 visual baseline` (Phase 6)
+- `Enhanced search results page` → `Layer 4 visual baseline` (Phase 6) _(roadmap: Track 2C, Phase 2 Engagement Features)_
+- `Better aliveness` → before `Layer 4 visual baseline` (Phase 6) _(roadmap: Track 2A, Phase 2 Engagement Features)_
 - `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway sub-phase 5
-- `Gamification` → Membership infrastructure _(not in scope)_ → Phase 8+
+- `Download gateway` → `Visitor engagement profile` → `Retention campaign personalization`
+- `Visitor engagement profile` + `Membership` _(board decision)_ → `Language passport` → `Gamification` → Phase 8+
 
 ---
 
@@ -197,6 +202,8 @@ The baseline introduced with PHPStan (PR #435) suppressed 400+ pre-existing viol
 
 _Phase 3 code quality chain (A–E) must complete before Docker so the image captures the final file layout. Stylus migration is deferred to Phase 7 — Docker does not need to capture the final CSS preprocessor state. Gateway sub-phases 0–5 can run in parallel with Docker setup._
 
+_**Roadmap note:** Gateway sub-phases 0–5 are roadmap Track 1A and ship immediately as the primary email capture engine. Docker setup follows on its own timeline. See `wikitongues-product-roadmap.md` Phase 1._
+
 #### Dockerize project
 
 Containerize the WordPress install for contributor onboarding and CI-based integration/E2E tests. Must capture the post-Phase 3 file layout.
@@ -207,47 +214,105 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 
 **Architectural decisions (resolved):**
 - Signed expiring redirect URLs — not proxy streaming; replaces `force_download_file()`
-- CPT strategy: use existing `resources` and `document_files` CPTs — records not yet populated, migration risk is low
-- Plugin namespace: `download-gateway` / prefix `dg_`
+- CPT strategy: `documents` + `document_files` (existing, in active use); `resources` CPT not used
+- Downloadable unit is the leaf node (`document_files` post, `videos` post, etc.) — selection UI stays in theme templates; gateway is post-type-agnostic
+- Plugin namespace: `download-gateway` / prefix `gateway_`
+- `FileResolverRegistry` maps post types to `FileResolver` implementations; `DocumentFileResolver` handles `document_files` via ACF `file` field; future types (videos, captions) register the same interface
+- **Policy model:** four values — `disabled` (link hidden entirely) | `none` | `soft` | `hard`. Three-tier resolution: per-record (`_gateway_gate_policy`) → per-CPT (`gateway_cpt_policy_{post_type}`) → global (`gateway_global_gate_policy`). First non-`inherit` value wins. Templates receive `disabled` as a signal to suppress the download affordance entirely.
+- **Intake forms:** resource-specific fields collected as modal step 2 (before redirect) when defined for a CPT. Fields registered via `gateway_intake_fields` PHP filter — not ACF. Gateway plugin renders whatever fields are declared; theme/CPT code owns the field definitions. Intake payload stored in `wp_gateway_intake_responses` and forwarded to external systems via WebhookDispatcher (sub-phase 2c).
 
 **Schema additions:**
-- `wp_dg_people` — email_hash, email, name, consent fields, anonymization flags
-- `wp_dg_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
-- `wp_dg_webhook_delivery` — retry queue and dead-letter
-- `wp_dg_tokens` _(not in original spec — required)_ — one-time download tokens with expiry; needed by sub-phases 3 and 5
+- `wp_gateway_people` — email_hash, email, name, consent fields, anonymization flags
+- `wp_gateway_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
+- `wp_gateway_webhook_delivery` — retry queue and dead-letter
+- `wp_gateway_tokens` — one-time download tokens with expiry; needed by sub-phases 3 and 5
+- `wp_gateway_intake_responses` — per-person, per-post intake payload (JSON blob); sub-phase 5b
 
-**Sub-phases 0–5:**
-- **0** — Plugin scaffold: activation/deactivation/uninstall hooks, feature flag constant, settings page placeholder, logging conventions
-- **1** — Data model: create tables with indexes on activation; idempotent migrations
-- **2a** — Core primitives _(unblocks 3)_: PolicyResolver with precedence (per-resource → taxonomy → global), SettingsRepository, EventBus, DownloadEventRepository
-- **2b** — Form/gate primitives _(unblocks 5)_: FormSchemaRegistry, Validator, SubmissionService, PeopleRepository, RateLimiter + honeypot, modal UI kit
-- **2c** — Deferrable primitives: WebhookDispatcher (retry + dead-letter), RetentionJob skeleton + cron registration
-- **3** — Download endpoint: `/dg/download/{token-or-post-id}`, `dg_vid` visitor cookie, click event logging, UTM/referrer capture, IP hashing, no-cache headers
-- **4** — Resource authoring: ACF fields on existing CPTs (file_url, storage_type, dropbox_path, version); metabox showing gateway URL; `[dg_download]` shortcode
-- **5** — Gate modes: soft gate (skippable) and hard gate (email required); `POST /wp-json/dg/v1/gate`; person upsert; one-time token; nonce + rate limit + honeypot
+**Sub-phases:**
+- [x] **0** — Plugin scaffold: activation/deactivation/uninstall hooks, `GATEWAY_ENABLED` feature flag, settings page placeholder, Logger (PR #560)
+- [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
+- [x] **2a** — Core primitives: `PolicyResolver` (per-resource → per-CPT → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
+- [x] **2b** — Collapsed into sub-phase 5: PeopleRepository, GateController, rate limiter (transients), honeypot, modal UI
+- **2c** — WebhookDispatcher: HTTP delivery with retry + dead-letter queue against `wp_gateway_webhook_delivery`; motivated by intake response forwarding to Make.com/Airtable (sub-phase 5b)
+- [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
+- [x] **4** — Resource authoring: native WP metabox (gate policy select + file URL + shortcode snippet), `[gateway_download]` shortcode. All three validated on localhost. (PR #561)
+- [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
+- [x] **5b-i** — Policy model expansion: per-CPT tier, `disabled` value, settings UI audit table, shortcode + metabox updates. (PR #566)
+- [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
+- [x] **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped). (PR #572)
+- [x] **6** — Dropbox storage adapters: `DropboxAdapter` (OAuth2 refresh token flow, `sharing/get_shared_link_metadata` → `files/get_temporary_link`, 3-level transient cache), `VideoFileResolver`, `CaptionFileResolver`. Credentials via `wp-config.php` constants (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`). Wikimedia Commons links gated via JS-only `data-file-url` redirect (no server file resolution). Modal UX: loading spinner while token resolves, AbortController on dismiss, close button always visible. Validated locally for videos, captions, and Wikimedia links.
+- **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
+- **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
+- [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
+  - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) to be deployed.
+- **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
 
 **Implementation notes:**
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
-- Cache plugins must explicitly exclude `/dg/download/` — HTTP headers alone are not sufficient
-- `dg_vid` cookie: define whether set unconditionally or only after consent (GDPR/ePrivacy implications)
-- Dropbox credentials: store in `wp_options` with `autoload=no`; exclude from any REST API exposure
-- ACF fields: use `register_meta` or own ACF JSON within the plugin — do not depend on theme's `acf-json/`
-- EventBus: evaluate `do_action('dg/download/click', $event)` before introducing a custom bus class
+- Cache plugins must explicitly exclude `/gateway/download/` — HTTP headers alone are not sufficient
+- `gateway_vid` cookie is set unconditionally on first download; GDPR/ePrivacy implications TBD before gate launch
+- Dropbox credentials: defined as PHP constants in `wp-config.php` (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`); never stored in the database
+- EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
+- Admin UI for download data: `wp_gateway_download_events` → sub-phase 8 (reporting, CSV export); `wp_gateway_people` → sub-phase 9 (retention management, anonymization audit, manual run-now)
+- Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
+- **Donation approach (2026-03-25):** no donation ask in the modal. Post-download email follow-up via Mailchimp, triggered by the `intake` webhook event (Make.com automation). Personalized by `use_case` tag — a researcher and a language speaker receive different messages. Rationale: user has already received the file (maximum gratitude moment); modal is already two steps; email is A/B-testable without code changes.
 
-**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3, 5 (basic hard gate), 9 (retention). Cut first: taxonomy-level policy defaults, admin charts (keep CSV only), webhook retries (keep best-effort), inline gate (keep modal only).
+**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate) ✅, 9 (retention). Cut first: per-CPT policy UI (keep global only), admin charts (keep CSV only), webhook retries (keep best-effort), intake forms (keep modal step 1 only).
 
-**Testing targets (unit):** PolicyResolver precedence, Validator, token expiry, people upsert
-**Testing targets (integration):** endpoint logs and redirects, gate submission yields one-time token, Dropbox temporary link generation
+**Testing targets (unit):** ✅ IpHasher (12), TokenRepository (12), FileResolverRegistry + DocumentFileResolver (11), VisitorId (8), DownloadController::resolve() (10) — 53 tests total
+**Testing targets (integration):** endpoint logs and redirects ✅ (manual), gate submission yields one-time token, Dropbox temporary link generation
 
-#### Forms _(parallel to gateway sub-phases 0–5)_
+#### Forms _(parallel to gateway sub-phases)_
 
 - **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
 - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms or custom REST endpoints
 - _Download gateway gate form_ — already scoped in gateway sub-phase 5; not duplicated here
+- _Resource-specific intake forms_ — scoped in gateway sub-phase 5b; implemented as modal step 2 via `gateway_intake_fields` filter, not a standalone form system
+
+**Forms approach:** all forms (gate, intake, support, feedback, contact) are custom REST endpoints + minimal PHP-defined markup. No forms plugin dependency — the forms are simple enough that a plugin adds overhead without benefit. Field definitions live in code (PHP filter or direct markup), not in ACF or a form builder admin UI.
 
 #### Better aliveness — dynamic homepage _(before Phase 6 visual baseline)_
 
+_(Roadmap: Track 2A, Phase 2 Engagement Features)_
+
 The homepage feels static. Surface recently added/updated languages, latest videos, rotate banners for current campaigns. Identify content signals (publication date, editor-curated featured flag). Assess JS vs. server-side rendering. Must land before Layer 4 so dynamic content is captured in baseline screenshots.
+
+#### Retention & discovery email campaign _(parallel; no code deps)_
+
+_(Roadmap: Track 1D, Phase 1 Fix the Funnel)_
+
+Nurture sequence turning language exploration into recurring donations. Core thesis: discovery and travel — users see a set of languages, receive an email campaign featuring associated languages, with the goal of driving monthly donations. Full spec in `wikitongues-product-roadmap.md` Track 1D.
+
+**Codebase touchpoints:**
+- UTM parameter conventions for all email links (must be consistent with GA4 channel grouping)
+- Email provider integration (API or webhook for subscriber management)
+- Newsletter subscribe event (`newsletter_subscribe`) already instrumented in GTM
+- Download gateway (sub-phases 0–5) provides the primary email capture mechanism
+
+#### Visitor engagement profile _(parallel; depends on download gateway for email capture)_
+
+Data infrastructure for tracking content engagement per email-known visitor. This is the foundation that the retention campaign personalizes from, and that the user-facing passport (Phase 8) eventually surfaces.
+
+**Visitor identity progression:**
+
+1. **Anonymous** — GA4 tracks aggregate behavior via `content_type` dimension. No PII. Current state.
+2. **Email-known** — Download gateway or newsletter captures email. Engagement can be tied to an individual via hashed email. No account, no password. Enables personalized retention emails.
+3. **Member** — Full account with password. User can see their own passport, earn stamps. **Blocked on board-level strategic decision** about what membership means for Wikitongues — scope, benefits, feel, impact. This is not a development task until the board decides.
+
+**What to build now (layers 1–2 only):**
+
+- `wp_gateway_people` table (already spec'd in download gateway sub-phase 1) stores the email-known visitor
+- Engagement log table: `visitor_id` (FK to `wp_gateway_people`), `content_type`, `content_slug`, `event_type` (view, download, donate_click), `timestamp`
+- Write hook: on `page_view` events where a `gateway_vid` cookie maps to a known person, log the content interaction
+- Read API: given an email hash, return content types and slugs engaged with — consumed by retention campaign for personalization
+
+**What NOT to build now:**
+
+- User-facing passport UI (requires membership — Phase 8)
+- Gamification / stamps (requires membership — Phase 8)
+- Account creation, login, password management (requires board decision)
+
+**Dependency note:** The engagement log extends the download gateway's `wp_gateway_people` table. It can ship as part of gateway sub-phases 6–10 or as a standalone addition after sub-phase 5.
 
 ---
 
@@ -269,27 +334,33 @@ Three known divergence directions:
 
 #### Download gateway — sub-phases 6–10
 
-- **6** — Storage adapters + Dropbox: local/media/external adapters; Dropbox adapter calls `files/get_temporary_link`, caches briefly, stores credentials in `wp_options` with `autoload=no`
+- [x] **6** — Dropbox storage adapters (see Phase 4 entry for details)
 - **7** — GA4 forwarding: EventBus subscriber; client-side where possible; events: `resource_download_click`, `resource_download_gate_submit`, `resource_download_redirect`
 - **8** — Admin reporting: date-filtered download table, top resources, CSV export with capability check
-- **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button
+- [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
 - **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
 
 ---
 
 ### Phase 6 — Visual baseline + data migration
 
-_Donors must land before the Layer 4 baseline is locked so Donors UI is captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration requires Airtable reconciliation (Phase 5)._
+_All new CPTs and templates (Donors, Creator, Collections) must land before the Layer 4 baseline is locked so their pages are captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration and Creator CPT backfill require Airtable reconciliation (Phase 5)._
 
 #### Complete Donors post type
+
+_(Roadmap: Track 1B, ships in Phase 1 ahead of Layer 4 gate)_
 
 Net new development — requires product definition and data input before implementation can begin. Build before Layer 4 baseline so Donors UI is included in screenshot comparisons.
 
 #### Donation optimization — donor cards in galleries
 
+_(Roadmap: Track 1B Phase 2, ships after Donors CPT)_
+
 After Donors CPT lands: integrate donor cards into gallery instances on relevant pages (campaign pages, homepage). Phase 2 (membership/recurring donors with profile features) is deferred pending a separate spec.
 
 #### FundraiseUp campaign management via ACF _(before Layer 4 — banner changes must be captured in baseline)_
+
+_(Roadmap: Track 1C, ships in Phase 1 as part of giving page redesign)_
 
 Move all FundraiseUp configuration out of hardcoded PHP into a new ACF options page ("Fundraising"), and add an admin-driven campaign banner slot.
 
@@ -315,6 +386,78 @@ New `banner--campaign.php` module. `header.php` gains two ordered banner slots: 
 **What this enables:** campaign launches and banner copy changes require no deploy. EOY campaigns, point-in-time drives, and future raises are managed entirely from admin.
 
 **Dependency note:** no Docker dependency; can start independently. Must land before Layer 4 so banner UI is captured in visual baseline.
+
+#### Video collections _(before Layer 4 — collection pages must be captured in baseline)_
+
+Editorial groupings that cut across the video archive for storytelling purposes — videos recorded by a specific person, videos belonging to a named project (Jewish Languages Project), videos from a given mission trip or recording expedition.
+
+**Data model:**
+
+New `collections` CPT with its own archive and single templates. Fields:
+- `title` — display name of the collection
+- `description` — editorial context (textarea)
+- `featured_image` — cover image for the collection card
+- `videos` — ACF relationship field to the `videos` CPT (multi-select, ordered)
+- `collection_type` — taxonomy or select: `person` / `project` / `expedition` / `other`
+
+Collections appear on:
+- A new `/collections/` archive page (gallery of collection cards)
+- Individual collection pages (`/collections/jewish-languages-project/`) listing the member videos
+- Optionally: a "Part of" affordance on `single-videos.php` linking back to the collection(s) the video belongs to
+
+**Airtable sync:** Not required at launch — collections are editorially curated in WordPress. If collections map to existing Airtable structures later, a sync route can be added.
+
+**Dependency note:** No Docker dependency; no Airtable reconciliation required. Must land before Layer 4 so collection archive and single templates are included in visual baseline screenshots.
+
+---
+
+#### Creator CPT _(before Layer 4 — creator pages must be captured in baseline)_
+
+Creators already exist as a table in Airtable and are referenced on video and caption records. Bringing them into WordPress as a first-class CPT enables creator archive and profile pages, creates a named entity to link to collections and download gateway data, and is a direct precursor to a user account system.
+
+**Data model:**
+
+New `creators` CPT synced from Airtable via Make.com (same pattern as languages, videos, captions).
+
+Core fields (sourced from Airtable):
+- `name` — display name
+- `bio` — short biography
+- `profile_image` — headshot or avatar
+- `languages` — relationship to `languages` CPT (languages they speak / have documented)
+- `videos` — relationship to `videos` CPT (videos they recorded or appear in)
+- `location` — country or region
+
+WordPress-side additions:
+- `_airtable_record_id` — sync key (same pattern as all other synced CPTs)
+- `user_id` — nullable FK to `wp_users`; empty until Phase 8 membership links an account to the creator record
+
+**Make.com sync:**
+
+Add a Creators blueprint following the established pattern (Airtable webhook → WP REST sync endpoint). Linked record resolution (languages, videos) follows the subscenario pattern used by Captions.
+
+**WordPress archive and templates:**
+- `/creators/` archive — gallery of creator cards
+- `single-creators.php` — profile page: bio, languages documented, video gallery
+
+**Why before membership:**
+The CPT creates the data model and public-facing profile URL (`/creators/jane-doe/`) without requiring authentication. Phase 8 membership links a WP user account to an existing creator record via `user_id` — it does not create the record from scratch. This ordering avoids a Phase 8 data migration.
+
+**Dependency note:** Airtable reconciliation (Phase 5) should run first so creator records are clean before backfilling. Must land before Layer 4 so creator archive and single templates are included in visual baseline.
+
+---
+
+#### Video state UI _(before Layer 4 — affects visual baseline)_
+
+The current video single template handles `Processing` and `Private` states with plain text messages and no affordances. Four gaps to close:
+
+- **Audio-only** — videos that are audio recordings have no video file; the thumbnail logic should detect this and show an audio-appropriate placeholder instead of a broken or absent video frame
+- **Processing** — currently shows a static message; add a "Notify me when ready" affordance (email capture, probably via the gateway people table or a lightweight subscribe endpoint)
+- **Private** — currently shows a static message; add a "Request access" affordance (sends a message to the archive team or logs a request)
+- **Thumbnail fallback logic** — audit the current thumbnail display logic across all four states (Public, Audio, Processing, Private) and define a consistent visual treatment for each
+
+**Dependency note:** No Docker dependency. Must land before Layer 4 so all state variants are captured in visual baseline screenshots.
+
+---
 
 #### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
 
@@ -364,11 +507,17 @@ No visibility into page load times or query performance in production. Known ris
 
 ### Phase 8 — Membership-dependent features
 
-_Blocked on membership infrastructure (user accounts), which is not currently in scope. Write a spec before implementation._
+_**Blocked on board-level strategic decision.** Membership — what it means for Wikitongues, its scope, benefits, feel, and impact — is a strategic question that rises above website development objectives. This phase does not begin until the board decides what membership looks like. Technical implementation follows that decision, not the other way around._
+
+_The visitor engagement profile (Phase 4) accumulates data in the background without requiring membership. When Phase 8 begins, that data is ready to surface._
+
+#### Language passport
+
+User-facing view of their engagement profile — languages explored, territories visited, videos watched, downloads. Requires authenticated access (account with password or token-based). The data layer already exists from the visitor engagement profile; this phase adds the UI and the account system.
 
 #### Gamification
 
-Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure. Write a separate spec before implementation.
+Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure + language passport. Write a separate spec before implementation.
 
 ---
 

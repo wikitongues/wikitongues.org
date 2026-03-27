@@ -4,5 +4,8 @@
     <testsuite name="Unit">
       <directory>tests/unit</directory>
     </testsuite>
+    <testsuite name="Gateway">
+      <directory>tests/unit/download-gateway</directory>
+    </testsuite>
   </testsuites>
 </phpunit>

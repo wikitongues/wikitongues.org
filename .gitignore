@@ -31,6 +31,7 @@ wp-config.php
 /wp-content/plugins/*/build/
 # Include
 !/wp-content/plugins/typeahead/
+!/wp-content/plugins/download-gateway/
 !/wp-content/plugins/typeahead/build
 !/wp-content/plugins/wt-gallery/
 !/wp-content/plugins/wt-airtable-sync/
@@ -56,6 +57,7 @@ vendor/
 
 # Misc
 .DS_Store
+.obsidian/
 .ftpquota
 ggstemp.html
 readme_backup.md
