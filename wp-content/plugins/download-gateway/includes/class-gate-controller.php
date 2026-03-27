@@ -21,7 +21,7 @@ namespace WT\DownloadGateway;
 class GateController {
 
 	/** Maximum gate submissions per IP per hour. */
-	private const RATE_LIMIT = 50;
+	private const RATE_LIMIT = 10;
 
 	/** Rate-limit window in seconds. */
 	private const RATE_WINDOW = 3600;
