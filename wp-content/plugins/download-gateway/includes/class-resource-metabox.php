@@ -89,25 +89,25 @@ class Resource_Metabox {
 		?>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Gate policy</p>
 		<select name="_gateway_gate_policy" style="width:100%;margin-bottom:10px;">
-			<option value=""       <?php selected( $policy, '' ); ?>>Inherit (use CPT / global default)</option>
-			<option value="none"     <?php selected( $policy, 'none' ); ?>>None — direct redirect</option>
-			<option value="soft"     <?php selected( $policy, 'soft' ); ?>>Soft gate — skippable prompt</option>
-			<option value="hard"     <?php selected( $policy, 'hard' ); ?>>Hard gate — email required</option>
-			<option value="disabled" <?php selected( $policy, 'disabled' ); ?>>Disabled — hide download link</option>
+			<option value=""         <?php selected( $policy, '' ); ?>>Inherit</option>
+			<option value="none"     <?php selected( $policy, 'none' ); ?>>None</option>
+			<option value="soft"     <?php selected( $policy, 'soft' ); ?>>Skippable</option>
+			<option value="hard"     <?php selected( $policy, 'hard' ); ?>>Required</option>
+			<option value="disabled" <?php selected( $policy, 'disabled' ); ?>>Disabled</option>
 		</select>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Intake form</p>
 		<select name="_gateway_intake_set" style="width:100%;margin-bottom:6px;">
-			<option value="inherit" <?php selected( $intake_set, 'inherit' ); ?>>Inherit (use CPT / global default)</option>
-			<option value="none"    <?php selected( $intake_set, 'none' ); ?>>None — no intake form</option>
+			<option value="inherit" <?php selected( $intake_set, 'inherit' ); ?>>Inherit</option>
+			<option value="none"    <?php selected( $intake_set, 'none' ); ?>>None</option>
 			<?php foreach ( $registered_sets as $set_name ) : ?>
-			<option value="<?php echo esc_attr( $set_name ); ?>" <?php selected( $intake_set, $set_name ); ?>><?php echo esc_html( $set_name ); ?></option>
+			<option value="<?php echo esc_attr( $set_name ); ?>" <?php selected( $intake_set, $set_name ); ?>><?php echo esc_html( ucfirst( $set_name ) ); ?></option>
 			<?php endforeach; ?>
 		</select>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Show intake on repeat downloads</p>
 		<select name="_gateway_intake_always" style="width:100%;margin-bottom:10px;">
-			<option value="inherit" <?php selected( $intake_always, 'inherit' ); ?>>Inherit (use CPT / global default)</option>
-			<option value="0"       <?php selected( $intake_always, '0' ); ?>>No — first download only</option>
-			<option value="1"       <?php selected( $intake_always, '1' ); ?>>Yes — every session</option>
+			<option value="inherit" <?php selected( $intake_always, 'inherit' ); ?>>Inherit</option>
+			<option value="0"       <?php selected( $intake_always, '0' ); ?>>First only</option>
+			<option value="1"       <?php selected( $intake_always, '1' ); ?>>Every session</option>
 		</select>
 		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Download URL</p>
 		<input
@@ -117,9 +117,15 @@ class Resource_Metabox {
 			style="width:100%;font-size:11px;margin-bottom:6px;"
 			onclick="this.select();"
 		/>
-		<p style="margin:0 0 6px;font-size:11px;color:#646970;">
-			Shortcode: <code>[gateway_download id="<?php echo esc_html( (string) $post->ID ); ?>"]</code>
-		</p>
+		<p style="margin:0 0 4px;font-size:11px;font-weight:600;">Shortcode</p>
+		<input
+			type="text"
+			readonly
+			value="[gateway_download id=&quot;<?php echo esc_attr( (string) $post->ID ); ?>&quot;]"
+			style="width:100%;font-size:11px;margin-bottom:6px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+			onclick="navigator.clipboard.writeText(this.value);this.select();"
+			title="Click to copy"
+		/>
 		<?php // @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php) ?>
 		<?php if ( ! GATEWAY_ENABLED ) : ?>
 		<p style="margin:4px 0 0;font-size:11px;color:#a00;">

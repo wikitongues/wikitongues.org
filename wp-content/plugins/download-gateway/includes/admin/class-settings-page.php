@@ -209,9 +209,9 @@ class Settings_Page {
 		if ( $include_inherit ) {
 			echo '<option value="" ' . selected( $current, '', false ) . '>Inherit</option>';
 		}
-		echo '<option value="none" ' . selected( $current, 'none', false ) . '>None — no intake form</option>';
+		echo '<option value="none" ' . selected( $current, 'none', false ) . '>None</option>';
 		foreach ( $registered_sets as $set_name ) {
-			echo '<option value="' . esc_attr( $set_name ) . '" ' . selected( $current, $set_name, false ) . '>' . esc_html( $set_name ) . '</option>';
+			echo '<option value="' . esc_attr( $set_name ) . '" ' . selected( $current, $set_name, false ) . '>' . esc_html( ucfirst( $set_name ) ) . '</option>';
 		}
 		echo '</select>';
 	}
@@ -222,8 +222,8 @@ class Settings_Page {
 		if ( $include_inherit ) {
 			echo '<option value="" ' . selected( $current, '', false ) . '>Inherit</option>';
 		}
-		echo '<option value="0" ' . selected( $current, '0', false ) . '>No — first download only</option>';
-		echo '<option value="1" ' . selected( $current, '1', false ) . '>Yes — every session</option>';
+		echo '<option value="0" ' . selected( $current, '0', false ) . '>First only</option>';
+		echo '<option value="1" ' . selected( $current, '1', false ) . '>Every session</option>';
 		echo '</select>';
 	}
 
@@ -233,10 +233,10 @@ class Settings_Page {
 		if ( $include_inherit ) {
 			echo '<option value="' . esc_attr( SettingsRepository::POLICY_INHERIT ) . '" ' . selected( $current, SettingsRepository::POLICY_INHERIT, false ) . '>Inherit</option>';
 		}
-		echo '<option value="none" ' . selected( $current, 'none', false ) . '>None — direct redirect</option>';
-		echo '<option value="soft" ' . selected( $current, 'soft', false ) . '>Soft gate — skippable prompt</option>';
-		echo '<option value="hard" ' . selected( $current, 'hard', false ) . '>Hard gate — email required</option>';
-		echo '<option value="disabled" ' . selected( $current, 'disabled', false ) . '>Disabled — hide download link</option>';
+		echo '<option value="none"     ' . selected( $current, 'none', false ) . '>None</option>';
+		echo '<option value="soft"     ' . selected( $current, 'soft', false ) . '>Skippable</option>';
+		echo '<option value="hard"     ' . selected( $current, 'hard', false ) . '>Required</option>';
+		echo '<option value="disabled" ' . selected( $current, 'disabled', false ) . '>Disabled</option>';
 		echo '</select>';
 	}
 
@@ -271,220 +271,221 @@ class Settings_Page {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$retention_result = isset( $_GET['retention_result'] ) ? (int) $_GET['retention_result'] : null;
 		?>
+		<style>
+			.gateway-legend { display:flex; flex-wrap:wrap; gap:1em 2em; margin:1em 0 0; padding:1em; background:#f6f7f7; border:1px solid #dcdcde; border-radius:3px; }
+			.gateway-legend dt { font-weight:600; }
+			.gateway-legend dd { margin:0 0 0 0.4em; display:inline; color:#50575e; }
+			.gateway-legend span { display:flex; gap:0.3em; }
+		</style>
 		<div class="wrap">
 			<h1>Download Gateway</h1>
-			<p>
-				Version <?php echo esc_html( GATEWAY_VERSION ); ?>
-				&nbsp;&mdash;&nbsp;
-				<?php // @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php) ?>
-				Status: <strong><?php echo GATEWAY_ENABLED ? '<span style="color:#0a0;">Enabled</span>' : '<span style="color:#a00;">Disabled</span>'; ?></strong>
+			<p style="max-width:600px; color:#50575e;">
+				Controls how visitors access downloadable resources — videos, captions, and documents.
+				You can require visitors to share their name and email before downloading, ask follow-up questions, and automatically send that information to your CRM.
 			</p>
 			<?php // @phpstan-ignore-next-line (runtime constant — value is overridden in wp-config.php) ?>
 			<?php if ( ! GATEWAY_ENABLED ) : ?>
-			<div class="notice notice-warning inline">
-				<p>
-					The gateway is not yet intercepting downloads.
-					Add <code>define( 'GATEWAY_ENABLED', true );</code> to <code>wp-config.php</code> to enable it.
-				</p>
+			<div class="notice notice-error inline" style="margin-bottom:1em;">
+				<p><strong>Gateway is inactive.</strong> Downloads are not being tracked or gated. Contact your developer to enable it.</p>
 			</div>
 			<?php endif; ?>
-
-			<h2 class="title">Dropbox integration</h2>
-			<?php if ( SettingsRepository::dropbox_configured() ) : ?>
-			<p class="description">&#10003; Dropbox credentials found in wp-config.php. Test by downloading a video.</p>
-			<?php else : ?>
-			<p class="description">&#10007; Dropbox not configured &mdash; define <code>GATEWAY_DROPBOX_APP_KEY</code>, <code>GATEWAY_DROPBOX_APP_SECRET</code>, and <code>GATEWAY_DROPBOX_REFRESH_TOKEN</code> in wp-config.php.</p>
-			<?php endif; ?>
-
-			<hr />
 
 			<form method="post">
 				<?php wp_nonce_field( self::NONCE_ACTION, self::NONCE_FIELD ); ?>
 
-				<h2 class="title">Gate policy</h2>
-				<p>
-					Policies resolve in order: per-resource override → per-CPT default → global default.<br />
-					<em>Disabled</em> hides the download link entirely. <em>Inherit</em> falls through to the next tier.
+				<div class="card" style="max-width:none; margin-bottom:1.5em;">
+					<h2 class="title">Download access</h2>
+					<p style="color:#50575e;">
+						Set whether visitors must share their details to download, and whether to show a follow-up form asking how they plan to use the resource.
+						The <strong>Global</strong> row is the default for all content. Per-content-type rows override it. Individual resources can be further customised from their edit screen.
+						<?php if ( empty( $registered_sets ) ) : ?>
+						<br /><em>No intake forms are currently configured.</em>
+						<?php endif; ?>
+					</p>
+
+					<table class="widefat striped" style="margin-top:1em;">
+						<thead>
+							<tr>
+								<th rowspan="2" style="vertical-align:bottom;">Content type</th>
+								<th rowspan="2" style="vertical-align:bottom;">Access</th>
+								<th colspan="2" style="text-align:center; border-bottom:1px solid #ccd0d4;">Follow-up form</th>
+							</tr>
+							<tr>
+								<th>Form</th>
+								<th>Ask every time?</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="background:#f0f6fc;">
+								<td><strong>Global default</strong></td>
+								<td><?php self::policy_select( SettingsRepository::OPTION_GLOBAL_GATE_POLICY, $current_policy, false ); ?></td>
+								<td><?php self::intake_set_select( SettingsRepository::OPTION_GLOBAL_INTAKE_SET, $current_intake_set, $registered_sets, false ); ?></td>
+								<td><?php self::intake_always_select( SettingsRepository::OPTION_GLOBAL_INTAKE_ALWAYS, $current_intake_always, false ); ?></td>
+							</tr>
+							<?php foreach ( $post_types as $post_type ) : ?>
+								<?php
+								$cpt_policy        = SettingsRepository::get_cpt_policy( $post_type ) ?? SettingsRepository::POLICY_INHERIT;
+								$cpt_intake_set    = SettingsRepository::get_cpt_intake_set( $post_type ) ?? '';
+								$cpt_intake_always = SettingsRepository::get_cpt_intake_always( $post_type );
+								$cpt_always_value  = null === $cpt_intake_always ? '' : ( $cpt_intake_always ? '1' : '0' );
+								$pt_obj            = get_post_type_object( $post_type );
+								$pt_label          = $pt_obj ? $pt_obj->labels->name : ucwords( str_replace( '_', ' ', $post_type ) );
+								?>
+							<tr>
+								<td><?php echo esc_html( $pt_label ); ?></td>
+								<td><?php self::policy_select( 'gateway_cpt_policy_' . $post_type, $cpt_policy ); ?></td>
+								<td><?php self::intake_set_select( SettingsRepository::OPTION_CPT_INTAKE_SET_PREFIX . $post_type, $cpt_intake_set, $registered_sets ); ?></td>
+								<td><?php self::intake_always_select( SettingsRepository::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type, $cpt_always_value ); ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+
+					<dl class="gateway-legend">
+						<span><dt>Inherit</dt><dd>— use the row above</dd></span>
+						<span><dt>None</dt><dd>— open download, no prompt</dd></span>
+						<span><dt>Skippable</dt><dd>— ask for details, visitor can decline</dd></span>
+						<span><dt>Required</dt><dd>— email required before downloading</dd></span>
+						<span><dt>Disabled</dt><dd>— download link hidden entirely</dd></span>
+					</dl>
+				</div>
+
+				<div class="card" style="max-width:none; margin-bottom:1.5em;">
+					<h2 class="title">Integrations</h2>
+
+					<h3 style="margin-bottom:4px;">Dropbox</h3>
+					<?php if ( SettingsRepository::dropbox_configured() ) : ?>
+					<p class="description">&#10003; Connected. Video and caption files are served via Dropbox.</p>
+					<?php else : ?>
+					<p class="description">&#10007; Not connected &mdash; video and caption downloads will not work. Contact your developer to configure Dropbox.</p>
+					<?php endif; ?>
+
+					<h3 style="margin-top:1.5em; margin-bottom:4px;">CRM &amp; email notifications</h3>
+					<p style="color:#50575e;">
+						When someone downloads a resource or submits the follow-up form, the gateway can notify your CRM or email platform automatically.
+						Paste the webhook URL from Make.com below. Leave blank to disable notifications.
+					</p>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row">
+								<label for="gateway_webhook_endpoint">Notification URL</label>
+							</th>
+							<td>
+								<input
+									type="url"
+									name="<?php echo esc_attr( SettingsRepository::OPTION_WEBHOOK_ENDPOINT ); ?>"
+									id="gateway_webhook_endpoint"
+									value="<?php echo esc_attr( SettingsRepository::get_webhook_endpoint() ); ?>"
+									placeholder="https://hook.make.com/…"
+									style="width:420px;"
+								/>
+								<p class="description">
+									Notifies your CRM when a visitor registers, downloads a resource, or submits a follow-up form.
+									<?php if ( '' !== SettingsRepository::get_webhook_endpoint() ) : ?>
+									<span style="color:#0a0;">&#10003; Configured.</span>
+									<?php endif; ?>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="card" style="max-width:none; margin-bottom:1.5em;">
+					<h2 class="title">Data privacy</h2>
+					<p style="color:#50575e;">
+						To comply with data protection regulations, visitor names and email addresses are automatically deleted after the period below.
+						Download history is preserved so usage data remains intact — only personal identifiers are removed.
+					</p>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row">
+								<label for="gateway_retention_months">Delete personal data after</label>
+							</th>
+							<td>
+								<input
+									type="number"
+									name="<?php echo esc_attr( SettingsRepository::OPTION_RETENTION_MONTHS ); ?>"
+									id="gateway_retention_months"
+									value="<?php echo esc_attr( (string) $current_retention_months ); ?>"
+									min="1"
+									max="120"
+									style="width:80px;"
+								/> months
+								<p class="description">Recommended: 24 months. Names and email addresses older than this are automatically removed once per day.</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<?php submit_button( 'Save settings' ); ?>
+			</form>
+
+			<div class="card" style="max-width:none; margin-bottom:1.5em;">
+				<h2 class="title">Individual resource overrides</h2>
+				<p style="color:#50575e;">
+					These resources have a custom access setting that differs from their content type default.
+					To change a resource's setting, open it in the editor and look for the Download Gateway panel in the sidebar.
+				</p>
+				<?php if ( empty( $audit_rows ) ) : ?>
+				<p><em>No overrides set — all resources use their content type or global default.</em></p>
+				<?php else : ?>
+				<table class="widefat striped" style="margin-top:1em;">
+					<thead>
+						<tr>
+							<th>Resource</th>
+							<th>Content type</th>
+							<th>Access</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $audit_rows as $row ) : ?>
+						<tr>
+							<td>
+								<a href="<?php echo esc_url( get_edit_post_link( $row['post_id'] ) ); ?>">
+									<?php echo esc_html( $row['post_title'] ?: '(no title)' ); ?>
+								</a>
+							</td>
+							<td>
+								<?php
+								$pt_obj = get_post_type_object( $row['post_type'] );
+								echo esc_html( $pt_obj ? $pt_obj->labels->name : ucwords( str_replace( '_', ' ', $row['post_type'] ) ) );
+								?>
+							</td>
+							<td><?php echo esc_html( self::policy_label( $row['policy'] ) ); ?></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<?php endif; ?>
+			</div>
+
+			<div class="card" style="max-width:none; margin-bottom:1.5em;">
+				<h2 class="title">Privacy cleanup</h2>
+				<p style="color:#50575e;">
+					This runs automatically once per day and removes personal data older than your retention period.
+					You can also run it manually below — for example, after updating the retention period.
 				</p>
 
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row">Global default</th>
-						<td>
-							<?php self::policy_select( SettingsRepository::OPTION_GLOBAL_GATE_POLICY, $current_policy, false ); ?>
-							<p class="description">Site-wide fallback when no per-CPT or per-resource override is set.</p>
-						</td>
-					</tr>
+				<?php if ( null !== $retention_result ) : ?>
+				<div class="notice notice-success inline">
+					<p>Cleanup complete &mdash; <strong><?php echo esc_html( (string) $retention_result ); ?></strong> subscriber record(s) anonymized.</p>
+				</div>
+				<?php endif; ?>
 
-					<?php foreach ( $post_types as $post_type ) : ?>
-						<?php $cpt_policy = SettingsRepository::get_cpt_policy( $post_type ) ?? SettingsRepository::POLICY_INHERIT; ?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $post_type ); ?></th>
-						<td>
-							<?php self::policy_select( 'gateway_cpt_policy_' . $post_type, $cpt_policy ); ?>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</table>
-
-				<h2 class="title">Intake forms</h2>
 				<p>
-					Intake forms are an optional step 2 shown after the gate, collecting supplementary information.
-					Field sets are registered via the <code>gateway_intake_fields</code> PHP filter.
-					<?php if ( empty( $registered_sets ) ) : ?>
-					<br /><em>No intake field sets are currently registered.</em>
+					<?php if ( is_array( $last_run ) ) : ?>
+					Last run: <strong><?php echo esc_html( $last_run['timestamp'] ?? '—' ); ?></strong>
+					&mdash; <?php echo esc_html( (string) ( $last_run['count'] ?? 0 ) ); ?> record(s) anonymized.
+					<?php else : ?>
+					<em>Has not run yet.</em>
 					<?php endif; ?>
 				</p>
 
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row">Global default set</th>
-						<td>
-							<?php self::intake_set_select( SettingsRepository::OPTION_GLOBAL_INTAKE_SET, $current_intake_set, $registered_sets, false ); ?>
-							<p class="description">Fallback intake set when no per-CPT or per-resource override is set.</p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">Show on repeat downloads (global)</th>
-						<td>
-							<?php self::intake_always_select( SettingsRepository::OPTION_GLOBAL_INTAKE_ALWAYS, $current_intake_always, false ); ?>
-							<p class="description">When set to "Yes", the intake form also appears for returning visitors downloading again within the same session.</p>
-						</td>
-					</tr>
-
-					<?php foreach ( $post_types as $post_type ) : ?>
-						<?php
-						$cpt_intake_set    = SettingsRepository::get_cpt_intake_set( $post_type ) ?? '';
-						$cpt_intake_always = SettingsRepository::get_cpt_intake_always( $post_type );
-						$cpt_always_value  = null === $cpt_intake_always ? '' : ( $cpt_intake_always ? '1' : '0' );
-						?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $post_type ); ?></th>
-						<td>
-							<?php self::intake_set_select( SettingsRepository::OPTION_CPT_INTAKE_SET_PREFIX . $post_type, $cpt_intake_set, $registered_sets ); ?>
-							&nbsp;
-							<?php self::intake_always_select( SettingsRepository::OPTION_CPT_INTAKE_ALWAYS_PREFIX . $post_type, $cpt_always_value ); ?>
-							<p class="description">Set &nbsp;/&nbsp; Always show</p>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</table>
-
-				<h2 class="title">Data retention</h2>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row">
-							<label for="gateway_retention_months">Retention window</label>
-						</th>
-						<td>
-							<input
-								type="number"
-								name="<?php echo esc_attr( SettingsRepository::OPTION_RETENTION_MONTHS ); ?>"
-								id="gateway_retention_months"
-								value="<?php echo esc_attr( (string) $current_retention_months ); ?>"
-								min="1"
-								max="120"
-								style="width:80px;"
-							/> months
-							<p class="description">
-								Email and name are nulled out after this many months.
-								The person record itself is kept so download history remains intact.
-							</p>
-						</td>
-					</tr>
-				</table>
-
-				<h2 class="title">Integrations</h2>
-				<p>
-					Webhook events are sent to a single endpoint for all three event types
-					(<code>person</code>, <code>download</code>, <code>intake</code>).
-					Leave blank to disable webhook delivery.
-				</p>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row">
-							<label for="gateway_webhook_endpoint">Webhook endpoint URL</label>
-						</th>
-						<td>
-							<input
-								type="url"
-								name="<?php echo esc_attr( SettingsRepository::OPTION_WEBHOOK_ENDPOINT ); ?>"
-								id="gateway_webhook_endpoint"
-								value="<?php echo esc_attr( SettingsRepository::get_webhook_endpoint() ); ?>"
-								placeholder="https://hook.make.com/…"
-								style="width:420px;"
-							/>
-							<p class="description">
-								Receives <code>person</code>, <code>download</code>, and <code>intake</code> events.
-								Deliveries are retried up to 5 times with exponential backoff.
-							</p>
-						</td>
-					</tr>
-				</table>
-
-			<?php submit_button( 'Save settings' ); ?>
-			</form>
-
-			<hr />
-
-			<h2>Per-resource overrides</h2>
-
-			<?php if ( empty( $audit_rows ) ) : ?>
-			<p>No per-resource policy overrides are set. All resources use their CPT or global default.</p>
-			<?php else : ?>
-			<table class="widefat striped" style="max-width:700px;">
-				<thead>
-					<tr>
-						<th>Post</th>
-						<th>Type</th>
-						<th>Policy</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ( $audit_rows as $row ) : ?>
-					<tr>
-						<td>
-							<a href="<?php echo esc_url( get_edit_post_link( $row['post_id'] ) ); ?>">
-								<?php echo esc_html( $row['post_title'] ?: '(no title)' ); ?>
-							</a>
-						</td>
-						<td><?php echo esc_html( $row['post_type'] ); ?></td>
-						<td><?php echo esc_html( self::policy_label( $row['policy'] ) ); ?></td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-			<?php endif; ?>
-
-			<hr />
-
-			<h2>Retention</h2>
-
-			<?php if ( null !== $retention_result ) : ?>
-			<div class="notice notice-success inline">
-				<p>Retention job completed: <strong><?php echo esc_html( (string) $retention_result ); ?></strong> record(s) anonymized.</p>
+				<form method="post">
+					<?php wp_nonce_field( self::NONCE_ACTION_RUN_NOW, self::NONCE_FIELD_RUN_NOW ); ?>
+					<?php submit_button( 'Run cleanup now', 'secondary' ); ?>
+				</form>
 			</div>
-			<?php endif; ?>
-
-			<?php if ( is_array( $last_run ) ) : ?>
-			<p>
-				Last run: <strong><?php echo esc_html( $last_run['timestamp'] ?? '—' ); ?></strong>
-				&mdash; <?php echo esc_html( (string) ( $last_run['count'] ?? 0 ) ); ?> record(s) anonymized.
-			</p>
-			<?php else : ?>
-			<p>The retention job has not run yet.</p>
-			<?php endif; ?>
-
-			<p>
-				The retention job also runs automatically once per day via WP-Cron.
-				On production, back it up with a server cron:
-				<code>wp cron event run --due-now</code>
-			</p>
-
-			<form method="post">
-				<?php wp_nonce_field( self::NONCE_ACTION_RUN_NOW, self::NONCE_FIELD_RUN_NOW ); ?>
-				<?php submit_button( 'Run retention now', 'secondary' ); ?>
-			</form>
 		</div>
 		<?php
 	}
