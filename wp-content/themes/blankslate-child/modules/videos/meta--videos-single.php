@@ -13,8 +13,11 @@
 		// Get captions linked to this video.
 		// source_video is an ACF post_object field but the sync stores the value
 		// as a serialized array, so we match against the serialized form with LIKE.
-		$video_id = get_the_ID();
-		$captions = get_posts(
+		$video_id      = get_the_ID();
+		$language_slug = ( ! empty( $featured_languages ) && isset( $featured_languages[0]->post_name ) )
+			? $featured_languages[0]->post_name
+			: null;
+		$captions      = get_posts(
 			array(
 				'post_type'      => 'captions',
 				'posts_per_page' => -1,
@@ -63,7 +66,9 @@
 							. ' data-policy="' . esc_attr( $caption_policy ) . '"'
 							. ' data-post-type="captions"'
 							. ' data-intake-set="' . esc_attr( $caption_intake['set'] ) . '"'
-							. ' data-intake-always="' . ( $caption_intake['always'] ? '1' : '0' ) . '">'
+							. ' data-intake-always="' . ( $caption_intake['always'] ? '1' : '0' ) . '"'
+							. ( $language_slug ? ' data-language-slug="' . esc_attr( $language_slug ) . '"' : '' )
+							. ' data-download-source="resource-page">'
 							. esc_html( $label ) . ' (.srt)</a></li>';
 					}
 				} else {
@@ -108,7 +113,9 @@
 								. ' data-policy="' . esc_attr( $video_policy ) . '"'
 								. ' data-post-type="videos"'
 								. ' data-intake-set="' . esc_attr( $video_intake['set'] ) . '"'
-								. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '">Dropbox (.mp4)</a></li>';
+								. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '"'
+								. ( $language_slug ? ' data-language-slug="' . esc_attr( $language_slug ) . '"' : '' )
+								. ' data-download-source="resource-page">Dropbox (.mp4)</a></li>';
 						}
 					} else {
 						echo '<li><a href="' . esc_url( $dropbox_link ) . '" target="_blank">Dropbox (.mp4)</a></li>';
@@ -126,7 +133,9 @@
 							. ' data-post-type="videos"'
 							. ' data-file-url="' . esc_attr( $wikimedia_commons_link ) . '"'
 							. ' data-intake-set="' . esc_attr( $video_intake['set'] ) . '"'
-							. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '">Wikimedia Commons (.webm)</a></li>';
+							. ' data-intake-always="' . ( $video_intake['always'] ? '1' : '0' ) . '"'
+							. ( $language_slug ? ' data-language-slug="' . esc_attr( $language_slug ) . '"' : '' )
+							. ' data-download-source="resource-page">Wikimedia Commons (.webm)</a></li>';
 					} else {
 						echo '<li><a href="' . esc_url( $wikimedia_commons_link ) . '" target="_blank">Wikimedia Commons (.webm)</a></li>';
 					}

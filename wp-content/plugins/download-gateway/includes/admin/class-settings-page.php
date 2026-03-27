@@ -279,7 +279,7 @@ class Settings_Page {
 		</style>
 		<div class="wrap">
 			<h1>Download Gateway</h1>
-			<p style="max-width:600px; color:#50575e;">
+			<p style="color:#50575e;">
 				Controls how visitors access downloadable resources — videos, captions, and documents.
 				You can require visitors to share their name and email before downloading, ask follow-up questions, and automatically send that information to your CRM.
 			</p>
