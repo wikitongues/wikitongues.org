@@ -233,7 +233,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
 - [x] **2a** — Core primitives: `PolicyResolver` (per-resource → per-CPT → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
 - [x] **2b** — Collapsed into sub-phase 5: PeopleRepository, GateController, rate limiter (transients), honeypot, modal UI
-- **2c** — WebhookDispatcher: HTTP delivery with retry + dead-letter queue against `wp_gateway_webhook_delivery`; motivated by intake response forwarding to Make.com/Airtable (sub-phase 5b)
+- [x] **2c** — WebhookDispatcher: HTTP delivery with retry + dead-letter queue against `wp_gateway_webhook_delivery`; motivated by intake response forwarding to Make.com/Airtable (sub-phase 5b). In production.
 - [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
 - [x] **4** — Resource authoring: native WP metabox (gate policy select + file URL + shortcode snippet), `[gateway_download]` shortcode. All three validated on localhost. (PR #561)
 - [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
@@ -241,7 +241,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
 - [x] **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped). (PR #572)
 - [x] **6** — Dropbox storage adapters: `DropboxAdapter` (OAuth2 refresh token flow, `sharing/get_shared_link_metadata` → `files/get_temporary_link`, 3-level transient cache), `VideoFileResolver`, `CaptionFileResolver`. Credentials via `wp-config.php` constants (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`). Wikimedia Commons links gated via JS-only `data-file-url` redirect (no server file resolution). Modal UX: loading spinner while token resolves, AbortController on dismiss, close button always visible. Validated locally for videos, captions, and Wikimedia links.
-- [x] **7** — GA4 forwarding: `dataLayer.push()` from `gateway-modal.js`; events: `resource_download_click`, `resource_download_gate_open`, `resource_download_gate_submit`, `resource_download_redirect`. GTM Custom Event triggers + GA4 Event tags configured separately. (PRs #578, #582, #585)
+- [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events (`resource_download_click`, `resource_download_gate_open`, `resource_download_gate_submit`, `resource_download_redirect`). GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. GA4: 3 new custom dimensions (post_type, policy, consent_download). Key events: gate_submit + redirect. Code spec: `download-gateway-ga4-handoff.md`. (PRs #578, #582, #585)
 - ~~**8** — Admin reporting: date-filtered download table, top resources, CSV export~~ — dropped; download data is accessible via Airtable views and phpMyAdmin/Beekeeper; a WP admin table adds no value over what already exists.
 - [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
   - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) to be deployed.
@@ -335,10 +335,11 @@ Three known divergence directions:
 #### Download gateway — sub-phases 6–10
 
 - [x] **6** — Dropbox storage adapters (see Phase 4 entry for details)
-- [x] **7** — GA4 forwarding: `dataLayer.push()` from `gateway-modal.js`; events: `resource_download_click`, `resource_download_gate_open`, `resource_download_gate_submit`, `resource_download_redirect`. (PRs #578, #582, #585)
+- [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events. GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. (PRs #578, #582, #585)
 - ~~**8** — Admin reporting~~ — dropped; Airtable views + phpMyAdmin/Beekeeper cover this.
-- [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
-- **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
+- [x] **9** — Retention automation (PR #565)
+  - **9b** — Retention webhook: enqueue `type:anonymize` to Make.com → clear Airtable/Mailchimp. Requires 2c.
+- **10** — Rollout: convert resources hub first, then top downloads; deprecate `force_download_file()`
 
 ---
 
