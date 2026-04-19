@@ -20,6 +20,13 @@ namespace WT\DownloadGateway;
 
 class DownloadController {
 
+	/**
+	 * Stores the redirect event ID logged by the most recent get_file_url() call.
+	 * Set as a side effect so handle() can include it in the ?format=json response
+	 * without changing the testable resolve() return type.
+	 */
+	private ?int $last_event_id = null;
+
 	public function register_routes(): void {
 		register_rest_route(
 			GATEWAY_REST_NAMESPACE,
@@ -68,7 +75,13 @@ class DownloadController {
 		VisitorId::set_cookie( $visitor_id );
 
 		if ( 'json' === $format ) {
-			return new \WP_REST_Response( array( 'url' => $result ), 200 );
+			return new \WP_REST_Response(
+				array(
+					'url'      => $result,
+					'event_id' => $this->last_event_id,
+				),
+				200
+			);
 		}
 
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -182,8 +195,8 @@ class DownloadController {
 			return new \WP_Error( 'file_not_found', 'File could not be resolved.', array( 'status' => 404 ) );
 		}
 
-		$post_type = (string) get_post_type( $post_id );
-		$event_id  = DownloadEventRepository::log(
+		$post_type           = (string) get_post_type( $post_id );
+		$event_id            = DownloadEventRepository::log(
 			array(
 				'post_id'      => $post_id,
 				'post_type'    => $post_type,
@@ -194,6 +207,7 @@ class DownloadController {
 				'ip_hash'      => IpHasher::hash_from_server( $server ),
 			)
 		);
+		$this->last_event_id = is_int( $event_id ) ? $event_id : null;
 
 		// Enqueue download webhook if an endpoint is configured.
 		$endpoint = SettingsRepository::get_webhook_endpoint();

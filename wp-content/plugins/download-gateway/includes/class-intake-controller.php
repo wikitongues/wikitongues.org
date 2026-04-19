@@ -44,11 +44,15 @@ class IntakeController {
 			$responses = array();
 		}
 
+		$raw_event_id      = $request->get_param( 'download_event_id' );
+		$download_event_id = is_numeric( $raw_event_id ) ? (int) $raw_event_id : null;
+
 		$result = $this->submit(
 			(int) ( $request->get_param( 'post_id' ) ?? 0 ),
 			(string) ( $request->get_param( 'person_cookie' ) ?? '' ),
 			(string) ( $request->get_param( 'nonce' ) ?? '' ),
-			$responses
+			$responses,
+			$download_event_id
 		);
 
 		if ( is_wp_error( $result ) ) {
@@ -61,13 +65,15 @@ class IntakeController {
 	/**
 	 * Process an intake submission. Returns true on success, WP_Error on failure.
 	 *
-	 * @param int                  $post_id       Post ID of the downloaded resource.
-	 * @param string               $person_cookie HMAC-signed cookie value from gateway_gated.
-	 * @param string               $nonce         WP nonce value.
-	 * @param array<string,string> $responses     Key-value map of field responses.
+	 * @param int                  $post_id           Post ID of the downloaded resource.
+	 * @param string               $person_cookie     HMAC-signed cookie value from gateway_gated.
+	 * @param string               $nonce             WP nonce value.
+	 * @param array<string,string> $responses         Key-value map of field responses.
+	 * @param int|null             $download_event_id ID of the redirect event from wp_gateway_download_events.
+	 *                                               Passed by the JS after fetching the download URL.
 	 * @return true|\WP_Error
 	 */
-	public function submit( int $post_id, string $person_cookie, string $nonce, array $responses ): bool|\WP_Error {
+	public function submit( int $post_id, string $person_cookie, string $nonce, array $responses, ?int $download_event_id = null ): bool|\WP_Error {
 		if ( ! wp_verify_nonce( $nonce, 'gateway_gate' ) ) {
 			return new \WP_Error( 'invalid_nonce', 'Request could not be verified.', array( 'status' => 403 ) );
 		}
@@ -103,7 +109,7 @@ class IntakeController {
 				array(
 					'type'               => 'intake',
 					'person_id'          => $person_id,
-					'download_event_id'  => DownloadEventRepository::find_redirect_id( $person_id, $post_id ),
+					'download_event_id'  => $download_event_id,
 					'post_id'            => $post_id,
 					'post_type'          => $post_type,
 					'airtable_record_id' => get_post_meta( $post_id, '_airtable_record_id', true ) ?: null,
