@@ -84,4 +84,34 @@ class DownloadEventRepository {
 
 		return $wpdb->insert_id;
 	}
+
+	/**
+	 * Return the ID of the most recent redirect event for a person + post.
+	 *
+	 * Used by IntakeController to include the download event ID in the intake
+	 * webhook payload so Make.com can update the correct Downloads record.
+	 *
+	 * @param int $person_id Person ID from wp_gateway_people.
+	 * @param int $post_id   Post ID of the downloaded resource.
+	 * @return int|null Row ID, or null if no matching redirect event found.
+	 */
+	public static function find_redirect_id( int $person_id, int $post_id ): ?int {
+		global $wpdb;
+
+		$id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}gateway_download_events
+				 WHERE person_id = %d
+				   AND post_id   = %d
+				   AND event_type = %s
+				 ORDER BY created_at DESC
+				 LIMIT 1",
+				$person_id,
+				$post_id,
+				self::EVENT_REDIRECT
+			)
+		);
+
+		return null !== $id ? (int) $id : null;
+	}
 }
