@@ -69,6 +69,7 @@ class WebhookDispatcher {
 				"SELECT * FROM {$wpdb->prefix}gateway_webhook_delivery
 				 WHERE status IN ('pending','failed')
 				   AND next_attempt_at <= %s
+				 ORDER BY id ASC
 				 LIMIT 50",
 				current_time( 'mysql' )
 			)
