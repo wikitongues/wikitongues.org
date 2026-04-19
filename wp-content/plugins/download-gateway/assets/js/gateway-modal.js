@@ -628,6 +628,7 @@
 		var personCookie = pendingPersonCookie;
 		var postId       = pendingPostId;
 		var directUrl    = pendingDirectUrl;
+		var isExternal   = pendingIsExternal;
 
 		// Collect responses from intake form fields.
 		var responses = {};
@@ -641,7 +642,45 @@
 
 		intakeSubmitBtn.disabled   = true;
 		intakeErrorMsg.textContent = '';
+		showLoadingStep();
 
+		// External downloads have no token to redeem — submit intake then redirect directly.
+		if ( isExternal || ! token ) {
+			doIntakeAndRedirect( postId, personCookie, responses, null, directUrl );
+			return;
+		}
+
+		// Step 1: Fetch the download URL via the JSON endpoint.
+		// This logs the redirect event server-side and returns {url, event_id}.
+		// Intake is submitted next so it can reference the correct download event.
+		fetch( gatewaySettings.downloadBase + '/' + token + '?format=json', {
+			credentials: 'same-origin',
+			headers:     { 'X-WP-Nonce': gatewaySettings.restNonce },
+		} )
+			.then( function ( res ) { return res.json().then( function ( d ) { return { ok: res.ok, data: d }; } ); } )
+			.then( function ( result ) {
+				var fileUrl = ( result.ok && result.data.url )      ? result.data.url      : null;
+				var eventId = ( result.ok && result.data.event_id ) ? result.data.event_id : null;
+				// Fall back to direct token redirect if JSON response was not OK.
+				doIntakeAndRedirect( postId, personCookie, responses, eventId, fileUrl || ( gatewaySettings.downloadBase + '/' + token ) );
+			} )
+			.catch( function () {
+				// Network error — fall back to direct token redirect (server will 302).
+				doIntakeAndRedirect( postId, personCookie, responses, null, gatewaySettings.downloadBase + '/' + token );
+			} );
+	}
+
+	/**
+	 * Submit the intake form then redirect to the file.
+	 * Intake is supplementary: redirect always happens regardless of outcome.
+	 *
+	 * @param {number}      postId          WP post ID.
+	 * @param {string}      personCookie    Signed gateway_gated cookie value.
+	 * @param {Object}      responses       Key-value intake field responses.
+	 * @param {number|null} downloadEventId ID of the just-logged redirect event, or null.
+	 * @param {string}      fileUrl         File URL (resolved) or token URL (fallback).
+	 */
+	function doIntakeAndRedirect( postId, personCookie, responses, downloadEventId, fileUrl ) {
 		fetch( gatewaySettings.intakeUrl, {
 			method:      'POST',
 			credentials: 'same-origin',
@@ -650,19 +689,39 @@
 				'X-WP-Nonce':   gatewaySettings.restNonce,
 			},
 			body: JSON.stringify( {
-				post_id:       postId,
-				person_cookie: personCookie,
-				nonce:         gatewaySettings.nonce,
-				responses:     responses,
+				post_id:           postId,
+				person_cookie:     personCookie,
+				nonce:             gatewaySettings.nonce,
+				responses:         responses,
+				download_event_id: downloadEventId,
 			} ),
 		} )
 			.then( function () {
-				// Intake is supplementary — proceed regardless of server response.
-				finishDownload( token, directUrl );
+				triggerDownloadRedirect( fileUrl );
 			} )
 			.catch( function () {
-				finishDownload( token, directUrl );
+				// Intake is supplementary — proceed regardless.
+				triggerDownloadRedirect( fileUrl );
 			} );
+	}
+
+	/**
+	 * Push the GA4 redirect event, close the modal, and navigate to the file.
+	 * Used by the intake path after intake has been submitted.
+	 *
+	 * @param {string} fileUrl Resolved file URL or fallback token URL.
+	 */
+	function triggerDownloadRedirect( fileUrl ) {
+		pushEvent( {
+			event:           'resource_download_redirect',
+			post_id:         pendingPostId || currentPostId,
+			post_type:       pendingPostType || currentPostType,
+			policy:          currentPolicy,
+			language_slug:   currentLanguageSlug,
+			download_source: currentDownloadSource,
+		} );
+		closeModal();
+		redirect( fileUrl );
 	}
 
 	/**

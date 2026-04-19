@@ -3,7 +3,7 @@
  * Plugin Name:       Wikitongues Download Gateway
  * Plugin URI:        https://github.com/wikitongues/wikitongues.org
  * Description:       Signed download tokens, optional email gate, download event logging, and GA4 forwarding for all downloadable resources (document files, videos, captions, and future types).
- * Version:           0.1.0
+ * Version:           0.1.13
  * Requires at least: 6.0
  * Requires PHP:      8.2
  * Author:            Wikitongues
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GATEWAY_VERSION', '0.1.12' );
+define( 'GATEWAY_VERSION', '0.1.13' );
 define( 'GATEWAY_FILE', __FILE__ );
 define( 'GATEWAY_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GATEWAY_REST_NAMESPACE', 'gateway/v1' );
