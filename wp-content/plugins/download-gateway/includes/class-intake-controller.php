@@ -101,13 +101,15 @@ class IntakeController {
 				(int) $intake_id,
 				$endpoint,
 				array(
-					'type'       => 'intake',
-					'person_id'  => $person_id,
-					'post_id'    => $post_id,
-					'post_type'  => $post_type,
-					'intake_set' => $intake_set,
-					'responses'  => $sanitized,
-					'created_at' => current_time( 'mysql' ),
+					'type'               => 'intake',
+					'person_id'          => $person_id,
+					'download_event_id'  => DownloadEventRepository::find_redirect_id( $person_id, $post_id ),
+					'post_id'            => $post_id,
+					'post_type'          => $post_type,
+					'airtable_record_id' => get_post_meta( $post_id, '_airtable_record_id', true ) ?: null,
+					'intake_set'         => $intake_set,
+					'responses'          => $sanitized,
+					'created_at'         => current_time( 'mysql' ),
 				)
 			);
 		}
