@@ -202,13 +202,14 @@ class DownloadController {
 				(int) $event_id,
 				$endpoint,
 				array(
-					'type'       => 'download',
-					'event_id'   => (int) $event_id,
-					'person_id'  => $person_id,
-					'post_id'    => $post_id,
-					'post_type'  => $post_type,
-					'policy'     => PolicyResolver::resolve( $post_id ),
-					'created_at' => current_time( 'mysql' ),
+					'type'               => 'download',
+					'event_id'           => (int) $event_id,
+					'person_id'          => $person_id,
+					'post_id'            => $post_id,
+					'post_type'          => $post_type,
+					'airtable_record_id' => get_post_meta( $post_id, '_airtable_record_id', true ) ?: null,
+					'policy'             => PolicyResolver::resolve( $post_id ),
+					'created_at'         => current_time( 'mysql' ),
 				)
 			);
 		}
