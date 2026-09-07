@@ -266,6 +266,7 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 
 - **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
 - **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms or custom REST endpoints
+- **Translate a document** _(deferred — design needs rework)_ — CTA below the versions table on document single pages, inviting speakers to help translate a resource and get in touch about contributing. First pass prototyped (pre-filled `mailto:hello@wikitongues.org` reusing the `custom-cta-container` button style; branch `feature/cc/document-translate-cta`), but the visual treatment isn't right yet — parked, not shipping until reworked. Later: consider graduating from `mailto` to a custom REST contact form per the forms approach below.
 - _Download gateway gate form_ — already scoped in gateway sub-phase 5; not duplicated here
 - _Resource-specific intake forms_ — scoped in gateway sub-phase 5b; implemented as modal step 2 via `gateway_intake_fields` filter, not a standalone form system
 
