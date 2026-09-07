@@ -65,8 +65,8 @@ while ( have_rows( 'block_group' ) ) :
 						. ' data-post-id="' . esc_attr( $selected_file->ID ) . '"'
 						. ' data-policy="' . esc_attr( $bl_policy ) . '"'
 						. ' data-post-type="document_files"'
-						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ?? '' ) . '"'
-						. ' data-intake-always="' . ( ( $bl_intake['always'] ?? false ) ? '1' : '0' ) . '"'
+						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ) . '"'
+						. ' data-intake-always="' . ( $bl_intake['always'] ? '1' : '0' ) . '"'
 						. ' data-download-source="card">Download</a>';
 				}
 			} elseif ( $file_field ) {
@@ -88,8 +88,8 @@ while ( have_rows( 'block_group' ) ) :
 						. ' data-post-id="' . esc_attr( $selected_file->ID ) . '"'
 						. ' data-policy="' . esc_attr( $bl_policy ) . '"'
 						. ' data-post-type="document_files"'
-						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ?? '' ) . '"'
-						. ' data-intake-always="' . ( ( $bl_intake['always'] ?? false ) ? '1' : '0' ) . '"'
+						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ) . '"'
+						. ' data-intake-always="' . ( $bl_intake['always'] ? '1' : '0' ) . '"'
 						. ' data-download-source="card">Download</a>';
 				}
 			} elseif ( $file_field ) {

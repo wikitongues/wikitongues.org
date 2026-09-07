@@ -46,10 +46,10 @@ $banner_cta_placeholder = $page_banner['banner_cta_placeholder'] ?? false;
 			<a href="<?php echo esc_url( $banner_gateway_url ); ?>"
 				class="gateway-download-link"
 				data-post-id="<?php echo esc_attr( $selected_file->ID ); ?>"
-				data-policy="<?php echo esc_attr( $bg_policy ); ?>"
+				data-policy="<?php echo esc_attr( $bg_policy ?? '' ); ?>"
 				data-post-type="document_files"
-				data-intake-set="<?php echo esc_attr( $bg_intake['set'] ?? '' ); ?>"
-				data-intake-always="<?php echo ( $bg_intake['always'] ?? false ) ? '1' : '0'; ?>"
+				data-intake-set="<?php echo esc_attr( is_array( $bg_intake ) ? $bg_intake['set'] : '' ); ?>"
+				data-intake-always="<?php echo ( is_array( $bg_intake ) && $bg_intake['always'] ) ? '1' : '0'; ?>"
 				data-download-source="banner">
 				<?php echo esc_html( $file_cta ); ?>
 			</a>

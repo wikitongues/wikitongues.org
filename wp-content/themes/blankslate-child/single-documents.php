@@ -130,11 +130,11 @@ function render_download_ui( $document_id ) {
 							<?php elseif ( $row['dl_url'] && $gateway_active ) : ?>
 								<a href="<?php echo esc_url( $row['dl_url'] ); ?>"
 									class="gateway-download-link"
-									data-post-id="<?php echo esc_attr( $row['file_id'] ); ?>"
-									data-policy="<?php echo esc_attr( $row['policy'] ); ?>"
+									data-post-id="<?php echo esc_attr( (string) $row['file_id'] ); ?>"
+									data-policy="<?php echo esc_attr( $row['policy'] ?? '' ); ?>"
 									data-post-type="document_files"
-									data-intake-set="<?php echo esc_attr( $row['intake']['set'] ?? '' ); ?>"
-									data-intake-always="<?php echo ( $row['intake']['always'] ?? false ) ? '1' : '0'; ?>"
+									data-intake-set="<?php echo esc_attr( is_array( $row['intake'] ) ? $row['intake']['set'] : '' ); ?>"
+									data-intake-always="<?php echo ( is_array( $row['intake'] ) && $row['intake']['always'] ) ? '1' : '0'; ?>"
 									data-download-source="resource-page">Download</a>
 							<?php elseif ( $row['dl_url'] ) : ?>
 								<a href="<?php echo esc_url( $row['dl_url'] ); ?>">Download</a>
