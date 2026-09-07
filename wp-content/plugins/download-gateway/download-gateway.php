@@ -80,6 +80,11 @@ add_action(
 		if ( $installed < Schema::SCHEMA_VERSION ) {
 			Schema::create_tables();
 		}
+		// Self-heal: re-register cron jobs if they were lost (shared-host cache
+		// flush, DB import, or deactivate/reactivate without a clean schedule).
+		// schedule() is a no-op when the event is already registered.
+		RetentionJob::schedule();
+		WebhookDispatcher::schedule();
 	}
 );
 
