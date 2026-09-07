@@ -47,25 +47,58 @@ while ( have_rows( 'block_group' ) ) :
 	$selected_file    = ( $linked_post_type === 'documents' ) ? get_field( 'selected_file', $linked_post_id ) : null;
 	$file_field       = $selected_file ? get_field( 'file', $selected_file->ID ) : '';
 
+	$gateway_active = shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED;
+
 	// Primary CTA logic
 	if ( ! empty( $link ) ) {
 		if ( $link_type === 'link' ) {
 			$anchor .= '<a href="' . esc_url( $link['url'] ) . '">' . esc_html( $link['title'] ) . '</a>';
 		}
-		if ( $link_type === 'download' && $file_field ) {
-			$anchor .= '<a href="' . esc_url( $file_field ) . '">Download</a>';
+		if ( $link_type === 'download' && $selected_file ) {
+			if ( $gateway_active ) {
+				$bl_policy = \WT\DownloadGateway\PolicyResolver::resolve( $selected_file->ID );
+				if ( $bl_policy !== \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED ) {
+					$bl_intake = \WT\DownloadGateway\IntakeResolver::resolve( $selected_file->ID );
+					$bl_url    = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $selected_file->ID );
+					$anchor   .= '<a href="' . esc_url( $bl_url ) . '"'
+						. ' class="gateway-download-link"'
+						. ' data-post-id="' . esc_attr( $selected_file->ID ) . '"'
+						. ' data-policy="' . esc_attr( $bl_policy ) . '"'
+						. ' data-post-type="document_files"'
+						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ?? '' ) . '"'
+						. ' data-intake-always="' . ( ( $bl_intake['always'] ?? false ) ? '1' : '0' ) . '"'
+						. ' data-download-source="card">Download</a>';
+				}
+			} elseif ( $file_field ) {
+				$anchor .= '<a href="' . esc_url( $file_field ) . '">Download</a>';
+			}
 		}
 	}
 
 	// Secondary CTA logic
 	if ( $display_secondary === 'Yes' && $linked_post_type === 'documents' ) {
-		if ( $link_type === 'link' && $file_field ) {
-			$anchor .= '<a class="secondary" href="' . esc_url( $file_field ) . '">Download</a>';
+		if ( $link_type === 'link' && $selected_file ) {
+			if ( $gateway_active ) {
+				$bl_policy = \WT\DownloadGateway\PolicyResolver::resolve( $selected_file->ID );
+				if ( $bl_policy !== \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED ) {
+					$bl_intake = \WT\DownloadGateway\IntakeResolver::resolve( $selected_file->ID );
+					$bl_url    = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $selected_file->ID );
+					$anchor   .= '<a class="secondary" href="' . esc_url( $bl_url ) . '"'
+						. ' class="gateway-download-link"'
+						. ' data-post-id="' . esc_attr( $selected_file->ID ) . '"'
+						. ' data-policy="' . esc_attr( $bl_policy ) . '"'
+						. ' data-post-type="document_files"'
+						. ' data-intake-set="' . esc_attr( $bl_intake['set'] ?? '' ) . '"'
+						. ' data-intake-always="' . ( ( $bl_intake['always'] ?? false ) ? '1' : '0' ) . '"'
+						. ' data-download-source="card">Download</a>';
+				}
+			} elseif ( $file_field ) {
+				$anchor .= '<a class="secondary" href="' . esc_url( $file_field ) . '">Download</a>';
+			}
 		}
 		if ( $link_type === 'download' ) {
 			$anchor .= '<a class="secondary" href="' . esc_url( $link['url'] ) . '">' . esc_html( $link['title'] ) . '</a>';
 		}
-	} else {
 	}
 
 	// Render Block
