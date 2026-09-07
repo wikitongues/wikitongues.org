@@ -232,12 +232,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 10
-			path: wp-content/themes/blankslate-child/includes/integrations/document-download-handler.php
-
-		-
-			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
-			count: 1
+			count: 4
 			path: wp-content/themes/blankslate-child/includes/integrations/document-download-handler.php
 
 		-
@@ -291,13 +286,38 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/banners/banner--alert.php
 
 		-
+			message: "#^Call to function is_array\\(\\) with null will always evaluate to false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
 
 		-
-			message: "#^Variable \\$file_cta might not be defined\\.$#"
+			message: "#^If condition is always false\\.$#"
 			count: 1
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$bg_policy on left side of \\?\\? always exists and is always null\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
+
+		-
+			message: "#^Variable \\$file_cta might not be defined\\.$#"
+			count: 2
 			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
 
 		-
@@ -432,6 +452,16 @@ parameters:
 
 		-
 			message: "#^Function the_row not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
 
@@ -846,8 +876,33 @@ parameters:
 			path: wp-content/themes/blankslate-child/single-careers.php
 
 		-
+			message: "#^Call to function is_array\\(\\) with null will always evaluate to false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 9
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
+			message: "#^Left side of && is always false\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
+			message: "#^Offset 'policy' on array\\{file_id\\: int, lang_id\\: mixed, lang_name\\: mixed, version\\: mixed, format\\: mixed, policy\\: null, disabled\\: false, intake\\: null, \\.\\.\\.\\} on left side of \\?\\? always exists and is always null\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/single-documents.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 2
 			path: wp-content/themes/blankslate-child/single-documents.php
 
 		-
