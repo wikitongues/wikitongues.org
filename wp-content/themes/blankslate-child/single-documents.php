@@ -38,27 +38,63 @@ function render_download_ui( $document_id ) {
 			return;
 	}
 
-	// Group files by language
-	$grouped = array();
-	foreach ( $files as $file ) {
-			$lang_obj       = get_field( 'language', $file->ID );
-			$language_field = get_field( 'language', $file->ID );
-			$version        = get_field( 'version', $file->ID );
-			$lang_id        = is_object( $language_field ) ? $language_field->ID : ( is_numeric( $language_field ) ? intval( $language_field ) : null );
+	// Determine gateway availability once for all rows.
+	$gateway_active = shortcode_exists( 'gateway_download' ) && GATEWAY_ENABLED;
 
-		if ( ! isset( $grouped[ $lang_id ] ) ) {
-				$grouped[ $lang_id ] = array();
+	// Build flat list of file data and collect unique languages for the selector.
+	$file_rows       = array();
+	$lang_index      = array(); // lang_id => ['name' => ..., 'iso' => ...]
+	$default_lang_id = null;
+
+	foreach ( $files as $file ) {
+		$lang_obj  = get_field( 'language', $file->ID );
+		$lang_id   = is_object( $lang_obj ) ? $lang_obj->ID : null;
+		$iso_code  = $lang_id ? get_the_title( $lang_id ) : 'unknown';
+		$lang_name = $lang_id ? ( get_field( 'standard_name', $lang_id ) ?: get_the_title( $lang_id ) ) : 'Unknown';
+		$version   = get_field( 'version', $file->ID );
+		$format    = get_field( 'format', $file->ID );
+
+		if ( $lang_id && ! isset( $lang_index[ $lang_id ] ) ) {
+			$lang_index[ $lang_id ] = array(
+				'name' => $lang_name,
+				'iso'  => $iso_code,
+			);
+			if ( 'eng' === $iso_code ) {
+				$default_lang_id = $lang_id;
+			}
 		}
 
-			$grouped[ $lang_id ][] = array(
-				'file_id'       => $file->ID,
-				'version'       => $version,
-				'language_id'   => $lang_id,
-				'language_name' => $lang_id ? ( get_field( 'standard_name', $lang_id ) ?: get_the_title( $lang_id ) ) : 'Unknown',
-			);
+		// Resolve gateway link or direct file URL.
+		if ( $gateway_active ) {
+			$policy   = \WT\DownloadGateway\PolicyResolver::resolve( $file->ID );
+			$disabled = ( $policy === \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED );
+			$intake   = $disabled ? null : \WT\DownloadGateway\IntakeResolver::resolve( $file->ID );
+			$dl_url   = $disabled ? null : rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $file->ID );
+		} else {
+			$policy   = null;
+			$disabled = false;
+			$intake   = null;
+			$dl_url   = get_field( 'file', $file->ID ) ?: null;
+		}
+
+		$file_rows[] = array(
+			'file_id'   => $file->ID,
+			'lang_id'   => $lang_id,
+			'lang_name' => $lang_name,
+			'version'   => $version,
+			'format'    => $format,
+			'policy'    => $policy,
+			'disabled'  => $disabled,
+			'intake'    => $intake,
+			'dl_url'    => $dl_url,
+		);
 	}
 
-	// Render UI
+	// Fall back to first language if English not present.
+	if ( null === $default_lang_id && ! empty( $lang_index ) ) {
+		$default_lang_id = array_key_first( $lang_index );
+	}
+
 	?>
 	<h3>Other available versions</h3>
 	<p>Wikitongues releases updates and translations to our resources periodically.<br>Below you can see all available versions of this document.</p>
@@ -66,90 +102,61 @@ function render_download_ui( $document_id ) {
 		<div class="language-selector">
 			<label for="language-filter">Filter other downloads by language:</label>
 			<select id="language-filter">
-				<?php
-				foreach ( $grouped as $lang_id => $docs ) {
-						$lang_obj  = get_post( $lang_id );
-						$iso_code  = $lang_obj->post_title ?? 'no_iso';
-						$lang_name = get_field( 'standard_name', $lang_id );
-						$selected  = ( $iso_code === 'eng' ) ? 'selected' : '';
-
-						echo '<option value="' . esc_attr( $lang_id ) . '" ' . $selected . '>' . esc_html( $lang_name ) . '</option>';
-				}
-				?>
+				<?php foreach ( $lang_index as $lid => $info ) : ?>
+					<option value="<?php echo esc_attr( $lid ); ?>"<?php selected( $lid, $default_lang_id ); ?>>
+						<?php echo esc_html( $info['name'] ); ?>
+					</option>
+				<?php endforeach; ?>
 			</select>
 		</div>
 		<table id="downloads-table">
-				<thead>
-					<tr>
-						<th>Language</th>
-						<th>Version</th>
-						<th>Format</th>
-						<th>Download</th>
+			<thead>
+				<tr>
+					<th>Language</th>
+					<th>Version</th>
+					<th>Format</th>
+					<th>Download</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $file_rows as $row ) : ?>
+					<tr data-lang-id="<?php echo esc_attr( $row['lang_id'] ); ?>"<?php echo ( $row['lang_id'] !== $default_lang_id ) ? ' style="display:none"' : ''; ?>>
+						<td><?php echo esc_html( $row['lang_name'] ); ?></td>
+						<td class="version"><?php echo esc_html( $row['version'] ); ?></td>
+						<td><?php echo esc_html( $row['format'] ); ?></td>
+						<td>
+							<?php if ( $row['disabled'] ) : ?>
+								<span>Unavailable</span>
+							<?php elseif ( $row['dl_url'] && $gateway_active ) : ?>
+								<a href="<?php echo esc_url( $row['dl_url'] ); ?>"
+									class="gateway-download-link"
+									data-post-id="<?php echo esc_attr( $row['file_id'] ); ?>"
+									data-policy="<?php echo esc_attr( $row['policy'] ); ?>"
+									data-post-type="document_files"
+									data-intake-set="<?php echo esc_attr( $row['intake']['set'] ?? '' ); ?>"
+									data-intake-always="<?php echo ( $row['intake']['always'] ?? false ) ? '1' : '0'; ?>"
+									data-download-source="resource-page">Download</a>
+							<?php elseif ( $row['dl_url'] ) : ?>
+								<a href="<?php echo esc_url( $row['dl_url'] ); ?>">Download</a>
+							<?php else : ?>
+								<span>Unavailable</span>
+							<?php endif; ?>
+						</td>
 					</tr>
-				</thead>
-				<tbody></tbody>
+				<?php endforeach; ?>
+			</tbody>
 		</table>
 	</div>
 	<script>
 	document.addEventListener("DOMContentLoaded", function () {
-	const ajaxUrl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
-	const languageSelect = document.getElementById("language-filter");
-
-	// Auto-load table with pre-selected language (e.g., "eng")
-	if (languageSelect.value) {
-		fetchTable(languageSelect.value);
-	}
-
-	// On language change, refresh table
-	languageSelect.addEventListener("change", function () {
-		fetchTable(this.value);
-	});
-
-	// Fetch & populate table based on selected ISO code
-	function fetchTable(isoCode) {
-		fetch(ajaxUrl, {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams({
-				action: "fetch_document_files",
-				parent_id: "<?php echo esc_attr( $document_id ); ?>",
-				lang_id: isoCode
-			})
-		})
-				.then(response => response.json())
-		.then(data => {
-			document.querySelector("#downloads-table tbody").innerHTML = data.data;
-		});
-	}
-
-	// Handle download clicks inside the table dynamically (delegation)
-	document.addEventListener("click", function (e) {
-		if (e.target.classList.contains('download-btn')) {
-			e.preventDefault();
-			triggerDownload(e.target.dataset.fileId);
+		const select = document.getElementById("language-filter");
+		function filterTable(langId) {
+			document.querySelectorAll("#downloads-table tbody tr").forEach(function (row) {
+				row.style.display = row.dataset.langId === langId ? "" : "none";
+			});
 		}
+		select.addEventListener("change", function () { filterTable(String(this.value)); });
 	});
-
-	// Trigger download handler (AJAX fetch → file redirect)
-	function triggerDownload(fileId) {
-		fetch(ajaxUrl, {
-			method: "POST",
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams({
-				action: "download_document",
-				file_id: fileId
-			})
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.success && data.data.file_url) {
-				window.location.href = data.data.file_url;
-			} else {
-				alert("Error downloading file: " + (data.message || "Unknown error."));
-			}
-		});
-	}
-});
 	</script>
 	<?php
 }
