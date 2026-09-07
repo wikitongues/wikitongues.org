@@ -244,8 +244,8 @@ Downloads currently go through unprotected direct file URLs or `force_download_f
 - [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events (`resource_download_click`, `resource_download_gate_open`, `resource_download_gate_submit`, `resource_download_redirect`). GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. GA4: 3 new custom dimensions (post_type, policy, consent_download). Key events: gate_submit + redirect. Code spec: `download-gateway-ga4-handoff.md`. (PRs #578, #582, #585)
 - ~~**8** — Admin reporting: date-filtered download table, top resources, CSV export~~ — dropped; download data is accessible via Airtable views and phpMyAdmin/Beekeeper; a WP admin table adds no value over what already exists.
 - [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
-  - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) to be deployed.
-- **10** — Rollout: convert resources hub first, then top downloads; deprecate `document-download-handler.php` `force_download_file()` once coverage is complete
+  - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) — now deployed. **Not yet implemented:** `RetentionJob::anonymize()` runs the bulk UPDATE but does not select the affected IDs or enqueue the webhook. This is the only remaining gateway sub-phase.
+- [x] **10** — Rollout: all document download surfaces (versions table, banner CTA, resources-hub card blocks) route through the gateway; videos/captions already gated (sub-phase 6). Legacy `document-download-handler.php` `force_download_file()` and the `/force-download/` route removed. (PR #598)
 
 **Implementation notes:**
 - WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
@@ -338,8 +338,8 @@ Three known divergence directions:
 - [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events. GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. (PRs #578, #582, #585)
 - ~~**8** — Admin reporting~~ — dropped; Airtable views + phpMyAdmin/Beekeeper cover this.
 - [x] **9** — Retention automation (PR #565)
-  - **9b** — Retention webhook: enqueue `type:anonymize` to Make.com → clear Airtable/Mailchimp. Requires 2c.
-- **10** — Rollout: convert resources hub first, then top downloads; deprecate `force_download_file()`
+  - **9b** — Retention webhook: enqueue `type:anonymize` to Make.com → clear Airtable/Mailchimp. Requires 2c (deployed). **Not yet implemented** — `anonymize()` does not enqueue the webhook. Only remaining gateway sub-phase.
+- [x] **10** — Rollout: document surfaces (table, banner, card) + resources hub routed through gateway; `force_download_file()` and `/force-download/` removed. (PR #598)
 
 ---
 
