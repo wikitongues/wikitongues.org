@@ -5,7 +5,7 @@
 	display flex
 	flex-direction row
 	flex-wrap wrap
-	gap 1.6rem 3.2rem
+	gap 3.2rem 3.2rem
 	width 100%
 
 	h4
@@ -138,13 +138,15 @@
 				text--body(inherit)
 
 &.thirds
-	justify-content left
+	display grid
+	grid-template-columns repeat(3, 1fr)
+
+	h4
+		grid-column 1 / -1
 
 	.block
 		flex-direction column
-		vertical-align top
-		flex 0 0 32%
-		float left
+		max-width none
 
 		.thumbnail
 			padding-bottom calc(100%/3*2)
@@ -169,15 +171,20 @@
 			p
 				flex-grow 1
 
+@media all and (max-width:$tablet)
+	.wrapper
+		&.thirds
+			grid-template-columns repeat(2, 1fr)
+
 @media all and (max-width:$mobile)
 	.wrapper
-		padding 0
+		padding 0 16px
 		gap 1.6rem
 
 		&.thirds
-			.block
-				flex initial
+			grid-template-columns 1fr
 
+			.block
 				.copy
 					padding 2.4rem
 
@@ -190,7 +197,7 @@
 			max-width initial
 			flex-direction column
 			height auto
-			margin 4px
+			margin 4px 0
 
 			&:before
 				left 0
