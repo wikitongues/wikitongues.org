@@ -21,6 +21,7 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 - [Phase 6](#phase-6--visual-baseline--data-migration)
 - [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
 - [Phase 8](#phase-8--membership-dependent-features)
+- [GitHub Issue Triage](#github-issue-triage--sequencing)
 - [Backlog](#backlog--known-issues-no-active-fix-timeline)
 
 ---
@@ -520,6 +521,48 @@ User-facing view of their engagement profile — languages explored, territories
 #### Gamification
 
 Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure + language passport. Write a separate spec before implementation.
+
+---
+
+### GitHub Issue Triage & Sequencing
+
+Assessment of the 15 open GitHub issues, validated against the codebase (2026-09-08), grouped by theme and sequenced. Waves are ordered by independence/effort and dependencies; order within a wave is top-to-bottom.
+
+**Verify & close (likely already resolved)**
+
+- [#73](https://github.com/wikitongues/wikitongues.org/issues/73) — *Languages single breaks on PHP 8.2.* The cited `array_merge( $lexicon_source, $lexicon_target )` no longer exists — lexicons were refactored into `single-languages__lexicons.php` (gallery-param based) during the Phase 3 CPT refactors. Render a language single on PHP 8.2 to confirm, then close.
+
+**Wave 1 — quick, independent (no dependencies)**
+
+- [#59](https://github.com/wikitongues/wikitongues.org/issues/59) — Team post type needs a YouTube channel field. One ACF field; trivial.
+- [#380](https://github.com/wikitongues/wikitongues.org/issues/380) *(bug)* — Gallery random-order pagination: `orderby => 'rand'` re-randomizes on every request, so paging forward/back is inconsistent. Fix by seeding the shuffle (persist a seed per query/session). `wt-gallery/includes/queries.php`.
+- [#421](https://github.com/wikitongues/wikitongues.org/issues/421) — Audit whether the gallery `id` param is used; add custom-class support on gallery elements. Small `wt-gallery` cleanup.
+
+**Wave 2 — live search bug (user-facing)**
+
+- [#379](https://github.com/wikitongues/wikitongues.org/issues/379) *(bug)* — Searching "russian" returns nothing. Triage whether it's search matching (WP `?s=` + `typeahead`) or a data issue (Russian's `standard_name`; see #53/#54). Quick-fix if matching; otherwise fold into the Enhanced search results page (Phase 3 · item 11).
+- [#58](https://github.com/wikitongues/wikitongues.org/issues/58) — Video thumbnails missing on `?s=` results (`search-results__thumbnail.php`). Belongs with the Enhanced search results page (Phase 3 · item 11).
+
+**Wave 3 — data quality (with Layer 5 Data Integrity + Airtable reconciliation)**
+
+_Dataset issues — sequence with the Layer 5 integrity checks (Phase 3 · item 10) and Airtable reconciliation (Phase 5)._
+
+- [#53](https://github.com/wikitongues/wikitongues.org/issues/53) — Some languages lack a standard/primary name (display falls back to the ISO code). Add an integrity check + backfill.
+- [#54](https://github.com/wikitongues/wikitongues.org/issues/54) — Comma-form names ("Gondi, Southern"). Decide display-side reorder → "Southern Gondi" vs. data-side `standard_name` fix. Pairs with #53.
+- [#72](https://github.com/wikitongues/wikitongues.org/issues/72) — Caption file IDs join languages with `,` instead of `+` (`irk, eng` → `irk+eng`). Naming-convention fix at the data layer.
+- [#241](https://github.com/wikitongues/wikitongues.org/issues/241) — South Korea languages don't return, caused by the comma-combined `nations_of_origin` value ("South Korea, North Korea") + LIKE matching. Resolved by the **`nations_of_origin` migration (Phase 6)** — track it there.
+
+**Wave 4 — gallery enhancements (after #380 / #421)**
+
+- [#377](https://github.com/wikitongues/wikitongues.org/issues/377) — Gallery post-type fallback (empty query → nation's languages / random). Enhancement.
+- [#378](https://github.com/wikitongues/wikitongues.org/issues/378) — Gallery dynamic querying (in-element filter/sort/search + editable post type). Larger; overlaps the Enhanced search results page (Phase 3 · item 11) — design together.
+
+**Wave 5 — content model & visual polish (Phase 6 / 7)**
+
+- [#4](https://github.com/wikitongues/wikitongues.org/issues/4) — A "removed" video tier for fraud/abuse, distinct from creator-private, with its own notice. Video status model.
+- [#61](https://github.com/wikitongues/wikitongues.org/issues/61) — The "processing" video single is undesigned. Style that state; fits the Phase 6/7 visual work.
+
+**Backlog (no active timeline)** — [#533](https://github.com/wikitongues/wikitongues.org/issues/533), tracked below.
 
 ---
 
