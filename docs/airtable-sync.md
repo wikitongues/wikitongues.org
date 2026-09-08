@@ -14,6 +14,7 @@ This document describes the data integration between Airtable and WordPress for 
   - [Videos (Oral Histories)](#videos-oral-histories)
   - [Captions (Oral History Captions)](#captions-oral-history-captions)
   - [Lexicons](#lexicons)
+  - [Gateway Webhook Router](#gateway-webhook-router)
 - [Plugin: wt-airtable-sync](#plugin-wt-airtable-sync)
   - [Authentication](#authentication)
   - [Endpoint](#endpoint)
@@ -131,6 +132,12 @@ The Captions scenario uses three **subscenarios** (`scenario-service:CallSubscen
 - **Blueprint file:** `WT Sync - Lexicons.blueprint.json`
 - **Flow:** Trigger → SetVariables → POST `/sync/lexicons`
 - **Trigger field:** `last_modified` (a `LAST_MODIFIED_TIME()` formula field in Airtable — must exist in the table for the trigger to work)
+
+### Gateway Webhook Router
+
+Pushes data the **other direction** — WordPress → Airtable — and is separate from the sync scenarios above. Receives webhooks from the download gateway (`download-gateway`'s `WebhookDispatcher`) and writes to the **Downloads** and **People** tables.
+
+- **⚠️ People `Last seen` is a Lookup — never write to it.** As of 2026-09-08 the People table's `Last seen` field is an Airtable **Lookup** (most recent linked Download's `Downloaded at`; sort latest→earliest, limit 1). Lookups are read-only computed fields, so the Make **People upsert/update module must not map anything into `Last seen`** — writing to it makes Airtable return `422 UNKNOWN_FIELD_NAME` and fails the whole run. The scenario only needs to create the Download record and link it to the Person; the lookup then reflects the latest download automatically. (It was previously a writable Date field, which is why the module historically set it — and why it was sparsely populated.)
 
 ---
 

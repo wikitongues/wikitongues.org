@@ -127,26 +127,6 @@
             "layout": "block",
             "sub_fields": [
                 {
-                    "key": "field_6736031369b1f",
-                    "label": "Custom Gallery ID",
-                    "name": "custom_gallery_id",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
                     "key": "field_6736031e69b20",
                     "label": "Custom Gallery Title",
                     "name": "custom_gallery_title",
@@ -241,5 +221,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1773159843
+    "modified": 1788885332
 }

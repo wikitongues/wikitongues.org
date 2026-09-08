@@ -18,6 +18,8 @@
 
 # Configuration
 wp-config.php
+.env
+.env.*
 
 # Themes
 /wp-content/themes/twenty*/
@@ -68,3 +70,6 @@ docs/local_docs/*
 transmit_sync_offset_2135232021
 /wp-content/backups-dup-pro/
 tool-sync-db-from-prod.sh
+
+# Claude Code — personal per-user overrides (shared config is committed in .claude/)
+.claude/settings.local.json

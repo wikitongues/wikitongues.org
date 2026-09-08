@@ -274,26 +274,6 @@
                             "layout": "block",
                             "sub_fields": [
                                 {
-                                    "key": "field_678fbeefb5d75",
-                                    "label": "Unique Gallery ID",
-                                    "name": "custom_gallery_id",
-                                    "aria-label": "",
-                                    "type": "text",
-                                    "instructions": "",
-                                    "required": 1,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "20",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "default_value": "",
-                                    "maxlength": "",
-                                    "placeholder": "Cannot be the same as another gallery id on this page.",
-                                    "prepend": "",
-                                    "append": ""
-                                },
-                                {
                                     "key": "field_679e929eeee04",
                                     "label": "Custom Gallery Type",
                                     "name": "custom_gallery_type",
@@ -960,5 +940,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1754851648
+    "modified": 1788885332
 }

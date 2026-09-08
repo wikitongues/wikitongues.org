@@ -53,9 +53,7 @@ $nations_pct           = ( $total_territories > 0 ) ? round( $nations_impacted /
 	<br><br>
 	<?php
 	$custom_posts = get_field( 'custom_gallery' );
-	if ( $custom_posts ) {
-		$post_ids = implode( ',', wp_list_pluck( $custom_posts['custom_gallery_posts'], 'ID' ) );
-	}
+	$post_ids     = ! empty( $custom_posts['custom_gallery_posts'] ) ? implode( ',', wp_list_pluck( $custom_posts['custom_gallery_posts'], 'ID' ) ) : '';
 	// Gallery
 	$params = wt_gallery_params(
 		array(

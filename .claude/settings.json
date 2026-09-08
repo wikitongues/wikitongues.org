@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(composer test)",
+      "Bash(composer lint)",
+      "Bash(composer lint:fix)",
+      "Bash(composer analyse)",
+      "Bash(composer analyse --memory-limit=-1)",
+      "Bash(git status)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git stash list)",
+      "Bash(php -l*)",
+      "Bash(find . *)",
+      "Bash(grep *)"
+    ]
+  }
+}
