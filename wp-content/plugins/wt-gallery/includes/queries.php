@@ -113,6 +113,15 @@ function build_gallery_query_args( $atts = array() ) {
 		}
 	}
 
+	// Seeded random order (#380): when a stable seed is supplied (persisted in
+	// the gallery's data-attributes and echoed back by the AJAX pagination
+	// request), turn orderby=rand into RAND(<seed>) so the shuffle is identical
+	// on every page. Without a seed, plain rand is left as-is.
+	if ( 'rand' === $args['orderby'] && ! empty( $args['rand_seed'] ) ) {
+		$args['orderby'] = 'RAND(' . (int) $args['rand_seed'] . ')';
+	}
+	unset( $args['rand_seed'] );
+
 	return $args;
 }
 

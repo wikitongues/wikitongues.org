@@ -236,6 +236,14 @@ function custom_gallery( $atts ) {
 		$args['post__in'] = $selected_posts;
 	}
 
+	// Seed random ordering once per render so AJAX pagination reuses the same
+	// RAND() order instead of re-shuffling on each page (#380). The seed rides
+	// along in data-attributes -> the AJAX request -> back into the query args,
+	// where build_gallery_query_args() turns it into RAND(<seed>).
+	if ( 'rand' === $args['orderby'] ) {
+		$args['rand_seed'] = wp_rand( 1, 999999999 );
+	}
+
 	$data_attributes = esc_attr( json_encode( $args ) );
 
 	$query = get_custom_gallery_query( $args );

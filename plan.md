@@ -21,6 +21,7 @@ Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [doc
 - [Phase 6](#phase-6--visual-baseline--data-migration)
 - [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
 - [Phase 8](#phase-8--membership-dependent-features)
+- [GitHub Issue Triage](#github-issue-triage--sequencing)
 - [Backlog](#backlog--known-issues-no-active-fix-timeline)
 
 ---
@@ -523,6 +524,51 @@ Stamp rally: users earn stamps for core actions (watch a video, add a language, 
 
 ---
 
+### GitHub Issue Triage & Sequencing
+
+Assessment of the 15 open GitHub issues, validated against the codebase (2026-09-08), grouped by theme and sequenced. Waves are ordered by independence/effort and dependencies; order within a wave is top-to-bottom.
+
+**Verified & closed (premise no longer holds)**
+
+- [x] [#73](https://github.com/wikitongues/wikitongues.org/issues/73) — *Languages single breaks on PHP 8.2.* **Closed 2026-09-08.** The cited `array_merge( $lexicon_source, $lexicon_target )` no longer exists — lexicons were refactored into `single-languages__lexicons.php` (gallery-param based) during the Phase 3 CPT refactors, and the only remaining reads of those fields (`includes/taxonomies/languages.php`) are null-guarded (`is_array(…) ? count(…) : 0`), so the PHP 8.0+ TypeError can't occur.
+
+> **Correction (2026-09-08):** a prior version of this triage claimed the `team` CPT was vestigial and slated it for deprecation/purge. That was wrong. `team` is **live** — it is the data source for the Staff, Board, Partners, and Interns/Volunteers pages via ACF relationship fields (`staff_members`, `board_members`, `partners`, `interns_and_volunteers`) that target `post_type => team`, rendered through `modules/team/team-member--*.php`. Do **not** deprecate or delete it. #59 is a valid enhancement (below).
+
+**Wave 1 — quick, independent (no dependencies)**
+
+- [x] [#380](https://github.com/wikitongues/wikitongues.org/issues/380) *(bug)* — Gallery random-order pagination re-shuffled every request. **Fixed (PR #615)** by seeding the shuffle. `wt-gallery/includes/queries.php`.
+- [x] [#421](https://github.com/wikitongues/wikitongues.org/issues/421) — Gallery `id` param audit + custom-class support. **Done (PR #612)** — removed the dead `custom_gallery_id` ACF field.
+- [x] [#59](https://github.com/wikitongues/wikitongues.org/issues/59) — *Team member YouTube link.* **Done 2026-09-08.** Rather than adding a lone `youtube` field to the team group, factored the duplicated social fields into a single shared ACF group — **"Global: Social Links"** (`group_wt_social_links.json`, 8 fields: email/facebook/instagram/linkedin/tiktok/twitter/website/youtube) — distributed to `team` + `fellows` via location rules (add a rule to extend to a new people type). Removed the inline social fields from the Team (`group_61548e2b929e2`) and Fellows (`group_624f529b40c49`) groups. Data-safe: field keys reused from Fellows, flat meta keys unchanged, verified all 86 populated social values resolve identically via `get_field()` and Staff/Board/Fellows pages render with no PHP errors. The render layer (`wt_social_links()`) already emitted `youtube`, so team members get it for free. *(Corrects the earlier wrong "team is vestigial" note — see above.)*
+
+**Wave 2 — live search bug (user-facing)**
+
+- [#379](https://github.com/wikitongues/wikitongues.org/issues/379) *(bug)* — Searching "russian" returns nothing. **Diagnosed 2026-09-08:** two surfaces. (1) The **typeahead** REST endpoint (`custom/v1/search`) already matches `alternate_names` and *does* return Russian — working. (2) The full-page **`?s=` results** don't list the language single because its `post_title` is the ISO code (`rus`) and WP default search only matches title/content, not `standard_name`/`alternate_names` meta. **Next up (deferred):** make the main search query also match language name meta. `includes/api/` / theme search query.
+- [#58](https://github.com/wikitongues/wikitongues.org/issues/58) — Video thumbnails missing on `?s=` results (`search-results__thumbnail.php`). Belongs with the Enhanced search results page (Phase 3 · item 11).
+
+**Wave 3 — data quality (with Layer 5 Data Integrity + Airtable reconciliation)**
+
+_Dataset issues — sequence with the Layer 5 integrity checks (Phase 3 · item 10) and Airtable reconciliation (Phase 5)._
+
+- [#53](https://github.com/wikitongues/wikitongues.org/issues/53) — Some languages lack a standard/primary name (display falls back to the ISO code). Add an integrity check + backfill.
+- [#54](https://github.com/wikitongues/wikitongues.org/issues/54) — Comma-form names ("Gondi, Southern"). Decide display-side reorder → "Southern Gondi" vs. data-side `standard_name` fix. Pairs with #53.
+- [#72](https://github.com/wikitongues/wikitongues.org/issues/72) — Caption file IDs join languages with `,` instead of `+` (`irk, eng` → `irk+eng`). Naming-convention fix at the data layer.
+- [#241](https://github.com/wikitongues/wikitongues.org/issues/241) — South Korea languages don't return, caused by the comma-combined `nations_of_origin` value ("South Korea, North Korea") + LIKE matching. Resolved by the **`nations_of_origin` migration (Phase 6)** — track it there.
+
+**Wave 4 — gallery enhancements (after #380 / #421)**
+
+- [#377](https://github.com/wikitongues/wikitongues.org/issues/377) — Gallery post-type fallback (empty query → nation's languages / random). Enhancement.
+- [#378](https://github.com/wikitongues/wikitongues.org/issues/378) — Gallery dynamic querying (in-element filter/sort/search + editable post type). Larger; overlaps the Enhanced search results page (Phase 3 · item 11) — design together.
+
+**Wave 5 — content model & visual polish (Phase 6 / 7)**
+
+- [#4](https://github.com/wikitongues/wikitongues.org/issues/4) — A "removed" video tier for fraud/abuse, distinct from creator-private, with its own notice. Video status model.
+- [#61](https://github.com/wikitongues/wikitongues.org/issues/61) — The "processing" video single is undesigned. Style that state; fits the Phase 6/7 visual work.
+
+**Backlog (no active timeline)** — [#533](https://github.com/wikitongues/wikitongues.org/issues/533), tracked below.
+
+---
+
 ### Backlog — known issues, no active fix timeline
 
 - **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
+- **Duplicate Download records in Airtable (gateway webhook replay)** — When People `Last seen` was switched to a lookup (2026-09-08), the Make Gateway Webhook Router 422'd on that read-only field; Make's incomplete-executions replay then re-ran the Download-create step on runs that had already created the row, leaving duplicate Download records for the outage window. Bounded to that window — new downloads log one row each now that runs complete cleanly. Impact: inflated download counts in Airtable analytics; the `Last seen` lookup and (email-upserted) People records are unaffected. **Fix when convenient:** dedupe Airtable Downloads on the gateway's unique `download_event_id` (already in the webhook payload) — map it onto the Download row if not already present, then group-by and keep one. See `docs/airtable-sync.md` → Gateway Webhook Router.
