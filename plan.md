@@ -528,13 +528,14 @@ Stamp rally: users earn stamps for core actions (watch a video, add a language, 
 
 Assessment of the 15 open GitHub issues, validated against the codebase (2026-09-08), grouped by theme and sequenced. Waves are ordered by independence/effort and dependencies; order within a wave is top-to-bottom.
 
-**Verify & close (likely already resolved)**
+**Verify & close (premise no longer holds)**
 
 - [#73](https://github.com/wikitongues/wikitongues.org/issues/73) — *Languages single breaks on PHP 8.2.* The cited `array_merge( $lexicon_source, $lexicon_target )` no longer exists — lexicons were refactored into `single-languages__lexicons.php` (gallery-param based) during the Phase 3 CPT refactors. Render a language single on PHP 8.2 to confirm, then close.
+- [#59](https://github.com/wikitongues/wikitongues.org/issues/59) — *Team post type needs a YouTube channel field.* **Premise is stale:** the `team` CPT (`includes/taxonomies/team.php`) is registered and holds ~51 legacy posts, but nothing queries `post_type => 'team'` for display — staff come from the `careers` CPT, board/partners from ACF page fields (`board_members`, `partners`). Close, or re-file against `careers` if a YouTube field is genuinely wanted.
+- **Cleanup surfaced by #59:** the `team` CPT is vestigial — registered + routed (`/team/` archive + singles) with ~51 orphaned posts, but zero display queries. Candidate for deprecation: unregister it, archive/export its posts, drop the `team` handling in `router.php`. The `modules/team/*` render templates stay (reused for `careers` + ACF board/partners). Fits Phase 3 (code quality).
 
 **Wave 1 — quick, independent (no dependencies)**
 
-- [#59](https://github.com/wikitongues/wikitongues.org/issues/59) — Team post type needs a YouTube channel field. One ACF field; trivial.
 - [#380](https://github.com/wikitongues/wikitongues.org/issues/380) *(bug)* — Gallery random-order pagination: `orderby => 'rand'` re-randomizes on every request, so paging forward/back is inconsistent. Fix by seeding the shuffle (persist a seed per query/session). `wt-gallery/includes/queries.php`.
 - [#421](https://github.com/wikitongues/wikitongues.org/issues/421) — Audit whether the gallery `id` param is used; add custom-class support on gallery elements. Small `wt-gallery` cleanup.
 
