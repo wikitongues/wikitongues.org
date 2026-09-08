@@ -85,76 +85,6 @@
             "step": ""
         },
         {
-            "key": "field_61899b565d818",
-            "label": "LinkedIn",
-            "name": "linkedin",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_61899b605d819",
-            "label": "Twitter",
-            "name": "twitter",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_61899b7c5d81a",
-            "label": "Website",
-            "name": "website",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_6189a4ed17b6a",
-            "label": "Email",
-            "name": "email",
-            "aria-label": "",
-            "type": "email",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_64fa001bd0d06",
             "label": "Profile Picture",
             "name": "profile_picture",
@@ -244,5 +174,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694111679
+    "modified": 1788903573
 }
