@@ -197,4 +197,58 @@ class GalleryQueryArgsTest extends TestCase {
 
 		$this->assertArrayNotHasKey( 'post__not_in', $args );
 	}
+
+	public function test_rand_with_seed_becomes_seeded_rand_orderby() {
+		$atts = $this->base_atts(
+			array(
+				'orderby'   => 'rand',
+				'rand_seed' => 12345,
+			)
+		);
+		$this->mock_wp_parse_args( $atts );
+
+		$args = build_gallery_query_args( $atts );
+
+		$this->assertSame( 'RAND(12345)', $args['orderby'] );
+		$this->assertArrayNotHasKey( 'rand_seed', $args );
+	}
+
+	public function test_rand_seed_is_cast_to_int() {
+		$atts = $this->base_atts(
+			array(
+				'orderby'   => 'rand',
+				'rand_seed' => '789abc',
+			)
+		);
+		$this->mock_wp_parse_args( $atts );
+
+		$args = build_gallery_query_args( $atts );
+
+		$this->assertSame( 'RAND(789)', $args['orderby'] );
+	}
+
+	public function test_rand_without_seed_left_as_plain_rand() {
+		$atts = $this->base_atts( array( 'orderby' => 'rand' ) );
+		$this->mock_wp_parse_args( $atts );
+
+		$args = build_gallery_query_args( $atts );
+
+		$this->assertSame( 'rand', $args['orderby'] );
+		$this->assertArrayNotHasKey( 'rand_seed', $args );
+	}
+
+	public function test_rand_seed_is_dropped_for_non_rand_orderby() {
+		$atts = $this->base_atts(
+			array(
+				'orderby'   => 'date',
+				'rand_seed' => 12345,
+			)
+		);
+		$this->mock_wp_parse_args( $atts );
+
+		$args = build_gallery_query_args( $atts );
+
+		$this->assertSame( 'date', $args['orderby'] );
+		$this->assertArrayNotHasKey( 'rand_seed', $args );
+	}
 }
