@@ -238,9 +238,11 @@ function wt_prefix_the( string $name ): string {
  * @return array<string, array{url: string|false, icon: string}>
  */
 function wt_social_links(): array {
+	$email = get_field( 'email' );
 	return array(
 		'email'     => array(
-			'url'  => get_field( 'email' ),
+			// Prefix mailto: so esc_url() doesn't treat the bare address as an http URL.
+			'url'  => $email ? 'mailto:' . $email : '',
 			'icon' => 'square-email',
 		),
 		'facebook'  => array(
