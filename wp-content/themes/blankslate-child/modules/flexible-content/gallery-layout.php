@@ -3,10 +3,7 @@ if ( have_rows( 'custom_gallery_posts' ) ) {
 	while ( have_rows( 'custom_gallery_posts' ) ) {
 		the_row();
 		$custom_posts = get_sub_field( 'custom_gallery_post' );
-
-		if ( $custom_posts ) {
-			$post_ids = implode( ',', wp_list_pluck( $custom_posts, 'ID' ) );
-		}
+		$post_ids     = $custom_posts ? implode( ',', wp_list_pluck( $custom_posts, 'ID' ) ) : '';
 
 		// Gallery
 		$params = wt_gallery_params(
