@@ -25,7 +25,7 @@ composer lint          # PHPCS (WordPress-Core standard)
 composer lint:fix      # PHPCBF auto-fix
 composer analyse       # PHPStan static analysis
 ```
-Run `composer test` and `composer lint` before every PR. Both run in CI on PHP 8.2.
+Run `/test` before every PR — it runs `composer lint`, `composer analyse`, and `composer test` in sequence. **All three are CI gates** (PHPStan included), so don't skip `composer analyse`. CI runs on PHP 8.2.
 
 ## Git workflow
 - Branch: `type/cc/description` — e.g. `feature/cc/thing`, `fix/cc/bug`
