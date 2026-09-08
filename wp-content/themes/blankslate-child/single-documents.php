@@ -147,6 +147,14 @@ function render_download_ui( $document_id ) {
 			</tbody>
 		</table>
 	</div>
+	<?php
+	$translate_email     = 'hello@wikitongues.org';
+	$translate_doc_title = get_the_title( $document_id );
+	$translate_subject   = rawurlencode( 'Translating "' . $translate_doc_title . '"' );
+	$translate_body      = rawurlencode( "Hi Wikitongues,\n\nI'd like to help translate \"" . $translate_doc_title . '" and would love to discuss how I can contribute.' );
+	$translate_mailto    = 'mailto:' . $translate_email . '?subject=' . $translate_subject . '&body=' . $translate_body;
+	?>
+	<p class="translate-cta">Every translation helps another community use this resource in their own language.<br/> If you'd like to help, write to <a href="<?php echo esc_url( $translate_mailto ); ?>"><?php echo esc_html( $translate_email ); ?></a>.</p>
 	<script>
 	document.addEventListener("DOMContentLoaded", function () {
 		const select = document.getElementById("language-filter");
