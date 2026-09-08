@@ -450,6 +450,7 @@ Intake responses are stored as JSON in `wp_gateway_intake_responses.responses`, 
 | Settings page shows no CPT rows | No resolvers registered | Check `require_once` and `FileResolverRegistry::register` calls in download-gateway.php |
 | Retention job never runs | WP-Cron not firing | Add a server cron for `wp cron event run --due-now` |
 | Intake form not appearing | No fields registered for the post type | Check `gateway_intake_fields` filter registration in theme/plugin code |
+| Make run fails `422 UNKNOWN_FIELD_NAME` on "Last seen" | People `Last seen` is now an Airtable **Lookup** (read-only) | Remove the "Last seen" mapping from the People update module in the Gateway Webhook Router scenario — the lookup auto-computes it (see `airtable-sync.md` → Gateway Webhook Router) |
 
 ### Logs
 
