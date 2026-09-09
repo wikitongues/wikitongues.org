@@ -1,0 +1,17 @@
+// Detail block with no portrait, for people listed without photographs —
+// advisors and former board members. Shared typography is in person--meta.styl;
+// this only drops the portrait's offset and top-aligns the column.
+.wt_person--list
+	display flex
+	width 100%
+
+	&__meta
+		display flex
+		flex-direction column
+		justify-content flex-start
+		width 100%
+		box-sizing border-box
+
+@media all and (max-width:$mobile)
+	.wt_person--list
+		display block

@@ -418,7 +418,7 @@
 									"name": "custom_gallery_layout",
 									"aria-label": "",
 									"type": "select",
-									"instructions": "",
+									"instructions": "List drops the portrait \u2014 used for advisors and former board members.",
 									"required": 0,
 									"conditional_logic": [
 										[
@@ -436,6 +436,7 @@
 									},
 									"choices": {
 										"wide": "Wide",
+										"list": "List (no photo)",
 										"grid": "Grid"
 									},
 									"default_value": "wide",
@@ -1114,5 +1115,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1788953875
+	"modified": 1788960627
 }

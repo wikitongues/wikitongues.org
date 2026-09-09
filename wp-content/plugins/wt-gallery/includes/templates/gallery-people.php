@@ -22,7 +22,15 @@ $title = get_field( 'leadership_title' );
 
 $social_links = function_exists( 'wt_social_links' ) ? wt_social_links() : array();
 
-$mode   = ( isset( $atts['custom_class'] ) && strpos( $atts['custom_class'], 'grid' ) !== false ) ? 'grid' : 'wide';
+$class = isset( $atts['custom_class'] ) ? $atts['custom_class'] : '';
+$mode  = 'wide';
+foreach ( array( 'grid', 'list' ) as $candidate ) {
+	if ( strpos( $class, $candidate ) !== false ) {
+		$mode = $candidate;
+		break;
+	}
+}
+
 $module = locate_template( 'modules/people/person--' . $mode . '.php' );
 
 echo '<li class="gallery-item gallery-item--person">';

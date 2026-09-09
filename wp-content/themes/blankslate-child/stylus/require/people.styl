@@ -1,16 +1,15 @@
-// People pages compose their sections as galleries, so the person modules now
+// People pages compose their sections as galleries, so the person modules
 // render inside .gallery-list rather than the old .page-template-* .wrapper
-// grid. The base gallery card treatment (black background, full-height anchor)
-// has to be neutralised here — person--wide.styl and person--grid.styl bring
-// their own layout. Single-column on mobile comes from the global override in
-// gallery.styl.
+// grid. Person items opt out of the gallery card treatment in gallery.styl,
+// which leaves person--wide.styl / person--grid.styl to lay them out exactly
+// as they did on the retired Board and Staff templates.
+//
+// This file is required *after* gallery.styl so equal-specificity rules here
+// win — notably the centring margin, which .custom-gallery.full would
+// otherwise override.
 .custom-gallery.people
 	width $content
 	margin 0 auto 4.8rem
-
-	> strong
-		text--header($black)
-		margin 0
 
 	.gallery-container
 		.gallery-list
@@ -18,19 +17,17 @@
 			gap 2.4rem 1.6rem
 
 			.gallery-item--person
-				a
-					background-color transparent
-					color inherit
-					display inline
-					width auto
-					height auto
-					padding 0
-					float none
-					border-radius 0
-					transition none
+				width 100%
 
-					&:hover
-						box-shadow none
+	// Section headings were <h4> on the old templates. The gallery emits a
+	// <strong>, which the base type scale renders at 1.6rem, so restore the h4
+	// size (3rem) and drop the rule the gallery draws under section headers.
+	.wt_sectionHeader
+		text--header($black)
+		font-size $fontScale(6)
+		border-bottom none
+		padding-bottom 0
+		margin 0 0 0.8rem
 
 .custom-gallery.careers
 	width $content
@@ -40,6 +37,11 @@
 		text--header($black)
 		border-bottom none
 		margin-bottom 0
+
+	.wt_sectionHeader
+		text--header($black)
+		font-size $fontScale(6)
+		border-bottom none
 
 	.gallery-container
 		.gallery-list

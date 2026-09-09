@@ -1,3 +1,4 @@
+// Portrait beside the detail block. Shared typography is in person--meta.styl.
 .wt_person--wide
 	display flex
 
@@ -19,41 +20,6 @@
 		box-sizing border-box
 		justify-content flex-end
 		flex-direction column
-
-		h4
-			text--header($black)
-
-		strong
-			text--strong($black)
-			margin-top 0.8rem
-			margin-bottom 1.6rem
-
-		p
-			text--body($black)
-
-		h3
-			text--body($black)
-
-		ul
-			margin 0 0 1.5rem 0
-
-			li
-				display inline-block
-				margin-right .8rem
-				text--body($black)
-
-				&:last-of-type
-					margin-right 0
-
-				a
-					text--body($blue())
-					text-decoration none
-					anchor($blue(),2px)
-
-			&.social
-				a
-					font-size $socialIcon
-					anchor($blue(),4px)
 
 @media all and (max-width:$mobile)
 	.wt_person--wide

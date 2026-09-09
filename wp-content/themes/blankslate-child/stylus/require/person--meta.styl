@@ -1,0 +1,39 @@
+// Typography shared by the person detail block, whether it sits beside a
+// portrait (person--wide) or stands alone (person--list). Layout differences
+// live in those two files.
+.wt_person--wide__meta,
+.wt_person--list__meta
+	h4
+		text--header($black)
+
+	strong
+		text--strong($black)
+		margin-top 0.8rem
+		margin-bottom 1.6rem
+
+	p
+		text--body($black)
+
+	h3
+		text--body($black)
+
+	ul
+		margin 0 0 1.5rem 0
+
+		li
+			display inline-block
+			margin-right .8rem
+			text--body($black)
+
+			&:last-of-type
+				margin-right 0
+
+			a
+				text--body($blue())
+				text-decoration none
+				anchor($blue(),2px)
+
+		&.social
+			a
+				font-size $socialIcon
+				anchor($blue(),4px)

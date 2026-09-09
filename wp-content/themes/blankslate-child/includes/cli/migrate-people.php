@@ -33,6 +33,7 @@ function wt_people_type_terms() {
 		'staff'        => 'Staff',
 		'volunteer'    => 'Volunteer',
 		'advisor'      => 'Advisor',
+		'former-board' => 'Former Board Member',
 	);
 }
 
@@ -58,6 +59,13 @@ function wt_people_page_map() {
 					'columns' => 2,
 					'title'   => '',
 				),
+				array(
+					'type'    => 'people',
+					'term'    => 'former-board',
+					'layout'  => 'list',
+					'columns' => 3,
+					'title'   => 'Former board members',
+				),
 			),
 		),
 		15078 => array(
@@ -67,7 +75,7 @@ function wt_people_page_map() {
 				array(
 					'type'    => 'people',
 					'term'    => 'advisor',
-					'layout'  => 'wide',
+					'layout'  => 'list',
 					'columns' => 2,
 					'title'   => '',
 				),

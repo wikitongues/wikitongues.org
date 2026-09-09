@@ -651,29 +651,29 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/people/person--grid.php
 
 		-
-			message: "#^Function the_field not found\\.$#"
+			message: "#^Function get_field not found\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
 			message: "#^Variable \\$bio might not be defined\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
 			message: "#^Variable \\$name might not be defined\\.$#"
 			count: 2
-			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
 			message: "#^Variable \\$social_links might not be defined\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
 			message: "#^Variable \\$title might not be defined\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
 			message: "#^Function the_field not found\\.$#"
