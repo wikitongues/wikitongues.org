@@ -74,7 +74,13 @@ $aspect-ratio = 16/9
 			// People render the theme's person modules rather than a card, so
 			// they opt out of the card treatment below (background, full-height
 			// anchor) and bring their own layout.
-			.gallery-item:not(.gallery-item--person)
+			//
+			// :where() contributes no specificity, so this stays exactly as
+			// specific as a bare .gallery-item. A plain :not() would raise it to
+			// tie with the per-type overrides further down (.custom-gallery.fellows
+			// ... .gallery-item), and being earlier in the file it would win —
+			// which is what flattened the fellow cards.
+			.gallery-item:not(:where(.gallery-item--person))
 				width 100%
 
 				.metadata
