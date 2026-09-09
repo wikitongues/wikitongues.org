@@ -426,14 +426,19 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
 
 		-
-			message: "#^Offset 'banner_copy' does not exist on array\\{banner_header\\: mixed\\}\\.$#"
+			message: "#^Function update_field not found\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
+			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
 
 		-
-			message: "#^Variable \\$term might not be defined\\.$#"
+			message: "#^Function delete_field not found\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
+			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/taxonomy-fellow-category.php
 
 		-
 			message: "#^Function get_field not found\\.$#"

@@ -1,6 +1,5 @@
 <?php
 $term = get_queried_object();
-global $page_banner_override;
 
 $templates = array(
 	'text_layout'         => 'modules/flexible-content/text-layout.php',

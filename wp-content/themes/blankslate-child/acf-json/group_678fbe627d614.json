@@ -185,7 +185,9 @@
                                     "allow_in_bindings": 0,
                                     "ui": 0,
                                     "ajax": 0,
-                                    "placeholder": ""
+                                    "placeholder": "",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_679e9983c94ed",
@@ -302,7 +304,9 @@
                                     "allow_in_bindings": 1,
                                     "ui": 0,
                                     "ajax": 0,
-                                    "placeholder": ""
+                                    "placeholder": "",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_679e937f3f403",
@@ -372,7 +376,9 @@
                                     "allow_null": 0,
                                     "ui": 0,
                                     "ajax": 0,
-                                    "placeholder": ""
+                                    "placeholder": "",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_678fbef0b5d76",
@@ -618,7 +624,9 @@
                             "allow_in_bindings": 1,
                             "ui": 0,
                             "ajax": 0,
-                            "placeholder": ""
+                            "placeholder": "",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_67dc16e6e0c71",
@@ -645,7 +653,9 @@
                             "allow_in_bindings": 0,
                             "ui": 0,
                             "ajax": 0,
-                            "placeholder": ""
+                            "placeholder": "",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_67d69cc1ec928",
@@ -743,7 +753,9 @@
                                     "ui": 0,
                                     "ajax": 0,
                                     "placeholder": "",
-                                    "parent_repeater": "field_67d69cc1ec928"
+                                    "parent_repeater": "field_67d69cc1ec928",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_67b744c6c4a2c",
@@ -772,7 +784,9 @@
                                     "ui": 0,
                                     "ajax": 0,
                                     "placeholder": "",
-                                    "parent_repeater": "field_67d69cc1ec928"
+                                    "parent_repeater": "field_67d69cc1ec928",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_67b745bf6f3df",
@@ -834,7 +848,9 @@
                                     "ui": 0,
                                     "ajax": 0,
                                     "placeholder": "",
-                                    "parent_repeater": "field_67d69cc1ec928"
+                                    "parent_repeater": "field_67d69cc1ec928",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_67b739042921f",
@@ -926,6 +942,13 @@
                 "operator": "==",
                 "value": "template-archive-success.php"
             }
+        ],
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
+                "value": "template-revitalization-fellows.php"
+            }
         ]
     ],
     "menu_order": 1,
@@ -940,5 +963,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1788885332
+    "display_title": "",
+    "modified": 1788907736
 }
