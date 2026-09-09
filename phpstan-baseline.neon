@@ -133,6 +133,11 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 5
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-people.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 5
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-resources.php
 
 		-
@@ -229,6 +234,21 @@ parameters:
 			message: "#^Function the_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/header.php
+
+		-
+			message: "#^Function delete_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
+
+		-
+			message: "#^Function update_field not found\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/includes/cli/migrate-people.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
@@ -331,11 +351,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/banners/banner--main.php
 
 		-
-			message: "#^Variable \\$team_banner might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/banners/banner--team.php
-
-		-
 			message: "#^Variable \\$wide_button_link might not be defined\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/button--wide.php
@@ -426,21 +441,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/flexible-content/banner-layout.php
 
 		-
-			message: "#^Function update_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
-
-		-
-			message: "#^Function delete_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/includes/cli/migrate-fellow-category-banner.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/taxonomy-fellow-category.php
-
-		-
 			message: "#^Function get_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
@@ -472,7 +472,7 @@ parameters:
 
 		-
 			message: "#^Function get_sub_field not found\\.$#"
-			count: 6
+			count: 10
 			path: wp-content/themes/blankslate-child/modules/flexible-content/gallery-layout.php
 
 		-
@@ -611,6 +611,71 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/page--head.php
 
 		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/partners/partner.php
+
+		-
+			message: "#^Variable \\$partner_bio might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/partners/partner.php
+
+		-
+			message: "#^Variable \\$partner_email might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/partners/partner.php
+
+		-
+			message: "#^Variable \\$partner_logo might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/partners/partner.php
+
+		-
+			message: "#^Variable \\$partner_website might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/partners/partner.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--grid.php
+
+		-
+			message: "#^Variable \\$social_links might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--grid.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--grid.php
+
+		-
+			message: "#^Function the_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+
+		-
+			message: "#^Variable \\$bio might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+
+		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 2
+			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+
+		-
+			message: "#^Variable \\$social_links might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--wide.php
+
+		-
 			message: "#^Function the_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/search/search-results.php
@@ -664,86 +729,6 @@ parameters:
 			message: "#^Function get_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/social-proof.php
-
-		-
-			message: "#^Variable \\$name might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
-
-		-
-			message: "#^Variable \\$profile_picture might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
-
-		-
-			message: "#^Variable \\$social_links might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
-
-		-
-			message: "#^Variable \\$title might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--grid.php
-
-		-
-			message: "#^Variable \\$name might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
-
-		-
-			message: "#^Variable \\$partner_bio might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
-
-		-
-			message: "#^Variable \\$partner_email might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
-
-		-
-			message: "#^Variable \\$partner_logo might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
-
-		-
-			message: "#^Variable \\$partner_website might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--partner.php
-
-		-
-			message: "#^Function the_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$bio might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$name might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$personal_languages might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$profile_picture might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$social_links might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
-
-		-
-			message: "#^Variable \\$title might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/team/team-member--wide.php
 
 		-
 			message: "#^Variable \\$territory_id might not be defined\\.$#"
@@ -932,18 +917,13 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 7
-			path: wp-content/themes/blankslate-child/template-about-board.php
+			count: 1
+			path: wp-content/themes/blankslate-child/taxonomy-fellow-category.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 6
 			path: wp-content/themes/blankslate-child/template-about-partners.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 11
-			path: wp-content/themes/blankslate-child/template-about-staff.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
@@ -974,6 +954,11 @@ parameters:
 			message: "#^Function get_field not found\\.$#"
 			count: 3
 			path: wp-content/themes/blankslate-child/template-giving-campaign.php
+
+		-
+			message: "#^Function get_field not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/template-people.php
 
 		-
 			message: "#^Function get_field not found\\.$#"

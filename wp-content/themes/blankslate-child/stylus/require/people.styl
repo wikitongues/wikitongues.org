@@ -1,0 +1,51 @@
+// People pages compose their sections as galleries, so the person modules now
+// render inside .gallery-list rather than the old .page-template-* .wrapper
+// grid. The base gallery card treatment (black background, full-height anchor)
+// has to be neutralised here — person--wide.styl and person--grid.styl bring
+// their own layout. Single-column on mobile comes from the global override in
+// gallery.styl.
+.custom-gallery.people
+	width $content
+	margin 0 auto 4.8rem
+
+	> strong
+		text--header($black)
+		margin 0
+
+	.gallery-container
+		.gallery-list
+			align-items start
+			gap 2.4rem 1.6rem
+
+			.gallery-item--person
+				a
+					background-color transparent
+					color inherit
+					display inline
+					width auto
+					height auto
+					padding 0
+					float none
+					border-radius 0
+					transition none
+
+					&:hover
+						box-shadow none
+
+.custom-gallery.careers
+	width $content
+	margin 6.4rem auto
+
+	h4
+		text--header($black)
+		border-bottom none
+		margin-bottom 0
+
+	.gallery-container
+		.gallery-list
+			.gallery-item
+				a
+					background-color transparent
+					color $black
+					anchor($blue(),4px)
+					height initial

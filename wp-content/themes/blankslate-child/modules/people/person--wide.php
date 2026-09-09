@@ -1,7 +1,12 @@
-<article class="wt_team-member--wide">
-	<aside class="wt_team-member--wide__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
+<?php
+// Rendered for every person a gallery returns, so nothing here can assume
+// a populated profile picture or language list.
+$personal_languages = (array) ( $personal_languages ?? array() );
+?>
+<article class="wt_person--wide">
+	<aside class="wt_person--wide__img" role="img" aria-label="<?php echo esc_attr( $profile_picture['alt'] ?? '' ); ?>" style="background-image:url(<?php echo esc_url( $profile_picture['url'] ?? '' ); ?>);"></aside>
 
-	<aside class="wt_team-member--wide__meta">
+	<aside class="wt_person--wide__meta">
 		<h4><?php echo $name; ?></h4>
 		<strong><?php echo $title; ?></strong>
 		<?php

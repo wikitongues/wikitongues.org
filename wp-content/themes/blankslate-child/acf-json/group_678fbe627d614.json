@@ -294,6 +294,7 @@
 										"faq": "FAQs",
 										"fellows": "Fellows",
 										"languages": "Languages",
+										"people": "People",
 										"resources": "Resources",
 										"videos": "Videos"
 									},
@@ -381,6 +382,140 @@
 									"save_options": 0
 								},
 								{
+									"key": "field_wt_gallery_orderby",
+									"label": "Order By",
+									"name": "custom_gallery_orderby",
+									"aria-label": "",
+									"type": "select",
+									"instructions": "Selection order only applies when specific posts are chosen below.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "20",
+										"class": "",
+										"id": ""
+									},
+									"choices": {
+										"rand": "Random",
+										"title": "Title",
+										"date": "Date",
+										"post__in": "Selection order"
+									},
+									"default_value": "rand",
+									"return_format": "value",
+									"multiple": 0,
+									"allow_null": 0,
+									"allow_in_bindings": 1,
+									"ui": 0,
+									"ajax": 0,
+									"placeholder": "",
+									"create_options": 0,
+									"save_options": 0
+								},
+								{
+									"key": "field_wt_gallery_layout",
+									"label": "Layout",
+									"name": "custom_gallery_layout",
+									"aria-label": "",
+									"type": "select",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_679e929eeee04",
+												"operator": "==",
+												"value": "people"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "20",
+										"class": "",
+										"id": ""
+									},
+									"choices": {
+										"wide": "Wide",
+										"grid": "Grid"
+									},
+									"default_value": "wide",
+									"return_format": "value",
+									"multiple": 0,
+									"allow_null": 0,
+									"allow_in_bindings": 1,
+									"ui": 0,
+									"ajax": 0,
+									"placeholder": "",
+									"create_options": 0,
+									"save_options": 0
+								},
+								{
+									"key": "field_wt_gallery_people_type",
+									"label": "People Type",
+									"name": "custom_gallery_people_type",
+									"aria-label": "",
+									"type": "taxonomy",
+									"instructions": "Leave empty to show all.",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_679e929eeee04",
+												"operator": "==",
+												"value": "people"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "40",
+										"class": "",
+										"id": ""
+									},
+									"taxonomy": "people-type",
+									"add_term": 0,
+									"save_terms": 0,
+									"load_terms": 0,
+									"return_format": "object",
+									"field_type": "multi_select",
+									"allow_null": 1,
+									"bidirectional": 0,
+									"multiple": 0,
+									"bidirectional_target": []
+								},
+								{
+									"key": "field_wt_gallery_career_type",
+									"label": "Career Type",
+									"name": "custom_gallery_career_type",
+									"aria-label": "",
+									"type": "taxonomy",
+									"instructions": "Leave empty to show all.",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_679e929eeee04",
+												"operator": "==",
+												"value": "careers"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "40",
+										"class": "",
+										"id": ""
+									},
+									"taxonomy": "career_type",
+									"add_term": 0,
+									"save_terms": 0,
+									"load_terms": 0,
+									"return_format": "object",
+									"field_type": "multi_select",
+									"allow_null": 1,
+									"bidirectional": 0,
+									"multiple": 0,
+									"bidirectional_target": []
+								},
+								{
 									"key": "field_678fbef0b5d76",
 									"label": "Custom Gallery Title",
 									"name": "custom_gallery_title",
@@ -418,7 +553,8 @@
 										"languages",
 										"fellows",
 										"videos",
-										"faq"
+										"faq",
+										"people"
 									],
 									"post_status": [
 										"publish"
@@ -956,6 +1092,13 @@
 				"operator": "==",
 				"value": "global-video-settings"
 			}
+		],
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "template-people.php"
+			}
 		]
 	],
 	"menu_order": 1,
@@ -971,5 +1114,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1788953407
+	"modified": 1788953875
 }
