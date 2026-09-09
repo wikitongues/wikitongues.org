@@ -70,6 +70,11 @@ echo '<main class="wt_single-videos__content">';
 
 	echo '</section>';
 
+	// Shared editorial block, configured once under Videos -> Video Settings
+	// rather than per post. 'option' is the ACF options store the page saves to.
+	$editorial_source = 'option';
+	require 'modules/editorial-content.php';
+
 	// Gallery
 	$params = wt_gallery_params(
 		array(
