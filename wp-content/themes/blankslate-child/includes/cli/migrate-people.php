@@ -64,6 +64,48 @@ function wt_review_people_types() {
 }
 
 /**
+ * Spelling corrections to person records, found during review.
+ *
+ * @return array<string,string> stored title => corrected title
+ */
+function wt_people_name_fixes() {
+	return array(
+		'Nicholas Paul Brysiewic' => 'Nicholas Paul Brysiewicz',
+	);
+}
+
+/**
+ * Titles supplied at review.
+ *
+ * Every advisor and former board member either had no leadership_title or
+ * carried the placeholder "Board of Directors", which reads as redundant under
+ * a heading that already says Former board members. These were researched and
+ * confirmed with the team.
+ *
+ * House style for this field is the organisation alone rather than a job
+ * title, matching the values already stored ("Queens Library", "Hebrew Union
+ * College"), except where a person is better described by what they do — the
+ * field already holds "Non-Profit Executive" and "Design Volunteer" too.
+ *
+ * @return array<string,string> person name => leadership_title
+ */
+function wt_review_people_titles() {
+	return array(
+		'Aleksandra Przegalinska'  => 'Kozminski University',
+		'Casson Trenor'            => 'Strategic advisor',
+		'Dario Maestro'            => 'Surveillance Technology Oversight Project',
+		'Everette Jordan'          => 'Translation expert',
+		'Heather Meeker'           => 'OSS Capital',
+		'Krupa Shinde-Covert'      => 'Philanthropy advisor',
+		'Menghis Bairu'            => 'Biotechnology entrepreneur',
+		'Myrna Cunningham'         => 'FILAC',
+		'Nicholas Paul Brysiewicz' => 'Eternity Foundation',
+		'Richard Chin'             => 'Ascendant Venture',
+		'Satdeep Gill'             => 'Wikimedia Foundation',
+	);
+}
+
+/**
  * Which page contributed which type, and how each page is rebuilt.
  *
  * `sources` maps a legacy relationship meta key to the people-type slug its
@@ -239,6 +281,24 @@ function wt_migrate_people( $args, $assoc_args ) {
 	$untyped = max( 0, $total - count( $assignments ) );
 	WP_CLI::log( sprintf( '           %d of %d published person(s) get no type — they appear on no page today either', $untyped, $total ) );
 
+	// ------------------------------------------- 3a. correct misspelt names
+	foreach ( wt_people_name_fixes() as $wrong => $right ) {
+		$person = get_page_by_title( $wrong, OBJECT, 'people' );
+		if ( ! $person ) {
+			continue;
+		}
+
+		WP_CLI::log( sprintf( '  name     %s -> %s%s', $wrong, $right, $execute ? '' : ' (would rename)' ) );
+		if ( $execute ) {
+			wp_update_post(
+				array(
+					'ID'         => $person->ID,
+					'post_title' => $right,
+				)
+			);
+		}
+	}
+
 	// ------------------------------- 3b. apply the types supplied at review
 	$people = get_posts(
 		array(
@@ -251,6 +311,16 @@ function wt_migrate_people( $args, $assoc_args ) {
 	$by_title = array();
 	foreach ( $people as $person ) {
 		$by_title[ strtolower( remove_accents( $person->post_title ) ) ] = $person;
+	}
+
+	// Register corrected spellings as aliases so a dry run resolves the same
+	// people an execute run would, having already renamed them above.
+	foreach ( wt_people_name_fixes() as $wrong => $right ) {
+		$from = strtolower( remove_accents( $wrong ) );
+		$to   = strtolower( remove_accents( $right ) );
+		if ( isset( $by_title[ $from ] ) && ! isset( $by_title[ $to ] ) ) {
+			$by_title[ $to ] = $by_title[ $from ];
+		}
 	}
 
 	foreach ( wt_review_people_types() as $name => $slugs ) {
@@ -280,6 +350,35 @@ function wt_migrate_people( $args, $assoc_args ) {
 		);
 		if ( $execute ) {
 			wp_set_object_terms( $person->ID, $missing, 'people-type', true );
+		}
+	}
+
+	// ------------------------------ 3c. apply the titles supplied at review
+	foreach ( wt_review_people_titles() as $name => $title ) {
+		$key = strtolower( remove_accents( $name ) );
+		if ( ! isset( $by_title[ $key ] ) ) {
+			WP_CLI::warning( sprintf( 'Person "%s" has no People record — skipping title.', $name ) );
+			continue;
+		}
+
+		$person  = $by_title[ $key ];
+		$current = (string) get_post_meta( $person->ID, 'leadership_title', true );
+		if ( $current === $title ) {
+			WP_CLI::log( sprintf( '  title    %s — already %s', $person->post_title, $title ) );
+			continue;
+		}
+
+		WP_CLI::log(
+			sprintf(
+				'  title    %s — %s %s -> %s',
+				$person->post_title,
+				$execute ? 'setting' : 'would set',
+				$current ? '"' . $current . '"' : '(empty)',
+				$title
+			)
+		);
+		if ( $execute ) {
+			update_field( 'field_61548e9fbbc7f', $title, $person->ID );
 		}
 	}
 
