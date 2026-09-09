@@ -104,6 +104,15 @@
 		padding 8px 12px
 		text--strong($black) // p
 
+	sectionHeader--plain()
+		// A gallery section heading that reads as a page heading rather than
+		// the gallery's ruled section label. The gallery emits <strong>, which
+		// the base scale sizes as body text, so restore the h4 size.
+		text--header($black)
+		font-size $fontScale(6)
+		border-bottom none
+		padding-bottom 0
+
 	anchor(color, padding)
 		text-decoration none
 		color color

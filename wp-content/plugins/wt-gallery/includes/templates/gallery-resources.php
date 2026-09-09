@@ -1,4 +1,4 @@
-<li class="gallery-item">
+<li class="gallery-item gallery-item--card">
 	<?php
 	$url                  = get_field( 'resource_url' );
 	$title                = get_field( 'resource_title' ) ? get_field( 'resource_title' ) : get_the_title();

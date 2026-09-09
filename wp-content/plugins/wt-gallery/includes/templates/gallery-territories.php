@@ -1,4 +1,4 @@
-<li class="gallery-item">
+<li class="gallery-item gallery-item--card">
 	<?php
 	$territory_id = $query->post->ID;
 	$meta_query   = array(
