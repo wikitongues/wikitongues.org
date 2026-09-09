@@ -232,7 +232,7 @@ function wt_prefix_the( string $name ): string {
  * Build the standard social-links array for the current post in context.
  *
  * Each entry maps a platform key to ['url' => string|false, 'icon' => string].
- * Pass the result to team-member--wide.php, team-member--grid.php, or
+ * Pass the result to person--wide.php, person--grid.php, or
  * meta--fellows-single.php as $social_links.
  *
  * @return array<string, array{url: string|false, icon: string}>

@@ -1,6 +1,6 @@
-<article class="wt_team-member--grid">
-	<aside class="wt_team-member--grid__img" role="img" aria-label="<?php echo $profile_picture['alt']; ?>" style="background-image:url(<?php echo $profile_picture['url']; ?>);"></aside>
-	<aside class="wt_team-member--grid__meta">
+<article class="wt_person--grid">
+	<aside class="wt_person--grid__img" role="img" aria-label="<?php echo esc_attr( $profile_picture['alt'] ?? '' ); ?>" style="background-image:url(<?php echo esc_url( $profile_picture['url'] ?? '' ); ?>);"></aside>
+	<aside class="wt_person--grid__meta">
 		<strong><?php echo $name; ?></strong>
 		<p><?php echo $title; ?></p>
 		<ul class="social">

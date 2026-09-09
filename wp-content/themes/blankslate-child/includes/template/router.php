@@ -26,11 +26,6 @@ function wikitongues_custom_template_redirects() {
 		exit;
 	}
 
-	if ( is_post_type_archive( array( 'team' ) ) ) {
-		wp_redirect( home_url( '/about/staff-and-volunteers/', 'relative' ) );
-		exit;
-	}
-
 	if ( is_post_type_archive( array( 'partners' ) ) ) {
 		wp_redirect( home_url( '/', 'relative' ) );
 		exit;
@@ -108,6 +103,11 @@ function wikitongues_custom_template_redirects() {
 		}
 	}
 
+	if ( is_404() && ( $request_path === 'team' || str_starts_with( $request_path, 'team/' ) ) ) {
+		wp_redirect( home_url( '/about/staff-and-volunteers/', 'relative' ), 301 );
+		exit;
+	}
+
 	if ( is_404() && $request_path === '2024-fundraiser' ) {
 		wp_redirect( home_url( '/donate', 'relative' ), 301 );
 		exit;
@@ -127,7 +127,7 @@ function wikitongues_custom_template_redirects() {
 		wp_redirect( home_url( '/reports', 'relative' ) );
 		exit;
 	}
-	if ( is_singular( 'team' ) ) {
+	if ( is_singular( 'people' ) ) {
 		wp_redirect( home_url( '/about/staff-and-volunteers/', 'relative' ) );
 		exit;
 	}

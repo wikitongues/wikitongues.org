@@ -1,142 +1,167 @@
 {
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "team"
-            }
-        ]
-    ],
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": "",
-    "description": "",
-    "show_in_rest": 0,
-    "display_title": "",
-    "title": "Post type: Team",
-    "key": "group_61548e2b929e2",
-    "menu_order": 0,
-    "active": true,
-    "fields": [
-        {
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "key": "field_61548e91bbc7e",
-            "label": "Contributor Location",
-            "name": "contributor_location"
-        },
-        {
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "key": "field_61548e9fbbc7f",
-            "label": "Leadership Title",
-            "name": "leadership_title"
-        },
-        {
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "languages"
-            ],
-            "post_status": "",
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 1,
-            "allow_null": 0,
-            "allow_in_bindings": 1,
-            "bidirectional": 0,
-            "ui": 1,
-            "bidirectional_target": [],
-            "key": "field_64fa179fcce3a",
-            "label": "Languages",
-            "name": "languages"
-        },
-        {
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "allow_in_bindings": 1,
-            "preview_size": "medium",
-            "key": "field_64fa001bd0d06",
-            "label": "Profile Picture",
-            "name": "profile_picture"
-        },
-        {
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "66",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "rows": "",
-            "placeholder": "",
-            "new_lines": "br",
-            "key": "field_64fa00efedc93",
-            "label": "Bio",
-            "name": "bio"
-        }
-    ],
-    "modified": 1788903850
+	"location": [
+		[
+			{
+				"param": "post_type",
+				"operator": "==",
+				"value": "people"
+			}
+		]
+	],
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"description": "",
+	"show_in_rest": 0,
+	"display_title": "",
+	"title": "Post type: People",
+	"key": "group_61548e2b929e2",
+	"menu_order": 0,
+	"active": true,
+	"fields": [
+		{
+			"key": "field_wt_people_type",
+			"label": "Type",
+			"name": "people_type",
+			"aria-label": "",
+			"type": "taxonomy",
+			"instructions": "What this person is to Wikitongues. A person can hold several types at once.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"taxonomy": "people-type",
+			"add_term": 0,
+			"save_terms": 1,
+			"load_terms": 1,
+			"return_format": "id",
+			"field_type": "multi_select",
+			"allow_null": 1,
+			"bidirectional": 0,
+			"multiple": 0,
+			"bidirectional_target": []
+		},
+		{
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 1,
+			"placeholder": "",
+			"prepend": "",
+			"append": "",
+			"key": "field_61548e91bbc7e",
+			"label": "Contributor Location",
+			"name": "contributor_location"
+		},
+		{
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 1,
+			"placeholder": "",
+			"prepend": "",
+			"append": "",
+			"key": "field_61548e9fbbc7f",
+			"label": "Leadership Title",
+			"name": "leadership_title"
+		},
+		{
+			"aria-label": "",
+			"type": "post_object",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"post_type": [
+				"languages"
+			],
+			"post_status": "",
+			"taxonomy": "",
+			"return_format": "object",
+			"multiple": 1,
+			"allow_null": 0,
+			"allow_in_bindings": 1,
+			"bidirectional": 0,
+			"ui": 1,
+			"bidirectional_target": [],
+			"key": "field_64fa179fcce3a",
+			"label": "Languages",
+			"name": "languages"
+		},
+		{
+			"aria-label": "",
+			"type": "image",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"allow_in_bindings": 1,
+			"preview_size": "medium",
+			"key": "field_64fa001bd0d06",
+			"label": "Profile Picture",
+			"name": "profile_picture"
+		},
+		{
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "66",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"allow_in_bindings": 1,
+			"rows": "",
+			"placeholder": "",
+			"new_lines": "br",
+			"key": "field_64fa00efedc93",
+			"label": "Bio",
+			"name": "bio"
+		}
+	],
+	"modified": 1788953825
 }

@@ -143,7 +143,10 @@
 								'container_class' => 'wt_header__nav--secondary',
 							)
 						); // if single language or single video, display the language
-					} elseif ( strpos( $template_slug, 'about' ) !== false ) {
+					} elseif ( strpos( $template_slug, 'about' ) !== false || strpos( $template_slug, 'people' ) !== false ) {
+						// template-people.php replaced template-about-board/-staff, which
+						// matched on 'about'. Match it explicitly so Board, Advisors and
+						// Staff keep the About sub-navigation.
 						wp_nav_menu(
 							array(
 								'theme_location'  => 'about-menu',

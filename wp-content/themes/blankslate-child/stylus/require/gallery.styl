@@ -71,7 +71,10 @@ $aspect-ratio = 16/9
 			gap 16px
 			display grid
 
-			.gallery-item
+			// People render the theme's person modules rather than a card, so
+			// they opt out of the card treatment below (background, full-height
+			// anchor) and bring their own layout.
+			.gallery-item:not(.gallery-item--person)
 				width 100%
 
 				.metadata

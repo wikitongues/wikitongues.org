@@ -40,7 +40,7 @@ function custom_reorder_admin_menu( array $menu_order ): array {
 		'edit.php?post_type=territories',     // Territories
 		'wt-section-people',                  // ── People ───────────────────────
 		'edit.php?post_type=fellows',         // Fellows
-		'edit.php?post_type=team',            // Team
+		'edit.php?post_type=people',          // People
 		'edit.php?post_type=partners',        // Partners
 		'wt-section-publishing',              // ── Publishing ───────────────────
 		'edit.php?post_type=page',            // Pages
@@ -101,7 +101,7 @@ function custom_remove_menu_pages(): void {
 		'resources',
 		'territories',
 		'fellows',
-		'team',
+		'people',
 		'partners',
 		'careers',
 		'page',

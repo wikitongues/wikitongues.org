@@ -227,6 +227,24 @@ class GalleryQueryArgsTest extends TestCase {
 		$this->assertSame( 'RAND(789)', $args['orderby'] );
 	}
 
+	public function test_orderby_post_in_is_passed_through_untouched() {
+		// custom_gallery() sets post__in for a curated selection; orderby
+		// "post__in" is what renders it in the selected order, so the arg
+		// builder must not rewrite it the way it rewrites "rand".
+		$atts = $this->base_atts(
+			array(
+				'orderby'  => 'post__in',
+				'post__in' => array( 99, 7, 12 ),
+			)
+		);
+		$this->mock_wp_parse_args( $atts );
+
+		$args = build_gallery_query_args( $atts );
+
+		$this->assertSame( 'post__in', $args['orderby'] );
+		$this->assertSame( array( 99, 7, 12 ), $args['post__in'] );
+	}
+
 	public function test_rand_without_seed_left_as_plain_rand() {
 		$atts = $this->base_atts( array( 'orderby' => 'rand' ) );
 		$this->mock_wp_parse_args( $atts );
