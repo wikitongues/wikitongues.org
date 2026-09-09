@@ -582,7 +582,8 @@ Read a person's types with `get_the_terms( $id, 'people-type' )`. The ACF field 
 - **`wp_gateway_people` naming overlap** — the download gateway already owns a "people" concept (`wp_gateway_people`, `PeopleRepository`) for email-captured visitors. There are now two registries: People (published profiles) and gateway people (contacts). Donors plausibly belong to both. Worth a naming/relationship note in `docs/` before the donor work links them.
 - **Board ordering is alphabetical** — the curated order the old `board_members` relationship field encoded (co-founders first) is not preserved by a type-filtered gallery. The gallery supports it: switch that section's *Order By* to **Selection order** and pick the people in order. Left alphabetical because type filtering is the requested model.
 - **Legacy meta not swept** — `board_members`, `staff_members`, `interns_and_volunteers` and `team_banner_*` are left in place on pages 15076/15078/15080 so the migration is reversible. Sweep once confirmed in production.
-- **Advisors and Partners pages are drafts** — pre-existing, unrelated to the rename. Only Board and Staff are live.
+- **`leadership_title` does double duty** — it holds "role at Wikitongues" for staff and board but "external affiliation" for advisors, and there is only one per person. So the three people who are both advisor and former board member show the same value in both places, and it cannot say anything about their board service. Splitting role from affiliation is the real fix; deferred.
+- **Partners page is still a draft** — pre-existing, unrelated to the rename. Board, Advisors and Staff are live.
 
 ### Shared banner definition
 
