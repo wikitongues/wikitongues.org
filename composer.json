@@ -6,7 +6,8 @@
     "phpunit/phpunit": "^9.6",
     "10up/wp_mock": "^1.0",
     "phpstan/phpstan": "^1.0",
-    "szepeviktor/phpstan-wordpress": "^1.0"
+    "szepeviktor/phpstan-wordpress": "^1.0",
+    "php-stubs/wp-cli-stubs": "^2.12"
   },
   "scripts": {
     "lint": "phpcs",

@@ -70,7 +70,7 @@ if ( $fellow_id ) {
 		)
 	);
 	echo create_gallery_instance( $params );
-
+	require 'modules/editorial-content.php';
 	require 'modules/newsletter.php';
 
 	get_footer();
