@@ -22,14 +22,17 @@ $title = get_field( 'leadership_title' );
 
 $social_links = function_exists( 'wt_social_links' ) ? wt_social_links() : array();
 
-$class = isset( $atts['custom_class'] ) ? $atts['custom_class'] : '';
-$mode  = 'wide';
-foreach ( array( 'grid', 'list' ) as $candidate ) {
-	if ( strpos( $class, $candidate ) !== false ) {
-		$mode = $candidate;
-		break;
-	}
-}
+/*
+ * Render modes, set by the gallery row's Layout field:
+ *   wide - portrait beside the detail block
+ *   list - detail block, no portrait          ("List - rich" in the editor)
+ *   name - the person's name alone            ("List - terse" in the editor)
+ *   grid - compact card
+ * Matched exactly rather than by substring so the values can't shadow each
+ * other as more are added.
+ */
+$class = isset( $atts['custom_class'] ) ? trim( $atts['custom_class'] ) : '';
+$mode  = in_array( $class, array( 'wide', 'list', 'name', 'grid' ), true ) ? $class : 'wide';
 
 $module = locate_template( 'modules/people/person--' . $mode . '.php' );
 

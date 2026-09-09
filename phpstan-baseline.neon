@@ -666,6 +666,11 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/people/person--meta.php
 
 		-
+			message: "#^Variable \\$name might not be defined\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/modules/people/person--name.php
+
+		-
 			message: "#^Variable \\$social_links might not be defined\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/people/person--meta.php

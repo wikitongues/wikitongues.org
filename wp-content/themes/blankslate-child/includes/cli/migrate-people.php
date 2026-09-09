@@ -38,6 +38,32 @@ function wt_people_type_terms() {
 }
 
 /**
+ * People types supplied during review rather than derived from the database.
+ *
+ * The retired templates never listed former board members, so those names
+ * cannot be inferred from anything stored — they are recorded here to keep
+ * localhost, staging and production consistent. Several of them also advise.
+ *
+ * Names are matched on post title, accent-insensitively, so "Przegalinska"
+ * finds "Przegalińska".
+ *
+ * @return array<string,string[]> person name => people-type slugs
+ */
+function wt_review_people_types() {
+	return array(
+		'Alolita Sharma'          => array( 'former-board', 'advisor' ),
+		'Aleksandra Przegalinska' => array( 'former-board', 'advisor' ),
+		'Casson Trenor'           => array( 'former-board' ),
+		'Dario Maestro'           => array( 'former-board', 'advisor' ),
+		'Jamie Joyce'             => array( 'former-board' ),
+		'Lindie Botes'            => array( 'former-board' ),
+		'Menghis Bairu'           => array( 'former-board' ),
+		'Richard Chin'            => array( 'former-board' ),
+		'Wade Davis'              => array( 'former-board', 'advisor' ),
+	);
+}
+
+/**
  * Which page contributed which type, and how each page is rebuilt.
  *
  * `sources` maps a legacy relationship meta key to the people-type slug its
@@ -62,7 +88,7 @@ function wt_people_page_map() {
 				array(
 					'type'    => 'people',
 					'term'    => 'former-board',
-					'layout'  => 'list',
+					'layout'  => 'name',
 					'columns' => 3,
 					'title'   => 'Former board members',
 				),
@@ -212,6 +238,50 @@ function wt_migrate_people( $args, $assoc_args ) {
 	$total   = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type IN ( %s, %s ) AND post_status = %s", 'team', 'people', 'publish' ) );
 	$untyped = max( 0, $total - count( $assignments ) );
 	WP_CLI::log( sprintf( '           %d of %d published person(s) get no type — they appear on no page today either', $untyped, $total ) );
+
+	// ------------------------------- 3b. apply the types supplied at review
+	$people = get_posts(
+		array(
+			'post_type'      => 'people',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$by_title = array();
+	foreach ( $people as $person ) {
+		$by_title[ strtolower( remove_accents( $person->post_title ) ) ] = $person;
+	}
+
+	foreach ( wt_review_people_types() as $name => $slugs ) {
+		$key = strtolower( remove_accents( $name ) );
+		if ( ! isset( $by_title[ $key ] ) ) {
+			WP_CLI::warning( sprintf( 'Person "%s" has no People record — skipping.', $name ) );
+			continue;
+		}
+
+		$person   = $by_title[ $key ];
+		$existing = (array) wp_get_object_terms( $person->ID, 'people-type', array( 'fields' => 'slugs' ) );
+		$missing  = array_values( array_diff( $slugs, $existing ) );
+
+		if ( ! $missing ) {
+			WP_CLI::log( sprintf( '  review   %s — already %s', $person->post_title, implode( ', ', $slugs ) ) );
+			continue;
+		}
+
+		WP_CLI::log(
+			sprintf(
+				'  review   %s — %s %s%s',
+				$person->post_title,
+				$execute ? 'adding' : 'would add',
+				implode( ', ', $missing ),
+				$existing ? ' (has ' . implode( ', ', $existing ) . ')' : ''
+			)
+		);
+		if ( $execute ) {
+			wp_set_object_terms( $person->ID, $missing, 'people-type', true );
+		}
+	}
 
 	// ------------------------------------------- 4. repoint the people pages
 	foreach ( wt_people_page_map() as $page_id => $page ) {
