@@ -1,5 +1,13 @@
 <?php
-$term = get_queried_object();
+/*
+ * Renders the editorial `main_content` flexible content.
+ *
+ * Defaults to the queried object (page, post or term). A caller that needs a
+ * different source — an options page, say — sets $editorial_source before
+ * including this file. It is unset afterwards so the next include starts from
+ * the default again.
+ */
+$editorial_source = isset( $editorial_source ) ? $editorial_source : get_queried_object();
 
 $templates = array(
 	'text_layout'         => 'modules/flexible-content/text-layout.php',
@@ -11,8 +19,8 @@ $templates = array(
 	'gallery_layout'      => 'modules/flexible-content/gallery-layout.php',
 );
 
-if ( have_rows( 'main_content', $term ) ) :
-	while ( have_rows( 'main_content', $term ) ) :
+if ( have_rows( 'main_content', $editorial_source ) ) :
+	while ( have_rows( 'main_content', $editorial_source ) ) :
 		the_row();
 		$layout = get_row_layout();
 		if ( empty( $templates[ $layout ] ) ) {
@@ -37,3 +45,5 @@ if ( have_rows( 'main_content', $term ) ) :
 		}
 	endwhile;
 endif;
+
+unset( $editorial_source );
