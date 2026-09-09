@@ -418,7 +418,7 @@
 									"name": "custom_gallery_layout",
 									"aria-label": "",
 									"type": "select",
-									"instructions": "Rich drops the portrait but keeps role, languages, links and bio. Terse is the name alone.",
+									"instructions": "List shows name and role only \u2014 no portrait, languages, links or bio.",
 									"required": 0,
 									"conditional_logic": [
 										[
@@ -436,8 +436,7 @@
 									},
 									"choices": {
 										"wide": "Wide",
-										"list": "List \u2014 rich",
-										"name": "List \u2014 terse",
+										"list": "List",
 										"grid": "Grid"
 									},
 									"default_value": "wide",
@@ -1116,5 +1115,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1788961153
+	"modified": 1788961767
 }

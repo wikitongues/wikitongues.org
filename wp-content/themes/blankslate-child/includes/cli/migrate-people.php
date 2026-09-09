@@ -88,7 +88,7 @@ function wt_people_page_map() {
 				array(
 					'type'    => 'people',
 					'term'    => 'former-board',
-					'layout'  => 'name',
+					'layout'  => 'list',
 					'columns' => 3,
 					'title'   => 'Former board members',
 				),
