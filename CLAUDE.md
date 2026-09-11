@@ -40,6 +40,31 @@ Run `/test` before every PR — it runs `composer lint`, `composer analyse`, and
 ## WordPress CLI
 WP-CLI is available as `wp`. Always pass `--allow-root` on localhost. For production, SSH in (see private ops notes) then run WP-CLI from the document root.
 
+## Database changes — sync and back up first
+Before any **migration or bulk write** to database state (WP-CLI migrations, scripted
+`update_field`/`wp_set_object_terms` runs, ACF changes needing a data migration), refresh
+from production so the change is built and tested against real data:
+
+1. **Actions → Backup Prod DB** — dumps production. This is both the pre-change backup
+   *and* the source for the two syncs below, so it does double duty. **Check it is still
+   enabled first** — GitHub silently disables scheduled workflows after 60 days of repo
+   inactivity, and Sync to Staging imports whatever dump was last written, however old.
+2. **Sync to Staging** fires automatically (~2–5 min) — staging now matches prod.
+3. `bash tool-sync-db-from-prod.sh` — pulls prod → local (DB + uploads).
+4. Only then write the migration, and run it **local → staging → production**.
+
+Why: environments drift. A migration validated against a stale local or staging database
+proves nothing about production — staging was found 1 person and several renames behind
+prod in Sept 2026, so the same command produced different results in each environment.
+
+Doesn't apply to one-off content edits in admin; this is for anything scripted or bulk.
+
+**Backup retention caveat:** `backup-prod-db.yml` always writes the same
+`~/public_html/tmp/prod_dump.sql` and keeps **no history** — running it again overwrites
+the previous dump. Before a risky production write, SSH in and keep a dated copy first.
+
+Full runbook: `docs/staging-sync.md`.
+
 ## Sync prod → local
 ```bash
 bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
