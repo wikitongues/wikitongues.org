@@ -22,6 +22,59 @@ Two GitHub Actions workflows handle the full sync:
 
 ---
 
+## Before changing database state
+
+Run this **before** writing a migration or any bulk/scripted database change — not after.
+The point is to develop and test against what production actually holds.
+
+| # | Step | Where |
+|---|---|---|
+| 1 | **Backup Prod DB** | Actions → Run workflow |
+| 2 | **Sync to Staging** (fires automatically) | Actions, ~2–5 min |
+| 3 | `bash tool-sync-db-from-prod.sh` | locally |
+| 4 | Write the change; run it local → staging → production | |
+
+Step 1 does double duty: the dump it produces is both the pre-change backup of production
+and the source both syncs read from. So a single run gets you a backup and two
+environments that match prod.
+
+### Why this matters
+
+Environments drift, silently. In September 2026 the People migration was developed against
+a local database synced from production weeks earlier, then run on staging — which turned
+out to be one person short and carrying older spellings (`Frederico Andrade` vs
+`Frederico Afrange de Andrade`). The same command produced different results in each
+environment, and the difference only surfaced because the dry-run output was read closely.
+
+A migration validated against a stale copy proves nothing about production.
+
+### Backup retention — read this before a production write
+
+`backup-prod-db.yml` always writes the same path, `~/public_html/tmp/prod_dump.sql`, and
+keeps **no history**. Running it again overwrites the previous dump. That is fine as a
+rolling weekly snapshot, but it means:
+
+- If a migration damages production and you then run the backup to "get a copy", you have
+  overwritten the last good dump with the damaged state.
+- Before any risky production write, SSH in and keep a dated copy first:
+
+```bash
+cd ~/public_html
+wp db export tmp/prod_dump_$(date +%Y%m%d-%H%M).sql --allow-root
+```
+
+Keep it until the change is confirmed good, then delete it — these dumps are large and sit
+in the web root's `tmp/`.
+
+### Migrations should survive a sync
+
+A sync from production **wipes whatever the migration wrote** on the target — terms,
+field values, page template assignments. This is why data changes belong in idempotent,
+dry-run-by-default WP-CLI commands rather than admin clicks: after any sync, re-running
+the command restores the state. See `includes/cli/` in the child theme.
+
+---
+
 ## Run a sync manually
 
 ### Option A — Fresh dump + sync (recommended)
