@@ -48,7 +48,7 @@ function custom_reorder_admin_menu( array $menu_order ): array {
 		'edit.php?post_type=careers',         // Careers
 		'edit.php?post_type=events',          // Events
 		'edit.php?post_type=faq',             // FAQ
-		'edit.php?post_type=reports',         // Reports
+		'edit.php?post_type=form_990',        // Form 990s
 		'upload.php',                         // Media
 		'wt-section-documents',               // ── Documents ────────────────────
 		'edit.php?post_type=documents',       // Documents
@@ -108,7 +108,7 @@ function custom_remove_menu_pages(): void {
 		'blog',
 		'events',
 		'faq',
-		'reports',
+		'form_990',
 		'documents',
 		'document_files',
 	);
