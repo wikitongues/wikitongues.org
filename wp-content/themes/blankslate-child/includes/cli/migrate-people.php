@@ -281,9 +281,36 @@ function wt_migrate_people( $args, $assoc_args ) {
 	$untyped = max( 0, $total - count( $assignments ) );
 	WP_CLI::log( sprintf( '           %d of %d published person(s) get no type — they appear on no page today either', $untyped, $total ) );
 
+	// --------------------------- index people by title, for the phases below
+	$people = get_posts(
+		array(
+			// Both types on purpose. Phase 1 only retypes under --execute, so on
+			// an unmigrated site a dry run would find no `people` at all and warn
+			// about every person it would in fact have matched.
+			'post_type'      => array( 'team', 'people' ),
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$by_title = array();
+	foreach ( $people as $person ) {
+		$by_title[ strtolower( remove_accents( $person->post_title ) ) ] = $person;
+	}
+
+	// Register corrected spellings as aliases, so the phases below resolve a
+	// person by either spelling — whether or not the rename has run yet.
+	foreach ( wt_people_name_fixes() as $wrong => $right ) {
+		$from = strtolower( remove_accents( $wrong ) );
+		$to   = strtolower( remove_accents( $right ) );
+		if ( isset( $by_title[ $from ] ) && ! isset( $by_title[ $to ] ) ) {
+			$by_title[ $to ] = $by_title[ $from ];
+		}
+	}
+
 	// ------------------------------------------- 3a. correct misspelt names
 	foreach ( wt_people_name_fixes() as $wrong => $right ) {
-		$person = get_page_by_title( $wrong, OBJECT, 'people' );
+		$person = $by_title[ strtolower( remove_accents( $wrong ) ) ] ?? null;
 		if ( ! $person ) {
 			continue;
 		}
@@ -300,29 +327,6 @@ function wt_migrate_people( $args, $assoc_args ) {
 	}
 
 	// ------------------------------- 3b. apply the types supplied at review
-	$people = get_posts(
-		array(
-			'post_type'      => 'people',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-		)
-	);
-
-	$by_title = array();
-	foreach ( $people as $person ) {
-		$by_title[ strtolower( remove_accents( $person->post_title ) ) ] = $person;
-	}
-
-	// Register corrected spellings as aliases so a dry run resolves the same
-	// people an execute run would, having already renamed them above.
-	foreach ( wt_people_name_fixes() as $wrong => $right ) {
-		$from = strtolower( remove_accents( $wrong ) );
-		$to   = strtolower( remove_accents( $right ) );
-		if ( isset( $by_title[ $from ] ) && ! isset( $by_title[ $to ] ) ) {
-			$by_title[ $to ] = $by_title[ $from ];
-		}
-	}
-
 	foreach ( wt_review_people_types() as $name => $slugs ) {
 		$key = strtolower( remove_accents( $name ) );
 		if ( ! isset( $by_title[ $key ] ) ) {
