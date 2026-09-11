@@ -707,36 +707,6 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 9
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Function get_sub_field not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Function have_rows not found\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Function the_row not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Parameter \\#1 \\(void\\) of echo cannot be converted to string\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Result of function the_title \\(void\\) is used\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/single-reports__preview.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/social-proof.php
 
