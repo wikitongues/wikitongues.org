@@ -1,0 +1,85 @@
+{
+	"key": "group_wt_template_people",
+	"title": "Template: People",
+	"fields": [
+		{
+			"key": "field_wt_people_banner",
+			"label": "People Banner",
+			"name": "people_banner",
+			"aria-label": "",
+			"type": "group",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "block",
+			"sub_fields": [
+				{
+					"key": "field_wt_people_banner_header",
+					"label": "Banner header",
+					"name": "banner_header",
+					"aria-label": "",
+					"type": "textarea",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"maxlength": "",
+					"rows": 2,
+					"placeholder": "",
+					"new_lines": "",
+					"allow_in_bindings": 1
+				},
+				{
+					"key": "field_wt_people_banner_copy",
+					"label": "Banner copy",
+					"name": "banner_copy",
+					"aria-label": "",
+					"type": "textarea",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "",
+						"class": "",
+						"id": ""
+					},
+					"default_value": "",
+					"maxlength": "",
+					"rows": 3,
+					"placeholder": "",
+					"new_lines": "",
+					"allow_in_bindings": 1
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "template-people.php"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "Banner for pages built with the People template. The people sections themselves are composed in Main Content.",
+	"show_in_rest": 0,
+	"modified": 1788953842
+}

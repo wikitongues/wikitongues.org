@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_wt_video_settings",
+    "title": "Global: Video Settings",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Global: Video Settings",
+    "menu_slug": "global-video-settings",
+    "parent_slug": "edit.php?post_type=videos",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "Video Settings",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1788953407
+}

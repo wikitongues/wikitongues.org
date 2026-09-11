@@ -5,6 +5,10 @@ includes:
 
 parameters:
     level: 5
+    scanFiles:
+        # WP-CLI is not autoloaded during analysis; stub it so migration
+        # commands under includes/cli/ are checked rather than baselined.
+        - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
     paths:
         - wp-content/themes/blankslate-child
         - wp-content/plugins/wt-gallery

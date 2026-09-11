@@ -1,5 +1,25 @@
 <?php
 /**
+ * Parse a comma-separated list of post IDs into a sanitised array.
+ *
+ * Backs the gallery's `selected_posts` attribute. Non-numeric and zero entries
+ * are dropped so a malformed value can't widen the query, and the given order
+ * is preserved so callers can pair this with orderby="post__in".
+ *
+ * @param mixed $csv Comma-separated post IDs.
+ * @return int[] Post IDs, in the order given.
+ */
+function wt_gallery_selected_post_ids( $csv ) {
+	if ( ! is_string( $csv ) || '' === trim( $csv ) ) {
+		return array();
+	}
+
+	$ids = array_map( 'intval', array_map( 'trim', explode( ',', $csv ) ) );
+
+	return array_values( array_filter( $ids ) );
+}
+
+/**
  * Builds the WP_Query args array for the custom gallery.
  *
  * Contains all arg-building logic for get_custom_gallery_query() so it can

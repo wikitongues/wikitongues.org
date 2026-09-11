@@ -37,14 +37,15 @@
 &.dark
 	.block
 		&:before
-			background $blue()
-			border-color $blue()
+			background $blue(10)
+			border-color $blue(10)
 
 		.copy
-			color $parchment
+			color $blue()
 
 			button, a
 				button--secondary($parchment, $blue())
+				transition all 0.05s ease-in-out
 
 				&.secondary
 					margin-left 1.6rem
@@ -52,6 +53,13 @@
 
 					&:hover
 						background $blue(85)
+
+			a
+				&:hover
+					background $parchment
+					padding 1.7rem 2.2rem
+					margin -0.2rem
+					border-radius 8px
 
 .block
 	display flex

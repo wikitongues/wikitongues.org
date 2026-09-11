@@ -92,3 +92,26 @@
 	.careers-page,
 	.career-post
 		margin 0 1.6rem 3.2rem
+
+// Careers galleries, as composed into editorial content.
+//
+// These render with the `full` modifier, whose flat 32px margin would
+// left-align them. `.custom-gallery.full` is also two class selectors, so the
+// combination is stated explicitly here rather than left to file order to
+// break the tie.
+.custom-gallery.careers
+	.wt_sectionHeader
+		sectionHeader--plain()
+
+	.gallery-container
+		.gallery-list
+			.gallery-item
+				a
+					background-color transparent
+					color $black
+					anchor($blue(),4px)
+					height initial
+
+.custom-gallery.careers.full
+	width $content
+	margin 6.4rem auto

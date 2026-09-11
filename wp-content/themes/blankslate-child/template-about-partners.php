@@ -2,16 +2,17 @@
 
 get_header();
 
-// team banner
-$team_banner = get_field( 'team_banner' );
+// The ACF field is still named team_banner; only the render module was
+// renamed, so partner content needs no migration.
+$text_banner = get_field( 'team_banner' );
 
-require 'modules/banners/banner--team.php';
+require 'modules/banners/banner--text.php';
 
 // define partner posts to display (acf)
 $partners = get_field( 'partners' );
 
 // cycle through selected posts
-foreach ( $partners as $post ) {
+foreach ( (array) $partners as $post ) {
 	// setup post data for each post
 	setup_postdata( $post );
 
@@ -22,7 +23,7 @@ foreach ( $partners as $post ) {
 	$partner_email   = get_field( 'partner_email' );
 
 	// show board member module
-	include 'modules/team/team-member--partner.php';
+	include 'modules/partners/partner.php';
 
 } wp_reset_postdata();
 

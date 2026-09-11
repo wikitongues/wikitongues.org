@@ -121,6 +121,8 @@ function get_custom_title( $post_type ) {
 			return $full_name;
 		case 'languages':
 			return get_field( 'standard_name' );
+		case 'people':
+			return get_the_title();
 		default:
 			return null;
 	}
@@ -205,13 +207,6 @@ function custom_gallery( $atts ) {
 		'custom_gallery'
 	);
 
-	// ACF Custom posts
-	if ( ! empty( $atts['selected_posts'] ) ) {
-		$selected_posts   = explode( ',', $atts['selected_posts'] );
-		$args['post__in'] = $selected_posts; // Limit query to these posts only
-		$args['orderby']  = 'post__in'; // Preserve order if needed
-	}
-
 	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	// Query setup
 	$args = array(
@@ -231,8 +226,13 @@ function custom_gallery( $atts ) {
 		'custom_class'   => $atts['custom_class'],
 	);
 
-	// Merge in any additional arguments (like selected posts)
-	if ( ! empty( $selected_posts ) ) {
+	// Limit the query to an explicit set of posts. This used to be assigned
+	// before $args existed and was then overwritten wholesale, which silently
+	// dropped the accompanying orderby="post__in" — so a curated selection kept
+	// its membership but lost its order. Pass orderby="post__in" to render the
+	// posts in the selected order; any other orderby still applies.
+	$selected_posts = wt_gallery_selected_post_ids( $atts['selected_posts'] );
+	if ( $selected_posts ) {
 		$args['post__in'] = $selected_posts;
 	}
 

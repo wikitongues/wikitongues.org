@@ -532,7 +532,9 @@ Assessment of the 15 open GitHub issues, validated against the codebase (2026-09
 
 - [x] [#73](https://github.com/wikitongues/wikitongues.org/issues/73) — *Languages single breaks on PHP 8.2.* **Closed 2026-09-08.** The cited `array_merge( $lexicon_source, $lexicon_target )` no longer exists — lexicons were refactored into `single-languages__lexicons.php` (gallery-param based) during the Phase 3 CPT refactors, and the only remaining reads of those fields (`includes/taxonomies/languages.php`) are null-guarded (`is_array(…) ? count(…) : 0`), so the PHP 8.0+ TypeError can't occur.
 
-> **Correction (2026-09-08):** a prior version of this triage claimed the `team` CPT was vestigial and slated it for deprecation/purge. That was wrong. `team` is **live** — it is the data source for the Staff, Board, Partners, and Interns/Volunteers pages via ACF relationship fields (`staff_members`, `board_members`, `partners`, `interns_and_volunteers`) that target `post_type => team`, rendered through `modules/team/team-member--*.php`. Do **not** deprecate or delete it. #59 is a valid enhancement (below).
+> **Correction (2026-09-08):** a prior version of this triage claimed the `team` CPT was vestigial and slated it for deprecation/purge. That was wrong — it was the live data source for the Staff, Board, Partners and Interns/Volunteers pages. Do **not** deprecate or delete it.
+>
+> **Superseded (2026-09-09):** `team` was renamed to **`people`** and is more central than ever — see *People content model* below.
 
 **Wave 1 — quick, independent (no dependencies)**
 
@@ -567,6 +569,25 @@ _Dataset issues — sequence with the Layer 5 integrity checks (Phase 3 · item 
 **Backlog (no active timeline)** — [#533](https://github.com/wikitongues/wikitongues.org/issues/533), tracked below.
 
 ---
+
+### People content model
+
+**Done 2026-09-09.** `team` → `people`, with a `people-type` taxonomy (Board Member, Staff, Volunteer, Advisor) exposed as an ACF multi-select. A person can hold several types, so one record can be both a board member and a donor. Board, Advisors and Staff now share a single `template-people.php` that composes itself from editorial content — each people section is a `gallery_layout` row filtered by type, so a new people page needs no deploy. The CPT is locked down (`show_in_rest => false`, `exclude_from_search => true`, `has_archive => false`) ahead of donor records existing.
+
+Read a person's types with `get_the_terms( $id, 'people-type' )`. The ACF field runs `load_terms`/`save_terms` on, so ACF drops the meta and `get_field( 'people_type' )` returns null by design — the taxonomy is the single source of truth.
+
+**Open follow-ups:**
+
+- **Donor anonymity** — some donors do not want to be listed. A donor who is also a board member must appear on the Board page but not on the Donors page, while still counting toward the donor total ("N anonymous supporters"). Needs a per-person suppression flag plus count logic in the donor gallery. Deferred to the Patreon/DonorBox round: nothing reads the flag until a Donors page exists.
+- **`wp_gateway_people` naming overlap** — the download gateway already owns a "people" concept (`wp_gateway_people`, `PeopleRepository`) for email-captured visitors. There are now two registries: People (published profiles) and gateway people (contacts). Donors plausibly belong to both. Worth a naming/relationship note in `docs/` before the donor work links them.
+- **Board ordering is alphabetical** — the curated order the old `board_members` relationship field encoded (co-founders first) is not preserved by a type-filtered gallery. The gallery supports it: switch that section's *Order By* to **Selection order** and pick the people in order. Left alphabetical because type filtering is the requested model.
+- **Legacy meta not swept** — `board_members`, `staff_members`, `interns_and_volunteers` and `team_banner_*` are left in place on pages 15076/15078/15080 so the migration is reversible. Sweep once confirmed in production.
+- **`leadership_title` does double duty** — it holds "role at Wikitongues" for staff and board but "external affiliation" for advisors, and there is only one per person. So the three people who are both advisor and former board member show the same value in both places, and it cannot say anything about their board service. Splitting role from affiliation is the real fix; deferred.
+- **Partners page is still a draft** — pre-existing, unrelated to the rename. Board, Advisors and Staff are live.
+
+### Shared banner definition
+
+**Deferred, verified feasible.** The editorial `banner_layout` banner and `revitalization_fellows_banner` are two definitions of the same thing, kept in parity by hand. ACF Pro's Clone field collapses them: `display: group` + `prefix_name: 1` reproduces the exact `main_content_0_banner_banner_image` meta shape, and `pro/fields/class-acf-field-clone.php:255` only rewrites field keys in the `seamless` branch — so group-mode clones keep the original keys and stored content does not unstick. The safe form is a location-less "Global: Banner" group that **reuses the editorial banner's existing field keys**, leaving the editorial side byte-identical; only `revitalization_fellows_banner`'s sub-field keys shift. Own PR.
 
 ### Backlog — known issues, no active fix timeline
 
