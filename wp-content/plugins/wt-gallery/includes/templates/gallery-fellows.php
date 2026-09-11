@@ -44,7 +44,7 @@ if ( $thumbnail_url ) {
 }
 
 if ( empty( $class ) || strpos( $class, 'full' ) !== false ) {
-	echo '<li class="gallery-item">';
+	echo '<li class="gallery-item gallery-item--card">';
 	echo '<a href="' . esc_url( $url ) . '">';
 	echo $thumbnail;
 	echo '<div class="details">';
@@ -57,7 +57,7 @@ if ( empty( $class ) || strpos( $class, 'full' ) !== false ) {
 	echo '</div></a>';
 	echo '</li>';
 } elseif ( $class === 'display' ) { // Display fellow on single language page
-	echo '<li class="gallery-item">';
+	echo '<li class="gallery-item gallery-item--card">';
 	echo '<a href="' . esc_url( $url ) . '">';
 	echo $thumbnail;
 	echo '<div class="details">';

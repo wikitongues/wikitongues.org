@@ -1,15 +1,17 @@
-// People pages compose their sections as galleries, so the person modules
-// render inside .gallery-list rather than the old .page-template-* .wrapper
-// grid. Person items opt out of the gallery card treatment in gallery.styl,
-// which leaves person--wide.styl / person--grid.styl to lay them out exactly
-// as they did on the retired Board and Staff templates.
+// People galleries.
 //
-// This file is required *after* gallery.styl so equal-specificity rules here
-// win — notably the centring margin, which .custom-gallery.full would
-// otherwise override.
+// People pages compose their sections as galleries, so the person modules
+// render inside .gallery-list rather than the .page-template-* .wrapper grid
+// the retired Board and Staff templates used. Person items don't carry
+// `gallery-item--card`, so the gallery's card visual never applies and
+// person--wide / person--list / person--grid lay themselves out unimpeded.
 .custom-gallery.people
 	width $content
 	margin 0 auto 4.8rem
+
+	.wt_sectionHeader
+		sectionHeader--plain()
+		margin 0 0 0.8rem
 
 	.gallery-container
 		.gallery-list
@@ -18,36 +20,3 @@
 
 			.gallery-item--person
 				width 100%
-
-	// Section headings were <h4> on the old templates. The gallery emits a
-	// <strong>, which the base type scale renders at 1.6rem, so restore the h4
-	// size (3rem) and drop the rule the gallery draws under section headers.
-	.wt_sectionHeader
-		text--header($black)
-		font-size $fontScale(6)
-		border-bottom none
-		padding-bottom 0
-		margin 0 0 0.8rem
-
-.custom-gallery.careers
-	width $content
-	margin 6.4rem auto
-
-	h4
-		text--header($black)
-		border-bottom none
-		margin-bottom 0
-
-	.wt_sectionHeader
-		text--header($black)
-		font-size $fontScale(6)
-		border-bottom none
-
-	.gallery-container
-		.gallery-list
-			.gallery-item
-				a
-					background-color transparent
-					color $black
-					anchor($blue(),4px)
-					height initial
