@@ -48,6 +48,33 @@ environment, and the difference only surfaced because the dry-run output was rea
 
 A migration validated against a stale copy proves nothing about production.
 
+### Check the backup workflow is still enabled
+
+GitHub **disables scheduled workflows automatically after 60 days without repository
+activity**, and resuming activity does *not* re-enable them — someone has to click
+**Enable workflow** on the Actions page. This is silent: no run, no failure, no Slack
+message. Absence of the weekly `:floppy_disk:` and `:truck:` notifications is the only
+signal, and absence is easy to miss.
+
+It has happened once already. **Backup Prod DB last ran 2026-06-22 and was found disabled
+on 2026-09-11** — staging had been frozen on June data for almost three months, which
+showed up as a person missing and stale names during the People migration.
+
+The dangerous part is the interaction with the sync: **Sync to Staging does not create the
+dump, it imports whichever `prod_dump.sql` was last written.** So if the backup has been
+disabled, running the sync on its own restores staging from a months-old dump — worse than
+the staleness you were trying to fix.
+
+Before relying on a sync:
+
+```bash
+gh workflow list --all                                    # is Backup Prod DB active?
+gh run list --workflow=backup-prod-db.yml --limit 3       # when did it last succeed?
+```
+
+If the last success is not recent, enable the workflow and run the backup **before**
+syncing.
+
 ### Backup retention — read this before a production write
 
 `backup-prod-db.yml` always writes the same path, `~/public_html/tmp/prod_dump.sql`, and

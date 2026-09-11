@@ -46,7 +46,9 @@ Before any **migration or bulk write** to database state (WP-CLI migrations, scr
 from production so the change is built and tested against real data:
 
 1. **Actions → Backup Prod DB** — dumps production. This is both the pre-change backup
-   *and* the source for the two syncs below, so it does double duty.
+   *and* the source for the two syncs below, so it does double duty. **Check it is still
+   enabled first** — GitHub silently disables scheduled workflows after 60 days of repo
+   inactivity, and Sync to Staging imports whatever dump was last written, however old.
 2. **Sync to Staging** fires automatically (~2–5 min) — staging now matches prod.
 3. `bash tool-sync-db-from-prod.sh` — pulls prod → local (DB + uploads).
 4. Only then write the migration, and run it **local → staging → production**.
