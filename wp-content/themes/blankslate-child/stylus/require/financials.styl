@@ -1,0 +1,39 @@
+.wt_financials
+	max-width $content
+	margin 0 auto 6.4rem
+	// Padding, not a margin on the h1: the margin would collapse into the body's
+	// header offset and leave the heading flush under the fixed nav.
+	padding-top 4.8rem
+
+	h1
+		text--header($black)
+		margin 0 0 1.6rem
+
+	&__intro
+		text--body($black)
+		margin-bottom 3.2rem
+
+	&__filings
+		li
+			margin-bottom 0.8rem
+			padding 0 1.2rem 0.6rem
+			border-left 4px solid transparent
+
+			&:hover
+				border-left-color $blue()
+
+			a
+				text--strong($black)
+				text-decoration none
+
+			span
+				text--body($grey-50)
+				margin-left 0.8rem
+
+	&__empty
+		text--body($grey-50)
+		font-style italic
+
+@media all and (max-width:$mobile)
+	.wt_financials
+		margin 0 1.6rem 3.2rem

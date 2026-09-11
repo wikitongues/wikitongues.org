@@ -1,0 +1,69 @@
+{
+	"key": "group_wt_form_990",
+	"title": "Post type: Form 990",
+	"fields": [
+		{
+			"key": "field_wt_form_990_tax_year",
+			"label": "Tax year",
+			"name": "tax_year",
+			"aria-label": "",
+			"type": "number",
+			"instructions": "The tax year this return covers, e.g. 2023. Filings are listed newest first.",
+			"required": 1,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"min": 2000,
+			"max": 2099,
+			"placeholder": "",
+			"step": 1,
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_wt_form_990_file",
+			"label": "Form 990 (PDF)",
+			"name": "form_990_file",
+			"aria-label": "",
+			"type": "file",
+			"instructions": "Upload the public disclosure copy. Remove contributor names and addresses from Schedule B first.",
+			"required": 1,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"min_size": "",
+			"max_size": "",
+			"mime_types": "pdf"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "post_type",
+				"operator": "==",
+				"value": "form_990"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "acf_after_title",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": [
+		"permalink"
+	],
+	"active": true,
+	"description": "One entry per filing, listed on /financials. The template reads the raw meta (tax_year, form_990_file), so keep these field names.",
+	"show_in_rest": 0,
+	"modified": 1789084800
+}

@@ -113,6 +113,12 @@ function wikitongues_custom_template_redirects() {
 		exit;
 	}
 
+	// The monthly reports were retired in favour of the Form 990 archive.
+	if ( is_404() && ( $request_path === 'reports' || str_starts_with( $request_path, 'reports/' ) ) ) {
+		wp_redirect( get_post_type_archive_link( 'form_990' ), 301 );
+		exit;
+	}
+
 	if ( is_singular( 'partners' ) ) {
 		wp_redirect( home_url( '/', 'relative' ) );
 		exit;
@@ -123,8 +129,8 @@ function wikitongues_custom_template_redirects() {
 		exit;
 	}
 
-	if ( is_singular( 'reports' ) ) {
-		wp_redirect( home_url( '/reports', 'relative' ) );
+	if ( is_singular( 'form_990' ) ) {
+		wp_redirect( get_post_type_archive_link( 'form_990' ) );
 		exit;
 	}
 	if ( is_singular( 'people' ) ) {
