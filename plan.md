@@ -585,6 +585,18 @@ Read a person's types with `get_the_terms( $id, 'people-type' )`. The ACF field 
 - **`leadership_title` does double duty** — it holds "role at Wikitongues" for staff and board but "external affiliation" for advisors, and there is only one per person. So the three people who are both advisor and former board member show the same value in both places, and it cannot say anything about their board service. Splitting role from affiliation is the real fix; deferred.
 - **Partners page is still a draft** — pre-existing, unrelated to the rename. Board, Advisors and Staff are live.
 
+### Financials (Form 990s)
+
+**Done 2026-09-11.** The `reports` CPT — monthly financial updates, last posted March 2024 — is retired. In its place, a `form_990` CPT whose archive at `/financials` lists every filing newest tax year first; admins add one entry per filing (title, tax year, PDF), and the footer links to it beside the Candid seal. `/reports` and `/reports/*` 301 to `/financials`. The template reads raw meta (`tax_year`, `form_990_file`) rather than `get_field()`, so it adds no PHPStan baseline entries.
+
+**Not gated, by decision (2026-09-11).** Filings link straight to the media library rather than through the download gateway. An optional (soft) email prompt was considered and declined: public-disclosure documents should be one click, and the gateway's site-wide default is `hard`, so one missed per-CPT setting would put them behind a required email. If revisited, pin `form_990` to `soft` in code rather than relying on the settings page.
+
+**Open follow-ups:**
+
+- **Older 2022 return is still public** — `Final-2022-990-signed-WT.pdf` (`/wp-content/uploads/2023/11/`, attached to the private 2023 EOY Fundraiser page) includes a Schedule B page. Confirm it is the public copy (contributor names and addresses removed); the new 2022 upload supersedes it on `/financials`.
+- **Retired data not deleted** — the 8 `reports` posts, the files attached to them (budget projections, financial statements), and the "Post type: Reports" ACF field group (`group_634b277f68bd7` — its JSON is gone but the database copy remains) are left in place, so this is reversible. Delete once confirmed in production.
+- **Stale menu item** — "Reports" under About in *Mobile & Footer Menu* points at the retired post type. WordPress drops it from the front end on its own; delete it in Appearance → Menus.
+
 ### Shared banner definition
 
 **Deferred, verified feasible.** The editorial `banner_layout` banner and `revitalization_fellows_banner` are two definitions of the same thing, kept in parity by hand. ACF Pro's Clone field collapses them: `display: group` + `prefix_name: 1` reproduces the exact `main_content_0_banner_banner_image` meta shape, and `pro/fields/class-acf-field-clone.php:255` only rewrites field keys in the `seamless` branch — so group-mode clones keep the original keys and stored content does not unstick. The safe form is a location-less "Global: Banner" group that **reuses the editorial banner's existing field keys**, leaving the editorial side byte-identical; only `revitalization_fellows_banner`'s sub-field keys shift. Own PR.

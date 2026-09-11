@@ -29,6 +29,7 @@
 				</div>
 				<div>
 				<a class="wt_footer__candid" href="https://www.guidestar.org/profile/shared/8eef7d54-d184-4013-aad1-0e3ada544f64" target="_blank"><img src="https://widgets.guidestar.org/TransparencySeal/9488075" /></a>
+				<a class="wt_footer__financials" href="<?php echo esc_url( get_post_type_archive_link( 'form_990' ) ); ?>">Financials</a>
 				</div>
 			</section>
 		</aside>
