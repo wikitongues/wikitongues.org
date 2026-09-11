@@ -1,0 +1,42 @@
+<?php
+/**
+ * Gallery item for the People post type.
+ *
+ * Rather than duplicate the member markup, this prepares the variables the
+ * theme's person modules expect and hands off to them, so the People template
+ * and any other gallery render identically.
+ *
+ * `custom_class` picks the render mode, matching how gallery-fellows.php
+ * branches: 'grid' for the compact card, anything else for the wide profile.
+ */
+
+$profile_picture    = get_field( 'profile_picture' );
+$name               = get_the_title();
+$bio                = get_field( 'bio' );
+$location           = get_field( 'contributor_location' );
+$personal_languages = get_field( 'languages' );
+
+// Shadows the $title that render_gallery_items() sets from get_custom_title():
+// the person modules use $title for the person's role, not the post title.
+$title = get_field( 'leadership_title' );
+
+$social_links = function_exists( 'wt_social_links' ) ? wt_social_links() : array();
+
+/*
+ * Render modes, set by the gallery row's Layout field:
+ *   wide - portrait beside the full detail block
+ *   list - name and role only
+ *   grid - compact card
+ * Matched exactly rather than by substring so the values cannot shadow one
+ * another as more are added.
+ */
+$class = isset( $atts['custom_class'] ) ? trim( $atts['custom_class'] ) : '';
+$mode  = in_array( $class, array( 'wide', 'list', 'grid' ), true ) ? $class : 'wide';
+
+$module = locate_template( 'modules/people/person--' . $mode . '.php' );
+
+echo '<li class="gallery-item gallery-item--person">';
+if ( $module ) {
+	include $module;
+}
+echo '</li>';

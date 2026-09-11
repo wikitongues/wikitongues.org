@@ -1,9 +1,9 @@
-<article class="wt_team-member--partner">
+<article class="wt_partner">
 	<!-- team member image -->
-	<aside class="wt_team-member--partner__img" role="img" aria-label="<?php echo $partner_logo['alt']; ?>" style="background-image:url(<?php echo $partner_logo['url']; ?>);"></aside>
+	<aside class="wt_partner__img" role="img" aria-label="<?php echo $partner_logo['alt']; ?>" style="background-image:url(<?php echo $partner_logo['url']; ?>);"></aside>
 
 	<!-- team member meta -->
-	<aside class="wt_team-member--partner__meta">
+	<aside class="wt_partner__meta">
 		<!-- team member name and title -->
 		<strong>
 			<span><?php echo $name; ?></span><br/>

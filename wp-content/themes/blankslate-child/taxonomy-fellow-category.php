@@ -1,13 +1,35 @@
 <?php
-	$category             = get_queried_object();
-	$page_banner_override = array(
-		'banner_header' => $category->name,
-		'banner_copy'   => $category->description,
-	);
-	global $page_banner_override;
+	$category = get_queried_object();
 
 	get_header();
-	require 'modules/editorial-content.php';
+
+	/*
+	 * The category banner comes from the term's own `revitalization_fellows_banner`
+	 * group rather than from an editorial `banner_layout` row. That frees the
+	 * editorial slot for a block at the foot of the page, giving this template the
+	 * same banner -> gallery -> block flow as template-revitalization-fellows.php.
+	 *
+	 * Pass the term explicitly: on a taxonomy archive ACF's implicit ID resolution
+	 * lands on the first fellow in the loop, not on the queried term.
+	 */
+	$page_banner = get_field( 'revitalization_fellows_banner', $category );
+if ( ! is_array( $page_banner ) ) {
+	$page_banner = array();
+}
+if ( ! is_array( $page_banner['banner_image'] ?? null ) ) {
+	$page_banner['banner_image'] = array();
+}
+
+	/*
+	 * Term name and description take precedence over the stored banner copy,
+	 * preserving what banner-layout.php did through $page_banner_override. Terms
+	 * leave both banner fields blank, so without this every category banner would
+	 * render without a heading.
+	 */
+	$page_banner['banner_header'] = $category->name ? $category->name : ( $page_banner['banner_header'] ?? '' );
+	$page_banner['banner_copy']   = $category->description ? $category->description : ( $page_banner['banner_copy'] ?? '' );
+
+	require 'modules/banners/banner--main.php';
 
 	$terms = get_terms(
 		array(
@@ -59,8 +81,9 @@
 </div>
 
 <?php
-// Retrieve all terms from the custom taxonomy 'fellow-category'
-
+// Editorial content sits below the gallery so a term can carry a closing block
+// (toolkit, blog) — the banner above no longer occupies this slot.
+require 'modules/editorial-content.php';
 require 'modules/newsletter.php';
 
 get_footer(); ?>

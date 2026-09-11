@@ -1,4 +1,4 @@
-<li class="gallery-item">
+<li class="gallery-item gallery-item--card">
 	<?php
 	$source_languages     = array( get_field( 'source_languages' ) );
 		$target_languages = get_field( 'target_languages' );

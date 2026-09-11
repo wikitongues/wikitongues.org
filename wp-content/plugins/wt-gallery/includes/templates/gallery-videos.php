@@ -1,4 +1,4 @@
-<li class="gallery-item">
+<li class="gallery-item gallery-item--card">
 	<?php
 	$url           = get_permalink();
 	$public_status = get_field( 'public_status' );

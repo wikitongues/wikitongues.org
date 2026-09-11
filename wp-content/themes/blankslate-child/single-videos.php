@@ -70,6 +70,11 @@ echo '<main class="wt_single-videos__content">';
 
 	echo '</section>';
 
+	// Shared editorial block, configured once under Videos -> Video Settings
+	// rather than per post. 'option' is the ACF options store the page saves to.
+	$editorial_source = 'option';
+	require 'modules/editorial-content.php';
+
 	// Gallery
 	$params = wt_gallery_params(
 		array(
@@ -88,7 +93,7 @@ echo '<main class="wt_single-videos__content">';
 	echo create_gallery_instance( $params );
 
 	$cta_el      = '<a href="' . home_url( '/submit-a-video', 'relative' ) . '">Contribute a video</a>';
-	$cta_el     .= '<a href="' . home_url( '/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf', 'relative' ) . '">How to create an oral history</a>';
+	$cta_el     .= '<a href="' . home_url( '/documents/recording-an-oral-history/', 'relative' ) . '">How to create an oral history</a>';
 	$gallery_cta = '<div class="custom-cta-container full"><section class="custom-gallery-video-cta">' . $cta_el . '</section></div>';
 	echo $gallery_cta;
 

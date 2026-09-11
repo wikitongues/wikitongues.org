@@ -1,0 +1,22 @@
+// People galleries.
+//
+// People pages compose their sections as galleries, so the person modules
+// render inside .gallery-list rather than the .page-template-* .wrapper grid
+// the retired Board and Staff templates used. Person items don't carry
+// `gallery-item--card`, so the gallery's card visual never applies and
+// person--wide / person--list / person--grid lay themselves out unimpeded.
+.custom-gallery.people
+	width $content
+	margin 0 auto 4.8rem
+
+	.wt_sectionHeader
+		sectionHeader--plain()
+		margin 0 0 0.8rem
+
+	.gallery-container
+		.gallery-list
+			align-items start
+			gap 2.4rem 1.6rem
+
+			.gallery-item--person
+				width 100%

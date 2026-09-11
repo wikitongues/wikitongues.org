@@ -27,7 +27,7 @@
 	<div class="custom-cta-container">
 		<section class="custom-gallery-video-cta">
 			<a href="<?php echo home_url( '/submit-a-video', 'relative' ); ?>">Contribute a video</a>
-			<a href="<?php echo home_url( '/wp-content/uploads/2024/09/Wikitongues-Recording-an-Oral-History-Sep-2024.pdf', 'relative' ); ?>">How to create an oral history</a>
+			<a href="<?php echo home_url( '/documents/recording-an-oral-history/', 'relative' ); ?>">How to create an oral history</a>
 		</section>
 	</div>
 </div>

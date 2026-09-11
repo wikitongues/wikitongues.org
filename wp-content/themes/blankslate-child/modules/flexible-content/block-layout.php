@@ -83,8 +83,12 @@ while ( have_rows( 'block_group' ) ) :
 				if ( $bl_policy !== \WT\DownloadGateway\SettingsRepository::POLICY_DISABLED ) {
 					$bl_intake = \WT\DownloadGateway\IntakeResolver::resolve( $selected_file->ID );
 					$bl_url    = rest_url( GATEWAY_REST_NAMESPACE . '/download/' . $selected_file->ID );
-					$anchor   .= '<a class="secondary" href="' . esc_url( $bl_url ) . '"'
-						. ' class="gateway-download-link"'
+					// One class attribute, not two: a second `class` is dropped by
+					// the parser, so this anchor never carried
+					// gateway-download-link and the gateway JS never bound to it —
+					// the click went straight at the REST URL, skipping intake.
+					$anchor .= '<a href="' . esc_url( $bl_url ) . '"'
+						. ' class="secondary gateway-download-link"'
 						. ' data-post-id="' . esc_attr( $selected_file->ID ) . '"'
 						. ' data-policy="' . esc_attr( $bl_policy ) . '"'
 						. ' data-post-type="document_files"'

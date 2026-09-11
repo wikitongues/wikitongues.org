@@ -71,7 +71,11 @@ $aspect-ratio = 16/9
 			gap 16px
 			display grid
 
-			.gallery-item
+			// The card visual — dark panel, full-height anchor, 16:9 thumbnail.
+			// Opt-in: gallery templates that render a card add
+			// `gallery-item--card`. People render the theme's person modules
+			// instead and simply don't carry it.
+			.gallery-item--card
 				width 100%
 
 				.metadata
@@ -255,10 +259,10 @@ $aspect-ratio = 16/9
 						justify-content space-between
 
 						&:hover
-							box-shadow 0 0 0 1px $blue(20)
-							background $blue(20)
+							box-shadow 0 0 0 1px $blue(10)
+							background $blue(10)
 							color $blue()
-							border-color $blue(20)
+							border-color $blue(10)
 
 							p
 								color inherit
