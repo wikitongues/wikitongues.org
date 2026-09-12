@@ -81,8 +81,9 @@ Every dump goes in `~/backups/` on the server, created with mode 700 and **outsi
 `public_html`**. The web server serves everything under `public_html`, and this repo is
 public, so the path of a dump kept there is effectively published. Never write a dump,
 export or dated copy anywhere under `public_html`, including the staging docroot inside
-it. `public_html/tmp/.htaccess` denies web access to the old location as a backstop;
-leave it in place.
+it. The old location, `public_html/tmp/`, was deleted on 2026-09-12. Don't recreate it:
+an old local copy of `tool-sync-db-from-prod.sh` that still exports there needs updating
+instead.
 
 ### Backup retention — read this before a production write
 
