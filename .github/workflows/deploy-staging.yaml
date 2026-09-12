@@ -59,7 +59,8 @@ jobs:
       # keep running: the theme loads every file in its includes folders, and WordPress still picks
       # up leftover templates. This pass removes such files, but only inside our own code, because
       # REMOTE_DIR also holds wp-config.php and uploads. It transfers nothing, and keeps the
-      # error_log and *.log files the server writes.
+      # error_log files PHP writes, which the server refuses to serve. Any other file in these
+      # folders that isn't in the repo, a stray log included, is removed.
       - name: Remove files deleted from the repo (our theme and plugins only)
         run: |
           # A partial checkout would look like a mass deletion, so stop if a core file is missing.
@@ -73,7 +74,7 @@ jobs:
           for dir in wp-content/themes/blankslate-child wp-content/plugins/download-gateway \
                      wp-content/plugins/wt-airtable-sync wp-content/plugins/wt-gallery wp-content/plugins/typeahead; do
             rsync -rv --delete --existing --ignore-existing --max-delete=100 -e "ssh" \
-              --filter='P error_log' --filter='P *.log' --filter='merge .rsync-filter' \
+              --filter='P error_log' --filter='merge .rsync-filter' \
               "$dir/" "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}$dir/"
           done
 
