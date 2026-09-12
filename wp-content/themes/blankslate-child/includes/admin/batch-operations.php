@@ -53,8 +53,6 @@ function batch_update_posts( $post_type, $batch_operation, $batch_size = 50 ) {
 		'post_status'    => 'any',
 	);
 
-	error_log( 'Batch update args: ' . print_r( $args, true ) ); // Debug log for query args
-
 	$posts = get_posts( $args );
 
 	if ( ! empty( $posts ) ) {

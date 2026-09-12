@@ -36,8 +36,21 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Trust only the pinned server key. ssh-keyscan trusted whatever answered, on every run, and
+      # it failed intermittently (2026-09-11). SSH_HOST_KEY holds the server's public host key as
+      # "type base64", one per line; lines copied straight from ssh-keyscan (with the host) work too.
       - name: Add server to known hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_HOST_KEY: ${{ secrets.SSH_HOST_KEY }}
+        run: |
+          [ -n "$SSH_HOST_KEY" ] || { echo "::error::The SSH_HOST_KEY secret is not set"; exit 1; }
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_HOST_KEY" | while read -r a b c _; do
+            case "$a" in ''|'#'*) continue ;; ssh-*|ecdsa-*|sk-*) type=$a key=$b ;; *) type=$b key=$c ;; esac
+            if [ -n "$key" ]; then printf '%s %s %s\n' "$SSH_HOST" "$type" "$key"; fi
+          done >> ~/.ssh/known_hosts
+          ssh-keygen -F "$SSH_HOST" -f ~/.ssh/known_hosts > /dev/null || { echo "::error::SSH_HOST_KEY holds no usable key"; exit 1; }
 
       - name: Deploy via rsync
         run: rsync -avz -e "ssh" --filter='merge .rsync-filter' . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}
@@ -46,7 +59,8 @@ jobs:
       # keep running: the theme loads every file in its includes folders, and WordPress still picks
       # up leftover templates. This pass removes such files, but only inside our own code, because
       # REMOTE_DIR also holds wp-config.php, uploads and the staging site. It transfers nothing, and
-      # keeps the error_log and *.log files the server writes.
+      # keeps the error_log files PHP writes, which the server refuses to serve. Any other file in
+      # these folders that isn't in the repo, a stray log included, is removed.
       - name: Remove files deleted from the repo (our theme and plugins only)
         run: |
           # A partial checkout would look like a mass deletion, so stop if a core file is missing.
@@ -60,7 +74,7 @@ jobs:
           for dir in wp-content/themes/blankslate-child wp-content/plugins/download-gateway \
                      wp-content/plugins/wt-airtable-sync wp-content/plugins/wt-gallery wp-content/plugins/typeahead; do
             rsync -rv --delete --existing --ignore-existing --max-delete=100 -e "ssh" \
-              --filter='P error_log' --filter='P *.log' --filter='merge .rsync-filter' \
+              --filter='P error_log' --filter='merge .rsync-filter' \
               "$dir/" "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}$dir/"
           done
 
