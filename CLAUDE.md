@@ -60,8 +60,10 @@ prod in Sept 2026, so the same command produced different results in each enviro
 Doesn't apply to one-off content edits in admin; this is for anything scripted or bulk.
 
 **Backup retention caveat:** `backup-prod-db.yml` always writes the same
-`~/public_html/tmp/prod_dump.sql` and keeps **no history** — running it again overwrites
-the previous dump. Before a risky production write, SSH in and keep a dated copy first.
+`~/backups/prod_dump.sql` and keeps **no history** — running it again overwrites
+the previous dump. Before a risky production write, SSH in and keep a dated copy first,
+also in `~/backups/`. Never write a dump anywhere under `public_html`: the web server
+serves that tree, and this repo is public.
 
 Full runbook: `docs/staging-sync.md`.
 

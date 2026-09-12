@@ -14,7 +14,7 @@ Two GitHub Actions workflows handle the full sync:
 | **Sync to Staging** | `sync-prod-to-staging.yml` | Auto after backup, or manual |
 
 **Automated flow (weekly):**
-1. Backup runs → dumps production DB to `~/public_html/tmp/prod_dump.sql` on the server
+1. Backup runs → dumps production DB to `~/backups/prod_dump.sql` on the server (outside the web root — see [Where backups live](#where-backups-live))
 2. Backup workflow fires a `sync-staging` repository dispatch event
 3. Sync workflow picks it up → imports dump into staging DB → rsync uploads → URL search-replace → verifies
 
@@ -75,9 +75,18 @@ gh run list --workflow=backup-prod-db.yml --limit 3       # when did it last suc
 If the last success is not recent, enable the workflow and run the backup **before**
 syncing.
 
+### Where backups live
+
+Every dump goes in `~/backups/` on the server, created with mode 700 and **outside
+`public_html`**. The web server serves everything under `public_html`, and this repo is
+public, so the path of a dump kept there is effectively published. Never write a dump,
+export or dated copy anywhere under `public_html`, including the staging docroot inside
+it. `public_html/tmp/.htaccess` denies web access to the old location as a backstop;
+leave it in place.
+
 ### Backup retention — read this before a production write
 
-`backup-prod-db.yml` always writes the same path, `~/public_html/tmp/prod_dump.sql`, and
+`backup-prod-db.yml` always writes the same path, `~/backups/prod_dump.sql`, and
 keeps **no history**. Running it again overwrites the previous dump. That is fine as a
 rolling weekly snapshot, but it means:
 
@@ -87,11 +96,10 @@ rolling weekly snapshot, but it means:
 
 ```bash
 cd ~/public_html
-wp db export tmp/prod_dump_$(date +%Y%m%d-%H%M).sql --allow-root
+wp db export ~/backups/prod_dump_$(date +%Y%m%d-%H%M).sql --allow-root
 ```
 
-Keep it until the change is confirmed good, then delete it — these dumps are large and sit
-in the web root's `tmp/`.
+Keep it until the change is confirmed good, then delete it — these dumps are large.
 
 ### Migrations should survive a sync
 
