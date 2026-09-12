@@ -42,6 +42,28 @@ jobs:
       - name: Deploy via rsync
         run: rsync -avz -e "ssh" --filter='merge .rsync-filter' . ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}
 
+      # The rsync above never deletes, so a file removed from the repo stays on the server and can
+      # keep running: the theme loads every file in its includes folders, and WordPress still picks
+      # up leftover templates. This pass removes such files, but only inside our own code, because
+      # REMOTE_DIR also holds wp-config.php and uploads. It transfers nothing, and keeps the
+      # error_log and *.log files the server writes.
+      - name: Remove files deleted from the repo (our theme and plugins only)
+        run: |
+          # A partial checkout would look like a mass deletion, so stop if a core file is missing.
+          for f in wp-content/themes/blankslate-child/style.css \
+                   wp-content/plugins/download-gateway/download-gateway.php \
+                   wp-content/plugins/wt-airtable-sync/wt-airtable-sync.php \
+                   wp-content/plugins/wt-gallery/wt-gallery.php \
+                   wp-content/plugins/typeahead/typeahead.php; do
+            [ -f "$f" ] || { echo "::error::$f is missing from the checkout; not deleting anything"; exit 1; }
+          done
+          for dir in wp-content/themes/blankslate-child wp-content/plugins/download-gateway \
+                     wp-content/plugins/wt-airtable-sync wp-content/plugins/wt-gallery wp-content/plugins/typeahead; do
+            rsync -rv --delete --existing --ignore-existing --max-delete=100 -e "ssh" \
+              --filter='P error_log' --filter='P *.log' --filter='merge .rsync-filter' \
+              "$dir/" "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}$dir/"
+          done
+
       - name: Health check — confirm homepage returns 200
         run: |
           status=$(curl -s -o /dev/null -w "%{http_code}" https://staging.wikitongues.org)
