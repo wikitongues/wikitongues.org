@@ -13,17 +13,8 @@ function custom_register_search_endpoint() {
 	);
 }
 
-add_action(
-	'rest_api_init',
-	function () {
-		$routes = rest_get_server()->get_routes();
-		error_log( print_r( $routes, true ) );
-	}
-);
-
 function custom_search_callback( $request ) {
 	$query = sanitize_text_field( $request['query'] );
-	error_log( 'Search query: ' . $query );
 
 	// Refine the search to include only the alternate_names field
 	$meta_query = array(
@@ -41,16 +32,11 @@ function custom_search_callback( $request ) {
 		'meta_query'     => $meta_query,
 	);
 
-	error_log( 'WP_Query args: ' . print_r( $args, true ) );
-
 	$posts = get_posts( $args );
-
-	error_log( 'Found posts: ' . print_r( $posts, true ) );
 
 	$results = array();
 	foreach ( $posts as $post ) {
 			$meta = get_post_meta( $post->ID );
-			error_log( 'Post meta for ' . $post->ID . ': ' . print_r( $meta, true ) );
 
 			$results[] = array(
 				'id'                => $post->ID,
@@ -62,8 +48,6 @@ function custom_search_callback( $request ) {
 				'glottocode'        => isset( $meta['glottocode'][0] ) ? $meta['glottocode'][0] : '',
 			);
 	}
-
-	error_log( 'Search results: ' . print_r( $results, true ) );
 
 	return $results;
 }
