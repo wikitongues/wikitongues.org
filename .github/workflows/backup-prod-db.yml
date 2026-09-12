@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  DUMP_PATH: ~/public_html/tmp/prod_dump.sql
+  # Outside public_html: anything under the web root can be served over HTTP.
+  DUMP_PATH: ~/backups/prod_dump.sql
 
 jobs:
   backup-db:
@@ -24,6 +25,9 @@ jobs:
       - name: Dump production database
         run: |
           ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
+            umask 077 &&
+            mkdir -p ~/backups &&
+            chmod 700 ~/backups &&
             mysqldump --no-tablespaces --skip-comments \
               -u ${{ secrets.PROD_DB_USER }} -p'${{ secrets.PROD_DB_PASS }}' ${{ secrets.PROD_DB_NAME }} \
             | sed '/\/\*!.*DEFINER=/d' \

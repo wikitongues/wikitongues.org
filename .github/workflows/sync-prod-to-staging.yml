@@ -6,7 +6,8 @@ on:
     types: [sync-staging]
 
 env:
-  DUMP_PATH: ~/public_html/tmp/prod_dump.sql
+  # Written by backup-prod-db.yml. Outside public_html: anything under the web root can be served over HTTP.
+  DUMP_PATH: ~/backups/prod_dump.sql
 
 jobs:
   sync-db:
