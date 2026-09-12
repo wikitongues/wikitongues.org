@@ -4,6 +4,9 @@
 - .gitignore
 - readme.md
 - plan.md
+- CLAUDE.md
+- .claude/
+- .vscode/
 - docs/
 - temp/
 - vendor/
