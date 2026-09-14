@@ -10,7 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
-| Plan and docs restructure | 2026-09-13 | — | [plan.md](../plan.md), this file |
+| Plan and docs restructure | 2026-09-13 | [#643] | [plan.md](../plan.md), this file |
 | Deploy and backup hardening | 2026-09-12 | [#633]–[#636], [#639], [#640] | [deployment.md](deployment.md), [staging-sync.md](staging-sync.md) |
 | Financials (Form 990s) | 2026-09-11 | [#630] | [content-model.md](content-model.md#financials-form-990s) |
 | People content model | 2026-09-08 – 11 | [#616], [#622], [#623], [#626] | [content-model.md](content-model.md#people) |
@@ -35,7 +35,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 ## 2026-09-13 (Plan and docs)
 
 ### Website plan restructured; docs for completed systems
-**Branch:** `docs/cc/plan-archive-refresh`
+**Branch:** `docs/cc/plan-archive-refresh` · **PR:** [#643]
 
 - `plan.md` was rewritten as an ordered queue plus workstream specs. It now owns the order of website work; the product roadmap remains the organization-level strategy. Completed phases were removed, and the gates on Docker, the visual-regression baseline and a zero PHPStan baseline were dropped: engineering foundations no longer block features.
 - This archive gained the index above and the March–September 2026 entries below.
@@ -1021,3 +1021,4 @@ Minor fix to SSH agent action version in deployment workflow.
 [#636]: https://github.com/wikitongues/wikitongues.org/pull/636
 [#639]: https://github.com/wikitongues/wikitongues.org/pull/639
 [#640]: https://github.com/wikitongues/wikitongues.org/pull/640
+[#643]: https://github.com/wikitongues/wikitongues.org/pull/643
