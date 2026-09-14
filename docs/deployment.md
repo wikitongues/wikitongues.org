@@ -200,7 +200,7 @@ The deploy only moves files. Some changes need a manual step on **each** environ
 - **Post-deploy steps are manual:** rewrite flushes, migrations and per-environment settings.
 - **Scheduled workflows can be switched off silently** (the 60-day rule above).
 - **WP-Cron depends on traffic.** No server cron is confirmed, and the download gateway's two scheduled jobs rely on WP-Cron ([download-gateway.md](download-gateway.md#scheduled-jobs)).
-- **Third-party plugins and WordPress core are updated by hand** on each server and aren't tracked in git. There is no vulnerability monitoring on production yet: WPScan in CI was dropped when its API stopped being free, and Patchstack or Wordfence on the server is the candidate replacement.
+- **Third-party plugins and WordPress core are updated by hand** on each server and aren't tracked in git. Monitoring them for vulnerabilities is a planned item ([plan.md](../plan.md), Engineering foundations).
 
 ---
 

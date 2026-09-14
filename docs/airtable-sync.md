@@ -366,7 +366,7 @@ The lexicons CPT has the largest gap: as of 2026-03-01, 130 of 152 Airtable lexi
 
 The `integromat-connector` WordPress plugin handled the old Make.com → WordPress write path. It exposed REST endpoints that Make.com called using the `wordpress:createMediaItem` and related modules. These paths were invalidated by the PHP 8.2 upgrade and have been replaced by `wt-airtable-sync`.
 
-The old Make.com scenario instances (v1) were disabled on 2026-03-01. The `integromat-connector` plugin remains installed. No sync scenario calls it any more; confirm that nothing else in Make does before uninstalling it (`plan.md` → Engineering foundations).
+The old Make.com scenario instances (v1) were disabled on 2026-03-01, and no sync scenario uses the `integromat-connector` write paths any more.
 
 ### post-object-helpers.php
 

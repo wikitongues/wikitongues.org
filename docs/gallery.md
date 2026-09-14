@@ -124,9 +124,9 @@ Don't style `.gallery-item` on its own. An earlier rule did, with a `:not()` exc
 
 ## Pagination and random order
 
-- **Unique containers.** Each render gets an ID, `gallery_{n}` (a counter per request), so several paginated galleries can share a page. The container stores the gallery's arguments as JSON in `data-attributes`.
-- **Paging.** Clicking a page number runs `js/custom-gallery-ajax.js` (jQuery), which posts to `admin-ajax.php` (`action=load_custom_gallery`, nonce `custom_gallery_nonce`) with the page number and those arguments. The response replaces the container's contents. Two pagination bars render: a 9-page one, and a 5-page one for mobile.
-- **Random order is seeded (#380).** When `orderby` is `rand`, `custom_gallery()` picks a random seed and keeps it in `data-attributes`. `build_gallery_query_args()` turns it into `ORDER BY RAND(seed)`, so every page draws from the same shuffle. A full page reload reshuffles.
+- **Unique containers.** Each render gets an ID, `gallery_{n}` (a counter per request), so several paginated galleries can share a page.
+- **Paging.** Clicking a page number runs `js/custom-gallery-ajax.js` (jQuery), which requests that page from `admin-ajax.php` (`action=load_custom_gallery`). The response replaces the container's contents. Two pagination bars render: a 9-page one, and a 5-page one for mobile.
+- **Random order is seeded (#380).** When `orderby` is `rand`, `custom_gallery()` picks a random seed that every page request for that gallery reuses. `build_gallery_query_args()` turns it into `ORDER BY RAND(seed)`, so every page draws from the same shuffle. A full page reload reshuffles.
 
 ---
 

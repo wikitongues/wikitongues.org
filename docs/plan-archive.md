@@ -551,7 +551,7 @@ Decision: **No.**
 
 **Blocking factors:**
 - GreenGeeks shared hosting — cPanel's `public_html/` webroot can't be cleanly redirected to Bedrock's `web/` subdirectory without fragile symlink hacks; a clean adoption would require migrating to a VPS or managed host.
-- 14 of 17 plugins are untracked third-party/premium installs (ACF Pro, Duplicator, etc.) — getting these into Composer requires Satispress or per-vendor repos with license keys, adding significant ongoing maintenance overhead for marginal gain.
+- 14 of 17 plugins are untracked third-party/premium installs (ACF Pro and others) — getting these into Composer requires Satispress or per-vendor repos with license keys, adding significant ongoing maintenance overhead for marginal gain.
 
 **Separable benefit retained:** The `.env`-based config (removing hardcoded secrets from `wp-config.php`) can be done standalone by adding `vlucas/phpdotenv` as a production Composer dependency. Worth doing independently.
 
@@ -702,10 +702,7 @@ Changes:
 Read all plugin source files and queried the DB for opted-in fields.
 
 **Findings:**
-- v1.5.9 (Make Connector by Celonis s.r.o.) — third-party plugin; not tracked in git
-- Token (`iwc_api_key`, 32-char) is active in DB; no expiry; no rotation performed
-- Authentication: `HTTP_IWC_API_KEY` header → `wp_set_current_user($admin_id)` (administrator-level access)
-- Guard scope: only protects core WP entities (posts/users/comments/tags/categories/media) on POST/PUT/DELETE; custom post type endpoints (languages, videos, fellows, territories) are not additionally gated by the plugin
+- Make Connector by Celonis s.r.o. — third-party plugin; not tracked in git
 - **No ACF fields or custom taxonomies are opted in** (`integromat_api_options_post` / `integromat_api_options_taxonomy` absent from DB)
 - Implication: Make.com writes raw `wp_postmeta` keys directly, bypassing ACF hooks and validation
 
@@ -719,7 +716,7 @@ Read all plugin source files and queried the DB for opted-in fields.
 
 `wt-form` was a prototype download gate for the Revitalization Toolkit. Both its Airtable and Mailchimp integration methods began with `return;` and never ran. The `[wikitongues_form]` shortcode was confirmed absent from all published content. Plugin folder deleted.
 
-Also corrected the plan entry for `integromat-connector`: it is the official Make Connector plugin by Make.com (Celonis s.r.o.), not custom code. Active API token confirmed in DB. Plan updated from "Track in VCS" to "Audit REST API exposure".
+Also corrected the plan entry for `integromat-connector`: it is the official Make Connector plugin by Make.com (Celonis s.r.o.), not custom code. Plan updated from "Track in VCS" to "Audit REST API exposure".
 
 ---
 

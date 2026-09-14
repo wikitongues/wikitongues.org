@@ -46,7 +46,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **Specs** live in the workstream sections, and queue entries link to them.
 - **The product roadmap**, kept outside the repo, holds organization-level strategy: Mailchimp, editorial, the contributor program, and board decisions. This file owns the order of website work.
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
-- **Security specifics** stay out of this public file and are tracked privately. That covers open findings, credentials and exposure details.
+- **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
 Last reviewed 2026-09-13.
 
@@ -357,7 +357,7 @@ None of this blocks feature work (decided 2026-09-13).
 
 - **Server cron.** WP-Cron only runs on page views, and the gateway's webhook delivery and retention jobs depend on it. Add a cPanel cron on production and staging that runs `wp cron event run --due-now` every 5 minutes.
 - **Vulnerability monitoring.** WPScan in CI was dropped when its API stopped being free. Install Patchstack or Wordfence on production instead.
-- **Plugin audit.** Confirm which third-party plugins production still needs, and uninstall the rest. That includes the Make Connector (`integromat-connector`) if no Make scenario still uses it; the sync no longer does.
+- **Plugin audit.** Confirm which third-party plugins production still needs, and uninstall the rest.
 
 #### 7.2 PHPStan baseline
 

@@ -188,13 +188,12 @@ Once you have SSH access, log into the MariaDB console to ensure that the databa
    ```
    Enter your root password when prompted.
 
-2. Grant permissions to the database user (`wikitong` in this example) to allow local and remote access:
+2. Grant permissions to the database user (`db_user` in this example). The tunnel connects from the server itself, so a `'localhost'` grant is all it needs:
    ```sql
-   GRANT ALL PRIVILEGES ON your_database_name.* TO 'wikitong'@'localhost' IDENTIFIED BY 'yourpassword';
-   GRANT ALL PRIVILEGES ON your_database_name.* TO 'wikitong'@'%' IDENTIFIED BY 'yourpassword';
+   GRANT ALL PRIVILEGES ON your_database_name.* TO 'db_user'@'localhost' IDENTIFIED BY 'yourpassword';
    FLUSH PRIVILEGES;
    ```
-   Replace `your_database_name` and `yourpassword` with the appropriate values.
+   Replace `your_database_name` and `yourpassword` with the appropriate values. Don't grant `'%'` (any host): the tunnel doesn't need it, and it opens the database to remote logins.
 
 #### Step 3: Set Up Beekeeper Studio Connection
 With the SSH tunnel running, configure Beekeeper Studio to connect to your database.
@@ -202,7 +201,7 @@ With the SSH tunnel running, configure Beekeeper Studio to connect to your datab
 1. **Add New Connection**:
    - **Host**: `localhost`
    - **Port**: `3307` (or whichever local port you specified in the SSH tunnel command)
-   - **Username**: Your database username (e.g., `wikitong`).
+   - **Username**: Your database username (e.g., `db_user`).
    - **Password**: Your database password (from `wp-config.php`).
    - **Database**: The name of your WordPress database.
 
@@ -221,7 +220,7 @@ With the SSH tunnel running, configure Beekeeper Studio to connect to your datab
 Database access through Beekeeper Studio is only possible while the SSH tunnel is running. Make sure the terminal session stays active throughout your database session.
 
 #### Troubleshooting
-- **Access Denied Errors**: Double-check the database username and password. Ensure the user permissions are properly granted for remote access.
+- **Access Denied Errors**: Double-check the database username and password. Ensure the user has the `'localhost'` grant from Step 2.
 - **Connection Terminated Unexpectedly**: Verify the SSH tunnel is still running and that you are using the correct port (`3307` in this example).
 - **Database User Not Allowed**: Use the MariaDB console to grant appropriate privileges (`GRANT ALL PRIVILEGES` commands) as described in Step 2.
 
@@ -377,7 +376,7 @@ Icons are inline SVGs returned by `wt_icon()`. Font Awesome was removed in Febru
 
 # Errors
 
-Localhost db view error: `The user specified as a definer ('wikitong_master'@'localhost') does not exist`
+Localhost db view error: `The user specified as a definer ('<production db user>'@'localhost') does not exist`
 1. `DROP VIEW IF EXISTS languages_view;`
 1. Recreate the View
 
