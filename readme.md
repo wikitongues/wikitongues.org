@@ -9,7 +9,7 @@
 	* In step 5, name your database according to the database `$name` provided by the maintainer.
 	* In step 6 item 3, be sure to use `$name` as the database name as well.
 * Optionally rename the newly created `Wordpress` directory to `wikitongues`.
-* You have now installed Wordpress! With MAMP running, you may now visit [localhost:8888/wikitongues](localhost:8888/wikitongues).
+* You have now installed Wordpress! With MAMP running, you may now visit [localhost:8888/wikitongues](http://localhost:8888/wikitongues).
 > _(**Note:** The address will match your directory name)_
 
 **3. Setting Up Version Control**
@@ -46,11 +46,11 @@ This provides:
 
 **5. Setting Up Plugins**
 
-* In admin ([localhost:8888/wikitongues/wp-admin/](localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
+* In admin ([localhost:8888/wikitongues/wp-admin/](http://localhost:8888/wikitongues/wp-admin/)) navigate to /plugins.
 * Install [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/resources/upgrade-guide-acf-pro/) by putting the plugin folder provided by the maintainer in `/wp-content/plugins/`.
 * In the sidebar, click on `Add New Plugin`. Add the following plugins.
 	* [Classic editor](https://wordpress.org/plugins/classic-editor/)
-	* [Make Connector](https://wordpress.org/plugins/integromat-connector/)
+	* [Make Connector](https://wordpress.org/plugins/integromat-connector/) (legacy; not needed locally, since the Airtable sync now runs through the `wt-airtable-sync` plugin)
 	* [WPS Hide Login](https://wordpress.org/plugins/wps-hide-login/) provides increased security to the site by masking the admin url.
 * After adding each plugin, it needs to be activated. This includes the plugins already available via Github.
 
@@ -135,7 +135,7 @@ This project follows a structured Continuous Integration and Continuous Deployme
 - Conduct thorough testing and verification in the Staging environment.
 
 **Production**
-- Following successful testing in Staging, create a pull request to merge `staging` into `production`.
+- Following successful testing in Staging, create a pull request to merge `main` into `production`.
 - The merge triggers an automatic deployment to the Production environment.
 - Monitor the deployment to ensure stability and functionality.
 
@@ -145,12 +145,14 @@ This project follows a structured Continuous Integration and Continuous Deployme
 - `staging`: Automatically deploys to the Staging environment upon merge.
 - `production`: Automatically deploys to the Production environment upon merge.
 
+What a deploy does, and the manual steps some changes need afterwards, are in [docs/deployment.md](docs/deployment.md).
+
 **Branch Protection**
-- The `main` and `production` branches are protected and can only be modified via pull requests from other branches.
+- The `main`, `staging` and `production` branches are protected and can only be modified via pull requests from other branches.
 - This ensures that all changes are reviewed, tested, and approved before affecting live environments.
 
 ## DBs
-Local database is postgres
+Local database is MySQL (via MAMP)
 Staging and Production databases are MariaDB
 Set up Beekeeper Studio or Equivalent DB client to interact with databases programmatically.
 
@@ -224,7 +226,7 @@ Database access through Beekeeper Studio is only possible while the SSH tunnel i
 - **Database User Not Allowed**: Use the MariaDB console to grant appropriate privileges (`GRANT ALL PRIVILEGES` commands) as described in Step 2.
 
 ## Database Sync
-Work is underway to syncronize databases across environments. To sync your local database up with Prod, run `bash tool-sync-db-from-prod.sh` from your local terminal.
+To sync your local database with production, run `bash tool-sync-db-from-prod.sh` from your local terminal. Staging syncs from production weekly. Before any migration or bulk write, refresh both from production first; see [docs/staging-sync.md](docs/staging-sync.md).
 
 ## Working with data
 When importing data, there are 2 general approaches based on the objective:
@@ -234,10 +236,7 @@ When importing data, there are 2 general approaches based on the objective:
 
 For **bulk import**, write an importer for the target data, and prepare a csv of the bulk dataset. Import it with wp-cli.
 
-For **pipeline import**, work with Make.com to create a scenario that keeps the dataset up to date with Airtable.
-> **Important note:** For importing values that are post objects in airtable, 2 things are required:
-> The post type needs to have access to the rest controller class WT_REST_Posts_Controller 'rest_controller_class' => 'WT_REST_Posts_Controller'
-> AND the field keys on Make.com need to be prefixed with _WT_TMP_. This enables wordpress to intercept the update and handle associating the import with the appropriate post records.
+For **pipeline import**, Make.com posts each changed Airtable record to the `wt-airtable-sync` plugin, which maps the fields and resolves relationships in code. See [docs/airtable-sync.md](docs/airtable-sync.md). (The old `_WT_TMP_` and `WT_REST_Posts_Controller` pattern was retired in March 2026.)
 
 # Testing
 
@@ -260,26 +259,17 @@ The project uses a layered testing strategy. All checks run automatically on eve
 
 - **PHPCS** enforces WordPress coding standards and catches basic security anti-patterns (unescaped output, direct DB queries). Run with `composer lint`; auto-fix with `composer lint:fix`.
 - **ESLint** checks custom JavaScript files. Run with `npm run lint:js`.
-- **PHPStan** performs type-safety analysis at **level 5** using [`szepeviktor/phpstan-wordpress`](https://github.com/szepeviktor/phpstan-wordpress) stubs for WordPress core functions. A baseline of pre-existing violations is maintained in `phpstan-baseline.neon`; CI fails only on _new_ violations. Run with `composer analyse`. Scope: `wp-content/themes/blankslate-child`, `wp-content/plugins/wt-gallery`, `wp-content/plugins/typeahead/typeahead.php`, and `tests/`.
+- **PHPStan** performs type-safety analysis at **level 5** using [`szepeviktor/phpstan-wordpress`](https://github.com/szepeviktor/phpstan-wordpress) stubs for WordPress core functions. A baseline of pre-existing violations is maintained in `phpstan-baseline.neon`; CI fails only on _new_ violations. Run with `composer analyse`. Scope: `wp-content/themes/blankslate-child`, `wp-content/plugins/wt-gallery`, `wp-content/plugins/wt-airtable-sync`, `wp-content/plugins/download-gateway`, `wp-content/plugins/typeahead/typeahead.php`, and `tests/`.
 
 ## Layer 2 — Unit Tests
 
 **Tools:** PHPUnit 9.6 + WP_Mock 1.1
 **Runs:** on every PR (`test.yml`)
-**Current count:** 58 tests, 91 assertions
+**Current count:** 223 tests, 328 assertions (2026-09-13)
 
-Test files live in `tests/unit/`; bootstrap at `tests/bootstrap.php`. Covers isolated business logic — URL encoding, meta value fallbacks, search routing regex, pagination math:
+Test files live in `tests/unit/`, with the download gateway's in `tests/unit/download-gateway/`; the bootstrap is `tests/bootstrap.php`. They cover isolated business logic: theme helpers, gallery query building, and the gateway's controllers, resolvers and repositories. [docs/testing-strategy.md](docs/testing-strategy.md) lists what each test class covers.
 
-- `import-captions.php` → `safe_dropbox_url()`, `get_safe_value()`
-- `acf-helpers.php` → `wt_meta_value()`
-- `search-filter.php` → `searchfilter()` regex routing
-- `render_gallery_items.php` → `generate_gallery_pagination()`
-- `wt-gallery/helpers.php` → `getDomainFromUrl()`
-- `template-helpers.php` → `get_environment()`, `wt_prefix_the()`
-- `events-filter.php` → `format_event_date_with_proximity()`
-- `wt-gallery/includes/queries.php` → `build_gallery_query_args()`
-
-> **Note:** WP_Mock 1.x is locked to PHPUnit ^9.6 due to a Patchwork incompatibility with PHPUnit 10+. The forward path is to push WP API calls to function edges so the logic core needs no mocking, then migrate to PHPUnit 10+ incrementally. See [plan.md](plan.md) for details.
+> **Note:** WP_Mock 1.x is locked to PHPUnit ^9.6 due to a Patchwork incompatibility with PHPUnit 10+. The forward path is to push WP API calls to function edges so the logic core needs no mocking, then migrate to PHPUnit 10+ incrementally. See [docs/testing-strategy.md](docs/testing-strategy.md) for details.
 
 ## Security Scanning
 
@@ -292,11 +282,11 @@ Scans each PR diff for verified secrets (API keys, credentials). The action is p
 
 | Layer | Tools | Status |
 |-------|-------|--------|
-| Layer 3 — Integration Tests | PHPUnit + `WP_UnitTestCase`, MySQL in Docker | Planned (Phase 5) |
-| Layer 4 — End-to-End & Visual Regression | Playwright | Planned (Phase 6) |
-| Layer 5 — Data Integrity | WP-CLI custom command | Planned (Phase 7) |
+| Layer 3 — Integration Tests | PHPUnit + `WP_UnitTestCase`, MySQL in Docker | Planned |
+| Layer 4 — End-to-End & Visual Regression | Playwright | Planned |
+| Layer 5 — Data Integrity | WP-CLI custom command | Planned |
 
-See [plan.md](plan.md) for the full specification of each future layer.
+See [docs/testing-strategy.md](docs/testing-strategy.md) for each layer's scope, and [plan.md](plan.md) (Engineering foundations) for where it sits in the queue.
 
 # CSS and Compiling Stylus
 This project uses [Stylus](https://stylus-lang.com/), a CSS pre-processor.
@@ -320,21 +310,11 @@ Some of our advanced features are maintained as custom plugins. At present, we h
 - ## **Typeahead Search**:
 
    This project uses a React search component maintained in a [separate repository](https://github.com/wikitongues/typeahead/tree/main).
-   To update the component in this wordpress project, you'll have to update the /build/ directory from the component into the plugin directory here. This applies separately for integration, staging and production environments.
-
-   Consider using `rsync` to facilitate the distribution.
-   ``` bash
-   rsync -avz --delete -e 'ssh -o StrictHostKeyChecking=no' ./build/ USERNAME@HOSTNAME:PATH/TO/plugins/typeahead/build/ && echo 'Done'
-   ```
+   To update the component, copy its `build/` directory into `wp-content/plugins/typeahead/build/` and commit it. The normal deploy ships it to staging and production and removes stale build files ([docs/deployment.md](docs/deployment.md)).
 
 - ## **Custom Gallery**:
 
-   This plugin handles all galleries for this project. It presently handles galleries for the following post types:
-
-   - Languages
-   - Videos
-   - Resources
-   - Fellows
+   This plugin handles all galleries for this project, for any post type with a template in `includes/templates/` (languages, videos, fellows, people, territories, lexicons, resources, careers, faq). Full reference: [docs/gallery.md](docs/gallery.md).
 
    It lives in `/wp-content/plugins/wt-gallery`, and is organized as follows:
    ```
@@ -346,6 +326,8 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    ```
 
    ### Gallery instances
+
+   _This table is a March 2026 snapshot and is no longer maintained; some of its templates have since been removed. [docs/gallery.md](docs/gallery.md#where-galleries-are-used) explains how to find current call sites._
 
    Every call to `create_gallery_instance()` across the theme. The `link_out` field must be present in every params array (set to `''` when unused); the plugin renders the "See all" button only when `link_out` is non-empty **and** `found_posts > posts_per_page`.
 
@@ -379,11 +361,19 @@ Some of our advanced features are maintained as custom plugins. At present, we h
    | `template-giving-campaign-24.php` | [ACF: custom_gallery_title] | fellows | — |
    | `modules/flexible-content/gallery-layout.php` | [ACF: custom_gallery_title] | [ACF type] | — |
 
+- ## **Download Gateway**:
+
+   Logs every download of a video, caption or document, can ask for a name and email first, and forwards contacts and downloads to Airtable through Make.com. It lives in `/wp-content/plugins/download-gateway`; the full reference is [docs/download-gateway.md](docs/download-gateway.md).
+
+- ## **Airtable Sync**:
+
+   Receives Airtable changes from Make.com and writes languages, videos, captions and lexicons to WordPress. It lives in `/wp-content/plugins/wt-airtable-sync`; the full reference is [docs/airtable-sync.md](docs/airtable-sync.md).
+
 # Dependencies
 
-## Font Awesome
+## Icons
 
-We use [FontAwewsome](https://fontawesome.com/) to render social icons.
+Icons are inline SVGs returned by `wt_icon()`. Font Awesome was removed in February 2026.
 
 # Errors
 
@@ -398,58 +388,4 @@ Blankslate theme
 
 # To-Do
 
-## Code structure and styles
-
-- [] later - simplify if statement syntax ( a ? b : c); e.g.
-`wp_nav_menu( array(
-	'theme_location' => is_user_logged_in() ? 'logged-in-menu' : 'logged-out-menu'
-) );`
-- [] clean up template/modules hierarchy on video single and language single
-- [] convert jquery to vanilla javascript
-
-## global
-
-- [] bug on search page title - title has first matching language iso (`Wikitongues | niv`) despite being search route (`?s=russian`).
-- [] add alert banner and display only if user hasn't visited the site in a week
-- [] build captions post type
-- [] build single page template for partners post type
-- [] add "about" drop down to header (footer only for launch)
-- [] ADA accessibility evaluation
-- [] blog integration
-- [] browser notifications opt-in
-- [x] track entire wordpress instance in git to capture plugin-specific (typeahead) changes
-- [x] backwards compatibility evaluation
-
-## search results
-
-- [] sort results by language first, then video, then lexicons, then resources - or, alternatively, divide results into sections with language videos, language pages, etc - to make it easier on the eyes
-
-## team member post type
-
-- [] add: historical interns, other secondary team data
-
-## languages single
-
-- [] inlcude more clarity for external resources
-- [] add continent of origin
-
-## video single
-
-- [] toggle metadata view for for more than 1 language
-- [] toggle all metadata view on mobile
-- [] once captions post type is live, add download feature
-- [] figure out embeds for Dropbox files (not on YouTube)
-
-## archive
-
-- [] language collection pages - probably page templates with customized for-loops baased on ACF fields  (need to define what we want to sort by)
-
-## fellows single
-
-- [] micro-blogging feature
-
-## revitalization toolkit
-
-- [] toolkit newsletter propt
-- [] toolkit language prompt
-- [] toolkit donate prompt
+Planned work lives in [plan.md](plan.md). The ideas that used to be listed here were moved to its Ideas list on 2026-09-13.

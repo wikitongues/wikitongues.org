@@ -1,7 +1,233 @@
 # Wikitongues – Completed Work
 
-Completed items from [plan.md](plan.md), in reverse chronological order.
-Each entry includes branch, PR, merge commit, and a summary of what was done.
+Completed work from [plan.md](../plan.md). The **index** lists each finished initiative and the doc that now describes it. The **log** below it records each change, newest first, with its branch and PR.
+
+When something in the plan is done: remove it from `plan.md`, add a log entry here, add or update its index row, and make sure the system it built is described in a doc under `docs/`, creating one if needed.
+
+---
+
+## Index
+
+| Initiative | Shipped | PRs | Described in |
+|---|---|---|---|
+| Plan and docs restructure | 2026-09-13 | — | [plan.md](../plan.md), this file |
+| Deploy and backup hardening | 2026-09-12 | [#633]–[#636], [#639], [#640] | [deployment.md](deployment.md), [staging-sync.md](staging-sync.md) |
+| Financials (Form 990s) | 2026-09-11 | [#630] | [content-model.md](content-model.md#financials-form-990s) |
+| People content model | 2026-09-08 – 11 | [#616], [#622], [#623], [#626] | [content-model.md](content-model.md#people) |
+| Editorial blocks on video and fellow-category pages | 2026-09-09 | [#620], [#621] | [content-model.md](content-model.md#editorial-content) |
+| Gallery fixes | 2026-09-08 – 11 | [#612], [#613], [#615], [#623] | [gallery.md](gallery.md) |
+| GitHub issue triage | 2026-09-08 | [#611] | [plan.md](../plan.md) |
+| Download gateway | 2026-03-14 – 09-11 | [#560]–[#598], [#619], [#623] | [download-gateway.md](download-gateway.md) |
+| Donation plumbing (FundraiseUp audit, donate CTAs) | 2026-03-10 – 14 | [#544], [#548], [#553], [#557] | This log |
+| Code-quality chain (plan Phase 3, items 1–9) | 2026-03-05 – 06 | [#501], [#520], [#529], [#536], [#538], [#541], [#542] | [content-model.md](content-model.md), [gallery.md](gallery.md) |
+| Staging data sync | 2026-03-05 | [#509], [#518] | [staging-sync.md](staging-sync.md) |
+| Airtable → WordPress sync | 2026-02-22 – 03-01 | [#482], [#486], [#489] | [airtable-sync.md](airtable-sync.md) |
+| Territories | 2026-02-20 – 28 | [#445], [#446], [#450]–[#455], [#491] | [content-model.md](content-model.md#territories-and-regions) |
+| Writing-system and genealogy taxonomies | 2026-02-22 | [#467], [#471] | [content-model.md](content-model.md#taxonomies) |
+| Font Awesome replaced with inline SVGs | 2026-02-22 | [#477] | This log |
+| Security foundation (secrets scanning, plugin and Make audits) | 2026-02-21 – 22 | [#459], [#463] | This log; the Make audit is in `docs/local_docs/` (not committed) |
+| Bedrock evaluated and declined | 2026-02-28 | — | This log |
+| Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
+| CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-09-13 (Plan and docs)
+
+### Website plan restructured; docs for completed systems
+**Branch:** `docs/cc/plan-archive-refresh`
+
+- `plan.md` was rewritten as an ordered queue plus workstream specs. It now owns the order of website work; the product roadmap remains the organization-level strategy. Completed phases were removed, and the gates on Docker, the visual-regression baseline and a zero PHPStan baseline were dropped: engineering foundations no longer block features.
+- This archive gained the index above and the March–September 2026 entries below.
+- New docs: [content-model.md](content-model.md), [deployment.md](deployment.md) and [gallery.md](gallery.md). [download-gateway.md](download-gateway.md) was rewritten against the code.
+- Stale facts corrected in `readme.md`, [testing-strategy.md](testing-strategy.md), [airtable-sync.md](airtable-sync.md) and `CLAUDE.md`.
+
+---
+
+## 2026-09-12 (Deploy and backup hardening)
+
+### Backups outside the web root, deploys that delete, a pinned host key
+**PRs:** [#633], [#634], [#635], [#636], [#639], [#640]
+
+- **Backups.** Backup Prod DB and Sync to Staging now write and read `~/backups/prod_dump.sql`, created with mode 700 under a `077` umask, outside the web root. The old dump folder was deleted ([#633], [#636]).
+- **Deletes.** Deploys remove files deleted from the repo, within the theme and the four custom plugins, with safeguards: a partial-checkout check, `--max-delete=100`, and a protected `error_log`. The first run removed about 80 leftovers per server, including retired templates and includes from before the folder reorganization. The Donate page was moved off a deleted template first ([#634]).
+- **Host key.** All four server workflows trust a pinned host key from the `SSH_HOST_KEY` secret instead of `ssh-keyscan` ([#635]).
+- **Logs.** Debug logging that wrote on every REST request was removed; the PHP error logs had grown to 1–2 GB ([#639]).
+- **Tooling.** `CLAUDE.md`, `.claude/` and `.vscode/` no longer deploy ([#640]).
+
+Described in [deployment.md](deployment.md) and [staging-sync.md](staging-sync.md).
+
+---
+
+## 2026-09-11 (Financials; People follow-ups)
+
+### Form 990 financials page replaces monthly reports
+**Branch:** `feature/cc/form-990-financials` · **PR:** [#630]
+
+- New `form_990` post type. `/financials` lists every filing, newest tax year first, and the footer links to it beside the Candid seal.
+- The `reports` post type (monthly updates, last posted March 2024) is retired; `/reports` and `/reports/*` redirect with a 301. Its posts and files stay in the database for now.
+- Filings link straight to the media library, not through the download gateway, by decision.
+- 8 new tests (223 total).
+
+Described in [content-model.md](content-model.md#financials-form-990s).
+
+### People migration and styling follow-ups
+**PRs:** [#623], [#624], [#626], [#628]
+
+- The `wp wt migrate-people` dry run now resolves people the way `--execute` does; only the preview had been wrong ([#626]).
+- An editorial block's secondary download button carried two `class` attributes, so it skipped the gateway; fixed. The gallery card look also became opt-in (`gallery-item--card`) after the People change flattened fellow cards ([#623]).
+- Lighter dark blocks and card hover states ([#624]).
+- Documented the rule to refresh from production before any migration or bulk write ([#628]).
+
+---
+
+## 2026-09-09 (People; editorial blocks)
+
+### `team` renamed to `people`, typed by taxonomy
+**Branch:** `feature/cc/people-cpt` · **PR:** [#622]
+
+- The post type now covers everyone connected to the organization, typed by a `people-type` taxonomy (Board Member, Staff, Volunteer, Advisor), so one person can hold several types.
+- The Board, Advisors and Staff pages share `template-people.php`, composed from editorial gallery rows filtered by type. New people pages need no deploy.
+- Locked down ahead of donor records: no REST route (the old `/wp-json/wp/v2/team` listed all 52 people), no search, no archive.
+- Also fixed: curated gallery selections lost their order, and the staff page's careers galleries matched nothing.
+- Migration: `wp wt migrate-people`. The old list fields were kept, so the change is reversible.
+
+Described in [content-model.md](content-model.md#people).
+
+### Editorial blocks on video and fellow-category pages
+**PRs:** [#620], [#621]
+
+- Fellow-category pages render the term's own banner, then the gallery, then an editorial block; existing banners were migrated with `wp wt migrate-fellow-category-banner` ([#620]).
+- Every video page shows one shared editorial block, configured under Videos → Video Settings ([#621]).
+
+### Oral-history CTAs routed through the document page
+**PR:** [#619]
+
+- Two video CTAs linked the oral-history PDF directly, bypassing the gateway; they now link its document page. Three links to the same PDF in admin content were left to fix by hand.
+
+---
+
+## 2026-09-08 (Gallery fixes; triage)
+
+### Gallery fixes
+**PRs:** [#612], [#613], [#615]
+
+- Random-order galleries re-shuffled on every pagination request; the shuffle is now seeded once per render (#380, [#615]).
+- Removed the `custom_gallery_id` field that editors were asked to fill but no code read (#421, [#612]).
+- Fixed an undefined `$post_ids` warning in gallery builders ([#613]).
+
+Described in [gallery.md](gallery.md).
+
+### Shared "Global: Social Links" group
+**PR:** [#616]
+
+- The duplicated social fields on Team and Fellows became one ACF group attached to both, which gave team members a YouTube field (#59). Field keys and meta keys were reused, so no data moved.
+
+### GitHub issue triage
+**PR:** [#611]
+
+- The 15 open issues were checked against the code and sequenced in the plan. Four were resolved or closed the same day: #59, #73, #380 and #421 (#73 no longer reproduced).
+
+### Project tooling and docs
+**PRs:** [#605], [#609], [#610], [#614]
+
+- Claude Code project config committed: `CLAUDE.md` and the `/deploy` and `/test` commands ([#605]).
+- Documented the change of the Airtable People *Last seen* field to a lookup, and its fallout ([#609]). Logged the duplicate Download records for cleanup ([#610]). Clarified that pre-PR checks run all three gates ([#614]).
+
+---
+
+## 2026-09-07 (Documents through the gateway)
+
+### Documents routed through the download gateway
+**PRs:** [#595], [#598], [#600]
+
+- Every document download surface (versions table, banner, card blocks) goes through the gateway. The legacy `force_download_file()` handler and `/force-download/` route were removed ([#598]).
+- The webhook cron event now re-registers itself if lost. It had gone missing, and 208 webhooks sat undelivered for about five months ([#595]).
+
+Part of the [download gateway](#2026-03-27-download-gateway).
+
+### Translate-a-document invitation
+**PR:** [#606]
+
+- Document pages invite readers to help translate, with a pre-filled email to hello@wikitongues.org below the versions table.
+
+### Card grids render three columns
+**PR:** [#602]
+
+- `.thirds` card grids became CSS grids (3, 2 or 1 columns by width); the flex layout had wrapped the third card.
+
+---
+
+## 2026-03-27 (Download gateway)
+
+### Download gateway: sub-phases 0–10
+**PRs:** [#560], [#561], [#563]–[#568], [#570], [#572]–[#574], [#577]–[#579], [#582], [#585], [#588], [#589], [#592], [#595], [#598]
+**Built:** 2026-03-14 to 2026-09-07 · **In production:** 2026-03-27
+
+A plugin that sits between every download link and its file. It logs each download, can ask for a name and email, asks follow-up questions, and forwards contacts and downloads to Airtable through Make.
+
+- **Mar 14–16:** scaffold, schema, the download endpoint with single-use tokens, soft and hard gates, the retention job, per-type policies and `disabled`, and the follow-up form infrastructure.
+- **Mar 21–27:** the Dropbox adapter and the video and caption resolvers; the signed person cookie and fixes from a security review; named form sets; the webhook queue; the modal redesign; GA4 events. First production release on Mar 27.
+- **Apr 12–19:** admin reporting dropped, since Airtable views cover it; payloads carry `airtable_record_id` and `download_event_id`.
+- **Sep 7–11:** self-healing cron schedule; documents routed through the gateway; CTA fixes.
+- **Not built:** the anonymization webhook (9b), now in the plan.
+
+**Decisions:**
+- Tokens and redirects, not streaming.
+- Forms in code, not ACF.
+- No donation ask in the modal; the post-download email carries it.
+- No reporting screen.
+- Form 990s bypass the gateway.
+
+Described in [download-gateway.md](download-gateway.md).
+
+---
+
+## 2026-03-15
+
+### Captions listing on video pages
+**PR:** [#562]
+
+- The captions query compared the serialized `source_video` value with `=`, so it found nothing; it now matches `LIKE '"{id}"'`. The section is hidden when no caption has a file.
+
+---
+
+## 2026-03-14 (Donate CTAs)
+
+### Donation CTA tracking and fixes
+**PRs:** [#553], [#554], [#557]
+
+- Donation elements carry data attributes for analytics ([#553]).
+- The fellow-page donate CTA no longer reloads the page or fires the wrong analytics event ([#557]).
+- Fellows gallery cards tweaked ([#554]).
+
+---
+
+## 2026-03-10 (FundraiseUp audit)
+
+### FundraiseUp audit
+**Branch:** `chore/cc/fundraiseup-audit` · **PRs:** [#544], [#545]
+
+- The disabled 2024 year-end campaign ID was replaced with the General Fund in the fellow and giving-campaign templates.
+- The language-page donate CTA was a `<button href>`, which doesn't navigate; it is now an `<a>`.
+- `/2024-fundraiser` redirects to `/donate` (301).
+- The `cli` includes folder is now loaded.
+- The FundraiseUp-in-ACF item was added to the plan.
+- Outside the repo, the same week: FundraiseUp campaigns and elements were consolidated into one General Fund, FundraiseUp was connected to GA4 through GTM, and every donate placement was instrumented.
+
+### Legacy analytics and CSS leftovers
+**PRs:** [#548], [#550]
+
+- Removed a newsletter-form handler that called a function that no longer existed ([#548]), and a stale `blankslate.css` import that 404ed on staging ([#550]).
+
+---
+
+## 2026-03-06 (Navigation)
+
+### Sub-menu width
+**PR:** [#537]
+
+- Long navigation items no longer clip in sub-menus.
 
 ---
 
@@ -22,7 +248,7 @@ Each entry includes branch, PR, merge commit, and a summary of what was done.
 
 ---
 
-## 2026-03-07 (Phase 3 item 9)
+## 2026-03-06 (Phase 3 item 9)
 
 ### Phase 3 item 9 — Root-level file hygiene
 **PRs:** [#498](https://github.com/wikitongues/wikitongues.org/pull/498)–[#500](https://github.com/wikitongues/wikitongues.org/pull/500), [#542](https://github.com/wikitongues/wikitongues.org/pull/542)
@@ -127,7 +353,7 @@ Deleted the dead code chain left behind from the old Make.com v1 (Integromat) wr
 Completed the staging sync setup with a runbook at [`docs/staging-sync.md`](staging-sync.md).
 
 The automated pipeline was already in place via two workflows:
-- `backup-prod-db.yml` — runs every Monday 03:00 UTC; dumps production DB to `~/public_html/tmp/prod_dump.sql`; automatically triggers the sync via repository dispatch
+- `backup-prod-db.yml` — runs every Monday 03:00 UTC; dumps production DB to `~/public_html/tmp/prod_dump.sql` (moved to `~/backups/` in [#633]); automatically triggers the sync via repository dispatch
 - `sync-prod-to-staging.yml` — imports dump, rsyncs uploads, runs URL search-replace (http + https), verifies `siteurl`/`home` point to staging
 
 The runbook documents manual trigger options, what each step does, post-sync caveats (ACF options, Make.com staging isolation, wp-config safety), and troubleshooting for common failure modes.
@@ -233,7 +459,7 @@ Rewrote `admin-helpers.php` to reorganize the WordPress admin sidebar with seman
 **Branches:** `feature/cc/wt-airtable-sync-phase-0-1`, `feature/cc/wt-airtable-sync-phase-2`, `feature/cc/wt-airtable-sync-dry-run`
 **PRs:** [#482](https://github.com/wikitongues/wikitongues.org/pull/482), [#486](https://github.com/wikitongues/wikitongues.org/pull/486), [#489](https://github.com/wikitongues/wikitongues.org/pull/489)
 **Production cutover:** 2026-03-01
-**Full documentation:** [`docs/airtable-sync.md`](docs/airtable-sync.md)
+**Full documentation:** [`docs/airtable-sync.md`](airtable-sync.md)
 
 Replaced the integromat-connector write paths with a standalone WordPress plugin that owns all field mapping, transformation, and ACF writes in code. Make.com is now a dumb HTTP transport: Airtable record change → POST raw Airtable payload to `/wp-json/wikitongues/v1/sync/{post_type}`.
 
@@ -352,7 +578,7 @@ Changes:
 
 ### Audit Make.com scenarios
 **Branch:** n/a (documentation only)
-**Findings:** `docs/make-audit-findings.md`
+**Findings:** `docs/local_docs/make-audit-findings.md` (local only; not committed)
 
 Conducted a full audit of all 14 Make.com scenarios by parsing exported JSON blueprints and cross-referencing against the WP codebase, live DB, and Airtable CSV exports.
 
@@ -384,7 +610,7 @@ Make.com cannot send WP post IDs for ACF `post_object` fields (it only knows Air
 - **`video_thumbnail`** (legacy raw postmeta): confirmed dead in templates; `video_thumbnail_v2` (ACF image field) is the live field
 - `post_type` Airtable field values exactly match registered WP CPT slugs — no slug mismatch
 
-**Complete field map** (all 5 CPTs, all meta keys, ACF field types, transform strategy) documented in `docs/make-audit-findings.md` § 9. This is the direct input to `config/field-maps.php` in `wt-airtable-sync`.
+**Complete field map** (all 5 CPTs, all meta keys, ACF field types, transform strategy) documented in `docs/local_docs/make-audit-findings.md` § 9. This is the direct input to `config/field-maps.php` in `wt-airtable-sync`.
 
 **Feeds into:** `wt-airtable-sync` plugin (next item in backlog).
 
@@ -458,7 +684,7 @@ Notes: Migration must be run on each environment after deploy. ACF field group s
 
 ### Single language page — multi-territory language gallery
 **Branch:** `fix/cc/multi-territory-language-gallery`
-**PR:** (pending)
+**PR:** [#474](https://github.com/wikitongues/wikitongues.org/pull/474)
 
 Fixed a regression in `single-languages.php` where the "Other languages from..." gallery only drew language IDs from the first territory (`$territories[0]`). For languages with multiple territories (e.g. English spanning US, UK, Australia), the gallery now collects and deduplicates language IDs from every associated territory.
 
@@ -471,7 +697,7 @@ Changes:
 
 ### Audit `integromat-connector` REST API exposure
 **Branch:** `chore/cc/delete-wt-form-and-plan-updates`
-**PR:** (pending)
+**PR:** [#463](https://github.com/wikitongues/wikitongues.org/pull/463)
 
 Read all plugin source files and queried the DB for opted-in fields.
 
@@ -489,7 +715,7 @@ Read all plugin source files and queried the DB for opted-in fields.
 
 ### Delete wt-form plugin
 **Branch:** `chore/cc/delete-wt-form-and-plan-updates`
-**PR:** (pending)
+**PR:** [#463](https://github.com/wikitongues/wikitongues.org/pull/463)
 
 `wt-form` was a prototype download gate for the Revitalization Toolkit. Both its Airtable and Mailchimp integration methods began with `return;` and never ran. The `[wikitongues_form]` shortcode was confirmed absent from all published content. Plugin folder deleted.
 
@@ -511,7 +737,7 @@ Part 2 (archive templates with `?territory=` / `?language=` filter params) is a 
 
 ### Secrets scanning
 **Branch:** `feature/cc/tier-1-security`
-**PR:** (pending)
+**PR:** [#459](https://github.com/wikitongues/wikitongues.org/pull/459)
 
 _Note: WPScan was planned for this tier but removed — the WPScan API is no longer free. Plugin/theme vulnerability monitoring deferred to a server-side tool (Patchstack or Wordfence)._
 
@@ -664,7 +890,7 @@ Tests written (initial batch):
 - `searchfilter()` regex routing — `search-filter.php`
 - `generate_gallery_pagination()` — `render_gallery_items.php`
 
-Notes: WP_Mock 1.x is locked to PHPUnit ^9.6 due to Patchwork incompatibility with PHPUnit 10+. Upgrade path: push WP API calls to function edges, reducing mocking surface, then drop WP_Mock incrementally. See plan.md Layer 2 for full constraint details.
+Notes: WP_Mock 1.x is locked to PHPUnit ^9.6 due to Patchwork incompatibility with PHPUnit 10+. Upgrade path: push WP API calls to function edges, reducing mocking surface, then drop WP_Mock incrementally. See [testing-strategy.md](testing-strategy.md) for full constraint details.
 
 ---
 
@@ -709,4 +935,89 @@ Minor fix to SSH agent action version in deployment workflow.
 
 **Fix:** Direct data correction on production — titles, iso_code, standard_name, and related ACF fields updated for all 19 affected posts. Database pulled from production to staging and local.
 
-**Prevention:** Layer 5 — Data Integrity (see plan.md) will catch duplicate iso_codes and standard_names on a weekly schedule before they cause routing failures.
+**Prevention:** Layer 5 — Data Integrity (see [plan.md](../plan.md) → Data quality) will catch duplicate iso_codes and standard_names on a weekly schedule before they cause routing failures.
+
+<!-- Pull request links used by the index and the newer entries above. -->
+[#423]: https://github.com/wikitongues/wikitongues.org/pull/423
+[#425]: https://github.com/wikitongues/wikitongues.org/pull/425
+[#428]: https://github.com/wikitongues/wikitongues.org/pull/428
+[#432]: https://github.com/wikitongues/wikitongues.org/pull/432
+[#435]: https://github.com/wikitongues/wikitongues.org/pull/435
+[#438]: https://github.com/wikitongues/wikitongues.org/pull/438
+[#441]: https://github.com/wikitongues/wikitongues.org/pull/441
+[#445]: https://github.com/wikitongues/wikitongues.org/pull/445
+[#446]: https://github.com/wikitongues/wikitongues.org/pull/446
+[#450]: https://github.com/wikitongues/wikitongues.org/pull/450
+[#455]: https://github.com/wikitongues/wikitongues.org/pull/455
+[#459]: https://github.com/wikitongues/wikitongues.org/pull/459
+[#463]: https://github.com/wikitongues/wikitongues.org/pull/463
+[#467]: https://github.com/wikitongues/wikitongues.org/pull/467
+[#471]: https://github.com/wikitongues/wikitongues.org/pull/471
+[#477]: https://github.com/wikitongues/wikitongues.org/pull/477
+[#482]: https://github.com/wikitongues/wikitongues.org/pull/482
+[#486]: https://github.com/wikitongues/wikitongues.org/pull/486
+[#489]: https://github.com/wikitongues/wikitongues.org/pull/489
+[#491]: https://github.com/wikitongues/wikitongues.org/pull/491
+[#501]: https://github.com/wikitongues/wikitongues.org/pull/501
+[#503]: https://github.com/wikitongues/wikitongues.org/pull/503
+[#509]: https://github.com/wikitongues/wikitongues.org/pull/509
+[#511]: https://github.com/wikitongues/wikitongues.org/pull/511
+[#518]: https://github.com/wikitongues/wikitongues.org/pull/518
+[#520]: https://github.com/wikitongues/wikitongues.org/pull/520
+[#529]: https://github.com/wikitongues/wikitongues.org/pull/529
+[#536]: https://github.com/wikitongues/wikitongues.org/pull/536
+[#537]: https://github.com/wikitongues/wikitongues.org/pull/537
+[#538]: https://github.com/wikitongues/wikitongues.org/pull/538
+[#541]: https://github.com/wikitongues/wikitongues.org/pull/541
+[#542]: https://github.com/wikitongues/wikitongues.org/pull/542
+[#544]: https://github.com/wikitongues/wikitongues.org/pull/544
+[#545]: https://github.com/wikitongues/wikitongues.org/pull/545
+[#548]: https://github.com/wikitongues/wikitongues.org/pull/548
+[#550]: https://github.com/wikitongues/wikitongues.org/pull/550
+[#553]: https://github.com/wikitongues/wikitongues.org/pull/553
+[#554]: https://github.com/wikitongues/wikitongues.org/pull/554
+[#557]: https://github.com/wikitongues/wikitongues.org/pull/557
+[#560]: https://github.com/wikitongues/wikitongues.org/pull/560
+[#561]: https://github.com/wikitongues/wikitongues.org/pull/561
+[#562]: https://github.com/wikitongues/wikitongues.org/pull/562
+[#563]: https://github.com/wikitongues/wikitongues.org/pull/563
+[#568]: https://github.com/wikitongues/wikitongues.org/pull/568
+[#570]: https://github.com/wikitongues/wikitongues.org/pull/570
+[#572]: https://github.com/wikitongues/wikitongues.org/pull/572
+[#574]: https://github.com/wikitongues/wikitongues.org/pull/574
+[#577]: https://github.com/wikitongues/wikitongues.org/pull/577
+[#579]: https://github.com/wikitongues/wikitongues.org/pull/579
+[#582]: https://github.com/wikitongues/wikitongues.org/pull/582
+[#585]: https://github.com/wikitongues/wikitongues.org/pull/585
+[#588]: https://github.com/wikitongues/wikitongues.org/pull/588
+[#589]: https://github.com/wikitongues/wikitongues.org/pull/589
+[#592]: https://github.com/wikitongues/wikitongues.org/pull/592
+[#595]: https://github.com/wikitongues/wikitongues.org/pull/595
+[#598]: https://github.com/wikitongues/wikitongues.org/pull/598
+[#600]: https://github.com/wikitongues/wikitongues.org/pull/600
+[#602]: https://github.com/wikitongues/wikitongues.org/pull/602
+[#605]: https://github.com/wikitongues/wikitongues.org/pull/605
+[#606]: https://github.com/wikitongues/wikitongues.org/pull/606
+[#609]: https://github.com/wikitongues/wikitongues.org/pull/609
+[#610]: https://github.com/wikitongues/wikitongues.org/pull/610
+[#611]: https://github.com/wikitongues/wikitongues.org/pull/611
+[#612]: https://github.com/wikitongues/wikitongues.org/pull/612
+[#613]: https://github.com/wikitongues/wikitongues.org/pull/613
+[#614]: https://github.com/wikitongues/wikitongues.org/pull/614
+[#615]: https://github.com/wikitongues/wikitongues.org/pull/615
+[#616]: https://github.com/wikitongues/wikitongues.org/pull/616
+[#619]: https://github.com/wikitongues/wikitongues.org/pull/619
+[#620]: https://github.com/wikitongues/wikitongues.org/pull/620
+[#621]: https://github.com/wikitongues/wikitongues.org/pull/621
+[#622]: https://github.com/wikitongues/wikitongues.org/pull/622
+[#623]: https://github.com/wikitongues/wikitongues.org/pull/623
+[#624]: https://github.com/wikitongues/wikitongues.org/pull/624
+[#626]: https://github.com/wikitongues/wikitongues.org/pull/626
+[#628]: https://github.com/wikitongues/wikitongues.org/pull/628
+[#630]: https://github.com/wikitongues/wikitongues.org/pull/630
+[#633]: https://github.com/wikitongues/wikitongues.org/pull/633
+[#634]: https://github.com/wikitongues/wikitongues.org/pull/634
+[#635]: https://github.com/wikitongues/wikitongues.org/pull/635
+[#636]: https://github.com/wikitongues/wikitongues.org/pull/636
+[#639]: https://github.com/wikitongues/wikitongues.org/pull/639
+[#640]: https://github.com/wikitongues/wikitongues.org/pull/640

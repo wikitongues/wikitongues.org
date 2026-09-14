@@ -154,7 +154,7 @@ wt-airtable-sync/
     ├── class-sync-api.php      REST route registration and auth
     ├── class-sync-controller.php  Upsert pipeline
     ├── class-field-resolver.php   post_object title → WP post ID resolution
-    ├── class-acf-fields.php    Programmatic ACF field registration
+    ├── class-acf-fields.php    Record ID field and the "View in Airtable" link
     └── class-logger.php        Structured logging wrapper
 ```
 
@@ -366,7 +366,7 @@ The lexicons CPT has the largest gap: as of 2026-03-01, 130 of 152 Airtable lexi
 
 The `integromat-connector` WordPress plugin handled the old Make.com → WordPress write path. It exposed REST endpoints that Make.com called using the `wordpress:createMediaItem` and related modules. These paths were invalidated by the PHP 8.2 upgrade and have been replaced by `wt-airtable-sync`.
 
-The old Make.com scenario instances (v1) were disabled on 2026-03-01. The `integromat-connector` plugin remains installed but is no longer called by any active Make.com scenario.
+The old Make.com scenario instances (v1) were disabled on 2026-03-01. The `integromat-connector` plugin remains installed. No sync scenario calls it any more; confirm that nothing else in Make does before uninstalling it (`plan.md` → Engineering foundations).
 
 ### post-object-helpers.php
 
@@ -374,7 +374,7 @@ The old Make.com scenario instances (v1) were disabled on 2026-03-01. The `integ
 
 Both this function and the `_WT_TMP_*` keys are now retired:
 - All 3,376 `_WT_TMP_*` rows were deleted from `wp_postmeta` on 2026-03-01
-- `post-object-helpers.php` is dead code — it should be removed during the code quality cleanup of `includes/`
+- `post-object-helpers.php` (both copies) and the `WT_REST_Posts_Controller` class that called it were deleted on 2026-03-05 (PR #520)
 
 ### _WT_TMP_* postmeta keys
 
@@ -384,7 +384,7 @@ These were temporary staging keys written by the old Make.com scenarios. They ha
 
 ## Deferred Work
 
-- **`resources` CPT** — deferred from the initial sync rollout. Airtable has 204 resources records but WordPress has ~907 `resources` posts, suggesting significant data divergence. Requires reconciliation before sync can be enabled safely. See `plan.md` and `docs/make-audit-findings.md` § F3.
+- **`resources` CPT** — deferred from the initial sync rollout. Airtable has 204 resources records but WordPress has ~907 `resources` posts, suggesting significant data divergence. Requires reconciliation before sync can be enabled safely. See `plan.md` (Data quality & Airtable) and `docs/local_docs/make-audit-findings.md` § F3 (local only, not committed).
 - **Airtable table bloat** — the Videos table has 188 fields, most computed or lookup. The correct long-term architecture is to resolve linked records in Make.com subscenarios (as Captions already does), then delete the Airtable computed columns. Do not add more Airtable lookup fields to support sync.
-- **Phase 3 cleanup** — `post-object-helpers.php` removal is tracked under Code Quality in `plan.md`.
+- **Writing-system and genealogy terms** — the languages map writes the legacy text fields `writing_systems` and `linguistic_genealogy`, but templates and archive filters read the `writing-system` and `linguistic-genealogy` taxonomies, which only the February 2026 migration populated. Languages edited since keep stale terms, and languages created since have none. The fix, mapping these payloads to terms (split on commas, `wp_set_object_terms()`), is in `plan.md` (Data quality & Airtable).
 - **Deletion propagation** — when a record is deleted in Airtable, no event fires to WordPress. The recommended approach is a soft-delete convention (set `post_status` to `trash` in Airtable before deleting the record) for the sync to propagate. A hard-delete endpoint (`DELETE /wp-json/wikitongues/v1/sync/{post_type}?airtable_id={id}`) is not yet implemented.
