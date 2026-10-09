@@ -254,7 +254,7 @@ Reference: [content-model.md](docs/content-model.md).
 
 *Later.* Video pages handle Processing and Private with plain text.
 
-- **Audio-only:** detect audio recordings and show an audio placeholder instead of a missing video frame.
+- **Audio-only:** map Airtable's `Type` field (`MovingImage` / `Sound`) to an explicit `media_type`, and show an audio placeholder from that. No detection is needed — the archive already records this. Today the gallery infers it from missing `metadata_width`/`metadata_height`, which is wrong in both directions: 38 videos render as audio, and 6 of 31 audio files render as video, because audio records store the string `N/A` for their dimensions rather than leaving them blank, and `N/A` is not empty. 110 records have a blank `Type`, so decide the fallback (backfill in Airtable, or treat unknown as video) before mapping.
 - **Processing:** design the state (#61), with a "notify me when ready" affordance.
 - **Private:** a "request access" affordance.
 - **Removed:** a tier for fraud or abuse takedowns, separate from creator-private, with its own notice (#4).
@@ -310,14 +310,40 @@ The sync writes the legacy text fields `writing_systems` and `linguistic_genealo
 - missing standard names (#53)
 - taxonomy terms out of step with their text fields
 - Airtable records with no WordPress post
+- **mapped field values that differ between Airtable and WordPress.** Compare values, not
+  timestamps. Airtable's `last_modified` fires on automation and formula churn — 843 and 602
+  video records were bumped on two days in April 2025 — so a timestamp comparison reports ~78%
+  of the archive as diverged while the real figure is 0.4%. A presence check does not catch
+  this either: the records exist, their values are stale (found 2026-10-04, see 6.3)
 
 #### 6.3 Airtable reconciliation
 
 *Later.*
 
 1. **Incomplete WordPress records.** 520+ languages arrived without some fields. Fix it at the source: make the fields required in Airtable, and handle gaps before sync.
-2. **Airtable records missing from WordPress.** As of March 2026: 2 languages, about 3 videos, 60 captions and 130 lexicons. Each is created when its record is next edited; bulk-touching the records closes the gap at once.
-3. **Airtable table bloat.** The Videos table has 188 fields, mostly computed or lookups. Resolve linked records in Make subscenarios, as Captions already does, then delete the computed columns. Don't add more lookup fields.
+2. **Airtable records missing from WordPress.** As of March 2026: 2 languages, about 3 videos, 60 captions and 130 lexicons. Each is created when its record is next edited.
+
+   **Bulk-touching does not reliably close the gap — it can open one.** Measured 2026-10-04: an
+   Airtable edit stamped ~40 video records within two minutes; the sync wrote 29 and silently
+   dropped 11, which were never retried. The `TriggerWatchRecords` cursor advances past a
+   timestamp once a run hits its per-run record cap, so records sharing that timestamp fall
+   behind it permanently. `plan.md` has catalogued "max records = 1" as an open blueprint issue;
+   that cap is the likely cause. Raising it reduces the odds but does not remove them, because
+   any batch larger than the cap straddles the cursor the same way. The value-divergence check
+   in 6.2 is what actually detects this.
+
+3. **Stale values on records that do exist.** Measured 2026-10-04 against a full Airtable
+   export (1,862 video records): `public_status` differs on 8, every one of them `Public` in
+   Airtable and `Processing` in WordPress — released oral histories that the site still gates
+   behind "we're still processing this video", suppressing the embed and the downloads.
+   `youtube_id` differs on 0; `Width` on 36. All 8 carry the same bulk-edit timestamp, so this
+   is the same mechanism as above, not a separate fault. Re-touching those records individually
+   clears them.
+
+4. **`N/A` written into a number field.** Audio records carry `Width`/`Height` of `N/A`, which
+   the sync passes through into ACF *number* fields. Normalise at the sync boundary, or stop
+   depending on dimensions once `media_type` exists (5.2).
+5. **Airtable table bloat.** The Videos table has 188 fields, mostly computed or lookups. Resolve linked records in Make subscenarios, as Captions already does, then delete the computed columns. Don't add more lookup fields. This is not only tidiness: computed columns are what drive the `last_modified` churn in 6.2, and that churn is what consumes the per-run record cap in 6.3.2.
 
 Two related gaps:
 

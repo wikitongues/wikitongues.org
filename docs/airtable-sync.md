@@ -319,7 +319,11 @@ Replace `--post-type` with the target CPT. `--field-types=text` is required for 
 | captions | 257 | 60 (absent from WP) |
 | lexicons | 20 | 130 (absent from WP — only 22 of 152 Airtable lexicon records had WP posts) |
 
-**"Not found" does not mean data loss.** When Make.com next triggers on a not-found record, the upsert falls back to title match and then creates a new WP post if no match is found. The gap closes organically as records are modified in Airtable. To force-close it: bulk-touch the missing Airtable records (e.g. update a non-critical field) to fire the trigger across the full set.
+**"Not found" does not mean data loss.** When Make.com next triggers on a not-found record, the upsert falls back to title match and then creates a new WP post if no match is found.
+
+**But the gap does not close organically, and bulk-touching can widen it.** Measured 2026-10-04: an Airtable edit stamped about 40 video records within two minutes. The sync wrote 29 and silently dropped 11, which were never retried — one of them had been diverged for 738 days. `TriggerWatchRecords` tracks a cursor over the `last_modified` field; once a run hits its per-run record cap the cursor advances past that timestamp, and every record sharing it falls behind permanently. Raising the cap lowers the odds without removing them, because any batch larger than the cap straddles the cursor the same way.
+
+Treat bulk-touching as a way to *trigger* a sync, never as proof that one happened. Verify afterwards by comparing field values — see the data integrity check in `plan.md` §6.2. Comparing `last_modified` against `post_modified` does not work: automation and formula churn bump `last_modified` constantly (843 and 602 video records on two days in April 2025), which reports most of the archive as diverged when almost none of it is.
 
 ---
 
@@ -328,6 +332,8 @@ Replace `--post-type` with the target CPT. `--field-types=text` is required for 
 Some Airtable records have no corresponding WordPress post. This is expected for CPTs where data was added to Airtable after the initial WP import, or where the old Make.com scenarios never synced them.
 
 The new sync infrastructure handles gaps correctly: on first trigger, the upsert creates the WP post. Once created, `_airtable_record_id` is stamped and subsequent syncs use the stable ID path.
+
+This covers records that are *absent*. It does not cover records that exist with stale values — a record can be present, carry its `_airtable_record_id`, and still hold field values years behind Airtable if the write that should have updated it was dropped. As of 2026-10-04, 8 video records are `Public` in Airtable and `Processing` in WordPress, which gates released oral histories behind a processing notice on the public site.
 
 The lexicons CPT has the largest gap: as of 2026-03-01, 130 of 152 Airtable lexicon records had no WP post. These will be created progressively as records are modified or force-touched.
 
