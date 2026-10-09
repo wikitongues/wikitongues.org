@@ -60,6 +60,7 @@ if ( ! defined( 'DAY_IN_SECONDS' ) ) {
 }
 
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/resource-card-abilities.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_gallery_items.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/queries.php';
