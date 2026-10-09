@@ -461,7 +461,7 @@ parameters:
 
 		-
 			message: "#^Function get_sub_field not found\\.$#"
-			count: 10
+			count: 11
 			path: wp-content/themes/blankslate-child/modules/flexible-content/block-layout.php
 
 		-
