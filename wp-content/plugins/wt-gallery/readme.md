@@ -1,48 +1,26 @@
-# Wikitongues gallery features
+# Wikitongues gallery plugin
 
-## Simple implementation
+Renders every grid of posts on the site. The full reference, covering parameters, templates, pagination and editorial gallery rows, is [docs/gallery.md](../../../docs/gallery.md) in the repository root.
 
-``` php
-  // Gallery
-  $params = [
-    'title' => 'Other videos of ' . $language_names,
-    'post_type' => 'videos',
-    'custom_class' => 'full',
-    'columns' => 5,
-    'posts_per_page' => 5,
-    'orderby' => 'rand',
-    'order' => 'asc',
-    'pagination' => 'false',
-    'meta_key' => 'featured_languages',
-    'meta_value' => $language_iso_codes,
-    'selected_posts' => '',
-    'display_blank' => '',
-    'taxonomy' => '',
-    'term' => ''
-  ];
-  echo create_gallery_instance($params);
+## Quick example
+
+```php
+echo create_gallery_instance(
+	wt_gallery_params(
+		array(
+			'title'          => 'Other videos of ' . $language_name,
+			'post_type'      => 'videos',
+			'columns'        => 5,
+			'posts_per_page' => 5,
+			'orderby'        => 'rand',
+			'meta_key'       => 'featured_languages',
+			'meta_value'     => $language_post_ids, // comma-separated post IDs, not ISO codes
+			'exclude_self'   => 'true',
+		)
+	)
+);
 ```
 
-Note: Boolean type fields must be strings instead
-
-## flexible post types:
-
-* `languages`
-* `videos`
-* `fellows`
-* `careers`
-* `resources`
-
-Any post type is accessible to the plugin. However custom templates will be required in order to render new types. Templates follow the name pattern gallery-[type].php
-
-# Design
-* Custom classes
-* Grid control via number of columns and count of posts to load per page
-* Sorting with `orderby` and `order`
-* `Pagination`
-
-# Filtering
-
-* Filter my post metadata with `meta_key` and `meta_value`
-* Filter by `taxonomy` and `term`
-* Return arbitrary posts with `selected_posts`
+- `wt_gallery_params()` lives in the theme (`includes/template/template-helpers.php`) and fills in every default.
+- Boolean parameters are strings: `'true'` or `'false'`.
+- A new post type needs a template at `includes/templates/gallery-{post_type}.php`.

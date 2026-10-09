@@ -73,10 +73,15 @@ bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
 ```
 
 ## Key architecture docs
-- `plan.md` — phased technical roadmap (Phases 1–8); source of truth for what's done vs. in-progress
+- `plan.md` — the live website plan: an ordered Now/Next queue plus workstream specs. It owns the order of website work; the product roadmap (kept outside the repo) is organization-level strategy
+- `docs/plan-archive.md` — completed work: an index of finished initiatives, each linked to its doc, and a dated log
 - `docs/airtable-sync.md` — Make.com / wt-airtable-sync full reference (authoritative)
-- `docs/download-gateway.md` — download gateway plugin architecture
+- `docs/download-gateway.md` — download gateway: policies, follow-up forms, webhooks, GA4 events, operations, known gaps
+- `docs/content-model.md` — every post type and taxonomy: where it's authored, templates, redirects, known data issues
+- `docs/gallery.md` — wt-gallery parameters, templates, pagination, editorial gallery rows
+- `docs/deployment.md` — release flow, CI checks, what a deploy does, post-deploy steps
 - `docs/staging-sync.md` — how to sync staging ↔ production
 - `docs/testing-strategy.md` — PHPUnit layer strategy and upgrade path
-- `docs/plan-archive.md` — completed phases (reference only)
-- `docs/local_docs/` — additional internal specs (security audit, GA4 handoff, gateway brief, Make audit findings, language registry spec)
+- `docs/local_docs/` — additional internal specs (security audit, GA4 handoff, gateway brief, Make audit findings, language registry spec). Gitignored; never commit them
+
+When a plan item ships: remove it from `plan.md`, add a log entry and an index row to `docs/plan-archive.md`, and make sure the system it built is described in a `docs/` file. Keep security specifics out of tracked files, because the repo is public.

@@ -1,608 +1,478 @@
-# Wikitongues – Technical Debt & Improvement Plan
+# Wikitongues – Website Plan
 
-This file tracks known issues, deferred refactors, and planned improvements.
-Completed work: [plan-archive.md](docs/plan-archive.md) | Testing strategy: [docs/testing-strategy.md](docs/testing-strategy.md)
+The live plan for wikitongues.org: what comes next, in order, and the spec for each piece of work. Finished work moves to [docs/plan-archive.md](docs/plan-archive.md); how the finished systems work is documented in `docs/`.
 
-**Companion documents (authoritative for sequencing and analytics):**
-- Product roadmap: `wikitongues-product-roadmap.md` — impact-first sequencing overrides the dependency-ordered phasing below where they conflict
-- Analytics strategy: `wikitongues-analytics-strategy.md` — defines GA4/GTM instrumentation, key metrics, and reporting cadence
+**Docs:** [content model](docs/content-model.md) · [download gateway](docs/download-gateway.md) · [Airtable sync](docs/airtable-sync.md) · [galleries](docs/gallery.md) · [deployment](docs/deployment.md) · [staging sync](docs/staging-sync.md) · [testing](docs/testing-strategy.md) · [completed work](docs/plan-archive.md)
 
----
+## Contents
 
-## Table of Contents
-
-- [Roadmap](#roadmap)
-- [~~Phase 1~~](#phase-1--security-foundation-)
-- [~~Phase 2~~](#phase-2--visual-infrastructure--plugin-hygiene-)
-- [Phase 3](#phase-3--code-quality--data-integrity-baseline)
-- [Phase 3b](#phase-3b--phpstan-baseline-reduction-)
-- [Phase 4](#phase-4--docker--gateway-core)
-- [Phase 5](#phase-5--integration-tests--airtable-reconciliation--gateway-completion)
-- [Phase 6](#phase-6--visual-baseline--data-migration)
-- [Phase 7](#phase-7--features-and-monitoring-requiring-the-visual-baseline)
-- [Phase 8](#phase-8--membership-dependent-features)
-- [GitHub Issue Triage](#github-issue-triage--sequencing)
-- [Backlog](#backlog--known-issues-no-active-fix-timeline)
+- [Why this work](#why-this-work)
+- [How this plan works](#how-this-plan-works)
+- [Queue](#queue)
+- [Workstreams](#workstreams)
+  - [1. Fundraising & donors](#1-fundraising--donors)
+  - [2. Pages & storytelling](#2-pages--storytelling)
+  - [3. Discovery](#3-discovery)
+  - [4. Email capture & engagement](#4-email-capture--engagement)
+  - [5. Content model](#5-content-model)
+  - [6. Data quality & Airtable](#6-data-quality--airtable)
+  - [7. Engineering foundations](#7-engineering-foundations)
+  - [8. Membership (blocked on the board)](#8-membership-blocked-on-the-board)
+- [GitHub issues](#github-issues)
+- [Ideas](#ideas)
+- [Decided against](#decided-against)
 
 ---
 
-## Roadmap
+## Why this work
 
-Phases are ordered by dependency. Items within a phase can be parallelized. **Note:** The product roadmap (`wikitongues-product-roadmap.md`) sequences work by impact rather than dependency. Where the two conflict, the roadmap's sequencing wins — several items below (download gateway sub-phases 0–5, FundraiseUp ACF, Donors CPT) ship ahead of their plan.md phase gates. This document remains the authoritative source for technical specs and dependency chains; the roadmap is authoritative for what ships when.
+Wikitongues documents the world's languages. The website is where that work meets the public: an archive of 8,000+ language profiles, 1,800+ oral histories, territories and fellows, and the place every donation starts.
 
-**Key dependency chains:**
+The product roadmap's working thesis is that **engagement drives donations**. People who explore the archive, finding a language, watching an oral history or downloading a resource, become more likely to give, and to give monthly.
 
-- `Secrets scanning` → integromat-connector audit ✅ → Make.com scenario audit ✅ → `wt-airtable-sync` ✅ → retire integromat-connector write paths ✅
-- `Make.com scenario audit` ✅ → `Airtable reconciliation` _(soft: audit findings narrow reconciliation scope)_
-- ~~`Evaluate Bedrock`~~ ✅ → code quality cleanups proceed in current form _(decision: No — see [archive](docs/plan-archive.md))_
-- `Duplication fix` → `Root includes move` → `Reorganize includes` → `Docker` _(Docker must capture final file layout)_
-- ~~`Font Awesome`~~ ✅ → `Docker` → **Layer 4 visual baseline** → `Stylus migration` _(deferred)_
-- `Donors CPT` _(Phase 6)_ → `Donation optimization` _(roadmap: Track 1B, ships in Phase 1 ahead of Layer 4)_
-- `Archive template refactor` + `Autoloader` → `Docker` (Phase 4)
-- `PHPStan baseline reduction` → zero suppressions before `Layer 3` (Phase 5)
-- `Docker` → `Layer 3` → gateway integration tests
-- `Docker` → `Layer 4` → maps, performance profiling
-- `Layer 5 Data Integrity` → `Airtable reconciliation` → `nations_of_origin migration`
-- `Enhanced search results page` → `Layer 4 visual baseline` (Phase 6) _(roadmap: Track 2C, Phase 2 Engagement Features)_
-- `Better aliveness` → before `Layer 4 visual baseline` (Phase 6) _(roadmap: Track 2A, Phase 2 Engagement Features)_
-- `Forms` (report/Airtable replace) — no hard deps; `Forms` (gate) → Download gateway sub-phase 5
-- `Download gateway` → `Visitor engagement profile` → `Retention campaign personalization`
-- `Visitor engagement profile` + `Membership` _(board decision)_ → `Language passport` → `Gamification` → Phase 8+
+- **Metrics:**
+  - North star: monthly recurring donor conversion.
+  - Near-term proof: one-time gift conversion.
+  - Leading indicator: email capture rate.
+- **Order of work:** first make giving work and visible, with FundraiseUp configuration, the giving page, donor recognition, and pages that tell the story. Then build the surfaces that test the thesis: homepage, maps, search. Then let the data choose what's next.
+- **Instrument on day one.** A feature isn't done until its GA4 events fire in DebugView.
+- **Sized for a small team.** Ship small and iterate, with minimal copy where copy is the bottleneck. Engineering foundations never block features.
 
----
+**Outside this repo, but it limits what this work can return:** the Mailchimp setup and the post-download nurture emails (roadmap steps 1–5) haven't started. The download gateway has been collecting emails since March 2026, and no email sequence follows up on them yet.
 
-### Phase 1 — Security foundation ✅
+## How this plan works
 
-_No prerequisites. Unblocked all credential-sensitive work. Complete._
+- **Queue.** *Now* items are committed and run in order; *Next* items wait behind them. Anything in the workstreams that isn't queued is unscheduled.
+- **Specs** live in the workstream sections, and queue entries link to them.
+- **The product roadmap**, kept outside the repo, holds organization-level strategy: Mailchimp, editorial, the contributor program, and board decisions. This file owns the order of website work.
+- **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
+- **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-- [x] Secrets scanning — TruffleHog on every PR + GitHub native push protection ([archive](docs/plan-archive.md))
-- [x] PHPCS security sniffs — runs on every PR via static analysis ([archive](docs/plan-archive.md))
-- [x] Audit `integromat-connector` REST API exposure — no ACF fields opted in; token active; Guard only covers WP core entities ([archive](docs/plan-archive.md))
-- [x] Audit Make.com scenarios — findings in `docs/make-audit-findings.md` ([archive](docs/plan-archive.md))
-- [ ] WPScan in CI _(deferred — API no longer free; use Patchstack or Wordfence on production instead)_
+Last reviewed 2026-09-13.
 
 ---
 
-### Phase 2 — Visual infrastructure + plugin hygiene ✅
+## Queue
 
-_Complete._
+### Now
 
-- [x] Delete `wt-form` plugin ([archive](docs/plan-archive.md))
-- [x] Gallery `link_out` param + filtered archive pages ([archive](docs/plan-archive.md))
-- [x] Convert `writing_systems` to `writing-system` taxonomy ([archive](docs/plan-archive.md))
-- [x] Convert `linguistic_genealogy` to `linguistic-genealogy` taxonomy ([archive](docs/plan-archive.md))
-- [x] Replace Font Awesome with inline SVGs ([archive](docs/plan-archive.md))
-- [x] Territories archive ([archive](docs/plan-archive.md))
-- [x] Evaluate Bedrock _(decision: No — GreenGeeks hosting blocks webroot relocation; see [archive](docs/plan-archive.md))_
-- [x] `wt-airtable-sync` plugin — Phases 0–3 complete; production cutover 2026-03-01 ([docs](docs/airtable-sync.md), [archive](docs/plan-archive.md))
+| # | Item | Why now | Spec |
+|---|---|---|---|
+| 1 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 2 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 3 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 4 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 5 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 6 | Maps on territory and region pages | Discovery by place | [3.2](#32-maps-on-territory-and-region-pages) |
+| 7 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
----
+The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
-### Phase 3 — Code quality + data integrity baseline
+### Next
 
-_Code quality chain (1→5) must complete before Docker (Phase 4) so the image captures the final structure. Parallel tracks (6–10) have no ordering constraint relative to each other or the chain._
+| Item | Spec |
+|---|---|
+| Download gateway follow-ups: the anonymization webhook (9b), retention gaps, the mobile email step, consent and cookies, smaller fixes | [4.1](#41-download-gateway-follow-ups) |
+| Keep writing-system and genealogy terms in sync from Airtable | [6.1](#61-writing-system-and-genealogy-terms-from-airtable) |
+| Operations: server cron, vulnerability monitoring, a third-party plugin audit | [7.1](#71-operations) |
+| Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
+| Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
 
-#### 1. ~~Resolve `class-wt-rest-posts-controller.php` duplication~~ ✅
+### Blocked on a decision
 
-Root copy was orphaned — deleted (PR #501). Theme copy is canonical. Remaining cleanup is item 3 below.
-
-#### 2. ~~Staging environment data sync~~ ✅
-
-Weekly automated sync via `backup-prod-db.yml` → `sync-prod-to-staging.yml`. Runbook: [`docs/staging-sync.md`](docs/staging-sync.md) (PR #518).
-
-#### 3. ~~Remove dead code + clear root `includes/`~~ ✅
-
-Deleted `post-object-helpers.php` (both copies), `class-wt-rest-posts-controller.php`, removed `rest_controller_class` from 7 CPTs, cleared root `includes/` directory (PR #520).
-
-#### 4. ~~Reorganize theme `includes/` into subdirectories + autoloader~~ ✅
-
-See [archive](docs/plan-archive.md) (PR #529).
-
-#### 5. ~~CPT/taxonomy file consistency refactor~~ ✅
-
-See [archive](docs/plan-archive.md) (PR #529).
-
-#### ~~6. Archive template refactor~~ ✅
-
-See [archive](docs/plan-archive.md) (PR #536).
-
-#### ~~7. `gallery-territories.php` + `archive-territories.php` fixes~~ ✅
-
-See [archive](docs/plan-archive.md) (PR #538).
-
-
-#### ~~8. Fellows ACF field audit~~ ✅
-
-See [archive](docs/plan-archive.md) (PR #541).
-
-#### ~~9. Root-level file hygiene~~ ✅
-
-See [archive](docs/plan-archive.md) (PRs #498–500, #542).
-
-#### 10. Layer 5 — Data Integrity _(parallel; no Docker required)_
-
-Weekly WP-CLI command (`wp wt integrity check`) against the live DB. See [docs/testing-strategy.md](docs/testing-strategy.md) for full spec, priority checks, and implementation approach.
-
-#### 11. Enhanced search results page _(parallel; no deps)_
-
-Replace the basic search results page with a gallery-powered page surfacing results across languages, territories, linguistic genealogy, writing system, videos, and fellows. Evaluate `create_gallery_instance()` in multi-type mode or a dedicated query-and-render pattern.
-
-#### 12. Airtable sync — Slack change notifications _(parallel; no deps)_
-
-Two-part feature: plugin returns a field-level diff in the sync response; Make.com posts a Slack message when the diff is non-empty or a new record is created.
-
-**Part 1 — Plugin: changed-fields diff in sync response**
-
-Add a diff step to `Sync_Controller::sync()` in `wt-airtable-sync`:
-
-1. Before writing, read the current stored value of each mapped field via `get_field()` / `get_post_meta()`.
-2. After resolving incoming values (same logic as `write_meta()`), compare old vs new.
-3. Exclude fields where old and new are identical — no write-without-change noise.
-4. Return a `changed` key in the live-write response alongside the existing fields:
-
-```json
-{
-  "status": "ok",
-  "action": "updated",
-  "post_id": 12345,
-  "post_title": "Polynesian",
-  "changed": {
-    "public_status": { "old": "draft", "new": "publish" },
-    "featured_languages": { "old": [42], "new": [42, 87] }
-  }
-}
-```
-
-For `created` records, `changed` lists all written values with `"old": null`. `video_thumbnail_v2` (attachment ID) is excluded from the diff — its changes are implicit when the thumbnail module runs.
-
-**Part 2 — Make.com: Slack module with human-readable diff**
-
-Add a Slack module at the end of each scenario, after the sync POST:
-
-- **Gate:** only fire when `action == "created"` OR `changed` is non-empty. Skip entirely on unchanged updates.
-- **post_object resolution:** `changed` values for relationship fields are WP post IDs. Use a "Resolve WP Post" subscenario (see below) to convert them to titles before formatting the message.
-- **Message format:** `[Videos] Updated "Polynesian" — public_status: draft → publish | featured_languages: added "English"`
-- **Channel:** configurable in each scenario's SetVariables module (same pattern as `wp_base_url`).
-
-**"Resolve WP Post" subscenario pattern**
-
-Mirrors the Captions subscenarios that resolve Airtable linked record IDs. Instead of calling Airtable, call the standard WP REST API:
-
-```
-GET {{wp_base_url}}/wp-json/wp/v2/{post_type}/{id}?_fields=id,title
-```
-
-No custom endpoint required — the built-in WP REST API already exposes this. One subscenario per target CPT (languages, videos, etc.) or a single generic one parameterised by `post_type` + `id`. The auth keychain used for media uploads (basicAuth) is reused — no new credentials needed.
-
-**Scope boundaries:**
-- Only scalar text fields and resolved post_object titles in the notification — no binary/attachment diffs.
-- `video_thumbnail_v2` excluded from diff display.
-- Staging and production scenario instances each notify their own channel (same per-environment convention as `wp_base_url`).
+| Item | Waiting on |
+|---|---|
+| Membership, and the language passport and gamification built on it | The board's decision on what membership means ([8](#8-membership-blocked-on-the-board)) |
 
 ---
 
-### Phase 3b — PHPStan baseline reduction _(concurrent with Phase 3 and beyond)_
+## Workstreams
 
-The baseline introduced with PHPStan (PR #435) suppressed 400+ pre-existing violations. CI only catches new regressions — existing debt is frozen unless actively reduced. This phase is not a single pass; it runs alongside other work: when a file is already being touched for a refactor, fix its suppressed errors in the same PR. Regenerate the baseline after each batch.
+### 1. Fundraising & donors
 
-**Strategy:** fix by file cluster, not by error type. Each batch should be scoped to files already being modified so the diff stays coherent and reviewable.
+#### 1.1 FundraiseUp configuration and campaign banner
 
-**Batches (in order of when the files are likely to be touched):**
+*Now #1. On production by mid-November.*
 
-- **Batch 1 — `taxonomies/`** — CPT/taxonomy consistency refactor (Phase 3 item 5) touches these files; fix their baseline suppressions in the same PR
-- **Batch 2 — `template/` and `integrations/`** — fix during or after archive template refactor (Phase 3 item 6)
-- **Batch 3 — templates (`single-*.php`, `archive-*.php`, `taxonomy-*.php`)** — fix during Layer 4 prep; these files accumulate the most `get_field not found` suppressions
-- **Batch 4 — modules (`modules/`)** — fix during Layer 4 visual baseline work
-- **Batch 5 — residual** — whatever remains after Batches 1–4; target zero baseline before Phase 5 integration tests so PHPStan runs clean with no suppressions
+The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a campaign change needs a deploy. Move all FundraiseUp configuration into an ACF options page ("Fundraising"), and add a campaign banner that editors control.
 
-**Goal:** zero entries in `phpstan-baseline.neon` before Phase 5. New code after that point must pass PHPStan without suppression.
+1. **Options page and fields.**
+   - *Default campaign:* `fundraiseup_org_id`, `default_element_id`, `default_campaign_id`.
+   - *Active campaign:* `active_campaign_status` (disabled, active or scheduled), `active_campaign_label` (admin only), `active_campaign_id`, `active_campaign_element_id`, `active_campaign_start`, `active_campaign_end`, and an `active_campaign_banner` group.
+2. **`wt_active_campaign()`** in `template-helpers.php`. It returns the active campaign when its status is `active`, or when it is `scheduled` and today falls within its dates, and the default campaign otherwise. Every template reads IDs through it, so none are hardcoded.
+3. **Campaign banner.** The `active_campaign_banner` group has `show_banner`, `heading`, `body`, `cta_label`, `variant` (standard or urgent) and `display_scope` (all, home, archive or singles). A new `modules/banners/banner--campaign.php` renders it. `header.php` places it before the existing alert banner (the `banner_alert_*` options), which stays for general announcements.
+
+- **Before starting:** find every template and editorial link that opens a FundraiseUp element, so that none stays hardcoded.
+- **Instrument:** `campaign_cta_click` (`campaign_slug`, `cta_type`). Keep `donate_cta_click` with `cta_location` on every donate placement.
+- **Enables:** the year-end campaign, point-in-time drives and banner copy changes, all without a deploy, plus the frequency-default test in 1.2.
+
+#### 1.2 Giving page redesign
+
+*Now #3.*
+
+`/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
+
+- **Content:** recurring vs. one-time giving, biased toward monthly; impact framing; social proof from donor recognition (1.3); the FundraiseUp modal.
+- **Copy:** ship with minimal copy and iterate (decided 2026-09-13). The impact statement needs sign-off before it is final.
+- **Frequency-default test** (analytics strategy, Q5): a second FundraiseUp element that defaults to monthly, placed on content pages, compared against the one-time default. It needs 1.1, so that element IDs are configurable, and the `fundraise_up_element_id` dimension registered in GA4.
+- **Measure:** giving-page conversion and recurring share, before and after, in 30-day windows of engaged sessions.
+
+#### 1.3 Donor recognition
+
+*Now #4. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
+
+Donors are People: add a **Donor** term to `people-type`, so a board member who donates stays one record ([content-model.md → People](docs/content-model.md#people)).
+
+- **Anonymity:** a per-person flag that keeps a donor off every public list while still counting them ("Join N supporters"). A donor who is also on the board still appears on the Board page.
+- **Surfaces:**
+  - a Donors section: a `template-people.php` gallery row filtered by type, with anonymous donors excluded
+  - a donor count helper
+  - a social-proof block for the giving page, the homepage and language pages
+- **Content:** donor quotes, photos and permissions; start collecting them now. How donor records get in, by hand or imported from the donation platforms, is still open.
+- **Privacy:** People stays locked down (no REST, no search, no archive). Anonymous donors are counted, never rendered.
+- **Instrument:** `donor_story_view` (`surface`).
+- **Follow-on:** donor cards in galleries on campaign pages and the homepage.
+
+### 2. Pages & storytelling
+
+#### 2.1 Pages and navigation
+
+*Now #2, with minimal copy (decided 2026-09-13).*
+
+From the roadmap (step 6):
+
+- **Header navigation.** Proposed structure: Fellowship · Language Archive · Revitalization Resources · Projects · Contribute · Donate · Blog.
+- **New pages:**
+  - `/contribute`: the program, the ways to contribute, and CTAs.
+  - `/contribute/record`: how to record an oral history. The *Recording an Oral History* document already exists.
+  - `/contribute/faq`.
+  - `/contribute/stories`, once there are contributor stories to tell.
+  - `/resources/captioning` waits on a review of captioning's role in the organization.
+- **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
+- **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
+- **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
+- **Later in this workstream:**
+  - Move the blog from Medium and Substack onto `/blog`, for search value.
+  - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).
+
+### 3. Discovery
+
+#### 3.1 Dynamic homepage
+
+*Now #5.*
+
+The homepage is static. Surface recent oral histories, the active campaign (from 1.1), featured languages and fellows, with a donation CTA in the stream. Decide which signals to use, such as the publication date or an editor-curated featured flag, and build from galleries server-side where possible. A "most recent video" block is a quick first step.
+
+- **Measure:** homepage exit rate, pages per session, and the rate of homepage entries that end in a donation.
+- **Evaluate** 60–90 days after launch by comparing donation rates for visitors who use discovery features against those who don't. That comparison is the thesis test, and its result decides what follows this queue.
+
+#### 3.2 Maps on territory and region pages
+
+*Now #6.*
+
+An embedded map on `single-territories.php` and `taxonomy-region.php`, with markers that link to language pages.
+
+- **Library:** Leaflet with OpenStreetMap tiles, or Mapbox GL. No unrestricted API key in the browser.
+- **Data:** territories have a `wikidata_id` but no coordinates or shapes yet. Sourcing them, from Wikidata coordinates or a country-boundaries dataset keyed by ISO code, is part of this work.
+- **Performance:** some territories list hundreds of languages (India: 403).
+- **Instrument:** `map_interaction` (`territory`, `action`).
+
+#### 3.3 Enhanced search
+
+*Now #7.*
+
+1. **Find languages by name (#379).** Full-page `?s=` results miss language pages, because a language's title is its ISO code, and WordPress search matches titles and content, not `standard_name` or `alternate_names`. The typeahead already matches names. Make the main search query match them too (`includes/template/search-filter.php`). In the same pass, fix the missing video thumbnails in results (#58) and the results page title that shows an ISO code.
+2. **A gallery-powered results page** across languages, territories, genealogies, writing systems, videos and fellows. It should be faceted (region, family, content type) and relevance-weighted. Design it together with in-gallery filtering (#378).
+
+- **Instrument:** `search_performed` (`query`, `results_count`) and `search_result_click` (`result_position`, `result_type`). The dimensions are already registered.
+
+### 4. Email capture & engagement
+
+#### 4.1 Download gateway follow-ups
+
+*Next.* Each item is detailed in [download-gateway.md → Known gaps](docs/download-gateway.md#known-gaps-and-follow-ups).
+
+- **Anonymization webhook (9b).** Retention anonymizes names and emails in WordPress but tells no other system. Select the affected IDs before the bulk update, queue a `type: anonymize` webhook for each person, and add a Make branch that clears the Airtable People record (and, later, the Mailchimp contact).
+- **Retention gaps.** Delivered `person` webhook payloads (name, email) and the free-text organization answer outlive retention; purge them too.
+- **Mobile email step.** In the first month, 60% of desktop visitors who saw the modal submitted it, against 7.7% on mobile (a small sample). Review the modal on phones: layout, keyboard behavior, number of fields.
+- **Consent and cookies.** The "Receive updates" box is ticked by default, and the visitor cookie is set without a consent step. Decide both before any email marketing starts.
+- **Smaller fixes:**
+  - Skippable shows no skip button when there's no follow-up form.
+  - Disabled doesn't hide the Wikimedia Commons link.
+  - External downloads aren't logged.
+  - *Skip and download* sends no GA4 `redirect` event.
+  - No environment guard on webhooks, so local copies deliver to production Make.
+  - Retry times mix time zones.
+  - Expired tokens are never purged.
+  - Unused schema.
+  - Uninstall leaves settings behind.
+- **Airtable cleanup.** Dedupe the Download records duplicated by the 2026-09-08 replay, on `download_event_id` ([airtable-sync.md](docs/airtable-sync.md#gateway-webhook-router)).
+- **For the Mailchimp work (roadmap step 3):** add the language slug to the `intake` webhook payload, so Make can set the `LANG_SLUG` merge field.
+- **Security hardening** from the March 2026 review is tracked privately.
+
+#### 4.2 Native forms
+
+*Next (roadmap step 12).*
+
+Replace the Airtable iframe embeds (Submit a video, Submit a document) with native forms: custom REST endpoints and PHP-defined markup, no forms plugin, and data forwarded to Airtable through Make using the gateway's webhook pattern.
+
+- **Report a problem:** a new form for content errors, such as a broken language page or a wrong ISO code.
+- **Translate a document:** later, replace the invitation's `mailto:` link with a form.
+- **Instrument:** a submit event for each form.
+
+#### 4.3 Visitor engagement profile
+
+*Later. Useful once nurture emails exist to consume it.*
+
+A log of what each email-known visitor engages with, for personalizing retention emails and, eventually, a member's view of their own history.
+
+- **Identity progression:** anonymous (GA4 only) → email-known (gateway or newsletter) → contributor → member. Membership is blocked (8).
+- **Build:**
+  - an engagement table keyed to `wp_gateway_people` (`visitor_id`, `content_type`, `content_slug`, `event_type`, timestamp)
+  - a write hook for page views where the `gateway_vid` cookie maps to a known person
+  - a read API that returns what an email hash has engaged with
+- **Not now:** a user-facing passport, stamps or accounts.
+
+### 5. Content model
+
+Reference: [content-model.md](docs/content-model.md).
+
+#### 5.1 Content cleanups
+
+*Next. Small admin and data tasks.*
+
+- **People.**
+  - Sweep the retired list fields (`board_members`, `staff_members`, `interns_and_volunteers`, `team_banner_*`) from the Board, Advisors and Staff pages, once production is confirmed good.
+  - Publish or retire the draft Partners page.
+  - Decide whether the Board section should list co-founders first (*Selection order*) instead of alphabetically.
+- **Form 990s.**
+  - Delete the retired `reports` posts, their attachments, and the database copy of their ACF field group (`group_634b277f68bd7`).
+  - Delete the stale "Reports" menu item.
+- **Oral-history PDF links.** Three links in admin content still point at the PDF directly: the Language Revitalization page and two FAQs. Point them at its document page, so downloads go through the gateway (#619).
+
+#### 5.2 Video state UI
+
+*Later.* Video pages handle Processing and Private with plain text.
+
+- **Audio-only:** detect audio recordings and show an audio placeholder instead of a missing video frame.
+- **Processing:** design the state (#61), with a "notify me when ready" affordance.
+- **Private:** a "request access" affordance.
+- **Removed:** a tier for fraud or abuse takedowns, separate from creator-private, with its own notice (#4).
+- **Thumbnails:** one consistent treatment across all states.
+
+#### 5.3 Video collections
+
+*Later.* Editorial groupings across the archive: by person, by project (the Jewish Languages Project) or by expedition.
+
+- **Model:** a `collections` post type with `description`, `featured_image`, an ordered `videos` relationship and a `collection_type`.
+- **Pages:** a `/collections/` archive and a page per collection; optionally, a "Part of" link on video pages.
+- **Source:** curated in WordPress; no Airtable sync needed.
+
+#### 5.4 Creators: choose the model first
+
+*Later (decided 2026-09-13).* Creators exist in Airtable and are linked from videos and captions. Before building anything, choose between:
+
+- **A public `creators` post type synced from Airtable.** This is the earlier spec: profile pages at `/creators/{name}/`, relationships to languages and videos, and a nullable `user_id` for future membership.
+- **A Creator type on People.** People is private, to protect donors, so this means reworking its lockdown into per-type visibility.
+
+Make the same decision with the contributor program's needs in view (contributor profiles and stories).
+
+#### 5.5 Shared banner definition
+
+*Later. Verified feasible.* The editorial `banner_layout` banner and `revitalization_fellows_banner` are two definitions of the same thing, kept in step by hand.
+
+An ACF Clone field collapses them: a location-less "Global: Banner" group that clones with `display: group` and `prefix_name: 1`, and reuses the editorial banner's field keys. Group-mode clones keep the original keys, so stored content keeps resolving. The editorial side stays byte-identical, and only `revitalization_fellows_banner`'s sub-field keys change. Own PR.
+
+#### 5.6 People modelling
+
+*Later.* `leadership_title` holds the role at Wikitongues for staff and board, but the outside affiliation for advisors, and there's only one per person. Someone who is both an advisor and a former board member therefore shows the same text in both places. Split role from affiliation.
+
+### 6. Data quality & Airtable
+
+Reference: [airtable-sync.md](docs/airtable-sync.md) and [content-model.md → Known data issues](docs/content-model.md#known-data-issues).
+
+#### 6.1 Writing-system and genealogy terms from Airtable
+
+*Next. Found 2026-09-13.*
+
+The sync writes the legacy text fields `writing_systems` and `linguistic_genealogy`. Templates and the `/languages/` filters read the `writing-system` and `linguistic-genealogy` taxonomies, which only the February 2026 migration populated. Edits made since then never reached the terms, and languages created since have none.
+
+- **Fix:** in `wt-airtable-sync`, map both payloads to terms: split on commas, create missing terms, call `wp_set_object_terms()`, and keep the text fields.
+- **Catch up:** refresh from production and re-run the migrations for every language (local → staging → production).
+- **Guard:** add the check to the data integrity command (6.2).
+
+#### 6.2 Data integrity checks
+
+*Later. Low effort.* A weekly `wp wt integrity check`, specified in [testing-strategy.md → Layer 5](docs/testing-strategy.md#layer-5--data-integrity-planned). It reports, and never blocks deploys. It checks for:
+
+- duplicate ISO codes and names
+- blank ISO codes, and slugs that don't match the ISO code
+- missing standard names (#53)
+- taxonomy terms out of step with their text fields
+- Airtable records with no WordPress post
+
+#### 6.3 Airtable reconciliation
+
+*Later.*
+
+1. **Incomplete WordPress records.** 520+ languages arrived without some fields. Fix it at the source: make the fields required in Airtable, and handle gaps before sync.
+2. **Airtable records missing from WordPress.** As of March 2026: 2 languages, about 3 videos, 60 captions and 130 lexicons. Each is created when its record is next edited; bulk-touching the records closes the gap at once.
+3. **Airtable table bloat.** The Videos table has 188 fields, mostly computed or lookups. Resolve linked records in Make subscenarios, as Captions already does, then delete the computed columns. Don't add more lookup fields.
+
+Two related gaps:
+
+- **Resources:** about 907 WordPress posts against 204 Airtable records. They must be reconciled before resources can sync.
+- **Deletions don't propagate.** Agree a soft-delete convention (set the status to trash in Airtable first), or add a delete endpoint.
+
+#### 6.4 `nations_of_origin` migration
+
+*Later, after 6.3.* This comma-separated text field is matched with `LIKE`, so combined values hide languages (#241: South Korea). Territory relationships already exist as the structured alternative. Change the field, update the sync, and backfill.
+
+#### 6.5 Language names and caption IDs
+
+*Later.*
+
+- Languages without a standard name fall back to the ISO code (#53).
+- Comma-form names ("Gondi, Southern") read badly (#54). Choose between reordering them for display and fixing the data.
+- Caption file IDs join languages with `,` instead of `+` (#72).
+
+#### 6.6 Airtable change notifications in Slack
+
+*Later.*
+
+- **Plugin.** Add a `changed` diff to `Sync_Controller::sync()` responses. Read each mapped field's current value before writing, compare it after resolving the incoming value, and return only what changed: `{"field": {"old": …, "new": …}}`. On creation, return every written value with `"old": null`. Leave `video_thumbnail_v2` out.
+- **Make.** After the sync request, post to Slack only when the record was created or `changed` is non-empty, for example `[Videos] Updated "Polynesian" — public_status: draft → publish`. Resolve relationship IDs to titles with a "Resolve WP Post" subscenario (`GET /wp/v2/{post_type}/{id}?_fields=id,title`, reusing the media-upload credentials). Each environment posts to its own channel.
+
+#### 6.7 Canonical language registry
+
+*Long-term.* A specification for a sourced language registry lives in `docs/local_docs/` (not committed): Glottolog, Wikidata and ISO 639-3 identifiers, with per-field provenance and licensing. It would inform 6.3–6.5 and replace hand-maintained language data. No website work is scheduled.
+
+### 7. Engineering foundations
+
+None of this blocks feature work (decided 2026-09-13).
+
+#### 7.1 Operations
+
+*Next.*
+
+- **Server cron.** WP-Cron only runs on page views, and the gateway's webhook delivery and retention jobs depend on it. Add a cPanel cron on production and staging that runs `wp cron event run --due-now` every 5 minutes.
+- **Vulnerability monitoring.** WPScan in CI was dropped when its API stopped being free. Install Patchstack or Wordfence on production instead.
+- **Plugin audit.** Confirm which third-party plugins production still needs, and uninstall the rest.
+
+#### 7.2 PHPStan baseline
+
+*Ongoing.* On 2026-09-13 the baseline held 473 suppressed errors across 192 entries. That's up from 424, because the gateway and sync plugins joined PHPStan's scope; most are `get_field()` calls in templates. Fix a file's entries when you touch the file, then regenerate the baseline. There is no zero deadline.
+
+#### 7.3 Tests
+
+*Later.* [testing-strategy.md](docs/testing-strategy.md) specifies each layer.
+
+- **Integration tests (Layer 3):** PHPUnit with `WP_UnitTestCase` against MySQL in CI, for REST endpoints, gallery queries, search and post type registration.
+- **End-to-end and visual regression (Layer 4):** Playwright, with screenshot baselines for key templates. The baseline captures whatever exists when it's built.
+- **Docker** for a reproducible local environment, if contributor onboarding needs one.
+
+#### 7.4 Front-end build
+
+*Later.* Stylus is largely unmaintained, and `npm audit` flags it (dev-only).
+
+- **Option A, Dart Sass (recommended):** near one-to-one syntax. Rename the `.styl` files to `.scss`, adjust the imports, and replace the `$blue(tint)` function with `color.mix()`.
+- **Option B, PostCSS and Vite:** CSS custom properties, plus a bundle for the theme's JavaScript. A larger change; A can come first.
+- **Related:** version the compiled `main.css` so browsers don't keep stale styles, and move jQuery code (gallery pagination included) to plain JavaScript.
+
+#### 7.5 Performance
+
+*Later.* There is no production visibility into load times or queries. Known risks:
+
+- territory pages with hundreds of languages (India 403, China 249, Brazil 200, USA 197)
+- continent pages, whose fellows query has one `LIKE` clause per territory (#533; Asia has 215)
+- relationship fields that hydrate full post objects
+
+Set baselines for the language, territory, region and search pages, and monitor them with Query Monitor on staging or a scheduled synthetic check. Already done: territory pages read raw language IDs.
+
+#### 7.6 Smaller items
+
+*Later.*
+
+- Move secrets from `wp-config.php` into a `.env` file (`vlucas/phpdotenv`), the separable part of the Bedrock evaluation.
+- An accessibility (ADA) evaluation.
+- A deploy health check that covers more than the homepage.
+- Internationalization (long-term).
+- **Resource card ability dedupes on URL.** `wikitongues/add-resource-card` refuses any URL already on the Resources page. That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses genuine cards that share a URL, and lets the same resource through under a variant URL. When a second write ability lands, give all write abilities a caller-supplied request ID for retries, and add content rules only where someone asks for them.
+
+### 8. Membership (blocked on the board)
+
+What membership means for Wikitongues (its scope, benefits, feel and impact) is a board decision that sits above website work. Nothing here starts until the board makes it. The contributor program's identity progression (email-known → contributor → member → fellow) and the visitor engagement profile (4.3) prepare the ground.
+
+- **Language passport:** a member's view of their own engagement: languages explored, territories visited, videos watched, downloads.
+- **Gamification:** stamps for core actions, and an onboarding flow. Write a separate spec first.
 
 ---
 
-### Phase 4 — Docker + gateway core
-
-_Phase 3 code quality chain (A–E) must complete before Docker so the image captures the final file layout. Stylus migration is deferred to Phase 7 — Docker does not need to capture the final CSS preprocessor state. Gateway sub-phases 0–5 can run in parallel with Docker setup._
-
-_**Roadmap note:** Gateway sub-phases 0–5 are roadmap Track 1A and ship immediately as the primary email capture engine. Docker setup follows on its own timeline. See `wikitongues-product-roadmap.md` Phase 1._
-
-#### Dockerize project
-
-Containerize the WordPress install for contributor onboarding and CI-based integration/E2E tests. Must capture the post-Phase 3 file layout.
-
-#### Download gateway plugin — sub-phases 0–5
-
-Downloads currently go through unprotected direct file URLs or `force_download_file()` (proxy streaming, no logging, no auth). Goal: standalone plugin that logs every download, optionally gates access with a name/email modal, supports Dropbox-hosted assets via temporary API links, forwards events to GA4, and auto-anonymizes collected data.
-
-**Architectural decisions (resolved):**
-- Signed expiring redirect URLs — not proxy streaming; replaces `force_download_file()`
-- CPT strategy: `documents` + `document_files` (existing, in active use); `resources` CPT not used
-- Downloadable unit is the leaf node (`document_files` post, `videos` post, etc.) — selection UI stays in theme templates; gateway is post-type-agnostic
-- Plugin namespace: `download-gateway` / prefix `gateway_`
-- `FileResolverRegistry` maps post types to `FileResolver` implementations; `DocumentFileResolver` handles `document_files` via ACF `file` field; future types (videos, captions) register the same interface
-- **Policy model:** four values — `disabled` (link hidden entirely) | `none` | `soft` | `hard`. Three-tier resolution: per-record (`_gateway_gate_policy`) → per-CPT (`gateway_cpt_policy_{post_type}`) → global (`gateway_global_gate_policy`). First non-`inherit` value wins. Templates receive `disabled` as a signal to suppress the download affordance entirely.
-- **Intake forms:** resource-specific fields collected as modal step 2 (before redirect) when defined for a CPT. Fields registered via `gateway_intake_fields` PHP filter — not ACF. Gateway plugin renders whatever fields are declared; theme/CPT code owns the field definitions. Intake payload stored in `wp_gateway_intake_responses` and forwarded to external systems via WebhookDispatcher (sub-phase 2c).
-
-**Schema additions:**
-- `wp_gateway_people` — email_hash, email, name, consent fields, anonymization flags
-- `wp_gateway_download_events` — resource, storage, UTM params, visitor_id, person_id, ip_hash, event_type
-- `wp_gateway_webhook_delivery` — retry queue and dead-letter
-- `wp_gateway_tokens` — one-time download tokens with expiry; needed by sub-phases 3 and 5
-- `wp_gateway_intake_responses` — per-person, per-post intake payload (JSON blob); sub-phase 5b
-
-**Sub-phases:**
-- [x] **0** — Plugin scaffold: activation/deactivation/uninstall hooks, `GATEWAY_ENABLED` feature flag, settings page placeholder, Logger (PR #560)
-- [x] **1** — Data model: 4 tables created via `dbDelta()` on activation; idempotent (PR #560)
-- [x] **2a** — Core primitives: `PolicyResolver` (per-resource → per-CPT → global), `SettingsRepository`, `EventBus` (namespaced WP hooks), `DownloadEventRepository` (PR #560)
-- [x] **2b** — Collapsed into sub-phase 5: PeopleRepository, GateController, rate limiter (transients), honeypot, modal UI
-- [x] **2c** — WebhookDispatcher: HTTP delivery with retry + dead-letter queue against `wp_gateway_webhook_delivery`; motivated by intake response forwarding to Make.com/Airtable (sub-phase 5b). In production.
-- [x] **3** — Download endpoint: `GET /wp-json/gateway/v1/download/{token-or-post-id}`, `gateway_vid` visitor cookie, click + redirect event logging, IP hashing, no-cache headers. Tested on localhost — 302 redirect confirmed (PR #560)
-- [x] **4** — Resource authoring: native WP metabox (gate policy select + file URL + shortcode snippet), `[gateway_download]` shortcode. All three validated on localhost. (PR #561)
-- [x] **5** — Gate modes: soft (skippable modal) and hard (email required); `POST /wp-json/gateway/v1/gate`; PeopleRepository upsert; one-time token; nonce + rate limit + honeypot; silent passthrough via `gateway_gated` cookie. All policy permutations validated on localhost. (PR #561)
-- [x] **5b-i** — Policy model expansion: per-CPT tier, `disabled` value, settings UI audit table, shortcode + metabox updates. (PR #566)
-- [x] **5b-ii** — Intake form infrastructure: `wp_gateway_intake_responses` table (schema v2), `plugins_loaded` upgrade hook, `IntakeRepository`, `IntakeController` (`POST /gateway/v1/intake`), `intakeSteps`/`intakeUrl` localized to JS, multi-step modal (step 2 field rendering, submit/skip, `proceedAfterGate`). (PR #567)
-- [x] **5b-iii** — Intake policy configuration: named field sets (filter keyed by set name, not post type), `IntakeResolver` (3-tier: per-record postmeta → per-CPT option → global option), per-CPT + per-record admin UI, passthrough intake (`intakeAlways` flag), session cookie (`gateway_gated` changed from 30-day to session-scoped). (PR #572)
-- [x] **6** — Dropbox storage adapters: `DropboxAdapter` (OAuth2 refresh token flow, `sharing/get_shared_link_metadata` → `files/get_temporary_link`, 3-level transient cache), `VideoFileResolver`, `CaptionFileResolver`. Credentials via `wp-config.php` constants (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`). Wikimedia Commons links gated via JS-only `data-file-url` redirect (no server file resolution). Modal UX: loading spinner while token resolves, AbortController on dismiss, close button always visible. Validated locally for videos, captions, and Wikimedia links.
-- [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events (`resource_download_click`, `resource_download_gate_open`, `resource_download_gate_submit`, `resource_download_redirect`). GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. GA4: 3 new custom dimensions (post_type, policy, consent_download). Key events: gate_submit + redirect. Code spec: `download-gateway-ga4-handoff.md`. (PRs #578, #582, #585)
-- ~~**8** — Admin reporting: date-filtered download table, top resources, CSV export~~ — dropped; download data is accessible via Airtable views and phpMyAdmin/Beekeeper; a WP admin table adds no value over what already exists.
-- [x] **9** — Retention automation: daily cron nulls email/name after `retention_months`, marks `is_anonymized`; manual run-now button. (PR #565)
-  - **9b** — Retention webhook: when `RetentionJob::anonymize()` runs, SELECT the IDs before the bulk UPDATE, then enqueue a `type:anonymize` webhook (`{ person_id, anonymized_at }`) for each via `WebhookDispatcher`. Make.com Branch 4 in the Gateway Webhook Router scenario receives it and clears or deletes the corresponding Airtable People record (and archives the Mailchimp subscriber). No-op when endpoint is blank. Requires 2c (WebhookDispatcher) — now deployed. **Not yet implemented:** `RetentionJob::anonymize()` runs the bulk UPDATE but does not select the affected IDs or enqueue the webhook. This is the only remaining gateway sub-phase.
-- [x] **10** — Rollout: all document download surfaces (versions table, banner CTA, resources-hub card blocks) route through the gateway; videos/captions already gated (sub-phase 6). Legacy `document-download-handler.php` `force_download_file()` and the `/force-download/` route removed. (PR #598)
-
-**Implementation notes:**
-- WP Cron fires on page visits only — production retention job should be backed by server cron (`wp cron event run --due-now`)
-- Cache plugins must explicitly exclude `/gateway/download/` — HTTP headers alone are not sufficient
-- `gateway_vid` cookie is set unconditionally on first download; GDPR/ePrivacy implications TBD before gate launch
-- Dropbox credentials: defined as PHP constants in `wp-config.php` (`GATEWAY_DROPBOX_APP_KEY`, `GATEWAY_DROPBOX_APP_SECRET`, `GATEWAY_DROPBOX_REFRESH_TOKEN`); never stored in the database
-- EventBus wraps WP `do_action`/`add_action` with `gateway/` namespace prefix
-- Download data (`wp_gateway_download_events`, `wp_gateway_people`) accessible via Airtable views, phpMyAdmin, or Beekeeper — no WP admin reporting UI planned
-- Intake forms are not ACF-defined — fields registered via `gateway_intake_fields` PHP filter in theme or CPT-specific code; gateway plugin is field-agnostic
-- **Donation approach (2026-03-25):** no donation ask in the modal. Post-download email follow-up via Mailchimp, triggered by the `intake` webhook event (Make.com automation). Personalized by `use_case` tag — a researcher and a language speaker receive different messages. Rationale: user has already received the file (maximum gratitude moment); modal is already two steps; email is A/B-testable without code changes.
-
-**Cut lines (if scope must shrink):** Must-have: sub-phases 0–3 ✅, 5 (basic hard gate) ✅, 9 (retention). Cut first: per-CPT policy UI (keep global only), admin charts (keep CSV only), webhook retries (keep best-effort), intake forms (keep modal step 1 only).
-
-**Testing targets (unit):** ✅ IpHasher (12), TokenRepository (12), FileResolverRegistry + DocumentFileResolver (11), VisitorId (8), DownloadController::resolve() (10) — 53 tests total
-**Testing targets (integration):** endpoint logs and redirects ✅ (manual), gate submission yields one-time token, Dropbox temporary link generation
-
-#### Forms _(parallel to gateway sub-phases)_
-
-- **Report a problem** — lightweight form for users to flag content errors (broken language page, wrong ISO code, etc.)
-- **Replace Airtable embed submission forms** — Airtable iframe embeds are brittle and off-brand; replace with native WP forms or custom REST endpoints
-- **Translate a document** _(deferred — design needs rework)_ — CTA below the versions table on document single pages, inviting speakers to help translate a resource and get in touch about contributing. First pass prototyped (pre-filled `mailto:hello@wikitongues.org` reusing the `custom-cta-container` button style; branch `feature/cc/document-translate-cta`), but the visual treatment isn't right yet — parked, not shipping until reworked. Later: consider graduating from `mailto` to a custom REST contact form per the forms approach below.
-- _Download gateway gate form_ — already scoped in gateway sub-phase 5; not duplicated here
-- _Resource-specific intake forms_ — scoped in gateway sub-phase 5b; implemented as modal step 2 via `gateway_intake_fields` filter, not a standalone form system
-
-**Forms approach:** all forms (gate, intake, support, feedback, contact) are custom REST endpoints + minimal PHP-defined markup. No forms plugin dependency — the forms are simple enough that a plugin adds overhead without benefit. Field definitions live in code (PHP filter or direct markup), not in ACF or a form builder admin UI.
-
-#### Better aliveness — dynamic homepage _(before Phase 6 visual baseline)_
-
-_(Roadmap: Track 2A, Phase 2 Engagement Features)_
-
-The homepage feels static. Surface recently added/updated languages, latest videos, rotate banners for current campaigns. Identify content signals (publication date, editor-curated featured flag). Assess JS vs. server-side rendering. Must land before Layer 4 so dynamic content is captured in baseline screenshots.
-
-#### Retention & discovery email campaign _(parallel; no code deps)_
-
-_(Roadmap: Track 1D, Phase 1 Fix the Funnel)_
-
-Nurture sequence turning language exploration into recurring donations. Core thesis: discovery and travel — users see a set of languages, receive an email campaign featuring associated languages, with the goal of driving monthly donations. Full spec in `wikitongues-product-roadmap.md` Track 1D.
-
-**Codebase touchpoints:**
-- UTM parameter conventions for all email links (must be consistent with GA4 channel grouping)
-- Email provider integration (API or webhook for subscriber management)
-- Newsletter subscribe event (`newsletter_subscribe`) already instrumented in GTM
-- Download gateway (sub-phases 0–5) provides the primary email capture mechanism
-
-#### Visitor engagement profile _(parallel; depends on download gateway for email capture)_
-
-Data infrastructure for tracking content engagement per email-known visitor. This is the foundation that the retention campaign personalizes from, and that the user-facing passport (Phase 8) eventually surfaces.
-
-**Visitor identity progression:**
-
-1. **Anonymous** — GA4 tracks aggregate behavior via `content_type` dimension. No PII. Current state.
-2. **Email-known** — Download gateway or newsletter captures email. Engagement can be tied to an individual via hashed email. No account, no password. Enables personalized retention emails.
-3. **Member** — Full account with password. User can see their own passport, earn stamps. **Blocked on board-level strategic decision** about what membership means for Wikitongues — scope, benefits, feel, impact. This is not a development task until the board decides.
-
-**What to build now (layers 1–2 only):**
-
-- `wp_gateway_people` table (already spec'd in download gateway sub-phase 1) stores the email-known visitor
-- Engagement log table: `visitor_id` (FK to `wp_gateway_people`), `content_type`, `content_slug`, `event_type` (view, download, donate_click), `timestamp`
-- Write hook: on `page_view` events where a `gateway_vid` cookie maps to a known person, log the content interaction
-- Read API: given an email hash, return content types and slugs engaged with — consumed by retention campaign for personalization
-
-**What NOT to build now:**
-
-- User-facing passport UI (requires membership — Phase 8)
-- Gamification / stamps (requires membership — Phase 8)
-- Account creation, login, password management (requires board decision)
-
-**Dependency note:** The engagement log extends the download gateway's `wp_gateway_people` table. It can ship as part of gateway sub-phases 6–10 or as a standalone addition after sub-phase 5.
-
----
-
-### Phase 5 — Integration tests + Airtable reconciliation + gateway completion
-
-_Layer 3 requires Docker. Airtable reconciliation requires Layer 5 results (Phase 3). Gateway sub-phases 6–10 require sub-phases 0–5._
-
-#### Layer 3 — Integration Tests
-
-PHPUnit + `WP_UnitTestCase`. Catches hook/filter wiring, CPT registration, REST endpoint responses, DB reads/writes, query correctness. Requires MySQL test database in CI (Docker service). See [docs/testing-strategy.md](docs/testing-strategy.md) for priority targets.
-
-#### Airtable reconciliation
-
-Three known divergence directions:
-
-1. **WP records missing fields** — 520+ language records arrived incomplete. Reconciliation should happen at the Airtable source: institute field requirements and handle divergence before sync.
-2. **Airtable records missing from WP** — `_airtable_record_id` backfill (2026-03-01) confirmed gaps: 2 languages (`wyim`, `wyug`), ~3 videos (encoding artifacts), 60 captions, 130 lexicons. All absent records are created automatically on next Airtable modification. To force-close: bulk-touch missing records in Airtable.
-3. **Airtable table bloat** — Videos table has 188 fields, most computed or lookup. Correct architecture: resolve linked records in Make.com subscenarios (as Captions already does), then delete Airtable computed columns. Do NOT add more lookup fields — migrate existing ones to subscenarios instead.
-
-#### Download gateway — sub-phases 6–10
-
-- [x] **6** — Dropbox storage adapters (see Phase 4 entry for details)
-- [x] **7** — GA4 forwarding *(Mar 28)*: `dataLayer.push()` from `gateway-modal.js`; 4 events. GTM: 6 DLVs, 4 triggers, 4 GA4 Event tags. (PRs #578, #582, #585)
-- ~~**8** — Admin reporting~~ — dropped; Airtable views + phpMyAdmin/Beekeeper cover this.
-- [x] **9** — Retention automation (PR #565)
-  - **9b** — Retention webhook: enqueue `type:anonymize` to Make.com → clear Airtable/Mailchimp. Requires 2c (deployed). **Not yet implemented** — `anonymize()` does not enqueue the webhook. Only remaining gateway sub-phase.
-- [x] **10** — Rollout: document surfaces (table, banner, card) + resources hub routed through gateway; `force_download_file()` and `/force-download/` removed. (PR #598)
-
----
-
-### Phase 6 — Visual baseline + data migration
-
-_All new CPTs and templates (Donors, Creator, Collections) must land before the Layer 4 baseline is locked so their pages are captured in screenshots. Stylus not required here — the baseline is captured before the preprocessor swap so regressions from that swap are caught in Phase 7. `nations_of_origin` migration and Creator CPT backfill require Airtable reconciliation (Phase 5)._
-
-#### Complete Donors post type
-
-_(Roadmap: Track 1B, ships in Phase 1 ahead of Layer 4 gate)_
-
-Net new development — requires product definition and data input before implementation can begin. Build before Layer 4 baseline so Donors UI is included in screenshot comparisons.
-
-#### Donation optimization — donor cards in galleries
-
-_(Roadmap: Track 1B Phase 2, ships after Donors CPT)_
-
-After Donors CPT lands: integrate donor cards into gallery instances on relevant pages (campaign pages, homepage). Phase 2 (membership/recurring donors with profile features) is deferred pending a separate spec.
-
-#### FundraiseUp campaign management via ACF _(before Layer 4 — banner changes must be captured in baseline)_
-
-_(Roadmap: Track 1C, ships in Phase 1 as part of giving page redesign)_
-
-Move all FundraiseUp configuration out of hardcoded PHP into a new ACF options page ("Fundraising"), and add an admin-driven campaign banner slot.
-
-**Three deliverables:**
-
-**1. ACF options page + field group**
-
-New "Fundraising" options page under General. Two sections:
-
-- _Default campaign_ — `fundraiseup_org_id` (text), `default_element_id` (text), `default_campaign_id` (text). Replaces the hardcoded org ID in `page--head.php` and element/campaign IDs in `single-fellows.php` and `meta--languages-single.php`.
-- _Active campaign_ — `active_campaign_status` (select: disabled / active / scheduled), `active_campaign_label` (text, admin-only), `active_campaign_id` (text), `active_campaign_element_id` (text), `active_campaign_start` (date_picker), `active_campaign_end` (date_picker), and an `active_campaign_banner` group (see deliverable 3).
-
-**2. `wt_active_campaign()` helper**
-
-New function in `template-helpers.php`. Returns the active point-in-time campaign data if status is `active`, or if status is `scheduled` and today falls within start/end dates; otherwise returns the default campaign. All templates consume this single function — no IDs hardcoded anywhere.
-
-**3. Campaign banner module + header integration**
-
-`active_campaign_banner` group fields: `show_banner` (true_false), `heading` (text), `body` (textarea), `cta_label` (text), `variant` (select: standard / urgent), `display_scope` (checkbox: all / home / archive / singles).
-
-New `banner--campaign.php` module. `header.php` gains two ordered banner slots: campaign banner (if active + `show_banner` + scope matches), then the existing alert banner. The two slots serve distinct purposes — campaign banner is fundraising-specific; alert banner remains for general announcements.
-
-**What this enables:** campaign launches and banner copy changes require no deploy. EOY campaigns, point-in-time drives, and future raises are managed entirely from admin.
-
-**Dependency note:** no Docker dependency; can start independently. Must land before Layer 4 so banner UI is captured in visual baseline.
-
-#### Video collections _(before Layer 4 — collection pages must be captured in baseline)_
-
-Editorial groupings that cut across the video archive for storytelling purposes — videos recorded by a specific person, videos belonging to a named project (Jewish Languages Project), videos from a given mission trip or recording expedition.
-
-**Data model:**
-
-New `collections` CPT with its own archive and single templates. Fields:
-- `title` — display name of the collection
-- `description` — editorial context (textarea)
-- `featured_image` — cover image for the collection card
-- `videos` — ACF relationship field to the `videos` CPT (multi-select, ordered)
-- `collection_type` — taxonomy or select: `person` / `project` / `expedition` / `other`
-
-Collections appear on:
-- A new `/collections/` archive page (gallery of collection cards)
-- Individual collection pages (`/collections/jewish-languages-project/`) listing the member videos
-- Optionally: a "Part of" affordance on `single-videos.php` linking back to the collection(s) the video belongs to
-
-**Airtable sync:** Not required at launch — collections are editorially curated in WordPress. If collections map to existing Airtable structures later, a sync route can be added.
-
-**Dependency note:** No Docker dependency; no Airtable reconciliation required. Must land before Layer 4 so collection archive and single templates are included in visual baseline screenshots.
-
----
-
-#### Creator CPT _(before Layer 4 — creator pages must be captured in baseline)_
-
-Creators already exist as a table in Airtable and are referenced on video and caption records. Bringing them into WordPress as a first-class CPT enables creator archive and profile pages, creates a named entity to link to collections and download gateway data, and is a direct precursor to a user account system.
-
-**Data model:**
-
-New `creators` CPT synced from Airtable via Make.com (same pattern as languages, videos, captions).
-
-Core fields (sourced from Airtable):
-- `name` — display name
-- `bio` — short biography
-- `profile_image` — headshot or avatar
-- `languages` — relationship to `languages` CPT (languages they speak / have documented)
-- `videos` — relationship to `videos` CPT (videos they recorded or appear in)
-- `location` — country or region
-
-WordPress-side additions:
-- `_airtable_record_id` — sync key (same pattern as all other synced CPTs)
-- `user_id` — nullable FK to `wp_users`; empty until Phase 8 membership links an account to the creator record
-
-**Make.com sync:**
-
-Add a Creators blueprint following the established pattern (Airtable webhook → WP REST sync endpoint). Linked record resolution (languages, videos) follows the subscenario pattern used by Captions.
-
-**WordPress archive and templates:**
-- `/creators/` archive — gallery of creator cards
-- `single-creators.php` — profile page: bio, languages documented, video gallery
-
-**Why before membership:**
-The CPT creates the data model and public-facing profile URL (`/creators/jane-doe/`) without requiring authentication. Phase 8 membership links a WP user account to an existing creator record via `user_id` — it does not create the record from scratch. This ordering avoids a Phase 8 data migration.
-
-**Dependency note:** Airtable reconciliation (Phase 5) should run first so creator records are clean before backfilling. Must land before Layer 4 so creator archive and single templates are included in visual baseline.
-
----
-
-#### Video state UI _(before Layer 4 — affects visual baseline)_
-
-The current video single template handles `Processing` and `Private` states with plain text messages and no affordances. Four gaps to close:
-
-- **Audio-only** — videos that are audio recordings have no video file; the thumbnail logic should detect this and show an audio-appropriate placeholder instead of a broken or absent video frame
-- **Processing** — currently shows a static message; add a "Notify me when ready" affordance (email capture, probably via the gateway people table or a lightweight subscribe endpoint)
-- **Private** — currently shows a static message; add a "Request access" affordance (sends a message to the archive team or logs a request)
-- **Thumbnail fallback logic** — audit the current thumbnail display logic across all four states (Public, Audio, Processing, Private) and define a consistent visual treatment for each
-
-**Dependency note:** No Docker dependency. Must land before Layer 4 so all state variants are captured in visual baseline screenshots.
-
----
-
-#### Layer 4 — End-to-End & Visual Regression _(locks the visual baseline)_
-
-Playwright. Full user flows, JS behaviour, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs). Nothing that changes template output should land after this without a deliberate baseline update. See [docs/testing-strategy.md](docs/testing-strategy.md) for priority flows.
-
-#### Migrate `nations_of_origin`
-
-`Also spoken in` (the `territories` ACF relationship field) already serves as the linked alternative in the sidebar. Migration requires changing the ACF field type, updating the Make.com sync, and backfilling data. Intentionally deferred until Airtable reconciliation (Phase 5) provides a clean data baseline.
-
----
-
-### Phase 7 — Features and monitoring requiring the visual baseline
-
-_All items here introduce visual changes or depend on Layer 4. Maps and Stylus must be validated against the established baseline. Performance profiling (Playwright-based) requires Docker + Layer 4._
-
-#### Migrate from Stylus
-
-Stylus is largely unmaintained. `npm audit` flags 3 high-severity findings (dev-only, no production impact). Choose one option before starting; they are mutually exclusive.
-
-**Option A — Dart Sass** _(recommended)_
-Sass/SCSS syntax maps almost 1:1 to Stylus. Dart Sass ships as a standalone CLI — same watch/build pattern as today. Resolves all audit findings. No template changes required.
-- Rename 42 `.styl` → `.scss`, adjust import syntax, update `package.json` scripts
-- Replace `$blue(tint)` color function with Sass `color.adjust()` or `color.mix()`
-- Drop `stylus`; add `sass`
-
-**Option B — PostCSS + Vite** _(larger investment; modern foundation)_
-Vite as build tool for both CSS and JS. PostCSS plugins provide Stylus-equivalent transforms; Stylus variables become CSS custom properties. JS gets bundled and tree-shaken — resolves the jQuery/bundling gap. Right foundation if Tailwind is ever introduced.
-- Add `vite`, `postcss`, `postcss-nesting`, `postcss-preset-env` to `devDependencies`
-- Convert Stylus variables to CSS custom properties; replace 4 individually-enqueued JS files with a Vite entry point
-- Larger scope — do not start while Phase 6 items are in flight
-
-_Option A can be adopted first; Option B can follow incrementally since Vite supports Sass natively._
-
-#### Maps on territory templates
-
-Territory and region pages would benefit from an embedded map. Applicable to `single-territories.php` and `taxonomy-region.php`. Evaluate Mapbox, Leaflet + OpenStreetMap, Google Maps Embed — ensure no API key is exposed client-side without restriction.
-
-#### Performance profiling and monitoring
-
-No visibility into page load times or query performance in production. Known risk areas: territory pages with large language counts (India: 403, China: 249, Brazil: 200, USA: 197); continent-level region pages aggregating many territories; `get_field()` returning full post objects on relationship fields at scale.
-
-**Goal:** Baseline measurements for key templates (language, territory, region, search); ongoing monitoring (New Relic, Query Monitor in staging, or GitHub Actions synthetic check); alert on regressions.
-
-**Quick win already done:** `get_field('languages', id, false)` on territory pages avoids hydrating hundreds of post objects.
-
----
-
-### Phase 8 — Membership-dependent features
-
-_**Blocked on board-level strategic decision.** Membership — what it means for Wikitongues, its scope, benefits, feel, and impact — is a strategic question that rises above website development objectives. This phase does not begin until the board decides what membership looks like. Technical implementation follows that decision, not the other way around._
-
-_The visitor engagement profile (Phase 4) accumulates data in the background without requiring membership. When Phase 8 begins, that data is ready to surface._
-
-#### Language passport
-
-User-facing view of their engagement profile — languages explored, territories visited, videos watched, downloads. Requires authenticated access (account with password or token-based). The data layer already exists from the visitor engagement profile; this phase adds the UI and the account system.
-
-#### Gamification
-
-Stamp rally: users earn stamps for core actions (watch a video, add a language, share a page). Onboarding flow guides new users through first actions. Matches the Wikitongues travel/documentation brand. Hard dependency: membership infrastructure + language passport. Write a separate spec before implementation.
-
----
-
-### GitHub Issue Triage & Sequencing
-
-Assessment of the 15 open GitHub issues, validated against the codebase (2026-09-08), grouped by theme and sequenced. Waves are ordered by independence/effort and dependencies; order within a wave is top-to-bottom.
-
-**Verified & closed (premise no longer holds)**
-
-- [x] [#73](https://github.com/wikitongues/wikitongues.org/issues/73) — *Languages single breaks on PHP 8.2.* **Closed 2026-09-08.** The cited `array_merge( $lexicon_source, $lexicon_target )` no longer exists — lexicons were refactored into `single-languages__lexicons.php` (gallery-param based) during the Phase 3 CPT refactors, and the only remaining reads of those fields (`includes/taxonomies/languages.php`) are null-guarded (`is_array(…) ? count(…) : 0`), so the PHP 8.0+ TypeError can't occur.
-
-> **Correction (2026-09-08):** a prior version of this triage claimed the `team` CPT was vestigial and slated it for deprecation/purge. That was wrong — it was the live data source for the Staff, Board, Partners and Interns/Volunteers pages. Do **not** deprecate or delete it.
->
-> **Superseded (2026-09-09):** `team` was renamed to **`people`** and is more central than ever — see *People content model* below.
-
-**Wave 1 — quick, independent (no dependencies)**
-
-- [x] [#380](https://github.com/wikitongues/wikitongues.org/issues/380) *(bug)* — Gallery random-order pagination re-shuffled every request. **Fixed (PR #615)** by seeding the shuffle. `wt-gallery/includes/queries.php`.
-- [x] [#421](https://github.com/wikitongues/wikitongues.org/issues/421) — Gallery `id` param audit + custom-class support. **Done (PR #612)** — removed the dead `custom_gallery_id` ACF field.
-- [x] [#59](https://github.com/wikitongues/wikitongues.org/issues/59) — *Team member YouTube link.* **Done 2026-09-08.** Rather than adding a lone `youtube` field to the team group, factored the duplicated social fields into a single shared ACF group — **"Global: Social Links"** (`group_wt_social_links.json`, 8 fields: email/facebook/instagram/linkedin/tiktok/twitter/website/youtube) — distributed to `team` + `fellows` via location rules (add a rule to extend to a new people type). Removed the inline social fields from the Team (`group_61548e2b929e2`) and Fellows (`group_624f529b40c49`) groups. Data-safe: field keys reused from Fellows, flat meta keys unchanged, verified all 86 populated social values resolve identically via `get_field()` and Staff/Board/Fellows pages render with no PHP errors. The render layer (`wt_social_links()`) already emitted `youtube`, so team members get it for free. *(Corrects the earlier wrong "team is vestigial" note — see above.)*
-
-**Wave 2 — live search bug (user-facing)**
-
-- [#379](https://github.com/wikitongues/wikitongues.org/issues/379) *(bug)* — Searching "russian" returns nothing. **Diagnosed 2026-09-08:** two surfaces. (1) The **typeahead** REST endpoint (`custom/v1/search`) already matches `alternate_names` and *does* return Russian — working. (2) The full-page **`?s=` results** don't list the language single because its `post_title` is the ISO code (`rus`) and WP default search only matches title/content, not `standard_name`/`alternate_names` meta. **Next up (deferred):** make the main search query also match language name meta. `includes/api/` / theme search query.
-- [#58](https://github.com/wikitongues/wikitongues.org/issues/58) — Video thumbnails missing on `?s=` results (`search-results__thumbnail.php`). Belongs with the Enhanced search results page (Phase 3 · item 11).
-
-**Wave 3 — data quality (with Layer 5 Data Integrity + Airtable reconciliation)**
-
-_Dataset issues — sequence with the Layer 5 integrity checks (Phase 3 · item 10) and Airtable reconciliation (Phase 5)._
-
-- [#53](https://github.com/wikitongues/wikitongues.org/issues/53) — Some languages lack a standard/primary name (display falls back to the ISO code). Add an integrity check + backfill.
-- [#54](https://github.com/wikitongues/wikitongues.org/issues/54) — Comma-form names ("Gondi, Southern"). Decide display-side reorder → "Southern Gondi" vs. data-side `standard_name` fix. Pairs with #53.
-- [#72](https://github.com/wikitongues/wikitongues.org/issues/72) — Caption file IDs join languages with `,` instead of `+` (`irk, eng` → `irk+eng`). Naming-convention fix at the data layer.
-- [#241](https://github.com/wikitongues/wikitongues.org/issues/241) — South Korea languages don't return, caused by the comma-combined `nations_of_origin` value ("South Korea, North Korea") + LIKE matching. Resolved by the **`nations_of_origin` migration (Phase 6)** — track it there.
-
-**Wave 4 — gallery enhancements (after #380 / #421)**
-
-- [#377](https://github.com/wikitongues/wikitongues.org/issues/377) — Gallery post-type fallback (empty query → nation's languages / random). Enhancement.
-- [#378](https://github.com/wikitongues/wikitongues.org/issues/378) — Gallery dynamic querying (in-element filter/sort/search + editable post type). Larger; overlaps the Enhanced search results page (Phase 3 · item 11) — design together.
-
-**Wave 5 — content model & visual polish (Phase 6 / 7)**
-
-- [#4](https://github.com/wikitongues/wikitongues.org/issues/4) — A "removed" video tier for fraud/abuse, distinct from creator-private, with its own notice. Video status model.
-- [#61](https://github.com/wikitongues/wikitongues.org/issues/61) — The "processing" video single is undesigned. Style that state; fits the Phase 6/7 visual work.
-
-**Backlog (no active timeline)** — [#533](https://github.com/wikitongues/wikitongues.org/issues/533), tracked below.
-
----
-
-### People content model
-
-**Done 2026-09-09.** `team` → `people`, with a `people-type` taxonomy (Board Member, Staff, Volunteer, Advisor) exposed as an ACF multi-select. A person can hold several types, so one record can be both a board member and a donor. Board, Advisors and Staff now share a single `template-people.php` that composes itself from editorial content — each people section is a `gallery_layout` row filtered by type, so a new people page needs no deploy. The CPT is locked down (`show_in_rest => false`, `exclude_from_search => true`, `has_archive => false`) ahead of donor records existing.
-
-Read a person's types with `get_the_terms( $id, 'people-type' )`. The ACF field runs `load_terms`/`save_terms` on, so ACF drops the meta and `get_field( 'people_type' )` returns null by design — the taxonomy is the single source of truth.
-
-**Open follow-ups:**
-
-- **Donor anonymity** — some donors do not want to be listed. A donor who is also a board member must appear on the Board page but not on the Donors page, while still counting toward the donor total ("N anonymous supporters"). Needs a per-person suppression flag plus count logic in the donor gallery. Deferred to the Patreon/DonorBox round: nothing reads the flag until a Donors page exists.
-- **`wp_gateway_people` naming overlap** — the download gateway already owns a "people" concept (`wp_gateway_people`, `PeopleRepository`) for email-captured visitors. There are now two registries: People (published profiles) and gateway people (contacts). Donors plausibly belong to both. Worth a naming/relationship note in `docs/` before the donor work links them.
-- **Board ordering is alphabetical** — the curated order the old `board_members` relationship field encoded (co-founders first) is not preserved by a type-filtered gallery. The gallery supports it: switch that section's *Order By* to **Selection order** and pick the people in order. Left alphabetical because type filtering is the requested model.
-- **Legacy meta not swept** — `board_members`, `staff_members`, `interns_and_volunteers` and `team_banner_*` are left in place on pages 15076/15078/15080 so the migration is reversible. Sweep once confirmed in production.
-- **`leadership_title` does double duty** — it holds "role at Wikitongues" for staff and board but "external affiliation" for advisors, and there is only one per person. So the three people who are both advisor and former board member show the same value in both places, and it cannot say anything about their board service. Splitting role from affiliation is the real fix; deferred.
-- **Partners page is still a draft** — pre-existing, unrelated to the rename. Board, Advisors and Staff are live.
-
-### Financials (Form 990s)
-
-**Done 2026-09-11.** The `reports` CPT — monthly financial updates, last posted March 2024 — is retired. In its place, a `form_990` CPT whose archive at `/financials` lists every filing newest tax year first; admins add one entry per filing (title, tax year, PDF), and the footer links to it beside the Candid seal. `/reports` and `/reports/*` 301 to `/financials`. The template reads raw meta (`tax_year`, `form_990_file`) rather than `get_field()`, so it adds no PHPStan baseline entries.
-
-**Not gated, by decision (2026-09-11).** Filings link straight to the media library rather than through the download gateway. An optional (soft) email prompt was considered and declined: public-disclosure documents should be one click, and the gateway's site-wide default is `hard`, so one missed per-CPT setting would put them behind a required email. If revisited, pin `form_990` to `soft` in code rather than relying on the settings page.
-
-**Open follow-ups:**
-
-- **Older 2022 return is still public** — `Final-2022-990-signed-WT.pdf` (`/wp-content/uploads/2023/11/`, attached to the private 2023 EOY Fundraiser page) includes a Schedule B page. Confirm it is the public copy (contributor names and addresses removed); the new 2022 upload supersedes it on `/financials`.
-- **Retired data not deleted** — the 8 `reports` posts, the files attached to them (budget projections, financial statements), and the "Post type: Reports" ACF field group (`group_634b277f68bd7` — its JSON is gone but the database copy remains) are left in place, so this is reversible. Delete once confirmed in production.
-- **Stale menu item** — "Reports" under About in *Mobile & Footer Menu* points at the retired post type. WordPress drops it from the front end on its own; delete it in Appearance → Menus.
-
-### Shared banner definition
-
-**Deferred, verified feasible.** The editorial `banner_layout` banner and `revitalization_fellows_banner` are two definitions of the same thing, kept in parity by hand. ACF Pro's Clone field collapses them: `display: group` + `prefix_name: 1` reproduces the exact `main_content_0_banner_banner_image` meta shape, and `pro/fields/class-acf-field-clone.php:255` only rewrites field keys in the `seamless` branch — so group-mode clones keep the original keys and stored content does not unstick. The safe form is a location-less "Global: Banner" group that **reuses the editorial banner's existing field keys**, leaving the editorial side byte-identical; only `revitalization_fellows_banner`'s sub-field keys shift. Own PR.
-
-### Backlog — known issues, no active fix timeline
-
-- **Fellows meta query scales poorly on continent pages** — `taxonomy-region.php` builds an OR `meta_query` with one LIKE clause per territory (Asia: 215 territories). Not currently failing (`memory_limit = -1` on local and production) but would exhaust a 128 MB limit. [Issue #533](https://github.com/wikitongues/wikitongues.org/issues/533)
-- **Duplicate Download records in Airtable (gateway webhook replay)** — When People `Last seen` was switched to a lookup (2026-09-08), the Make Gateway Webhook Router 422'd on that read-only field; Make's incomplete-executions replay then re-ran the Download-create step on runs that had already created the row, leaving duplicate Download records for the outage window. Bounded to that window — new downloads log one row each now that runs complete cleanly. Impact: inflated download counts in Airtable analytics; the `Last seen` lookup and (email-upserted) People records are unaffected. **Fix when convenient:** dedupe Airtable Downloads on the gateway's unique `download_event_id` (already in the webhook payload) — map it onto the Download row if not already present, then group-by and keep one. See `docs/airtable-sync.md` → Gateway Webhook Router.
-- **Resource card ability dedupes on URL** — `wikitongues/add-resource-card` refuses any URL already on the Resources page (`wt_resource_cards_has_url()` in `includes/integrations/resource-card-abilities.php`). That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses two genuine cards that share a URL, and lets the same resource through under a variant URL (`www.`, query string, redirect). **Fix when a second write ability lands:** a caller-supplied request ID shared by all write abilities (a retry with the same ID returns the first result without writing again), plus content rules only where someone actually asks for them.
+## GitHub issues
+
+Open issues, and where each is tracked (2026-09-13):
+
+| Issue | Tracked in |
+|---|---|
+| [#379](https://github.com/wikitongues/wikitongues.org/issues/379) Searching "russian" finds nothing | 3.3 (Now #7) |
+| [#58](https://github.com/wikitongues/wikitongues.org/issues/58) Video thumbnails missing in search | 3.3 (Now #7) |
+| [#378](https://github.com/wikitongues/wikitongues.org/issues/378) Gallery: dynamic querying | 3.3, designed with the results page |
+| [#377](https://github.com/wikitongues/wikitongues.org/issues/377) Gallery: post-type fallback | [gallery.md → Known gaps](docs/gallery.md#known-gaps) |
+| [#61](https://github.com/wikitongues/wikitongues.org/issues/61) "Processing" video page undesigned | 5.2 |
+| [#4](https://github.com/wikitongues/wikitongues.org/issues/4) "Removed" videos | 5.2 |
+| [#53](https://github.com/wikitongues/wikitongues.org/issues/53) Languages without standard names | 6.2, 6.5 |
+| [#54](https://github.com/wikitongues/wikitongues.org/issues/54) Comma-form language names | 6.5 |
+| [#72](https://github.com/wikitongues/wikitongues.org/issues/72) Caption file ID separators | 6.5 |
+| [#241](https://github.com/wikitongues/wikitongues.org/issues/241) South Korea's languages missing | 6.4 |
+| [#533](https://github.com/wikitongues/wikitongues.org/issues/533) Fellows query on continent pages | 7.5 |
+
+## Ideas
+
+Unprioritized. An idea moves into a workstream when data or capacity says so. Collected from the product roadmap's backlog and the readme's old to-do list.
+
+- **Discovery:**
+  - country landing pages
+  - a "Guess the Language" game
+  - galleries in place of carousels
+  - archive filters, and an interactive taxonomy on language pages
+  - a fellowship taxonomy archive
+  - search results grouped by type
+- **Storytelling:**
+  - an About page refresh
+  - an "Our impact" page with cohort stories
+  - numbers at a glance
+  - a fellowship information page
+  - press and speaking
+  - more testimonials
+  - earmarked giving
+- **Language pages:**
+  - external resource links (Wikimedia, OLAC, Ethnologue, Omniglot), and clearer presentation of them
+  - continent of origin
+  - audio-only entries
+  - a caption submission CTA (the PCF/Amara partnership)
+  - links between fellows and their languages
+- **Video pages:**
+  - transcripts and translations
+  - video authors
+  - licensing and ethics notes
+  - metadata toggles for multi-language videos and on mobile
+  - embeds for videos that aren't on YouTube
+- **Site-wide:**
+  - a mobile style pass
+  - 404 styling
+  - an alert banner shown only to visitors who haven't been by in a week
+  - an "About" dropdown in the header
+  - browser notification opt-in
+  - expiry for career posts
+- **Fellows and toolkit:**
+  - micro-blogging on fellow pages
+  - newsletter, language and donate prompts in the Revitalization Toolkit
+
+## Decided against
+
+- **Bedrock** (2026-02-28): the host's web root can't be moved cleanly, and most plugins can't be managed through Composer.
+- **A donation ask inside the download modal** (2026-03-25): the post-download email carries the ask.
+- **A reporting screen for the download gateway** (2026-04-12): Airtable views and a database client cover it.
+- **Gating Form 990s** (2026-09-11): public-disclosure documents stay one click away.
+- **A separate Donors post type** (2026-09-13): donors are a People type.
+- **A Google Ads monthly grant** (roadmap).
