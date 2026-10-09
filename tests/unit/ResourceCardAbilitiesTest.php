@@ -236,6 +236,13 @@ class ResourceCardAbilitiesTest extends TestCase {
 				'return' => 2,
 			)
 		);
+		WP_Mock::userFunction(
+			'acf_flush_value_cache',
+			array(
+				'times' => 1,
+				'args'  => array( self::PAGE_ID, 'main_content' ),
+			)
+		);
 		WP_Mock::userFunction( 'get_permalink', array( 'return' => 'https://wikitongues.org/revitalization/resources/' ) );
 
 		$result = wt_resource_cards_execute_add( $this->valid_input() );
@@ -310,6 +317,7 @@ class ResourceCardAbilitiesTest extends TestCase {
 		$existing = array( $this->card( 'Toolkit', 'https://wikitongues.org/documents/toolkit/' ) );
 		WP_Mock::userFunction( 'get_field', array( 'return' => $this->content( $existing ) ) );
 		WP_Mock::userFunction( 'add_sub_row', array( 'return' => 2 ) );
+		WP_Mock::userFunction( 'acf_flush_value_cache' );
 
 		$result = wt_resource_cards_execute_add( $this->valid_input() );
 

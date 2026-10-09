@@ -254,6 +254,9 @@ function wt_resource_cards_execute_add( $input = null ) {
 		$page_id
 	);
 
+	// add_sub_row() only flushes ACF's cache for the sub field it wrote, so
+	// without this the read-back returns the cached pre-write `main_content`.
+	acf_flush_value_cache( $page_id, 'main_content' );
 	$cards = wt_resource_cards_from_content( get_field( 'main_content', $page_id ) );
 	if ( $added === false || ! wt_resource_cards_has_url( $cards, $clean['url'] ) ) {
 		return new WP_Error( 'wt_resource_card_not_saved', 'The card could not be saved.' );
