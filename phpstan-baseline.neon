@@ -261,6 +261,10 @@ parameters:
 			path: wp-content/themes/blankslate-child/includes/integrations/events-filter.php
 
 		-
+			message: "#^Function acf_flush_value_cache not found\\.$#"
+			count: 1
+			path: wp-content/themes/blankslate-child/includes/integrations/resource-card-abilities.php
+		-
 			message: "#^Function add_sub_row not found\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/includes/integrations/resource-card-abilities.php
