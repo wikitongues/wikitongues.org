@@ -3,7 +3,7 @@
 Goal: professional-grade coverage — no visual regressions, no behavior breakage, no security gaps.
 Coverage is built in layers, from fast/cheap to slow/comprehensive.
 
-Layers 1–2 are complete and run on every PR. Layers 3–5 are planned for Phases 3–6.
+Layers 1–2 are complete and run on every PR. Layers 3–5 are planned but unscheduled: they sit under *Engineering foundations* in [plan.md](../plan.md) and never block feature work.
 
 ---
 
@@ -13,9 +13,9 @@ Layers 1–2 are complete and run on every PR. Layers 3–5 are planned for Phas
 **Catches:** coding standards violations, basic security anti-patterns (unescaped output, direct DB queries), JS style issues, type-safety violations
 **Runs:** on every PR via GitHub Actions
 
-**PHPCS** enforces the WordPress Coding Standards ruleset across the theme and `wt-gallery` plugin. One class per file enforced. Security sniffs catch unescaped output and direct `$wpdb` queries.
+**PHPCS** enforces the WordPress Coding Standards ruleset across the theme, `wt-gallery`, `download-gateway`, `typeahead/typeahead.php` and `tests/`. `wt-airtable-sync` is not in its scope yet. One class per file enforced. Security sniffs catch unescaped output and direct `$wpdb` queries.
 
-**PHPStan** at level 5 with `szepeviktor/phpstan-wordpress` stubs. A baseline of pre-existing violations lives in `phpstan-baseline.neon`; CI fails only on new violations introduced after the baseline. To regenerate: temporarily remove the baseline include from `phpstan.neon`, run `composer analyse --generate-baseline`, then re-add it.
+**PHPStan** at level 5 with `szepeviktor/phpstan-wordpress` stubs. A baseline of pre-existing violations lives in `phpstan-baseline.neon`; CI fails only on new violations introduced after the baseline. On 2026-09-13 the baseline held 473 suppressed errors across 192 entries, more than the 424 it started with, mainly because the download gateway and sync plugins joined PHPStan's scope. Shrink it as you go: fix a file's entries when you touch the file, then regenerate. To regenerate: temporarily remove the baseline include from `phpstan.neon`, run `composer analyse --generate-baseline`, then re-add it.
 
 ---
 
@@ -26,18 +26,17 @@ Layers 1–2 are complete and run on every PR. Layers 3–5 are planned for Phas
 **Runs:** on every PR via GitHub Actions
 **Does not cover:** templates, DB queries, actual rendering, hook/filter wiring
 
-### Covered functions
+### Covered code
 
-| File | Functions |
+223 tests, 328 assertions (2026-09-13).
+
+| Area | Test classes in `tests/unit/` |
 |---|---|
-| `import-captions.php` | `safe_dropbox_url()`, `get_safe_value()` |
-| `acf-helpers.php` | `wt_meta_value()` |
-| `search-filter.php` | `searchfilter()` regex routing |
-| `render_gallery_items.php` | `generate_gallery_pagination()` |
-| `wt-gallery/helpers.php` | `getDomainFromUrl()` |
-| `template-helpers.php` | `get_environment()`, `wt_prefix_the()` |
-| `events-filter.php` | `format_event_date_with_proximity()` |
-| `wt-gallery/includes/queries.php` | `build_gallery_query_args()` (10 tests) |
+| Theme helpers | `AcfHelpersTest` (`wt_meta_value()`), `EnvironmentTest` (`get_environment()`), `PrefixTheTest` (`wt_prefix_the()`), `WtIconTest` (`wt_icon()`), `EventDateProximityTest` (`format_event_date_with_proximity()`), `SearchFilterTest` (`searchfilter()` routing), `Form990Test` (the `/financials` query and `wt_form_990_file()`) |
+| `wt-gallery` | `GalleryQueryArgsTest` (`build_gallery_query_args()`), `GallerySelectedPostsTest` (`wt_gallery_selected_post_ids()`), `GalleryPaginationTest` (`generate_gallery_pagination()`), `GetDomainFromUrlTest` (`getDomainFromUrl()`) |
+| `download-gateway` | 16 classes in `download-gateway/`: the three controllers, the file resolvers and Dropbox adapter, the repositories, the person and visitor cookies, IP hashing, webhook delivery and retention |
+
+The `import-captions.php` tests were deleted along with the importer in March 2026 (#529).
 
 Any new function with non-trivial logic should ship with a unit test.
 
@@ -59,7 +58,7 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 
 ---
 
-## Layer 3 — Integration Tests (Phase 5)
+## Layer 3 — Integration Tests (planned)
 
 **Tools:** PHPUnit + `WP_UnitTestCase` (official WordPress test suite)
 **Catches:** hook/filter wiring, CPT registration, REST endpoint responses, DB reads/writes, query correctness
@@ -75,7 +74,7 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 
 ---
 
-## Layer 4 — End-to-End & Visual Regression (Phase 6)
+## Layer 4 — End-to-End & Visual Regression (planned)
 
 **Tools:** Playwright
 **Catches:** full user flows, JS behaviour, authenticated vs. unauthenticated states, visual layout regressions (screenshot diffs)
@@ -89,16 +88,16 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - Gallery pagination
 - Admin-restricted pages return 403
 
-**Visual regression:** screenshot baseline per key page template; diff on every PR. Catches CSS/layout changes that behaviour assertions miss. Once established, nothing that changes template output should land without a deliberate baseline update.
+**Visual regression:** screenshot baseline per key page template; diff on every PR. Catches CSS/layout changes that behaviour assertions miss. Once established, nothing that changes template output should land without a deliberate baseline update. The baseline captures whatever templates exist when it's built; features don't wait for it.
 
 ---
 
-## Layer 5 — Data Integrity (Phase 3)
+## Layer 5 — Data Integrity (planned)
 
 **Tools:** WP-CLI custom command, server cron or GitHub Actions scheduled workflow
 **Catches:** duplicate iso_codes/standard_names, missing required ACF fields, slug/iso_code mismatches, Airtable→WP record gaps
 **Runs:** weekly scheduled job; logs results; reports violations (log file + optional GitHub issue or admin notice)
-**Does not replace:** Airtable reconciliation (Phase 5) — complements it by catching problems that slip through to WordPress
+**Does not replace:** Airtable reconciliation (plan.md → Data quality & Airtable) — complements it by catching problems that slip through to WordPress
 
 ### Priority checks
 
@@ -106,6 +105,8 @@ As functions are refactored to be purer, WP_Mock can be removed from individual 
 - No two published language posts share the same `standard_name` / `post_title`
 - No published language post has a blank `iso_code`
 - `post_name` (URL slug) matches `iso_code` for all published language posts — mismatch causes silent routing failures like the wblu/blu bug
+- Every published language has a `standard_name` (#53)
+- Every published language's `writing-system` and `linguistic-genealogy` terms agree with its synced text fields. The sync writes only the text fields, so the terms drift ([content-model.md](content-model.md#known-data-issues)).
 - **Airtable → WP record gap** — cross-check each CPT against the Airtable API to identify records with no corresponding WP post. Production backfill (2026-03-01) confirmed: 2 languages, ~3 videos (likely encoding artifacts), 60 captions, 130 lexicons absent from WP. Output: list of Airtable record IDs with no matching `_airtable_record_id` in WP.
 
 ### Implementation
