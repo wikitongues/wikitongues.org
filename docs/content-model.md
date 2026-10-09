@@ -198,7 +198,7 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 | `video_layout` | An embedded video |
 | `testimonials_layout` | A testimonial carousel |
 | `link_group_layout` | A group of links |
-| `block_layout` | A card or navigation block. Its link type Download (and the secondary button on document links) downloads a document through the gateway. |
+| `block_layout` | A card or navigation block. Its link type Download (and the secondary button on document links) downloads a document through the gateway. Cards lay out by count: one to three sit centred in a row, four scroll sideways, five or more wrap into a three-column grid. |
 
 **Where it's available:** default pages, `template-editorial.php`, the revitalization home, fellows and toolkit templates, `template-archive-success.php`, `template-people.php`, fellows and documents singles, fellow-category terms, and the Video Settings options page. `editorial-content.php` reads the current page by default; a caller can set `$editorial_source` to render another source, as video singles do with the options page.
 

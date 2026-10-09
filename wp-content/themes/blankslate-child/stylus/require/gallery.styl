@@ -502,6 +502,43 @@ $aspect-ratio = 16/9
 						text--strong($blue()) // a
 						pointer-events none
 
+// FAQ galleries read as a page's Q&A list rather than a grid of cards: aligned
+// to the content column, a page-style heading, and inline links. Editorial
+// gallery rows always render FAQs as `full`, and the extra class keeps this
+// ahead of `.custom-gallery.full` (including its mobile width) without
+// depending on @require order.
+.custom-gallery.full.faq
+	margin 0 auto 3.2rem
+	width 90%
+	max-width $content
+	clear both
+
+	.wt_sectionHeader
+		text--header($black)
+		font-size $fontScale(6) // 3
+		border-bottom 0
+		padding-bottom 0
+
+	.gallery-container
+		.gallery-list
+			.gallery-item
+				&:first-of-type
+					&::first-letter
+						text--header($black)
+						font-size 3.2rem
+				a
+					background-color initial
+					display inline
+					float initial
+					flex-direction initial
+					justify-content initial
+					border-radius 0
+					padding 0
+					transition none
+					color $blue()
+					text--body($blue())
+					anchor($blue(),2px)
+
 .home
 	.custom-gallery
 		strong

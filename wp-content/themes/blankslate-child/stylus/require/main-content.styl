@@ -68,6 +68,52 @@
 			&:last-of-type
 				margin-bottom 0
 
+	ol
+		text--body($black)
+		margin 0.8rem 0 1.6rem
+		padding-left 2.4rem
+
+		li
+			list-style-type decimal
+			padding 4px 8px
+			margin-bottom 8px
+			line-height 2.6rem
+
+			strong
+				display inline
+				margin 0 0.4rem 0 0
+
+	// Editor-authored tables scroll sideways on narrow screens instead of
+	// widening the page.
+	.table-scroll
+		overflow-x auto
+		margin 1.6rem 0
+
+	table
+		width 100%
+		border-collapse collapse
+
+		th, td
+			text--body($black)
+			padding 8px 12px
+			border-bottom 1px solid $border-color
+			text-align right
+			white-space nowrap
+
+			strong
+				display inline
+				margin 0
+
+		thead th
+			text--strong($black)
+			border-bottom 2px solid $border-color
+
+		tbody th
+			text--strong($black)
+
+		th:first-child
+			text-align left
+
 	&.wt_single-videos__embed
 		max-width none
 		width 100%
