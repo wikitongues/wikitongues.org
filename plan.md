@@ -397,6 +397,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - An accessibility (ADA) evaluation.
 - A deploy health check that covers more than the homepage.
 - Internationalization (long-term).
+- **Resource card ability dedupes on URL.** `wikitongues/add-resource-card` refuses any URL already on the Resources page. That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses genuine cards that share a URL, and lets the same resource through under a variant URL. When a second write ability lands, give all write abilities a caller-supplied request ID for retries, and add content rules only where someone asks for them.
 
 ### 8. Membership (blocked on the board)
 
