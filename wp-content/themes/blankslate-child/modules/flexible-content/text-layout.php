@@ -4,7 +4,7 @@
 	$class        = $image ? ' has-image' : '';
 	$text_content = wpautop( wp_kses_post( get_sub_field( 'text_area' ) ) );
 
-	echo '<section class="main-content' . $class . '">';
+	echo '<section class="main-content main-content--text' . $class . '">';
 if ( $image ) {
 	echo '<div class="image-container"><img src="' . get_sub_field( 'image' ) . '" alt="Your Alt Text" class="your-css-class">';
 	if ( $caption ) {
