@@ -425,6 +425,17 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - Internationalization (long-term).
 - **Resource card ability dedupes on URL.** `wikitongues/add-resource-card` refuses any URL already on the Resources page. That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses genuine cards that share a URL, and lets the same resource through under a variant URL. When a second write ability lands, give all write abilities a caller-supplied request ID for retries, and add content rules only where someone asks for them.
 
+#### 7.7 Content styles: one prose module
+
+*Later.* About a dozen templates output rich text: editorial text rows, blog posts, the fellow "about" block, `page.php`, FAQ items, careers, Archive success and the giving campaign. Each styles bare tags on its own, after the base theme's reset strips them: there are 7 separate italic rules and 15 `anchor()` calls across 11 files, and blog links differ from text-row links. `.main-content` is both a layout box and a tag stylesheet, and some of its tag rules are layout rules (`ul li { float: left }`), so each new scope starts by undoing them. `main-content--text` (#651) is the newest such scope, and the next surface that needs lists or tables would copy it.
+
+- **Split prose from layout.** A `prose.styl` module and a `.wt_prose` class style everything the WYSIWYG produces: headings, paragraphs, lists, links, `strong` and `em`, blockquotes, images and captions, tables and embeds. Vertical rhythm is a single `> * + *` rule, not per-element margins. `.main-content`, `.entry-content` and their kin keep only width and outer margins.
+- **Variants are modifiers, not scopes:** `--compact` for FAQ answers and cards, and `--lede` to opt into the drop cap, which text rows currently apply to every first paragraph.
+- **Flat specificity.** Write prose rules as `.wt_prose :where(ul)` and the like, so a component can override one without escalating. Components style their own classes and never bare tags. This follows the same rule as the gallery cards (#623).
+- **Defaults from what works:** fellow singles, which render through text rows, and blog posts. Where they disagree, such as link underlines, link padding and drop caps, decide before building.
+- **Migrate one surface at a time:** text rows first (rename `main-content--text` to `wt_prose`), then blog, the fellow about block, `page.php`, FAQ items and careers. Each step deletes that surface's own rules and is checked against before-and-after screenshots of the pages that use it. Strip `.main-content` to layout last; the Revitalization application page's list is the last thing that depends on its float rules.
+- **Document** the rule ("bare tags only inside `.wt_prose`") in a content-styles section in `docs/`.
+
 ### 8. Membership (blocked on the board)
 
 What membership means for Wikitongues (its scope, benefits, feel and impact) is a board decision that sits above website work. Nothing here starts until the board makes it. The contributor program's identity progression (email-known → contributor → member → fellow) and the visitor engagement profile (4.3) prepare the ground.

@@ -120,6 +120,8 @@ A template that renders a card adds `gallery-item--card` to its `<li>`, and the 
 
 Don't style `.gallery-item` on its own. An earlier rule did, with a `:not()` exclusion for people, and it silently outranked the per-type overrides and flattened the fellow cards (#623). Opting in keeps specificity flat, and correctness doesn't depend on the order of `@require`s in `main.styl`.
 
+**FAQ galleries aren't cards.** `.custom-gallery.full.faq` in `gallery.styl` renders them as a page's question-and-answer list: aligned to the content column, a page-style heading, and inline links in the answers. It used to be scoped to the Archive success template, so an FAQ gallery row on any other page fell back to the card look and hid its links.
+
 ---
 
 ## Pagination and random order
@@ -202,3 +204,4 @@ About two dozen template call sites (`grep -rn "create_gallery_instance(" wp-con
 | 2026-09-08 | Seeded random pagination (#380) | #615 |
 | 2026-09-09 | People galleries; `selected_posts` keeps its order; new gallery-row fields | #622 |
 | 2026-09-11 | Card treatment made opt-in | #623 |
+| 2026-10-10 | FAQ gallery styling applies on every page, not only Archive success | |
