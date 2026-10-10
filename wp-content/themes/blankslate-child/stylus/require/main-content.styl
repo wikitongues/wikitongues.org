@@ -68,51 +68,85 @@
 			&:last-of-type
 				margin-bottom 0
 
-	ol
-		text--body($black)
-		margin 0.8rem 0 1.6rem
-		padding-left 2.4rem
+	// Editorial text rows (text-layout.php). Scoped so headings, lists and
+	// tables authored in the WYSIWYG don't reach the other .main-content
+	// surfaces (application page content, fellow about, document downloads),
+	// which keep the generic rules above.
+	&.main-content--text
+		h2
+			text--header($black)
+			font-size $fontScale(6) // 3, matching gallery section headings
+			margin 0 0 1.6rem
 
-		li
-			list-style-type decimal
-			padding 4px 8px
-			margin-bottom 8px
-			line-height 2.6rem
+		em
+			font-style italic
 
-			strong
-				display inline
-				margin 0 0.4rem 0 0
+		a
+			text--body($blue())
+			anchor($blue(),2px)
 
-	// Editor-authored tables scroll sideways on narrow screens instead of
-	// widening the page.
-	.table-scroll
-		overflow-x auto
-		margin 1.6rem 0
+		strong a
+			font-weight inherit
 
-	table
-		width 100%
-		border-collapse collapse
-
-		th, td
+		// Bulleted and numbered lists share one treatment. A list item's
+		// lead-in stays inline, so it reads as part of the item rather than
+		// as another subheading.
+		ul, ol
 			text--body($black)
-			padding 8px 12px
-			border-bottom 1px solid $border-color
-			text-align right
-			white-space nowrap
+			display block
+			margin 0.8rem 0 1.6rem
+			padding-left 2.4rem
 
-			strong
-				display inline
-				margin 0
+			li
+				float none
+				clear none
+				padding 4px 8px
+				margin-bottom 8px
+				line-height 2.6rem
 
-		thead th
-			text--strong($black)
-			border-bottom 2px solid $border-color
+				&:last-of-type
+					margin-bottom 0
 
-		tbody th
-			text--strong($black)
+				strong
+					display inline
+					margin 0 0.4rem 0 0
 
-		th:first-child
-			text-align left
+		ul li
+			list-style-type disc
+
+		ol li
+			list-style-type decimal
+
+		// Tables scroll sideways on narrow screens instead of widening the
+		// page.
+		.table-scroll
+			overflow-x auto
+			margin 1.6rem 0
+
+		table
+			width 100%
+			border-collapse collapse
+
+			th, td
+				text--body($black)
+				padding 8px 12px
+				border-bottom 1px solid $border-color
+				text-align right
+				white-space nowrap
+
+				strong
+					display inline
+					margin 0
+
+			thead th
+				text--strong($black)
+				border-bottom 2px solid $border-color
+
+			tbody th
+				text--strong($black)
+
+			th:first-child
+				text-align left
 
 	&.wt_single-videos__embed
 		max-width none
