@@ -33,9 +33,10 @@ The defaults come from the blog, the most-read prose surface.
 
 - **Type:** body 1.6rem at 1.5 line height. `h2` in the display face at 3rem,
   `h3` bold at 2rem.
-- **Rhythm:** one owl rule, `.wt_prose > * + *`, gives 1.6rem between blocks.
-  Headings get more space above (4.8rem for `h2`, 3.2rem for `h3`) and 0.8rem
-  below.
+- **Rhythm:** every text block (paragraph, list, figure, quote, table, heading)
+  has a 1.6rem bottom margin, at any depth, because pasted content wraps
+  paragraphs in extra `div`s (several blog posts came from Medium). Headings
+  get more space above (4.8rem for `h2`, 3.2rem for `h3`) and 0.8rem below.
 - **Links:** blue and underlined, with the `anchor()` hover pill.
 - **Lists:** blue markers. A bold lead-in stays inline, so it reads as part of
   the item rather than as another subheading.

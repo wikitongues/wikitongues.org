@@ -8,7 +8,7 @@
 //   component can override any rule without escalating.
 // - Layout (width, outer margins) belongs to the container's own class, not
 //   to .wt_prose. Running text should sit in a $measure-wide column.
-// - Vertical rhythm comes from one owl rule, not per-element margins.
+// - Vertical rhythm comes from one bottom margin shared by every text block.
 // - Variants are modifiers: .wt_prose--lede opts into the drop cap.
 //
 // Defaults come from the blog, the most-read prose surface: 1.6rem body at
@@ -18,8 +18,14 @@
 .wt_prose
 	text--body($black)
 
-	> :where(* + *)
-		margin-top 1.6rem
+	// Rhythm: every text block is followed by 1.6rem, at any depth, because
+	// pasted content (posts imported from Medium, say) wraps paragraphs in
+	// extra divs. The last block's margin collapses into the container's.
+	:where(p, ul, ol, blockquote, figure, .wp-caption, .table-scroll, h2, h3, h4)
+		margin-bottom 1.6rem
+
+	> :where(:last-child)
+		margin-bottom 0
 
 	:where(p, li, th, td, figcaption, .wp-caption-text)
 		font-size 1.6rem
@@ -36,14 +42,18 @@
 		text--strong($black)
 		font-size 2rem
 
-	> :where(* + h2)
+	// Headings take their extra space above, and sit close to what follows.
+	:where(h2)
 		margin-top 4.8rem
 
-	> :where(* + h3)
+	:where(h3)
 		margin-top 3.2rem
 
-	> :where(h2 + *, h3 + *)
-		margin-top 0.8rem
+	:where(h2, h3)
+		margin-bottom 0.8rem
+
+	> :where(h2, h3):first-child
+		margin-top 0
 
 	// Inline
 
