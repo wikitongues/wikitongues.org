@@ -5,15 +5,13 @@
  */
 
 .wt_banner-alert
+	// Positioned by its parent, the sticky .wt_masthead (header.styl)
 	&__container
-		z-index 10
-		position fixed
-		top 0
 		display flex
 		justify-content center
+		box-sizing border-box
 		width 100%
 		height auto
-		max-width 1800px
 		padding 15px
 		background-color $blue()
 
