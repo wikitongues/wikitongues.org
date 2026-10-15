@@ -45,6 +45,11 @@ The defaults come from the blog, the most-read prose surface.
 - **Images:** full column width with rounded corners. Captioned images
   (`.wp-caption`) run 5% wider than the column on each side, with a small
   grey caption centred below.
+- **Images in text rows go in the WYSIWYG** (Add Media), with or without a
+  caption, not in the row's separate `image` field. Text rows run the same
+  filters as `the_content` (`wp_filter_content_tags`, `do_shortcode`), and
+  rewrite `sizes` to the column width, so any inserted size loads sharply.
+  The `image` / `image_caption` fields still render but are being retired.
 - **Drop cap:** opt-in with `.wt_prose--lede`. `editorial-content.php` gives it
   to a page's first text row only. The blog does not use it.
 

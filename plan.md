@@ -431,6 +431,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 - **`page.php`** (`.entry-content`) and **FAQ items** in galleries, which want a `--compact` variant.
 - **Careers**, **Archive success** and the **giving campaign**.
+- **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
 ### 8. Membership (blocked on the board)
