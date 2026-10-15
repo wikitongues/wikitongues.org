@@ -54,7 +54,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `form_990` | An annual IRS filing | Listed at `/financials/` | `archive-form_990.php` | **No** |
 | `events` | An event | None: redirects to `/events` | `events-page.php` lists them | Yes |
 | `careers` | A job or volunteer opening | `/careers/{slug}/` | `single-careers.php` | Yes |
-| `faq` | A question and answer | Via the `[faqs]` shortcode | `faq-page.php` | Yes |
+| `faq` | A question and answer | None: redirects to `/about/faq/` | `faq-page.php`, the `[faqs]` shortcode, FAQ gallery rows | Yes |
 | `partners` | A partner organization | None: redirects home | `[partners]` shortcode, `template-about-partners.php` | Yes |
 | `blog` | A blog post | `/blog/` and `/blog/{slug}/` | `archive-blog.php`, `single-blog.php` | Yes |
 
@@ -244,6 +244,7 @@ From `includes/template/router.php`:
 | The `partners` archive and singles | Home |
 | A caption, lexicon or resource | Its video or language, or `/archive` if that isn't published |
 | An event | `/events` |
+| An FAQ | `/about/faq/` (301) |
 | A Form 990 | `/financials` |
 | A person | `/about/staff-and-volunteers/` |
 | `/fellow-category/` | The first fellow category |

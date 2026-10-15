@@ -429,7 +429,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 *In progress.* `prose.styl` and `.wt_prose` exist, and three surfaces use them: editorial text rows, the fellow "About" block and blog posts. The rules and decisions are in [content-styles.md](docs/content-styles.md). Still to migrate, one at a time and each checked against before-and-after screenshots of the pages that use it:
 
-- **`page.php`** (`.entry-content`) and **FAQ items** in galleries, which want a `--compact` variant. The single FAQ page (`/faqs/...`) has no theme template at all and renders unstyled; decide whether it should exist before styling it.
+- **`page.php`** (`.entry-content`) and **FAQ items** in galleries, which want a `--compact` variant.
 - **Careers**, **Archive success** and the **giving campaign**.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
