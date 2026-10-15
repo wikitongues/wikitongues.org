@@ -141,23 +141,6 @@
 		height auto
 		aspect-ratio 16 / 9
 
-	// An image beside a text row's copy (text-layout.php's image field).
-
-	:where(.image-container)
-		float right
-		width (2 / 3) * 100%
-		margin 0 -3.2rem 0.8rem 1.6rem
-		padding 8px
-		border-radius 4px
-		background $black
-
-		:where(img)
-			border-radius 0
-
-		:where(.caption)
-			color $parchment
-			margin-top 0.6rem
-
 // The lede: a two-line drop cap on the first paragraph.
 .wt_prose--lede
 	> :where(p:first-of-type)::first-letter
@@ -179,7 +162,3 @@
 		:where(.wp-caption-text)
 			padding 0 1.6rem
 
-		:where(.image-container)
-			float none
-			width auto
-			margin 0 0 1.6rem

@@ -44,20 +44,6 @@
 		padding 0
 		display inline-block
 
-		&.link-group
-			li
-				list-style-type none
-				padding 0
-
-				a
-					text--body($blue())
-					border-left 2px solid $blue()
-					padding 4px 8px
-					float left
-
-					&:hover
-						text-decoration underline
-
 		li
 			margin-bottom 8px
 			list-style-type initial
@@ -96,3 +82,28 @@
 	// would collapse into the row's own margin.
 	> h2:first-child
 		padding-top 2.4rem
+
+// A text row's list of links (link-group-layout.php): one link per line,
+// marked by a blue rule rather than a bullet.
+.link-group
+	padding-left 0
+
+	li
+		list-style-type none
+		padding-left 0
+
+		& + li
+			margin-top 0.8rem
+
+	a
+		display inline-block
+		margin 0
+		padding 4px 8px
+		border-left 2px solid $blue()
+		border-radius 0
+		color $blue()
+		text-decoration none
+
+		&:hover
+			text-decoration underline
+			background none
