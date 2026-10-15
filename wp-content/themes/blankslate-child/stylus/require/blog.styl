@@ -6,6 +6,7 @@
 	max-width $content
 	width 100%
 	margin 0 auto
+	padding-top 4.8rem // room below the sticky header (header.styl)
 
 	h1
 		text--header($black)
@@ -75,10 +76,15 @@
 						text-overflow: ellipsis;
 
 .blog-post
+	// The header is sticky and in the flow (header.styl), so the page sets
+	// its own space below it.
+	padding-top 4.8rem
+
 	.breadcrumbs,
 	.entry-header,
 	.entry-content
-		width ($content / 1.5)
+		width calc(100% - 3.2rem)
+		max-width $measure
 		margin 0 auto
 
 	.breadcrumbs
@@ -99,45 +105,7 @@
 			p
 				font-size $fontScale(4) // 2
 
-	.entry-content
-		*
-			margin-bottom 1.6rem
-
-		em
-			font-style italic
-
-		.wp-caption
-			max-width 110%
-			margin 0 auto 1.6rem
-
-		.wp-caption img,
-		img
-			width 100%
-			height auto
-			margin-top 2.4rem
-			border-radius 1.6rem
-
-		.wp-caption img
-			margin-left -5%
-
-		.wp-caption-text
-			color $grey-50
-			text-align center
-			max-width 960px
-			margin 0 -5%
-			width 100%
-			margin-left -5%
-
-		a
-			anchor($blue(), 4px)
-			text-decoration underline
-
-		p
-			iframe
-				width 100%
-				height auto
-				aspect-ratio 16 / 9
-				margin-bottom 0
+	// Body copy is .wt_prose (prose.styl).
 
 	.related-posts
 		width $content * 1.5
@@ -183,12 +151,6 @@
 
 @media all and (max-width:$mobile)
 	.blog-post
-		.breadcrumbs,
-		.entry-header,
-		.entry-content
-			width 100%
-			padding 0 1.6rem
-
 		header
 			h1
 				font-size $fontScale(7)
@@ -196,14 +158,6 @@
 			.excerpt
 				p
 					font-size $fontScale(4)
-
-		.entry-content
-			.wp-caption img,
-			img
-				border-radius 0
-
-			.wp-caption-text
-				padding 0 1.6rem
 
 		.related-posts
 			width 100%

@@ -1,0 +1,175 @@
+// Prose: one stylesheet for rich text, wherever the WYSIWYG or the block
+// editor produced it (plan.md 7.7). Text rows, the fellow "About" block and
+// blog posts use it so far.
+//
+// Rules:
+// - .wt_prose styles bare tags; components never do. Selectors go through
+//   :where() so the whole module sits at one class of specificity, and a
+//   component can override any rule without escalating.
+// - Layout (width, outer margins) belongs to the container's own class, not
+//   to .wt_prose. Running text should sit in a $measure-wide column.
+// - Vertical rhythm comes from one owl rule, not per-element margins.
+// - Variants are modifiers: .wt_prose--lede opts into the drop cap.
+//
+// Defaults come from the blog, the most-read prose surface: 1.6rem body at
+// 1.5 line height, 1.6rem between blocks, underlined links, wide rounded
+// images with centred captions.
+
+.wt_prose
+	text--body($black)
+
+	> :where(* + *)
+		margin-top 1.6rem
+
+	:where(p, li, th, td, figcaption, .wp-caption-text)
+		font-size 1.6rem
+		line-height 1.5
+
+	// Headings
+
+	:where(h2)
+		text--header($black)
+		font-size $fontScale(6) // 3, matching gallery section headings
+		line-height 1.2
+
+	:where(h3)
+		text--strong($black)
+		font-size 2rem
+
+	> :where(* + h2)
+		margin-top 4.8rem
+
+	> :where(* + h3)
+		margin-top 3.2rem
+
+	> :where(h2 + *, h3 + *)
+		margin-top 0.8rem
+
+	// Inline
+
+	:where(a)
+		anchor($blue(), 4px)
+		text-decoration underline
+
+	:where(strong)
+		font-weight 700
+
+	:where(strong a)
+		font-weight inherit
+
+	:where(em)
+		font-style italic
+
+	// Lists. A list item's lead-in stays inline, so it reads as part of the
+	// item rather than as another subheading.
+
+	:where(ul, ol)
+		padding-left 2.4rem
+
+	:where(li)
+		padding-left 0.8rem
+
+		&::marker
+			text--strong($blue())
+
+	:where(li + li)
+		margin-top 1.2rem
+
+	:where(ul > li)
+		list-style-type disc
+
+	:where(ol > li)
+		list-style-type decimal
+
+	// Tables scroll sideways on narrow screens instead of widening the page.
+
+	:where(.table-scroll)
+		overflow-x auto
+
+	:where(table)
+		width 100%
+		border-collapse collapse
+		font-variant-numeric tabular-nums
+
+	:where(th, td)
+		padding 8px 12px
+		border-bottom 1px solid $border-color
+		text-align right
+		white-space nowrap
+
+	:where(th)
+		font-weight 700
+
+	:where(thead th)
+		border-bottom-width 2px
+
+	:where(th:first-child, td:first-child)
+		text-align left
+
+	// Media. Images run slightly wider than the text column.
+
+	:where(img)
+		display block
+		width 100%
+		height auto
+		border-radius 1.6rem
+
+	:where(.wp-caption)
+		width auto !important // WordPress writes the image width inline
+		margin-left -5%
+		margin-right -5%
+
+	:where(.wp-caption-text)
+		color $grey-50
+		font-size 1.2rem
+		text-align center
+		margin-top 0.8rem
+
+	:where(p iframe)
+		display block
+		width 100%
+		height auto
+		aspect-ratio 16 / 9
+
+	// An image beside a text row's copy (text-layout.php's image field).
+
+	:where(.image-container)
+		float right
+		width (2 / 3) * 100%
+		margin 0 -3.2rem 0.8rem 1.6rem
+		padding 8px
+		border-radius 4px
+		background $black
+
+		:where(img)
+			border-radius 0
+
+		:where(.caption)
+			color $parchment
+			margin-top 0.6rem
+
+// The lede: a two-line drop cap on the first paragraph.
+.wt_prose--lede
+	> :where(p:first-of-type)::first-letter
+		text--header($black)
+		float left
+		font-size 6.4rem
+		line-height 0.8
+		margin 0.6rem 0.8rem 0 0
+
+@media all and (max-width:$mobile)
+	.wt_prose
+		:where(.wp-caption)
+			margin-left -1.6rem
+			margin-right -1.6rem
+
+		:where(img)
+			border-radius 0
+
+		:where(.wp-caption-text)
+			padding 0 1.6rem
+
+		:where(.image-container)
+			float none
+			width auto
+			margin 0 0 1.6rem
