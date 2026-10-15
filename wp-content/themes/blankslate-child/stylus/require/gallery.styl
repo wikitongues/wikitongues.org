@@ -510,7 +510,7 @@ $aspect-ratio = 16/9
 .custom-gallery.full.faq
 	margin 0 auto 3.2rem
 	width 90%
-	max-width $content
+	max-width $measure // the same reading column as text rows
 	clear both
 
 	.wt_sectionHeader
@@ -522,10 +522,17 @@ $aspect-ratio = 16/9
 	.gallery-container
 		.gallery-list
 			.gallery-item
-				&:first-of-type
-					&::first-letter
-						text--header($black)
-						font-size 3.2rem
+				// One question per ruled row, its answer tucked under it.
+				padding 2.4rem 0
+				border-top 1px solid $border-color
+
+				&:last-of-type
+					border-bottom 1px solid $border-color
+
+				> strong
+					font-size 1.8rem
+					margin-bottom 0.8rem
+
 				a
 					background-color initial
 					display inline

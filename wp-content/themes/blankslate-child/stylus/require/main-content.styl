@@ -73,10 +73,40 @@
 	// surfaces (application page content, fellow about, document downloads),
 	// which keep the generic rules above.
 	&.main-content--text
+		// A reading column: about 80 characters a line, centred.
+		max-width $measure
+
 		h2
 			text--header($black)
 			font-size $fontScale(6) // 3, matching gallery section headings
 			margin 0 0 1.6rem
+
+			// Room above each new section. Padding, because a first child's
+			// margin would collapse into the row's own margin.
+			&:first-child
+				padding-top 2.4rem
+
+		h3
+			font-size 2rem
+			margin 3.2rem 0 0.8rem
+
+		p
+			margin-left 0
+			margin-right 0
+
+		// Drop caps belong to the page's lede only (editorial-content.php
+		// marks the first text row), not to every row's first paragraph.
+		p:first-of-type::first-letter
+			text--body(inherit)
+			font-size inherit
+
+		&.main-content--lede
+			p:first-of-type::first-letter
+				text--header($black)
+				float left
+				font-size 6.4rem
+				line-height 0.8
+				margin 0.6rem 0.8rem 0 0
 
 		em
 			font-style italic
@@ -100,9 +130,12 @@
 			li
 				float none
 				clear none
-				padding 4px 8px
-				margin-bottom 8px
+				padding 0 0 0 0.8rem
+				margin-bottom 1.2rem
 				line-height 2.6rem
+
+				&::marker
+					text--strong($blue())
 
 				&:last-of-type
 					margin-bottom 0
@@ -126,6 +159,7 @@
 		table
 			width 100%
 			border-collapse collapse
+			font-variant-numeric tabular-nums
 
 			th, td
 				text--body($black)

@@ -1,7 +1,9 @@
 <?php
-	$image        = get_sub_field( 'image' );
-	$caption      = get_sub_field( 'image_caption' );
-	$class        = $image ? ' has-image' : '';
+	$image   = get_sub_field( 'image' );
+	$caption = get_sub_field( 'image_caption' );
+	$class   = $image ? ' has-image' : '';
+	// The page's first text row is its lede and opens with a drop cap.
+	$class       .= ( isset( $text_row_index ) && 0 === $text_row_index ) ? ' main-content--lede' : '';
 	$text_content = wpautop( wp_kses_post( get_sub_field( 'text_area' ) ) );
 
 	echo '<section class="main-content main-content--text' . $class . '">';
