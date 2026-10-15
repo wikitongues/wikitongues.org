@@ -1,57 +1,34 @@
 $wpChrome = 32px
 $primary = 56px
-$secondary = 54px
 $headerFontSize = 14px
 
-body
-	&[data-alert="true"]
-		padding-top 194.63px
+// The alert banner and header share one sticky masthead. Sticky (not fixed)
+// keeps the masthead in the document flow, so content always starts below
+// it, whatever it contains: subnav or not, alert banner or not, wrapped text.
+// No page needs a margin-top to clear it.
+//
+// The theme removes core's admin-bar bump (template-helpers.php), so pad the
+// body for the admin bar here. Core sets --wp-admin--admin-bar--height
+// (32px, 46px under 782px) whenever the bar is shown.
+body.admin-bar
+	padding-top var(--wp-admin--admin-bar--height, $wpChrome)
 
-		.wt_header
-			top 72px !important
+.wt_masthead
+	z-index 10
+	position sticky
+	top var(--wp-admin--admin-bar--height, 0px)
 
-	// Primary Navigation Bar
-	&.page-template,
-	&.single-careers,
-	&.single-document,
-	&.post-type-archive-languages,
-	&.post-type-archive-fellows,
-	&.post-type-archive-videos,
-	&.post-type-archive-territories,
-	&.post-type-archive-form_990,
-	&.post-type-archive-careers,
-	&.page-template.page-template-faq-page,
-	&.tax-fellow-category,
-	&.error404
-		margin-top $primary
+// Below 600px core makes the admin bar scroll away (position absolute), so
+// the masthead sticks to the very top once the bar has gone.
+@media screen and (max-width: 600px)
+	.wt_masthead
+		top 0
 
-		&.logged-in
-			margin-top $wpChrome + $primary
-
-	// Primary + Secondary Navigation Bar
-	&.page-parent,
-	&.page-child,
-	&.search,
-	&.post-type-archive-blog,
-	&.single:not(&.single-careers):not(&.single-document),
-	&.tax-region
-		margin-top $primary + $secondary
-
-		&.logged-in
-			margin-top $primary + $secondary + $wpChrome
-
-	&.logged-in
-		.wt_header
-			top $wpChrome
-
-		&[data-alert="true"]
-			padding-top 226.63px !important
-
-			.wt_banner-alert__container
-				top $wpChrome !important
-
-			.wt_header
-				top 104px !important
+// The front page header is transparent and sits over the hero banner. It has
+// no subnav, so it is exactly one primary bar tall.
+body.home
+	.wt_masthead
+		margin-bottom -($primary)
 
 .skip-link
 	text--body($black)
@@ -63,14 +40,10 @@ body
 		color $black
 
 .wt_header
-	z-index 10
 	display flex
 	flex-direction column
 	align-items center
-	position fixed
-	top 0
 	width 100%
-	max-width 1800px
 	box-sizing border-box
 	background $parchment
 	transition-property background
@@ -309,34 +282,12 @@ body
 
 @media all and (max-width:$mobile)
 	body
-		&.archive,
-		&.page-template
-			margin-top $primary
-
 		&.logged-in
-			margin-top 46px
-
-			.wt_header
-				top 46px
-
 			.wt_header
 				&__nav,
 				&__secondary
 					&--mobile
-						top 46px
-
-			&.page-parent,
-			&.page-child,
-			&.single-languages,
-			&.single-videos,
-			&.archive
-				margin-top 46px + $primary
-
-@media all and (max-width:$mobile)
-	body
-		&.logged-in
-			.wt_header
-				top 46px
+						top var(--wp-admin--admin-bar--height, 46px)
 
 				&__mobile-buttons
 					button
