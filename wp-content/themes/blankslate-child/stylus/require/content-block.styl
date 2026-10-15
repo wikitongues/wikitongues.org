@@ -47,19 +47,21 @@
 				button--secondary($parchment, $blue())
 				transition all 0.05s ease-in-out
 
+				// Hover grows the button by 0.2rem with a ring in its own colour.
+				// A shadow, not padding and negative margin, so nothing around it
+				// moves (the margin used to cancel .secondary's margin-left).
+				&:hover
+					background $parchment
+					box-shadow 0 0 0 0.2rem $parchment
+					border-radius 8px
+
 				&.secondary
 					margin-left 1.6rem
 					button--secondary($blue(), $parchment)
 
 					&:hover
 						background $blue(85)
-
-			a
-				&:hover
-					background $parchment
-					padding 1.7rem 2.2rem
-					margin -0.2rem
-					border-radius 8px
+						box-shadow 0 0 0 0.2rem $blue(85)
 
 .block
 	display flex
