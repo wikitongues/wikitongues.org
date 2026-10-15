@@ -78,6 +78,7 @@ bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
 - `docs/airtable-sync.md` — Make.com / wt-airtable-sync full reference (authoritative)
 - `docs/download-gateway.md` — download gateway: policies, follow-up forms, webhooks, GA4 events, operations, known gaps
 - `docs/content-model.md` — every post type and taxonomy: where it's authored, templates, redirects, known data issues
+- `docs/content-styles.md` — the `.wt_prose` module: bare tags only inside it, prose vs layout, type/rhythm/link decisions
 - `docs/gallery.md` — wt-gallery parameters, templates, pagination, editorial gallery rows
 - `docs/deployment.md` — release flow, CI checks, what a deploy does, post-deploy steps
 - `docs/staging-sync.md` — how to sync staging ↔ production
