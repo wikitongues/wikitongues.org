@@ -3,12 +3,34 @@ $section_header = get_sub_field( 'section_header' );
 $block_type     = get_sub_field( 'block_type' );
 $block_style    = get_sub_field( 'block_style' );
 
-$class  = ( $block_type === 'Card' ) ? 'thirds' : ( ( $block_type === 'Block' ) ? 'wide' : '' );
+$is_card = ( $block_type === 'Card' );
+
+$class  = $is_card ? 'thirds' : ( ( $block_type === 'Block' ) ? 'wide' : '' );
 $class .= ' ' . $block_style;
+
+// Cards lay out by count: up to three sit centred in one row, four scroll
+// sideways, and five or more wrap into a three-column grid.
+if ( $is_card ) {
+	$card_count = count( (array) get_sub_field( 'block_group' ) );
+	if ( $card_count > 4 ) {
+		$class .= ' thirds--grid';
+	} elseif ( $card_count === 4 ) {
+		$class .= ' thirds--scroll';
+	} else {
+		$class .= ' thirds--centered';
+	}
+}
+
 echo '<main class="wrapper ' . esc_attr( $class ) . '">';
 
 if ( $section_header ) {
 	echo '<h4>' . esc_html( $section_header ) . '</h4>';
+}
+
+// Cards get their own row container so the section header stays outside the
+// scrolling row.
+if ( $is_card ) {
+	echo '<div class="cards">';
 }
 
 while ( have_rows( 'block_group' ) ) :
@@ -131,5 +153,9 @@ while ( have_rows( 'block_group' ) ) :
 
 	echo '</section>';
 endwhile;
+
+if ( $is_card ) {
+	echo '</div>';
+}
 
 echo '</main>';

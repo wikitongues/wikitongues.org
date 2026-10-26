@@ -36,6 +36,7 @@
 
 			<?php wp_body_open(); ?>
 
+			<div class="wt_masthead">
 			<!-- alert/message banner -->
 			<?php
 			// load alert banner if user hasn't visited the site in 1 day
@@ -72,10 +73,6 @@
 					</div>
 					<?php echo do_shortcode( '[react_typeahead id="typeahead_nav" custom_class="nav-style" data_source="airtable"]' ); ?>
 					<?php
-
-					// global var? define somewher else?
-					$template_slug = get_page_template_slug();
-
 					if ( is_front_page() ) {
 						wp_nav_menu(
 							array(
@@ -114,48 +111,19 @@
 					</aside>
 				</section>
 
-				<?php if ( ! is_front_page() && ! is_page_template( 'template-giving-campaign.php' ) ) : ?>
+				<?php $secondary_menu_location = wt_secondary_menu_location(); ?>
+				<?php if ( $secondary_menu_location ) : ?>
 				<section class="wt_header__secondary">
 					<?php
-					if (
-							strpos( $template_slug, 'revitalization' ) !== false ||
-							is_singular( array( 'documents', 'fellows' ) ) ||
-							is_tax( 'fellow-category' )
-						) {
-						wp_nav_menu(
-							array(
-								'theme_location'  => 'revitalization-menu',
-								'container'       => 'nav',
-								'container_class' => 'wt_header__nav--secondary',
-							)
-						);
-					} elseif (
-							strpos( $template_slug, 'archive' ) !== false ||
-							is_post_type_archive( array( 'languages', 'videos', 'fellows', 'territories' ) ) ||
-							is_singular( array( 'languages', 'videos', 'territories' ) ) ||
-							is_tax( 'region' ) ||
-							is_search()
-						) {
-						wp_nav_menu(
-							array(
-								'theme_location'  => 'archive-menu',
-								'container'       => 'nav',
-								'container_class' => 'wt_header__nav--secondary',
-							)
-						); // if single language or single video, display the language
-					} elseif ( strpos( $template_slug, 'about' ) !== false || strpos( $template_slug, 'people' ) !== false ) {
-						// template-people.php replaced template-about-board/-staff, which
-						// matched on 'about'. Match it explicitly so Board, Advisors and
-						// Staff keep the About sub-navigation.
-						wp_nav_menu(
-							array(
-								'theme_location'  => 'about-menu',
-								'container'       => 'nav',
-								'container_class' => 'wt_header__nav--secondary',
-							)
-						);
-					}
+					wp_nav_menu(
+						array(
+							'theme_location'  => $secondary_menu_location,
+							'container'       => 'nav',
+							'container_class' => 'wt_header__nav--secondary',
+						)
+					);
 					?>
 				</section>
 				<?php endif; ?>
 			</header>
+			</div>

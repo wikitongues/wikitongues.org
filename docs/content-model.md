@@ -54,7 +54,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `form_990` | An annual IRS filing | Listed at `/financials/` | `archive-form_990.php` | **No** |
 | `events` | An event | None: redirects to `/events` | `events-page.php` lists them | Yes |
 | `careers` | A job or volunteer opening | `/careers/{slug}/` | `single-careers.php` | Yes |
-| `faq` | A question and answer | Via the `[faqs]` shortcode | `faq-page.php` | Yes |
+| `faq` | A question and answer | None: redirects to `/about/faq/` | `faq-page.php`, the `[faqs]` shortcode, FAQ gallery rows | Yes |
 | `partners` | A partner organization | None: redirects home | `[partners]` shortcode, `template-about-partners.php` | Yes |
 | `blog` | A blog post | `/blog/` and `/blog/{slug}/` | `archive-blog.php`, `single-blog.php` | Yes |
 
@@ -198,7 +198,7 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 | `video_layout` | An embedded video |
 | `testimonials_layout` | A testimonial carousel |
 | `link_group_layout` | A group of links |
-| `block_layout` | A card or navigation block. Its link type Download (and the secondary button on document links) downloads a document through the gateway. |
+| `block_layout` | A card or navigation block. Its link type Download (and the secondary button on document links) downloads a document through the gateway. Cards lay out by count: one to three sit centred in a row, four scroll sideways, five or more wrap into a three-column grid. |
 
 **Where it's available:** default pages, `template-editorial.php`, the revitalization home, fellows and toolkit templates, `template-archive-success.php`, `template-people.php`, fellows and documents singles, fellow-category terms, and the Video Settings options page. `editorial-content.php` reads the current page by default; a caller can set `$editorial_source` to render another source, as video singles do with the options page.
 
@@ -244,6 +244,7 @@ From `includes/template/router.php`:
 | The `partners` archive and singles | Home |
 | A caption, lexicon or resource | Its video or language, or `/archive` if that isn't published |
 | An event | `/events` |
+| An FAQ | `/about/faq/` (301) |
 | A Form 990 | `/financials` |
 | A person | `/about/staff-and-volunteers/` |
 | `/fellow-category/` | The first fellow category |

@@ -129,6 +129,13 @@ function wikitongues_custom_template_redirects() {
 		exit;
 	}
 
+	// FAQs are only read in lists (the FAQ page, FAQ gallery rows), never
+	// one at a time.
+	if ( is_singular( 'faq' ) ) {
+		wp_redirect( home_url( '/about/faq/', 'relative' ), 301 );
+		exit;
+	}
+
 	if ( is_singular( 'form_990' ) ) {
 		wp_redirect( get_post_type_archive_link( 'form_990' ) );
 		exit;
