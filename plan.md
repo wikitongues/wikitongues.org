@@ -425,6 +425,15 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - Internationalization (long-term).
 - **Resource card ability dedupes on URL.** `wikitongues/add-resource-card` refuses any URL already on the Resources page. That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses genuine cards that share a URL, and lets the same resource through under a variant URL. When a second write ability lands, give all write abilities a caller-supplied request ID for retries, and add content rules only where someone asks for them.
 
+#### 7.7 Content styles: one prose module
+
+*In progress.* `prose.styl` and `.wt_prose` exist, and three surfaces use them: editorial text rows, the fellow "About" block and blog posts. The rules and decisions are in [content-styles.md](docs/content-styles.md). Still to migrate, one at a time and each checked against before-and-after screenshots of the pages that use it:
+
+- **`page.php`** (`.entry-content`) and **FAQ items** in galleries, which want a `--compact` variant.
+- **Careers**, **Archive success** and the **giving campaign**.
+- **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
+- **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
+
 ### 8. Membership (blocked on the board)
 
 What membership means for Wikitongues (its scope, benefits, feel and impact) is a board decision that sits above website work. Nothing here starts until the board makes it. The contributor program's identity progression (email-known → contributor → member → fellow) and the visitor engagement profile (4.3) prepare the ground.

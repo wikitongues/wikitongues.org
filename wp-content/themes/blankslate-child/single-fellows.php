@@ -43,12 +43,11 @@ $display_about           = get_field( 'display_about', 'option' );
 $fellowship_about        = get_field( 'fellowship_about', 'option' );
 $fellowship_about_header = get_field( 'fellowship_about_header', 'option' );
 if ( $display_about && $fellowship_about ) {
-	echo '<div class="main-content">';
-	echo '<div class="fellowship-about">';
-	echo '<strong class="wt_sectionHeader">' . esc_html( $fellowship_about_header ) . '</strong>';
+	// Styled like the fellow's own text rows above it.
+	echo '<section class="wt_text-row wt_prose fellowship-about">';
+	echo '<h3>' . esc_html( $fellowship_about_header ) . '</h3>';
 	echo wp_kses_post( $fellowship_about );
-	echo '</div>';
-	echo '</div>';
+	echo '</section>';
 }
 
 ?>

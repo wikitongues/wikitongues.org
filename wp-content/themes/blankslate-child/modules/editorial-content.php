@@ -9,6 +9,9 @@
  */
 $editorial_source = isset( $editorial_source ) ? $editorial_source : get_queried_object();
 
+// Only the first text row opens with a drop cap (text-layout.php reads this).
+$text_row_index = 0;
+
 $templates = array(
 	'text_layout'         => 'modules/flexible-content/text-layout.php',
 	'banner_layout'       => 'modules/flexible-content/banner-layout.php',
@@ -43,7 +46,11 @@ if ( have_rows( 'main_content', $editorial_source ) ) :
 		if ( $template_path ) {
 			include $template_path;
 		}
+
+		if ( 'text_layout' === $layout ) {
+			++$text_row_index;
+		}
 	endwhile;
 endif;
 
-unset( $editorial_source );
+unset( $editorial_source, $text_row_index );
