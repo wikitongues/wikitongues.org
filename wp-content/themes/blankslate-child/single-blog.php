@@ -15,7 +15,7 @@
 		<h6 class="entry-meta"><?php echo get_the_date(); ?></h6>
 		</header>
 
-		<div class="entry-content">
+		<div class="entry-content wt_prose">
 			<?php the_content(); ?>
 		</div>
 

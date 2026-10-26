@@ -44,20 +44,6 @@
 		padding 0
 		display inline-block
 
-		&.link-group
-			li
-				list-style-type none
-				padding 0
-
-				a
-					text--body($blue())
-					border-left 2px solid $blue()
-					padding 4px 8px
-					float left
-
-					&:hover
-						text-decoration underline
-
 		li
 			margin-bottom 8px
 			list-style-type initial
@@ -84,26 +70,40 @@
 		margin-right auto
 		max-width 100%
 
-	&.has-image
-		.image-container
-			border-radius 4px
-			background $black
-			padding 8px
-			float right
-			width (2 / 3) * 100%
-			margin 0 -32px 8px 16px
+// Editorial text rows (text-layout.php) and the fellow "About" block: a
+// reading column of .wt_prose (prose.styl), which styles everything inside.
+.wt_text-row
+	width calc(100% - 3.2rem)
+	max-width $measure
+	margin 3.2rem auto
+	clear both
 
-			p
-				color $parchment
-				padding .6rem 0 0
+	// Room above each new section. Padding, because a first child's margin
+	// would collapse into the row's own margin.
+	> h2:first-child
+		padding-top 2.4rem
 
-				&::first-letter
-					text--body(inherit)
-					font-size 1.6rem
+// A text row's list of links (link-group-layout.php): one link per line,
+// marked by a blue rule rather than a bullet.
+.link-group
+	padding-left 0
 
-		&:nth-of-type(2n - 1)
-			margin-top 48px
+	li
+		list-style-type none
+		padding-left 0
 
-			.image-container
-				float left
-				margin 0 16px 8px -32px
+		& + li
+			margin-top 0.8rem
+
+	a
+		display inline-block
+		margin 0
+		padding 4px 8px
+		border-left 2px solid $blue()
+		border-radius 0
+		color $blue()
+		text-decoration none
+
+		&:hover
+			text-decoration underline
+			background none

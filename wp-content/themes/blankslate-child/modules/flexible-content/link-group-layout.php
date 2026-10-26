@@ -1,7 +1,8 @@
 <?php
 if ( have_rows( 'link_group' ) ) :
-	echo '<section class="main-content">';
-	echo '<strong>Links</strong>';
+	// A text row, so it shares the reading column and heading style.
+	echo '<section class="wt_text-row wt_prose">';
+	echo '<h3>Links</h3>';
 	echo '<ul class="link-group">';
 	while ( have_rows( 'link_group' ) ) :
 		the_row();
