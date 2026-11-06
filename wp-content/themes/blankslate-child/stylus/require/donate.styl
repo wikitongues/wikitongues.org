@@ -1,140 +1,357 @@
-$aspect-ratio = 1.185185185
+.wt-donate
+	background #fffcef
+	color #101010
+	font 400 16px/1.6 'Graphik Web', Arial, sans-serif
 
+	*
+		box-sizing border-box
 
+	[hidden]
+		display none !important
 
-.page-template-template-donate
-	.content
-		max-width $content
-		margin 0 auto 64px
+	h1, h2, h3, p, ul, ol, fieldset
+		margin 0
 
-		h4
-			text--header($black)
-			margin-bottom 1.6rem
+	ul, ol, fieldset
+		padding 0
 
-		p
-			text--body($black)
+	ul, ol
+		list-style none
 
-		.cta-group
-			width 100%
-			display inline-block
-			margin 16px 0
+	h1, h2, h3
+		color inherit
+		font 300 30px/1.2 'Schnyder Wide M Web', Georgia, serif
 
-			a
-				text--body($blue())
-				text-decoration none
-				margin 1.6rem auto
-				display block
-				text-align center
+	h3
+		font-size 24px
 
-			button,
-			a.cta
-				width 100%
-				border-radius 8px
-				background $red
-				text--strong($parchment) // button, a
-				border none
-				padding 1.6rem
+	:where(a, button, label, li, p, strong)
+		font-size inherit
+		line-height inherit
+
+	a:not(.wt-donate__button)
+		color #3814a5
+
+	a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible
+		outline 3px solid #e52600
+		outline-offset 4px
+
+	&__wrap
+		width 100%
+		max-width 1240px
+		margin-inline auto
+		padding-inline clamp(16px, 4vw, 32px)
+
+	&__hero, &__pair, &__feature
+		display grid
+		grid-template-columns repeat(2, minmax(0, 1fr))
+		gap clamp(28px, 5vw, 64px)
+
+	&__hero
+		grid-template-columns minmax(0, 1fr) minmax(0, 440px)
+		padding-block 56px 40px
+		align-items start
+
+	&__intro, &__gift, &__heading, &__story-copy, &__pair > div
+		display grid
+		gap 16px
+		align-content start
+
+	&__intro
+		gap 24px
+		padding-top 12px
+
+		h1
+			font-size clamp(32px, 5vw, 66px)
+			overflow-wrap anywhere
+			line-height 1
+			text-transform uppercase
+
+		> p:not([class])
+			max-width 520px
+			font-size 18px
+
+	& &__eyebrow
+		font 600 13px/1.4 'Graphik Web', Arial, sans-serif
+		letter-spacing .065em
+		text-transform uppercase
+
+	&__highlight
+		background url('../img/donate/highlight.png') center / 100% 88% no-repeat
+		padding-inline .08em
+		-webkit-box-decoration-break clone
+		box-decoration-break clone
+
+	&__underline
+		background url('../img/donate/underline.png') left bottom / 100% .42em no-repeat
+		padding-bottom .12em
+
+	&__trust
+		display flex
+		align-items center
+		gap 20px
+		font-size 14px
+
+		img
+			display block
+			object-fit contain
+
+		li
+			margin-block 4px
+
+	&__jump
+		display flex
+		align-items center
+		gap 12px
+		max-width 360px
+		font-size 14px
+
+		&::after
+			content ''
+			flex 0 0 42px
+			height 42px
+			background url('../img/donate/arrow.png') center / contain no-repeat
+
+	&__gift
+		border 2px solid #101010
+		padding clamp(16px, 3vw, 28px)
+		gap 20px
+
+		form, .wt-donate__checkout-fallback
+			display grid
+			gap 18px
+
+		fieldset
+			border 0
+			min-width 0
+			display grid
+			grid-template-columns repeat(2, minmax(0, 1fr))
+			gap 8px
+
+		legend
+			padding 0
+			margin-bottom 8px
+			font-size 13px
+
+		label
+			position relative
+
+		input[type=radio]
+			position absolute
+			opacity 0
+			width 1px
+			height 1px
+
+			+ span
+				display grid
+				place-items center
+				min-height 48px
+				padding 6px
+				border 1px solid #101010
+				font-weight 600
 				cursor pointer
 
-		.image
+			&:checked + span
+				background #101010
+				color #fffcef
+
+			&:focus-visible + span
+				outline 3px solid #e52600
+				outline-offset 2px
+
+		.wt-donate__amounts span
+			font-size 20px
+
+	&__custom
+		display grid
+		gap 6px
+
+		input
+			min-width 0
 			width 100%
-			height 0
-			padding-bottom (1/(16/9)*100)%
-			background-position center
-			background-size cover
-			border-radius 8px
-			margin 32px 0
+			padding 10px 12px
+			border 1px solid #101010
+			background transparent
+			color inherit
+			font inherit
 
-		.stats
-			display flex
-			justify-content space-between
-			margin 64px 0 128px
+	&__legal
+		font-size 13px
 
-			li
-				float left
+	&__button
+		display inline-flex
+		align-items center
+		justify-content center
+		justify-self start
+		min-height 48px
+		padding 10px 22px
+		border 1px solid #101010
+		border-radius 0
+		background #101010
+		color #fffcef
+		font inherit
+		font-weight 600
+		text-align center
+		text-decoration none
+		cursor pointer
 
-				h1
-					text--header($black)
-					text-align center
+		&:hover
+			background #3814a5
+			color #fffcef
 
-		.donations-button-group
-			section.secondary
-				display flex
+	&__gift .wt-donate__button
+		width 100%
 
-				strong
-					text--strong($black)
-					margin-bottom 1.6rem
+	&__button--outline
+		background transparent
+		color #101010
 
-				button,
-				a.cta
-					margin 2.4rem	auto 0
-					border none
-					border-radius 8px
-					padding 1.6rem
-					display block
-					cursor pointer
-					text--strong($parchment) // button, a
-					text-align center
-					text-decoration none
+	&__grid
+		display grid
+		grid-template-columns repeat(3, minmax(0, 1fr))
 
-				div.option
-					display flex
-					flex-direction column
-					align-content center
+	&__reach
+		background #101010
+		color #fffcef
 
-					&:first-of-type
-						button,
-						a.cta
-							background $blue()
+		ul
+			padding-block 64px
+			padding-inline clamp(16px, 4vw, 32px)
+			margin-inline auto
+			gap 32px
 
-					&:last-of-type
-						button,
-						a.cta
-							background transparent
-							color $blue()
+		strong
+			display block
+			font 300 clamp(42px, 6vw, 70px)/1.1 'Schnyder Wide M Web', Georgia, serif
 
-			&> p
-				text-align center
-				margin-top 4.8rem
+	&__rule
+		border-top 1px solid #101010
 
-		.custom-gallery.custom.fundraiser
-			.gallery-container
-				.gallery-list
-					li
-						margin-bottom 32px
+	&__section
+		display grid
+		gap 40px
+		padding-block clamp(52px, 8vw, 96px)
 
-						.thumbnail,
-						section
-							float left
+	&__heading
+		max-width 760px
 
-						.thumbnail
-							width (1/2*100)%
-							height 0
-							padding-bottom (((1/16)*9)*50)%
-							background-position center
-							background-size cover
-							border-radius 8px
+	&__programs
+		border-top 1px solid #101010
+		border-left 1px solid #101010
 
-						section
-							width	(1/2*100)%
-							padding-left 16px
-							padding-bottom 16px
-							height 100%
-							display flex
-							gap 1.6rem
-							flex-direction column
-							justify-content flex-end
+		li
+			display grid
+			align-content start
+			gap 12px
+			padding clamp(16px, 3vw, 32px)
+			border-right 1px solid #101010
+			border-bottom 1px solid #101010
 
-							strong
-								border-bottom none
+	&__story-art
+		display grid
+		place-items center
+		min-height 185px
+		padding 16px
+		background #f2ead6
+		text-align center
+		font 300 clamp(25px, 4vw, 52px)/1.15 'Schnyder Wide M Web', Georgia, serif
 
-							p
-								text--body($black)
+	&__story-art--photo
+		display block
+		width 100%
+		height 100%
+		padding 0
+		object-fit cover
 
-	iframe
-		margin-bottom 6rem
+	&__feature
+		align-items center
 
-@media all and ( max-width: $mobile )
-	.page-template-template-donate
-		iframe
-			margin-bottom 4.5rem
+		.wt-donate__story-art
+			min-height clamp(185px, 32vw, 420px)
+			border 1px solid #101010
+
+		h3
+			font-size 36px
+
+	&__stories
+		gap 24px
+
+		article
+			border 1px solid #101010
+
+		.wt-donate__story-art
+			border-bottom 1px solid #101010
+			font-size clamp(24px, 3vw, 36px)
+
+		.wt-donate__story-copy
+			padding 24px
+
+	&__monthly
+		padding clamp(22px, 4vw, 40px)
+		background #101010
+		color #fffcef
+
+		.wt-donate__button
+			background #fffcef
+			color #101010
+
+			&:hover
+				background #ffff00
+
+	&__faq
+		max-width 880px
+		gap 0
+
+		.wt-donate__heading
+			margin-bottom 32px
+
+		details
+			border-bottom 1px solid #101010
+
+			&:first-of-type
+				border-top 1px solid #101010
+
+		summary
+			cursor pointer
+			padding-block 18px
+			font-weight 600
+
+		details p
+			padding-bottom 18px
+
+	&__close
+		max-width 1040px
+		justify-items center
+		text-align center
+		gap 26px
+
+		h2
+			font-size clamp(32px, 5vw, 60px)
+			overflow-wrap anywhere
+			line-height 1.05
+			text-transform uppercase
+
+	&__actions
+		display flex
+		flex-wrap wrap
+		justify-content center
+		gap 16px
+
+	[data-donate-share-status]:empty
+		display none
+
+@media (max-width: 960px)
+	.wt-donate__hero
+		grid-template-columns minmax(0, 1fr) minmax(0, .9fr)
+		gap 24px
+
+@media (max-width: 760px)
+	.wt-donate
+		&__hero, &__pair, &__feature, &__grid
+			grid-template-columns minmax(0, 1fr)
+
+		&__hero
+			padding-top 28px
+
+		&__reach ul
+			padding-block 40px
