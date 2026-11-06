@@ -67,6 +67,76 @@ function wt_get_archive_stats() {
 	return $stats;
 }
 
+/**
+ * Counts distinct territories across raw `fellow_territory` values.
+ *
+ * A value can be one ID or a list of IDs (fellows can list several countries).
+ * IDs outside $valid_ids (unpublished or deleted territories) are ignored.
+ *
+ * @param array<int, mixed> $raw_values One raw field value per fellow.
+ * @param array<int, int>   $valid_ids  Published territory IDs.
+ * @return int
+ */
+function wt_count_distinct_territories( $raw_values, $valid_ids ) {
+	$valid = array_flip( array_map( 'intval', $valid_ids ) );
+	$found = array();
+	foreach ( $raw_values as $value ) {
+		foreach ( (array) $value as $id ) {
+			$id = (int) $id;
+			if ( isset( $valid[ $id ] ) ) {
+				$found[ $id ] = true;
+			}
+		}
+	}
+	return count( $found );
+}
+
+/**
+ * Fellowship counts: published fellows and the countries they come from.
+ *
+ * Cached in the `wt_fellow_stats` transient, which wt_invalidate_fellow_stats()
+ * clears whenever a fellow or territory changes.
+ *
+ * @return array{fellow_count: int, country_count: int}
+ */
+function wt_get_fellow_stats() {
+	$stats = get_transient( 'wt_fellow_stats' );
+	if ( is_array( $stats ) ) {
+		return $stats;
+	}
+
+	$fellow_ids    = get_posts(
+		array(
+			'post_type'      => 'fellows',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	$territory_ids = get_posts(
+		array(
+			'post_type'      => 'territories',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+
+	$raw_values = array();
+	foreach ( $fellow_ids as $fellow_id ) {
+		$raw_values[] = get_post_meta( (int) $fellow_id, 'fellow_territory', true );
+	}
+
+	$stats = array(
+		'fellow_count'  => count( $fellow_ids ),
+		'country_count' => wt_count_distinct_territories( $raw_values, array_map( 'intval', $territory_ids ) ),
+	);
+	set_transient( 'wt_fellow_stats', $stats, DAY_IN_SECONDS );
+	return $stats;
+}
+
 function get_environment() {
 	if ( strpos( $_SERVER['HTTP_HOST'], 'localhost' ) !== false ) {
 			return 'localhost';

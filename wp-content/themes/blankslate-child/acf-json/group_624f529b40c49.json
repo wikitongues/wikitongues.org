@@ -152,11 +152,11 @@
         },
         {
             "key": "field_67b700001a001",
-            "label": "Fellow Territory",
+            "label": "Territories",
             "name": "fellow_territory",
             "aria-label": "",
             "type": "post_object",
-            "instructions": "",
+            "instructions": "The countries the fellow works in. Pick more than one if they work across countries; each counts once toward the countries stat.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -170,7 +170,7 @@
             "post_status": "",
             "taxonomy": "",
             "return_format": "object",
-            "multiple": 0,
+            "multiple": 1,
             "allow_null": 1,
             "allow_in_bindings": 1,
             "bidirectional": 0,
@@ -404,5 +404,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1788907097
+    "modified": 1793983452
 }
