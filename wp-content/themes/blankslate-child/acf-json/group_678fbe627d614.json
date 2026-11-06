@@ -1776,7 +1776,7 @@
 							"name": "display_photos",
 							"aria-label": "",
 							"type": "select",
-							"instructions": "Show fellows\u2019 headshots. When off, each story shows its language name instead.",
+							"instructions": "Show fellows\u2019 headshots. When off, or when a fellow has no headshot, the story shows its language name instead.",
 							"required": 0,
 							"conditional_logic": 0,
 							"wrapper": {
@@ -1794,7 +1794,7 @@
 							"ui": 0,
 							"ajax": 0,
 							"placeholder": "",
-							"default_value": "No"
+							"default_value": "Yes"
 						},
 						{
 							"key": "field_wtdb918c7f06ff",
@@ -2310,5 +2310,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1793983452
+	"modified": 1793994270
 }

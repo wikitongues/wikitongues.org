@@ -185,7 +185,7 @@ function wt_donate_default_blocks() {
 			'section_eyebrow' => 'Fellows.',
 			'section_header'  => 'What your gift makes possible',
 			'stories'         => $story_rows,
-			'display_photos'  => 'No',
+			'display_photos'  => 'Yes',
 			'footer_link'     => $link( 'Meet all our fellows', home_url( '/revitalization/fellows/' ) ),
 		),
 		array(

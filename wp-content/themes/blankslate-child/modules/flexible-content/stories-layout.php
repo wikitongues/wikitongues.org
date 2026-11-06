@@ -2,7 +2,7 @@
 // Fellow Stories: the first story large, the rest as cards. See donate-content.php.
 $row         = wt_donate_row();
 $stories     = array_values( array_filter( array_map( 'wt_donate_story', (array) ( $row['stories'] ?? array() ) ) ) );
-$show_photos = 'Yes' === ( $row['display_photos'] ?? 'No' );
+$show_photos = 'Yes' === ( $row['display_photos'] ?? 'Yes' );
 $featured    = array_shift( $stories );
 
 /**

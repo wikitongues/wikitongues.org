@@ -213,7 +213,7 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 | `donate_hero_layout` | Headline, trust signals and the gift box (`modules/donate/gift-box.php`). Its `id="give"` is the target for "#give" links |
 | `stats_layout` | Stats, each a live count (fellows, countries fellows come from, archive languages, archive countries) or typed text, with an optional prefix ("Up to") and a label |
 | `numbered_list_layout` | A heading and numbered columns. `{languages}` prints the live count, and the first one on a page is the hero's `#where` target |
-| `stories_layout` | Fellow stories that pick fellow posts: the first large, the rest as cards. Name, language, location, year and headshot come from the fellow; the header and copy can be overridden. Photos are off by default |
+| `stories_layout` | Fellow stories that pick fellow posts: the first large, the rest as cards. Name, language, location, year and headshot come from the fellow; the header and copy can be overridden. Shows headshots by default; a fellow without one, or the block with Display Photos off, shows the language name instead |
 | `give_now_layout` | A one-time pitch beside a dark monthly box, each with a link CTA |
 | `faq_accordion_layout` | FAQ posts as an accordion, the first open (fields mirror the FAQ page's `faq_layout`) |
 | `closing_cta_layout` | A large headline, a CTA and an optional share button |

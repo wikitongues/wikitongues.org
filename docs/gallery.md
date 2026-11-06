@@ -162,7 +162,6 @@ About two dozen template call sites (`grep -rn "create_gallery_instance(" wp-con
 - **Filtered archives:** `archive-languages.php`, `archive-videos.php`, `archive-fellows.php` and `archive-territories.php`.
 - **Fellowship:** fellows by cohort (`template-revitalization-fellows.php`) and by category (`taxonomy-fellow-category.php`).
 - **People pages:** the Board, Advisors and Staff sections (editorial rows), and careers galleries.
-- **Donate page:** case-study fellows (`template-donate.php`).
 
 `docs/gallery-inventory.csv` and `docs/gallery-inventory-main.csv` record every template gallery's settings before and after the March 2026 refactor (#536). They are a historical snapshot and are no longer updated.
 
