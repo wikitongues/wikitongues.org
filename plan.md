@@ -153,6 +153,15 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
+- **Built locally, not yet on production.** Both pages exist only in the local database and travel as content bundles ([content-model.md](docs/content-model.md#content-bundles)). Their bundles are in `docs/local_docs/content/`.
+  - **Language Rights** (`/language-rights`, plus nine FAQs). Built, with banner and block images; it depends on the banner caption style (#660) and Numbered Columns (#661) being deployed. Before it goes to production:
+    - Upload `2026/11/language-rights-banner.jpg` and `2026/11/hilario-poot-cahun-class.jpg` there; the import matches images by path.
+    - Decide whether this is the pre-launch page or the launch page: the banner says "First edition forthcoming", but parts of the body read as if the report is already out.
+    - Identify the delegate in the banner photo, then name them in its alt text and caption.
+    - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
+    - Confirm the list of languages the team reads, quoted in "Help us get it right".
+  - **Native Language AI** (`/revitalization/resources/native-language-ai`). Its seven FAQs are on production, but the page isn't. Its banner upload (`2026/10/IMG_1620.jpeg`) is local only, so upload it to production first.
+  - Add both to GTM's `content_type` lookup when they go live.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).
