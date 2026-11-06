@@ -24,7 +24,7 @@ $join      = static function ( $parts ) {
 <section class="wt-donate wt-donate__rule" aria-labelledby="gift-stories">
 	<div class="wt-donate__wrap wt-donate__section">
 		<div class="wt-donate__heading">
-			<p class="wt-donate__eyebrow"><?php echo esc_html( $row['section_eyebrow'] ?? '' ); ?></p>
+			<p class="wt-donate__label"><?php echo esc_html( $row['section_eyebrow'] ?? '' ); ?></p>
 			<h2 id="gift-stories"><?php echo esc_html( $row['section_header'] ?? '' ); ?></h2>
 		</div>
 		<?php if ( $featured ) : ?>
