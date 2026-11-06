@@ -143,16 +143,20 @@ function wt_donate_default_blocks() {
 			'acf_fc_layout' => 'stats_layout',
 			'stats'         => array(
 				array(
+					'stat_type'  => 'live',
 					'stat'       => 'fellows',
-					'stat_label' => 'published fellowship projects',
+					'stat_label' => 'languages whose communities we have funded since 2021.',
 				),
 				array(
-					'stat'       => 'languages',
-					'stat_label' => 'languages documented in our archive',
+					'stat_type'  => 'custom',
+					'stat_value' => '34',
+					'stat_label' => 'countries our fellows have come from so far. Activists anywhere can apply.',
 				),
 				array(
-					'stat'       => 'countries',
-					'stat_label' => 'countries and territories represented in our archive',
+					'stat_type'   => 'custom',
+					'stat_prefix' => 'Up to',
+					'stat_value'  => '100',
+					'stat_label'  => 'language projects a year we’ll support when our new peer-to-peer fellowship launches in 2027.',
 				),
 			),
 		),
@@ -323,6 +327,19 @@ function wt_donate_stat( $stat ) {
 	}
 	$stats = wt_get_archive_stats();
 	return (int) ( 'countries' === $stat ? $stats['nations_count'] : $stats['language_count'] );
+}
+
+/**
+ * The number a Stats Band row shows: its typed text, or a formatted live count.
+ *
+ * @param array<string, mixed> $stat Stat row (stat_type, stat, stat_value).
+ * @return string
+ */
+function wt_donate_stat_display( $stat ) {
+	if ( 'custom' === ( $stat['stat_type'] ?? 'live' ) ) {
+		return trim( (string) ( $stat['stat_value'] ?? '' ) );
+	}
+	return number_format_i18n( wt_donate_stat( (string) ( $stat['stat'] ?? '' ) ) );
 }
 
 /**

@@ -42,6 +42,28 @@ class DonateContentTest extends TestCase {
 		$this->assertSame( array( 1, 2, 3 ), wt_donate_amounts( '', array( 1, 2, 3 ) ) );
 	}
 
+	// wt_donate_stat_display().
+
+	public function test_custom_stat_shows_typed_text() {
+		$stat = array(
+			'stat_type'  => 'custom',
+			'stat_value' => ' 34 ',
+			'stat'       => 'fellows',
+		);
+		$this->assertSame( '34', wt_donate_stat_display( $stat ) );
+	}
+
+	public function test_live_stat_shows_formatted_count() {
+		WP_Mock::userFunction( 'wp_count_posts', array( 'return' => (object) array( 'publish' => 1065 ) ) );
+		WP_Mock::userFunction( 'number_format_i18n', array( 'return' => '1,065' ) );
+		$stat = array(
+			'stat_type'  => 'live',
+			'stat'       => 'fellows',
+			'stat_value' => 'ignored',
+		);
+		$this->assertSame( '1,065', wt_donate_stat_display( $stat ) );
+	}
+
 	// wt_acf_value_by_key().
 
 	private function flexible_field() {
