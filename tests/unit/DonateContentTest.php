@@ -54,7 +54,15 @@ class DonateContentTest extends TestCase {
 	}
 
 	public function test_live_stat_shows_formatted_count() {
-		WP_Mock::userFunction( 'wp_count_posts', array( 'return' => (object) array( 'publish' => 1065 ) ) );
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'return' => array(
+					'fellow_count'  => 1065,
+					'country_count' => 1,
+				),
+			)
+		);
 		WP_Mock::userFunction( 'number_format_i18n', array( 'return' => '1,065' ) );
 		$stat = array(
 			'stat_type'  => 'live',
@@ -62,6 +70,33 @@ class DonateContentTest extends TestCase {
 			'stat_value' => 'ignored',
 		);
 		$this->assertSame( '1,065', wt_donate_stat_display( $stat ) );
+	}
+
+	// wt_count_distinct_territories().
+
+	public function test_territory_count_dedupes_across_fellows() {
+		$raw = array( array( '10' ), array( '10', '11' ), '12', array() );
+		$this->assertSame( 3, wt_count_distinct_territories( $raw, array( 10, 11, 12 ) ) );
+	}
+
+	public function test_territory_count_ignores_unpublished_territories() {
+		$raw = array( array( '10', '99' ), '' );
+		$this->assertSame( 1, wt_count_distinct_territories( $raw, array( 10 ) ) );
+	}
+
+	public function test_fellow_countries_stat_reads_cached_stats() {
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'args'   => array( 'wt_fellow_stats' ),
+				'return' => array(
+					'fellow_count'  => 65,
+					'country_count' => 34,
+				),
+			)
+		);
+		$this->assertSame( 34, wt_donate_stat( 'fellow_countries' ) );
+		$this->assertSame( 65, wt_donate_stat( 'fellows' ) );
 	}
 
 	// wt_acf_value_by_key().

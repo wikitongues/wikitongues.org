@@ -148,8 +148,8 @@ function wt_donate_default_blocks() {
 					'stat_label' => 'languages whose communities we have funded since 2021.',
 				),
 				array(
-					'stat_type'  => 'custom',
-					'stat_value' => '34',
+					'stat_type'  => 'live',
+					'stat'       => 'fellow_countries',
 					'stat_label' => 'countries our fellows have come from so far. Activists anywhere can apply.',
 				),
 				array(
@@ -318,12 +318,13 @@ function wt_donate_row() {
 /**
  * A live count for the Stats Band block.
  *
- * @param string $stat fellows, languages or countries.
+ * @param string $stat fellows, fellow_countries, languages or countries.
  * @return int
  */
 function wt_donate_stat( $stat ) {
-	if ( 'fellows' === $stat ) {
-		return (int) wp_count_posts( 'fellows' )->publish;
+	if ( 'fellows' === $stat || 'fellow_countries' === $stat ) {
+		$fellow_stats = wt_get_fellow_stats();
+		return (int) ( 'fellows' === $stat ? $fellow_stats['fellow_count'] : $fellow_stats['country_count'] );
 	}
 	$stats = wt_get_archive_stats();
 	return (int) ( 'countries' === $stat ? $stats['nations_count'] : $stats['language_count'] );

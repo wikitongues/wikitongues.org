@@ -110,3 +110,28 @@ function fellows_custom_column_orderby( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'fellows_custom_column_orderby' );
+
+// ====================
+// Invalidate Fellow Stats Transient (wt_get_fellow_stats())
+// ====================
+// save_post covers publishing, unpublishing and trashing; the meta hooks cover
+// fellow_territory writes that land after save_post (ACF, the Airtable sync).
+add_action( 'save_post', 'wt_invalidate_fellow_stats' );
+add_action( 'deleted_post', 'wt_invalidate_fellow_stats' );
+function wt_invalidate_fellow_stats( $post_id ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( in_array( get_post_type( $post_id ), array( 'fellows', 'territories' ), true ) ) {
+		delete_transient( 'wt_fellow_stats' );
+	}
+}
+
+add_action( 'added_post_meta', 'wt_invalidate_fellow_stats_on_meta', 10, 3 );
+add_action( 'updated_post_meta', 'wt_invalidate_fellow_stats_on_meta', 10, 3 );
+add_action( 'deleted_post_meta', 'wt_invalidate_fellow_stats_on_meta', 10, 3 );
+function wt_invalidate_fellow_stats_on_meta( $meta_id, $post_id, $meta_key ) {
+	if ( 'fellow_territory' === $meta_key ) {
+		delete_transient( 'wt_fellow_stats' );
+	}
+}

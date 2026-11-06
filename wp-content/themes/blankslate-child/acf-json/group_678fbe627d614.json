@@ -1414,9 +1414,10 @@
 										"id": ""
 									},
 									"choices": {
-										"fellows": "Fellowship projects",
+										"fellows": "Fellows",
+										"fellow_countries": "Countries our fellows come from",
 										"languages": "Languages in the archive",
-										"countries": "Countries and territories"
+										"countries": "Countries in the archive"
 									},
 									"return_format": "value",
 									"multiple": 0,
@@ -2309,5 +2310,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1793983288
+	"modified": 1793983452
 }

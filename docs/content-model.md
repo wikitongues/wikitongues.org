@@ -126,7 +126,8 @@ Territories arrived in February 2026 (#445, #491) and give the archive a geograp
 - **Fields.** `first_name`, `last_name`, `fellow_year` (the cohort), `fellow_language` and `fellow_language_preferred_name`, `fellow_category` (the `fellow-category` taxonomy), `fellow_territory` (one or more territories), `fellow_location`, `fellow_banner` (a group, which also holds the headshot), `fellow_testimonial`, `testimonial_link_back`, `marketing_text`, plus the shared **Global: Social Links** group.
 - **Pages.** `single-fellows.php` renders the fellow's own editorial content, plus shared "about the fellowship" copy from the **Global: Fellowship** options page. The archive redirects to `/revitalization/fellows` unless filtered by `?territory=` or `?region=`.
 - **Category pages.** `taxonomy-fellow-category.php` renders the term's own banner fields, then the fellows gallery, then the term's editorial content (#620). `wp wt migrate-fellow-category-banner` moved existing banners into that shape.
-- **Territory links.** `fellow_territory` makes fellows show up on territory and region pages.
+- **Territory links.** `fellow_territory` makes fellows show up on territory and region pages. It is a multi-select and stores a serialized array even with one country: the territory and region queries match `"<id>"` with `LIKE`, so a bare ID would drop the fellow from those pages.
+- **Fellow stats.** `wt_get_fellow_stats()` counts published fellows and the distinct published territories they list. It is cached in the `wt_fellow_stats` transient, which is cleared when a fellow or territory is saved or deleted, or `fellow_territory` changes. The Donate page's Stats Band reads it.
 
 ---
 
@@ -210,7 +211,7 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 | Layout | Renders |
 |---|---|
 | `donate_hero_layout` | Headline, trust signals and the gift box (`modules/donate/gift-box.php`). Its `id="give"` is the target for "#give" links |
-| `stats_layout` | Stats, each a live count (fellowship projects, languages, countries) or typed text, with an optional prefix ("Up to") and a label |
+| `stats_layout` | Stats, each a live count (fellows, countries fellows come from, archive languages, archive countries) or typed text, with an optional prefix ("Up to") and a label |
 | `numbered_list_layout` | A heading and numbered columns. `{languages}` prints the live count, and the first one on a page is the hero's `#where` target |
 | `stories_layout` | Fellow stories that pick fellow posts: the first large, the rest as cards. Name, language, location, year and headshot come from the fellow; the header and copy can be overridden. Photos are off by default |
 | `give_now_layout` | A one-time pitch beside a dark monthly box, each with a link CTA |
