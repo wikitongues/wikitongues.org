@@ -266,7 +266,8 @@
 		display block
 		width 100%
 		height auto
-		aspect-ratio 4 / 3
+		min-height 0
+		aspect-ratio 16 / 9
 		padding 0
 		object-fit cover
 		object-position 50% 30%
@@ -277,6 +278,9 @@
 		.wt-donate__story-art
 			min-height clamp(185px, 32vw, 420px)
 			border 1px solid #101010
+
+		.wt-donate__story-art--photo
+			min-height 0
 
 		h3
 			font-size 36px
