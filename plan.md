@@ -112,6 +112,8 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
+- **Status (2026-11-06):** the new layout is in (gift box, reach stats, where the gift goes, fellow stories, monthly pitch, FAQ). Still open: copy and figure sign-off, story consent and photos, social proof (1.3) and the frequency test. The checkout campaign is a `WT_DONATE_CAMPAIGN_ID` constant for now, and should read through `wt_active_campaign()` once 1.1 lands.
+
 - **Content:** recurring vs. one-time giving, biased toward monthly; impact framing; social proof from donor recognition (1.3); the FundraiseUp modal.
 - **Copy:** ship with minimal copy and iterate (decided 2026-09-13). The impact statement needs sign-off before it is final.
 - **Frequency-default test** (analytics strategy, Q5): a second FundraiseUp element that defaults to monthly, placed on content pages, compared against the one-time default. It needs 1.1, so that element IDs are configurable, and the `fundraise_up_element_id` dimension registered in GA4.
