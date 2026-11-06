@@ -42,6 +42,11 @@
 		margin-inline auto
 		padding-inline clamp(16px, 4vw, 32px)
 
+		// Outside the Donate page these blocks sit between editorial text rows,
+		// so they share the reading column instead of jogging out to 1240px.
+		body:not(.page-template-template-donate) &
+			max-width $measure + 64px // the column plus the 32px side padding it has at this width
+
 	&__hero, &__pair, &__feature
 		display grid
 		grid-template-columns repeat(2, minmax(0, 1fr))
