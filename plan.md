@@ -153,6 +153,10 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
+- **Built locally, not yet on production.** Both pages exist only in the local database and travel as content bundles ([content-model.md](docs/content-model.md#content-bundles)). Their bundles are in `docs/local_docs/content/`.
+  - **Language Rights** (`/language-rights`, draft, plus nine FAQs). Needs a banner image. Its "First edition forthcoming" banner contradicts body copy that reads as if the report is already out, so decide whether this is the pre-launch page or the launch page. Confirm the list of languages the team reads.
+  - **Native Language AI** (`/native-language-ai`). Its seven FAQs are on production, but the page isn't. Its banner upload (`2026/10/IMG_1620.jpeg`) is local only, so upload it to production first.
+  - Add both to GTM's `content_type` lookup when they go live.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).

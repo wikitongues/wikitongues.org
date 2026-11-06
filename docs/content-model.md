@@ -280,6 +280,30 @@ From `includes/template/router.php`:
 - **ACF field groups** are defined in `acf-json/` but also live in the database. After editing a JSON file by hand, bump its `modified` timestamp so the admin offers to sync. Deleting a JSON file doesn't retire a group; trash it in ACF → Field Groups too.
 - **Don't regroup existing fields.** Wrapping existing fields in an ACF group changes their meta keys, so values already stored stop resolving without a data migration. To share a definition across groups, use a location rule, as **Global: Social Links** does, or a Clone field that keeps the original keys.
 - **Script data changes.** Put them in idempotent WP-CLI commands under `includes/cli/`, dry run by default (`wp wt …`). Refresh from production first, then run them local → staging → production (see [staging-sync.md](staging-sync.md)). A staging sync wipes whatever a migration wrote there, and re-running the command restores it.
+- **Moving an authored page between environments.** Editorial pages live only in the database, so deploys never carry them. Use a content bundle (below) rather than rebuilding the page by hand.
+
+### Content bundles
+
+`wp wt content-export` writes a page, plus every post its ACF fields point at, to a JSON bundle. Those referenced posts are typically the FAQs or testimonials in its galleries. `wp wt content-import` upserts the bundle on another environment (`includes/cli/content-bundle.php`).
+
+- **Portable by design.** The home URL is stored as `{{home}}`, so links written on localhost resolve to the target site. Post references travel as post type + slug, images as their upload path, and terms as taxonomy + slug, and each resolves to the target's own IDs on import.
+- **Matched by slug, and the bundle wins.** A post with the same type and slug is updated in place, and its meta is replaced by the bundle's. Admin edits made on the target since the last import are overwritten. Anything unmatched is created. The import is dry run by default and safe to re-run.
+- **Uploads don't travel.** An image whose file isn't in the target's media library is left empty, with a warning. Upload the file there first, keeping the same `YYYY/MM/` path, or set the image in admin afterwards.
+- **Keep bundles out of the repo.** Unpublished copy shouldn't land in a public repo. Write bundles to `docs/local_docs/content/` (gitignored). Copy them to the server's home directory, never under `public_html`.
+
+**Export before you sync local.** `tool-sync-db-from-prod.sh` overwrites the local database, including any page that exists only there. Export first, then sync, then re-import locally if you still need it.
+
+```bash
+# local
+wp wt content-export language-rights --out=docs/local_docs/content/language-rights.json --allow-root
+scp docs/local_docs/content/language-rights.json <prod-ssh>:~/content/
+
+# staging, then production (after a dated backup)
+wp wt content-import ~/content/language-rights.json                         # dry run
+wp wt content-import ~/content/language-rights.json --execute --status=draft --author=<login>
+```
+
+`--status` applies only to the bundle's root posts. Referenced FAQs keep their own status, so published FAQs go live at their `/faqs/…` URLs as soon as the import runs. A staging sync wipes an import, and re-running the command restores it.
 - **Flush rewrite rules after a URL change.** Adding a post type, archive or slug changes URLs, and deploys don't flush rewrite rules. Open Settings → Permalinks, or run `wp rewrite flush`, on each environment ([deployment.md](deployment.md)).
 - **Check pages before removing a template.** Deploys delete files removed from the repo, so a page still assigned to a deleted template falls back to the default layout.
 - **New synced fields** go in `wt-airtable-sync/config/field-maps.php` and in the Make scenario's request body.
