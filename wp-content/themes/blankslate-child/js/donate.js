@@ -6,7 +6,11 @@ if (giftForm) {
   const presets = [...giftForm.querySelectorAll('input[name="preset"]')];
   const note = giftForm.querySelector('[data-donate-note]');
   const submit = giftForm.querySelector('button[type="submit"]');
-  const amounts = { once: [50, 100, 250], monthly: [5, 10, 25] };
+  const parseAmounts = (list) => list.split(',').map(Number);
+  const amounts = {
+    once: parseAmounts(giftForm.dataset.amountsOnce),
+    monthly: parseAmounts(giftForm.dataset.amountsMonthly),
+  };
   const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -36,9 +40,7 @@ if (giftForm) {
     const validAmount = amount && (!isCustom || customInput.validity.valid);
     giftForm.elements.amount.value = validAmount ? amount : '';
     const label = validAmount ? formatAmount(Number(amount)) : '';
-    note.textContent = monthly
-      ? 'Monthly supporters give fellows steady support they can plan around.'
-      : 'Your gift supports all of Wikitongues’ work, including the fellowship.';
+    note.textContent = monthly ? giftForm.dataset.noteMonthly : giftForm.dataset.noteOnce;
     if (monthly && validAmount) {
       note.textContent = `${label} a month is ${formatAmount(Number(amount) * 12)} a year. ${note.textContent}`;
     }

@@ -202,6 +202,15 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 
 **Where it's available:** default pages, `template-editorial.php`, the revitalization home, fellows and toolkit templates, `template-archive-success.php`, `template-people.php`, fellows and documents singles, fellow-category terms, and the Video Settings options page. `editorial-content.php` reads the current page by default; a caller can set `$editorial_source` to render another source, as video singles do with the options page.
 
+
+### Donate page
+
+`/donate` uses `template-donate.php`, which has a fixed layout instead of `main_content`. All of its copy is edited in **Template: Donate** (`group_6735ff7970d17.json`). The fields sit in tabs that follow the page from top to bottom. Programs, fellow stories and FAQ are repeaters; editors can add, remove and reorder them.
+
+- **Defaults.** `includes/template/donate-content.php` holds the launch copy. Until the page saves a field, `wt_donate_default_value()` (on `acf/load_value`) supplies that copy, both on the page and in the admin form, so no migration seeds it. A saved value always wins, even an empty one: emptying the FAQ hides it.
+- **Reading fields.** Use `wt_donate_field()`, which looks fields up by key. `get_field()` with a name finds only fields the page has already saved.
+- **Editor conventions.** In the headline, closing headline and featured story, `*asterisks*` mark the hand-drawn highlight or underline (`wt_donate_marked()`). In program descriptions, `{languages}` prints the live archive count. The reach numbers come from `wt_get_archive_stats()` and published fellows.
+- **Checkout.** When **Fundraise Up campaign ID** (Gift box tab) is set, the gift box shows once/monthly and three preset amounts per frequency, and links to the page with Fundraise Up's `?form=` URL parameters. When it is empty, the box shows one button to the **Checkout link**. Fellow photos are optional; without one, a card shows the language name.
 ---
 
 ## Options pages

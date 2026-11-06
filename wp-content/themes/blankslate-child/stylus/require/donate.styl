@@ -247,55 +247,6 @@
 			border-right 1px solid #101010
 			border-bottom 1px solid #101010
 
-	&__spending
-		display grid
-		gap 12px
-
-		> p
-			font-size 14px
-
-	&__bar
-		display grid
-		grid-template-columns minmax(0, 69fr) minmax(0, 16fr) minmax(0, 14fr)
-		height 44px
-		border 1px solid #101010
-
-		span
-			display grid
-			align-items center
-			padding-inline 12px
-			font-size 13px
-			font-weight 600
-
-		span:first-child
-			background #101010
-			color #fffcef
-
-		span:nth-child(2)
-			background #3814a5
-			color #fffcef
-
-	&__legend
-		display flex
-		flex-wrap wrap
-		gap 8px 24px
-		font-size 14px
-
-		li::before
-			content ''
-			display inline-block
-			width 12px
-			height 12px
-			margin-right 8px
-			border 1px solid #101010
-			background #101010
-
-		li:nth-child(2)::before
-			background #3814a5
-
-		li:nth-child(3)::before
-			background #fffcef
-
 	&__story-art
 		display grid
 		place-items center
@@ -304,6 +255,13 @@
 		background #f2ead6
 		text-align center
 		font 300 clamp(25px, 4vw, 52px)/1.15 'Schnyder Wide M Web', Georgia, serif
+
+	&__story-art--photo
+		display block
+		width 100%
+		height 100%
+		padding 0
+		object-fit cover
 
 	&__feature
 		align-items center
@@ -386,20 +344,6 @@
 	.wt-donate__hero
 		grid-template-columns minmax(0, 1fr) minmax(0, .9fr)
 		gap 24px
-
-@media (min-width: 1101px)
-	.wt-donate__legend
-		position absolute
-		width 1px
-		height 1px
-		overflow hidden
-		clip-path inset(50%)
-		white-space nowrap
-
-@media (max-width: 1100px)
-	.wt-donate__bar span
-		font-size 0
-		padding 0
 
 @media (max-width: 760px)
 	.wt-donate
