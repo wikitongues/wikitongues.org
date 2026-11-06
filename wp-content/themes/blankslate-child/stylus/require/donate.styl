@@ -101,15 +101,17 @@
 
 	&__jump
 		display flex
-		align-items center
-		gap 12px
+		align-items flex-start
+		gap 4px
 		max-width 360px
 		font-size 14px
 
+		// Size, rotation and offset as in the design mockup.
 		&::after
 			content ''
-			flex 0 0 42px
-			height 42px
+			flex 0 0 86px
+			height 92px
+			transform rotate(92deg) translate(18px, -6px)
 			background url('../img/donate/arrow.png') center / contain no-repeat
 
 	&__gift
