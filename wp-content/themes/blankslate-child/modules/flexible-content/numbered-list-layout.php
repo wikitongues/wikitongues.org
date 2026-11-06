@@ -18,7 +18,8 @@ $language_count      = number_format_i18n( wt_donate_stat( 'languages' ) );
 			<?php endif; ?>
 		</div>
 		<?php if ( $items ) : ?>
-			<ol class="wt-donate__grid wt-donate__programs">
+			<?php // One column per item, up to three, so a two-item list has no empty, half-ruled cell. ?>
+			<ol class="wt-donate__grid wt-donate__programs" style="--columns: <?php echo esc_attr( (string) min( 3, count( $items ) ) ); ?>">
 				<?php foreach ( array_values( $items ) as $i => $item ) : ?>
 					<li>
 						<p class="wt-donate__number"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></p>
