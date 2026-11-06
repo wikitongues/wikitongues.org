@@ -1,0 +1,25 @@
+{
+    "key": "group_6377eeeba994d",
+    "title": "Template: Donate (2022, retired)",
+    "fields": [],
+    "location": [
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
+                "value": "template-donate.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": false,
+    "description": "Retired: an unused 2022 Donate group that existed only in the database. Kept inactive here so it no longer shows on the Donate page.",
+    "show_in_rest": 0,
+    "display_title": "",
+    "modified": 1793981824
+}

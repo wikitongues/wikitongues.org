@@ -1,14 +1,13 @@
 <?php
-// Set by template-donate.php before this partial is required.
+// Gift box for donate-hero-layout.php, which sets these.
 $gift            = $gift ?? array();
 $campaign_id     = $campaign_id ?? '';
 $checkout_page   = $checkout_page ?? (string) get_permalink();
-$checkout        = $checkout ?? '';
 $once_amounts    = $once_amounts ?? array( 50, 100, 250 );
 $monthly_amounts = $monthly_amounts ?? array( 5, 10, 25 );
 ?>
 <div class="wt-donate__gift">
-	<h2 id="gift-box-title"><?php echo esc_html( $gift['title'] ?? '' ); ?></h2>
+	<h2 id="gift-box-title"><?php echo esc_html( $gift['gift_header'] ?? '' ); ?></h2>
 	<?php if ( $campaign_id ) : ?>
 		<form action="<?php echo esc_url( $checkout_page ); ?>" method="get" aria-labelledby="gift-box-title" data-donate-form
 			data-amounts-once="<?php echo esc_attr( implode( ',', $once_amounts ) ); ?>"
@@ -40,8 +39,8 @@ $monthly_amounts = $monthly_amounts ?? array( 5, 10, 25 );
 		</form>
 	<?php endif; ?>
 	<div class="wt-donate__checkout-fallback" data-donate-fallback>
-		<a class="wt-donate__button" data-cta-location="donate-page-top-single" href="<?php echo esc_url( $checkout ); ?>"><?php echo esc_html( $gift['fallback_button'] ?? '' ); ?></a>
-		<p><?php echo esc_html( $gift['fallback_note'] ?? '' ); ?></p>
+		<?php wt_donate_link( $gift['checkout_link'] ?? null, 'wt-donate__button', 'donate-page-top-single' ); ?>
+		<p><?php echo esc_html( $gift['checkout_note'] ?? '' ); ?></p>
 	</div>
-	<p class="wt-donate__legal"><?php echo esc_html( $gift['legal'] ?? '' ); ?></p>
+	<p class="wt-donate__legal"><?php echo esc_html( $gift['legal_copy'] ?? '' ); ?></p>
 </div>

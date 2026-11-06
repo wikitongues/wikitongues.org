@@ -42,43 +42,157 @@ class DonateContentTest extends TestCase {
 		$this->assertSame( array( 1, 2, 3 ), wt_donate_amounts( '', array( 1, 2, 3 ) ) );
 	}
 
-	// wt_donate_default_value().
+	// wt_donate_stat_display().
 
-	public function test_default_fills_unsaved_text_field() {
-		WP_Mock::userFunction( 'metadata_exists', array( 'return' => false ) );
-		$field = array( 'name' => 'donate_gift_title' );
-		$this->assertSame( 'Make a gift', wt_donate_default_value( null, 16670, $field ) );
+	public function test_custom_stat_shows_typed_text() {
+		$stat = array(
+			'stat_type'  => 'custom',
+			'stat_value' => ' 34 ',
+			'stat'       => 'fellows',
+		);
+		$this->assertSame( '34', wt_donate_stat_display( $stat ) );
 	}
 
-	public function test_saved_value_wins_even_when_empty() {
-		WP_Mock::userFunction( 'metadata_exists', array( 'return' => true ) );
-		$field = array( 'name' => 'donate_gift_title' );
-		$this->assertSame( '', wt_donate_default_value( '', 16670, $field ) );
-	}
-
-	public function test_other_fields_are_untouched() {
-		$field = array( 'name' => 'banner' );
-		$this->assertSame( 'x', wt_donate_default_value( 'x', 16670, $field ) );
-	}
-
-	public function test_repeater_default_rows_are_keyed_by_sub_field_key() {
-		WP_Mock::userFunction( 'metadata_exists', array( 'return' => false ) );
-		$field = array(
-			'name'       => 'donate_programs',
-			'sub_fields' => array(
-				array(
-					'name' => 'title',
-					'key'  => 'field_t',
+	public function test_live_stat_shows_formatted_count() {
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'return' => array(
+					'fellow_count'  => 1065,
+					'country_count' => 1,
 				),
-				array(
-					'name' => 'text',
-					'key'  => 'field_x',
+			)
+		);
+		WP_Mock::userFunction( 'number_format_i18n', array( 'return' => '1,065' ) );
+		$stat = array(
+			'stat_type'  => 'live',
+			'stat'       => 'fellows',
+			'stat_value' => 'ignored',
+		);
+		$this->assertSame( '1,065', wt_donate_stat_display( $stat ) );
+	}
+
+	// wt_count_distinct_territories().
+
+	public function test_territory_count_dedupes_across_fellows() {
+		$raw = array( array( '10' ), array( '10', '11' ), '12', array() );
+		$this->assertSame( 3, wt_count_distinct_territories( $raw, array( 10, 11, 12 ) ) );
+	}
+
+	public function test_territory_count_ignores_unpublished_territories() {
+		$raw = array( array( '10', '99' ), '' );
+		$this->assertSame( 1, wt_count_distinct_territories( $raw, array( 10 ) ) );
+	}
+
+	public function test_fellow_countries_stat_reads_cached_stats() {
+		WP_Mock::userFunction(
+			'get_transient',
+			array(
+				'args'   => array( 'wt_fellow_stats' ),
+				'return' => array(
+					'fellow_count'  => 65,
+					'country_count' => 34,
+				),
+			)
+		);
+		$this->assertSame( 34, wt_donate_stat( 'fellow_countries' ) );
+		$this->assertSame( 65, wt_donate_stat( 'fellows' ) );
+	}
+
+	// wt_acf_value_by_key().
+
+	private function flexible_field() {
+		return array(
+			'type'    => 'flexible_content',
+			'layouts' => array(
+				'layout_a' => array(
+					'name'       => 'hero',
+					'sub_fields' => array(
+						array(
+							'name' => 'header',
+							'key'  => 'field_header',
+							'type' => 'text',
+						),
+						array(
+							'name'       => 'box',
+							'key'        => 'field_box',
+							'type'       => 'group',
+							'sub_fields' => array(
+								array(
+									'name' => 'note',
+									'key'  => 'field_note',
+									'type' => 'text',
+								),
+							),
+						),
+						array(
+							'name'       => 'items',
+							'key'        => 'field_items',
+							'type'       => 'repeater',
+							'sub_fields' => array(
+								array(
+									'name' => 'title',
+									'key'  => 'field_title',
+									'type' => 'text',
+								),
+							),
+						),
+					),
 				),
 			),
 		);
-		$rows  = wt_donate_default_value( false, 16670, $field );
-		$this->assertCount( 3, $rows );
-		$this->assertSame( 'Language Revitalization Fellowship', $rows[0]['field_t'] );
-		$this->assertArrayHasKey( 'field_x', $rows[0] );
+	}
+
+	public function test_value_by_key_rekeys_nested_layouts() {
+		$value = array(
+			array(
+				'acf_fc_layout' => 'hero',
+				'header'        => 'Hi',
+				'box'           => array( 'note' => 'N' ),
+				'items'         => array( array( 'title' => 'One' ), array( 'title' => 'Two' ) ),
+			),
+		);
+		$this->assertSame(
+			array(
+				array(
+					'acf_fc_layout' => 'hero',
+					'field_header'  => 'Hi',
+					'field_box'     => array( 'field_note' => 'N' ),
+					'field_items'   => array( array( 'field_title' => 'One' ), array( 'field_title' => 'Two' ) ),
+				),
+			),
+			wt_acf_value_by_key( $value, $this->flexible_field() )
+		);
+	}
+
+	public function test_value_by_key_drops_unknown_layouts_and_fields() {
+		$value = array(
+			array( 'acf_fc_layout' => 'missing' ),
+			array(
+				'acf_fc_layout' => 'hero',
+				'stray'         => 'x',
+			),
+		);
+		$this->assertSame(
+			array( array( 'acf_fc_layout' => 'hero' ) ),
+			wt_acf_value_by_key( $value, $this->flexible_field() )
+		);
+	}
+
+	// wt_donate_default_value().
+
+	public function test_default_value_ignores_other_fields() {
+		$this->assertSame( 'x', wt_donate_default_value( 'x', 16670, array( 'key' => 'field_other' ) ) );
+	}
+
+	public function test_default_value_ignores_other_templates() {
+		WP_Mock::userFunction( 'get_page_template_slug', array( 'return' => 'template-editorial.php' ) );
+		$this->assertFalse( wt_donate_default_value( false, 2, array( 'key' => WT_MAIN_CONTENT_KEY ) ) );
+	}
+
+	public function test_saved_blocks_win() {
+		WP_Mock::userFunction( 'get_page_template_slug', array( 'return' => 'template-donate.php' ) );
+		WP_Mock::userFunction( 'metadata_exists', array( 'return' => true ) );
+		$this->assertSame( array( 'saved' ), wt_donate_default_value( array( 'saved' ), 16670, array( 'key' => WT_MAIN_CONTENT_KEY ) ) );
 	}
 }

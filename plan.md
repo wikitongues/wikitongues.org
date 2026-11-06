@@ -112,7 +112,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
-- **Status (2026-11-06):** the new layout is in (gift box, reach stats, where the gift goes, fellow stories, monthly pitch, FAQ), and all its copy is editable in admin ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story consent and photos, social proof (1.3) and the frequency test. The checkout campaign ID is a field on the Donate page for now, and should move to `wt_active_campaign()` once 1.1 lands.
+- **Status (2026-11-06):** the new layout is in, built from editorial blocks like the homepage ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story photo consent, social proof (1.3), the frequency test, and the design's Graphik Light (body text) and Schnyder Wide L (section labels) web fonts. Our Commercial Type licence covers neither, so the page uses Graphik Regular and Schnyder Wide M until they're licensed. The gift box's campaign ID is a block field for now, and should move to `wt_active_campaign()` once 1.1 lands.
 
 - **Content:** recurring vs. one-time giving, biased toward monthly; impact framing; social proof from donor recognition (1.3); the FundraiseUp modal.
 - **Copy:** ship with minimal copy and iterate (decided 2026-09-13). The impact statement needs sign-off before it is final.

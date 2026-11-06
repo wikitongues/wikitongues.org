@@ -1,7 +1,7 @@
 .wt-donate
 	background #fffcef
 	color #101010
-	font 400 16px/1.6 'Graphik Web', Arial, sans-serif
+	font 400 17px/1.6 'Graphik Web', Arial, sans-serif
 
 	*
 		box-sizing border-box
@@ -68,13 +68,23 @@
 			text-transform uppercase
 
 		> p:not([class])
-			max-width 520px
-			font-size 18px
+			max-width 600px
+			font-size clamp(19px, 2vw, 24px)
+			line-height 1.3
 
 	& &__eyebrow
 		font 600 13px/1.4 'Graphik Web', Arial, sans-serif
 		letter-spacing .065em
 		text-transform uppercase
+
+	// Large serif label above a section heading: "Gifts.", "Fellows.", "Questions."
+	&__label
+		font 300 clamp(40px, 6vw, 56px)/1 'Schnyder Wide L Web', 'Schnyder Wide M Web', Georgia, serif
+
+	&__number
+		color #3814a5
+		font 600 13px/1.4 'Graphik Web', Arial, sans-serif
+		letter-spacing .06em
 
 	&__highlight
 		background url('../img/donate/highlight.png') center / 100% 88% no-repeat
@@ -101,15 +111,18 @@
 
 	&__jump
 		display flex
-		align-items center
-		gap 12px
-		max-width 360px
-		font-size 14px
+		align-items flex-start
+		gap 4px
+		max-width 420px
+		font-size 17px
+		line-height 1.4
 
+		// Size, rotation and offset as in the design mockup.
 		&::after
 			content ''
-			flex 0 0 42px
-			height 42px
+			flex 0 0 86px
+			height 92px
+			transform rotate(92deg) translate(18px, -6px)
 			background url('../img/donate/arrow.png') center / contain no-repeat
 
 	&__gift
@@ -183,8 +196,8 @@
 		align-items center
 		justify-content center
 		justify-self start
-		min-height 48px
-		padding 10px 22px
+		min-height 52px
+		padding 14px 28px
 		border 1px solid #101010
 		border-radius 0
 		background #101010
@@ -199,8 +212,11 @@
 			background #3814a5
 			color #fffcef
 
-	&__gift .wt-donate__button
-		width 100%
+	&__gift
+		font-size 16px
+
+		.wt-donate__button
+			width 100%
 
 	&__button--outline
 		background transparent
@@ -220,9 +236,15 @@
 			margin-inline auto
 			gap 32px
 
+		li
+			max-width 28ch
+
 		strong
 			display block
 			font 300 clamp(42px, 6vw, 70px)/1.1 'Schnyder Wide M Web', Georgia, serif
+
+	&__stat-prefix
+		font-size .4em
 
 	&__rule
 		border-top 1px solid #101010
@@ -259,9 +281,12 @@
 	&__story-art--photo
 		display block
 		width 100%
-		height 100%
+		height auto
+		min-height 0
+		aspect-ratio 16 / 9
 		padding 0
 		object-fit cover
+		object-position 50% 30%
 
 	&__feature
 		align-items center
@@ -270,8 +295,14 @@
 			min-height clamp(185px, 32vw, 420px)
 			border 1px solid #101010
 
+		.wt-donate__story-art--photo
+			min-height 0
+
 		h3
 			font-size 36px
+
+		p:not([class])
+			font-size 19px
 
 	&__stories
 		gap 24px
@@ -285,6 +316,27 @@
 
 		.wt-donate__story-copy
 			padding 24px
+
+			p:not([class])
+				font-size 16px
+
+	&__pair
+		align-items stretch
+
+		> div
+			grid-template-rows auto auto auto 1fr
+			align-content stretch
+			gap 20px
+
+			// Lines its button up with the monthly box's, as in the design.
+			&:not(.wt-donate__monthly)
+				padding-bottom clamp(22px, 4vw, 40px)
+
+			p:not([class])
+				font-size 19px
+
+			.wt-donate__button
+				align-self end
 
 	&__monthly
 		padding clamp(22px, 4vw, 40px)
@@ -303,24 +355,47 @@
 		gap 0
 
 		.wt-donate__heading
+			gap 16px
 			margin-bottom 32px
 
 		details
-			border-bottom 1px solid #101010
+			border-bottom 1.5px solid #101010
 
 			&:first-of-type
-				border-top 1px solid #101010
+				border-top 1.5px solid #101010
+
+			&[open] .wt-donate__faq-toggle
+				transform rotate(45deg)
 
 		summary
+			display flex
+			justify-content space-between
+			align-items center
+			gap 16px
+			padding-block 22px
 			cursor pointer
-			padding-block 18px
-			font-weight 600
+			list-style none
+			font-size 19px
+			font-weight 400
+
+			&::-webkit-details-marker
+				display none
+
+		&-toggle
+			flex none
+			font-size 28px
+			line-height 1
+			transition transform .2s
+
+			@media (prefers-reduced-motion: reduce)
+				transition none
 
 		details p
-			padding-bottom 18px
+			max-width 64ch
+			margin 0 0 24px
 
 	&__close
-		max-width 1040px
+		max-width 1240px
 		justify-items center
 		text-align center
 		gap 26px
@@ -330,6 +405,10 @@
 			overflow-wrap anywhere
 			line-height 1.05
 			text-transform uppercase
+
+		p:not([class])
+			max-width 576px
+			font-size 19px
 
 	&__actions
 		display flex
