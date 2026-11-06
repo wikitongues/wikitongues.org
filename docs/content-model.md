@@ -288,6 +288,7 @@ From `includes/template/router.php`:
 
 - **Portable by design.** The home URL is stored as `{{home}}`, so links written on localhost resolve to the target site. Post references travel as post type + slug, images as their upload path, and terms as taxonomy + slug, and each resolves to the target's own IDs on import.
 - **Matched by slug, and the bundle wins.** A post with the same type and slug is updated in place, and its meta is replaced by the bundle's. Admin edits made on the target since the last import are overwritten. Anything unmatched is created. The import is dry run by default and safe to re-run.
+- **Nested pages keep their URL.** A child page's parent travels as its path, such as `revitalization/resources`. The parent must already exist on the target; if it doesn't, the import stops before writing anything.
 - **Uploads don't travel.** An image whose file isn't in the target's media library is left empty, with a warning. Upload the file there first, keeping the same `YYYY/MM/` path, or set the image in admin afterwards.
 - **Keep bundles out of the repo.** Unpublished copy shouldn't land in a public repo. Write bundles to `docs/local_docs/content/` (gitignored). Copy them to the server's home directory, never under `public_html`.
 

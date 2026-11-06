@@ -164,6 +164,21 @@ function wt_content_import( $args, $assoc_args ) {
 
 	WP_CLI::log( $execute ? "Importing into {$home}." : "Dry run against {$home} — pass --execute to write." );
 
+	// Resolve every parent before writing anything: placing a nested page at the
+	// top level would publish it at the wrong URL, and failing halfway through
+	// would leave the bundle half-imported.
+	$parents = array();
+	foreach ( $bundle['posts'] as $entry ) {
+		if ( empty( $entry['parent'] ) ) {
+			continue;
+		}
+		$parent = get_page_by_path( $entry['parent']['path'], OBJECT, $entry['parent']['post_type'] );
+		if ( ! $parent ) {
+			WP_CLI::error( sprintf( '%s/%s: parent %s not found on this site. Create it first; nothing was written.', $entry['post_type'], $entry['post_name'], $entry['parent']['path'] ) );
+		}
+		$parents[ $entry['post_name'] ] = $parent->ID;
+	}
+
 	// Content is trusted (it came from our own admin) and kses would strip the
 	// markup an editor is allowed to save.
 	kses_remove_filters();
@@ -190,6 +205,8 @@ function wt_content_import( $args, $assoc_args ) {
 			}
 			$meta[] = array( $row['key'], $value );
 		}
+
+		$parent_id = empty( $entry['parent'] ) ? 0 : $parents[ $entry['post_name'] ];
 
 		WP_CLI::log(
 			sprintf(
@@ -223,6 +240,7 @@ function wt_content_import( $args, $assoc_args ) {
 			'post_excerpt'   => wt_bundle_detokenize_urls( $entry['post_excerpt'], $home ),
 			'post_status'    => $post_status,
 			'menu_order'     => $entry['menu_order'],
+			'post_parent'    => $parent_id,
 			'comment_status' => $entry['comment_status'],
 			'ping_status'    => $entry['ping_status'],
 		);
@@ -403,6 +421,11 @@ function wt_bundle_export_post( $post, $home ) {
 		'post_excerpt'   => wt_bundle_tokenize_urls( $post->post_excerpt, $home ),
 		'post_status'    => $post->post_status,
 		'menu_order'     => $post->menu_order,
+		// The parent's full path, so a nested page keeps its URL on the target.
+		'parent'         => $post->post_parent ? array(
+			'post_type' => get_post_type( $post->post_parent ),
+			'path'      => get_page_uri( $post->post_parent ),
+		) : null,
 		'comment_status' => $post->comment_status,
 		'ping_status'    => $post->ping_status,
 		'terms'          => (object) $terms,
