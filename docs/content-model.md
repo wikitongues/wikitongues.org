@@ -205,12 +205,23 @@ Most pages are composed in the admin from one flexible-content field, `main_cont
 
 ### Donate page
 
-`/donate` uses `template-donate.php`, which has a fixed layout instead of `main_content`. All of its copy is edited in **Template: Donate** (`group_6735ff7970d17.json`). The fields sit in tabs that follow the page from top to bottom. Programs, fellow stories and FAQ are repeaters; editors can add, remove and reorder them.
+`/donate` uses `template-donate.php`, which renders editorial `main_content` like the homepage. Seven layouts in **Global: Editorial page** are donation blocks, and any editorial page can use them. Their templates are in `modules/flexible-content/`, and their helpers in `includes/template/donate-content.php`.
 
-- **Defaults.** `includes/template/donate-content.php` holds the launch copy. Until the page saves a field, `wt_donate_default_value()` (on `acf/load_value`) supplies that copy, both on the page and in the admin form, so no migration seeds it. A saved value always wins, even an empty one: emptying the FAQ hides it.
-- **Reading fields.** Use `wt_donate_field()`, which looks fields up by key. `get_field()` with a name finds only fields the page has already saved.
-- **Editor conventions.** In the headline, closing headline and featured story, `*asterisks*` mark the hand-drawn highlight or underline (`wt_donate_marked()`). In program descriptions, `{languages}` prints the live archive count. The reach numbers come from `wt_get_archive_stats()` and published fellows.
-- **Checkout.** When **Fundraise Up campaign ID** (Gift box tab) is set, the gift box shows once/monthly and three preset amounts per frequency, and links to the page with Fundraise Up's `?form=` URL parameters. When it is empty, the box shows one button to the **Checkout link**. Fellow photos are optional; without one, a card shows the language name.
+| Layout | Renders |
+|---|---|
+| `donate_hero_layout` | Headline, trust signals and the gift box (`modules/donate/gift-box.php`). Its `id="give"` is the target for "#give" links |
+| `stats_layout` | Live counts (fellowship projects, languages, countries) with editable labels |
+| `numbered_list_layout` | A heading and numbered columns. `{languages}` prints the live count, and the first one on a page is the hero's `#where` target |
+| `stories_layout` | Fellow stories that pick fellow posts: the first large, the rest as cards. Name, language, location, year and headshot come from the fellow; the header and copy can be overridden. Photos are off by default |
+| `give_now_layout` | A one-time pitch beside a dark monthly box, each with a link CTA |
+| `faq_accordion_layout` | FAQ posts as an accordion, the first open (fields mirror the FAQ page's `faq_layout`) |
+| `closing_cta_layout` | A large headline, a CTA and an optional share button |
+
+- **Launch content.** Until the Donate page saves `main_content`, `wt_donate_default_value()` (on `acf/load_value`) loads `wt_donate_default_blocks()`, both on the page and in the admin form, so no migration seeds it. The template reads the field by key (`$editorial_field` in `editorial-content.php`), because `have_rows()` with a name finds only saved fields. Saved blocks always win.
+- **FAQ posts.** The launch FAQ block picks FAQ posts by title. `wp wt create-donate-faqs --execute` creates the four that don't exist yet; run it on each environment before the page is first saved.
+- **Editor conventions.** In headers and the first story's copy, `*asterisks*` mark the hand-drawn highlight or underline (`wt_donate_marked()`).
+- **Checkout.** With a **Fundraise Up Campaign ID** in the hero's gift box, the box shows once/monthly and three preset amounts per frequency, and links with Fundraise Up's `?form=` URL parameters. Without one, it shows the **Checkout Link**. The other CTAs are link fields; with a campaign, paste Fundraise Up's campaign links into them.
+- **Retired groups.** `group_6735ff7970d17` (the 2024 fundraiser fields) and `group_6377eeeba994d` (a 2022 Donate group that existed only in the database) are kept as inactive JSON, so their database copies no longer show on the page.
 ---
 
 ## Options pages

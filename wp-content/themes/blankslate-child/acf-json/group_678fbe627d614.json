@@ -1016,6 +1016,1111 @@
 					],
 					"min": "",
 					"max": ""
+				},
+				"layout_wtdba6dc7e8e8a": {
+					"key": "layout_wtdba6dc7e8e8a",
+					"name": "donate_hero_layout",
+					"label": "Donation Hero",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdb57706d06a2",
+							"label": "Eyebrow",
+							"name": "section_eyebrow",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Small capitals above the header.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdbf8441517e8",
+							"label": "Trust Note",
+							"name": "trust_note",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Shown next to the Candid seal.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdbc27fb0798d",
+							"label": "Section Header",
+							"name": "section_header",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Wrap words in *asterisks* to add the yellow highlight.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb5ffd469aef",
+							"label": "Section Copy",
+							"name": "section_copy",
+							"aria-label": "",
+							"type": "textarea",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"rows": 3,
+							"new_lines": ""
+						},
+						{
+							"key": "field_wtdbe2538462ee",
+							"label": "Financials Link",
+							"name": "financials_link",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array"
+						},
+						{
+							"key": "field_wtdb3f8e732a07",
+							"label": "Scroll Prompt",
+							"name": "jump_text",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Links down to the first Numbered Columns block.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb4bb46af159",
+							"label": "Gift Box",
+							"name": "gift_box",
+							"aria-label": "",
+							"type": "group",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "block",
+							"sub_fields": [
+								{
+									"key": "field_wtdb406f80b4c5",
+									"label": "Gift Header",
+									"name": "gift_header",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb3a4aacbb1c",
+									"label": "Fundraise Up Campaign ID",
+									"name": "campaign_id",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "From the Fundraise Up dashboard: the value after \u201c?form=\u201d in the campaign\u2019s link (starts with F, e.g. FUNABCDEFG). With an ID, the box shows once/monthly and amount buttons; without one, it shows the Checkout Link button.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb02cf397412",
+									"label": "One-time Amounts (USD)",
+									"name": "once_amounts",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "Exactly three whole-dollar amounts, e.g. 50, 100, 250. The middle one is selected first.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdbf18e99eb57",
+									"label": "Monthly Amounts (USD)",
+									"name": "monthly_amounts",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "Exactly three whole-dollar amounts, e.g. 5, 10, 25. The middle one is selected first.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb98533070a6",
+									"label": "One-time Note",
+									"name": "note_once",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								},
+								{
+									"key": "field_wtdb86bf65dc76",
+									"label": "Monthly Note",
+									"name": "note_monthly",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "The yearly total (e.g. \u201c$10 a month is $120 a year.\u201d) is added in front automatically.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								},
+								{
+									"key": "field_wtdbc13c49d4bb",
+									"label": "Checkout Link",
+									"name": "checkout_link",
+									"aria-label": "",
+									"type": "link",
+									"instructions": "Used when there is no campaign ID.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"return_format": "array"
+								},
+								{
+									"key": "field_wtdbe0404f75e3",
+									"label": "Checkout Note",
+									"name": "checkout_note",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "Shown under the Checkout Link button.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								},
+								{
+									"key": "field_wtdb35e3fb288a",
+									"label": "Small Print",
+									"name": "legal_copy",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								}
+							]
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdb3220ef648b": {
+					"key": "layout_wtdb3220ef648b",
+					"name": "stats_layout",
+					"label": "Stats Band",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdba0b3acf9c3",
+							"label": "Stats",
+							"name": "stats",
+							"aria-label": "",
+							"type": "repeater",
+							"instructions": "The numbers update automatically from the site.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "table",
+							"button_label": "Add stat",
+							"min": 0,
+							"max": 0,
+							"collapsed": "",
+							"pagination": 0,
+							"rows_per_page": 20,
+							"sub_fields": [
+								{
+									"key": "field_wtdbbb41d7d52e",
+									"label": "Number",
+									"name": "stat",
+									"aria-label": "",
+									"type": "select",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "30",
+										"class": "",
+										"id": ""
+									},
+									"choices": {
+										"fellows": "Fellowship projects",
+										"languages": "Languages in the archive",
+										"countries": "Countries and territories"
+									},
+									"return_format": "value",
+									"multiple": 0,
+									"allow_null": 0,
+									"ui": 0,
+									"ajax": 0,
+									"placeholder": "",
+									"default_value": "languages"
+								},
+								{
+									"key": "field_wtdb2598bca869",
+									"label": "Label",
+									"name": "stat_label",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "70",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								}
+							]
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdb35ea3e499c": {
+					"key": "layout_wtdb35ea3e499c",
+					"name": "numbered_list_layout",
+					"label": "Numbered Columns",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdb3ea8ce2d21",
+							"label": "Eyebrow",
+							"name": "section_eyebrow",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "30",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb133156846c",
+							"label": "Section Header",
+							"name": "section_header",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "70",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb914641259a",
+							"label": "Section Copy",
+							"name": "section_copy",
+							"aria-label": "",
+							"type": "textarea",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"rows": 3,
+							"new_lines": ""
+						},
+						{
+							"key": "field_wtdbbd13922434",
+							"label": "Items",
+							"name": "items",
+							"aria-label": "",
+							"type": "repeater",
+							"instructions": "Numbered automatically, three per row.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "block",
+							"button_label": "Add item",
+							"min": 0,
+							"max": 0,
+							"collapsed": "",
+							"pagination": 0,
+							"rows_per_page": 20,
+							"sub_fields": [
+								{
+									"key": "field_wtdb7522549ffe",
+									"label": "Header",
+									"name": "item_header",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdbc0f031e201",
+									"label": "Copy",
+									"name": "item_copy",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "Type {languages} to show the live number of languages in the archive.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								}
+							]
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdbda4f62aba2": {
+					"key": "layout_wtdbda4f62aba2",
+					"name": "stories_layout",
+					"label": "Fellow Stories",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdb1a04455aa9",
+							"label": "Eyebrow",
+							"name": "section_eyebrow",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "30",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb600b3b51d4",
+							"label": "Section Header",
+							"name": "section_header",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "70",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb1a09f66bc5",
+							"label": "Stories",
+							"name": "stories",
+							"aria-label": "",
+							"type": "repeater",
+							"instructions": "The first story is shown large; the rest as cards, three per row.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "block",
+							"button_label": "Add story",
+							"min": 0,
+							"max": 0,
+							"collapsed": "",
+							"pagination": 0,
+							"rows_per_page": 20,
+							"sub_fields": [
+								{
+									"key": "field_wtdb04224ee0e9",
+									"label": "Fellow",
+									"name": "fellow",
+									"aria-label": "",
+									"type": "post_object",
+									"instructions": "Name, language, country, year and photo come from the fellow\u2019s page.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "40",
+										"class": "",
+										"id": ""
+									},
+									"post_type": [
+										"fellows"
+									],
+									"taxonomy": "",
+									"return_format": "object",
+									"multiple": 0,
+									"allow_null": 0,
+									"ui": 1,
+									"bidirectional": 0,
+									"bidirectional_target": []
+								},
+								{
+									"key": "field_wtdb1e1b75ce80",
+									"label": "Story Header",
+									"name": "story_header",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "Optional. Only the first (large) story shows a header; cards show the fellow\u2019s name.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "60",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdbe67ce6ff50",
+									"label": "Story Copy",
+									"name": "story_copy",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "Optional. Leave empty to use the fellow\u2019s marketing text. In the first story, wrap words in *asterisks* to add the hand-drawn underline.",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								}
+							]
+						},
+						{
+							"key": "field_wtdb9ecb5c70c7",
+							"label": "Display Photos",
+							"name": "display_photos",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "Show fellows\u2019 headshots. When off, each story shows its language name instead.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "30",
+								"class": "",
+								"id": ""
+							},
+							"choices": {
+								"Yes": "Yes",
+								"No": "No"
+							},
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"ui": 0,
+							"ajax": 0,
+							"placeholder": "",
+							"default_value": "No"
+						},
+						{
+							"key": "field_wtdb918c7f06ff",
+							"label": "Footer Link",
+							"name": "footer_link",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "70",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array"
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdb6fd0598d48": {
+					"key": "layout_wtdb6fd0598d48",
+					"name": "give_now_layout",
+					"label": "Give Now Pair",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdb366f23fef8",
+							"label": "Give Once (left)",
+							"name": "give_once",
+							"aria-label": "",
+							"type": "group",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "block",
+							"sub_fields": [
+								{
+									"key": "field_wtdb0b385df515",
+									"label": "Eyebrow",
+									"name": "section_eyebrow",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb4eaa692d45",
+									"label": "Section Header",
+									"name": "section_header",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdba9a5689fee",
+									"label": "Section Copy",
+									"name": "section_copy",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								},
+								{
+									"key": "field_wtdb94478f7596",
+									"label": "Section CTA",
+									"name": "section_cta",
+									"aria-label": "",
+									"type": "link",
+									"instructions": "Button text and address. With a Fundraise Up campaign, paste the campaign link from the Fundraise Up dashboard (it ends in ?form=\u2026).",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"return_format": "array"
+								}
+							]
+						},
+						{
+							"key": "field_wtdb6662004259",
+							"label": "Give Monthly (dark box)",
+							"name": "give_monthly",
+							"aria-label": "",
+							"type": "group",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"layout": "block",
+							"sub_fields": [
+								{
+									"key": "field_wtdbae04aaa74e",
+									"label": "Eyebrow",
+									"name": "section_eyebrow",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb95d98b0f6b",
+									"label": "Section Header",
+									"name": "section_header",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"prepend": "",
+									"append": ""
+								},
+								{
+									"key": "field_wtdb6101b80954",
+									"label": "Section Copy",
+									"name": "section_copy",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "",
+									"rows": 3,
+									"new_lines": ""
+								},
+								{
+									"key": "field_wtdba8d9604623",
+									"label": "Section CTA",
+									"name": "section_cta",
+									"aria-label": "",
+									"type": "link",
+									"instructions": "Button text and address. With a Fundraise Up campaign, paste the campaign link from the Fundraise Up dashboard (it ends in ?form=\u2026).",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"return_format": "array"
+								}
+							]
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdbbe9b08c12a": {
+					"key": "layout_wtdbbe9b08c12a",
+					"name": "faq_accordion_layout",
+					"label": "FAQ Accordion",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdbcf85eb22e4",
+							"label": "Eyebrow",
+							"name": "section_eyebrow",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "30",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdbc91b0429a6",
+							"label": "Section Header",
+							"name": "section_header",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "70",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdb18152dbe90",
+							"label": "FAQ Entries",
+							"name": "faq_entries",
+							"aria-label": "",
+							"type": "relationship",
+							"instructions": "Pick FAQ posts. The first is shown open.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"post_type": [
+								"faq"
+							],
+							"taxonomy": "",
+							"filters": [
+								"search",
+								"taxonomy"
+							],
+							"return_format": "object",
+							"min": "",
+							"max": "",
+							"elements": "",
+							"bidirectional": 0,
+							"bidirectional_target": []
+						}
+					],
+					"min": "",
+					"max": ""
+				},
+				"layout_wtdb6ccde4a64e": {
+					"key": "layout_wtdb6ccde4a64e",
+					"name": "closing_cta_layout",
+					"label": "Closing Call to Action",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_wtdb0ab66b9c43",
+							"label": "Section Header",
+							"name": "section_header",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Wrap words in *asterisks* to add the yellow highlight.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_wtdbb6401f8fcb",
+							"label": "Section Copy",
+							"name": "section_copy",
+							"aria-label": "",
+							"type": "textarea",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"rows": 3,
+							"new_lines": ""
+						},
+						{
+							"key": "field_wtdb97715e70d3",
+							"label": "Section CTA",
+							"name": "section_cta",
+							"aria-label": "",
+							"type": "link",
+							"instructions": "Use #give to scroll back up to the gift box.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"return_format": "array"
+						},
+						{
+							"key": "field_wtdb3fd00692bd",
+							"label": "Display Share Button",
+							"name": "display_share",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "Shows a button that shares or copies the page link.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "20",
+								"class": "",
+								"id": ""
+							},
+							"choices": {
+								"Yes": "Yes",
+								"No": "No"
+							},
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"ui": 0,
+							"ajax": 0,
+							"placeholder": "",
+							"default_value": "Yes"
+						},
+						{
+							"key": "field_wtdb4cd6266ed5",
+							"label": "Share Button Text",
+							"name": "share_label",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "30",
+								"class": "",
+								"id": ""
+							},
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						}
+					],
+					"min": "",
+					"max": ""
 				}
 			},
 			"min": "",
@@ -1100,6 +2205,13 @@
 				"operator": "==",
 				"value": "template-people.php"
 			}
+		],
+		[
+			{
+				"param": "post_template",
+				"operator": "==",
+				"value": "template-donate.php"
+			}
 		]
 	],
 	"menu_order": 1,
@@ -1115,5 +2227,5 @@
 	"description": "",
 	"show_in_rest": 0,
 	"display_title": "",
-	"modified": 1788961767
+	"modified": 1793981780
 }
