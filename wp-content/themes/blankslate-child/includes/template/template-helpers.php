@@ -299,6 +299,31 @@ function wt_prefix_the( string $name ): string {
 }
 
 /**
+ * Join items into an English list with an Oxford comma.
+ *
+ * Example: array( 'A', 'B', 'C' ) becomes "A, B, and C"; two items become "A and B".
+ *
+ * @param string[] $items       List items, already formatted.
+ * @param string   $conjunction Word before the last item: "and" or "or".
+ * @return string Joined list, or '' when empty.
+ */
+function wt_join_list( array $items, string $conjunction = 'and' ): string {
+	$items = array_values( $items );
+	$count = count( $items );
+	if ( 0 === $count ) {
+		return '';
+	}
+	if ( 1 === $count ) {
+		return $items[0];
+	}
+	if ( 2 === $count ) {
+		return $items[0] . ' ' . $conjunction . ' ' . $items[1];
+	}
+	$last = array_pop( $items );
+	return implode( ', ', $items ) . ', ' . $conjunction . ' ' . $last;
+}
+
+/**
  * Build the standard social-links array for the current post in context.
  *
  * Each entry maps a platform key to ['url' => string|false, 'icon' => string].
