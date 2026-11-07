@@ -56,11 +56,15 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 	$writing_system_terms       = get_the_terms( get_the_ID(), 'writing-system' );
 	$linguistic_genealogy_terms = get_the_terms( get_the_ID(), 'linguistic-genealogy' );
 	$egids                      = get_field( 'egids_status' );
+	$blurb                      = wt_language_blurb( wt_language_facts( get_the_ID() ) );
 	?>
 <div class="wt_meta--languages-single">
 	<h1>
 		<?php echo esc_html( $standard_name ); ?>
 	</h1>
+	<?php if ( $blurb ) : ?>
+		<p class="blurb"><?php echo esc_html( $blurb ); ?></p>
+	<?php endif; ?>
 	<?php if ( $wikipedia_description ) : ?>
 		<p>
 			<?php echo esc_html( $wikipedia_description ); ?> &nbsp;

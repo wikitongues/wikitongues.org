@@ -89,6 +89,13 @@ These are the documentation archive. The first four are synced from Airtable; th
 - **Classification.** The `writing-system` and `linguistic-genealogy` taxonomies are what templates read. The legacy text fields `writing_systems` and `linguistic_genealogy` are what Airtable still writes.
 - **Related content.** `speakers_recorded` (videos), `lexicon_source` and `lexicon_target` (lexicons), `external_resources` (resources). Counts are cached in `{field}_count` post meta for sorting the admin list.
 - **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons, resources and "other languages from" each territory the language is linked to.
+- **Summary.** Under the name, the sidebar shows a summary built from the fields at render time (`includes/template/language-blurb.php`), e.g. "Emilian, original to Italy, is a dormant Indo-European language written with the Latin script." Nothing is stored. `wt_language_facts()` reads the fields into a plain array, and `wt_language_blurb()` turns it into prose and is unit-tested (`tests/unit/LanguageBlurbTest.php`). Each phrase is optional and drops out when its field is empty, and the summary is hidden when only the name is known. Wording that depends on a value is kept in lookup tables in that file:
+  - which EGIDS levels are described (6a–10; levels 1–5, "More data needed" and the rest are left out)
+  - genealogy terms that aren't families ("Sign language", "Language isolate", and others; "Unclassified" is dropped)
+  - scripts that aren't named as a script (Braille, and "Unwritten", which becomes "with no established writing system")
+  - country names that take "the"
+
+  After the first sentence come the endonyms (`autonym`), as "In the language itself, it is called …". They keep their bracketed romanization ("भोजपुरी (Bhōjpurī)"), and an endonym that only repeats the standard name is skipped. It shows at most 3 endonyms, 3 alternate names and 5 extra territories. Alternate names already given as the name or an endonym aren't repeated, and a name marked `(pej.)` is never featured. To add a source such as a Wikipedia extract or speaker population, add a key to the facts array and one phrase builder.
 
 ### Videos
 

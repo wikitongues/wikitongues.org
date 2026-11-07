@@ -46,21 +46,14 @@ if ( $territories ) {
 	$selected     = implode( ',', $language_ids );
 
 	// Build territory name list with Oxford comma (e.g. "Dominica, Saint Kitts and Nevis, and United Kingdom").
-	$territory_names = array_map(
+	$territory_names  = array_map(
 		function ( $t ) {
 			return wt_prefix_the( $t->post_title );
 		},
 		$territories
 	);
-	$territory_count = count( $territory_names );
-	if ( $territory_count === 1 ) {
-		$territory_label = $territory_names[0];
-	} elseif ( $territory_count === 2 ) {
-		$territory_label = $territory_names[0] . ' and ' . $territory_names[1];
-	} else {
-		$last            = array_pop( $territory_names );
-		$territory_label = implode( ', ', $territory_names ) . ', and ' . $last;
-	}
+	$territory_count  = count( $territory_names );
+	$territory_label  = wt_join_list( $territory_names );
 	$gallery_title    = 'Other languages from ' . $territory_label;
 	$gallery_link_out = $territory_count === 1
 		? add_query_arg( 'territory', $territories[0]->post_name, get_post_type_archive_link( 'languages' ) )
