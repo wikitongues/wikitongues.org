@@ -170,6 +170,7 @@ function render(lang, pov = 'defacto') {
   const id = `${lang.iso}-${pov}`;
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     + `<rect class="sea" width="${W}" height="${H}"/>`
+    + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<g class="lands">${land}</g><g class="hls">${highlight}</g><g class="disputes">${disp}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`

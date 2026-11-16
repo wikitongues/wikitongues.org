@@ -263,6 +263,7 @@ On local data, 7,536 language pages list exactly one territory, 44 list more tha
 
 - **Brand:** Wikitongues blue sea (`$blue()`, `#3814a5`), land in the site's `$blue(50)`, the language's primary territories in parchment with a deep-blue edge, and secondary territories in a pale blue between the two. Borders and the disputed-area hatch are blues too. It looks the same in light and dark mode.
 - **Terrain shading** on top: Natural Earth's grayscale hillshade (SR_50M), reprojected into each frame by inverting the same d3 projection, remapped so flat ground is neutral gray, cut to the vector coastline, and blended with `mix-blend-mode: hard-light`. Soft-light was tried and disappears on light fills. Ship the images at about 600×450 to stay within about 30 KB per page; the prototype's 800×600 images ran 1–52 KB.
+- **Ocean floor (on trial).** Natural Earth's GRAY_50M_SR_OB carries seafloor relief: continental shelves, trenches, ridges and fracture zones. The build maps deep ocean to neutral gray, cuts the image to the sea, and blends it over the sea blue with `hard-light` at 65% opacity, fainter than the land shading so the coast stays the strongest edge. It adds 5–29 KB per page at 2×. Decide on or off from the prototype.
 - **Tokens** in a `wt-maps` Stylus partial built from the site palette, so the colors live in one place.
 - **Size:** full sidebar width (about 230–390px), with a fixed 4:3 aspect ratio so the layout doesn't shift as the page loads.
 
