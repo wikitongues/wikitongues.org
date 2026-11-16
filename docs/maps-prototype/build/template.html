@@ -150,12 +150,6 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .wt-map .seashade { display: none; }
 .s-brand .wt-map .seashade, .s-shaded .wt-map .seashade { display: inline; mix-blend-mode: hard-light; opacity: .65; }
 .no-seafloor .wt-map .seashade { display: none; }
-/* compass: a small north arrow, rotated by the build to true north at its spot */
-.wt-map { --compass: var(--ink); --compass-halo: var(--sea); }
-.s-brand .wt-map { --compass: var(--brd-primary); --compass-halo: var(--brd-sea); }
-.wt-map .compass-n { fill: var(--compass); stroke: var(--compass-halo); stroke-width: .8; paint-order: stroke; }
-.wt-map .compass-s { fill: none; stroke: var(--compass); stroke-width: .9; stroke-linejoin: round; }
-.wt-map .compass-label { fill: var(--compass); font: 600 7.5px var(--font-body); letter-spacing: .02em; stroke: var(--compass-halo); stroke-width: 1.6px; paint-order: stroke; }
 .sw-p { background: var(--primary); } .sw-s { background: var(--secondary); } .sw-l { background: var(--land); outline: 1px solid var(--border); } .sw-sea { background: var(--sea); }
 .s-brand .sw-p { background: var(--brd-primary); outline: 1px solid var(--brd-edge); } .s-brand .sw-s { background: var(--brd-secondary); } .s-brand .sw-l { background: var(--brd-land); outline: 0; } .s-brand .sw-sea { background: var(--brd-sea); }
 .s-shaded .sw-p { background: color-mix(in srgb, var(--primary) 52%, var(--land)); }
