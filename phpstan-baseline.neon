@@ -570,16 +570,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/languages/single-languages__lexicons.php
 
 		-
-			message: "#^Variable \\$language might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/languages/single-languages__resources.php
-
-		-
-			message: "#^Variable \\$standard_name might not be defined\\.$#"
-			count: 2
-			path: wp-content/themes/blankslate-child/modules/languages/single-languages__resources.php
-
-		-
 			message: "#^Variable \\$standard_name might not be defined\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/modules/languages/single-languages__videos.php

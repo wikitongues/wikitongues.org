@@ -45,7 +45,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `videos` | An oral history (1,800+) | `/videos/{slug}/` | `single-videos.php` | Yes |
 | `captions` | A caption file for a video | None: redirects to its video | — | Yes |
 | `lexicons` | A word list between languages | None: redirects to its source language | — | Yes |
-| `resources` | An external resource about a language | None: redirects to its language | — | Yes |
+| `resources` | An external resource about a language (no longer listed on language pages) | None: redirects to its language | — | Yes |
 | `territories` | A country or territory | `/territories/{region}/{territory}/` | `single-territories.php` | Yes |
 | `fellows` | A Revitalization Fellow | `/fellows/{slug}/` | `single-fellows.php` | Yes |
 | `people` | Staff, board, advisors, volunteers | None: redirects to the staff page | Sections of `template-people.php` pages | **No** |
@@ -88,7 +88,7 @@ These are the documentation archive. The first four are synced from Airtable; th
 - **Geography.** `nations_of_origin` is legacy comma-separated text, matched with `LIKE` (#241). The structured links are territory relationships: each territory's `languages` and `official_languages` fields, and the language's own `territories` field.
 - **Classification.** The `writing-system` and `linguistic-genealogy` taxonomies are what templates read. The legacy text fields `writing_systems` and `linguistic_genealogy` are what Airtable still writes.
 - **Related content.** `speakers_recorded` (videos), `lexicon_source` and `lexicon_target` (lexicons), `external_resources` (resources). Counts are cached in `{field}_count` post meta for sorting the admin list.
-- **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons, resources and "other languages from" each territory the language is linked to.
+- **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons and "other languages from" each territory the language is linked to.
 - **Summary.** Under the name, the sidebar shows a summary built from the fields at render time (`includes/template/language-blurb.php`), e.g. "Emilian, original to Italy, is a dormant Indo-European language written with the Latin script." Nothing is stored. `wt_language_facts()` reads the fields into a plain array, and `wt_language_blurb()` turns it into prose and is unit-tested (`tests/unit/LanguageBlurbTest.php`). Each phrase is optional and drops out when its field is empty, and the summary is hidden when only the name is known. Wording that depends on a value is kept in lookup tables in that file:
   - which EGIDS levels are described (6a–10; levels 1–5, "More data needed" and the rest are left out)
   - genealogy terms that aren't families ("Sign language", "Language isolate", and others; "Unclassified" is dropped)
