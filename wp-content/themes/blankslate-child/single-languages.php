@@ -26,7 +26,6 @@ echo '<main class="wt_single-languages__content">';
 require 'modules/languages/single-languages__fellows.php';
 require 'modules/languages/single-languages__videos.php';
 require 'modules/languages/single-languages__lexicons.php';
-require 'modules/languages/single-languages__resources.php';
 echo '</main>';
 
 // ====================
