@@ -26,6 +26,8 @@
   /* land is the site's $blue(50): brand blue blended 50% into parchment */
   --brd-sea: #3814a5; --brd-land: #9c88ca; --brd-border: #7f6ab8; --brd-edge: #24107a;
   --brd-primary: #fffcef; --brd-secondary: #d6cdee; --brd-dispute: #e6e0f3;
+  /* site secondary and tertiary: red for contested areas, yellow for rings and dots */
+  --brd-contested: #e52600; --brd-dot: #ffff00;
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -137,11 +139,29 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .bhl-line { stroke: var(--brd-dispute); stroke-width: .8; opacity: .6; }
 .bhp-line { stroke: var(--brd-primary); stroke-width: 1.3; }
 .bhs-line { stroke: var(--brd-secondary); stroke-width: 1.3; }
+.bhp-bg { fill: var(--brd-primary); } .bhs-bg { fill: var(--brd-secondary); }
+.bhc-line { stroke: var(--brd-contested); stroke-width: 1.1; }
+.bhcl-line { stroke: var(--brd-contested); stroke-width: .8; opacity: .55; }
+.s-brand .wt-map .disputed { stroke: var(--brd-contested); }
+.s-brand .wt-map .marker.primary { stroke: var(--brd-dot); stroke-width: 2.2; }
+.s-brand .wt-map .marker.secondary { stroke: var(--brd-dot); stroke-width: 1.4; stroke-dasharray: 2.5 1.8; }
 /* ocean floor: GRAY_50M_SR_OB cut to the sea, deep ocean neutral, blended over the sea colour.
    Fainter than the land shading so the coast stays the strongest edge. */
 .wt-map .seashade { display: none; }
 .s-brand .wt-map .seashade, .s-shaded .wt-map .seashade { display: inline; mix-blend-mode: hard-light; opacity: .65; }
 .no-seafloor .wt-map .seashade { display: none; }
+/* compass: a small north arrow, rotated by the build to true north at its spot */
+.wt-map { --compass: var(--ink); --compass-halo: var(--sea); }
+.s-brand .wt-map { --compass: var(--brd-primary); --compass-halo: var(--brd-sea); }
+.wt-map .compass-n { fill: var(--compass); stroke: var(--compass-halo); stroke-width: .8; paint-order: stroke; }
+.wt-map .compass-s { fill: none; stroke: var(--compass); stroke-width: .9; stroke-linejoin: round; }
+.wt-map .compass-label { fill: var(--compass); font: 600 7.5px var(--font-body); letter-spacing: .02em; stroke: var(--compass-halo); stroke-width: 1.6px; paint-order: stroke; }
+.sw-p { background: var(--primary); } .sw-s { background: var(--secondary); } .sw-l { background: var(--land); outline: 1px solid var(--border); } .sw-sea { background: var(--sea); }
+.s-brand .sw-p { background: var(--brd-primary); outline: 1px solid var(--brd-edge); } .s-brand .sw-s { background: var(--brd-secondary); } .s-brand .sw-l { background: var(--brd-land); outline: 0; } .s-brand .sw-sea { background: var(--brd-sea); }
+.s-shaded .sw-p { background: color-mix(in srgb, var(--primary) 52%, var(--land)); }
+.brand-only { display: none; } .s-brand .brand-only { display: inline; }
+.sw-c { background: repeating-linear-gradient(45deg, var(--brd-land) 0 3px, var(--brd-contested) 3px 4px); }
+.sw-d { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brd-dot); background: var(--brd-sea); }
 /* outline style */
 .s-outline .wt-map .sea { fill: var(--paper); }
 .s-outline .wt-map .land, .s-outline .wt-map .disputed.land { fill: none; stroke: var(--ink-2); stroke-width: .45; opacity: .9; }
@@ -217,9 +237,9 @@ summary { cursor: pointer; font-weight: 500; }
     <pattern id="ihatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="ihatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihp-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="ihatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihs-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
-    <pattern id="bhatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
-    <pattern id="bhatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhp-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
-    <pattern id="bhatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhs-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhcl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhp-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhs-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
   </defs>
 </svg>
 
@@ -256,7 +276,7 @@ summary { cursor: pointer; font-weight: 500; }
       <span class="eyebrow">01 · The sidebar map</span>
       <h2 id="h-tests">Nine test languages</h2>
       <p class="muted">Each map is a static SVG, centred on its own territory with a projection that preserves area. Shapes under 1.5px are dropped and lines are simplified to sidebar resolution. The size line shows the gzipped SVG and, for the relief style, the extra image; the spec budgets 20 KB and 30 KB.</p>
-      <div class="legend"><span><i class="sw" style="background:var(--primary)"></i>Primary: also a country of origin</span><span><i class="sw" style="background:var(--secondary)"></i>Secondary: also spoken in</span><span><i class="sw" style="background:var(--land);outline:1px solid var(--border)"></i>Context</span></div>
+      <div class="legend"><span><i class="sw sw-p"></i>Primary: also a country of origin</span><span><i class="sw sw-s"></i>Secondary: also spoken in</span><span><i class="sw sw-l"></i>Context</span><span><i class="sw sw-sea"></i>Sea</span><span class="brand-only"><i class="sw sw-c"></i>Contested</span><span class="brand-only"><i class="sw sw-d"></i>Too small to see: ring</span></div>
     </div>
     <div class="cards">{{CARDS}}</div>
   </section>

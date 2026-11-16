@@ -51,6 +51,25 @@ function framingParts(feature) {
   return parts.filter((p) => p === L || p.a >= 0.15 * L.a || d3.geoDistance(p.c, L.c) <= rL * 1.5 + 0.035).map((p) => p.f);
 }
 
+// A small north arrow in the bottom-right corner, rotated to true north at
+// that spot: on a centred azimuthal map north is only straight up along the
+// central meridian, so the arrow leans on wide frames.
+const COMPASS_AT = [W - 22, H - 30];
+function compass(proj) {
+  const [cx, cy] = COMPASS_AT;
+  let deg = 0;
+  const ll = proj.invert([cx, cy]);
+  if (ll && Math.abs(ll[1]) < 89.5) {
+    const a = proj(ll), b = proj([ll[0], ll[1] + 0.05]);
+    if (a && b) deg = (Math.atan2(b[0] - a[0], a[1] - b[1]) * 180) / Math.PI;
+  }
+  // Needle 20 units tall: filled north half, outlined south half, "N" above.
+  return `<g class="compass" transform="translate(${cx} ${cy}) rotate(${deg.toFixed(1)}) scale(1.6)" aria-hidden="true">`
+    + `<path class="compass-n" d="M0,-10L3.2,0L-3.2,0Z"/>`
+    + `<path class="compass-s" d="M0,10L3.2,0L-3.2,0Z"/>`
+    + `<text class="compass-label" x="0" y="-12.5" text-anchor="middle">N</text></g>`;
+}
+
 // Douglas–Peucker on projected points (iterative).
 function dp(pts, eps) {
   const n = pts.length; if (n < 4) return pts;
@@ -137,7 +156,7 @@ function render(lang, pov = 'defacto') {
     ownerCodes(m.refs).forEach((c) => hiCodes[cls].add(c));
     return geomFor(m.refs).map((f) => {
       const area = path.area(f);
-      if (area < 14) {
+      if (area < 40) { // too small to read as a shape: add a ring
         const c = proj(d3.geoCentroid(f));
         if (c) markers.push(`<circle class="marker ${cls}" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="7"/>`);
       }
@@ -147,7 +166,11 @@ function render(lang, pov = 'defacto') {
 
   // Disputed overlays, coloured by the chosen view.
   const hiCls = (code) => (hiCodes.primary.has(code) ? 'primary' : hiCodes.secondary.has(code) ? 'secondary' : null);
-  const selfHi = (d) => hl.find(({ m }) => m.refs.some(([, c]) => c === d.code));
+  // A disputed area is the territory itself when it shares the territory's code,
+  // or when its de facto owner is a highlighted map unit or breakaway region
+  // (Natural Earth stores Somaliland both ways). Never via a whole country:
+  // that would hand Crimea to Russia on a Russian page.
+  const selfHi = (d) => hl.find(({ m }) => m.refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
   const disp = disputed.map((d) => {
     const own = selfHi(d);
     let cls;
@@ -174,6 +197,7 @@ function render(lang, pov = 'defacto') {
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<g class="lands">${land}</g><g class="hls">${highlight}</g><g class="disputes">${disp}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
+    + compass(proj)
     + `<g class="markers">${markers.join('')}</g></svg>`;
 
   // Projected extent in metres for gdalwarp (d3 flips y).
