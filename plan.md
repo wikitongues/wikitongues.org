@@ -63,7 +63,7 @@ Last reviewed 2026-09-13.
 | 3 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
 | 4 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
 | 5 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 6 | Maps on territory and region pages | Discovery by place | [3.2](#32-maps-on-territory-and-region-pages) |
+| 6 | Maps: a locator map on language pages, then interactive territory and region maps | Discovery by place | [3.2](#32-maps) |
 | 7 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
@@ -177,16 +177,117 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 - **Measure:** homepage exit rate, pages per session, and the rate of homepage entries that end in a donation.
 - **Evaluate** 60–90 days after launch by comparing donation rates for visitors who use discovery features against those who don't. That comparison is the thesis test, and its result decides what follows this queue.
 
-#### 3.2 Maps on territory and region pages
+#### 3.2 Maps
 
-*Now #6.*
+*Now #6. Spec drafted, prototyped and decided 2026-11-16.*
 
-An embedded map on `single-territories.php` and `taxonomy-region.php`, with markers that link to language pages.
+Maps in two steps, both from one new plugin, `wt-maps`:
 
-- **Library:** Leaflet with OpenStreetMap tiles, or Mapbox GL. No unrestricted API key in the browser.
-- **Data:** territories have a `wikidata_id` but no coordinates or shapes yet. Sourcing them, from Wikidata coordinates or a country-boundaries dataset keyed by ISO code, is part of this work.
-- **Performance:** some territories list hundreds of languages (India: 403).
-- **Instrument:** `map_interaction` (`territory`, `action`).
+1. **A static locator map in the language page sidebar** that shows where the language is spoken. It doesn't need to be interactive. This step builds the plugin, the country data and the visual style.
+2. **Interactive maps on territory and region pages** (`single-territories.php`, `taxonomy-region.php`), with shaded countries that link to language pages. They reuse the step 1 data and style.
+
+##### Decided
+
+| Question | Decision |
+|---|---|
+| Imagery or vector | **Vector** country shapes, colored by CSS, with a raster terrain layer cut to the coast. Satellite tiles are licensed, heavy, can't highlight a single country, and lose their detail at sidebar width. |
+| Rendering | **Ahead of time, no JavaScript.** SVG files made by a build script and placed inline by PHP. No tile server, no API key, no request to a third party. |
+| Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. |
+| Style | **Brand** (see "Look"). Shaded and colored relief were the alternatives; flat, outline and a gray inverted style were tried and dropped. |
+| Labels and caption | **No labels and no visible caption.** The summary sentence above the map already says where the language is spoken. The SVG carries the same text as its accessible description. |
+| Projection | **Lambert azimuthal equal-area, centered on each map's territories.** Areas are exact, and shapes stretch only with distance from the center: typically 1–5% over the highlighted territory. An Albers equal-area conic was tested for continent-sized countries and rejected, because over each country's own land the azimuthal distorts less every time (Russia: 3.0% median and 12.6% worst, against 3.4% and 28.8%; Canada: 6.4% worst, against 36.6%). Large figures only appear in the empty corners of very wide frames. A Waterman butterfly suits a whole-world map, not a locator. |
+| Disputed borders | **Neutral.** Disputed areas get a dashed edge and a hatch, and are assigned to no one. The hatch takes the highlight color when a claimant is one of the language's territories, so a Ukrainian page shows Crimea as contested. Natural Earth's default (control today) and its US view were the alternatives; its UN view is empty. |
+| Link from territory to shape | **An ACF field on territories, "Map shape"**, holding Natural Earth codes (`GAZ,WEB` for Palestine), editable in WordPress. |
+| France | **Metropolitan France only** (`FXX`), because its overseas departments are territories of their own. |
+| Languages in several territories | **Fit the frame to all of them.** The prototype showed this works (Russian), so there are no separate region maps for languages. |
+
+##### Content changes that ship with the plugin
+
+These are one-off edits in WordPress admin and Airtable, made before the backfill. Each follows the territory-change checklist below.
+
+- **Fold Nagorno-Karabakh.** Natural Earth still draws the pre-2023 area, but Azerbaijan has controlled it since September 2023 and the republic dissolved in January 2024. Remove it from Armenian, its only language. Armenian keeps Armenia, Lebanon and Abkhazia. Don't add Azerbaijan, because a territory link says the language is spoken there now, and the Karabakh Armenian community left in 2023. Then unpublish the territory.
+- **Add Greenland** as a territory (Natural Earth unit `GRL`, ISO `GRL`) and move Greenlandic to it from Denmark. In Airtable, change Greenlandic's `nations_of_origin` from Denmark to Greenland.
+- **Rename "Cape Verde Islands" to "Cabo Verde",** and make the same change to the matching `nations_of_origin` value in Airtable (one language).
+- **Keep as they are:** "Sahrawi Arab Democratic Republic" (it maps to all of Western Sahara), "Federated Staes of Micronesia" and "Naoero".
+
+##### Territory-change checklist
+
+A territory touches up to four places. Change all of them together, or the map, the summary sentence or the territory pages drift apart. This goes in `docs/maps.md`.
+
+1. **The territory post** (WordPress → Territories). Rename the title; leave the slug alone unless the URL must change, and if it does, add a redirect from the old slug. Unpublish rather than delete, so the old URL can redirect.
+2. **Language links.** Edit the language's Territories field, or the territory's Languages field. The relationship is two-way, so either side updates both.
+3. **`nations_of_origin` in Airtable** for each affected language. It is synced free text, and both the summary sentence and the map's primary highlight match it against territory titles exactly. A rename without this change makes the summary say "Also spoken in" about the language's own country.
+4. **Map shape** on the territory: the Natural Earth code. A territory without one shows no map, never a wrong one.
+
+The plugin adds a check that turns this list into a report: `wp wt-maps doctor` lists territories without a map shape, map shapes that don't exist in the data, and `nations_of_origin` values that match no territory title. Run it after any territory change.
+
+##### Data
+
+- **Boundaries:** Natural Earth v5.1.2, 1:50m, which has no license restrictions. Keep the source files and version in the plugin, so a rebuild gives the same result. Three layers: whole countries from `admin_0_countries`; the French overseas departments, Hong Kong, Macao, Kosovo, Taiwan, Somaliland, Northern Cyprus, Western Sahara, Palestine and Greenland from `admin_0_map_units`; the breakaway regions (Abkhazia, South Ossetia, Transnistria) and every disputed overlay from `admin_0_breakaway_disputed_areas`.
+- **Matching.** `wikidata_id` is empty on all territories, on production too. Matching titles against Natural Earth's name fields finds 189 of 215 by name, and the other 26 come from a hand-written table; the prototype matched all 215. A WP-CLI command backfills "Map shape" from that table, and in the same pass fills `iso_code` and `wikidata_id` from Natural Earth where they exist. Five territories (Abkhazia, South Ossetia, Transnistria, Northern Cyprus, Somaliland) have no ISO code, and Kosovo uses the user-assigned XKX. The backfill is a bulk write, so follow the database-sync steps in CLAUDE.md first.
+- **Too small to see.** Shapes under 1.5px are dropped at sidebar scale. A territory whose shape is too small (Tuvalu) gets a ring marker instead.
+
+##### Which countries to highlight
+
+On local data, 7,536 language pages list exactly one territory, 44 list more than one, and none list zero.
+
+- **Primary:** territories whose titles are also in `nations_of_origin`. This is the same split the language summary makes between "spoken in" and "also spoken in" (`wt_blurb_also_spoken_sentence()`). If no territory is also a country of origin, every territory is primary.
+- **Secondary:** the other territories, highlighted more lightly.
+- **Context:** the neighboring countries.
+- Don't add a "primary territory" field. If `nations_of_origin` moves to territory relationships (6.4), the rule reads from that field instead.
+
+##### Building the maps
+
+- **A Node build script** in `wt-maps/build/` (`d3-geo`), with one shared projection module that the SVG renderer and both raster steps use, so they can't drift apart. Per territory it writes:
+  - an SVG centered on the territory, framed on its main body (far-flung islands don't widen the frame), never zoomed tighter than about 350 km radius, with the neighbors inside the frame;
+  - a hillshade WebP for the same frame (see "Look").
+- **Simplify to sidebar resolution.** Douglas–Peucker at 0.6px, and drop rings under 1.5px. This takes Russia from 516 KB to 19 KB gzipped; the prototype median is 3 KB.
+- **Languages in several territories** get a frame fitted to all of them. PHP can't refit a vector frame at request time, so the build also writes a frame for each distinct combination of territories in use (44 languages today), keyed by the sorted territory IDs.
+- **Commit the build output.** It's small, changes rarely, and committing it means deploys don't need a new build step. Rerun the script by hand when the data or the style changes.
+- **Each path carries a class and a data attribute** (`data-a3`, `data-territory`). PHP adds the primary and secondary classes when it renders, so one file serves every language in that territory.
+- **The antimeridian** (Fiji, Kiribati, Chukotka) is handled by centering; the prototype checked Fiji.
+
+##### PHP API
+
+- **`wt_map( array $args ): string`** returns the `<figure>`. Its arguments:
+  - `territories`: territory post IDs; the default is the current language's.
+  - `primary`: territory IDs to highlight as primary; the default follows the rule above.
+  - `caption`: `false` by default; a string shows a visible caption.
+  - `class`: an extra class on the wrapper.
+- A shortcode, `[wt_map]`, with the same arguments, for editorial pages.
+- Markup: `<figure class="wt-map">`, containing the `<svg role="img">` with a `<title>` and a `<desc>` that names the territories.
+- Read the SVG with `file_get_contents`, and cache the rendered result in the object cache, keyed by the territory IDs, the primary IDs and the plugin version. Add the highlight classes with the HTML API (`WP_HTML_Tag_Processor`), not regular expressions.
+- **Where it goes:** `modules/languages/meta--languages-single.php`, after the summary (`.blurb`) and before the endonyms. The sidebar's mobile accordion leaves the map open.
+
+##### Look
+
+- **Brand:** Wikitongues blue sea (`$blue()`, `#3814a5`), land in the site's `$blue(50)`, the language's primary territories in parchment with a deep-blue edge, and secondary territories in a pale blue between the two. Borders and the disputed-area hatch are blues too. It looks the same in light and dark mode.
+- **Terrain shading** on top: Natural Earth's grayscale hillshade (SR_50M), reprojected into each frame by inverting the same d3 projection, remapped so flat ground is neutral gray, cut to the vector coastline, and blended with `mix-blend-mode: hard-light`. Soft-light was tried and disappears on light fills. Ship the images at about 600×450 to stay within about 30 KB per page; the prototype's 800×600 images ran 1–52 KB.
+- **Tokens** in a `wt-maps` Stylus partial built from the site palette, so the colors live in one place.
+- **Size:** full sidebar width (about 230–390px), with a fixed 4:3 aspect ratio so the layout doesn't shift as the page loads.
+
+##### Step 2: interactive maps
+
+- **MapLibre GL** with vector tiles that we host ourselves: a Protomaps PMTiles file served from the plugin or from uploads. No API key in the browser and no third-party tile server. The style reuses the Brand colors and the hillshade.
+- **Territory pages:** the territory highlighted, with the languages listed beside the map. Languages don't have coordinates, so link from shaded countries, not language markers, until there's a source for language locations (Glottolog has some, keyed by `glottocode`).
+- **Region pages:** each territory shaded by how many languages it has, linking to its territory page.
+- **A world view**, if one is wanted (homepage, region index): compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
+- **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
+- **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
+- **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
+
+##### Prototype
+
+A private claude.ai page (2026-11-16) showed nine test languages at true sidebar width in each style, disputed borders under three rules, and the full territory mapping. Its build scripts (matching, rendering, simplification, raster reprojection and masking) are in [`docs/maps-prototype/`](docs/maps-prototype/README.md), with the full territory mapping, and are the starting point for `wt-maps/build/`.
+
+##### Done when
+
+- The content changes above are made, and `wp wt-maps doctor` reports nothing.
+- Every territory has a map shape, and `iso_code` and `wikidata_id` where they exist.
+- Every published language page with a territory shows a map.
+- `docs/maps.md` describes the plugin, the decisions above and the territory-change checklist.
+- There are unit tests for choosing the primary territories, choosing the frame, and assembling the markup.
+- `composer lint`, `composer analyse` and `composer test` pass.
 
 #### 3.3 Enhanced search
 

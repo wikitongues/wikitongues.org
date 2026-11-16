@@ -1,0 +1,330 @@
+<title>Language Page Maps</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a working sheet — sticky style bar, then three bands: test maps at true sidebar width, disputed-border views side by side, the territory ledger. */
+:root {
+  --paper: #fffcef;         /* Wikitongues parchment */
+  --ink: #101010;
+  --ink-2: #57534a;
+  --rule: #e4dccb;
+  --brand: #3814a5;         /* Wikitongues blue */
+  --brand-soft: #d3c9df;    /* site border colour, blue(22) */
+  --panel: #f7f2e1;
+  --warn: #9a4a00; --warn-bg: #fbe9d2;
+  --ok: #2f6b3a; --ok-bg: #e2f0df;
+  --flag: #7a1fa0; --flag-bg: #efe2f7;
+  /* map tokens */
+  --sea: #e9e6ef; --land: #fbf7e8; --border: #c9c0d9;
+  --primary: #3814a5; --secondary: #9c8ad2; --dispute: #6b6478;
+  /* inverted map: a deliberate single look, the same in both themes */
+  --inv-sea: #2c2b33; --inv-land: #56545f; --inv-border: #74717e;
+  --inv-primary: #fbf7e8; --inv-secondary: #b9b2cc; --inv-dispute: #b0acbb;
+  /* brand variant of inverted: Wikitongues blue sea */
+  /* land is the site's $blue(50): brand blue blended 50% into parchment */
+  --brd-sea: #3814a5; --brd-land: #9c88ca; --brd-border: #7f6ab8; --brd-edge: #24107a;
+  --brd-primary: #fffcef; --brd-secondary: #d6cdee; --brd-dispute: #e6e0f3;
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --w: 300px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #14121c; --ink: #f1ede2; --ink-2: #a8a2b4; --rule: #2c2838; --brand: #a996ff; --brand-soft: #3a3358; --panel: #1c1928;
+  --warn: #ffb36b; --warn-bg: #3a2614; --ok: #8fd49a; --ok-bg: #18301c; --flag: #dba6f2; --flag-bg: #33203d;
+  --sea: #1a1828; --land: #2b2839; --border: #45405a; --primary: #a996ff; --secondary: #5f53a0; --dispute: #9b94ab;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #14121c; --ink: #f1ede2; --ink-2: #a8a2b4; --rule: #2c2838; --brand: #a996ff; --brand-soft: #3a3358; --panel: #1c1928;
+  --warn: #ffb36b; --warn-bg: #3a2614; --ok: #8fd49a; --ok-bg: #18301c; --flag: #dba6f2; --flag-bg: #33203d;
+  --sea: #1a1828; --land: #2b2839; --border: #45405a; --primary: #a996ff; --secondary: #5f53a0; --dispute: #9b94ab;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 0 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 300; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; }
+h2 { font-size: 2rem; line-height: 1.15; }
+h3 { font-size: 1.35rem; font-weight: 500; }
+p { margin: 0; max-width: 66ch; }
+a { color: var(--brand); }
+.eyebrow { font: 500 11px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.mono { font-family: var(--font-mono); font-size: 12.5px; }
+.muted { color: var(--ink-2); }
+
+header.top { display: grid; gap: 14px; padding-block: 48px 28px; }
+.lede { font-size: 17px; color: var(--ink-2); }
+
+/* toolbar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-block: 1px solid var(--rule); padding-block: 10px; display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; }
+.ctl { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.seg { display: inline-flex; border: 1px solid var(--brand-soft); border-radius: 999px; padding: 2px; }
+.seg button { font: 500 13px var(--font-body); color: var(--ink); background: none; border: 0; border-radius: 999px; padding: 6px 13px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--brand); color: var(--paper); }
+.seg button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+input[type=range] { accent-color: var(--brand); width: 140px; }
+.wval { font: 500 12.5px var(--font-mono); min-width: 52px; font-variant-numeric: tabular-nums; }
+
+section { display: grid; gap: 22px; padding-block: 52px 8px; }
+.sec-head { display: grid; gap: 10px; }
+
+/* map component — this block is the proposed plugin CSS */
+.wt-map { margin: 0; display: grid; gap: 8px; }
+.wt-map__svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 3px; }
+.wt-map figcaption { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.no-caption .wt-map figcaption { display: none; }
+.wt-map .sea { fill: var(--sea); }
+.wt-map .relief { display: none; }
+.wt-map .land { fill: var(--land); stroke: var(--border); stroke-width: .6; stroke-linejoin: round; }
+.wt-map .hl { stroke: var(--paper); stroke-width: .7; stroke-linejoin: round; }
+.wt-map .hl.primary { fill: var(--primary); }
+.wt-map .hl.secondary { fill: var(--secondary); }
+.wt-map .disputed { stroke: var(--dispute); stroke-width: .7; stroke-dasharray: 2 1.6; }
+.wt-map .disputed.land { fill: var(--land); }
+.wt-map .disputed.edge { fill: none; }
+.wt-map .hatch-land { fill: url(#hatch-land); }
+.wt-map .hatch-primary { fill: url(#hatch-primary); }
+.wt-map .hatch-secondary { fill: url(#hatch-secondary); }
+.wt-map .marker { fill: none; stroke-width: 2; }
+.wt-map .marker.primary { stroke: var(--primary); }
+.wt-map .marker.secondary { stroke: var(--secondary); }
+.hp-line { stroke: var(--primary); stroke-width: 1.3; }
+.hs-line { stroke: var(--secondary); stroke-width: 1.3; }
+.hl-line { stroke: var(--dispute); stroke-width: .8; opacity: .7; }
+.hatch-bg-land { fill: var(--land); }
+
+/* relief style */
+.s-relief .wt-map .sea { fill: var(--sea); } /* relief images are cut to the coast, so the sea is ours */
+.s-relief .wt-map .relief { display: inline; }
+.s-relief .wt-map .land, .s-relief .wt-map .disputed.land { fill: rgba(255,252,239,.18); stroke: rgba(255,252,239,.85); stroke-width: .6; }
+.s-relief .wt-map .hl { stroke: #fffcef; stroke-width: 1; }
+.s-relief .wt-map .hl.primary { fill: rgba(56,20,165,.55); }
+.s-relief .wt-map .hl.secondary { fill: rgba(56,20,165,.28); }
+.s-relief .wt-map .marker.primary { stroke: #3814a5; }
+.s-relief .wt-map .disputed { stroke: #fffcef; }
+/* shaded style: flat fills, with a grayscale hillshade laid on top.
+   The hillshade is neutral grey on flat ground, so hard-light only darkens
+   shadowed slopes and lightens lit ones, whatever colour sits underneath. */
+.wt-map .shade { display: none; }
+.s-shaded .wt-map .shade { display: inline; mix-blend-mode: hard-light; }
+/* Solid brand blue goes near-black under hard-light, so shaded uses tints that leave the terrain readable. */
+.s-shaded .wt-map .hl.primary { fill: color-mix(in srgb, var(--primary) 52%, var(--land)); }
+.s-shaded .wt-map .hl.secondary { fill: color-mix(in srgb, var(--primary) 24%, var(--land)); }
+.s-shaded .wt-map .hl { stroke: var(--primary); stroke-width: .6; }
+/* inverted style: dark grey world, light target, terrain shading on top */
+.s-inverted .wt-map { --sea: var(--inv-sea); --land: var(--inv-land); --border: var(--inv-border); --primary: var(--inv-primary); --secondary: var(--inv-secondary); --dispute: var(--inv-dispute); }
+.s-inverted .wt-map .shade { display: inline; mix-blend-mode: hard-light; }
+.s-inverted .wt-map .hl { stroke: var(--inv-sea); stroke-width: .5; }
+.s-inverted .wt-map .hatch-land { fill: url(#ihatch-land); }
+.s-inverted .wt-map .hatch-primary { fill: url(#ihatch-primary); }
+.s-inverted .wt-map .hatch-secondary { fill: url(#ihatch-secondary); }
+.ihl-bg { fill: var(--inv-land); }
+.ihl-line { stroke: var(--inv-dispute); stroke-width: .8; opacity: .6; }
+.ihp-line { stroke: var(--inv-primary); stroke-width: 1.3; }
+.ihs-line { stroke: var(--inv-secondary); stroke-width: 1.3; }
+/* brand style: inverted, with the sea in Wikitongues blue */
+.s-brand .wt-map { --sea: var(--brd-sea); --land: var(--brd-land); --border: var(--brd-border); --primary: var(--brd-primary); --secondary: var(--brd-secondary); --dispute: var(--brd-dispute); }
+.s-brand .wt-map .shade { display: inline; mix-blend-mode: hard-light; }
+.s-brand .wt-map .hl { stroke: var(--brd-edge); stroke-width: .5; }
+.s-brand .wt-map .hatch-land { fill: url(#bhatch-land); }
+.s-brand .wt-map .hatch-primary { fill: url(#bhatch-primary); }
+.s-brand .wt-map .hatch-secondary { fill: url(#bhatch-secondary); }
+.bhl-bg { fill: var(--brd-land); }
+.bhl-line { stroke: var(--brd-dispute); stroke-width: .8; opacity: .6; }
+.bhp-line { stroke: var(--brd-primary); stroke-width: 1.3; }
+.bhs-line { stroke: var(--brd-secondary); stroke-width: 1.3; }
+/* outline style */
+.s-outline .wt-map .sea { fill: var(--paper); }
+.s-outline .wt-map .land, .s-outline .wt-map .disputed.land { fill: none; stroke: var(--ink-2); stroke-width: .45; opacity: .9; }
+.s-outline .wt-map .hl { stroke: var(--primary); }
+.s-outline .wt-map .wt-map__svg, .s-outline .wt-map__svg { outline: 1px solid var(--rule); outline-offset: -1px; }
+
+/* test grid */
+.cards { display: flex; flex-wrap: wrap; gap: 36px 28px; align-items: flex-start; }
+.card { width: var(--w); max-width: 100%; display: grid; gap: 10px; min-width: 0; }
+.card h3 { font-family: var(--font-display); font-weight: 300; font-size: 1.6rem; }
+.card .why { font-size: 13px; color: var(--ink); border-top: 1px solid var(--rule); padding-top: 9px; }
+.card .stats { font: 400 11.5px var(--font-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.over { color: var(--warn); }
+
+/* disputes */
+.dgrid { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.drow { display: grid; grid-template-columns: minmax(150px, 1fr) repeat(3, minmax(0, 1.25fr)); gap: 18px; padding-block: 18px; border-bottom: 1px solid var(--rule); align-items: start; }
+.drow > * { min-width: 0; }
+.dhead { padding-block: 12px; align-items: end; }
+.dhead .col { display: grid; gap: 4px; }
+.dhead .col b { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; }
+.dhead .col span { font-size: 12.5px; color: var(--ink-2); }
+.dlabel h3 { font-family: var(--font-display); font-weight: 300; font-size: 1.4rem; }
+.dlabel p { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+.mlabel { display: none; }
+.rec { display: inline-block; font: 500 10.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ok); background: var(--ok-bg); padding: 3px 7px; border-radius: 3px; }
+@media (max-width: 760px) {
+  .drow { grid-template-columns: 1fr 1fr 1fr; }
+  .dlabel { grid-column: 1 / -1; }
+  .dhead .col span { display: none; }
+}
+@media (max-width: 520px) {
+  .drow { grid-template-columns: 1fr; }
+  .dhead { display: none; }
+  .mlabel { display: block; font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin-bottom: 4px; }
+}
+
+/* decisions */
+.decisions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 0 32px; border-top: 1px solid var(--rule); }
+.dec { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; padding-block: 18px; border-bottom: 1px solid var(--rule); }
+.dec .q { font-weight: 600; }
+.dec .a { grid-column: 2; font-size: 14px; color: var(--ink-2); }
+.dec .a strong { color: var(--ink); font-weight: 500; }
+
+.pill { font: 500 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 7px; border-radius: 3px; white-space: nowrap; align-self: start; }
+.p-decide { color: var(--flag); background: var(--flag-bg); }
+.p-fix { color: var(--warn); background: var(--warn-bg); }
+.p-ok { color: var(--ok); background: var(--ok-bg); }
+.p-confirm { color: var(--brand); background: var(--brand-soft); }
+
+/* ledger */
+.stats-row { display: flex; flex-wrap: wrap; gap: 10px 40px; }
+.stat b { display: block; font: 300 2.6rem/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--ink-2); }
+.tablewrap { overflow-x: auto; border-top: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13.5px; }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+td.code { font-family: var(--font-mono); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+td .note { color: var(--ink-2); }
+details { border-top: 1px solid var(--rule); padding-block: 12px; }
+summary { cursor: pointer; font-weight: 500; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--ink-2); align-items: center; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+@media (prefers-reduced-motion: no-preference) { .wt-map__svg { transition: opacity .2s; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg-land" width="4" height="4"/><line class="hl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="hatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg-land" width="4" height="4"/><line class="hp-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="hatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg-land" width="4" height="4"/><line class="hs-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="ihatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="ihatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihp-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="ihatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="ihl-bg" width="4" height="4"/><line class="ihs-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhp-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <pattern id="bhatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhs-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+  </defs>
+</svg>
+
+<div class="wrap s-brand" id="root">
+  <header class="top">
+    <span class="eyebrow">wt-maps · prototype · plan item 3.2</span>
+    <h1>Language page maps</h1>
+    <p class="lede">The sidebar map for nine test languages (Shaded is the flat style with terrain shading and no ground colour; Relief keeps the coloured ground), three ways to draw disputed borders, and every territory matched to a map shape. Pick a style and width below; the cards render at true sidebar width.</p>
+  </header>
+
+  <div class="bar" role="toolbar" aria-label="Map display">
+    <div class="ctl"><span class="eyebrow" id="lbl-style">Style</span>
+      <div class="seg" role="group" aria-labelledby="lbl-style">
+        <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Brand</button>
+        <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
+        <button type="button" id="st-relief" data-style="relief" aria-pressed="false">Relief</button>
+      </div></div>
+    <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
+      <div class="seg" role="group" aria-labelledby="lbl-cap">
+        <button type="button" id="cap-on" data-cap="on" aria-pressed="true">On</button>
+        <button type="button" id="cap-off" data-cap="off" aria-pressed="false">Off</button>
+      </div></div>
+    <div class="ctl"><label class="eyebrow" for="width">Sidebar width</label>
+      <input type="range" id="width" min="220" max="390" step="10" value="300"><span class="wval" id="wval">300px</span></div>
+  </div>
+
+  <section aria-labelledby="h-tests">
+    <div class="sec-head">
+      <span class="eyebrow">01 · The sidebar map</span>
+      <h2 id="h-tests">Nine test languages</h2>
+      <p class="muted">Each map is a static SVG, centred on its own territory with a projection that preserves area. Shapes under 1.5px are dropped and lines are simplified to sidebar resolution. The size line shows the gzipped SVG and, for the relief style, the extra image; the spec budgets 20 KB and 30 KB.</p>
+      <div class="legend"><span><i class="sw" style="background:var(--primary)"></i>Primary: also a country of origin</span><span><i class="sw" style="background:var(--secondary)"></i>Secondary: also spoken in</span><span><i class="sw" style="background:var(--land);outline:1px solid var(--border)"></i>Context</span></div>
+    </div>
+    <div class="cards">{{CARDS}}</div>
+  </section>
+
+  <section aria-labelledby="h-disputes">
+    <div class="sec-head">
+      <span class="eyebrow">02 · Disputed borders</span>
+      <h2 id="h-disputes">Whose map do we draw?</h2>
+      <p class="muted">Natural Earth's default draws borders where control lies today. It also records how about 30 governments see each disputed area. Its UN field is empty, so a UN view isn't available. These rows show the same language under three rules; disputed areas always get a dashed edge.</p>
+    </div>
+    <div class="dgrid">
+      <div class="drow dhead">
+        <div></div>
+        <div class="col"><b>De facto</b><span>Natural Earth default: who controls it now</span></div>
+        <div class="col"><b>US view</b><span>Natural Earth's US point of view</span></div>
+        <div class="col"><b>Neutral <span class="rec">Recommended</span></b><span>Hatched; shaded toward any claimant we highlight</span></div>
+      </div>
+      {{DISPUTES}}
+    </div>
+  </section>
+
+  <section aria-labelledby="h-ledger">
+    <div class="sec-head">
+      <span class="eyebrow">03 · Matching territories to shapes</span>
+      <h2 id="h-ledger">All 215 territories have a shape</h2>
+      <p class="muted">Production has no <span class="mono">wikidata_id</span> values, so matching ran on titles against Natural Earth's name fields. Natural Earth carries a Wikidata ID for each country, so the backfill can fill <span class="mono">wikidata_id</span> at the same time.</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><b>189</b><span>matched by name</span></div>
+      <div class="stat"><b>26</b><span>matched by hand</span></div>
+      <div class="stat"><b>13</b><span>need a decision or a fix</span></div>
+      <div class="stat"><b>0</b><span>unmatched</span></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Territory</th><th>Map shape</th><th>ISO 3166</th><th>Status</th><th>Note</th></tr></thead>
+        <tbody>{{HAND}}</tbody>
+      </table>
+    </div>
+    <details>
+      <summary>All 215 territories</summary>
+      <div class="tablewrap" style="margin-top:12px">
+        <table>
+          <thead><tr><th>Territory</th><th>Region</th><th>Languages</th><th>Map shape</th><th>ISO 3166</th></tr></thead>
+          <tbody>{{ALL}}</tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section aria-labelledby="h-decide">
+    <div class="sec-head">
+      <span class="eyebrow">04 · Before the plugin</span>
+      <h2 id="h-decide">Decisions this prototype raises</h2>
+    </div>
+    <div class="decisions">{{DECISIONS}}</div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('root');
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const setStyle = (s) => {
+    root.classList.remove('s-flat', 's-shaded', 's-inverted', 's-brand', 's-relief', 's-outline'); root.classList.add('s-' + s);
+    document.querySelectorAll('[data-style]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.style === s)));
+    store.set('wtmap-style5', s);
+  };
+  const setCap = (c) => {
+    root.classList.toggle('no-caption', c === 'off');
+    document.querySelectorAll('[data-cap]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cap === c)));
+    store.set('wtmap-cap', c);
+  };
+  const w = document.getElementById('width'), wv = document.getElementById('wval');
+  const setW = (v) => { root.style.setProperty('--w', v + 'px'); wv.textContent = v + 'px'; w.value = v; store.set('wtmap-w', v); };
+  document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => setStyle(b.dataset.style)));
+  document.querySelectorAll('[data-cap]').forEach((b) => b.addEventListener('click', () => setCap(b.dataset.cap)));
+  w.addEventListener('input', () => setW(w.value));
+  setStyle((['brand','shaded','relief'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
+})();
+</script>
