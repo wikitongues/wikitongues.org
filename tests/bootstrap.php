@@ -66,6 +66,7 @@ require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_galler
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/queries.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/template-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/language-blurb.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/donate-content.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/taxonomies/form-990.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/content-bundle-helpers.php';
