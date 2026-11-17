@@ -44,7 +44,7 @@ $territory_query = new WP_Query(
 );
 
 echo '<div class="wt_meta--territories-single">';
-echo '<h1>' . esc_html( $territory ) . '</h1>';
+echo '<h1>' . esc_html( $current_region->name ) . '</h1>';
 $current_region->parent !== 0 ? require 'modules/territories/territories-child-regions.php' : '';
 require 'modules/territories/territories-sibling-regions.php';
 require 'modules/territories/territories-parent-regions.php';

@@ -288,13 +288,53 @@ function wt_gallery_params( array $overrides ): array {
 }
 
 /**
- * Prefix a territory or region name with "The" where grammatically required.
+ * Prefix a territory or region name with "the" where English requires it.
+ *
+ * Returns a lowercase "the", so the result reads correctly mid-sentence
+ * ("Languages of the United States"). Don't use it at the start of a
+ * heading; print the bare name there.
+ *
+ * Names must match territory post titles and region term names exactly.
  *
  * @param string $name Territory or region name.
- * @return string Name with "The " prepended if applicable.
+ * @return string Name with "the " prepended if applicable.
  */
 function wt_prefix_the( string $name ): string {
-	$prefixed_names = array( 'Americas', 'Caribbean', 'Sahel', 'Gambia', 'Bahamas' );
+	$prefixed_names = array(
+		// Regions.
+		'Americas',
+		'Caribbean',
+		'Sahel',
+		// Territories.
+		'Bahamas',
+		'Cape Verde Islands',
+		'Cayman Islands',
+		'Central African Republic',
+		'Comoros',
+		'Cook Islands',
+		'Czech Republic',
+		'Democratic Republic of the Congo',
+		'Dominican Republic',
+		'Falkland Islands',
+		'Falklands',
+		'Faroe Islands',
+		'Federated States of Micronesia',
+		'Gambia',
+		'Maldives',
+		'Marshall Islands',
+		'Netherlands',
+		'Northern Mariana Islands',
+		'Philippines',
+		'Republic of the Congo',
+		'Russian Federation',
+		'Sahrawi Arab Democratic Republic',
+		'Seychelles',
+		'Solomon Islands',
+		'Turks and Caicos Islands',
+		'United Arab Emirates',
+		'United Kingdom',
+		'United States',
+	);
 	return in_array( $name, $prefixed_names, true ) ? 'the ' . $name : $name;
 }
 

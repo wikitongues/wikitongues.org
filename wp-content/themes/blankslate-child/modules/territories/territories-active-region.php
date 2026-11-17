@@ -17,7 +17,7 @@
 	);
 	$current_region_name = wt_prefix_the( $current_region->name );
 	?>
-	<h1><?php echo $territory; ?></h1>
+	<h1><?php echo esc_html( get_the_title() ); ?></h1>
 	<?php	if ( $territory_query->have_posts() ) : ?>
 	<section class="related-territories metadata">
 		<strong>Other territories in <a href="<?php echo esc_url( get_term_link( $current_region ) ); ?>"><?php echo esc_html( $current_region_name ); ?></a></strong>
