@@ -336,12 +336,12 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 **Data** (scripted writes, so sync first)
 - [x] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh` (2026-11-17).
 - [x] Confirm on production data that Chamorro and Carolinian have no territory and no `nations_of_origin` (2026-11-17).
-- [ ] The WordPress edits below are scripted in `docs/maps-prototype/territory-edits.php` (dry run by default, `execute` to apply, safe to rerun). **Done on local and staging 2026-11-17** and checked: the reverse links, the new territory pages, the language summaries and the redirect from the old Western Sahara slug. The script is on the server in `~/scripts/`, outside the web root. Next: production, dry run first, after keeping a dated copy of the dump. Found on the way: `wt_prefix_the()` knows only five names, so summaries read "Spoken in Northern Mariana Islands" (and "United States", "Philippines"). The new territories' official languages: Greenland Greenlandic; Guam English and Chamorro; Northern Mariana Islands English, Chamorro and Carolinian. Greenland sits in the Northern America region (UN M49).
-- [ ] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory.
-- [ ] Add Greenland and move Greenlandic to it from Denmark.
-- [ ] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands.
-- [ ] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara", slug `western-sahara`, with a redirect from the old slug.
-- [ ] Rename "Cape Verde Islands" to "Cabo Verde".
+- [x] The WordPress edits below are scripted in `docs/maps-prototype/territory-edits.php` (dry run by default, `execute` to apply, safe to rerun). **Done on local, staging and production 2026-11-17** and checked: the reverse links, the new territory pages, the language summaries and the redirect from the old Western Sahara slug. The script is on the server in `~/scripts/`, outside the web root. Production ran after a dated dump (`~/backups/prod_2026-11-17_pre-maps-territories.sql`); its language pages don't show the summary sentence yet, because that feature is only on staging. Found on the way: `wt_prefix_the()` knows only five names, so summaries read "Spoken in Northern Mariana Islands" (and "United States", "Philippines"). The new territories' official languages: Greenland Greenlandic; Guam English and Chamorro; Northern Mariana Islands English, Chamorro and Carolinian. Greenland sits in the Northern America region (UN M49).
+- [x] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory (2026-11-17).
+- [x] Add Greenland and move Greenlandic to it from Denmark (2026-11-17).
+- [x] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands (2026-11-17).
+- [x] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara", slug `western-sahara`, with a redirect from the old slug (2026-11-17).
+- [x] Rename "Cape Verde Islands" to "Cabo Verde" (2026-11-17).
 - [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian), and Micronesia: 18 languages (Chuukese, Kosraean, Pohnpeian, Yapese and others) have `nations_of_origin` "Micronesia", which matches no territory title, so their summaries say "Also spoken in" about their own country. Change them to "Federated States of Micronesia".
 - [ ] The ACF fields: "Map shape" and "Territory type" on territories, "Map focus" on languages (JSON, with `modified` bumped).
 - [ ] Set every territory's type in the backfill, and check the list with Kristen (it feeds the language rights reports too).
