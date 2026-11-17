@@ -217,7 +217,7 @@ These are one-off edits in WordPress admin and Airtable, made before the backfil
 - **Rename "Sahrawi Arab Democratic Republic" to "Western Sahara"** (2026-11-17, from Kristen's review): Western Sahara is the UN territory name, and the SADR is the government in exile. The map already shows all of Western Sahara. The slug changes to `western-sahara`, with a redirect from the old one. Make the same change to the matching `nations_of_origin` values in Airtable.
 - **Add a territory type field** (2026-11-17, before launch) with four values: sovereign state, autonomous territory (Greenland), dependency (Guam), breakaway region (Abkhazia). Partially recognised states (Kosovo, Taiwan, Palestine) count as sovereign states, so the field adds no political label of its own. It is ACF on territories, set for all of them in the backfill, and shared with the language rights reports, which need the same split.
 - **Rename "Cape Verde Islands" to "Cabo Verde",** and make the same change to the matching `nations_of_origin` value in Airtable (one language).
-- **"Federated Staes of Micronesia" is fixed** to "Federated States of Micronesia" in production by hand (2026-11-17). Local and staging catch up at the sync; check the Airtable `nations_of_origin` value matches (the `doctor` report will flag it).
+- **"Federated Staes of Micronesia" is fixed** to "Federated States of Micronesia" in production by hand (2026-11-17). Synced to staging and local the same day; WordPress keeps the old slug as a redirect. Its 18 languages' `nations_of_origin` say "Micronesia", which never matched the title, typo or not: fix them in Airtable with the others below.
 - **Keep as it is:** "Naoero", Nauru's official English name since August 2026.
 
 ##### Territory-change checklist
@@ -334,14 +334,14 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Review: a contested-area change needs a second reviewer, the site lead or Kristen; Kristen owns the yearly claims review (2026-11-17).
 
 **Data** (scripted writes, so sync first)
-- [ ] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh`.
-- [ ] Confirm on production data that Chamorro and Carolinian have no territory and no `nations_of_origin`.
+- [x] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh` (2026-11-17).
+- [x] Confirm on production data that Chamorro and Carolinian have no territory and no `nations_of_origin` (2026-11-17).
 - [ ] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory.
 - [ ] Add Greenland and move Greenlandic to it from Denmark.
 - [ ] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands.
 - [ ] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara", slug `western-sahara`, with a redirect from the old slug.
 - [ ] Rename "Cape Verde Islands" to "Cabo Verde".
-- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian), and check Micronesia's matches its corrected title.
+- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian), and Micronesia: 18 languages (Chuukese, Kosraean, Pohnpeian, Yapese and others) have `nations_of_origin` "Micronesia", which matches no territory title, so their summaries say "Also spoken in" about their own country. Change them to "Federated States of Micronesia".
 - [ ] The ACF fields: "Map shape" and "Territory type" on territories, "Map focus" on languages (JSON, with `modified` bumped).
 - [ ] Set every territory's type in the backfill, and check the list with Kristen (it feeds the language rights reports too).
 - [ ] Set Hawaiian's map focus to `USH`.
