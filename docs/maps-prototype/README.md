@@ -29,3 +29,5 @@ Everything runs from this folder (`S` below is its absolute path). `ne/`, `raste
    `python3 build/match.py $S`, `node build/render.mjs $S`, `node build/relief.mjs $S`, `node build/hillshade.mjs $S`, `node build/seafloor.mjs $S`, `python3 build/mask.py $S` (cuts the relief, hillshade and ocean floor), then `python3 build/assemble.py $S`.
 
 GDAL isn't needed: the rasters are reprojected by inverting the d3 projection directly.
+
+The page references its images (`relief/`, `shade/`, `sea/`) as separate files. Whenever a frame changes, publish them together with `site/maps.html`. Otherwise the new outlines sit on old terrain, which happened once in November 2026 after the small-territory zoom. The same rule applies to the plugin: an SVG and its terrain images are built from one projection and must ship together.
