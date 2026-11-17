@@ -118,9 +118,12 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .wt-map .shade { display: none; }
 .s-shaded .wt-map .shade { display: inline; mix-blend-mode: hard-light; }
 /* Solid brand blue goes near-black under hard-light, so shaded uses tints that leave the terrain readable. */
-.s-shaded .wt-map .hl.primary { fill: color-mix(in srgb, var(--primary) 52%, var(--land)); }
-.s-shaded .wt-map .hl.secondary { fill: color-mix(in srgb, var(--primary) 24%, var(--land)); }
-.s-shaded .wt-map .hl { stroke: var(--primary); stroke-width: .6; }
+/* Active areas in the coloured relief (the per-map pattern), not a blue tint: the
+   territory reads as land in colour on a grey-shaded world. Secondary keeps the
+   relief with a dashed edge, so the two differ by treatment, not tint. */
+.s-shaded .wt-map .hl.primary { fill: var(--relief); }
+.s-shaded .wt-map .hl.secondary { fill: var(--relief); stroke-dasharray: 2.4 1.6; stroke-width: 1; }
+.s-shaded .wt-map .hl { stroke: var(--primary); stroke-width: .7; }
 /* inverted style: dark grey world, light target, terrain shading on top */
 .s-inverted .wt-map { --sea: var(--inv-sea); --land: var(--inv-land); --border: var(--inv-border); --primary: var(--inv-primary); --secondary: var(--inv-secondary); --dispute: var(--inv-dispute); }
 .s-inverted .wt-map .shade { display: inline; mix-blend-mode: hard-light; }
@@ -164,7 +167,8 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .no-seafloor .wt-map .seashade { display: none; }
 .sw-p { background: var(--primary); } .sw-s { background: var(--secondary); } .sw-l { background: var(--land); outline: 1px solid var(--border); } .sw-sea { background: var(--sea); }
 .s-brand .sw-p { background: var(--brd-primary); outline: 1px solid var(--brd-edge); } .s-brand .sw-s { background: color-mix(in srgb, var(--brd-primary) 30%, var(--brd-land)); outline: 1.5px solid var(--brd-primary); outline-offset: -1.5px; } .s-brand .sw-l { background: var(--brd-land); outline: 0; } .s-brand .sw-sea { background: var(--brd-sea); }
-.s-shaded .sw-p { background: color-mix(in srgb, var(--primary) 52%, var(--land)); }
+.s-shaded .sw-p { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1px solid var(--primary); }
+.s-shaded .sw-s { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1.5px dashed var(--primary); outline-offset: -1.5px; }
 .brand-only { display: none; } .s-brand .brand-only { display: inline; }
 /* fog style: the brand map, revealed only around the territory, like fog of war.
    The mask grows the highlighted shapes, blurs them and roughens the edge (#fog filter),
@@ -317,8 +321,8 @@ summary { cursor: pointer; font-weight: 500; }
     <div class="ctl"><span class="eyebrow" id="lbl-style">Style</span>
       <div class="seg" role="group" aria-labelledby="lbl-style">
         <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Brand</button>
-        <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
         <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Fog</button>
+        <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
         <button type="button" id="st-fogparch" data-style="fogparch" aria-pressed="false">Fog parchment</button>
       </div></div>
     <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
