@@ -85,10 +85,17 @@ These are the documentation archive. The first four are synced from Airtable; th
 ### Languages
 
 - **Identity.** A language's `post_title` and slug are its ISO 639-3 code (`nch`); its display name is `standard_name`. A slug that doesn't match the ISO code serves the wrong content: 19 languages did in February 2026 (the `wblu`/`blu` fix in the [archive](plan-archive.md)). Other identifiers: `iso_code`, `glottocode`, `autonym`, `alternate_names`, `egids_status`, `olac_url`, `wikipedia_url`, `wikipedia_editions`, `wikipedia_description`.
-- **Geography.** `nations_of_origin` is legacy comma-separated text, matched with `LIKE` (#241). The structured links are territory relationships: each territory's `languages` and `official_languages` fields, and the language's own `territories` field.
+- **Geography.** Two links to territory posts. `nations_of_origin` (post_object, multiple, one-way) holds the countries a language is original to; the Airtable sync fills it from the language's Nation of Origin names, resolved by exact title. `territories` (post_object, bidirectional with each territory's `languages`) holds everywhere it is spoken; it came from a one-time import in February 2026 and is not synced. Territories also carry `official_languages`. Read nations of origin through `wt_language_origins()` (`includes/template/language-origins.php`), which also reads not-yet-migrated text. The language page lists both: "Countries of origin", then the other territories as "Also spoken in" (or "Spoken in" when there is no origin).
 - **Classification.** The `writing-system` and `linguistic-genealogy` taxonomies are what templates read. The legacy text fields `writing_systems` and `linguistic_genealogy` are what Airtable still writes.
 - **Related content.** `speakers_recorded` (videos), `lexicon_source` and `lexicon_target` (lexicons), `external_resources` (resources). Counts are cached in `{field}_count` post meta for sorting the admin list.
 - **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons and "other languages from" each territory the language is linked to.
+- **Summary.** Under the name, the sidebar shows a summary built from the fields at render time (`includes/template/language-blurb.php`), e.g. "Emilian, original to Italy, is a dormant Indo-European language written with the Latin script." Nothing is stored. `wt_language_facts()` reads the fields into a plain array, and `wt_language_blurb()` turns it into prose and is unit-tested (`tests/unit/LanguageBlurbTest.php`). Each phrase is optional and drops out when its field is empty, and the summary is hidden when only the name is known. Wording that depends on a value is kept in lookup tables in that file:
+  - which EGIDS levels are described (6a–10; levels 1–5, "More data needed" and the rest are left out)
+  - genealogy terms that aren't families ("Sign language", "Language isolate", and others; "Unclassified" is dropped)
+  - scripts that aren't named as a script (Braille, and "Unwritten", which becomes "with no established writing system")
+  - country names that take "the"
+
+  After the first sentence come the endonyms (`autonym`), as "In the language itself, it is called …". They keep their bracketed romanization ("भोजपुरी (Bhōjpurī)"), and an endonym that only repeats the standard name is skipped. It shows at most 3 endonyms, 3 alternate names and 5 extra territories. Alternate names already given as the name or an endonym aren't repeated, and a name marked `(pej.)` is never featured. To add a source such as a Wikipedia extract or speaker population, add a key to the facts array and one phrase builder.
 
 ### Videos
 
@@ -320,7 +327,7 @@ Tracked in [plan.md](../plan.md) under *Data quality & Airtable* unless noted.
 | Issue | Detail |
 |---|---|
 | Writing systems and genealogies drift | The sync writes the legacy text fields (`writing_systems`, `linguistic_genealogy`), not the taxonomies templates read. Terms reflect the February 2026 migration only, and languages created since have none. |
-| `nations_of_origin` is comma-separated text | `LIKE` matching breaks on combined values: "South Korea, North Korea" hides South Korea's languages (#241). Planned migration to territory relationships. |
+| Airtable nation names must match territory titles | The sync resolves Nation of Origin names to territories by exact title and skips names that match nothing (logged as errors). The field map's `aliases` cover Congo, Macedonia and Vatican State until those Airtable nations are renamed. |
 | Names | Some languages lack a standard name (#53); some use the comma form "Gondi, Southern" (#54). |
 | Caption file IDs | Caption file IDs join languages with `,` instead of `+` (#72). |
 | Resources diverged | About 907 WordPress posts against 204 Airtable records; not synced. |

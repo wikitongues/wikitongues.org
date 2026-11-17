@@ -9,31 +9,28 @@
 	$glottolog             = $glottocode ? 'https://glottolog.org/resource/languoid/id/' . $glottocode : '';
 	$ethnologue            = 'https://www.ethnologue.com/language/' . get_the_title();
 	$links                 = array();
+	$origins               = wt_language_origins( get_the_ID() );
+	$origin_ids            = wp_list_pluck( $origins, 'ID' );
 	$territories           = get_field( 'territories' );
-	$territories_list      = '';
-if ( $territories ) {
-	$count = count( $territories );
-	foreach ( $territories as $index => $territory ) {
-		$post_title        = get_the_title( $territory );
-		$guid              = get_permalink( $territory );
-		$territories_list .= '<a href="' . esc_url( $guid ) . '">' . esc_html( $post_title );
-		if ( $index < $count - 1 ) {
-			$territories_list .= ',&nbsp;';
-		}
-		$territories_list .= '</a>';
-	}
-}
+	$also_spoken           = array_values(
+		array_filter(
+			is_array( $territories ) ? $territories : array(),
+			function ( $territory ) use ( $origin_ids ) {
+				return $territory instanceof WP_Post && ! in_array( $territory->ID, $origin_ids, true );
+			}
+		)
+	);
 
-if ( have_rows( 'wikipedia_editions' ) ) {
-	while ( have_rows( 'wikipedia_editions' ) ) {
-		the_row();
-		$edition_name = get_sub_field( 'language_wikipedia_name' );
-		$edition_url  = get_sub_field( 'language_wikipedia_url' );
-		if ( ! empty( $edition_name ) && ! empty( $edition_url ) ) {
-			$links[ $edition_name ] = $edition_url;
+	if ( have_rows( 'wikipedia_editions' ) ) {
+		while ( have_rows( 'wikipedia_editions' ) ) {
+			the_row();
+			$edition_name = get_sub_field( 'language_wikipedia_name' );
+			$edition_url  = get_sub_field( 'language_wikipedia_url' );
+			if ( ! empty( $edition_name ) && ! empty( $edition_url ) ) {
+				$links[ $edition_name ] = $edition_url;
+			}
 		}
 	}
-}
 
 	// Add additional links without overwriting existing ones
 	$additional_links = array(
@@ -52,15 +49,18 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 	$alternate_names            = get_field( 'alternate_names' );
 	$iso_code                   = get_field( 'iso_code' );
 	$glottocode                 = get_field( 'glottocode' );
-	$nations_of_origin          = get_field( 'nations_of_origin' );
 	$writing_system_terms       = get_the_terms( get_the_ID(), 'writing-system' );
 	$linguistic_genealogy_terms = get_the_terms( get_the_ID(), 'linguistic-genealogy' );
 	$egids                      = get_field( 'egids_status' );
+	$blurb                      = wt_language_blurb( wt_language_facts( get_the_ID() ) );
 	?>
 <div class="wt_meta--languages-single">
 	<h1>
 		<?php echo esc_html( $standard_name ); ?>
 	</h1>
+	<?php if ( $blurb ) : ?>
+		<p class="blurb"><?php echo esc_html( $blurb ); ?></p>
+	<?php endif; ?>
 	<?php if ( $wikipedia_description ) : ?>
 		<p>
 			<?php echo esc_html( $wikipedia_description ); ?> &nbsp;
@@ -101,15 +101,18 @@ if ( have_rows( 'wikipedia_editions' ) ) {
 
 		</div>
 	<?php endif; ?>
-	<?php if ( $nations_of_origin || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>
+	<?php if ( $origins || $also_spoken || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>
 		<div class="metadata" id="metadata">
 			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
 			<div class="mobile-accordion-content">
-				<?php if ( $nations_of_origin ) : ?>
+				<?php if ( $origins ) : ?>
 					<strong>Countries of origin</strong>
-					<p class="wt_text--label"><?php echo esc_html( $nations_of_origin ); ?></p>
-					<strong>Also spoken in</strong>
-					<p class="wt_text--label territories"><?php echo $territories_list; ?></p>
+					<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
+				<?php endif; ?>
+
+				<?php if ( $also_spoken ) : ?>
+					<strong><?php echo $origins ? 'Also spoken in' : 'Spoken in'; ?></strong>
+					<p class="wt_text--label territories"><?php echo wt_territory_links( $also_spoken ); ?></p>
 				<?php endif; ?>
 
 				<?php if ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) : ?>
