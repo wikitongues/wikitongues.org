@@ -17,18 +17,26 @@ const brk = layer('breakaway_disputed_areas');
 // Disputed areas stay 1:50m: none falls inside a zoomed frame.
 const countries10 = layer('countries', '10m');
 const units10 = layer('map_units', '10m');
+// Sub-units (Hawaii, Alaska, Wales, Scotland…): for a language-level map focus
+// inside one territory, not for territories themselves.
+const subunits = layer('map_subunits');
+const subunits10 = layer('map_subunits', '10m');
 const matches = read('data/matches.json');
 const byTitle = Object.fromEntries(matches.map((m) => [m.title, m]));
+// Territories proposed in the spec but not yet in WordPress (Guam, Northern Mariana Islands).
+for (const [title, refs] of Object.entries(read('data/cases.json').proposed || {})) byTitle[title] = { title, refs, proposed: true };
 
 const idx = {
   countries: Object.fromEntries(countries.map((f) => [f.properties.ADM0_A3, f])),
   units: Object.fromEntries(units.map((f) => [f.properties.GU_A3, f])),
   breakaway: Object.fromEntries(brk.map((f) => [f.properties.BRK_A3, f])),
+  subunits: Object.fromEntries(subunits.map((f) => [f.properties.SU_A3, f])),
 };
 const idx10 = {
   countries: Object.fromEntries(countries10.map((f) => [f.properties.ADM0_A3, f])),
   units: Object.fromEntries(units10.map((f) => [f.properties.GU_A3, f])),
   breakaway: idx.breakaway,
+  subunits: Object.fromEntries(subunits10.map((f) => [f.properties.SU_A3, f])),
 };
 // Frames tighter than this radius draw from 1:10m.
 const FINE_BELOW_DEG = 6;
@@ -90,13 +98,17 @@ function maxRadius(fc, center) {
   return m;
 }
 
-const THE = new Set(['United States', 'Russian Federation', 'Netherlands', 'Philippines', 'Bahamas', 'Gambia', 'Maldives', 'Marshall Islands', 'Solomon Islands', 'Cook Islands', 'Comoros', 'Seychelles', 'Democratic Republic of the Congo', 'Republic of the Congo', 'Central African Republic', 'Czech Republic', 'Dominican Republic', 'United Kingdom', 'United Arab Emirates', 'Sahrawi Arab Democratic Republic', 'Cape Verde Islands']);
+const THE = new Set(['United States', 'Russian Federation', 'Netherlands', 'Philippines', 'Bahamas', 'Gambia', 'Maldives', 'Marshall Islands', 'Solomon Islands', 'Cook Islands', 'Comoros', 'Seychelles', 'Democratic Republic of the Congo', 'Republic of the Congo', 'Central African Republic', 'Czech Republic', 'Dominican Republic', 'United Kingdom', 'United Arab Emirates', 'Sahrawi Arab Democratic Republic', 'Cape Verde Islands', 'Northern Mariana Islands']);
 const place = (t) => (THE.has(t) ? `the ${t}` : t);
 const list = (a) => (a.length < 3 ? a.join(' and ') : `${a.slice(0, -1).join(', ')}, and ${a.at(-1)}`);
 
 function render(lang, pov = 'defacto') {
-  const prim = lang.primary.map((t) => byTitle[t]);
-  const sec = lang.secondary.map((t) => byTitle[t]);
+  // A language-level map focus swaps a territory's shape for a part of it
+  // (Hawaiian: the United States, drawn as Hawaii). The territory link is unchanged.
+  const focus_ = lang.focus || {};
+  const pick = (t) => (focus_[t] ? { ...byTitle[t], refs: focus_[t].refs, focusLabel: focus_[t].label } : byTitle[t]);
+  const prim = lang.primary.map(pick);
+  const sec = lang.secondary.map(pick);
   const hl = [...prim.map((m) => ({ m, cls: 'primary' })), ...sec.map((m) => ({ m, cls: 'secondary' }))];
 
   // Frame on the main body of every highlighted territory.
@@ -183,6 +195,7 @@ function render(lang, pov = 'defacto') {
   // (Natural Earth stores Somaliland both ways). Never via a whole country:
   // that would hand Crimea to Russia on a Russian page.
   const selfHi = (d) => hl.find(({ m }) => m.refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
+  const edges = [];
   const disp = disputed.map((d) => {
     const own = selfHi(d);
     let cls;
@@ -195,12 +208,16 @@ function render(lang, pov = 'defacto') {
       const owner = pov === 'us' ? d.us : d.defacto;
       cls = hiCls(owner) ? `hl ${hiCls(owner)}` : 'land';
     }
-    return pathEl(d.f, `disputed ${cls}`, ` data-area="${d.name}"`);
+    const el = pathEl(d.f, `disputed ${cls}`, ` data-area="${d.name}"`);
+    const dd = el.match(/ d="([^"]+)"/);
+    if (dd) edges.push(`<path d="${dd[1]}"/>`);
+    return el;
   }).join('');
 
-  const capPrim = list(lang.primary.map(place));
-  const caption = `Spoken in ${capPrim}.` + (lang.secondary.length ? ` Also in ${list(lang.secondary.map(place))}.` : '');
-  const desc = `Map centred on ${list(lang.primary.map(place))}${lang.secondary.length ? `, with ${list(lang.secondary.map(place))} also marked` : ''}.`;
+  const placeOf = (t) => (focus_[t] ? `${focus_[t].label} in ${place(t)}` : place(t));
+  const capPrim = list(lang.primary.map(placeOf));
+  const caption = `Spoken in ${capPrim}.` + (lang.secondary.length ? ` Also in ${list(lang.secondary.map(placeOf))}.` : '');
+  const desc = `Map centred on ${list(lang.primary.map(placeOf))}${lang.secondary.length ? `, with ${list(lang.secondary.map(placeOf))} also marked` : ''}.`;
 
   const id = `${lang.iso}-${pov}`;
 
@@ -211,7 +228,10 @@ function render(lang, pov = 'defacto') {
   const nice = [1, 2, 5].flatMap((m) => [1, 10, 100, 1000, 10000].map((e) => m * e)).sort((a, b) => a - b)
     .filter((km) => km / kmPerUnit <= 80).at(-1);
   const len = nice / kmPerUnit;
-  const scale = `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
+  // Hidden at continent scale (OS: scale varies there, so a bar misleads):
+  // when shapes stretch more than 5% anywhere in the frame.
+  const stretch = maxStretch(proj);
+  const scale = stretch > 5 ? '' : `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
     + `<text class="scale-label" x="${(20 + len).toFixed(1)}" y="290">${nice.toLocaleString('en')} km</text></g>`;
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
@@ -222,6 +242,9 @@ function render(lang, pov = 'defacto') {
     + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g>`
+    // Contested edges: a parchment casing under dark dashes, legible on sea, land and parchment alike
+    // (gzip makes the repeated paths nearly free).
+    + `<g class="dispute-casing">${edges.join('')}</g><g class="dispute-line">${edges.join('')}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g>${scale}</svg>`;
 
@@ -229,7 +252,7 @@ function render(lang, pov = 'defacto') {
   const k = proj.scale(), [tx, ty] = proj.translate();
   const te = [(0 - tx) / k, (ty - H) / k, (W - tx) / k, ty / k].map((v) => v * R_EARTH);
   const proj4 = `+proj=laea +lat_0=${center[1]} +lon_0=${center[0]} +R=${R_EARTH} +units=m +no_defs`;
-  return { id, iso: lang.iso, pov, svg, fine, scaleKm: nice, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch: maxStretch(proj) };
+  return { id, iso: lang.iso, pov, svg, fine, scaleKm: nice, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch };
 }
 
 const cases = read('data/cases.json');

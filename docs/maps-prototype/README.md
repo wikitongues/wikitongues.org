@@ -20,7 +20,7 @@ The scripts behind the language-page map prototype (plan item 3.2, November 2026
 
 Everything runs from this folder (`S` below is its absolute path). `ne/`, `raster/` and `site/` are downloads and output, and are gitignored.
 
-1. Download Natural Earth v5.1.2 GeoJSON from `nvkelso/natural-earth-vector` into `ne/`: 1:50m `admin_0_countries`, `admin_0_map_units`, `admin_0_breakaway_disputed_areas`, and 1:10m `admin_0_countries` and `admin_0_map_units` (zoomed-in maps and framing).
+1. Download Natural Earth v5.1.2 GeoJSON from `nvkelso/natural-earth-vector` into `ne/`: 1:50m `admin_0_countries`, `admin_0_map_units`, `admin_0_breakaway_disputed_areas`, and 1:50m and 1:10m `admin_0_map_subunits` (map focus), and 1:10m `admin_0_countries` and `admin_0_map_units` (zoomed-in maps and framing).
 2. Download `HYP_50M_SR`, `SR_50M` and `GRAY_50M_SR_OB` from naturalearthdata.com into `raster/`, `raster/sr/` and `raster/ob/`, then convert them to raw bytes:
    `magick HYP_50M_SR.tif -depth 8 rgb:hyp.rgb` and `magick SR_50M.tif -colorspace gray -depth 8 gray:sr.gray`, and the same for `GRAY_50M_SR_OB.tif` → `ob.gray`.
 3. `cd build && npm ci`

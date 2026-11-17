@@ -1,20 +1,190 @@
-{"pov":"defacto",
-"gallery":[
- {"iso":"quy","name":"Ayacucho Quechua","primary":["Peru"],"secondary":[],"why":"Baseline: one mid-sized country"},
- {"iso":"rus","name":"Russian","primary":["Russian Federation","Abkhazia"],"secondary":["South Ossetia","Transnistria"],"why":"Huge country, several territories, two of them breakaway regions"},
- {"iso":"mlt","name":"Maltese","primary":["Malta"],"secondary":[],"why":"Small country: zoomed until it reads as a shape"},
- {"iso":"fij","name":"Fijian","primary":["Fiji"],"secondary":[],"why":"Straddles the 180° line"},
- {"iso":"tvl","name":"Tuvaluan","primary":["Tuvalu"],"secondary":[],"why":"Atolls too small to see: a ring per atoll, framed on all of them"},
- {"iso":"yue","name":"Yue Chinese","primary":["China","Hong Kong"],"secondary":[],"why":"A tiny territory inside a big one"},
- {"iso":"abk","name":"Abkhaz","primary":["Georgia","Abkhazia"],"secondary":[],"why":"A breakaway region as a territory"},
- {"iso":"haw","name":"Hawaiian","primary":["United States"],"secondary":[],"why":"Data gap: our territory is the whole US, so Hawaii isn't what's highlighted"},
- {"iso":"kal","name":"Greenlandic Inuktitut","primary":["Denmark"],"secondary":[],"why":"Data gap: Greenland isn't a territory, so Denmark is highlighted"}
-],
-"disputes":[
- {"iso":"ukr","name":"Ukrainian","primary":["Ukraine"],"secondary":[],"why":"Crimea, and the Donetsk and Luhansk areas"},
- {"iso":"kat","name":"Georgian","primary":["Georgia"],"secondary":[],"why":"Abkhazia and South Ossetia"},
- {"iso":"ary","name":"Moroccan Spoken Arabic","primary":["Morocco"],"secondary":[],"why":"Western Sahara"},
- {"iso":"kas","name":"Kashmiri","primary":["India"],"secondary":[],"why":"Kashmir, and the India–China border areas"},
- {"iso":"som","name":"Somali","primary":["Somalia","Somaliland"],"secondary":[],"why":"Somaliland, which is a territory of its own here"},
- {"iso":"heb","name":"Hebrew","primary":["Israel"],"secondary":[],"why":"Golan Heights, West Bank, Gaza"}
-]}
+{
+ "pov": "defacto",
+ "gallery": [
+  {
+   "iso": "quy",
+   "name": "Ayacucho Quechua",
+   "primary": [
+    "Peru"
+   ],
+   "secondary": [],
+   "why": "Baseline: one mid-sized country"
+  },
+  {
+   "iso": "rus",
+   "name": "Russian",
+   "primary": [
+    "Russian Federation",
+    "Abkhazia"
+   ],
+   "secondary": [
+    "South Ossetia",
+    "Transnistria"
+   ],
+   "why": "Huge country, several territories, two of them breakaway regions"
+  },
+  {
+   "iso": "mlt",
+   "name": "Maltese",
+   "primary": [
+    "Malta"
+   ],
+   "secondary": [],
+   "why": "Small country: zoomed until it reads as a shape"
+  },
+  {
+   "iso": "fij",
+   "name": "Fijian",
+   "primary": [
+    "Fiji"
+   ],
+   "secondary": [],
+   "why": "Straddles the 180° line"
+  },
+  {
+   "iso": "tvl",
+   "name": "Tuvaluan",
+   "primary": [
+    "Tuvalu"
+   ],
+   "secondary": [],
+   "why": "Atolls too small to see: a ring per atoll, framed on all of them"
+  },
+  {
+   "iso": "yue",
+   "name": "Yue Chinese",
+   "primary": [
+    "China",
+    "Hong Kong"
+   ],
+   "secondary": [],
+   "why": "A tiny territory inside a big one"
+  },
+  {
+   "iso": "abk",
+   "name": "Abkhaz",
+   "primary": [
+    "Georgia",
+    "Abkhazia"
+   ],
+   "secondary": [],
+   "why": "A breakaway region as a territory"
+  },
+  {
+   "iso": "haw",
+   "name": "Hawaiian",
+   "primary": [
+    "United States"
+   ],
+   "secondary": [],
+   "why": "Map focus: the territory stays the United States; the map draws Hawaiʻi",
+   "focus": {
+    "United States": {
+     "label": "Hawaiʻi",
+     "refs": [
+      [
+       "subunits",
+       "USH"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "iso": "cha",
+   "name": "Chamorro",
+   "primary": [
+    "Guam",
+    "Northern Mariana Islands"
+   ],
+   "secondary": [],
+   "why": "Proposed territories: today Chamorro has none, so no map"
+  },
+  {
+   "iso": "kal",
+   "name": "Greenlandic Inuktitut",
+   "primary": [
+    "Greenland"
+   ],
+   "secondary": [],
+   "why": "Greenland as its own territory (content change in the spec)"
+  }
+ ],
+ "disputes": [
+  {
+   "iso": "ukr",
+   "name": "Ukrainian",
+   "primary": [
+    "Ukraine"
+   ],
+   "secondary": [],
+   "why": "Crimea, and the Donetsk and Luhansk areas"
+  },
+  {
+   "iso": "kat",
+   "name": "Georgian",
+   "primary": [
+    "Georgia"
+   ],
+   "secondary": [],
+   "why": "Abkhazia and South Ossetia"
+  },
+  {
+   "iso": "ary",
+   "name": "Moroccan Spoken Arabic",
+   "primary": [
+    "Morocco"
+   ],
+   "secondary": [],
+   "why": "Western Sahara"
+  },
+  {
+   "iso": "kas",
+   "name": "Kashmiri",
+   "primary": [
+    "India"
+   ],
+   "secondary": [],
+   "why": "Kashmir, and the India–China border areas"
+  },
+  {
+   "iso": "som",
+   "name": "Somali",
+   "primary": [
+    "Somalia",
+    "Somaliland"
+   ],
+   "secondary": [],
+   "why": "Somaliland, which is a territory of its own here"
+  },
+  {
+   "iso": "heb",
+   "name": "Hebrew",
+   "primary": [
+    "Israel"
+   ],
+   "secondary": [],
+   "why": "Golan Heights, West Bank, Gaza"
+  }
+ ],
+ "proposed": {
+  "Guam": [
+   [
+    "countries",
+    "GUM"
+   ]
+  ],
+  "Northern Mariana Islands": [
+   [
+    "countries",
+    "MNP"
+   ]
+  ],
+  "Greenland": [
+   [
+    "units",
+    "GRL"
+   ]
+  ]
+ }
+}
