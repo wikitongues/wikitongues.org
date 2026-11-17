@@ -336,6 +336,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 **Data** (scripted writes, so sync first)
 - [x] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh` (2026-11-17).
 - [x] Confirm on production data that Chamorro and Carolinian have no territory and no `nations_of_origin` (2026-11-17).
+- [ ] The WordPress edits below are scripted in `docs/maps-prototype/territory-edits.php` (dry run by default, `execute` to apply, safe to rerun). **Done on local 2026-11-17** and checked: the reverse links, the new territory pages and the redirect from the old Western Sahara slug. Next: staging, then production, dry run first each time. The new territories' official languages: Greenland Greenlandic; Guam English and Chamorro; Northern Mariana Islands English, Chamorro and Carolinian. Greenland sits in the Northern America region (UN M49).
 - [ ] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory.
 - [ ] Add Greenland and move Greenlandic to it from Denmark.
 - [ ] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands.
