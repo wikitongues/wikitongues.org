@@ -9,21 +9,21 @@ $log     = function ( $msg ) use ( $execute ) {
 	WP_CLI::log( ( $execute ? '' : '[dry run] ' ) . $msg );
 };
 
-$lang = function ( $iso ) {
+$lang             = function ( $iso ) {
 	$p = get_page_by_path( $iso, OBJECT, 'languages' );
 	if ( ! $p ) {
 		WP_CLI::error( "No language $iso" );
 	}
 	return $p->ID;
 };
-$terr = function ( $slug ) {
+$terr             = function ( $slug ) {
 	$p = get_page_by_path( $slug, OBJECT, 'territories' );
 	return $p ? $p->ID : 0;
 };
-$ids = function ( $post_id, $field ) {
+$ids              = function ( $post_id, $field ) {
 	return array_map( 'intval', (array) ( get_field( $field, $post_id, false ) ?: array() ) );
 };
-$set_territories = function ( $lang_id, array $territory_ids ) use ( $execute, $log, $ids ) {
+$set_territories  = function ( $lang_id, array $territory_ids ) use ( $execute, $log, $ids ) {
 	$before = $ids( $lang_id, 'territories' );
 	$after  = array_values( array_unique( array_map( 'intval', $territory_ids ) ) );
 	$name   = fn( $list ) => implode( ', ', array_map( 'get_the_title', $list ) ) ?: '(none)';
@@ -79,7 +79,12 @@ if ( $nk ) {
 	if ( 'publish' === get_post_status( $nk ) ) {
 		$log( 'Nagorno-Karabakh: unpublish (draft)' );
 		if ( $execute ) {
-			wp_update_post( array( 'ID' => $nk, 'post_status' => 'draft' ) );
+			wp_update_post(
+				array(
+					'ID'          => $nk,
+					'post_status' => 'draft',
+				)
+			);
 		}
 	} else {
 		$log( 'Nagorno-Karabakh: already unpublished' );
@@ -113,7 +118,10 @@ foreach ( $renames as $old => list( $title, $slug ) ) {
 	}
 	$log( get_the_title( $id ) . " -> $title" . ( $slug ? ", slug $old -> $slug" : ', slug unchanged' ) );
 	if ( $execute ) {
-		$update = array( 'ID' => $id, 'post_title' => $title );
+		$update = array(
+			'ID'         => $id,
+			'post_title' => $title,
+		);
 		if ( $slug ) {
 			$update['post_name'] = $slug;
 		}
