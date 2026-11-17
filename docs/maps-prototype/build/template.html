@@ -216,6 +216,11 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .wt-map circle.globe-casing { fill: none; stroke: none; }
 .wt-map .globe-view { fill: none; stroke: var(--brd-dot); stroke-width: 2; stroke-linejoin: round; }
 .wt-map path.globe-casing { fill: none; stroke: var(--brd-edge); stroke-width: 4; stroke-linejoin: round; }
+/* light styles: the same globe with its shades flipped, pale sea and brand-blue land,
+   so it sits in the light page's key; a thin deep-blue rim holds its edge on parchment */
+.s-shaded .wt-map .globe-sea, .s-fogparch .wt-map .globe-sea { fill: var(--brd-secondary); }
+.s-shaded .wt-map .globe-land, .s-fogparch .wt-map .globe-land { fill: var(--brd-sea); }
+.s-shaded .wt-map .globe-rim, .s-fogparch .wt-map .globe-rim { stroke: var(--brd-edge); stroke-width: .9; }
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */
 .wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
 .wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
