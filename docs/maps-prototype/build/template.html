@@ -344,16 +344,6 @@ summary { cursor: pointer; font-weight: 500; }
         <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Dark full</button>
         <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Dark focused</button>
       </div></div>
-    <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
-      <div class="seg" role="group" aria-labelledby="lbl-cap">
-        <button type="button" id="cap-on" data-cap="on" aria-pressed="true">On</button>
-        <button type="button" id="cap-off" data-cap="off" aria-pressed="false">Off</button>
-      </div></div>
-    <div class="ctl"><span class="eyebrow" id="lbl-sea">Sea floor</span>
-      <div class="seg" role="group" aria-labelledby="lbl-sea">
-        <button type="button" id="sea-on" data-sea="on" aria-pressed="true">On</button>
-        <button type="button" id="sea-off" data-sea="off" aria-pressed="false">Off</button>
-      </div></div>
     <div class="ctl"><label class="eyebrow" for="width">Sidebar width</label>
       <input type="range" id="width" min="220" max="390" step="10" value="300"><span class="wval" id="wval">300px</span></div>
   </div>
@@ -436,13 +426,13 @@ summary { cursor: pointer; font-weight: 500; }
   document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => setStyle(b.dataset.style)));
   document.querySelectorAll('[data-cap]').forEach((b) => b.addEventListener('click', () => setCap(b.dataset.cap)));
   w.addEventListener('input', () => setW(w.value));
-  setStyle((['brand','shaded','fog','fogparch'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
+  setStyle((['brand','shaded','fog','fogparch'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap('off'); // captions are composed by the theme template, not the map setW(store.get('wtmap-w') || 300);
   const setSea = (v) => {
     root.classList.toggle('no-seafloor', v === 'off');
     document.querySelectorAll('[data-sea]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sea === v)));
     store.set('wtmap-sea', v);
   };
   document.querySelectorAll('[data-sea]').forEach((b) => b.addEventListener('click', () => setSea(b.dataset.sea)));
-  setSea(store.get('wtmap-sea') || 'on');
+  setSea('on'); // sea floor is always on (decided)
 })();
 </script>
