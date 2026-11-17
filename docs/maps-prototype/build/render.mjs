@@ -20,6 +20,8 @@ const units10 = layer('map_units', '10m');
 // Sub-units (Hawaii, Alaska, Wales, Scotland…): for a language-level map focus
 // inside one territory, not for territories themselves.
 const subunits = layer('map_subunits');
+// 1:110m land, no borders: all the locator globe needs, and a fraction of the bytes.
+const land110 = read('ne/ne_110m_land.geojson').features;
 const subunits10 = layer('map_subunits', '10m');
 const matches = read('data/matches.json');
 const byTitle = Object.fromEntries(matches.map((m) => [m.title, m]));
@@ -291,7 +293,10 @@ function render(lang, pov = 'defacto') {
   // centred on the map, with a ring on the spot. It goes in whichever top or bottom-right
   // corner the language's territories and claims crowd least; the scale bar has bottom-left.
   let inset = '';
-  if (spec.cornerDeg < 10) {
+  // Threshold 30°: includes Morocco (17.6°), Somalia (15.9°), Peru (20.8°) and Greenland
+  // (27°), not India (35°), China or Russia. Aimed at readers who don't know where a
+  // mid-sized country is; only continent-sized frames are their own context.
+  if (spec.cornerDeg < 30) {
     const GR = 34, PADI = 10;
     const corners = [[W - PADI - GR, PADI + GR], [PADI + GR, PADI + GR], [W - PADI - GR, H - PADI - GR]];
     const busy = [...hl.flatMap(({ m }) => geomFor(m.refs, ix)), ...claimed.map((d) => d.f)].flatMap(ptsOf);
@@ -299,11 +304,23 @@ function render(lang, pov = 'defacto') {
     const [gx, gy] = corners.reduce((a, b) => (crowd(b) < crowd(a) ? b : a));
     const globe = d3.geoOrthographic().rotate([-center[0], -center[1]]).scale(GR).translate([gx, gy]).clipAngle(90);
     const gpath = d3.geoPath({ stream: (st) => globe.stream(thin(st)) }).digits(1);
-    const gland = countries.map((f) => gpath(f)).filter(Boolean).join('');
+    const gland = land110.map((f) => gpath(f)).filter(Boolean).join('');
     const [mx, my] = globe(center);
+    // Mark: a ring on small frames; on larger ones, the map's own view outlined on the
+    // globe (OS: mark an inset's area on the locator), once that outline outgrows the ring.
+    const view = [];
+    for (let i = 0; i <= 16; i++) view.push([(i / 16) * W, 0]);
+    for (let i = 1; i <= 12; i++) view.push([W, (i / 12) * H]);
+    for (let i = 15; i >= 0; i--) view.push([(i / 16) * W, H]);
+    for (let i = 11; i >= 1; i--) view.push([0, (i / 12) * H]);
+    const vpts = view.map((p) => proj.invert(p)).filter(Boolean).map((ll) => globe(ll)).filter(Boolean);
+    const span = vpts.length ? Math.max(...vpts.map((p) => Math.hypot(p[0] - mx, p[1] - my))) : 0;
+    const mark = span > 6
+      ? `<path class="globe-view" d="M${vpts.map((p) => p.map((v) => v.toFixed(1)).join(' ')).join('L')}Z"/>`
+      : `<circle class="globe-mark" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4"/>`;
     inset = `<g class="inset" aria-hidden="true"><circle class="globe-halo" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR + 1.5}"/>`
       + `<circle class="globe-sea" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/><path class="globe-land" d="${gland}"/>`
-      + `<circle class="globe-mark" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4"/></g>`;
+      + `${mark}<circle class="globe-rim" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/></g>`;
   }
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
