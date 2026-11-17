@@ -204,6 +204,18 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-fogparch .sw-c { background: repeating-linear-gradient(45deg, var(--fp-land) 0 3px, var(--brd-edge) 3px 4px); }
 .s-fogrelief .sw-p { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1px solid var(--brd-primary); }
 .s-fogrelief .sw-s { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1.5px dashed var(--brd-primary); outline-offset: -1.5px; }
+/* locator globe: its own little sea and land, a halo to lift it off the map */
+.wt-map .globe-halo { fill: var(--paper); }
+.wt-map .globe-sea { fill: var(--sea); stroke: var(--border); stroke-width: .6; }
+.wt-map .globe-land { fill: color-mix(in srgb, var(--ink-2) 45%, var(--paper)); }
+.wt-map .globe-mark { fill: none; stroke: var(--primary); stroke-width: 1.8; }
+.s-brand .wt-map .globe-halo { fill: var(--brd-primary); }
+.s-brand .wt-map .globe-sea { fill: var(--brd-sea); stroke: none; }
+.s-brand .wt-map .globe-land { fill: var(--brd-land); }
+.s-brand .wt-map .globe-mark { stroke: var(--brd-dot); stroke-width: 2; }
+.s-fogparch .wt-map .globe-sea { fill: var(--fp-sea); stroke: var(--fp-border); }
+.s-fogparch .wt-map .globe-land { fill: #b9b3a5; }
+.s-fogparch .wt-map .globe-mark { stroke: var(--brand-ink); }
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */
 .wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
 .wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }

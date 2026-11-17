@@ -284,6 +284,27 @@ function render(lang, pov = 'defacto') {
   const stretch = maxStretch(proj);
   const scale = stretch > 5 ? '' : `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
     + `<text class="scale-label" x="${(20 + len).toFixed(1)}" y="290">${nice.toLocaleString('en')} km</text></g>`;
+
+  // Locator globe (OS: a locator map shows the area within its wider region). Only on
+  // small frames, where the map alone can't say where on Earth it is; a continent-sized
+  // map is its own context. An orthographic globe, ~50px across at a 300px sidebar,
+  // centred on the map, with a ring on the spot. It goes in whichever top or bottom-right
+  // corner the language's territories and claims crowd least; the scale bar has bottom-left.
+  let inset = '';
+  if (spec.cornerDeg < 10) {
+    const GR = 34, PADI = 10;
+    const corners = [[W - PADI - GR, PADI + GR], [PADI + GR, PADI + GR], [W - PADI - GR, H - PADI - GR]];
+    const busy = [...hl.flatMap(({ m }) => geomFor(m.refs, ix)), ...claimed.map((d) => d.f)].flatMap(ptsOf);
+    const crowd = ([cx, cy]) => busy.filter(([x, y]) => Math.hypot(x - cx, y - cy) < GR + 6).length;
+    const [gx, gy] = corners.reduce((a, b) => (crowd(b) < crowd(a) ? b : a));
+    const globe = d3.geoOrthographic().rotate([-center[0], -center[1]]).scale(GR).translate([gx, gy]).clipAngle(90);
+    const gpath = d3.geoPath({ stream: (st) => globe.stream(thin(st)) }).digits(1);
+    const gland = countries.map((f) => gpath(f)).filter(Boolean).join('');
+    const [mx, my] = globe(center);
+    inset = `<g class="inset" aria-hidden="true"><circle class="globe-halo" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR + 1.5}"/>`
+      + `<circle class="globe-sea" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/><path class="globe-land" d="${gland}"/>`
+      + `<circle class="globe-mark" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4"/></g>`;
+  }
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
     // the shared #fog filter. Only the fog style applies it, through --fog.
@@ -299,7 +320,7 @@ function render(lang, pov = 'defacto') {
     // (gzip makes the repeated paths nearly free).
     + `<g class="dispute-casing">${edges.join('')}</g><g class="dispute-line">${edges.join('')}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g>${scale}</svg>`;
+    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g>${scale}${inset}</svg>`;
 
   // Projected extent in metres for gdalwarp (d3 flips y).
   const k = proj.scale(), [tx, ty] = proj.translate();
