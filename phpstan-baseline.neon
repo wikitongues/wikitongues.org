@@ -725,11 +725,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
 
 		-
-			message: "#^Variable \\$territory might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
-
-		-
 			message: "#^Variable \\$territory_id might not be defined\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
