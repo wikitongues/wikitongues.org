@@ -46,30 +46,30 @@ function searchfilter( $query ) {
 					)
 				);
 			} else {
+				// Nations of origin are territory IDs, so a country name
+				// matches through the territories whose titles contain it.
 				$query->set(
 					'meta_query',
-					array(
+					array_merge(
 						array(
-							'key'     => 'standard_name',
-							'value'   => $languages_search,
-							'compare' => 'LIKE',
+							array(
+								'key'     => 'standard_name',
+								'value'   => $languages_search,
+								'compare' => 'LIKE',
+							),
+							array(
+								'key'     => 'alternate_names',
+								'value'   => $languages_search,
+								'compare' => 'LIKE',
+							),
+							array(
+								'key'     => 'video_title',
+								'value'   => $languages_search,
+								'compare' => 'LIKE',
+							),
 						),
-						array(
-							'key'     => 'alternate_names',
-							'value'   => $languages_search,
-							'compare' => 'LIKE',
-						),
-						array(
-							'key'     => 'nations_of_origin',
-							'value'   => $languages_search,
-							'compare' => 'LIKE',
-						),
-						array(
-							'key'     => 'video_title',
-							'value'   => $languages_search,
-							'compare' => 'LIKE',
-						),
-						'relation' => 'OR',
+						wt_origin_meta_clauses( $languages_search ),
+						array( 'relation' => 'OR' )
 					)
 				);
 			}
@@ -83,7 +83,7 @@ function searchfilter( $query ) {
 			// glottocode - identical
 			// standard_name - like
 			// alternate_names - like
-			// nations_of_origin - like
+			// nations_of_origin - territories whose title is like the term
 			// linguistic_genealogy - identical
 			// anything else included in Scott's code from January
 

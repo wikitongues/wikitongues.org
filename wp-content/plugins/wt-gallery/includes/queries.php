@@ -63,10 +63,9 @@ function build_gallery_query_args( $atts = array() ) {
 		} else {
 			// Non-featured_languages keys follow original logic
 			$compare_operator = 'LIKE';
-			if ( $atts['meta_key'] === 'fellow_language' ) {
+			// Serialized post-ID fields: match the quoted ID inside the stored array.
+			if ( in_array( $atts['meta_key'], array( 'fellow_language', 'nations_of_origin' ), true ) ) {
 				$val_array = array_map( fn( $v ) => '"' . intval( $v ) . '"', $val_array );
-			} elseif ( in_array( $atts['meta_key'], array( 'nations_of_origin' ), true ) ) {
-				$compare_operator = '=';
 			}
 
 			if ( count( $val_array ) > 1 ) {
