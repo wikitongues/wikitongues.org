@@ -102,9 +102,12 @@ add_action( 'manage_languages_posts_custom_column', 'fill_languages_custom_colum
 function fill_languages_custom_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'standard_name':
-		case 'nations_of_origin':
 			$value = get_field( $column, $post_id );
 			echo esc_html( $value );
+			break;
+
+		case 'nations_of_origin':
+			echo esc_html( implode( ', ', wt_language_origin_titles( $post_id ) ) );
 			break;
 
 		case 'speakers_recorded':
@@ -126,7 +129,6 @@ function fill_languages_custom_columns( $column, $post_id ) {
 add_filter( 'manage_edit-languages_sortable_columns', 'make_languages_columns_sortable' );
 function make_languages_columns_sortable( $columns ) {
 	$columns['standard_name']      = 'standard_name';
-	$columns['nations_of_origin']  = 'nations_of_origin';
 	$columns['speakers_recorded']  = 'speakers_recorded';
 	$columns['lexicons']           = 'lexicons';
 	$columns['external_resources'] = 'external_resources';
@@ -146,7 +148,7 @@ function languages_custom_column_orderby( $query ) {
 	$orderby = $query->get( 'orderby' );
 	$order   = $query->get( 'order' ) ? $query->get( 'order' ) : 'ASC';
 
-	if ( in_array( $orderby, array( 'standard_name', 'nations_of_origin' ), true ) ) {
+	if ( in_array( $orderby, array( 'standard_name' ), true ) ) {
 		$query->set( 'meta_key', $orderby );
 		$query->set( 'orderby', 'meta_value' );
 	} elseif ( in_array( $orderby, array( 'speakers_recorded', 'lexicons', 'external_resources' ), true ) ) {

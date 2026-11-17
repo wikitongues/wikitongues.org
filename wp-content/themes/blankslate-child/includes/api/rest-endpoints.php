@@ -43,7 +43,7 @@ function custom_search_callback( $request ) {
 				'label'             => isset( $meta['standard_name'][0] ) ? $meta['standard_name'][0] : '',
 				'identifier'        => $post->post_name,
 				'alternate_names'   => isset( $meta['alternate_names'][0] ) ? $meta['alternate_names'][0] : '',
-				'nations_of_origin' => isset( $meta['nations_of_origin'][0] ) ? $meta['nations_of_origin'][0] : '',
+				'nations_of_origin' => implode( ', ', wt_language_origin_titles( $post->ID ) ),
 				'iso_code'          => isset( $meta['iso_code'][0] ) ? $meta['iso_code'][0] : '',
 				'glottocode'        => isset( $meta['glottocode'][0] ) ? $meta['glottocode'][0] : '',
 			);

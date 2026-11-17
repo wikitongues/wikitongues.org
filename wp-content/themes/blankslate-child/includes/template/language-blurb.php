@@ -110,7 +110,7 @@ function wt_language_facts( int $post_id ): array {
 
 	return array(
 		'name'        => $name,
-		'origins'     => wt_blurb_split( wt_blurb_field( 'nations_of_origin', $post_id ) ),
+		'origins'     => wt_language_origin_titles( $post_id ),
 		'status'      => wt_blurb_field( 'egids_status', $post_id ),
 		'families'    => wt_blurb_term_names( $post_id, 'linguistic-genealogy' ),
 		'scripts'     => wt_blurb_term_names( $post_id, 'writing-system' ),

@@ -74,7 +74,7 @@ Defaults differ by entry point. Template calls get `wt_gallery_params()`'s defau
 | `meta_key` | How `meta_value` matches |
 |---|---|
 | `featured_languages`, `fellow_language` | Language post IDs, matched against ACF's serialized arrays (`LIKE '"42"'`) |
-| `nations_of_origin` | Exact `=`. The field is comma-separated text, so combined values miss (#241) |
+| `nations_of_origin` | Territory post IDs, matched the same way |
 | Anything else | `LIKE` |
 
 ---

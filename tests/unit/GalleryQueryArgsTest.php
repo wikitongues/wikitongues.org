@@ -106,18 +106,19 @@ class GalleryQueryArgsTest extends TestCase {
 		$this->assertContains( '"8"', $values );
 	}
 
-	public function test_nations_of_origin_uses_equals_compare() {
+	public function test_nations_of_origin_matches_quoted_territory_ids() {
 		$atts = $this->base_atts(
 			array(
 				'meta_key'   => 'nations_of_origin',
-				'meta_value' => 'Nigeria',
+				'meta_value' => '20475',
 			)
 		);
 		$this->mock_wp_parse_args( $atts );
 
 		$args = build_gallery_query_args( $atts );
 
-		$this->assertSame( '=', $args['meta_query'][0]['compare'] );
+		$this->assertSame( 'LIKE', $args['meta_query'][0]['compare'] );
+		$this->assertSame( '"20475"', $args['meta_query'][0]['value'] );
 	}
 
 	public function test_generic_meta_key_multiple_values_build_or_meta_query() {
