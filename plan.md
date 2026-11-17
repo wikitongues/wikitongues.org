@@ -301,6 +301,46 @@ On local data, 7,536 language pages list exactly one territory, 44 list more tha
 
 A private claude.ai page (2026-11-16, updated through 2026-11-17) shows ten test languages and six disputed-border languages at true sidebar width in each style, and the full territory mapping. Its build scripts (matching, rendering, simplification, raster reprojection and masking) are in [`docs/maps-prototype/`](docs/maps-prototype/README.md), with the full territory mapping, and are the starting point for `wt-maps/build/`.
 
+##### Release checklist
+
+**Decide**
+- [ ] The sidebar style: Brand, Fog, Fog relief or Fog parchment.
+- [ ] Which missing ISO territories to add now (Guam and the Northern Mariana Islands at least), and which languages get a map focus.
+- [ ] Dark mode: the Fog styles fade into the page, so either design a dark version or keep the map on parchment in both themes.
+
+**Data** (scripted writes, so sync first: Backup Prod DB → Sync to Staging → `tool-sync-db-from-prod.sh`)
+- [ ] The content changes above in WordPress admin, each through the territory-change checklist.
+- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Chamorro, Carolinian).
+- [ ] The ACF fields: "Map shape" on territories, "Map focus" on languages (JSON, with `modified` bumped).
+
+**Build**
+- [ ] The `wt-maps` plugin: the PHP API, the shortcode, the backfill and `doctor` commands, and the prototype scripts moved into it.
+- [ ] Whitelist it in `.gitignore` (`!/wp-content/plugins/wt-maps/`). Commit the generated SVGs and images outside `build/`, which `.gitignore` excludes for every plugin, because deploys ship only what is committed.
+- [ ] Count the maps before generating them all: one per distinct set of territories, so check the total size against the repo and the deploy.
+- [ ] The reviewed claims table that overrides Natural Earth's 2022-era data.
+- [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
+- [ ] Unit tests for the PHP API, and `/test` (lint, PHPStan, PHPUnit) green.
+- [ ] A plugin setting that turns the sidebar map off without a deploy.
+
+**Review before staging**
+- [ ] A person reads the `doctor` report of contested areas per map.
+- [ ] Spot-check about 20 languages at sidebar width: the test set here, plus the five with the most territories.
+- [ ] Each map's page weight stays within the budget (SVG ≤ 20 KB gzipped, images ≤ 30 KB).
+
+**Staging**
+- [ ] Merge the PR to `main`, then `/deploy staging`.
+- [ ] Activate the plugin on staging (deploys don't activate plugins), then run the backfill (dry run, then `--execute`) and `doctor`.
+- [ ] Check language pages on staging, including a contested one, a small island and a language with no territory.
+
+**Production**
+- [ ] Before writing anything, keep a dated copy of the production dump in `~/backups/`.
+- [ ] `/deploy production`, activate the plugin, run the backfill (dry run, then `--execute`) and `doctor`.
+- [ ] Spot-check the same pages, and hard-refresh, since the CSS has no version string.
+
+**After**
+- [ ] Move this item to `docs/plan-archive.md`, and write `docs/maps.md`: how maps are built and how to change a territory.
+- [ ] Put the yearly claims review on the calendar.
+
 ##### Done when
 
 - The content changes above are made, and `wp wt-maps doctor` reports nothing.
