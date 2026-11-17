@@ -193,7 +193,9 @@ Maps in two steps, both from one new plugin, `wt-maps`:
 | Imagery or vector | **Vector** country shapes, colored by CSS, with a raster terrain layer cut to the coast. Satellite tiles are licensed, heavy, can't highlight a single country, and lose their detail at sidebar width. |
 | Rendering | **Ahead of time, no JavaScript.** SVG files made by a build script and placed inline by PHP. No tile server, no API key, no request to a third party. |
 | Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. |
-| Style | **Brand** (see "Look"). Shaded and colored relief were the alternatives; flat, outline and a gray inverted style were tried and dropped. |
+| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between Brand, Fog, Shaded and Fog parchment needs no rebuild or deploy. Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
+| Dark mode | **Not supported** (2026-11-17): the site has no dark mode, so the maps have one look, on parchment. |
+| Territory coverage | **A cheap, steady review process over a complete list at launch** (2026-11-17). Launch with the content changes already decided below; add the remaining ISO 3166-1 entries and map focuses later, one small reviewed change at a time (see "Territory review process"). |
 | Labels and caption | **No labels and no visible caption.** The summary sentence above the map already says where the language is spoken. The SVG carries the same text as its accessible description. |
 | Projection | **Lambert azimuthal equal-area, centered on each map's territories.** Areas are exact, and shapes stretch only with distance from the center: typically 1–5% over the highlighted territory. An Albers equal-area conic was tested for continent-sized countries and rejected, because over each country's own land the azimuthal distorts less every time (Russia: 3.0% median and 12.6% worst, against 3.4% and 28.8%; Canada: 6.4% worst, against 36.6%). Large figures only appear in the empty corners of very wide frames. A Waterman butterfly suits a whole-world map, not a locator. |
 | Disputed borders | **Neutral.** Disputed areas get a dashed edge and a hatch, and are assigned to no one. The hatch takes the highlight color when a claimant is one of the language's territories, so a Ukrainian page shows Crimea as contested. Committed 2026-11-17: the plugin draws only this view, with no switch. See "Contested areas are never hidden" under Look for how framing and the fog treat them. Natural Earth's default (control today) and its US view were compared in the prototype and dropped; its UN view is empty. |
@@ -211,7 +213,7 @@ These are one-off edits in WordPress admin and Airtable, made before the backfil
 - **Add Greenland** as a territory (Natural Earth unit `GRL`, ISO `GRL`) and move Greenlandic to it from Denmark. In Airtable, change Greenlandic's `nations_of_origin` from Denmark to Greenland.
 - **Add Guam and the Northern Mariana Islands** as territories (Natural Earth `GUM`, `MNP`). Link Chamorro to both and Carolinian to the Northern Mariana Islands; set their Airtable `nations_of_origin` to "Guam, Northern Mariana Islands" and "Northern Mariana Islands". In local data (2026-11-17) Chamorro and Carolinian have no territory and no `nations_of_origin`, so they get no map and no summary sentence; confirm against production after the sync.
 - **Set Hawaiian's map focus to `USH`.** Its territory stays the United States. Other candidates: Central Yupik and other Alaskan languages (`USK`), Welsh (`WLS`), Scottish Gaelic (`SCT`). Languages tied to an area below a sub-unit (Navajo Nation, the Basque Country) need Natural Earth's admin-1 layer, which the field can accept later.
-- **Review the other ISO 3166-1 entries we lack**, and add those with languages in the archive. Inhabited ones: Puerto Rico, the US Virgin Islands, American Samoa, Curaçao and Aruba (Papiamento), Sint Maarten, Saint-Martin, Saint-Barthélemy, the Faroe Islands (Faroese), Åland, the Isle of Man (Manx), Jersey (Jèrriais), Guernsey (Guernésiais), Niue (Niuean), Norfolk Island (Norfuk), Saint Pierre and Miquelon, Bermuda, the Cayman Islands, the Turks and Caicos, the British Virgin Islands, Anguilla, Montserrat, Saint Helena and the Falklands. Each addition runs the checklist below.
+- **Later, through the review process (not a launch blocker): the other ISO 3166-1 entries we lack**, added when they have languages in the archive. Inhabited ones: Puerto Rico, the US Virgin Islands, American Samoa, Curaçao and Aruba (Papiamento), Sint Maarten, Saint-Martin, Saint-Barthélemy, the Faroe Islands (Faroese), Åland, the Isle of Man (Manx), Jersey (Jèrriais), Guernsey (Guernésiais), Niue (Niuean), Norfolk Island (Norfuk), Saint Pierre and Miquelon, Bermuda, the Cayman Islands, the Turks and Caicos, the British Virgin Islands, Anguilla, Montserrat, Saint Helena and the Falklands. Each addition runs the checklist below.
 - **Rename "Cape Verde Islands" to "Cabo Verde",** and make the same change to the matching `nations_of_origin` value in Airtable (one language).
 - **Keep as they are:** "Sahrawi Arab Democratic Republic" (it maps to all of Western Sahara), "Federated Staes of Micronesia" and "Naoero".
 
@@ -223,6 +225,16 @@ A territory touches up to four places. Change all of them together, or the map, 
 2. **Language links.** Edit the language's Territories field, or the territory's Languages field. The relationship is two-way, so either side updates both.
 3. **`nations_of_origin` in Airtable** for each affected language. It is synced free text, and both the summary sentence and the map's primary highlight match it against territory titles exactly. A rename without this change makes the summary say "Also spoken in" about the language's own country.
 4. **Map shape** on the territory: the Natural Earth code. A territory without one shows no map, never a wrong one.
+
+##### Territory review process
+
+Coverage grows by small changes, not a big push, so the process has to stay cheap enough to run for a single territory and safe enough to run without a cartographer.
+
+- **One request, one record.** A territory or map-focus request is a GitHub issue from a template: the place, the languages it affects, the Natural Earth code, and a source for the claim if it is contested. The issue is the queue and the audit trail.
+- **One change, one PR.** The WordPress edits and the Airtable edits follow the checklist above. The regenerated maps and the `doctor` output then go in a single PR, because the build lives in this repo.
+- **The review is reading two reports.** `wp wt-maps doctor` must be clean (no missing shapes, no unmatched `nations_of_origin`, no languages left without a territory by the change). The PR shows the contested-areas diff: every contested area a changed map now reveals, frames or hatches, against the last release. A change that touches no contested area needs one reviewer; one that does needs a second, and a source in the issue.
+- **Batch the slow parts.** Data syncs and production writes happen at most once a month, for whatever has been merged since. The claims table gets its yearly review then too, and after any news that moves a border.
+- **Backlog to start from:** the ISO gaps listed above; the 508 published languages with no territory at all (local data, 2026-11-17), which show no map and no "spoken in" sentence; and map focuses for Alaskan languages, Welsh and Scottish Gaelic.
 
 The plugin adds a check that turns this list into a report: `wp wt-maps doctor` lists territories without a map shape, map shapes that don't exist in the data, and `nations_of_origin` values that match no territory title. Run it after any territory change.
 
@@ -266,7 +278,7 @@ On local data, 7,536 language pages list exactly one territory, 44 list more tha
 
 ##### Look
 
-- **Brand:** a deep blue sea, the brand hue at lower chroma (`oklch(0.33 0.11 285)`; the full `$blue()` `#3814a5` was too loud across most of the frame, against OS and Imhof's rule that saturated colour belongs in small areas), land in the site's `$blue(50)`, the language's primary territories in parchment with a deep-blue edge, and secondary territories in a pale blue between the two. Borders and the disputed-area hatch are blues too. It looks the same in light and dark mode.
+- **Brand:** a deep blue sea, the brand hue at lower chroma (`oklch(0.33 0.11 285)`; the full `$blue()` `#3814a5` was too loud across most of the frame, against OS and Imhof's rule that saturated colour belongs in small areas), land in the site's `$blue(50)`, the language's primary territories in parchment with a deep-blue edge, and secondary territories in a pale blue between the two. Borders and the disputed-area hatch are blues too.
 - **Terrain shading** on top, at a resolution matched to each frame. The land hillshade is computed from AWS Terrain Tiles (open elevation data, terrarium encoding; credit its sources per the Tilezen attribution list). The build picks the tile zoom from the frame's ground distance per pixel: zoom 3 for Russia at 13 km a pixel, zoom 10 for Malta at 195 m. It samples the tiles through the inverted d3 projection and shades from the north-west at 45°. Vertical exaggeration grows with pixel size (×2 for Malta, ×18 for Russia). Flat ground maps to neutral gray, and the result is cut to the vector coastline and blended with `mix-blend-mode: hard-light` (soft-light was tried and disappears on light fills). Natural Earth's SR_50M, used first, is fixed at about 3.7 km a pixel and went soft on small frames. The images ship at 600×450, quality 30: every test map is under 30 KB. Tiles are cached by the build, never fetched by the site.
 - **Sea floor stays on Natural Earth** (GRAY_50M_SR_OB). The tiles' bathymetry has steps of several hundred metres between sources (near the antimeridian: Fiji, Tuvalu), and hillshading turns them into straight seams. The sea is background, so its softer resolution suits it.
 - **Ocean floor, kept 2026-11-16.** Natural Earth's GRAY_50M_SR_OB carries seafloor relief: continental shelves, trenches, ridges and fracture zones. The build maps deep ocean to neutral gray, cuts the image to the sea, and blends it over the sea blue with `hard-light` at 65% opacity, fainter than the land shading so the coast stays the strongest edge. It adds 5–29 KB per page at 2×, less at the shipping size.
@@ -306,9 +318,9 @@ A private claude.ai page (2026-11-16, updated through 2026-11-17) shows ten test
 ##### Release checklist
 
 **Decide**
-- [ ] The sidebar style: Brand, Fog or Fog parchment (Relief and Fog relief were hidden on 2026-11-17).
-- [ ] Which missing ISO territories to add now (Guam and the Northern Mariana Islands at least), and which languages get a map focus.
-- [ ] Dark mode: the Fog styles fade into the page, so either design a dark version or keep the map on parchment in both themes.
+- [x] Style: deferred, shipped as a setting (2026-11-17). Pick the launch default in the plugin settings; it can change at any time.
+- [x] Coverage: launch with the decided content changes; the rest goes through the territory review process (2026-11-17).
+- [x] Dark mode: not supported (2026-11-17).
 
 **Data** (scripted writes, so sync first: Backup Prod DB → Sync to Staging → `tool-sync-db-from-prod.sh`)
 - [ ] The content changes above in WordPress admin, each through the territory-change checklist.
@@ -322,7 +334,9 @@ A private claude.ai page (2026-11-16, updated through 2026-11-17) shows ten test
 - [ ] The reviewed claims table that overrides Natural Earth's 2022-era data.
 - [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
 - [ ] Unit tests for the PHP API, and `/test` (lint, PHPStan, PHPUnit) green.
-- [ ] A plugin setting that turns the sidebar map off without a deploy.
+- [ ] A plugin setting that turns the sidebar map off without a deploy, and one that picks the style.
+- [ ] All three image layers built for every map, so any style works (check the total against the size estimate).
+- [ ] The review tooling: the territory-request issue template, and the contested-areas diff the build writes for each PR.
 
 **Review before staging**
 - [ ] A person reads the `doctor` report of contested areas per map.
