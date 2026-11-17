@@ -154,6 +154,15 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-brand .sw-p { background: var(--brd-primary); outline: 1px solid var(--brd-edge); } .s-brand .sw-s { background: var(--brd-secondary); } .s-brand .sw-l { background: var(--brd-land); outline: 0; } .s-brand .sw-sea { background: var(--brd-sea); }
 .s-shaded .sw-p { background: color-mix(in srgb, var(--primary) 52%, var(--land)); }
 .brand-only { display: none; } .s-brand .brand-only { display: inline; }
+/* fog style: the brand map, revealed only around the territory, like fog of war.
+   The mask grows the highlighted shapes, blurs them and roughens the edge (#fog filter),
+   with a dimmer outer halo; past that the map dissolves into the page, so there is no frame. */
+.s-fog .wt-map .world { mask: var(--fog); }
+.s-fog .wt-map__svg { border-radius: 0;
+  /* territories stop at 12% from each side, so a fade over the outer 9% never touches them,
+     and a halo that reaches the frame melts away instead of ending in a straight cut */
+  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent), linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  mask-composite: intersect; }
 .sw-c { background: repeating-linear-gradient(45deg, var(--brd-land) 0 3px, var(--brd-contested) 3px 4px); }
 .sw-d { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brd-dot); background: var(--brd-sea); }
 /* outline style */
@@ -234,6 +243,17 @@ summary { cursor: pointer; font-weight: 500; }
     <pattern id="bhatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhcl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="bhatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhp-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="bhatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhs-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <filter id="fog" filterUnits="userSpaceOnUse" x="-60" y="-60" width="520" height="420" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d1"/>
+      <feGaussianBlur in="d1" stdDeviation="10" result="b1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="3" seed="4" result="n"/>
+      <feDisplacementMap in="b1" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G" result="near"/>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="22" result="d2"/>
+      <feGaussianBlur in="d2" stdDeviation="18" result="b2"/>
+      <feDisplacementMap in="b2" in2="n" scale="44" xChannelSelector="R" yChannelSelector="G" result="far0"/>
+      <feComponentTransfer in="far0" result="far"><feFuncA type="linear" slope=".55"/></feComponentTransfer>
+      <feMerge><feMergeNode in="far"/><feMergeNode in="near"/><feMergeNode in="SourceAlpha"/></feMerge>
+    </filter>
   </defs>
 </svg>
 
@@ -250,6 +270,7 @@ summary { cursor: pointer; font-weight: 500; }
         <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Brand</button>
         <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
         <button type="button" id="st-relief" data-style="relief" aria-pressed="false">Relief</button>
+        <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Fog</button>
       </div></div>
     <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
       <div class="seg" role="group" aria-labelledby="lbl-cap">
@@ -335,7 +356,8 @@ summary { cursor: pointer; font-weight: 500; }
   const root = document.getElementById('root');
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   const setStyle = (s) => {
-    root.classList.remove('s-flat', 's-shaded', 's-inverted', 's-brand', 's-relief', 's-outline'); root.classList.add('s-' + s);
+    root.classList.remove('s-flat', 's-shaded', 's-inverted', 's-brand', 's-relief', 's-outline', 's-fog'); root.classList.add('s-' + s);
+    if (s === 'fog') root.classList.add('s-brand'); // fog is the brand map under a mask
     document.querySelectorAll('[data-style]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.style === s)));
     store.set('wtmap-style5', s);
   };
@@ -349,7 +371,7 @@ summary { cursor: pointer; font-weight: 500; }
   document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => setStyle(b.dataset.style)));
   document.querySelectorAll('[data-cap]').forEach((b) => b.addEventListener('click', () => setCap(b.dataset.cap)));
   w.addEventListener('input', () => setW(w.value));
-  setStyle((['brand','shaded','relief'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
+  setStyle((['brand','shaded','relief','fog'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
   const setSea = (v) => {
     root.classList.toggle('no-seafloor', v === 'off');
     document.querySelectorAll('[data-sea]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sea === v)));

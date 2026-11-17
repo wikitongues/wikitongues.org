@@ -173,12 +173,16 @@ function render(lang, pov = 'defacto') {
 
   const id = `${lang.iso}-${pov}`;
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
+    // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
+    // the shared #fog filter. Only the fog style applies it, through --fog.
+    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></mask></defs>`
+    + `<g class="world" style="--fog:url(#fog-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<g class="lands">${land}</g><g class="hls">${highlight}</g><g class="disputes">${disp}</g>`
+    + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<g class="markers">${markers.join('')}</g></svg>`;
+    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g></svg>`;
 
   // Projected extent in metres for gdalwarp (d3 flips y).
   const k = proj.scale(), [tx, ty] = proj.translate();
