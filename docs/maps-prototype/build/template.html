@@ -31,7 +31,7 @@
   /* contested: neutral dark ink, not red (OS: red reads as alarm on sensitive subjects) */
   --brd-contested: #24107a; --brd-dot: #ffff00;
   /* fog parchment: a light world (the same in both themes) */
-  --fp-land: #fbf7e8; --fp-sea: #e8e3ec; --fp-border: #cfc6dc; --brand-ink: #3814a5;
+  --fp-land: #fbf7e8; --fp-sea: #e5e5e5; /* neutral grey, same luminance as the earlier #e8e3ec */ --fp-border: #cfc6dc; --brand-ink: #3814a5;
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -180,7 +180,7 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-fogrelief .wt-map .hl.secondary { fill: var(--relief); stroke: var(--brd-primary); stroke-width: 1.3; stroke-dasharray: 2.4 1.6; }
 .s-fogrelief .wt-map .shade { opacity: .75; }
 /* fog parchment: Fog relief on a light world. Context land is parchment with the hillshade,
-   the sea a pale cool parchment, and the fog dissolves both into the page, so the map reads as
+   the sea a neutral grey, and the fog dissolves both into the page, so the map reads as
    Shaded fading out around a territory in coloured relief. Yellow rings vanish on parchment
    (≈1:1), so rings and edges turn to dark brand blue. */
 .s-fogparch .wt-map .sea { fill: var(--fp-sea); }
