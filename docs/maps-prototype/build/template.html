@@ -333,16 +333,16 @@ summary { cursor: pointer; font-weight: 500; }
   <header class="top">
     <span class="eyebrow">wt-maps · prototype · plan item 3.2</span>
     <h1>Language page maps</h1>
-    <p class="lede">The sidebar map for nine test languages (Shaded is the flat style with terrain shading and no ground colour; Relief keeps the coloured ground), three ways to draw disputed borders, and every territory matched to a map shape. Pick a style and width below; the cards render at true sidebar width.</p>
+    <p class="lede">The sidebar map for ten test languages in four styles: light or dark (a parchment world or a brand-blue one), each either full (the whole frame) or focused (the map falls away around the language's territories). Then the disputed borders, and every territory matched to a map shape. Pick a style and width below; the cards render at true sidebar width.</p>
   </header>
 
   <div class="bar" role="toolbar" aria-label="Map display">
     <div class="ctl"><span class="eyebrow" id="lbl-style">Style</span>
       <div class="seg" role="group" aria-labelledby="lbl-style">
-        <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Brand</button>
-        <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Fog</button>
-        <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
-        <button type="button" id="st-fogparch" data-style="fogparch" aria-pressed="false">Fog parchment</button>
+        <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Light full</button>
+        <button type="button" id="st-fogparch" data-style="fogparch" aria-pressed="false">Light focused</button>
+        <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Dark full</button>
+        <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Dark focused</button>
       </div></div>
     <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
       <div class="seg" role="group" aria-labelledby="lbl-cap">
