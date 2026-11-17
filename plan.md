@@ -192,8 +192,8 @@ Maps in two steps, both from one new plugin, `wt-maps`:
 |---|---|
 | Imagery or vector | **Vector** country shapes, colored by CSS, with a raster terrain layer cut to the coast. Satellite tiles are licensed, heavy, can't highlight a single country, and lose their detail at sidebar width. |
 | Rendering | **Ahead of time, no JavaScript.** SVG files made by a build script and placed inline by PHP. No tile server, no API key, no request to a third party. |
-| Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. |
-| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Kristen's preference (2026-11-17): Dark full, then Light full; she isn't a fan of the focused styles. Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
+| Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. **In this repo** (2026-11-17), with the generated maps committed beside it, so a territory change, its rebuilt maps and the `doctor` output land in one PR. |
+| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Kristen's preference (2026-11-17): Dark full, then Light full; she isn't a fan of the focused styles. **Launch default: Light focused** (2026-11-17). Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
 | Dark mode | **Not supported** (2026-11-17): the site has no dark mode, so the maps have one look, on parchment. |
 | Territory coverage | **A cheap, steady review process over a complete list at launch** (2026-11-17). Launch with the content changes already decided below; add the remaining ISO 3166-1 entries and map focuses later, one small reviewed change at a time (see "Territory review process"). |
 | Labels and caption | **No labels, and no caption from the plugin.** Any text around the map is composed by the theme template (2026-11-17); the summary sentence above it already says where the language is spoken. The SVG carries the same text as its accessible description. |
@@ -214,10 +214,11 @@ These are one-off edits in WordPress admin and Airtable, made before the backfil
 - **Add Guam and the Northern Mariana Islands** as territories (Natural Earth `GUM`, `MNP`). Link Chamorro to both and Carolinian to the Northern Mariana Islands; set their Airtable `nations_of_origin` to "Guam, Northern Mariana Islands" and "Northern Mariana Islands". In local data (2026-11-17) Chamorro and Carolinian have no territory and no `nations_of_origin`, so they get no map and no summary sentence; confirm against production after the sync.
 - **Set Hawaiian's map focus to `USH`.** Its territory stays the United States. Other candidates: Central Yupik and other Alaskan languages (`USK`), Welsh (`WLS`), Scottish Gaelic (`SCT`). Languages tied to an area below a sub-unit (Navajo Nation, the Basque Country) need Natural Earth's admin-1 layer, which the field can accept later.
 - **Later, through the review process (not a launch blocker): the other ISO 3166-1 entries we lack**, added when they have languages in the archive. Inhabited ones: Puerto Rico, the US Virgin Islands, American Samoa, Curaçao and Aruba (Papiamento), Sint Maarten, Saint-Martin, Saint-Barthélemy, the Faroe Islands (Faroese), Åland, the Isle of Man (Manx), Jersey (Jèrriais), Guernsey (Guernésiais), Niue (Niuean), Norfolk Island (Norfuk), Saint Pierre and Miquelon, Bermuda, the Cayman Islands, the Turks and Caicos, the British Virgin Islands, Anguilla, Montserrat, Saint Helena and the Falklands. Each addition runs the checklist below.
-- **Rename "Sahrawi Arab Democratic Republic" to "Western Sahara"** (2026-11-17, from Kristen's review): Western Sahara is the UN territory name, and the SADR is the government in exile. The map already shows all of Western Sahara. Make the same change to the matching `nations_of_origin` values in Airtable.
-- **Add a territory type field** (2026-11-17, before launch): sovereign state, autonomous territory (Greenland), dependency (Guam), breakaway region (Abkhazia). It is ACF on territories, set for all of them in the backfill, and shared with the language rights reports, which need the same split.
+- **Rename "Sahrawi Arab Democratic Republic" to "Western Sahara"** (2026-11-17, from Kristen's review): Western Sahara is the UN territory name, and the SADR is the government in exile. The map already shows all of Western Sahara. The slug changes to `western-sahara`, with a redirect from the old one. Make the same change to the matching `nations_of_origin` values in Airtable.
+- **Add a territory type field** (2026-11-17, before launch) with four values: sovereign state, autonomous territory (Greenland), dependency (Guam), breakaway region (Abkhazia). Partially recognised states (Kosovo, Taiwan, Palestine) count as sovereign states, so the field adds no political label of its own. It is ACF on territories, set for all of them in the backfill, and shared with the language rights reports, which need the same split.
 - **Rename "Cape Verde Islands" to "Cabo Verde",** and make the same change to the matching `nations_of_origin` value in Airtable (one language).
-- **Keep as they are:** "Federated Staes of Micronesia" and "Naoero" (Nauru's official English name since August 2026).
+- **"Federated Staes of Micronesia" is fixed** to "Federated States of Micronesia" in production by hand (2026-11-17). Local and staging catch up at the sync; check the Airtable `nations_of_origin` value matches (the `doctor` report will flag it).
+- **Keep as it is:** "Naoero", Nauru's official English name since August 2026.
 
 ##### Territory-change checklist
 
@@ -234,8 +235,8 @@ Coverage grows by small changes, not a big push, so the process has to stay chea
 
 - **One request, one record.** A territory or map-focus request is a GitHub issue from a template: the place, the languages it affects, the Natural Earth code, and a source for the claim if it is contested. The issue is the queue and the audit trail.
 - **One change, one PR.** The WordPress edits and the Airtable edits follow the checklist above. The regenerated maps and the `doctor` output then go in a single PR, because the build lives in this repo.
-- **The review is reading two reports.** `wp wt-maps doctor` must be clean (no missing shapes, no unmatched `nations_of_origin`, no languages left without a territory by the change). The PR shows the contested-areas diff: every contested area a changed map now reveals, frames or hatches, against the last release. A change that touches no contested area needs one reviewer; one that does needs a second, and a source in the issue.
-- **Batch the slow parts.** Data syncs and production writes happen at most once a month, for whatever has been merged since. The claims table gets its yearly review then too, and after any news that moves a border.
+- **The review is reading two reports.** `wp wt-maps doctor` must be clean (no missing shapes, no unmatched `nations_of_origin`, no languages left without a territory by the change). The PR shows the contested-areas diff: every contested area a changed map now reveals, frames or hatches, against the last release. A change that touches no contested area needs one reviewer; one that does needs a second (the site lead or Kristen, whoever didn't make the change), and a source in the issue.
+- **Batch the slow parts.** Data syncs and production writes happen at most once a month, for whatever has been merged since. The claims table gets its yearly review then too, owned by Kristen, and after any news that moves a border.
 - **Backlog to start from:** the ISO gaps listed above; the 508 published languages with no territory at all (local data, 2026-11-17), which show no map and no "spoken in" sentence; and map focuses for Alaskan languages, Welsh and Scottish Gaelic.
 
 The plugin adds a check that turns this list into a report: `wp wt-maps doctor` lists territories without a map shape, map shapes that don't exist in the data, and `nations_of_origin` values that match no territory title. Run it after any territory change.
@@ -327,8 +328,10 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Contested areas: the neutral view only; claimed areas are framed and revealed, never fogged, cut or cropped (2026-11-17).
 - [x] Captions: composed by the theme template; the plugin renders none (2026-11-17).
 - [x] Locator globe: on frames under 30° corner radius; a yellow dot or the outlined view; shades flipped in the light styles (2026-11-17).
-- [ ] Packaging: `wt-maps` in this repo with the generated maps committed beside it (recommended), or its own repo like typeahead. WordPress media was considered and isn't needed.
-- [ ] Launch style: the default the plugin setting starts on. It can change at any time.
+- [x] Packaging: `wt-maps` in this repo, with the generated maps committed beside it (2026-11-17).
+- [x] Launch style: Light focused, as the setting's default; it can change at any time (2026-11-17).
+- [x] Territory types: four values (sovereign state, autonomous territory, dependency, breakaway region) (2026-11-17).
+- [x] Review: a contested-area change needs a second reviewer, the site lead or Kristen; Kristen owns the yearly claims review (2026-11-17).
 
 **Data** (scripted writes, so sync first)
 - [ ] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh`.
@@ -336,9 +339,9 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [ ] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory.
 - [ ] Add Greenland and move Greenlandic to it from Denmark.
 - [ ] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands.
-- [ ] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara".
+- [ ] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara", slug `western-sahara`, with a redirect from the old slug.
 - [ ] Rename "Cape Verde Islands" to "Cabo Verde".
-- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian).
+- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian), and check Micronesia's matches its corrected title.
 - [ ] The ACF fields: "Map shape" and "Territory type" on territories, "Map focus" on languages (JSON, with `modified` bumped).
 - [ ] Set every territory's type in the backfill, and check the list with Kristen (it feeds the language rights reports too).
 - [ ] Set Hawaiian's map focus to `USH`.
@@ -374,7 +377,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 
 **After**
 - [ ] Move this item to `docs/plan-archive.md`, and write `docs/maps.md`: how maps are built and how to change a territory.
-- [ ] Put the yearly claims review on the calendar.
+- [ ] Put the yearly claims review on Kristen's calendar.
 
 ##### Done when
 
