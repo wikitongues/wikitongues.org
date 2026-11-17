@@ -23,6 +23,47 @@ class PrefixTheTest extends TestCase {
 		$this->assertSame( 'the Bahamas', wt_prefix_the( 'Bahamas' ) );
 	}
 
+	/**
+	 * Territory names that take "the" in English.
+	 *
+	 * @return array<string, array{string}>
+	 */
+	public function the_territories(): array {
+		$names = array(
+			'United States',
+			'United Kingdom',
+			'Netherlands',
+			'Philippines',
+			'Northern Mariana Islands',
+			'Marshall Islands',
+			'Solomon Islands',
+			'Maldives',
+			'Comoros',
+			'Seychelles',
+			'Central African Republic',
+			'Democratic Republic of the Congo',
+			'Republic of the Congo',
+			'Dominican Republic',
+			'Czech Republic',
+			'United Arab Emirates',
+			'Federated States of Micronesia',
+			'Cook Islands',
+			'Russian Federation',
+		);
+		return array_combine( $names, array_map( fn( $n ) => array( $n ), $names ) );
+	}
+
+	/**
+	 * @dataProvider the_territories
+	 */
+	public function test_territory_gets_prefix( string $name ) {
+		$this->assertSame( 'the ' . $name, wt_prefix_the( $name ) );
+	}
+
+	public function test_france_unchanged() {
+		$this->assertSame( 'France', wt_prefix_the( 'France' ) );
+	}
+
 	public function test_ordinary_name_unchanged() {
 		$this->assertSame( 'Uganda', wt_prefix_the( 'Uganda' ) );
 	}

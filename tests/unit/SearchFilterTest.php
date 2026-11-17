@@ -51,12 +51,15 @@ class SearchFilterTest extends TestCase {
 				'return' => 'Russian',
 			)
 		);
+		WP_Mock::userFunction( 'get_posts', array( 'return' => array( 20591 ) ) );
 
 		$query = new FakeQuery();
 		searchfilter( $query );
 
 		$meta_query = $query->calls['meta_query'];
-		$keys       = array_column( array_filter( $meta_query, 'is_array' ), 'key' );
+		$clauses    = array_filter( $meta_query, 'is_array' );
+		$keys       = array_column( $clauses, 'key' );
+		$this->assertContains( '"20591"', array_column( $clauses, 'value' ) );
 		$this->assertContains( 'standard_name', $keys );
 		$this->assertContains( 'alternate_names', $keys );
 		$this->assertContains( 'nations_of_origin', $keys );
@@ -72,6 +75,7 @@ class SearchFilterTest extends TestCase {
 				'return' => 'Russian',
 			)
 		);
+		WP_Mock::userFunction( 'get_posts', array( 'return' => array() ) );
 
 		$query = new FakeQuery();
 		searchfilter( $query );

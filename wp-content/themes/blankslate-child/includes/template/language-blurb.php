@@ -94,50 +94,6 @@ function wt_blurb_excluded_scripts(): array {
 }
 
 /**
- * Country names that take "the" in running prose ("original to the United
- * States"), on top of the ones wt_prefix_the() already handles.
- *
- * Kept here rather than in wt_prefix_the(), which has many callers on
- * territory and fellow pages that would also change.
- *
- * @return string[]
- */
-function wt_blurb_the_names(): array {
-	return array(
-		'Cape Verde Islands',
-		'Central African Republic',
-		'Comoros',
-		'Cook Islands',
-		'Czech Republic',
-		'Democratic Republic of the Congo',
-		'Dominican Republic',
-		'Federated States of Micronesia',
-		'Maldives',
-		'Marshall Islands',
-		'Netherlands',
-		'Philippines',
-		'Republic of the Congo',
-		'Russian Federation',
-		'Sahrawi Arab Democratic Republic',
-		'Seychelles',
-		'Solomon Islands',
-		'United Arab Emirates',
-		'United Kingdom',
-		'United States',
-	);
-}
-
-/**
- * A place name as it reads mid-sentence: "the United States", "Italy".
- *
- * @param string $name Territory name.
- * @return string
- */
-function wt_blurb_place( string $name ): string {
-	return in_array( $name, wt_blurb_the_names(), true ) ? 'the ' . $name : wt_prefix_the( $name );
-}
-
-/**
  * Gather the facts the blurb is built from.
  *
  * @param int $post_id Language post ID.
@@ -154,7 +110,7 @@ function wt_language_facts( int $post_id ): array {
 
 	return array(
 		'name'        => $name,
-		'origins'     => wt_blurb_split( wt_blurb_field( 'nations_of_origin', $post_id ) ),
+		'origins'     => wt_language_origin_titles( $post_id ),
 		'status'      => wt_blurb_field( 'egids_status', $post_id ),
 		'families'    => wt_blurb_term_names( $post_id, 'linguistic-genealogy' ),
 		'scripts'     => wt_blurb_term_names( $post_id, 'writing-system' ),
@@ -260,7 +216,7 @@ function wt_blurb_origin_phrase( array $facts ): string {
 	if ( ! $origins ) {
 		return '';
 	}
-	return 'original to ' . wt_join_list( array_map( 'wt_blurb_place', $origins ) );
+	return 'original to ' . wt_join_list( array_map( 'wt_prefix_the', $origins ) );
 }
 
 /**
@@ -334,7 +290,7 @@ function wt_blurb_also_spoken_sentence( array $facts ): string {
 		return '';
 	}
 
-	$shown = array_map( 'wt_blurb_place', array_slice( $territories, 0, WT_BLURB_MAX_TERRITORIES ) );
+	$shown = array_map( 'wt_prefix_the', array_slice( $territories, 0, WT_BLURB_MAX_TERRITORIES ) );
 	$rest  = count( $territories ) - count( $shown );
 	if ( $rest > 0 ) {
 		$shown[] = $rest . ' other ' . ( 1 === $rest ? 'territory' : 'territories' );

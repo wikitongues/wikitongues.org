@@ -526,7 +526,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 10
+			count: 9
 			path: wp-content/themes/blankslate-child/modules/languages/meta--languages-single.php
 
 		-
@@ -725,11 +725,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
 
 		-
-			message: "#^Variable \\$territory might not be defined\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
-
-		-
 			message: "#^Variable \\$territory_id might not be defined\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/modules/territories/territories-active-region.php
@@ -761,7 +756,7 @@ parameters:
 
 		-
 			message: "#^Function get_field not found\\.$#"
-			count: 6
+			count: 5
 			path: wp-content/themes/blankslate-child/modules/videos/meta--videos-single.php
 
 		-

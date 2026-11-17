@@ -91,8 +91,8 @@
             "label": "Nations of Origin",
             "name": "nations_of_origin",
             "aria-label": "",
-            "type": "text",
-            "instructions": "",
+            "type": "post_object",
+            "instructions": "Synced from Airtable (the language's Nation of Origin links).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -100,12 +100,18 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "post_type": [
+                "territories"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_6810db0f101e3",
@@ -529,5 +535,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1771716263
+    "display_title": "",
+    "modified": 1794947311
 }
