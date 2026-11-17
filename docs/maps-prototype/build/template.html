@@ -169,6 +169,16 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
    with a dimmer outer halo; past that the map dissolves into the page, so there is no frame. */
 .s-fog .wt-map .world { mask: var(--fog); }
 .s-fog .wt-map__svg { border-radius: 0; }
+/* fog relief: the fog composition with Natural Earth's coloured relief. The language's
+   territories show the relief at full colour; context land is washed with the land blue
+   so the territory still leads; sea, contested edges, rings and scale bar as in Brand. */
+.s-fogrelief .wt-map .land, .s-fogrelief .wt-map .disputed.land { fill: var(--brd-land); fill-opacity: .62; stroke: var(--brd-border); }
+.s-fogrelief .wt-map .relief { display: inline; }
+.s-fogrelief .wt-map .hl.primary { fill: var(--relief); stroke: var(--brd-primary); stroke-width: .9; }
+.s-fogrelief .wt-map .hl.secondary { fill: var(--relief); stroke: var(--brd-primary); stroke-width: 1.3; stroke-dasharray: 2.4 1.6; }
+.s-fogrelief .wt-map .shade { opacity: .75; }
+.s-fogrelief .sw-p { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1px solid var(--brd-primary); }
+.s-fogrelief .sw-s { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1.5px dashed var(--brd-primary); outline-offset: -1.5px; }
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */
 .wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
 .wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
@@ -288,6 +298,7 @@ summary { cursor: pointer; font-weight: 500; }
         <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
         <button type="button" id="st-relief" data-style="relief" aria-pressed="false">Relief</button>
         <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Fog</button>
+        <button type="button" id="st-fogrelief" data-style="fogrelief" aria-pressed="false">Fog relief</button>
       </div></div>
     <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
       <div class="seg" role="group" aria-labelledby="lbl-cap">
@@ -316,18 +327,10 @@ summary { cursor: pointer; font-weight: 500; }
   <section aria-labelledby="h-disputes">
     <div class="sec-head">
       <span class="eyebrow">02 · Disputed borders</span>
-      <h2 id="h-disputes">Whose map do we draw?</h2>
-      <p class="muted">Natural Earth's default draws borders where control lies today. It also records how about 30 governments see each disputed area. Its UN field is empty, so a UN view isn't available. These rows show the same language under three rules; disputed areas always get a dashed edge.</p>
+      <h2 id="h-disputes">Neutral, everywhere</h2>
+      <p class="muted">Disputed areas belong to no one on these maps. Each gets a dark dashed edge on a parchment casing and a hatch. The hatch takes the language's colour when a claimant is one of its territories, so a Ukrainian page shows Crimea as contested, not as lost. Natural Earth's de facto and US views were compared and dropped.</p>
     </div>
-    <div class="dgrid">
-      <div class="drow dhead">
-        <div></div>
-        <div class="col"><b>De facto</b><span>Natural Earth default: who controls it now</span></div>
-        <div class="col"><b>US view</b><span>Natural Earth's US point of view</span></div>
-        <div class="col"><b>Neutral <span class="rec">Recommended</span></b><span>Hatched; shaded toward any claimant we highlight</span></div>
-      </div>
-      {{DISPUTES}}
-    </div>
+    <div class="cards">{{DISPUTES}}</div>
   </section>
 
   <section aria-labelledby="h-ledger">
@@ -373,8 +376,8 @@ summary { cursor: pointer; font-weight: 500; }
   const root = document.getElementById('root');
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   const setStyle = (s) => {
-    root.classList.remove('s-flat', 's-shaded', 's-inverted', 's-brand', 's-relief', 's-outline', 's-fog'); root.classList.add('s-' + s);
-    if (s === 'fog') root.classList.add('s-brand'); // fog is the brand map under a mask
+    root.classList.remove('s-flat', 's-shaded', 's-inverted', 's-brand', 's-relief', 's-outline', 's-fog', 's-fogrelief'); root.classList.add('s-' + s);
+    if (s === 'fog' || s === 'fogrelief') root.classList.add('s-brand', 's-fog'); // both are the brand map under the fog mask
     document.querySelectorAll('[data-style]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.style === s)));
     store.set('wtmap-style5', s);
   };
@@ -388,7 +391,7 @@ summary { cursor: pointer; font-weight: 500; }
   document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => setStyle(b.dataset.style)));
   document.querySelectorAll('[data-cap]').forEach((b) => b.addEventListener('click', () => setCap(b.dataset.cap)));
   w.addEventListener('input', () => setW(w.value));
-  setStyle((['brand','shaded','relief','fog'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
+  setStyle((['brand','shaded','relief','fog','fogrelief'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
   const setSea = (v) => {
     root.classList.toggle('no-seafloor', v === 'off');
     document.querySelectorAll('[data-sea]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sea === v)));

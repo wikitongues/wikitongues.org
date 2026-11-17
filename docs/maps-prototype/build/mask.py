@@ -21,8 +21,10 @@ for r in json.load(open(f'{S}/data/rendered.json')):
                     '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',
                     f'{S}/site/relief/{iso}.webp'], check=True)
     # hillshade cut to the land, ocean floor cut to the sea
+    # Hillshade from the terrain tiles is detailed, so it ships at sidebar size (600×450,
+    # 2× a 300px sidebar) and quality 30, which keeps the heaviest map near 30 KB.
     subprocess.run(['magick', '-size', '800x600', '-depth', '8', f'gray:{S}/raster/sr/{iso}.gray', f'{S}/raster/{iso}-mask.png',
-                    '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',
+                    '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-resize', '600x450', '-quality', '30', '-define', 'webp:alpha-quality=50',
                     f'{S}/site/shade/{iso}.webp'], check=True)
     subprocess.run(['magick', '-size', '800x600', '-depth', '8', f'gray:{S}/raster/ob/{iso}.gray', '(', f'{S}/raster/{iso}-mask.png', '-negate', ')',
                     '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',

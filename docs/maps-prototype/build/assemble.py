@@ -14,22 +14,19 @@ def fig(r, caption=True):
     cap = f'<figcaption>{e(r["caption"])}</figcaption>' if caption else ''
     return f'<figure class="wt-map">{r["svg"]}{cap}</figure>'
 
-cards = []
-for r in [x for x in R if x['section'] == 'gallery']:
+def card(r):
     gz = len(gzip.compress(r['svg'].encode()))
     rk = relief_kb(r['iso'])
     sp = f'{S}/site/shade/{r["iso"]}.webp'
     sk = os.path.getsize(sp) if os.path.exists(sp) else 0
     cls = lambda over: ' class="over"' if over else ''
-    cards.append(f'''<article class="card"><span class="eyebrow">{e(r["iso"])}</span><h3>{e(r["lang"]["name"])}</h3>{fig(r)}
+    return f'''<article class="card"><span class="eyebrow">{e(r["iso"])}</span><h3>{e(r["lang"]["name"])}</h3>{fig(r)}
 <p class="why">{e(r["lang"]["why"])}</p>
-<p class="stats"><span{cls(gz > 20480)}>SVG {kb(gz)} gz</span> · <span{cls(sk > 30720)}>shaded +{kb(sk)}</span> · <span{cls(rk > 30720)}>relief +{kb(rk)}</span></p></article>''')
+<p class="stats"><span{cls(gz > 20480)}>SVG {kb(gz)} gz</span> · <span{cls(sk > 30720)}>shaded +{kb(sk)}</span> · <span{cls(rk > 30720)}>relief +{kb(rk)}</span></p></article>'''
 
-POV = {'defacto': 'De facto', 'us': 'US view', 'neutral': 'Neutral'}
-rows = []
-for c in json.load(open(f'{S}/data/cases.json'))['disputes']:
-    cells = ''.join(f'<div><span class="mlabel">{POV[p]}</span>{fig(next(x for x in R if x["id"] == c["iso"] + "-" + p), caption=False)}</div>' for p in ['defacto', 'us', 'neutral'])
-    rows.append(f'<div class="drow"><div class="dlabel"><span class="eyebrow">{e(c["iso"])}</span><h3>{e(c["name"])}</h3><p>{e(c["why"])}</p></div>{cells}</div>')
+cards = [card(r) for r in R if r['section'] == 'gallery']
+# Disputed borders: the neutral view only, as cards like the gallery.
+rows = [card(r) for r in R if r['section'] == 'disputes']
 
 STATUS = {  # title -> (pill class, label, note)
     'Sahrawi Arab Democratic Republic': ('p-decide', 'Decide', 'Our title names the state; the shape is all of Western Sahara, most of which Morocco administers. Rename the territory "Western Sahara"?'),

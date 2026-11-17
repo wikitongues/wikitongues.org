@@ -4,3 +4,4 @@ site/
 data/rendered.json
 data/langs.json
 build/node_modules/
+dem/

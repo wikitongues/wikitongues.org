@@ -70,7 +70,26 @@ function framingParts(feature) {
   // A scattered archipelago (Tuvalu): no island is big enough to read as a shape,
   // so frame on all of them, not on whichever atoll is largest.
   if (rL < (0.1 * Math.PI) / 180) return parts.map((p) => p.f);
-  return parts.filter((p) => p === L || p.a >= 0.15 * L.a || d3.geoDistance(p.c, L.c) <= rL * 1.5 + 0.035).map((p) => p.f);
+  // Grow from the main body: a part joins if it is big (≥15% of it) or near any kept
+  // part. Only parts of at least 1% can extend the chain further, so an island chain
+  // (Hawaiʻi: Big Island → Maui → Oʻahu → Kauaʻi → Niʻihau) stays whole while specks
+  // far out (the Northwestern Hawaiian Islands) don't widen the frame.
+  const reach = rL * 1.5 + 0.035;
+  const kept = [L], seeds = [L];
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const p of parts) {
+      if (kept.includes(p)) continue;
+      // Specks join only when near the main body itself, never by way of the chain.
+      const near = (q) => d3.geoDistance(p.c, q.c) <= reach;
+      if (p.a >= 0.15 * L.a || near(L) || (p.a >= 0.01 * L.a && seeds.some(near))) {
+        kept.push(p); grew = true;
+        if (p.a >= 0.01 * L.a) seeds.push(p);
+      }
+    }
+  }
+  return kept.map((p) => p.f);
 }
 
 // Douglas–Peucker on projected points (iterative).
@@ -236,8 +255,10 @@ function render(lang, pov = 'defacto') {
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
     // the shared #fog filter. Only the fog style applies it, through --fog.
-    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></g></mask></defs>`
-    + `<g class="world" style="--fog:url(#fog-${id})">`
+    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></g></mask>`
+    // The coloured relief as a fill, for the Fog relief style's territories.
+    + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern></defs>`
+    + `<g class="world" style="--fog:url(#fog-${id});--relief:url(#rp-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
@@ -258,6 +279,7 @@ function render(lang, pov = 'defacto') {
 const cases = read('data/cases.json');
 const results = [];
 for (const c of cases.gallery) results.push({ ...render(c, cases.pov), section: 'gallery', lang: c });
-for (const c of cases.disputes) for (const pov of ['defacto', 'us', 'neutral']) results.push({ ...render(c, pov), section: 'disputes', lang: c });
+// Neutral only (decided 2026-11-17); the de facto and US views stay in render() for comparison runs.
+for (const c of cases.disputes) results.push({ ...render(c, 'neutral'), section: 'disputes', lang: c });
 fs.writeFileSync(`${S}/data/rendered.json`, JSON.stringify(results));
 for (const r of results) console.log(r.id.padEnd(16), String(r.bytes).padStart(7), r.caption);
