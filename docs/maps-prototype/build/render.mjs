@@ -130,9 +130,21 @@ function render(lang, pov = 'defacto') {
   const sec = lang.secondary.map(pick);
   const hl = [...prim.map((m) => ({ m, cls: 'primary' })), ...sec.map((m) => ({ m, cls: 'secondary' }))];
 
-  // Frame on the main body of every highlighted territory.
+  // Contested areas this language's territories claim (neutral view). They get the
+  // same treatment as the territory itself: always inside the frame, and revealed by
+  // the fog. Leaving one out (Crimea fogged on a Ukrainian page) would be a statement.
+  // The rule is symmetric: a Russian page frames and reveals Crimea too, hatched.
+  const claimCodes = new Set(hl.flatMap(({ m }) => [...ownerCodes(m.refs)]));
+  const isSelf = (d) => hl.some(({ m }) => m.refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
+  const claimed = pov === 'neutral' ? disputed.filter((d) => !isSelf(d) && [...d.claimants].some((c) => claimCodes.has(c))) : [];
+  const claimedSet = new Set(claimed);
+
+  // Frame on the main body of every highlighted territory, plus the areas it claims.
   // Framed on 1:10m outlines: 1:50m drops most small islands (it has one of Tuvalu's nine atolls).
-  const focus = { type: 'FeatureCollection', features: hl.flatMap(({ m }) => geomFor(m.refs, idx10).flatMap(framingParts)) };
+  const focus = { type: 'FeatureCollection', features: [
+    ...hl.flatMap(({ m }) => geomFor(m.refs, idx10).flatMap(framingParts)),
+    ...claimed.map((d) => d.f),
+  ] };
   const center = d3.geoCentroid(focus);
   let frame = focus;
   // Minimum frame radius ~45 km: small countries zoom until they read as a shape
@@ -214,7 +226,23 @@ function render(lang, pov = 'defacto') {
   // (Natural Earth stores Somaliland both ways). Never via a whole country:
   // that would hand Crimea to Russia on a Russian page.
   const selfHi = (d) => hl.find(({ m }) => m.refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
-  const edges = [];
+  // The fog never cuts through a contested area: any one that comes within the reveal
+  // (about 30 units of a territory or a claimed area) is revealed whole, in its own
+  // neutral hatch (the West Bank and Gaza on a Hebrew page, Transnistria on a Ukrainian one).
+  const REACH = 30, cell = REACH;
+  const grid = new Map();
+  const ptsOf = (f) => { const out = []; d3.geoStream(f, proj.stream({ point(x, y) { out.push([x, y]); }, lineStart() {}, lineEnd() {}, polygonStart() {}, polygonEnd() {}, sphere() {} })); return out; };
+  for (const f of [...hl.flatMap(({ m }) => geomFor(m.refs, ix)), ...claimed.map((d) => d.f)]) {
+    for (const [x, y] of ptsOf(f)) { const k = `${Math.floor(x / cell)},${Math.floor(y / cell)}`; if (!grid.has(k)) grid.set(k, []); grid.get(k).push([x, y]); }
+  }
+  const nearReveal = (f) => ptsOf(f).some(([x, y]) => {
+    if (x < -REACH || y < -REACH || x > W + REACH || y > H + REACH) return false;
+    const cx = Math.floor(x / cell), cy = Math.floor(y / cell);
+    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (const [px, py] of grid.get(`${cx + i},${cy + j}`) || []) if (Math.hypot(px - x, py - y) <= REACH) return true;
+    return false;
+  });
+  const touched = [];
+  const edges = [], claims = [];
   const disp = disputed.map((d) => {
     const own = selfHi(d);
     let cls;
@@ -230,6 +258,10 @@ function render(lang, pov = 'defacto') {
     const el = pathEl(d.f, `disputed ${cls}`, ` data-area="${d.name}"`);
     const dd = el.match(/ d="([^"]+)"/);
     if (dd) edges.push(`<path d="${dd[1]}"/>`);
+    if (claimedSet.has(d) || (pov === 'neutral' && !isSelf(d) && el && nearReveal(d.f))) {
+      if (!claimedSet.has(d)) touched.push(d.name);
+      claims.push(el); return '';
+    }
     return el;
   }).join('');
 
@@ -255,14 +287,14 @@ function render(lang, pov = 'defacto') {
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
     // the shared #fog filter. Only the fog style applies it, through --fog.
-    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></g></mask>`
+    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#cl-${id}"/><use href="#mk-${id}"/></g></g></mask>`
     // The coloured relief as a fill, for the Fog relief style's territories.
     + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern></defs>`
     + `<g class="world" style="--fog:url(#fog-${id});--relief:url(#rp-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g>`
+    + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g><g class="claims" id="cl-${id}">${claims.join('')}</g>`
     // Contested edges: a parchment casing under dark dashes, legible on sea, land and parchment alike
     // (gzip makes the repeated paths nearly free).
     + `<g class="dispute-casing">${edges.join('')}</g><g class="dispute-line">${edges.join('')}</g>`
@@ -273,7 +305,7 @@ function render(lang, pov = 'defacto') {
   const k = proj.scale(), [tx, ty] = proj.translate();
   const te = [(0 - tx) / k, (ty - H) / k, (W - tx) / k, ty / k].map((v) => v * R_EARTH);
   const proj4 = `+proj=laea +lat_0=${center[1]} +lon_0=${center[0]} +R=${R_EARTH} +units=m +no_defs`;
-  return { id, iso: lang.iso, pov, svg, fine, scaleKm: nice, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch };
+  return { id, iso: lang.iso, pov, svg, claimed: claimed.map((d) => d.name), touched, fine, scaleKm: nice, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch };
 }
 
 const cases = read('data/cases.json');

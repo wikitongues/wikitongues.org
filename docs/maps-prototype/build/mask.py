@@ -10,7 +10,7 @@ for r in json.load(open(f'{S}/data/rendered.json')):
     done.add(iso)
     paths = ''.join(
         f'<path d="{d}"/>'
-        for g in ('lands', 'hls', 'disputes')
+        for g in ('lands', 'hls', 'disputes', 'claims')
         for d in re.findall(r'd="([^"]+)"', re.search(rf'<g class="{g}"[^>]*>(.*?)</g>', r['svg']).group(1))
     )
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="800" height="600">'
