@@ -318,9 +318,7 @@ summary { cursor: pointer; font-weight: 500; }
       <div class="seg" role="group" aria-labelledby="lbl-style">
         <button type="button" id="st-brand" data-style="brand" aria-pressed="true">Brand</button>
         <button type="button" id="st-shaded" data-style="shaded" aria-pressed="false">Shaded</button>
-        <button type="button" id="st-relief" data-style="relief" aria-pressed="false">Relief</button>
         <button type="button" id="st-fog" data-style="fog" aria-pressed="false">Fog</button>
-        <button type="button" id="st-fogrelief" data-style="fogrelief" aria-pressed="false">Fog relief</button>
         <button type="button" id="st-fogparch" data-style="fogparch" aria-pressed="false">Fog parchment</button>
       </div></div>
     <div class="ctl"><span class="eyebrow" id="lbl-cap">Caption</span>
@@ -415,7 +413,7 @@ summary { cursor: pointer; font-weight: 500; }
   document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => setStyle(b.dataset.style)));
   document.querySelectorAll('[data-cap]').forEach((b) => b.addEventListener('click', () => setCap(b.dataset.cap)));
   w.addEventListener('input', () => setW(w.value));
-  setStyle((['brand','shaded','relief','fog','fogrelief','fogparch'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
+  setStyle((['brand','shaded','fog','fogparch'].includes(store.get('wtmap-style5')) ? store.get('wtmap-style5') : 'brand')); setCap(store.get('wtmap-cap') || 'on'); setW(store.get('wtmap-w') || 300);
   const setSea = (v) => {
     root.classList.toggle('no-seafloor', v === 'off');
     document.querySelectorAll('[data-sea]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sea === v)));
