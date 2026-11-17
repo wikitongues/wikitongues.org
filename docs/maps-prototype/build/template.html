@@ -158,11 +158,12 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
    The mask grows the highlighted shapes, blurs them and roughens the edge (#fog filter),
    with a dimmer outer halo; past that the map dissolves into the page, so there is no frame. */
 .s-fog .wt-map .world { mask: var(--fog); }
-.s-fog .wt-map__svg { border-radius: 0;
-  /* territories stop at 12% from each side, so a fade over the outer 9% never touches them,
-     and a halo that reaches the frame melts away instead of ending in a straight cut */
-  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent), linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
-  mask-composite: intersect; }
+.s-fog .wt-map__svg { border-radius: 0; }
+/* scale bar: sits on the sea or land in the framed styles, on the page in fog */
+.wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
+.wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
+.s-shaded .wt-map .scale-bar { stroke: var(--ink-2); } .s-shaded .wt-map .scale-label { fill: var(--ink-2); stroke: var(--paper); }
+.s-fog .wt-map .scale-bar { stroke: var(--ink-2); } .s-fog .wt-map .scale-label { fill: var(--ink-2); stroke: none; }
 .sw-c { background: repeating-linear-gradient(45deg, var(--brd-land) 0 3px, var(--brd-contested) 3px 4px); }
 .sw-d { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brd-dot); background: var(--brd-sea); }
 /* outline style */
@@ -243,6 +244,12 @@ summary { cursor: pointer; font-weight: 500; }
     <pattern id="bhatch-land" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhl-bg" width="4" height="4"/><line class="bhcl-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="bhatch-primary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhp-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
     <pattern id="bhatch-secondary" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="bhs-bg" width="4" height="4"/><line class="bhc-line" x1="0" y1="0" x2="0" y2="4"/></pattern>
+    <!-- edge fade for the fog mask: territories stop 12% from each side, so a fade over the
+         outer 9% never touches them, and a halo reaching the frame melts instead of ending in a straight cut -->
+    <linearGradient id="fog-gx"><stop offset="0" stop-color="#000"/><stop offset=".09" stop-color="#fff"/><stop offset=".91" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+    <linearGradient id="fog-gy" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".09" stop-color="#fff"/><stop offset=".91" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+    <mask id="fog-edge-y" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="300"><rect width="400" height="300" fill="url(#fog-gy)"/></mask>
+    <mask id="fog-edge" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="300"><rect width="400" height="300" fill="url(#fog-gx)" mask="url(#fog-edge-y)"/></mask>
     <filter id="fog" filterUnits="userSpaceOnUse" x="-60" y="-60" width="520" height="420" color-interpolation-filters="sRGB">
       <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d1"/>
       <feGaussianBlur in="d1" stdDeviation="10" result="b1"/>

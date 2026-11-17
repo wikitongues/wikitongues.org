@@ -11,7 +11,7 @@ for r in json.load(open(f'{S}/data/rendered.json')):
     paths = ''.join(
         f'<path d="{d}"/>'
         for g in ('lands', 'hls', 'disputes')
-        for d in re.findall(r'd="([^"]+)"', re.search(rf'<g class="{g}">(.*?)</g>', r['svg']).group(1))
+        for d in re.findall(r'd="([^"]+)"', re.search(rf'<g class="{g}"[^>]*>(.*?)</g>', r['svg']).group(1))
     )
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="800" height="600">'
            f'<rect width="400" height="300" fill="#000"/><g fill="#fff" stroke="#fff" stroke-width=".4">{paths}</g></svg>')
@@ -20,4 +20,11 @@ for r in json.load(open(f'{S}/data/rendered.json')):
     subprocess.run(['magick', '-size', '800x600', '-depth', '8', f'rgb:{S}/raster/{iso}.rgb', f'{S}/raster/{iso}-mask.png',
                     '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',
                     f'{S}/site/relief/{iso}.webp'], check=True)
+    # hillshade cut to the land, ocean floor cut to the sea
+    subprocess.run(['magick', '-size', '800x600', '-depth', '8', f'gray:{S}/raster/sr/{iso}.gray', f'{S}/raster/{iso}-mask.png',
+                    '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',
+                    f'{S}/site/shade/{iso}.webp'], check=True)
+    subprocess.run(['magick', '-size', '800x600', '-depth', '8', f'gray:{S}/raster/ob/{iso}.gray', '(', f'{S}/raster/{iso}-mask.png', '-negate', ')',
+                    '-alpha', 'off', '-compose', 'CopyOpacity', '-composite', '-quality', '70', '-define', 'webp:alpha-quality=60',
+                    f'{S}/site/sea/{iso}.webp'], check=True)
     print(iso, end=' ')

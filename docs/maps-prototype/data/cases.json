@@ -2,9 +2,9 @@
 "gallery":[
  {"iso":"quy","name":"Ayacucho Quechua","primary":["Peru"],"secondary":[],"why":"Baseline: one mid-sized country"},
  {"iso":"rus","name":"Russian","primary":["Russian Federation","Abkhazia"],"secondary":["South Ossetia","Transnistria"],"why":"Huge country, several territories, two of them breakaway regions"},
- {"iso":"mlt","name":"Maltese","primary":["Malta"],"secondary":[],"why":"Small country: minimum zoom kicks in"},
+ {"iso":"mlt","name":"Maltese","primary":["Malta"],"secondary":[],"why":"Small country: zoomed until it reads as a shape"},
  {"iso":"fij","name":"Fijian","primary":["Fiji"],"secondary":[],"why":"Straddles the 180° line"},
- {"iso":"tvl","name":"Tuvaluan","primary":["Tuvalu"],"secondary":[],"why":"Islands too small to see: falls back to a marker"},
+ {"iso":"tvl","name":"Tuvaluan","primary":["Tuvalu"],"secondary":[],"why":"Atolls too small to see: a ring per atoll, framed on all of them"},
  {"iso":"yue","name":"Yue Chinese","primary":["China","Hong Kong"],"secondary":[],"why":"A tiny territory inside a big one"},
  {"iso":"abk","name":"Abkhaz","primary":["Georgia","Abkhazia"],"secondary":[],"why":"A breakaway region as a territory"},
  {"iso":"haw","name":"Hawaiian","primary":["United States"],"secondary":[],"why":"Data gap: our territory is the whole US, so Hawaii isn't what's highlighted"},

@@ -8,11 +8,15 @@ import { choose, maxStretch } from './projection.mjs';
 const S = process.argv[2];
 const W = 400, H = 300, R_EARTH = 6371000;
 const read = (p) => JSON.parse(fs.readFileSync(`${S}/${p}`, 'utf8'));
-const layer = (n) => read(`ne/ne_50m_admin_0_${n}.geojson`).features;
+const layer = (n, res = '50m') => read(`ne/ne_${res}_admin_0_${n}.geojson`).features;
 
 const countries = layer('countries');
 const units = layer('map_units');
 const brk = layer('breakaway_disputed_areas');
+// 1:10m outlines for zoomed-in maps (small territories); 1:50m is too coarse there.
+// Disputed areas stay 1:50m: none falls inside a zoomed frame.
+const countries10 = layer('countries', '10m');
+const units10 = layer('map_units', '10m');
 const matches = read('data/matches.json');
 const byTitle = Object.fromEntries(matches.map((m) => [m.title, m]));
 
@@ -21,6 +25,13 @@ const idx = {
   units: Object.fromEntries(units.map((f) => [f.properties.GU_A3, f])),
   breakaway: Object.fromEntries(brk.map((f) => [f.properties.BRK_A3, f])),
 };
+const idx10 = {
+  countries: Object.fromEntries(countries10.map((f) => [f.properties.ADM0_A3, f])),
+  units: Object.fromEntries(units10.map((f) => [f.properties.GU_A3, f])),
+  breakaway: idx.breakaway,
+};
+// Frames tighter than this radius draw from 1:10m.
+const FINE_BELOW_DEG = 6;
 
 // Disputed overlays: every NE breakaway area, plus the map units that are
 // themselves contested states/areas.
@@ -35,7 +46,7 @@ const disputed = [
   return { ...d, defacto: p.ADM0_A3, us: p.ADM0_A3_US, claimants, note: p.NOTE_BRK };
 });
 
-const geomFor = (refs) => refs.map(([l, c]) => idx[l][c]).filter(Boolean);
+const geomFor = (refs, ix = idx) => refs.map(([l, c]) => ix[l][c] || idx[l][c]).filter(Boolean);
 // Codes a highlighted territory answers to when an overlay names an owner.
 const ownerCodes = (refs) => new Set(geomFor(refs).flatMap((f) => [f.properties.ADM0_A3, f.properties.GU_A3, f.properties.BRK_A3, f.properties.SOV_A3]).filter(Boolean));
 
@@ -48,6 +59,9 @@ function framingParts(feature) {
     .sort((x, y) => y.a - x.a);
   const L = parts[0];
   const rL = Math.sqrt(L.a / Math.PI); // angular radius of an equal-area disc
+  // A scattered archipelago (Tuvalu): no island is big enough to read as a shape,
+  // so frame on all of them, not on whichever atoll is largest.
+  if (rL < (0.1 * Math.PI) / 180) return parts.map((p) => p.f);
   return parts.filter((p) => p === L || p.a >= 0.15 * L.a || d3.geoDistance(p.c, L.c) <= rL * 1.5 + 0.035).map((p) => p.f);
 }
 
@@ -86,11 +100,20 @@ function render(lang, pov = 'defacto') {
   const hl = [...prim.map((m) => ({ m, cls: 'primary' })), ...sec.map((m) => ({ m, cls: 'secondary' }))];
 
   // Frame on the main body of every highlighted territory.
-  const focus = { type: 'FeatureCollection', features: hl.flatMap(({ m }) => geomFor(m.refs).flatMap(framingParts)) };
+  // Framed on 1:10m outlines: 1:50m drops most small islands (it has one of Tuvalu's nine atolls).
+  const focus = { type: 'FeatureCollection', features: hl.flatMap(({ m }) => geomFor(m.refs, idx10).flatMap(framingParts)) };
   const center = d3.geoCentroid(focus);
   let frame = focus;
-  const MIN_R = (3.2 * Math.PI) / 180; // never zoom tighter than ~350 km radius
-  if (maxRadius(focus, center) < MIN_R) frame = d3.geoCircle().center(center).radius(3.2)();
+  // Minimum frame radius ~45 km: small countries zoom until they read as a shape
+  // (Malta and Gozo take about a quarter of the width). Neighbours drop out of
+  // view at this zoom; the scale bar says how small the place is.
+  // Scattered islands (Tuvalu) still frame on their spread.
+  const MIN_DEG = 0.4;
+  const focusDeg = (maxRadius(focus, center) * 180) / Math.PI;
+  if (focusDeg < MIN_DEG) frame = d3.geoCircle().center(center).radius(MIN_DEG)();
+  const fine = Math.max(focusDeg, MIN_DEG) < FINE_BELOW_DEG;
+  const ix = fine ? idx10 : idx;
+  const base = fine ? countries10 : countries;
 
   const { proj, spec } = choose(frame, center);
   proj.clipExtent([[0, 0], [W, H]]);
@@ -127,7 +150,7 @@ function render(lang, pov = 'defacto') {
   // Base: every country, de facto (NE default).
   // (A highlighted whole country is drawn once, in the highlight layer.)
   const hlCountry = new Set(hl.flatMap(({ m }) => m.refs.filter(([l]) => l === 'countries').map(([, c]) => c)));
-  const land = countries.filter((f) => !hlCountry.has(f.properties.ADM0_A3))
+  const land = base.filter((f) => !hlCountry.has(f.properties.ADM0_A3))
     .map((f) => pathEl(f, 'land', ` data-a3="${f.properties.ADM0_A3}"`)).join('');
 
   // Highlights
@@ -135,11 +158,19 @@ function render(lang, pov = 'defacto') {
   const markers = [];
   const highlight = hl.map(({ m, cls }) => {
     ownerCodes(m.refs).forEach((c) => hiCodes[cls].add(c));
-    return geomFor(m.refs).map((f) => {
+    return geomFor(m.refs, ix).map((f) => {
       const area = path.area(f);
       if (area < 40) { // too small to read as a shape: add a ring
-        const c = proj(d3.geoCentroid(f));
-        if (c) markers.push(`<circle class="marker ${cls}" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="7"/>`);
+        // One ring per island group, so a scattered archipelago (Tuvalu) shows its
+        // spread instead of one ring in empty sea. Groups closer than 12 units merge.
+        const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+        const pts = [];
+        for (const c of polys) {
+          const p = proj(d3.geoCentroid({ type: 'Polygon', coordinates: c }));
+          if (p && p[0] >= 0 && p[0] <= W && p[1] >= 0 && p[1] <= H && !pts.some((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 12)) pts.push(p);
+        }
+        const r = pts.length > 1 ? 4.5 : 7;
+        for (const [x, y] of pts) markers.push(`<circle class="marker ${cls}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"/>`);
       }
       return pathEl(f, `hl ${cls}`, ` data-territory="${m.title}"`);
     }).join('');
@@ -172,23 +203,33 @@ function render(lang, pov = 'defacto') {
   const desc = `Map centred on ${list(lang.primary.map(place))}${lang.secondary.length ? `, with ${list(lang.secondary.map(place))} also marked` : ''}.`;
 
   const id = `${lang.iso}-${pov}`;
+
+  // Abstract scale bar: one round length, true at the centre of the map (an
+  // equal-area projection keeps area, not distance, so it is a guide, not a ruler).
+  const c0 = proj.invert([W / 2, H / 2]), c1 = proj.invert([W / 2 + 1, H / 2]);
+  const kmPerUnit = d3.geoDistance(c0, c1) * (R_EARTH / 1000);
+  const nice = [1, 2, 5].flatMap((m) => [1, 10, 100, 1000, 10000].map((e) => m * e)).sort((a, b) => a - b)
+    .filter((km) => km / kmPerUnit <= 80).at(-1);
+  const len = nice / kmPerUnit;
+  const scale = `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
+    + `<text class="scale-label" x="${(20 + len).toFixed(1)}" y="290">${nice.toLocaleString('en')} km</text></g>`;
   const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg"><title id="t-${id}">Where ${lang.name} is spoken</title><desc id="d-${id}">${desc}</desc>`
     // Fog-of-war mask: the highlighted shapes (and their rings), grown and blurred by
     // the shared #fog filter. Only the fog style applies it, through --fog.
-    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></mask></defs>`
+    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#mk-${id}"/></g></g></mask></defs>`
     + `<g class="world" style="--fog:url(#fog-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<image class="relief" href="relief/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g>`
     + `<image class="shade" href="shade/${lang.iso}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g></svg>`;
+    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g>${scale}</svg>`;
 
   // Projected extent in metres for gdalwarp (d3 flips y).
   const k = proj.scale(), [tx, ty] = proj.translate();
   const te = [(0 - tx) / k, (ty - H) / k, (W - tx) / k, ty / k].map((v) => v * R_EARTH);
   const proj4 = `+proj=laea +lat_0=${center[1]} +lon_0=${center[0]} +R=${R_EARTH} +units=m +no_defs`;
-  return { id, iso: lang.iso, pov, svg, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch: maxStretch(proj) };
+  return { id, iso: lang.iso, pov, svg, fine, scaleKm: nice, caption, bytes: Buffer.byteLength(svg), proj4, te, center, rotate: proj.rotate(), scale: k, translate: [tx, ty], spec, stretch: maxStretch(proj) };
 }
 
 const cases = read('data/cases.json');
