@@ -297,7 +297,7 @@ function render(lang, pov = 'defacto') {
   // (27°), not India (35°), China or Russia. Aimed at readers who don't know where a
   // mid-sized country is; only continent-sized frames are their own context.
   if (spec.cornerDeg < 30) {
-    const GR = 34, PADI = 10;
+    const GR = 44, PADI = 10;
     const corners = [[W - PADI - GR, PADI + GR], [PADI + GR, PADI + GR], [W - PADI - GR, H - PADI - GR]];
     const busy = [...hl.flatMap(({ m }) => geomFor(m.refs, ix)), ...claimed.map((d) => d.f)].flatMap(ptsOf);
     const crowd = ([cx, cy]) => busy.filter(([x, y]) => Math.hypot(x - cx, y - cy) < GR + 6).length;

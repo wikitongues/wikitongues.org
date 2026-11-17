@@ -193,7 +193,7 @@ Maps in two steps, both from one new plugin, `wt-maps`:
 | Imagery or vector | **Vector** country shapes, colored by CSS, with a raster terrain layer cut to the coast. Satellite tiles are licensed, heavy, can't highlight a single country, and lose their detail at sidebar width. |
 | Rendering | **Ahead of time, no JavaScript.** SVG files made by a build script and placed inline by PHP. No tile server, no API key, no request to a third party. |
 | Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. |
-| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
+| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Kristen's preference (2026-11-17): Dark full, then Light full; she isn't a fan of the focused styles. Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
 | Dark mode | **Not supported** (2026-11-17): the site has no dark mode, so the maps have one look, on parchment. |
 | Territory coverage | **A cheap, steady review process over a complete list at launch** (2026-11-17). Launch with the content changes already decided below; add the remaining ISO 3166-1 entries and map focuses later, one small reviewed change at a time (see "Territory review process"). |
 | Labels and caption | **No labels, and no caption from the plugin.** Any text around the map is composed by the theme template (2026-11-17); the summary sentence above it already says where the language is spoken. The SVG carries the same text as its accessible description. |
@@ -214,8 +214,10 @@ These are one-off edits in WordPress admin and Airtable, made before the backfil
 - **Add Guam and the Northern Mariana Islands** as territories (Natural Earth `GUM`, `MNP`). Link Chamorro to both and Carolinian to the Northern Mariana Islands; set their Airtable `nations_of_origin` to "Guam, Northern Mariana Islands" and "Northern Mariana Islands". In local data (2026-11-17) Chamorro and Carolinian have no territory and no `nations_of_origin`, so they get no map and no summary sentence; confirm against production after the sync.
 - **Set Hawaiian's map focus to `USH`.** Its territory stays the United States. Other candidates: Central Yupik and other Alaskan languages (`USK`), Welsh (`WLS`), Scottish Gaelic (`SCT`). Languages tied to an area below a sub-unit (Navajo Nation, the Basque Country) need Natural Earth's admin-1 layer, which the field can accept later.
 - **Later, through the review process (not a launch blocker): the other ISO 3166-1 entries we lack**, added when they have languages in the archive. Inhabited ones: Puerto Rico, the US Virgin Islands, American Samoa, Curaçao and Aruba (Papiamento), Sint Maarten, Saint-Martin, Saint-Barthélemy, the Faroe Islands (Faroese), Åland, the Isle of Man (Manx), Jersey (Jèrriais), Guernsey (Guernésiais), Niue (Niuean), Norfolk Island (Norfuk), Saint Pierre and Miquelon, Bermuda, the Cayman Islands, the Turks and Caicos, the British Virgin Islands, Anguilla, Montserrat, Saint Helena and the Falklands. Each addition runs the checklist below.
+- **Rename "Sahrawi Arab Democratic Republic" to "Western Sahara"** (2026-11-17, from Kristen's review): Western Sahara is the UN territory name, and the SADR is the government in exile. The map already shows all of Western Sahara. Make the same change to the matching `nations_of_origin` values in Airtable.
+- **Add a territory type field** (2026-11-17, before launch): sovereign state, autonomous territory (Greenland), dependency (Guam), breakaway region (Abkhazia). It is ACF on territories, set for all of them in the backfill, and shared with the language rights reports, which need the same split.
 - **Rename "Cape Verde Islands" to "Cabo Verde",** and make the same change to the matching `nations_of_origin` value in Airtable (one language).
-- **Keep as they are:** "Sahrawi Arab Democratic Republic" (it maps to all of Western Sahara), "Federated Staes of Micronesia" and "Naoero".
+- **Keep as they are:** "Federated Staes of Micronesia" and "Naoero" (Nauru's official English name since August 2026).
 
 ##### Territory-change checklist
 
@@ -292,7 +294,7 @@ On local data, 7,536 language pages list exactly one territory, 44 list more tha
   2. **The fog never cuts through a contested area.** If the reveal reaches one (within about 30 units of a territory or a claimed area), all of it is revealed, in its neutral hatch: Transnistria on a Ukrainian page, the West Bank and Gaza on a Hebrew page.
   3. **The rule is symmetric.** It follows claims, not control, so a Russian page shows Crimea hatched as contested exactly as a Ukrainian page does. Nothing is drawn as belonging to either side.
   - **The claims data dates from Natural Earth 5.1.2.** It lacks Russia's 2022 claims to Donetsk, Luhansk, Zaporizhzhia and Kherson, and the end of Nagorno-Karabakh. The plugin should keep a reviewed claims table in the repo that overrides Natural Earth, check it at least once a year and whenever a territory changes, and have `wp wt-maps doctor` list every contested area each map reveals so a person can read it before a release.
-- **Locator globe, added 2026-11-17.** OS's guidance is that a locator map shows the area within its wider region. For readers who don't know where a mid-sized country is, any frame with a corner radius under 30° gets an orthographic globe about 50px across at a 300px sidebar. That covers Malta, Fiji, Tuvalu, Hawaiʻi, Guam, Georgia, Israel, Ukraine, Somalia, Morocco, Peru and Greenland; it leaves out India (35°), China and Russia, which are their own context. The globe is centred on the map. Small frames get a ring on the spot; larger ones get the map's own view outlined, as OS advises for marking an inset's area. It takes whichever of the top-right, top-left and bottom-right corners the language's territories and claims crowd least (the scale bar has bottom-left), sits outside the fog mask, and is `aria-hidden`. Drawn from Natural Earth 1:110m land with no borders: 2–4 KB raw. **One treatment in every style** (chosen 2026-11-17 from five variants compared at sidebar width): the brand globe, with the muted blue sea and `$blue(50)` land on a parchment halo. Small places get a filled yellow dot with a thin dark edge, the least noisy mark at about 50px. Larger frames get their view outlined in yellow on a dark underline. In the light styles the globe flips its shades: a pale sea (`#d6cdee`) and brand-blue land, with a thin deep-blue rim. That keeps the classic dark-land figure and sits in the light page's key, while the colours and marks stay shared. Rejected: a grey globe with a blue mark, which was dark on dark for inland places, and a cased ring, which was too noisy on the Hebrew map.
+- **Locator globe, added 2026-11-17.** OS's guidance is that a locator map shows the area within its wider region. For readers who don't know where a mid-sized country is, any frame with a corner radius under 30° gets an orthographic globe about 65px across at a 300px sidebar (radius 44 in the 400-unit frame; enlarged from about 50px on 2026-11-17 after Kristen found it hard to see). That covers Malta, Fiji, Tuvalu, Hawaiʻi, Guam, Georgia, Israel, Ukraine, Somalia, Morocco, Peru and Greenland; it leaves out India (35°), China and Russia, which are their own context. The globe is centred on the map. Small frames get a ring on the spot; larger ones get the map's own view outlined, as OS advises for marking an inset's area. It takes whichever of the top-right, top-left and bottom-right corners the language's territories and claims crowd least (the scale bar has bottom-left), sits outside the fog mask, and is `aria-hidden`. Drawn from Natural Earth 1:110m land with no borders: 2–4 KB raw. **One treatment in every style** (chosen 2026-11-17 from five variants compared at sidebar width): the brand globe, with the muted blue sea and `$blue(50)` land on a parchment halo. Small places get a filled yellow dot with a thin dark edge, the least noisy mark at about 50px. Larger frames get their view outlined in yellow on a dark underline. In the light styles the globe flips its shades: a pale sea (`#d6cdee`) and brand-blue land, with a thin deep-blue rim. That keeps the classic dark-land figure and sits in the light page's key, while the colours and marks stay shared. Rejected: a grey globe with a blue mark, which was dark on dark for inland places, and a cased ring, which was too noisy on the Hebrew map.
 - **Shaded (Light full), revised 2026-11-17.** The language's territories show the coloured relief (the same per-map pattern as Fog parchment) in place of a blue tint, with a brand-blue edge, dashed for secondary. Effectively Fog parchment with a frame and no fog.
 - **Fog (Dark focused), under trial 2026-11-17.** The Brand map, revealed only around the territory like fog of war in a strategy game. Each SVG carries a mask built from its own highlighted shapes and rings. A shared filter grows them (dilate, blur, a turbulence-roughened edge), with a dimmer outer halo. Past that, the map dissolves into the page: no frame, no rectangle. A 9% edge fade stops a halo from ending in a straight cut where a territory sits near the frame. It costs nothing in bytes (the mask reuses the highlight paths with `<use>`), but it needs one shared `<filter id="fog">` per page, and the edge fade sits inside the SVG mask so the scale bar is not faded. Not yet chosen over Brand.
 - **Fog relief, tried and hidden 2026-11-17.** The Fog composition with Natural Earth's coloured relief (HYP_50M_SR) and every other decision kept: the muted sea and ocean floor, neutral contested edges, rings and the scale bar. The language's territories show the relief at full colour through an SVG pattern (one `<pattern>` per map, so the fog mask still sees an opaque shape), with a parchment edge for primary and a dashed parchment edge for secondary. Context land gets a 62% land-blue wash so the territory leads, and the detailed hillshade sits on top at 75%.
@@ -316,30 +318,48 @@ A private claude.ai page (2026-11-16, updated through 2026-11-17) shows ten test
 
 ##### Release checklist
 
+Tracked live on a private claude.ai checklist page (updated 2026-11-17); this list is the record in the repo.
+
 **Decide**
-- [x] Style: deferred, shipped as a setting (2026-11-17). Pick the launch default in the plugin settings; it can change at any time.
+- [x] Style: deferred, shipped as a plugin setting with four styles (Light full, Light focused, Dark full, Dark focused) (2026-11-17).
 - [x] Coverage: launch with the decided content changes; the rest goes through the territory review process (2026-11-17).
 - [x] Dark mode: not supported (2026-11-17).
+- [x] Contested areas: the neutral view only; claimed areas are framed and revealed, never fogged, cut or cropped (2026-11-17).
+- [x] Captions: composed by the theme template; the plugin renders none (2026-11-17).
+- [x] Locator globe: on frames under 30° corner radius; a yellow dot or the outlined view; shades flipped in the light styles (2026-11-17).
+- [ ] Packaging: `wt-maps` in this repo with the generated maps committed beside it (recommended), or its own repo like typeahead. WordPress media was considered and isn't needed.
+- [ ] Launch style: the default the plugin setting starts on. It can change at any time.
 
-**Data** (scripted writes, so sync first: Backup Prod DB → Sync to Staging → `tool-sync-db-from-prod.sh`)
-- [ ] The content changes above in WordPress admin, each through the territory-change checklist.
-- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Chamorro, Carolinian).
-- [ ] The ACF fields: "Map shape" on territories, "Map focus" on languages (JSON, with `modified` bumped).
+**Data** (scripted writes, so sync first)
+- [ ] Sync: Backup Prod DB (check the workflow is still enabled) → Sync to Staging → `tool-sync-db-from-prod.sh`.
+- [ ] Confirm on production data that Chamorro and Carolinian have no territory and no `nations_of_origin`.
+- [ ] Fold Nagorno-Karabakh: remove it from Armenian, then unpublish the territory.
+- [ ] Add Greenland and move Greenlandic to it from Denmark.
+- [ ] Add Guam and the Northern Mariana Islands; link Chamorro to both and Carolinian to the Northern Mariana Islands.
+- [ ] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara".
+- [ ] Rename "Cape Verde Islands" to "Cabo Verde".
+- [ ] The matching `nations_of_origin` edits in Airtable (Greenlandic, Cabo Verde, Western Sahara, Chamorro, Carolinian).
+- [ ] The ACF fields: "Map shape" and "Territory type" on territories, "Map focus" on languages (JSON, with `modified` bumped).
+- [ ] Set every territory's type in the backfill, and check the list with Kristen (it feeds the language rights reports too).
+- [ ] Set Hawaiian's map focus to `USH`.
 
 **Build**
 - [ ] The `wt-maps` plugin: the PHP API, the shortcode, the backfill and `doctor` commands, and the prototype scripts moved into it.
 - [ ] Whitelist it in `.gitignore` (`!/wp-content/plugins/wt-maps/`). Commit the generated SVGs and images outside `build/`, which `.gitignore` excludes for every plugin, because deploys ship only what is committed.
-- [ ] Count the maps before generating them all: one per distinct set of territories, so check the total size against the repo and the deploy.
+- [ ] Count the maps before generating them all: one per distinct set of territories (233 today), so check the total size against the repo and the deploy.
+- [ ] Map focus support: the 1:50m and 1:10m sub-unit layers in the build, and the focus applied when picking shapes.
 - [ ] The reviewed claims table that overrides Natural Earth's 2022-era data.
-- [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
-- [ ] Unit tests for the PHP API, and `/test` (lint, PHPStan, PHPUnit) green.
+- [ ] All three image layers (hillshade, sea floor, coloured relief) and the locator globe built for every map, so any style works (check the total against the size estimate).
+- [ ] The map tokens as a Stylus partial built from the site palette, with the four style classes.
+- [ ] The sidebar placement in `meta--languages-single.php`, with the template composing any caption.
 - [ ] A plugin setting that turns the sidebar map off without a deploy, and one that picks the style.
-- [ ] All three image layers built for every map, so any style works (check the total against the size estimate).
+- [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
 - [ ] The review tooling: the territory-request issue template, and the contested-areas diff the build writes for each PR.
+- [ ] Unit tests for the PHP API, and `/test` (lint, PHPStan, PHPUnit) green.
 
 **Review before staging**
 - [ ] A person reads the `doctor` report of contested areas per map.
-- [ ] Spot-check about 20 languages at sidebar width: the test set here, plus the five with the most territories.
+- [ ] Spot-check about 20 languages at sidebar width in all four styles: the test set here, plus the five with the most territories.
 - [ ] Each map's page weight stays within the budget (SVG ≤ 20 KB gzipped, images ≤ 30 KB).
 
 **Staging**

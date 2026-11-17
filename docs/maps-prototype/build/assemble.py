@@ -29,13 +29,13 @@ cards = [card(r) for r in R if r['section'] == 'gallery']
 rows = [card(r) for r in R if r['section'] == 'disputes']
 
 STATUS = {  # title -> (pill class, label, note)
-    'Sahrawi Arab Democratic Republic': ('p-decide', 'Decide', 'Our title names the state; the shape is all of Western Sahara, most of which Morocco administers. Rename the territory "Western Sahara"?'),
-    'Nagorno-Karabakh': ('p-decide', 'Decide', 'Natural Earth 5.1.2 still draws the pre-2023 area. Azerbaijan has controlled it since September 2023, and the republic dissolved in January 2024.'),
-    'France': ('p-decide', 'Confirm', 'Metropolitan France only, because Guadeloupe, Martinique, Réunion, Mayotte and French Guiana are territories of their own here.'),
-    'United States': ('p-decide', 'Decide', 'Hawaiian is filed under the United States, so its map highlights the mainland. Hawaii isn’t a territory of its own.'),
-    'Denmark': ('p-decide', 'Decide', 'Greenlandic is filed under Denmark. Greenland isn’t a territory, though Natural Earth has its shape.'),
+    'Sahrawi Arab Democratic Republic': ('p-fix', 'Rename', 'Renaming to "Western Sahara", the UN territory name; SADR is the name of the government in exile. Decided 2026-11-17.'),
+    'Nagorno-Karabakh': ('p-fix', 'Fold', 'Removing it from Armenian and unpublishing it: Azerbaijan has controlled the area since September 2023, and the republic dissolved in January 2024. Decided 2026-11-17.'),
+    'France': ('p-confirm', 'Decided', 'Metropolitan France only, because Guadeloupe, Martinique, Réunion, Mayotte and French Guiana are territories of their own here.'),
+    'United States': ('p-confirm', 'Decided', 'Hawaiian keeps the United States as its territory, with a map focus of Hawaiʻi (USH), so its map shows only the islands.'),
+    'Denmark': ('p-fix', 'Add Greenland', 'Greenland is an autonomous territory with its own ISO code; adding it as a territory and moving Greenlandic there from Denmark. A territory type field (sovereign state, autonomous territory and so on) ships with the maps.'),
     'Federated Staes of Micronesia': ('p-fix', 'Fix title', 'Typo: “Staes”.'),
-    'Naoero': ('p-fix', 'Fix title?', 'Nauruan name for Nauru. Every other territory uses its English name.'),
+    'Naoero': ('p-confirm', 'Keep', 'The official English name since Nauru changed it in August 2026.'),
     'Abkhazia': ('p-confirm', 'No ISO code', 'Breakaway from Georgia.'),
     'South Ossetia': ('p-confirm', 'No ISO code', 'Breakaway from Georgia.'),
     'Transnistria': ('p-confirm', 'No ISO code', 'Breakaway from Moldova.'),
@@ -54,19 +54,19 @@ for t in order:
 
 allrows = ''.join(f'<tr><td>{e(m["title"])}</td><td>{e(", ".join(m["region"]))}</td><td class="code">{m["langs"]}</td><td class="code">{e(shape(m["refs"]))}</td><td class="code">{e(m["iso"] or "—")}</td></tr>' for m in M)
 
-DEC = [
-    ('p-decide', 'Map style', 'Pick one in the toolbar. <strong>Flat</strong> costs about 3 KB per page. <strong>Relief</strong> adds 3–74 KB: Yue Chinese, Russian and Kashmiri are over the 30 KB budget at this resolution, and a 600px image at lower quality would fit. <strong>Outline</strong> is the lightest look.'),
-    ('p-decide', 'Caption', 'The summary sentence above the map already says where a language is spoken, so a visible caption repeats it. The SVG carries the same text for screen readers either way.'),
-    ('p-ok', 'Disputed borders', '<strong>Recommend neutral.</strong> Disputed areas are hatched and assigned to no one; the hatch takes the highlight colour when a claimant is the language’s territory. It takes no side and still shows a Ukrainian speaker that Crimea is in question.'),
-    ('p-decide', 'Where the link lives', '<strong>Recommend</strong> an ACF field on territories, “Map shape”, holding Natural Earth codes (<span class="mono">GAZ,WEB</span> for Palestine), backfilled from this table. Six territories have no ISO code, so ISO alone can’t drive the map. Fill <span class="mono">iso_code</span> and <span class="mono">wikidata_id</span> in the same pass where they exist.'),
-    ('p-decide', 'Nagorno-Karabakh', 'Keep the territory and the pre-2023 shape, since the languages were documented there, or fold it into Azerbaijan. It is an editorial call.'),
-    ('p-decide', 'Sahrawi Arab Democratic Republic', 'Rename to Western Sahara to match what the map shows, or keep the name of the state.'),
-    ('p-decide', 'Places below country level', 'Hawaiian points at the United States and Greenlandic at Denmark. Adding Greenland as a territory is cheap. Hawaii would need sub-national regions, which is out of scope here.'),
-    ('p-ok', 'Several territories', 'The spec said to switch to a region map. Fitting all highlighted territories directly works (see Russian), so <strong>drop the region-map rule</strong>.'),
-    ('p-confirm', 'France', 'Draw metropolitan France only, because its overseas departments are separate territories.'),
-    ('p-fix', 'Title fixes', '“Federated Staes of Micronesia” is a typo. “Naoero” is the only territory titled with its endonym.'),
+DEC = [  # (pill, label, question, answer); everything here was decided 2026-11-17
+    ('p-ok', 'Decided', 'Map style', 'A WordPress setting, picked in the plugin; every style’s images ship, so switching needs no rebuild. Kristen leans Dark full, then Light full.'),
+    ('p-ok', 'Decided', 'Caption', 'None from the plugin. The theme template composes any text around the map; the SVG carries a description for screen readers.'),
+    ('p-ok', 'Decided', 'Disputed borders', 'Neutral only. Disputed areas are hatched and assigned to no one, and claimed areas are always framed and revealed.'),
+    ('p-ok', 'Decided', 'Where the link lives', 'An ACF field on territories, “Map shape”, holding Natural Earth codes (<span class="mono">GAZ,WEB</span> for Palestine), backfilled from this table, with <span class="mono">iso_code</span> and <span class="mono">wikidata_id</span> filled in the same pass.'),
+    ('p-ok', 'Decided', 'Nagorno-Karabakh', 'Fold it: remove it from Armenian and unpublish the territory.'),
+    ('p-ok', 'Decided', 'Western Sahara', 'Rename “Sahrawi Arab Democratic Republic” to “Western Sahara”, the UN territory name, in WordPress and Airtable.'),
+    ('p-ok', 'Decided', 'Places below country level', 'Greenland, Guam and the Northern Mariana Islands become territories. Hawaiian keeps the United States, with a map focus of Hawaiʻi.'),
+    ('p-ok', 'Decided', 'Territory types', 'A type field on territories (sovereign state, autonomous territory, dependency, breakaway), shipped with the maps and shared with the language rights reports.'),
+    ('p-ok', 'Decided', 'Several territories', 'Fit the frame to all of them (see Russian); no region maps.'),
+    ('p-ok', 'Decided', 'France', 'Metropolitan France only, because its overseas departments are territories of their own.'),
 ]
-dec = ''.join(f'<div class="dec"><span class="pill {p}">{"Decide" if p=="p-decide" else "Recommend" if p=="p-ok" else "Confirm" if p=="p-confirm" else "Fix"}</span><span class="q">{e(q)}</span><p class="a">{a}</p></div>' for p, q, a in DEC)
+dec = ''.join(f'<div class="dec"><span class="pill {p}">{lab}</span><span class="q">{e(q)}</span><p class="a">{a}</p></div>' for p, lab, q, a in DEC)
 
 out = tpl.replace('{{CARDS}}', '\n'.join(cards)).replace('{{DISPUTES}}', '\n'.join(rows)).replace('{{HAND}}', ''.join(hand)).replace('{{ALL}}', allrows).replace('{{DECISIONS}}', dec)
 open(f'{S}/site/maps.html', 'w').write(out)
