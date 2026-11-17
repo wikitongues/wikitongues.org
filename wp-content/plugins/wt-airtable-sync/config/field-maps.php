@@ -49,19 +49,12 @@ return array(
 			'acf_type'  => 'text',
 			'post_type' => null,
 		),
-		// Airtable Nation of Origin names → territory posts. Aliases cover
-		// Airtable names that differ from the WordPress title; drop each one
-		// once the Airtable nation is renamed (plan.md 3.2).
+		// Airtable Nation of Origin names → territory posts, matched by exact title.
 		'nations_of_origin'    => array(
 			'meta_key'  => 'nations_of_origin',
 			'acf'       => true,
 			'acf_type'  => 'post_object',
 			'post_type' => 'territories',
-			'aliases'   => array(
-				'Congo'        => 'Republic of the Congo',
-				'Macedonia'    => 'North Macedonia',
-				'Vatican State' => 'Vatican City',
-			),
 		),
 		'writing_systems'      => array(
 			'meta_key'  => 'writing_systems',
