@@ -210,6 +210,7 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .wt-map .globe-land { fill: color-mix(in srgb, var(--ink-2) 45%, var(--paper)); }
 .wt-map .globe-mark, .wt-map .globe-view { fill: none; stroke: var(--primary); stroke-width: 1.8; stroke-linejoin: round; }
 .wt-map .globe-rim { fill: none; stroke: var(--border); stroke-width: .6; }
+.wt-map .globe-casing { fill: none; stroke: none; }
 .s-brand .wt-map .globe-halo { fill: var(--brd-primary); }
 .s-brand .wt-map .globe-sea { fill: var(--brd-sea); stroke: none; }
 .s-brand .wt-map .globe-land { fill: var(--brd-land); }
@@ -220,7 +221,9 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-shaded .wt-map .globe-sea, .s-fogparch .wt-map .globe-sea { fill: var(--fp-sea); stroke: none; }
 .s-shaded .wt-map .globe-land, .s-fogparch .wt-map .globe-land { fill: #57534a; }
 .s-shaded .wt-map .globe-rim, .s-fogparch .wt-map .globe-rim { stroke: #57534a; stroke-width: 1.4; }
-.s-shaded .wt-map .globe-mark, .s-shaded .wt-map .globe-view, .s-fogparch .wt-map .globe-mark, .s-fogparch .wt-map .globe-view { stroke: var(--brand-ink); stroke-width: 2; paint-order: stroke; }
+.s-shaded .wt-map .globe-mark, .s-shaded .wt-map .globe-view, .s-fogparch .wt-map .globe-mark, .s-fogparch .wt-map .globe-view { stroke: var(--brand-ink); stroke-width: 2; }
+/* casing: parchment under the blue, so the mark reads on the dark land (blue alone was ~1.6:1 there) */
+.s-shaded .wt-map .globe-casing, .s-fogparch .wt-map .globe-casing { stroke: var(--fp-land); stroke-width: 4.4; stroke-linejoin: round; }
 .s-shaded .wt-map .globe-halo, .s-fogparch .wt-map .globe-halo { fill: var(--fp-land); }
 
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */

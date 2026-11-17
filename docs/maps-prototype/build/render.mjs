@@ -315,9 +315,11 @@ function render(lang, pov = 'defacto') {
     for (let i = 11; i >= 1; i--) view.push([0, (i / 12) * H]);
     const vpts = view.map((p) => proj.invert(p)).filter(Boolean).map((ll) => globe(ll)).filter(Boolean);
     const span = vpts.length ? Math.max(...vpts.map((p) => Math.hypot(p[0] - mx, p[1] - my))) : 0;
-    const mark = span > 6
-      ? `<path class="globe-view" d="M${vpts.map((p) => p.map((v) => v.toFixed(1)).join(' ')).join('L')}Z"/>`
-      : `<circle class="globe-mark" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4"/>`;
+    // Drawn twice: a light casing under the line, so the mark holds on dark land and light sea.
+    const markShape = (cls) => (span > 6
+      ? `<path class="${cls}" d="M${vpts.map((p) => p.map((v) => v.toFixed(1)).join(' ')).join('L')}Z"/>`
+      : `<circle class="${cls}" cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="4.5"/>`);
+    const mark = markShape('globe-casing') + markShape(span > 6 ? 'globe-view' : 'globe-mark');
     inset = `<g class="inset" aria-hidden="true"><circle class="globe-halo" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR + 1.5}"/>`
       + `<circle class="globe-sea" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/><path class="globe-land" d="${gland}"/>`
       + `${mark}<circle class="globe-rim" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/></g>`;
