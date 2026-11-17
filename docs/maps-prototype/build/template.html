@@ -204,49 +204,18 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-fogparch .sw-c { background: repeating-linear-gradient(45deg, var(--fp-land) 0 3px, var(--brd-edge) 3px 4px); }
 .s-fogrelief .sw-p { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1px solid var(--brd-primary); }
 .s-fogrelief .sw-s { background: linear-gradient(135deg, #8fa86a, #c9b98a 55%, #f0ede4); outline: 1.5px dashed var(--brd-primary); outline-offset: -1.5px; }
-/* locator globe: its own little sea and land, a halo to lift it off the map */
-.wt-map .globe-halo { fill: var(--paper); }
-.wt-map .globe-sea { fill: var(--sea); stroke: var(--border); stroke-width: .6; }
-.wt-map .globe-land { fill: color-mix(in srgb, var(--ink-2) 45%, var(--paper)); }
-.wt-map .globe-mark, .wt-map .globe-view { fill: none; stroke: var(--primary); stroke-width: 1.8; stroke-linejoin: round; }
-.wt-map .globe-rim { fill: none; stroke: var(--border); stroke-width: .6; }
-.wt-map .globe-casing { fill: none; stroke: none; }
-.s-brand .wt-map .globe-halo { fill: var(--brd-primary); }
-.s-brand .wt-map .globe-sea { fill: var(--brd-sea); stroke: none; }
-.s-brand .wt-map .globe-land { fill: var(--brd-land); }
-.s-brand .wt-map .globe-mark, .s-brand .wt-map .globe-view { stroke: var(--brd-dot); stroke-width: 2; }
-.s-brand .wt-map .globe-rim { stroke: none; }
-/* light styles (Shaded, Fog parchment): dark land on a light sea, a firm rim, so the
-   globe holds at 50px for readers who need it most (land/sea about 4.6:1) */
-.s-shaded .wt-map .globe-sea, .s-fogparch .wt-map .globe-sea { fill: var(--fp-sea); stroke: none; }
-.s-shaded .wt-map .globe-land, .s-fogparch .wt-map .globe-land { fill: #57534a; }
-.s-shaded .wt-map .globe-rim, .s-fogparch .wt-map .globe-rim { stroke: #57534a; stroke-width: 1.4; }
-.s-shaded .wt-map .globe-mark, .s-shaded .wt-map .globe-view, .s-fogparch .wt-map .globe-mark, .s-fogparch .wt-map .globe-view { stroke: var(--brand-ink); stroke-width: 2; }
-/* casing: parchment under the blue, so the mark reads on the dark land (blue alone was ~1.6:1 there) */
-.s-shaded .wt-map .globe-casing, .s-fogparch .wt-map .globe-casing { stroke: var(--fp-land); stroke-width: 4.4; stroke-linejoin: round; }
-.s-shaded .wt-map .globe-halo, .s-fogparch .wt-map .globe-halo { fill: var(--fp-land); }
-
-.gvs .gv-row { display: grid; gap: 10px; padding-block: 18px; border-top: 1px solid var(--rule); }
-.gvs .gv-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; }
-.gvs .gv-row p { font-size: 13px; color: var(--ink-2); }
-.gvs .gv-maps { display: flex; flex-wrap: wrap; gap: 14px; }
-.gvs .gv-maps figure { width: 300px; max-width: 100%; margin: 0; }
-/* variant 2: brand globe, yellow ring on a dark underline */
-.gvs .gv-2 .wt-map .globe-sea, .gvs .gv-3 .wt-map .globe-sea, .gvs .gv-4 .wt-map .globe-sea { fill: var(--brd-sea); stroke: none; }
-.gvs .gv-2 .wt-map .globe-land, .gvs .gv-3 .wt-map .globe-land, .gvs .gv-4 .wt-map .globe-land { fill: var(--brd-land); }
-.gvs .gv-2 .wt-map .globe-rim, .gvs .gv-3 .wt-map .globe-rim, .gvs .gv-4 .wt-map .globe-rim { stroke: none; }
-.gvs .gv-2 .wt-map .globe-halo, .gvs .gv-3 .wt-map .globe-halo, .gvs .gv-4 .wt-map .globe-halo { fill: var(--brd-primary); }
-.gvs .gv-2 .wt-map .globe-mark, .gvs .gv-2 .wt-map .globe-view, .gvs .gv-3 .wt-map .globe-mark, .gvs .gv-3 .wt-map .globe-view { stroke: var(--brd-dot); stroke-width: 2; }
-.gvs .gv-2 .wt-map .globe-casing { stroke: var(--brd-edge); stroke-width: 4; }
-.gvs .gv-3 .wt-map .globe-casing { stroke: none; }
-/* variant 4: brand globe, filled yellow dot (view boxes keep a yellow line on a dark underline) */
-.gvs .gv-4 .wt-map circle.globe-mark { fill: var(--brd-dot); stroke: var(--brd-edge); stroke-width: 1.2; }
-.gvs .gv-4 .wt-map circle.globe-casing { stroke: none; }
-.gvs .gv-4 .wt-map .globe-view { stroke: var(--brd-dot); stroke-width: 2; }
-.gvs .gv-4 .wt-map path.globe-casing { stroke: var(--brd-edge); stroke-width: 4; }
-/* variant 5: grey globe, filled blue dot with a parchment edge */
-.gvs .gv-5 .wt-map circle.globe-mark { fill: var(--brand-ink); stroke: var(--fp-land); stroke-width: 1.4; }
-.gvs .gv-5 .wt-map circle.globe-casing { stroke: none; }
+/* locator globe, one treatment in every style (chosen 2026-11-17 from five variants):
+   the brand globe (blue sea, $blue(50) land) on a parchment halo. Small places get a
+   filled yellow dot with a thin dark edge, the least noisy mark at ~50px; larger frames
+   get their view outlined in yellow on a dark underline. */
+.wt-map .globe-halo { fill: var(--brd-primary); }
+.wt-map .globe-sea { fill: var(--brd-sea); }
+.wt-map .globe-land { fill: var(--brd-land); }
+.wt-map .globe-rim { fill: none; stroke: none; }
+.wt-map circle.globe-mark { fill: var(--brd-dot); stroke: var(--brd-edge); stroke-width: 1.2; }
+.wt-map circle.globe-casing { fill: none; stroke: none; }
+.wt-map .globe-view { fill: none; stroke: var(--brd-dot); stroke-width: 2; stroke-linejoin: round; }
+.wt-map path.globe-casing { fill: none; stroke: var(--brd-edge); stroke-width: 4; stroke-linejoin: round; }
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */
 .wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
 .wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
@@ -429,18 +398,6 @@ summary { cursor: pointer; font-weight: 500; }
   </section>
 </div>
 
-<!-- Locator globe variants: outside #root, so the toolbar's style classes don't reach it.
-     Every row is the Light full style; only the globe changes. -->
-<div class="wrap gvs">
-  <section aria-labelledby="h-globes">
-    <div class="sec-head">
-      <span class="eyebrow">05 · Locator globe, light styles</span>
-      <h2 id="h-globes">Which globe reads best?</h2>
-      <p class="muted">The same maps at sidebar width in Light full, with five treatments of the globe. Hebrew is the hard case: an inland mark on a busy coast.</p>
-    </div>
-    {{GLOBES}}
-  </section>
-</div>
 
 <script>
 (() => {
