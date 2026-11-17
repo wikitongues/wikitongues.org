@@ -68,6 +68,17 @@ DEC = [
 ]
 dec = ''.join(f'<div class="dec"><span class="pill {p}">{"Decide" if p=="p-decide" else "Recommend" if p=="p-ok" else "Confirm" if p=="p-confirm" else "Fix"}</span><span class="q">{e(q)}</span><p class="a">{a}</p></div>' for p, q, a in DEC)
 
-out = tpl.replace('{{CARDS}}', '\n'.join(cards)).replace('{{DISPUTES}}', '\n'.join(rows)).replace('{{HAND}}', ''.join(hand)).replace('{{ALL}}', allrows).replace('{{DECISIONS}}', dec)
+GV = [
+    ('gv-1', '1 · Current', 'Grey globe; blue ring or box on a parchment casing.'),
+    ('gv-2', '2 · Brand globe, yellow on a dark underline', 'Blue sea and land, as in the dark styles; the yellow mark on a deep-blue casing.'),
+    ('gv-3', '3 · Brand globe, yellow alone', 'As in the dark styles: no casing.'),
+    ('gv-4', '4 · Brand globe, filled yellow dot', 'A solid dot with a thin dark edge for small places; view boxes keep yellow on a dark underline.'),
+    ('gv-5', '5 · Grey globe, filled blue dot', 'A solid brand-blue dot with a parchment edge; view boxes as in 1.'),
+]
+byid = {r['iso']: r for r in R}
+globes = ''.join(f'<div class="gv-row {c}"><h3>{e(t)}</h3><p>{e(d)}</p><div class="gv-maps s-shaded">'
+                 + ''.join(f'<figure class="wt-map">{byid[i]["svg"]}</figure>' for i in ['heb', 'kat', 'ukr', 'mlt', 'ary'])
+                 + '</div></div>' for c, t, d in GV)
+out = tpl.replace('{{CARDS}}', '\n'.join(cards)).replace('{{DISPUTES}}', '\n'.join(rows)).replace('{{HAND}}', ''.join(hand)).replace('{{ALL}}', allrows).replace('{{DECISIONS}}', dec).replace('{{GLOBES}}', globes)
 open(f'{S}/site/maps.html', 'w').write(out)
 print(len(out), 'bytes')

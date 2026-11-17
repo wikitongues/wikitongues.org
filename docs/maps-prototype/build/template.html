@@ -226,6 +226,27 @@ section { display: grid; gap: 22px; padding-block: 52px 8px; }
 .s-shaded .wt-map .globe-casing, .s-fogparch .wt-map .globe-casing { stroke: var(--fp-land); stroke-width: 4.4; stroke-linejoin: round; }
 .s-shaded .wt-map .globe-halo, .s-fogparch .wt-map .globe-halo { fill: var(--fp-land); }
 
+.gvs .gv-row { display: grid; gap: 10px; padding-block: 18px; border-top: 1px solid var(--rule); }
+.gvs .gv-row h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; }
+.gvs .gv-row p { font-size: 13px; color: var(--ink-2); }
+.gvs .gv-maps { display: flex; flex-wrap: wrap; gap: 14px; }
+.gvs .gv-maps figure { width: 300px; max-width: 100%; margin: 0; }
+/* variant 2: brand globe, yellow ring on a dark underline */
+.gvs .gv-2 .wt-map .globe-sea, .gvs .gv-3 .wt-map .globe-sea, .gvs .gv-4 .wt-map .globe-sea { fill: var(--brd-sea); stroke: none; }
+.gvs .gv-2 .wt-map .globe-land, .gvs .gv-3 .wt-map .globe-land, .gvs .gv-4 .wt-map .globe-land { fill: var(--brd-land); }
+.gvs .gv-2 .wt-map .globe-rim, .gvs .gv-3 .wt-map .globe-rim, .gvs .gv-4 .wt-map .globe-rim { stroke: none; }
+.gvs .gv-2 .wt-map .globe-halo, .gvs .gv-3 .wt-map .globe-halo, .gvs .gv-4 .wt-map .globe-halo { fill: var(--brd-primary); }
+.gvs .gv-2 .wt-map .globe-mark, .gvs .gv-2 .wt-map .globe-view, .gvs .gv-3 .wt-map .globe-mark, .gvs .gv-3 .wt-map .globe-view { stroke: var(--brd-dot); stroke-width: 2; }
+.gvs .gv-2 .wt-map .globe-casing { stroke: var(--brd-edge); stroke-width: 4; }
+.gvs .gv-3 .wt-map .globe-casing { stroke: none; }
+/* variant 4: brand globe, filled yellow dot (view boxes keep a yellow line on a dark underline) */
+.gvs .gv-4 .wt-map circle.globe-mark { fill: var(--brd-dot); stroke: var(--brd-edge); stroke-width: 1.2; }
+.gvs .gv-4 .wt-map circle.globe-casing { stroke: none; }
+.gvs .gv-4 .wt-map .globe-view { stroke: var(--brd-dot); stroke-width: 2; }
+.gvs .gv-4 .wt-map path.globe-casing { stroke: var(--brd-edge); stroke-width: 4; }
+/* variant 5: grey globe, filled blue dot with a parchment edge */
+.gvs .gv-5 .wt-map circle.globe-mark { fill: var(--brand-ink); stroke: var(--fp-land); stroke-width: 1.4; }
+.gvs .gv-5 .wt-map circle.globe-casing { stroke: none; }
 /* scale bar: sits on the sea or land in the framed styles, on the page in fog */
 .wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
 .wt-map .scale-label { font: 600 12px var(--font-body); fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
@@ -405,6 +426,19 @@ summary { cursor: pointer; font-weight: 500; }
       <h2 id="h-decide">Decisions this prototype raises</h2>
     </div>
     <div class="decisions">{{DECISIONS}}</div>
+  </section>
+</div>
+
+<!-- Locator globe variants: outside #root, so the toolbar's style classes don't reach it.
+     Every row is the Light full style; only the globe changes. -->
+<div class="wrap gvs">
+  <section aria-labelledby="h-globes">
+    <div class="sec-head">
+      <span class="eyebrow">05 · Locator globe, light styles</span>
+      <h2 id="h-globes">Which globe reads best?</h2>
+      <p class="muted">The same maps at sidebar width in Light full, with five treatments of the globe. Hebrew is the hard case: an inland mark on a busy coast.</p>
+    </div>
+    {{GLOBES}}
   </section>
 </div>
 
