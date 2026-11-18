@@ -14,17 +14,16 @@ $subtitle = 'Wikitongues crowd-sources video samples of every language in the wo
 
 if ( $territory_post ) {
 	$territory_name = wt_prefix_the( $territory_post->post_title );
-	// false = return raw IDs, not hydrated WP_Post objects (critical for large territories).
-	$language_ids = get_field( 'languages', $territory_post->ID, false );
-	$selected     = $language_ids ? implode( ',', $language_ids ) : '';
 
 	$params = wt_gallery_params(
-		array(
-			'title'          => 'Languages of ' . $territory_name,
-			'subtitle'       => $subtitle,
-			'post_type'      => 'languages',
-			'selected_posts' => $selected,
-			'display_blank'  => 'true',
+		array_merge(
+			array(
+				'title'         => 'Languages of ' . $territory_name,
+				'subtitle'      => $subtitle,
+				'post_type'     => 'languages',
+				'display_blank' => 'true',
+			),
+			wt_origin_gallery_filter( $territory_post->ID )
 		)
 	);
 } elseif ( $genealogy_term ) {
