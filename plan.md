@@ -77,6 +77,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 | Operations: server cron, vulnerability monitoring, a third-party plugin audit | [7.1](#71-operations) |
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
+| GTM: give Native Language AI (live since 2026-11-18) its own `content_type`, and Language Rights when it launches | [2.1](#21-pages-and-navigation) |
 
 ### Blocked on a decision
 
@@ -160,7 +161,11 @@ From the roadmap (step 6):
     - Identify the delegate in the banner photo, then name them in its alt text and caption.
     - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
     - Confirm the list of languages the team reads, quoted in "Help us get it right".
-- **GTM:** add Native Language AI (live since 2026-11-18) to GTM's `content_type` lookup now, and Language Rights when it goes live.
+- **GTM `content_type` (open, done in GTM rather than in code).** `content_type` is a RegEx Table variable in GTM that maps `{{Page Path}}` to a content type and goes out on every `page_view`. Pages it doesn't match get no content type of their own, so their traffic can't be separated out in GA4.
+  - **Native Language AI:** live since 2026-11-18 and not mapped yet. Match `/revitalization/resources/native-language-ai/`. The `/ai` short link redirects there before the page loads, so it needs no row of its own.
+  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches.
+  - **Then:** publish the GTM container, and check the content type in GA4's real-time report or DebugView.
+  - **Still open:** whether these pages get a shared type (for example `resource`) or one each.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).
