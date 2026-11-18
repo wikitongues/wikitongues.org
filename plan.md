@@ -77,6 +77,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 | Operations: server cron, vulnerability monitoring, a third-party plugin audit | [7.1](#71-operations) |
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
+| GTM: give Native Language AI (live since 2026-11-18) its own `content_type`, and Language Rights when it launches | [2.1](#21-pages-and-navigation) |
 
 ### Blocked on a decision
 
@@ -153,15 +154,18 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
-- **Built locally, not yet on production.** Both pages exist only in the local database and travel as content bundles ([content-model.md](docs/content-model.md#content-bundles)). Their bundles are in `docs/local_docs/content/`.
+- **Built locally, not yet on production.** Language Rights exists only in the local database and travels as a content bundle ([content-model.md](docs/content-model.md#content-bundles)). Its bundle is in `docs/local_docs/content/`.
   - **Language Rights** (`/language-rights`, plus nine FAQs). Built, with banner and block images; it depends on the banner caption style (#660) and Numbered Columns (#661) being deployed. Before it goes to production:
     - Upload `2026/11/language-rights-banner.jpg` and `2026/11/hilario-poot-cahun-class.jpg` there; the import matches images by path.
     - Decide whether this is the pre-launch page or the launch page: the banner says "First edition forthcoming", but parts of the body read as if the report is already out.
     - Identify the delegate in the banner photo, then name them in its alt text and caption.
     - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
     - Confirm the list of languages the team reads, quoted in "Help us get it right".
-  - **Native Language AI** (`/revitalization/resources/native-language-ai`). The page and its seven FAQs are on staging and production, with the page set to private. `/ai` redirects to it. Before it is made public, upload `2026/11/native-language-ai-banner.jpg` and `2026/11/native-language-ai-recording-setup.jpg` to both sites and set them on the page; the import matches images by path. Both are Wikimedia Commons photos (CC BY 4.0 and CC BY-SA 4.0), so keep their captions shown: the credit is what the licence requires.
-  - Add both to GTM's `content_type` lookup when they go live.
+- **GTM `content_type` (open, done in GTM rather than in code).** `content_type` is a RegEx Table variable in GTM that maps `{{Page Path}}` to a content type and goes out on every `page_view`. Pages it doesn't match get no content type of their own, so their traffic can't be separated out in GA4.
+  - **Native Language AI:** live since 2026-11-18 and not mapped yet. Match `/revitalization/resources/native-language-ai/`. The `/ai` short link redirects there before the page loads, so it needs no row of its own.
+  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches.
+  - **Then:** publish the GTM container, and check the content type in GA4's real-time report or DebugView.
+  - **Still open:** whether these pages get a shared type (for example `resource`) or one each.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).

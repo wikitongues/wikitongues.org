@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Native Language AI page | 2026-11-18 | [#676], [#678], [#681] | [content-model.md](content-model.md#redirects) (the `/ai` short link) |
 | Nations of origin as territory links | 2026-11-17 | — | [content-model.md](content-model.md#languages) |
 | Plan and docs restructure | 2026-09-13 | [#643] | [plan.md](../plan.md), this file |
 | Deploy and backup hardening | 2026-09-12 | [#633]–[#636], [#639], [#640] | [deployment.md](deployment.md), [staging-sync.md](staging-sync.md) |
@@ -30,6 +31,14 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-18 (Native Language AI)
+
+### Native Language AI page published, with an `/ai` short link
+
+`/revitalization/resources/native-language-ai` went public on staging and production. Its banner and support-block photos come from Wikimedia Commons and were chosen for the project's idea rather than the Igala pilot: a Mozilla Common Voice training in Ghana (CC BY 4.0) and a Lingua Libre recording setup (CC BY-SA 4.0). Their credit captions stay shown because the licences require them. Block image captions now share the banner caption's style: a parchment tab in italic body text, replacing the yellow label ([#676]). `/ai` redirects to the page through a new short-link list in `includes/template/short-links.php`; it runs ahead of WordPress's canonical redirect, which had been guessing `/ai` into `/languages/aia/` ([#678]).
 
 ---
 
@@ -1028,3 +1037,6 @@ Minor fix to SSH agent action version in deployment workflow.
 [#639]: https://github.com/wikitongues/wikitongues.org/pull/639
 [#640]: https://github.com/wikitongues/wikitongues.org/pull/640
 [#643]: https://github.com/wikitongues/wikitongues.org/pull/643
+[#676]: https://github.com/wikitongues/wikitongues.org/pull/676
+[#678]: https://github.com/wikitongues/wikitongues.org/pull/678
+[#681]: https://github.com/wikitongues/wikitongues.org/pull/681
