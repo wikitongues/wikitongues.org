@@ -72,6 +72,10 @@ require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/donate-content.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/taxonomies/form-990.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/content-bundle-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/stamp-airtable-ids-helpers.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-logger.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-field-resolver.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-record-rows.php';
 
 // events-filter.php calls get_current_datetime() → wp_date() at file scope,
 // before WP_Mock has stubbed it. Define a shim so the include doesn't fatal.
