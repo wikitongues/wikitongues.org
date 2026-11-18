@@ -89,7 +89,9 @@ Every scenario follows the same structural pattern:
 - **WP CPT:** `languages`
 - **Blueprint file:** `WT Sync - Languages.blueprint.json`
 - **Flow:** Trigger → SetVariables → POST `/sync/languages`
-- **maxRecords:** 100
+- **Trigger:** the Website Export view, polled hourly, `last_modified` as the trigger field, up to 50 records a run (checked against the live scenario 2026-11-18; the 15-minute and 100-record figures above are out of date for this scenario).
+- **What counts as a change:** `last_modified` is `IF({Last Modified}=BLANK(), {Created}, {Last Modified})`, and `Last Modified` watches only specific fields: Ethnologue name, Wikitongues Code, Oral Histories, Lexicon Source, Lexicon Target, External Resources and, since 2026-11-18, Subject [Nation of Origin]. An edit to any other field, or to a link made from the other table's side, never reaches WordPress. Add a field to `Last Modified`'s list before relying on the sync for it. Changing the list doesn't re-stamp existing records, so values edited before the change need a one-off reconcile.
+- **Date-only cursor:** `last_modified` has no time, so a batch of more than 50 records edited on the same day can straddle the cursor and leave some behind (see the bulk-touching note under [WP-CLI Backfill](#wp-cli-backfill)). After a bulk edit, compare values rather than trusting the sync.
 
 ### Videos (Oral Histories)
 
