@@ -147,90 +147,28 @@
             "label": "Subdivisions",
             "name": "subdivisions",
             "aria-label": "",
-            "type": "repeater",
-            "instructions": "Synced from Airtable (Languages → Subject [Territories]). Edit in Airtable: changes here are overwritten by the next sync.",
+            "type": "post_object",
+            "instructions": "Synced from Airtable (the language's Subject [Territories] links): the parts of a nation it comes from, such as Guam or Hawaii.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_6a1f3c2b8d402",
-                    "label": "Airtable record ID",
-                    "name": "airtable_id",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "30",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_6a1f3c2b8d401"
-                },
-                {
-                    "key": "field_6a1f3c2b8d403",
-                    "label": "Identifier",
-                    "name": "identifier",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "40",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_6a1f3c2b8d401"
-                },
-                {
-                    "key": "field_6a1f3c2b8d404",
-                    "label": "Name",
-                    "name": "name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "30",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_6a1f3c2b8d401"
-                }
-            ]
+            "post_type": [
+                "territories",
+                "subdivisions"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_6810db1a101e4",
@@ -626,5 +564,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1795027526
+    "modified": 1795040193
 }
