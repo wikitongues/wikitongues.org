@@ -280,6 +280,8 @@ From `includes/template/router.php`:
 | `/reports`, `/reports/*` | `/financials` (301) |
 | `/2024-fundraiser` | `/donate` (301) |
 
+Short links live in `includes/template/short-links.php`: `wt_short_links()` maps a top-level path to a page, e.g. `/ai` to `/revitalization/resources/native-language-ai/` (302, so the target can change). They apply only when the path is a 404, and run ahead of WordPress's canonical redirect, which would otherwise guess a nearby post (`/ai` used to land on `/languages/aia/`).
+
 ---
 
 ## Changing the content model safely
