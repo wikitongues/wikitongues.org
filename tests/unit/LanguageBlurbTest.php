@@ -47,6 +47,30 @@ class LanguageBlurbTest extends TestCase {
 		);
 	}
 
+	public function test_origin_only_becomes_the_predicate() {
+		$this->assertSame(
+			'Old Norse is original to Norway.',
+			wt_language_blurb(
+				array(
+					'name'     => 'Old Norse',
+					'origins'  => array( 'Norway' ),
+					'families' => array( 'Unclassified' ),
+					'scripts'  => array( 'Braille' ),
+				)
+			)
+		);
+		$this->assertSame(
+			'Old Norse is original to Norway. Also spoken in Iceland.',
+			wt_language_blurb(
+				array(
+					'name'        => 'Old Norse',
+					'origins'     => array( 'Norway' ),
+					'territories' => array( 'Norway', 'Iceland' ),
+				)
+			)
+		);
+	}
+
 	public function test_name_only_gives_no_blurb() {
 		$this->assertSame( '', wt_language_blurb( array( 'name' => 'Emilian' ) ) );
 	}
