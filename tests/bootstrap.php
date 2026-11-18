@@ -73,6 +73,7 @@ require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/taxonomies/form-990.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/content-bundle-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/stamp-airtable-ids-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/sync-territories-helpers.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-logger.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-field-resolver.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-sync-controller.php';
