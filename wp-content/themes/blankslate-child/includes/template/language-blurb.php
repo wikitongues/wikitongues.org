@@ -198,6 +198,12 @@ function wt_blurb_identity_sentence( array $facts ): string {
 		return '';
 	}
 
+	// Origin is the only fact: "X, original to Norway, is a language." says
+	// nothing in its predicate, so the origin becomes the predicate instead.
+	if ( '' === $status && 'language' === $kind && '' === $script ) {
+		return $name . ' is ' . $origin . '.';
+	}
+
 	$noun_phrase = trim( $status . ' ' . $kind );
 	$subject     = '' === $origin ? $name : $name . ', ' . $origin . ',';
 	$predicate   = wt_blurb_article( $noun_phrase ) . ' ' . $noun_phrase;
