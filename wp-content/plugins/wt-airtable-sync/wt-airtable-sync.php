@@ -23,8 +23,8 @@ define( 'WT_AIRTABLE_SYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-logger.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-field-resolver.php';
-require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-record-rows.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-controller.php';
+require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-place-sync.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-sync-api.php';
 require_once WT_AIRTABLE_SYNC_DIR . 'includes/class-acf-fields.php';
 
