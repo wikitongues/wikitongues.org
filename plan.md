@@ -160,7 +160,7 @@ From the roadmap (step 6):
     - Identify the delegate in the banner photo, then name them in its alt text and caption.
     - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
     - Confirm the list of languages the team reads, quoted in "Help us get it right".
-  - **Native Language AI** (`/revitalization/resources/native-language-ai`). Its seven FAQs are on production, but the page isn't. Its banner upload (`2026/10/IMG_1620.jpeg`) is local only, so upload it to production first.
+  - **Native Language AI** (`/revitalization/resources/native-language-ai`). The page and its seven FAQs are on staging and production, with the page set to private. `/ai` redirects to it. Before it is made public, upload `2026/11/native-language-ai-banner.jpg` and `2026/11/native-language-ai-recording-setup.jpg` to both sites and set them on the page; the import matches images by path. Both are Wikimedia Commons photos (CC BY 4.0 and CC BY-SA 4.0), so keep their captions shown: the credit is what the licence requires.
   - Add both to GTM's `content_type` lookup when they go live.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
