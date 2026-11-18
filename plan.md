@@ -48,7 +48,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
 - **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-Last reviewed 2026-09-13.
+Last reviewed 2026-11-18.
 
 ---
 
@@ -63,7 +63,7 @@ Last reviewed 2026-09-13.
 | 3 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
 | 4 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
 | 5 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 6 | Maps: a locator map on language pages, then interactive territory and region maps | Discovery by place | [3.2](#32-maps) |
+| 6 | Maps: a locator map on language pages, then interactive territory and region maps | Discovery by place. Its one data dependency is the subdivision sync slice of 6.8 | [3.2](#32-maps) |
 | 7 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
@@ -77,6 +77,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 | Operations: server cron, vulnerability monitoring, a third-party plugin audit | [7.1](#71-operations) |
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
+| Language geography cleanup across Airtable, Make and WordPress: origins, subdivisions, "also spoken in" | [6.8](#68-language-geography-across-airtable-make-and-wordpress) |
 
 ### Blocked on a decision
 
@@ -202,7 +203,7 @@ Maps in two steps, both from one new plugin, `wt-maps`:
 | Link from territory to shape | **An ACF field on territories, "Map shape"**, holding Natural Earth codes (`GAZ,WEB` for Palestine), editable in WordPress. |
 | France | **Metropolitan France only** (`FXX`), because its overseas departments are territories of their own. |
 | What counts as a territory | **An ISO 3166-1 entry, plus the breakaway regions already listed.** That is why the French overseas departments, Greenland, Guam and the Northern Mariana Islands are territories, and Hawaiʻi, Alaska, Wales and Scotland are not: those have ISO 3166-2 codes, inside a country. |
-| A language spoken in part of a territory | **The language's Airtable territory** (revised 2026-11-17). Airtable's Territories table already holds the places below a nation (`Hawaii_US`, `Alaska_US`, `Wales_GB`, `Greenland_DK`, `Guam_US`), but a nation-of-origin link can only point at Nations. So the Languages table gets a second link field, to Territories, synced to WordPress; the plugin translates each Airtable territory to a Natural Earth sub-unit code with a table (`Hawaii_US` → `USH`). The map draws that part in place of the whole nation; the summary sentence and Airtable's nations stay as they are. Empty means the whole territory. This replaces the WordPress-only "Map focus" field planned earlier, so the place is edited once, in Airtable. |
+| A language spoken in part of a territory | **The language's Airtable territory** (revised 2026-11-17). Airtable's Territories table already holds the places below a nation (`Hawaii_US`, `Alaska_US`, `Wales_GB`, `Greenland_DK`, `Guam_US`), but a nation-of-origin link can only point at Nations. The Languages table already links to them (Subject [Territories]); syncing that link to WordPress is 6.8 phase B, the maps' one dependency on that item. The plugin translates each Airtable territory to a Natural Earth sub-unit code with a table (`Hawaii_US` → `USH`). The map draws that part in place of the whole nation; the summary sentence and Airtable's nations stay as they are. Empty means the whole territory. This replaces the WordPress-only "Map focus" field planned earlier, so the place is edited once, in Airtable. |
 | Languages in several territories | **Fit the frame to all of them.** The prototype showed this works (Russian), so there are no separate region maps for languages. |
 
 ##### Content changes that ship with the plugin
@@ -211,14 +212,14 @@ These are one-off edits in WordPress admin and Airtable, made before the backfil
 
 - **Fold Nagorno-Karabakh.** Natural Earth still draws the pre-2023 area, but Azerbaijan has controlled it since September 2023 and the republic dissolved in January 2024. Remove it from Armenian, its only language. Armenian keeps Armenia, Lebanon and Abkhazia. Don't add Azerbaijan, because a territory link says the language is spoken there now, and the Karabakh Armenian community left in 2023. Then unpublish the territory.
 - **Add Greenland** as a territory (Natural Earth unit `GRL`, ISO `GRL`) and move Greenlandic to it from Denmark. Done 2026-11-17. In Airtable Greenlandic's nation stays Denmark, because Greenland is a Territory there (`Greenland_DK`), not a Nation; with no WordPress territory matching its nation, Greenland is drawn as primary.
-- **Add Guam and the Northern Mariana Islands** as territories (Natural Earth `GUM`, `MNP`). Link Chamorro to both and Carolinian to the Northern Mariana Islands. Done 2026-11-17. In Airtable set both languages' nation to United States, in line with Greenlandic and Denmark, and link their Airtable territories (`Guam_US`, `Northern-Mariana-Islands_US`) once the field exists.
-- **Link Hawaiian to `Hawaii_US`** in the new Airtable territory field. Its nation stays the United States. Other candidates: Alaskan languages (`Alaska_US`), Welsh (`Wales_GB`), Scottish Gaelic (`Scotland_GB`). Languages tied to an area below an Airtable territory (Navajo Nation, the Basque Country) need Natural Earth's admin-1 layer later.
+- **Add Guam and the Northern Mariana Islands** as territories (Natural Earth `GUM`, `MNP`). Link Chamorro to both and Carolinian to the Northern Mariana Islands. Done 2026-11-17. In Airtable both languages' nation is United States, in line with Greenlandic and Denmark, and their Airtable territories are `Guam_US` and `Northern-Mariana-Islands_US` (checked 2026-11-18).
+- **Link Hawaiian to `Hawaii_US`** in Subject [Territories]. Its nation stays the United States. Other candidates: Alaskan languages (`Alaska_US`), Welsh (`Wales_GB`), Scottish Gaelic (`Scotland_GB`). Languages tied to an area below an Airtable territory (Navajo Nation, the Basque Country) need Natural Earth's admin-1 layer later.
 - **Later, through the review process (not a launch blocker): the other ISO 3166-1 entries we lack**, added when they have languages in the archive. Inhabited ones: Puerto Rico, the US Virgin Islands, American Samoa, Curaçao and Aruba (Papiamento), Sint Maarten, Saint-Martin, Saint-Barthélemy, the Faroe Islands (Faroese), Åland, the Isle of Man (Manx), Jersey (Jèrriais), Guernsey (Guernésiais), Niue (Niuean), Norfolk Island (Norfuk), Saint Pierre and Miquelon, Bermuda, the Cayman Islands, the Turks and Caicos, the British Virgin Islands, Anguilla, Montserrat, Saint Helena and the Falklands. Each addition runs the checklist below.
 - **Rename "Sahrawi Arab Democratic Republic" to "Western Sahara"** (2026-11-17, from Kristen's review): Western Sahara is the UN territory name, and the SADR is the government in exile. The map already shows all of Western Sahara. The slug changes to `western-sahara`, with a redirect from the old one. Make the same change to the matching `nations_of_origin` values in Airtable.
-- **Territory type: reopened 2026-11-17.** The four values decided earlier (sovereign state, autonomous territory, dependency, breakaway region) predate the Airtable review: Airtable Nations already has "Sovereign status" (UN Member, De facto independent, UN Observer), and Territories are by definition below a nation. Decide in 6.8 rather than invent a parallel list; not a maps launch blocker.
+- **Territory type: reopened 2026-11-17.** The four values decided earlier (sovereign state, autonomous territory, dependency, breakaway region) predate the Airtable review: Airtable Nations already has "Sovereign status" (UN Member, De facto independent, UN Observer), and Territories are by definition below a nation. Parked: out of scope for 6.8 too, and not a maps launch blocker.
 - **Rename "Cape Verde Islands" to "Cabo Verde".** Done in WordPress 2026-11-17; the Airtable nation is already "Cabo Verde", and a nation rename there carries through to every language's `nations_of_origin`.
 - **"Federated Staes of Micronesia" is fixed** to "Federated States of Micronesia" in production by hand (2026-11-17), and the Airtable nation renamed the same day, which updates its 18 languages' `nations_of_origin` (from "Micronesia"). WordPress keeps the old slug as a redirect.
-- **Three nation names differ between Airtable and WordPress**: Congo / Republic of the Congo (37 languages), Macedonia / North Macedonia (2), Vatican State / Vatican City (1). The most accurate names stay, which are the WordPress ones; rename the Airtable nations, and their languages follow.
+- **Three nation names differed between Airtable and WordPress**: Congo / Republic of the Congo (37 languages), Macedonia / North Macedonia (2), Vatican State / Vatican City (1). The Airtable nations were renamed to the WordPress names on 2026-11-17, and the sync's temporary aliases come out in #674.
 - **Keep as it is:** "Naoero", Nauru's official English name since August 2026.
 
 ##### Territory-change checklist
@@ -227,7 +228,7 @@ A territory touches up to four places. Change all of them together, or the map, 
 
 1. **The territory post** (WordPress → Territories). Rename the title; leave the slug alone unless the URL must change, and if it does, add a redirect from the old slug. Unpublish rather than delete, so the old URL can redirect.
 2. **Language links.** Edit the language's Territories field, or the territory's Languages field. The relationship is two-way, so either side updates both.
-3. **The nation in Airtable.** `nations_of_origin` is synced from the language's link to the Nations table, and both the summary sentence and the map's primary highlight match it against territory titles exactly. Rename the Airtable nation rather than editing languages: the change propagates to every linked language. A WordPress territory that is a Territory in Airtable (Greenland, Martinique) never matches a nation, so its languages keep their nation there.
+3. **The nation in Airtable.** `nations_of_origin` holds links to territory posts, which the sync finds by matching the Airtable nation's name to the territory title exactly. Rename the Airtable nation and the WordPress territory together; the Airtable change propagates to every linked language. A WordPress territory that is a Territory in Airtable (Greenland, Martinique) never matches a nation, so its languages keep their nation there.
 4. **Map shape** on the territory: the Natural Earth code. A territory without one shows no map, never a wrong one.
 
 ##### Territory review process
@@ -238,7 +239,7 @@ Coverage grows by small changes, not a big push, so the process has to stay chea
 - **One change, one PR.** The WordPress edits and the Airtable edits follow the checklist above. The regenerated maps and the `doctor` output then go in a single PR, because the build lives in this repo.
 - **The review is reading two reports.** `wp wt-maps doctor` must be clean (no missing shapes, no unmatched `nations_of_origin`, no languages left without a territory by the change). The PR shows the contested-areas diff: every contested area a changed map now reveals, frames or hatches, against the last release. A change that touches no contested area needs one reviewer; one that does needs a second (the site lead or Kristen, whoever didn't make the change), and a source in the issue.
 - **Batch the slow parts.** Data syncs and production writes happen at most once a month, for whatever has been merged since. The claims table gets its yearly review then too, owned by Kristen, and after any news that moves a border.
-- **Backlog to start from:** the ISO gaps listed above; the 508 published languages with no territory at all (local data, 2026-11-17), which show no map and no "spoken in" sentence; and map focuses for Alaskan languages, Welsh and Scottish Gaelic.
+- **Backlog to start from:** the ISO gaps listed above; languages with no territory link, which show no map (since 2026-11-17 every non-constructed language has a country of origin in Airtable; 6.8 phase A checks they reach WordPress); and map focuses for Alaskan languages, Welsh and Scottish Gaelic.
 
 The plugin adds a check that turns this list into a report: `wp wt-maps doctor` lists territories without a map shape, map shapes that don't exist in the data, and `nations_of_origin` values that match no territory title. Run it after any territory change.
 
@@ -252,10 +253,10 @@ The plugin adds a check that turns this list into a report: `wp wt-maps doctor` 
 
 On local data, 7,536 language pages list exactly one territory, 44 list more than one, and none list zero.
 
-- **Primary:** territories whose titles are also in `nations_of_origin`. This is the same split the language summary makes between "spoken in" and "also spoken in" (`wt_blurb_also_spoken_sentence()`). If no territory is also a country of origin, every territory is primary.
+- **Primary:** territories that are also the language's countries of origin (`nations_of_origin` links). This is the same split the language summary makes between "spoken in" and "also spoken in" (`wt_blurb_also_spoken_sentence()`). If no territory is also a country of origin, every territory is primary.
 - **Secondary:** the other territories, highlighted more lightly.
 - **Context:** the neighboring countries.
-- Don't add a "primary territory" field. If `nations_of_origin` moves to structured nation links (6.8), the rule reads from that field instead.
+- Don't add a "primary territory" field: `nations_of_origin` is already structured links (#671).
 
 ##### Building the maps
 
@@ -331,7 +332,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Locator globe: on frames under 30° corner radius; a yellow dot or the outlined view; shades flipped in the light styles (2026-11-17).
 - [x] Packaging: `wt-maps` in this repo, with the generated maps committed beside it (2026-11-17).
 - [x] Launch style: Light focused, as the setting's default; it can change at any time (2026-11-17).
-- [ ] Territory types: reopened after the Airtable review; decided in 6.8, not a launch blocker.
+- [x] Territory types: parked, out of scope, not a launch blocker (2026-11-18).
 - [x] Review: a contested-area change needs a second reviewer, the site lead or Kristen; Kristen owns the yearly claims review (2026-11-17).
 
 **Data** (scripted writes, so sync first)
@@ -344,10 +345,10 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Rename "Sahrawi Arab Democratic Republic" to "Western Sahara", slug `western-sahara`, with a redirect from the old slug (2026-11-17).
 - [x] Rename "Cape Verde Islands" to "Cabo Verde" (2026-11-17).
 - [x] Airtable nation renames that propagate to languages: Western Sahara, Cabo Verde, Federated States of Micronesia (2026-11-17).
-- [ ] Airtable: set Chamorro's and Carolinian's nation to United States.
-- [ ] Airtable: rename the nations Congo, Macedonia and Vatican State to Republic of the Congo, North Macedonia and Vatican City.
-- [ ] Airtable: a Languages field linking to the Territories table; add it to the Make language scenario and the `wt-airtable-sync` field map; link Hawaiian to `Hawaii_US`, Chamorro to `Guam_US` and `Northern-Mariana-Islands_US`, Carolinian to `Northern-Mariana-Islands_US`.
-- [ ] The ACF fields: "Map shape" on territories, and the synced Airtable territory link on languages (JSON, with `modified` bumped).
+- [x] Airtable: Chamorro's and Carolinian's nation set to United States, with `Guam_US` and `Northern-Mariana-Islands_US` as their territories (checked 2026-11-18).
+- [x] Airtable: the nations Congo, Macedonia and Vatican State renamed to Republic of the Congo, North Macedonia and Vatican City (2026-11-17); nations of origin became territory links in WordPress (#671).
+- [ ] The subdivision sync, 6.8 phase B's three steps marked **Maps needs this**: Subject [Territories] in the Make payload, the `subdivisions` field in `wt-airtable-sync`, and Hawaiian → `Hawaii_US`.
+- [ ] The ACF fields: "Map shape" on territories, and `subdivisions` on languages (JSON, with `modified` bumped).
 - [ ] Check the Airtable territory links with Kristen before the backfill.
 - [ ] The plugin's table from Airtable territories to Natural Earth sub-units (`Hawaii_US` → `USH`), starting with the ones linked at launch.
 
@@ -589,18 +590,64 @@ Two related gaps:
 
 *Long-term.* A specification for a sourced language registry lives in `docs/local_docs/` (not committed): Glottolog, Wikidata and ISO 639-3 identifiers, with per-field provenance and licensing. It would inform 6.3–6.5 and replace hand-maintained language data. No website work is scheduled.
 
-#### 6.8 Geography that mirrors Airtable
+#### 6.8 Language geography across Airtable, Make and WordPress
 
-*Later, after the maps launch (3.2). Takes over 6.4.* Raised 2026-11-17 while reconciling the maps with Airtable.
+*Data cleanup, after Maps (3.2). Rescoped 2026-11-18, after the maps work turned into a geography cleanup: the maps need only the small slice marked **Maps needs this**; everything else here waits until the maps ship.*
 
-WordPress "territories" and Airtable "Territories" mean different things. Airtable has two levels: **Nations** (204, with `Sovereign status`: 193 UN Members, 9 de facto independent, 2 UN Observers) and **Territories**, the places below a nation: dependencies (`Greenland_DK`, `Guam_US`), states and provinces (`Hawaii_US`), home nations (`Wales_GB`). WordPress has one level: 218 territories, of which 201 are Airtable nations under the same name, 3 are nations under another name, and 14 are Airtable Territories made into territories of their own (the French overseas departments and collectivities, Hong Kong, Macao, and since 2026-11-17 Greenland, Guam and the Northern Mariana Islands). So Martinique and Greenland get pages while Puerto Rico, the Faroe Islands, Hawaiʻi and Wales don't, by no stated rule.
+Each language page should say three things about place, each edited once in Airtable and synced to WordPress by Make:
 
-- **Two levels in WordPress, synced from Airtable.** Nations and Territories, each Territory under its nation, all handled by one rule. Names and sovereign status come from Airtable, so renames happen once.
-- **Languages link to both.** The nation link (today's `nations_of_origin` text, moved to a structured relationship, which was 6.4) and the territory link added for the maps (3.2).
-- **Type comes from the data.** A nation's `Sovereign status`, or "territory of" its nation, in place of a hand-kept type list.
-- **Decide:** whether Territories show in the territories menu and archive (territories don't imply sovereignty, but a sub-national list is long), and what happens to the 14 promoted pages and their URLs.
-- **Backlog:** 560 of 8,093 Airtable language records have no nation; every language should have one.
-- **Done when** WordPress geography follows Airtable with no hand-made territories, every language has a nation, and `wp wt-maps doctor` reports no unmatched names.
+| Level | Meaning | Airtable (Languages table) | WordPress (language) | State |
+|---|---|---|---|---|
+| **Country of origin** | where the language comes from | Subject [Nation of Origin] → Nations | `nations_of_origin`: links to territory pages | **Live** (#671, 2026-11-17). 8,073 of 8,093 records have one; the 20 without are constructed languages |
+| **Subdivision**, where relevant | the part of a nation it belongs to (`Hawaii_US`, `Guam_US`, `Oaxaca_MX`) | Subject [Territories] → Territories | not synced yet | Phase B |
+| **Also spoken in** | everywhere else of note: cross-border communities, second-language use, official status, diaspora | nothing yet | `territories`: today a February 2026 copy that matches the origin for 7,550 of 7,570 languages | Phase C |
+
+**How the sync works today.** Make's "Wordpress Production Sync - Languages" polls the Languages table's Website Export view hourly, up to 50 records a run, triggered by `last_modified`, and posts to `wt-airtable-sync`, which resolves names to WordPress posts by exact title. A bulk edit of N languages takes about N/50 hours to reach the site. Edits made from the Nations side of a link don't touch the language's `last_modified`, so they never sync; that is the source of the drift below.
+
+##### Phase A: finish country of origin
+
+Small, and mostly in Airtable. Not a maps blocker: the maps read whatever origins WordPress has.
+
+- [ ] Check that the 560 languages whose nation was filled on 2026-11-17 have all synced (20 had on the first check).
+- [ ] Fix the nation errors found while checking (in `nation-of-origin-checks.csv`, kept outside the repo): Urak Lawoi’ → Transnistria, Khalaj → Azerbaijan, North Picene → Spain, Northern Kurdish → Lebanon only, Dan → Guinea-Bissau, Judeo-Berber and Yevanic → Israel, Western Armenian → Armenia; check Ngundu, Darkhat and Korean Sign Language; relink Monastic Sign Language from the leftover "Vatican State" nation to Vatican City before #674 (dropping the nation aliases) deploys.
+- [ ] Reconcile the drift: about 30 languages whose Airtable nations never reached WordPress (Italian + San Marino, Russian + South Ossetia and Transnistria, Ila, Yiman, Yugambeh, 18 with none). One WP-CLI pass from an Airtable export, then a rule: edit links from the Languages side, or add the Nations link to what `last_modified` watches.
+- [ ] Optional: 42 multi-nation records list their nations in reverse order, so summaries read "original to Togo and Ghana". Reorder in Airtable if it matters.
+- [ ] Territory pages list languages by country of origin rather than by the `territories` copy, so phase C can change `territories` without emptying them.
+
+##### Phase B: subdivisions
+
+The maps draw a language's subdivision in place of its whole nation, so the first three steps are the maps' only dependency on this item.
+
+- [ ] **Maps needs this.** Make: add Subject [Territories] to the language payload as `subdivisions`.
+- [ ] **Maps needs this.** `wt-airtable-sync`: map `subdivisions` to a new ACF field on languages holding the Airtable territory names as text. Most have no WordPress page, so they are stored as names, not links.
+- [ ] **Maps needs this.** The launch cases in Airtable: Hawaiian → `Hawaii_US` (Chamorro and Carolinian already have `Guam_US` and `Northern-Mariana-Islands_US`).
+- [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low.
+- [ ] Where a subdivision has a WordPress page of its own (Greenland, Guam, the Northern Mariana Islands, the French overseas territories, Hong Kong, Macao), the language page links to it.
+
+##### Phase C: also spoken in
+
+After the maps launch.
+
+- [ ] **Decide** how Airtable stores it: a presence table (one row per language and nation, with type, population or share, and source) or a single link field on Languages. The presence table is the one that can show second-language use.
+- [ ] Seed it from open sources, recording the source on every row: Glottolog's country lists (2,658 nation pairs beyond origin, across 1,548 languages), the Nations table's official and regionally official columns (318 pairs), and Unicode CLDR's population shares for major languages, including second-language use.
+- [ ] Ask SIL International about licensing Ethnologue's language-in-country data, which has first- and second-language populations per country. Its terms forbid redistributing the raw data, so nothing from Ethnologue is used without an agreement.
+- [ ] Make: sync it with the language, or as its own scenario if it's a table.
+- [ ] WordPress: `territories` becomes "also spoken in", synced from Airtable in place of the February copy; the sidebar and summary sentence show it.
+
+##### Out of scope
+
+Parked so this item stays finishable:
+
+- Reorganizing Airtable, including moving geography into a base of its own.
+- Two levels of territory pages in WordPress (a page for every Airtable Territory), territory types, and whether subdivisions appear in the territories menu.
+- What happens to the 14 promoted territory pages and their URLs.
+- The Nations table's language-code column, which only mirrors Nation of Origin.
+
+##### Done when
+
+- Every language record has a country of origin, or is marked as constructed, and WordPress matches Airtable.
+- Languages with a relevant subdivision have one in Airtable, and it reaches WordPress and the map.
+- "Also spoken in" on the site comes from Airtable, with a source for every entry.
 
 ### 7. Engineering foundations
 
