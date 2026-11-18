@@ -124,7 +124,8 @@ Territories arrived in February 2026 (#445, #491) and give the archive a geograp
 - **Source.** A one-time WP-CLI import (`temp/territories/import-territories.php`, not committed) built the continent → sub-region hierarchy and the territories. It is not synced from Airtable.
 - **Pages.** Territory and region pages show a fellows gallery and a languages gallery, each linking to a filtered archive. Continent pages aggregate every sub-region.
 - **Names.** `wt_prefix_the()` adds "the" where English needs it ("the Bahamas", "the Americas").
-- **Performance.** Territory pages read `get_field( 'languages', $id, false )` (raw IDs), because some territories list hundreds of languages (India: 403). Continent fellows queries are the known hot spot (#533).
+- **Languages on a territory.** The territory page's languages gallery and the `/languages/?territory=` archive list languages whose `nations_of_origin` includes the territory (`wt_origin_gallery_filter()` in `includes/template/language-origins.php`, #675). They no longer read the territory's `languages` relationship, the mirror of the February 2026 `territories` copy, so that field can later become "also spoken in" without emptying these pages. Subdivisions such as New Caledonia or Hong Kong list nothing until the subdivision level is synced: Airtable gives those languages the nation (France, China) as their origin.
+- **Performance.** Some territories list hundreds of languages (India: 403). The origin lookup is a quoted-ID `LIKE` on `nations_of_origin`, about 0.4 s on production; the cost of a long list is rendering its cards (France's 90-language archive took about 9 s on 2026-11-18). Continent fellows queries are the other known hot spot (#533).
 
 ---
 
