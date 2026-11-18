@@ -613,10 +613,13 @@ Each language page should say three things about place, each edited once in Airt
 The maps draw a language's subdivision in place of its whole nation, so the first three steps are the maps' only dependency on this item.
 
 - [ ] **Maps needs this.** Make: add Subject [Territories] to the language payload as `subdivisions`.
-- [ ] **Maps needs this.** `wt-airtable-sync`: map `subdivisions` to a new ACF field on languages holding the Airtable territory names as text. Most have no WordPress page, so they are stored as names, not links.
+- [ ] **Maps needs this.** `wt-airtable-sync`: map `subdivisions` to a new ACF field on languages. Each row holds the Airtable territory's record ID, with its identifier and name as labels; matching is by record ID, never by name (decided 2026-11-18, for idempotency). `nations_of_origin` moves to record IDs in the same change (#687).
 - [ ] **Maps needs this.** The launch cases in Airtable: Hawaiian → `Hawaii_US` (Chamorro and Carolinian already have `Guam_US` and `Northern-Mariana-Islands_US`).
 - [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low.
-- [ ] Where a subdivision has a WordPress page of its own (Greenland, Guam, the Northern Mariana Islands, the French overseas territories, Hong Kong, Macao), the language page links to it.
+- [ ] **Show subdivisions where readers look for them** (decided 2026-11-18). Two kinds, treated differently:
+  - **Internal subdivisions** (states, provinces, regions: `Hawaii_US`, `Oaxaca_MX`) get no page of their own. The nation's page groups its languages by subdivision, as smaller galleries within the page ("Hawaiʻi: Hawaiian"), and the language page shows the subdivision as a label. Readers think of these as part of the nation, and thousands of separate pages would mostly be empty.
+  - **Territories with their own ISO 3166-1 code** (the 13 that already have WordPress pages: Greenland, Guam, the Northern Mariana Islands, the French overseas territories, Hong Kong, Macao) keep their pages. Readers look for them as places ("languages of Guam"), the region menus already list them beside their neighbours (the Northern Mariana Islands under Micronesia), and folding some of them under a nation would be an editorial statement. Their pages list languages whose subdivisions include them as well as languages that originate there; today they show "0 languages", because they only query origin. Stamp their record IDs from the Territories table with `wp wt stamp-airtable-ids`, and link the language page's subdivision label to the page.
+  - A language then appears on both its nation's page, in its subdivision's group, and on its territory's page. That is intended, as long as the nation page labels the group.
 
 ##### Phase C: also spoken in
 
@@ -634,7 +637,7 @@ Parked so this item stays finishable:
 
 - Reorganizing Airtable, including moving geography into a base of its own.
 - Two levels of territory pages in WordPress (a page for every Airtable Territory), territory types, and whether subdivisions appear in the territories menu.
-- What happens to the 14 promoted territory pages and their URLs.
+- What happens to the 14 promoted territory pages' URLs. They stay as pages (phase B, last step); only their place in the URL and menu hierarchy is parked.
 - The Nations table's language-code column, which only mirrors Nation of Origin.
 
 ##### Done when
