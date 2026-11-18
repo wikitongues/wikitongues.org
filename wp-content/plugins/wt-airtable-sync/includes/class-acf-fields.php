@@ -100,13 +100,21 @@ class ACF_Fields {
 							'value'    => 'lexicons',
 						),
 					),
-					// Not synced, but stamped by `wp wt stamp-airtable-ids` so
-					// links from languages resolve by record ID.
+					// Nations are stamped by `wp wt stamp-airtable-ids`; other
+					// territories and all subdivisions are written by
+					// POST /sync/territories (Place_Sync).
 					array(
 						array(
 							'param'    => 'post_type',
 							'operator' => '==',
 							'value'    => 'territories',
+						),
+					),
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'subdivisions',
 						),
 					),
 				),

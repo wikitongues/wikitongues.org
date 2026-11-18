@@ -41,14 +41,28 @@ class Field_Resolver {
 	}
 
 	/**
+	 * The Airtable record IDs in a payload value, in order, without repeats.
+	 *
+	 * Anything not shaped like a record ID is dropped. Used to keep the raw
+	 * IDs a language links to, so links to posts that do not exist yet can be
+	 * resolved when those posts arrive.
+	 *
+	 * @param string|string[] $value One reference, comma-separated references, or an array.
+	 * @return string[]
+	 */
+	public static function record_ids( string|array $value ): array {
+		return array_values( array_unique( array_filter( self::normalise_titles( $value ), array( self::class, 'is_record_id' ) ) ) );
+	}
+
+	/**
 	 * Resolve record IDs or post titles to an array of WP post IDs.
 	 *
 	 * @param string|string[]       $value     One reference, comma-separated references, or an array.
-	 * @param string                $post_type The CPT to search within.
+	 * @param string|string[]       $post_type The CPT, or CPTs, to search within.
 	 * @param array<string, string> $aliases   Incoming title => WP title, for names that differ.
 	 * @return int[]                           Matched WP post IDs, in order. Unmatched references are logged and skipped.
 	 */
-	public static function resolve( string|array $value, string $post_type, array $aliases = array() ): array {
+	public static function resolve( string|array $value, string|array $post_type, array $aliases = array() ): array {
 		$ids = array();
 
 		foreach ( self::normalise_titles( $value ) as $reference ) {
@@ -67,7 +81,7 @@ class Field_Resolver {
 				Logger::error(
 					sprintf(
 						'Field_Resolver: no %s post found for %s "%s".',
-						$post_type,
+						implode( '/', (array) $post_type ),
 						$kind,
 						$reference
 					)
@@ -83,11 +97,11 @@ class Field_Resolver {
 	 *
 	 * Returns 0 if no match is found.
 	 *
-	 * @param string $record_id Airtable record ID.
-	 * @param string $post_type CPT slug to search within.
+	 * @param string          $record_id Airtable record ID.
+	 * @param string|string[] $post_type CPT slug, or slugs, to search within.
 	 * @return int
 	 */
-	private static function find_post_by_record_id( string $record_id, string $post_type ): int {
+	public static function find_post_by_record_id( string $record_id, string|array $post_type ): int {
 		$query = new \WP_Query(
 			array(
 				'post_type'              => $post_type,
@@ -114,11 +128,11 @@ class Field_Resolver {
 	 *
 	 * Returns 0 if no match is found.
 	 *
-	 * @param string $title     Post title to search for.
-	 * @param string $post_type CPT slug to search within.
+	 * @param string          $title     Post title to search for.
+	 * @param string|string[] $post_type CPT slug, or slugs, to search within.
 	 * @return int
 	 */
-	private static function find_post_by_title( string $title, string $post_type ): int {
+	private static function find_post_by_title( string $title, string|array $post_type ): int {
 		$query = new \WP_Query(
 			array(
 				'post_type'              => $post_type,

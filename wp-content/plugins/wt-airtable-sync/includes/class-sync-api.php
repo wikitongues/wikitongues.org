@@ -106,7 +106,13 @@ class Sync_API {
 		}
 
 		$dry_run = '1' === (string) $request->get_header( 'X-WT-Dry-Run' );
-		$result  = ( new Sync_Controller() )->sync( $post_type, $payload, $maps[ $post_type ], $dry_run );
+
+		// Territories records become `territories` or `subdivisions` posts.
+		if ( Place_Sync::TERRITORY === $post_type ) {
+			$result = ( new Place_Sync() )->sync( $payload, $maps[ $post_type ], $dry_run );
+		} else {
+			$result = ( new Sync_Controller() )->sync( $post_type, $payload, $maps[ $post_type ], $dry_run );
+		}
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
