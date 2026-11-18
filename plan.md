@@ -637,6 +637,7 @@ Parked so this item stays finishable:
 
 - Reorganizing Airtable, including moving geography into a base of its own.
 - Two levels of territory pages in WordPress (a page for every Airtable Territory), territory types, and whether subdivisions appear in the territories menu.
+- Fixing Airtable Territories' type field. Its values are unreliable (checked 2026-11-18): "Special Administrative Region" covers about 50 records of unlike status (US territories, British Overseas Territories, Crown Dependencies, Dutch constituent countries, New Zealand's free-association states, Aceh); "Overseas Territory" is the pre-2003 French term, used for overseas departments and collectivities alike; "Autonomous Country" puts Greenland with England. Nothing on the site may depend on it. Whether a territory has its own page comes from the new "ISO 3166-1 code" field instead. A proper taxonomy is a later job, with Kristen.
 - What happens to the 14 promoted territory pages' URLs. They stay as pages (phase B, last step); only their place in the URL and menu hierarchy is parked.
 - The Nations table's language-code column, which only mirrors Nation of Origin.
 
