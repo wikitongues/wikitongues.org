@@ -35,6 +35,9 @@ class Sync_Controller {
 	 *   - keep_existing_slug   (bool) An existing post keeps its slug when its title changes.
 	 *   - keep_existing_status (bool) An existing post keeps its status; the payload's status
 	 *                                 applies only to a new post.
+	 *   - title_match_unstamped (bool) The title fallback only matches posts with no Airtable
+	 *                                 record ID, so a record never takes over a post that
+	 *                                 belongs to another record with the same name.
 	 *
 	 * @param string               $post_type WP CPT slug.
 	 * @param array<string, mixed> $payload   Decoded JSON body from the request.
@@ -55,7 +58,7 @@ class Sync_Controller {
 		$post_status = isset( $payload['post_status'] ) ? sanitize_text_field( (string) $payload['post_status'] ) : 'publish';
 
 		// 1. Locate existing post (read-only — runs in both modes).
-		$post_id = $this->find_post( $post_type, $airtable_id, $post_title, $payload );
+		$post_id = $this->find_post( $post_type, $airtable_id, $post_title, $payload, ! empty( $options['title_match_unstamped'] ) );
 		$action  = $post_id ? 'updated' : 'created';
 
 		if ( $dry_run ) {
@@ -128,13 +131,15 @@ class Sync_Controller {
 	 * @param string               $airtable_id Airtable record ID.
 	 * @param string               $post_title  Post title from payload.
 	 * @param array<string, mixed> $payload     Full payload (used for iso_code fallback).
+	 * @param bool                 $unstamped   Title fallback matches only posts without a record ID.
 	 * @return int WP post ID, or 0.
 	 */
 	private function find_post(
 		string $post_type,
 		string $airtable_id,
 		string $post_title,
-		array $payload
+		array $payload,
+		bool $unstamped = false
 	): int {
 		// 1. Stable Airtable record ID.
 		if ( $airtable_id ) {
@@ -155,7 +160,7 @@ class Sync_Controller {
 
 		// 3. Post title fallback.
 		if ( $post_title ) {
-			$id = $this->find_by_title( $post_type, $post_title );
+			$id = $this->find_by_title( $post_type, $post_title, $unstamped );
 			if ( $id ) {
 				return $id;
 			}
@@ -202,20 +207,30 @@ class Sync_Controller {
 	 *
 	 * @param string $post_type  WP CPT slug.
 	 * @param string $post_title Exact title to match.
+	 * @param bool   $unstamped  Only match posts that have no Airtable record ID.
 	 * @return int Post ID, or 0.
 	 */
-	private function find_by_title( string $post_type, string $post_title ): int {
-		$query = new \WP_Query(
-			array(
-				'post_type'              => $post_type,
-				'title'                  => $post_title,
-				'post_status'            => 'any',
-				'posts_per_page'         => 1,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			)
+	private function find_by_title( string $post_type, string $post_title, bool $unstamped = false ): int {
+		$args = array(
+			'post_type'              => $post_type,
+			'title'                  => $post_title,
+			'post_status'            => 'any',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		);
+
+		if ( $unstamped ) {
+			$args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'key'     => self::AIRTABLE_ID_KEY,
+					'compare' => 'NOT EXISTS',
+				),
+			);
+		}
+
+		$query = new \WP_Query( $args );
 
 		if ( $query->have_posts() ) {
 			return (int) $query->posts[0]->ID;
