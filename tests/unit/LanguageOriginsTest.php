@@ -39,4 +39,14 @@ class LanguageOriginsTest extends TestCase {
 
 		$this->assertSame( array(), wt_origin_meta_clauses( 'Atlantis' ) );
 	}
+
+	public function test_origin_gallery_filter_targets_nations_of_origin() {
+		$this->assertSame(
+			array(
+				'meta_key'   => 'nations_of_origin',
+				'meta_value' => '20613',
+			),
+			wt_origin_gallery_filter( 20613 )
+		);
+	}
 }

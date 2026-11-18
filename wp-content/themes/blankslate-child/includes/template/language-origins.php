@@ -137,3 +137,21 @@ function wt_origin_meta_clauses( string $term ): array {
 	}
 	return $clauses;
 }
+
+/**
+ * Gallery attributes that list the languages original to a territory.
+ *
+ * Territory pages list languages by `nations_of_origin`, not the territory's
+ * `languages` field: that field mirrors the language `territories` copy,
+ * which is to become "also spoken in". wt-gallery matches the quoted ID
+ * inside the stored array.
+ *
+ * @param int $territory_id Territory post ID.
+ * @return array{meta_key: string, meta_value: string}
+ */
+function wt_origin_gallery_filter( int $territory_id ): array {
+	return array(
+		'meta_key'   => 'nations_of_origin',
+		'meta_value' => (string) $territory_id,
+	);
+}
