@@ -102,8 +102,9 @@ class Place_Sync {
 			$field_map,
 			$dry_run,
 			array(
-				'keep_existing_slug'   => true,
-				'keep_existing_status' => true,
+				'keep_existing_slug'    => true,
+				'keep_existing_status'  => true,
+				'title_match_unstamped' => true,
 			)
 		);
 
