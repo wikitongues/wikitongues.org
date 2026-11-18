@@ -625,6 +625,7 @@ The maps draw a language's subdivision in place of its whole nation, so the firs
 
 After the maps launch.
 
+- [ ] **Separate origin from presence in Subject [Territories]** (found 2026-11-18). The field mixes two meanings: for Chamorro it is where the language comes from (Guam, Northern Mariana Islands); for French it lists 15 places where French is spoken (Jersey, U.S. Virgin Islands, Saint Martin, the French overseas territories). Shown as "Territory of origin", the second kind is wrong. Decide which links are origins, move the rest to "also spoken in", and only then backfill the roughly 2,757 languages that already have territories. Until then, phase B syncs only the launch cases, whose links are origins.
 - [ ] **Decide** how Airtable stores it: a presence table (one row per language and nation, with type, population or share, and source) or a single link field on Languages. The presence table is the one that can show second-language use.
 - [ ] Seed it from open sources, recording the source on every row: Glottolog's country lists (2,658 nation pairs beyond origin, across 1,548 languages), the Nations table's official and regionally official columns (318 pairs), and Unicode CLDR's population shares for major languages, including second-language use.
 - [ ] Ask SIL International about licensing Ethnologue's language-in-country data, which has first- and second-language populations per country. Its terms forbid redistributing the raw data, so nothing from Ethnologue is used without an agreement.
