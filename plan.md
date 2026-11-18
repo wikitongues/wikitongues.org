@@ -347,8 +347,8 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Airtable nation renames that propagate to languages: Western Sahara, Cabo Verde, Federated States of Micronesia (2026-11-17).
 - [x] Airtable: Chamorro's and Carolinian's nation set to United States, with `Guam_US` and `Northern-Mariana-Islands_US` as their territories (checked 2026-11-18).
 - [x] Airtable: the nations Congo, Macedonia and Vatican State renamed to Republic of the Congo, North Macedonia and Vatican City (2026-11-17); nations of origin became territory links in WordPress (#671).
-- [ ] The subdivision sync, 6.8 phase B's three steps marked **Maps needs this**: Subject [Territories] in the Make payload, the `subdivisions` field in `wt-airtable-sync`, and Hawaiian → `Hawaii_US`.
-- [ ] The ACF fields: "Map shape" on territories, and `subdivisions` on languages (JSON, with `modified` bumped).
+- [ ] The subdivision objects, 6.8 phase B's three steps marked **Maps needs this**: the `subdivisions` post type and Territories sync, the language link field, and the launch cases synced (Hawaiian → `Hawaii_US` is done in Airtable).
+- [ ] The ACF fields: "Map shape" on territories and subdivisions, and the `subdivisions` link field on languages (JSON, with `modified` bumped).
 - [ ] Check the Airtable territory links with Kristen before the backfill.
 - [ ] The plugin's table from Airtable territories to Natural Earth sub-units (`Hawaii_US` → `USH`), starting with the ones linked at launch.
 
@@ -610,16 +610,99 @@ Each language page should say three things about place, each edited once in Airt
 
 ##### Phase B: subdivisions
 
-The maps draw a language's subdivision in place of its whole nation, so the first three steps are the maps' only dependency on this item.
+*Redesigned 2026-11-18: subdivisions are objects, not strings.* The maps draw a language's subdivision in place of its whole nation, so the steps marked **Maps needs this** are the maps' only dependency on this item.
 
-- [ ] **Maps needs this.** Make: add Subject [Territories] to the language payload as `subdivisions`.
-- [ ] **Maps needs this.** `wt-airtable-sync`: map `subdivisions` to a new ACF field on languages. Each row holds the Airtable territory's record ID, with its identifier and name as labels; matching is by record ID, never by name (decided 2026-11-18, for idempotency). `nations_of_origin` moves to record IDs in the same change (#687).
-- [ ] **Maps needs this.** The launch cases in Airtable: Hawaiian → `Hawaii_US` (Chamorro and Carolinian already have `Guam_US` and `Northern-Mariana-Islands_US`).
-- [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low.
-- [ ] **Show subdivisions where readers look for them** (decided 2026-11-18). Two kinds, treated differently:
-  - **Internal subdivisions** (states, provinces, regions: `Hawaii_US`, `Oaxaca_MX`) get no page of their own. The nation's page groups its languages by subdivision, as smaller galleries within the page ("Hawaiʻi: Hawaiian"), and the language page shows the subdivision as a label. Readers think of these as part of the nation, and thousands of separate pages would mostly be empty.
-  - **Territories with their own ISO 3166-1 code** (the 13 that already have WordPress pages: Greenland, Guam, the Northern Mariana Islands, the French overseas territories, Hong Kong, Macao) keep their pages. Readers look for them as places ("languages of Guam"), the region menus already list them beside their neighbours (the Northern Mariana Islands under Micronesia), and folding some of them under a nation would be an editorial statement. Their pages list languages whose subdivisions include them as well as languages that originate there; today they show "0 languages", because they only query origin. Stamp their record IDs from the Territories table with `wp wt stamp-airtable-ids`, and link the language page's subdivision label to the page.
-  - A language then appears on both its nation's page, in its subdivision's group, and on its territory's page. That is intended, as long as the nation page labels the group.
+**Already done (#687, live on every environment 2026-11-18).** Links resolve by Airtable record ID, with title matching kept as a logged fallback; `wp wt stamp-airtable-ids` stamped the 204 Nations onto their territory pages (a re-run changes nothing). In Airtable: Hawaiian → `Hawaii_US`; Subject [Territories] joined `Last Modified`; Territories gained an "ISO 3166-1 code" field (50 territories coded) and lost six duplicate records. #687 also shipped a `subdivisions` repeater of strings on languages. It was never populated, and this design replaces it, along with the two Languages lookups (`subdivision_identifiers`, `subdivision_names`) created for it.
+
+**Why objects.** A repeater copies each territory's name onto every language. A rename in Airtable never reaches WordPress, because renaming a territory does not touch the language's `Last Modified`; "languages in Guam" becomes a text search; and the territory has nowhere to keep its own data (ISO code, nation, map shape). Countries of origin are already links to objects; subdivisions should be too.
+
+**The model**
+
+- Every Airtable Territory that a language links to becomes a WordPress object, keyed on its record ID:
+  - **With an ISO 3166-1 code** (Guam, Greenland, Puerto Rico, Hong Kong…): a `territories` post. The 13 that already have pages are stamped with their Territories record ID; the rest are created by the sync.
+  - **Without one** (Hawaii, Oaxaca, Catalonia, Wales…): a post of a new type, `subdivisions`. It never appears in menus or archives.
+  - Each object holds its record ID, its nation (a link to the nation's territory page) and its ISO code. The Natural Earth sub-unit code for the maps (`Hawaii_US` → `USH`) lives here too.
+- A new Make scenario syncs Airtable's Territories table to these objects: upsert by record ID, so a re-run changes nothing and a rename updates one post.
+- Languages' `subdivisions` becomes a link field, like `nations_of_origin`, pointing at either post type and matched by record ID. Make sends only the record IDs. The language also keeps the raw IDs, so a language that syncs before its subdivision exists is linked when the subdivision arrives, without re-saving the language.
+
+**Routes.** Each subdivision is a view nested under its nation: `/territories/{region}/{nation}/{subdivision}/`. It shows the subdivision with its nation as context ("Guam, in the United States"), the subdivision's map with the nation beside it, the subdivision's languages first, then a link to the nation. Context lives in the URL, not in how the reader arrived, so shared links, search results and reloads all show it. Rules:
+
+- Slugs come from the title, unique within the nation (`…/united-states/georgia/` and `/western-asia/georgia/` coexist; so do Punjab in India and in Pakistan).
+- A view with no languages does not exist (404) and is never linked.
+- A rename keeps the old slug as a 301 to the new one.
+- The 13 existing territory pages move under their nation, with a 301 from the old URL (`/territories/micronesia/guam/` → `/territories/northern-america/united-states/guam/`).
+- Nation pages group their languages by subdivision, then list the rest.
+- Language pages say "Territory of origin: Guam, United States", linking each part.
+- Nested post-type URLs need custom rewrite rules; WordPress has none for this.
+
+**Region sidebar rule.** A place appears in its region's sidebar ("Territories in Micronesia") when it has (1) an ISO 3166-1 code, (2) a WordPress region, and (3) at least one language. Today the rule is only "a published `territories` post with a region", which is why the Northern Mariana Islands shows with 0 languages. The new rule adds about 37 ISO-coded territories as they gain languages (Puerto Rico, the Faroe Islands, Bermuda, Aruba, the Cook Islands…), each needing a WordPress region; draft them from UN M49 for review.
+
+<details><summary>50 example routes (2026-11-18)</summary>
+
+| # | Route | Shows / does |
+|---|---|---|
+| 1 | `/territories/northern-america/united-states/` | US languages grouped by subdivision, then the rest |
+| 2 | `/territories/northern-europe/denmark/` | Groups for Greenland and the Faroe Islands |
+| 3 | `/territories/east-asia/china/` | Groups for Hong Kong, Macao, Tibet, Xinjiang, Yunnan… |
+| 4 | `/territories/western-europe/france/` | Groups for the 8 overseas territories |
+| 5 | `/territories/western-europe/united-kingdom/` | England, Scotland, Wales, Northern Ireland, overseas territories |
+| 6 | `/territories/south-asia/india/` | Assam, Kerala, Nagaland, Punjab… |
+| 7 | `/territories/northern-america/mexico/` | Oaxaca, Chiapas… |
+| 8 | `/territories/east-asia/taiwan/` | No change (a nation) |
+| 9 | `/territories/southern-europe/kosovo/` | No change (a nation) |
+| 10 | `/territories/northern-africa/western-sahara/` | No change (a nation) |
+| 11 | `/territories/northern-america/united-states/guam/` | Guam with US context and map; Chamorro first |
+| 12 | `…/united-states/northern-mariana-islands/` | Carolinian, Chamorro |
+| 13 | `…/united-states/puerto-rico/` | New view (no page today) |
+| 14 | `…/united-states/wake-island/` | No languages: 404, not linked |
+| 15 | `/territories/northern-europe/denmark/greenland/` | Greenlandic first, Denmark as context |
+| 16 | `…/denmark/faroe-islands/` | Faroese (new view) |
+| 17 | `/territories/east-asia/china/hong-kong/` | Cantonese, Hong Kong Sign Language, English |
+| 18 | `…/china/macao/` | Macanese, Cantonese, Portuguese |
+| 19 | `/territories/western-europe/france/french-polynesia/` | Tahitian, Marquesan… |
+| 20 | `…/france/new-caledonia/` | 37 languages |
+| 21 | `…/france/reunion/` | Accent dropped from the slug |
+| 22 | `…/france/mayotte/` | Bushi, Maore Comorian |
+| 23 | `/territories/northern-europe/norway/svalbard/` | Shares ISO code SJ with #24 |
+| 24 | `…/norway/jan-mayen/` | Separate view, same code |
+| 25 | `/territories/northern-europe/finland/aland-islands/` | `Å` → `a` in the slug |
+| 26 | `…/united-states/hawaii/` | Hawaiian |
+| 27 | `…/united-states/alaska/` | Alaskan languages |
+| 28 | `…/united-states/georgia/` | The US state; no clash with the nation |
+| 29 | `…/united-states/washington/` | Washington State |
+| 30 | `…/united-states/washington-d-c/` | Comma name, clean slug |
+| 31 | `/territories/northern-america/mexico/oaxaca/` | Zapotec, Mixtec… |
+| 32 | `/territories/southern-europe/spain/catalonia/` | Catalan |
+| 33 | `…/spain/basque-country/` | Basque |
+| 34 | `/territories/western-europe/united-kingdom/wales/` | Welsh |
+| 35 | `/territories/south-asia/india/punjab/` | Same name as #36 |
+| 36 | `/territories/south-asia/pakistan/punjab/` | No collision |
+| 37 | `/territories/south-america/brazil/amazonas/` | Venezuela also has one |
+| 38 | `/territories/western-asia/iraq/iraqi-kurdistan/` | Sensitive label, from our data |
+| 39 | `/territories/eastern-africa/ethiopia/southern-nations-nationalities-and-peoples-region/` | Long slug, commas and apostrophe |
+| 40 | `/territories/east-asia/china/tibet-autonomous-region/` | Sensitive; official title |
+| 41 | `/territories/northern-america/canada/nunavut/` | Inuktitut |
+| 42 | `/territories/australia-new-zealand/australia/northern-territory/` | |
+| 43 | `/territories/micronesia/guam/` | 301 → #11 |
+| 44 | `/territories/northern-america/greenland/` | 301 → #15 |
+| 45 | `/territories/east-asia/hong-kong/` | 301 → #17 |
+| 46 | Old slug after a rename | 301 → new slug |
+| 47 | `/territories/micronesia/` | Region page; sidebar follows the three-part rule |
+| 48 | `/languages/cha/` | "Territory of origin: Guam, United States" (and the Northern Mariana Islands) |
+| 49 | `/languages/kal/` | "Territory of origin: Greenland, Denmark" |
+| 50 | `/languages/fra/` | Links 15 places it is spoken, not its origin: phase C |
+
+</details>
+
+**Steps**
+
+- [ ] **Maps needs this.** WordPress: the `subdivisions` post type; record ID, nation, ISO code and sub-unit code on both place types; a `/sync/territories` endpoint that upserts either type by record ID, choosing by ISO code; the language link field replacing the repeater, with the raw IDs kept and relinked when a subdivision arrives. Tests, then `/test`.
+- [ ] **Maps needs this.** Make: a Territories scenario posting to the new endpoint; in the Languages scenario, `nations_of_origin` and `subdivisions` as record IDs. Then retire the two Languages lookups.
+- [ ] **Maps needs this.** Stamp the 13 existing ISO-coded territory pages with their Territories record IDs, and sync the launch cases (Hawaiian, Chamorro, Carolinian).
+- [ ] Routes: nested views, the 301s from the 13 old URLs, old-slug redirects, nation-page groups, the language-page label.
+- [ ] The region sidebar rule, and WordPress regions for the newly coded territories (draft from UN M49 for review). **Decide** Greenland's region: it is filed under Northern America today and nests under Denmark (Northern Europe).
+- [ ] **Decide** Nagorno-Karabakh: a WordPress page with no Airtable record in either table.
+- [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low. Waits for the origin/presence split in phase C.
 
 ##### Phase C: also spoken in
 
@@ -639,7 +722,7 @@ Parked so this item stays finishable:
 - Reorganizing Airtable, including moving geography into a base of its own.
 - Two levels of territory pages in WordPress (a page for every Airtable Territory), territory types, and whether subdivisions appear in the territories menu.
 - Fixing Airtable Territories' type field. Its values are unreliable (checked 2026-11-18): "Special Administrative Region" covers about 50 records of unlike status (US territories, British Overseas Territories, Crown Dependencies, Dutch constituent countries, New Zealand's free-association states, Aceh); "Overseas Territory" is the pre-2003 French term, used for overseas departments and collectivities alike; "Autonomous Country" puts Greenland with England. Nothing on the site may depend on it. Whether a territory has its own page comes from the new "ISO 3166-1 code" field instead. A proper taxonomy is a later job, with Kristen.
-- What happens to the 14 promoted territory pages' URLs. They stay as pages (phase B, last step); only their place in the URL and menu hierarchy is parked.
+- Nagorno-Karabakh's page, beyond the decision listed in phase B. (The 13 ISO-coded territory pages' URLs are now in phase B: they nest under their nation, with 301s.)
 - The Nations table's language-code column, which only mirrors Nation of Origin.
 
 ##### Done when
