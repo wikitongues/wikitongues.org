@@ -598,21 +598,15 @@ Each language page should say three things about place, each edited once in Airt
 
 | Level | Meaning | Airtable (Languages table) | WordPress (language) | State |
 |---|---|---|---|---|
-| **Country of origin** | where the language comes from | Subject [Nation of Origin] → Nations | `nations_of_origin`: links to territory pages | **Live** (#671, 2026-11-17). 8,073 of 8,093 records have one; the 20 without are constructed languages |
+| **Country of origin** | where the language comes from | Subject [Nation of Origin] → Nations | `nations_of_origin`: links to territory pages | **Done** (phase A, 2026-11-18). WordPress matches Airtable; the 20 records without one are constructed languages |
 | **Subdivision**, where relevant | the part of a nation it belongs to (`Hawaii_US`, `Guam_US`, `Oaxaca_MX`) | Subject [Territories] → Territories | not synced yet | Phase B |
 | **Also spoken in** | everywhere else of note: cross-border communities, second-language use, official status, diaspora | nothing yet | `territories`: today a February 2026 copy that matches the origin for 7,550 of 7,570 languages | Phase C |
 
-**How the sync works today.** Make's "Wordpress Production Sync - Languages" polls the Languages table's Website Export view hourly, up to 50 records a run, triggered by `last_modified`, and posts to `wt-airtable-sync`, which resolves names to WordPress posts by exact title. A bulk edit of N languages takes about N/50 hours to reach the site. Edits made from the Nations side of a link don't touch the language's `last_modified`, so they never sync; that is the source of the drift below.
+**How the sync works today.** Make's "Wordpress Production Sync - Languages" polls the Languages table's Website Export view hourly, up to 50 records a run, triggered by `last_modified`, and posts to `wt-airtable-sync`, which resolves names to WordPress posts by exact title. A bulk edit of N languages takes about N/50 hours to reach the site. `last_modified` only moves when a field on `Last Modified`'s list changes; Nation of Origin joined that list on 2026-11-18, and a field added for phase B (Subject [Territories]) must join it too. Details in [airtable-sync.md](docs/airtable-sync.md#languages).
 
 ##### Phase A: finish country of origin
 
-Small, and mostly in Airtable. Not a maps blocker: the maps read whatever origins WordPress has.
-
-- [ ] Check that the 560 languages whose nation was filled on 2026-11-17 have all synced (20 had on the first check).
-- [ ] Fix the nation errors found while checking (in `nation-of-origin-checks.csv`, kept outside the repo): Urak Lawoi’ → Transnistria, Khalaj → Azerbaijan, North Picene → Spain, Northern Kurdish → Lebanon only, Dan → Guinea-Bissau, Judeo-Berber and Yevanic → Israel, Western Armenian → Armenia; check Ngundu, Darkhat and Korean Sign Language; relink Monastic Sign Language from the leftover "Vatican State" nation to Vatican City before #674 (dropping the nation aliases) deploys.
-- [ ] Reconcile the drift: about 30 languages whose Airtable nations never reached WordPress (Italian + San Marino, Russian + South Ossetia and Transnistria, Ila, Yiman, Yugambeh, 18 with none). One WP-CLI pass from an Airtable export, then a rule: edit links from the Languages side, or add the Nations link to what `last_modified` watches.
-- [ ] Optional: 42 multi-nation records list their nations in reverse order, so summaries read "original to Togo and Ghana". Reorder in Airtable if it matters.
-- [ ] Territory pages list languages by country of origin rather than by the `territories` copy, so phase C can change `territories` without emptying them.
+*Done 2026-11-18; see the [archive](docs/plan-archive.md).* Nine Airtable nation errors fixed, Nation of Origin added to what `last_modified` watches, 574 languages reconciled on every environment, and territory pages list languages by origin (#675). Still open, and small: Ngundu, Darkhat and Korean Sign Language to check; 42 multi-nation records in reverse order (optional); Slovenian Sign Language has no nation in Airtable; `yug` and `yim` have no WordPress post; six records share the identifier `wart`.
 
 ##### Phase B: subdivisions
 
