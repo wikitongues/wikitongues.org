@@ -100,6 +100,15 @@ class ACF_Fields {
 							'value'    => 'lexicons',
 						),
 					),
+					// Not synced, but stamped by `wp wt stamp-airtable-ids` so
+					// links from languages resolve by record ID.
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'territories',
+						),
+					),
 				),
 				'menu_order'            => 100,
 				'position'              => 'side',

@@ -20,10 +20,16 @@
  *       'acf_type'  => string|null,  ACF field type — drives resolver selection
  *       'post_type' => string|null,  Target CPT for post_object resolution; null otherwise
  *       'aliases'   => array|null,   Optional post_object title map, incoming name => WP title
+ *       'columns'   => array|null,   Repeater only: sub-field name => payload key; the first is the record-ID key column
  *   ]
  *
- * post_object fields receive comma-separated titles (or an array) from the
- * payload; Field_Resolver::resolve() converts them to WP post IDs before writing.
+ * post_object fields receive Airtable record IDs (preferred) or titles, as an
+ * array or comma-separated; Field_Resolver::resolve() converts them to WP post
+ * IDs before writing. Record IDs match the target's `_airtable_record_id`, so
+ * renames never break a link: send IDs wherever the target CPT is stamped.
+ *
+ * Repeater fields with 'columns' are rebuilt from parallel payload lists by
+ * Record_Rows::build(), one row per linked Airtable record.
  *
  * Phase 1: languages only.
  * Phase 2: videos, captions, lexicons (this file).
@@ -49,12 +55,29 @@ return array(
 			'acf_type'  => 'text',
 			'post_type' => null,
 		),
-		// Airtable Nation of Origin names → territory posts, matched by exact title.
+		// Airtable Subject [Nation of Origin] → territory posts. Make sends the
+		// Nations record IDs, matched against each territory's stamped
+		// `_airtable_record_id`; nation names still resolve by exact title.
 		'nations_of_origin'    => array(
 			'meta_key'  => 'nations_of_origin',
 			'acf'       => true,
 			'acf_type'  => 'post_object',
 			'post_type' => 'territories',
+		),
+		// Airtable Subject [Territories]: the subdivision a language belongs to
+		// (Hawaii_US, Guam_US). Most have no WordPress page, so each is stored
+		// as a row keyed by its Territories record ID, with its identifier and
+		// name as labels. Make sends three parallel arrays.
+		'subdivisions'         => array(
+			'meta_key'  => 'subdivisions',
+			'acf'       => true,
+			'acf_type'  => 'repeater',
+			'post_type' => null,
+			'columns'   => array(
+				'airtable_id' => 'subdivisions',
+				'identifier'  => 'subdivision_identifiers',
+				'name'        => 'subdivision_names',
+			),
 		),
 		'writing_systems'      => array(
 			'meta_key'  => 'writing_systems',

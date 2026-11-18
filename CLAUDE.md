@@ -18,6 +18,29 @@ docs/                                        # Architecture docs (airtable-sync.
 ```
 Do **not** edit: `wp-includes/`, `wp-admin/`, `wp-content/plugins/advanced-custom-fields-pro/`, or any other third-party plugin/theme.
 
+## Architectural principles
+
+### Idempotency, always
+Every write path — sync endpoints, Make scenarios, WP-CLI commands, migrations, deploy
+steps — must give the same result whether it runs once or ten times, and must not depend on
+the order its inputs arrive in. Design for the re-run, because syncs retry, Make re-polls,
+and migrations run local → staging → production and again after every staging refresh.
+
+- **Key on stable IDs, never on names.** Anything from Airtable is matched by its Airtable
+  record ID (`_airtable_record_id` on the post), not by title or display name. Names are
+  labels: they get renamed, repeated (`Georgia`) and contain delimiters
+  (`Washington,-D.C._US`). Title matching is only a transition fallback, and it logs.
+- **Send lists as arrays of IDs**, not joined strings of names.
+- **Write absolute state, not deltas.** Set a field to what the source says; never append,
+  increment or toggle. Rebuild derived rows from scratch on each write.
+- **Upsert, don't insert.** Look up by ID before creating.
+- **A second run is a no-op.** Scripts dry-run by default, print what they would change,
+  never overwrite a conflicting value silently, and report 0 changes when run again.
+- **Make switches order-independent.** When a payload or field changes shape, ship code that
+  accepts both the old and new shape first, then change the sender.
+
+Apply this to new code and to code you touch; call out existing violations as follow-ups.
+
 ## Dev commands
 ```bash
 composer test          # PHPUnit 9.6 (WP_Mock 1.x)
