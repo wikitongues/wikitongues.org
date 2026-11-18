@@ -19,6 +19,7 @@
  *       'acf'       => bool,         true  → update_field(); false → update_post_meta()
  *       'acf_type'  => string|null,  ACF field type — drives resolver selection
  *       'post_type' => string|null,  Target CPT for post_object resolution; null otherwise
+ *       'aliases'   => array|null,   Optional post_object title map, incoming name => WP title
  *   ]
  *
  * post_object fields receive comma-separated titles (or an array) from the
@@ -48,11 +49,12 @@ return array(
 			'acf_type'  => 'text',
 			'post_type' => null,
 		),
+		// Airtable Nation of Origin names → territory posts, matched by exact title.
 		'nations_of_origin'    => array(
 			'meta_key'  => 'nations_of_origin',
 			'acf'       => true,
-			'acf_type'  => 'text',
-			'post_type' => null,
+			'acf_type'  => 'post_object',
+			'post_type' => 'territories',
 		),
 		'writing_systems'      => array(
 			'meta_key'  => 'writing_systems',

@@ -18,12 +18,16 @@ class Field_Resolver {
 	/**
 	 * Resolve one or more post titles to an array of WP post IDs.
 	 *
-	 * @param string|string[] $value     Single title, comma-separated titles, or array of titles.
-	 * @param string          $post_type The CPT to search within.
-	 * @return int[]                     Array of matched WP post IDs. Unmatched titles are skipped.
+	 * @param string|string[]       $value     Single title, comma-separated titles, or array of titles.
+	 * @param string                $post_type The CPT to search within.
+	 * @param array<string, string> $aliases   Incoming title => WP title, for names that differ.
+	 * @return int[]                           Array of matched WP post IDs. Unmatched titles are skipped.
 	 */
-	public static function resolve( string|array $value, string $post_type ): array {
-		$titles = self::normalise_titles( $value );
+	public static function resolve( string|array $value, string $post_type, array $aliases = array() ): array {
+		$titles = array_map(
+			static fn( string $title ): string => $aliases[ $title ] ?? $title,
+			self::normalise_titles( $value )
+		);
 
 		if ( empty( $titles ) ) {
 			return array();

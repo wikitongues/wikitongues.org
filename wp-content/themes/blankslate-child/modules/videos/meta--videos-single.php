@@ -165,17 +165,17 @@
 				$language_url               = get_the_permalink();
 				$standard_name              = get_field( 'standard_name' );
 				$alternate_names            = get_field( 'alternate_names' );
-				$nations_of_origin          = get_field( 'nations_of_origin' );
+				$origins                    = wt_language_origins( get_the_ID() );
 				$writing_system_terms       = get_the_terms( get_the_ID(), 'writing-system' );
 				$linguistic_genealogy_terms = get_the_terms( get_the_ID(), 'linguistic-genealogy' );
 				?>
 				<strong class="wt_sectionHeader"><a href="<?php echo $language_url; ?>"><?php echo $standard_name; ?></a></strong>
 				<ul>
-				<?php if ( $nations_of_origin ) : ?>
+				<?php if ( $origins ) : ?>
 					<li>
 						<p>Countries of origin</p>
 						<p class="wt_text--label">
-							<?php echo $nations_of_origin; ?>
+							<?php echo wt_territory_links( $origins ); ?>
 						</p>
 					</li>
 				<?php endif; ?>

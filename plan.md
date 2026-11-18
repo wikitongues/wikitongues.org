@@ -568,7 +568,7 @@ Two related gaps:
 
 #### 6.4 `nations_of_origin` migration
 
-*Later, after 6.3; folded into 6.8 (2026-11-17).* This comma-separated text field is matched with `LIKE`, so combined values hide languages (#241: South Korea). Territory relationships already exist as the structured alternative. Change the field, update the sync, and backfill.
+*Done 2026-11-17; see the [archive](docs/plan-archive.md).* Nations of origin are territory links now. The number stays so later items keep theirs.
 
 #### 6.5 Language names and caption IDs
 
@@ -687,7 +687,6 @@ Open issues, and where each is tracked (2026-09-13):
 | [#53](https://github.com/wikitongues/wikitongues.org/issues/53) Languages without standard names | 6.2, 6.5 |
 | [#54](https://github.com/wikitongues/wikitongues.org/issues/54) Comma-form language names | 6.5 |
 | [#72](https://github.com/wikitongues/wikitongues.org/issues/72) Caption file ID separators | 6.5 |
-| [#241](https://github.com/wikitongues/wikitongues.org/issues/241) South Korea's languages missing | 6.8 (was 6.4) |
 | [#533](https://github.com/wikitongues/wikitongues.org/issues/533) Fellows query on continent pages | 7.5 |
 
 ## Ideas

@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Nations of origin as territory links | 2026-11-17 | — | [content-model.md](content-model.md#languages) |
 | Plan and docs restructure | 2026-09-13 | [#643] | [plan.md](../plan.md), this file |
 | Deploy and backup hardening | 2026-09-12 | [#633]–[#636], [#639], [#640] | [deployment.md](deployment.md), [staging-sync.md](staging-sync.md) |
 | Financials (Form 990s) | 2026-09-11 | [#630] | [content-model.md](content-model.md#financials-form-990s) |
@@ -29,6 +30,14 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-17 (Nations of origin)
+
+### `nations_of_origin` becomes territory links (plan 6.4, #241)
+
+The field was comma-separated text shown as plain text in the language sidebar and matched with `LIKE`, so "South Korea, North Korea" hid Korean from South Korea. It is now an ACF post_object field (multiple) pointing at territories. `wp wt migrate-nations-of-origin` converted 7,570 languages and emptied 234 blank values, with an alias table for eight stale names (Congo, Macedonia, Vatican State, Micronesia, Sahrawi Arab Democratic Republic, Cape Verde Islands, Nauru, Swaziland). The sync resolves Airtable's names by title, so the Make scenario is unchanged. The sidebar links each country of origin and lists only the remaining territories under "Also spoken in"; search finds languages through matching territory titles; the gallery filter and REST endpoint read the links.
 
 ---
 

@@ -285,7 +285,7 @@ class Sync_Controller {
 			$cpt       = $field['post_type'] ?? null;
 
 			if ( 'post_object' === $acf_type && $cpt ) {
-				$preview[ $meta_key ] = Field_Resolver::resolve( $raw_value, $cpt );
+				$preview[ $meta_key ] = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
 			} else {
 				$preview[ $meta_key ] = $raw_value;
 			}
@@ -317,7 +317,7 @@ class Sync_Controller {
 			$cpt       = $field['post_type'] ?? null;
 
 			if ( 'post_object' === $acf_type && $cpt ) {
-				$value = Field_Resolver::resolve( $raw_value, $cpt );
+				$value = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
 			} else {
 				$value = $raw_value;
 			}

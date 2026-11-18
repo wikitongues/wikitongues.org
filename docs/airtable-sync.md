@@ -233,13 +233,13 @@ If a match is found the post is updated; if not, a new post is created. After ev
 
 **Adding a new field:** add an entry to the relevant CPT array in `field-maps.php` and update the Make.com scenario body to include the new payload key. No other code changes required.
 
-**post_object fields** receive post titles (or comma-separated titles) from Make.com. `Field_Resolver::resolve()` converts them to WP post IDs via `WP_Query` before writing. Unresolved titles are logged as errors and skipped.
+**post_object fields** receive post titles (or comma-separated titles) from Make.com. `Field_Resolver::resolve()` converts them to WP post IDs via `WP_Query` before writing. Unresolved titles are logged as errors and skipped. A field entry may add `aliases` (incoming name => WordPress title) for names that differ between the systems. None is in use: Airtable's nation names match the WordPress territory titles.
 
 **Current field maps by CPT:**
 
 | CPT | Scalar fields | post_object fields |
 |---|---|---|
-| `languages` | standard_name, alternate_names, nations_of_origin, writing_systems, linguistic_genealogy, iso_code, glottocode, olac_url, wikipedia_url | speakers_recorded (→ videos), lexicon_source (→ lexicons), lexicon_target (→ lexicons), external_resources (→ resources) |
+| `languages` | standard_name, alternate_names, writing_systems, linguistic_genealogy, iso_code, glottocode, olac_url, wikipedia_url | nations_of_origin (→ territories), speakers_recorded (→ videos), lexicon_source (→ lexicons), lexicon_target (→ lexicons), external_resources (→ resources) |
 | `videos` | video_title, video_description, video_license, license_link, public_status, dropbox_link, wikimedia_commons_link, youtube_publish_date, youtube_id, youtube_link, video_thumbnail_v2, metadata | featured_languages (→ languages) |
 | `captions` | creator, file_url | source_video (→ videos), source_language (→ languages) |
 | `lexicons` | dropbox_link, external_link | source_languages (→ languages), target_languages (→ languages) |
