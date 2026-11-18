@@ -327,7 +327,7 @@ Tracked in [plan.md](../plan.md) under *Data quality & Airtable* unless noted.
 | Issue | Detail |
 |---|---|
 | Writing systems and genealogies drift | The sync writes the legacy text fields (`writing_systems`, `linguistic_genealogy`), not the taxonomies templates read. Terms reflect the February 2026 migration only, and languages created since have none. |
-| Airtable nation names must match territory titles | The sync resolves Nation of Origin names to territories by exact title and skips names that match nothing (logged as errors). The field map's `aliases` cover Congo, Macedonia and Vatican State until those Airtable nations are renamed. |
+| Airtable nation names must match territory titles | The sync resolves Nation of Origin names to territories by exact title and skips names that match nothing (logged as errors). Airtable nations carry the WordPress titles since 2026-11-17 (Congo, Macedonia and Vatican State were renamed); rename a nation in both places, or add an `aliases` entry to the field map. |
 | Names | Some languages lack a standard name (#53); some use the comma form "Gondi, Southern" (#54). |
 | Caption file IDs | Caption file IDs join languages with `,` instead of `+` (#72). |
 | Resources diverged | About 907 WordPress posts against 204 Airtable records; not synced. |

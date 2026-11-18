@@ -233,7 +233,7 @@ If a match is found the post is updated; if not, a new post is created. After ev
 
 **Adding a new field:** add an entry to the relevant CPT array in `field-maps.php` and update the Make.com scenario body to include the new payload key. No other code changes required.
 
-**post_object fields** receive post titles (or comma-separated titles) from Make.com. `Field_Resolver::resolve()` converts them to WP post IDs via `WP_Query` before writing. Unresolved titles are logged as errors and skipped. A field entry may add `aliases` (incoming name => WordPress title) for names that differ between the systems; `nations_of_origin` uses this for Airtable nations not yet renamed to their WordPress titles.
+**post_object fields** receive post titles (or comma-separated titles) from Make.com. `Field_Resolver::resolve()` converts them to WP post IDs via `WP_Query` before writing. Unresolved titles are logged as errors and skipped. A field entry may add `aliases` (incoming name => WordPress title) for names that differ between the systems. None is in use: Airtable's nation names match the WordPress territory titles.
 
 **Current field maps by CPT:**
 
