@@ -279,25 +279,43 @@ class Sync_Controller {
 				continue;
 			}
 
-			$raw_value = $payload[ $payload_key ];
-			$meta_key  = $field['meta_key'];
-			$acf_type  = $field['acf_type'] ?? null;
-			$cpt       = $field['post_type'] ?? null;
-
-			if ( 'post_object' === $acf_type && $cpt ) {
-				$preview[ $meta_key ] = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
-			} else {
-				$preview[ $meta_key ] = $raw_value;
-			}
+			$preview[ $field['meta_key'] ] = $this->resolve_value( $payload[ $payload_key ], $payload, $field );
 		}
 
 		return $preview;
 	}
 
 	/**
+	 * Turn one payload value into the value written to WordPress.
+	 *
+	 * - post_object: record IDs or titles → WP post IDs (Field_Resolver).
+	 * - repeater with 'columns': parallel payload lists → rows (Record_Rows).
+	 * - anything else: written as received.
+	 *
+	 * @param mixed                $raw_value Payload value under the field's own key.
+	 * @param array<string, mixed> $payload   Full request payload (repeaters read sibling keys).
+	 * @param array<string, mixed> $field     Field entry from config/field-maps.php.
+	 * @return mixed
+	 */
+	private function resolve_value( mixed $raw_value, array $payload, array $field ): mixed {
+		$acf_type = $field['acf_type'] ?? null;
+		$cpt      = $field['post_type'] ?? null;
+
+		if ( 'post_object' === $acf_type && $cpt ) {
+			return Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
+		}
+
+		if ( 'repeater' === $acf_type && ! empty( $field['columns'] ) ) {
+			return Record_Rows::build( $field['columns'], $payload ) ?? array();
+		}
+
+		return $raw_value;
+	}
+
+	/**
 	 * Write all mapped meta fields from the payload to the post.
 	 *
-	 * post_object fields are resolved to WP post IDs before writing.
+	 * Values are resolved first (see resolve_value()).
 	 * Fields absent from the payload are skipped (no clearing of existing values).
 	 *
 	 * @param int                  $post_id   WP post ID.
@@ -310,17 +328,9 @@ class Sync_Controller {
 				continue;
 			}
 
-			$raw_value = $payload[ $payload_key ];
-			$meta_key  = $field['meta_key'];
-			$is_acf    = (bool) $field['acf'];
-			$acf_type  = $field['acf_type'] ?? null;
-			$cpt       = $field['post_type'] ?? null;
-
-			if ( 'post_object' === $acf_type && $cpt ) {
-				$value = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
-			} else {
-				$value = $raw_value;
-			}
+			$meta_key = $field['meta_key'];
+			$is_acf   = (bool) $field['acf'];
+			$value    = $this->resolve_value( $payload[ $payload_key ], $payload, $field );
 
 			if ( $is_acf && function_exists( 'update_field' ) ) {
 				update_field( $meta_key, $value, $post_id );
