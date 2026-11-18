@@ -178,11 +178,6 @@ parameters:
 		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
-			path: wp-content/themes/blankslate-child/archive-languages.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
 			path: wp-content/themes/blankslate-child/archive-videos.php
 
 		-
@@ -883,11 +878,6 @@ parameters:
 			message: "#^Function get_field not found\\.$#"
 			count: 3
 			path: wp-content/themes/blankslate-child/single-languages.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/single-territories.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
