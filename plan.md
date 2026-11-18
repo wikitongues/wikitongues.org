@@ -702,6 +702,7 @@ Each language page should say three things about place, each edited once in Airt
 - [ ] Routes: nested views, the 301s from the 13 old URLs, old-slug redirects, nation-page groups, the language-page label.
 - [ ] The region sidebar rule, and WordPress regions for the newly coded territories (draft from UN M49 for review). **Decide** Greenland's region: it is filed under Northern America today and nests under Denmark (Northern Europe).
 - [ ] **Decide** Nagorno-Karabakh: a WordPress page with no Airtable record in either table.
+- [ ] **Decide** whether WordPress may edit archive data at all (raised 2026-11-19). Airtable is the source for languages, places and their links, and every sync overwrites WordPress, so an admin edit is silently lost on the next sync, or worse, survives until one. Options: make synced fields read-only in wp-admin (the `_airtable_record_id` field already is); or push admin edits back to Airtable and block the rest. Related: should a place's nation, and a subdivision's link to it, be required? The Territories table has a nation for all 854 records today, but nothing enforces it in either system. Applies beyond 6.8: every field `wt-airtable-sync` writes.
 - [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low. Waits for the origin/presence split in phase C.
 
 ##### Phase C: also spoken in
