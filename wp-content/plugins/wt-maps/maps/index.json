@@ -897,8 +897,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 7255,
-   "svg_gzip": 2567,
+   "svg_bytes": 8101,
+   "svg_gzip": 2679,
    "images": {
     "relief": 2336,
     "shade": 1234,
@@ -3819,8 +3819,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 7813,
-   "svg_gzip": 2876,
+   "svg_bytes": 8407,
+   "svg_gzip": 2960,
    "images": {
     "relief": 4060,
     "shade": 2776,
@@ -7120,8 +7120,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 5448,
-   "svg_gzip": 1992,
+   "svg_bytes": 6632,
+   "svg_gzip": 2148,
    "images": {
     "relief": 2542,
     "shade": 1452,
