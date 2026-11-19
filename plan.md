@@ -637,10 +637,12 @@ Two related gaps:
 
 - [ ] **Airtable sandbox:** rename Territories → Subdivisions, then Nations → Territories; move the 49 coded rows and the 6 non-ISO states as new records; add South Sudan's code (SS).
 - [ ] **Origins:** apply the reviewed changes for the 46 multi-origin languages (2026-11-20) in the sandbox, then in the real base after approval.
-- [ ] **Also spoken in:** decide its storage, a presence table (one row per language and territory, with a role and a source) or a link field; seed it from open sources (Glottolog, the Nations official-language columns, Unicode CLDR).
+- [ ] **Also spoken in:** decide its storage, a presence table (one row per language and territory, with a source) or a link field; seed it from open sources (Glottolog, the Nations official-language columns, Unicode CLDR).
+- [ ] **Sync territories:** Make sends each language's origins (Nation of Origin) and presence as two complete lists of record IDs; the sync writes `nations_of_origin` = origins and `territories` = presence ∪ origins, through ACF so the territory pages' Languages field updates too. Rule 2 is enforced here and nowhere else. Until presence exists in Airtable, `territories` stays the February 2026 copy.
 - [ ] **WordPress**, in small PRs that read both data shapes: the map rule, territory pages, the sidebar rule, the labels.
 - [ ] **Cutover:** pause Make, move the rows in the real base, re-stamp WordPress posts and the map shape table, resume Make.
 - [ ] **Maps:** add the province-level layer and subdivision shape codes, then rebuild (about 626 maps). Gets its own spec.
+- [ ] **Remove the maps' origins fallback** (temporary since maps v1: a language with no territories draws its origins). Do it after the territories sync, once every origin is a territory; a rebuild and `wp wt-maps doctor` should show no change. Removing it earlier drops the maps of the ~490 languages with origins and no territories.
 
 ##### Open questions
 
@@ -672,6 +674,8 @@ Subdivision pages and routes; historical origin as a field; cell-based geography
 | 2026-11-19 | Rename the Airtable tables; moved rows become new records with new IDs | Each name means one thing; no dual-ID support |
 | 2026-11-19 | Make is paused during the cutover | Nothing syncs mid-change |
 | 2026-11-19 | A diaspora language may have no origin | Choosing one by convention would be a false claim |
+| 2026-11-20 | Make sends origins and presence as two lists; the sync writes territories as their union | Rule 2 in one place; absolute state; the archival origin field stays the only source of origins |
+| 2026-11-20 | Maps v1 ships with the origins fallback, documented as temporary; `territories` stays the February copy until presence exists | Nothing new to build now; the February copy holds ~66 real extra places the review hasn't replaced |
 | 2026-11-20 | Origin review approved for 46 languages (186 decisions); retired codes, `apa` and Wikitongues codes set aside | Evidence from Glottolog; one decision per card |
 
 ### 7. Engineering foundations
