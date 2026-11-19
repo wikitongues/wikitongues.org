@@ -103,14 +103,12 @@
 	<?php endif; ?>
 	<?php
 	// Locator map from the wt-maps plugin (plan 3.2); empty when the language has none.
-	if ( function_exists( 'wt_maps_sidebar_map' ) ) {
-		echo wt_maps_sidebar_map( get_the_ID() ); // Built and escaped by the plugin.
-	}
+	$sidebar_map = function_exists( 'wt_maps_sidebar_map' ) ? wt_maps_sidebar_map( get_the_ID() ) : '';
 	?>
-	<?php if ( $origins || $also_spoken ) : ?>
-		<?php // Where it is spoken: read with the map above, so it is not an accordion on mobile. ?>
+	<?php if ( $origins || $also_spoken || $sidebar_map ) : ?>
+		<?php // Where it is spoken, then the map: read together, so not an accordion on mobile. ?>
 		<div class="metadata" id="geography">
-			<strong class="wt_sectionHeader">Geography</strong>
+			<strong class="wt_sectionHeader">Where it&rsquo;s spoken</strong>
 			<?php if ( $origins ) : ?>
 				<strong>Territories of origin</strong>
 				<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
@@ -120,6 +118,7 @@
 				<strong><?php echo $origins ? 'Also spoken in' : 'Spoken in'; ?></strong>
 				<p class="wt_text--label territories"><?php echo wt_territory_links( $also_spoken ); ?></p>
 			<?php endif; ?>
+			<?php echo $sidebar_map; // Built and escaped by the plugin. ?>
 		</div>
 	<?php endif; ?>
 	<?php if ( ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>

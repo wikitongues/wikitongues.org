@@ -29,16 +29,17 @@
 
 		// Not an accordion, so its heading takes the gap an open section's
 		// content would (.mobile-accordion-content.active).
-		&#geography .wt_sectionHeader
-			margin-bottom 16px
+		&#geography
+			.wt_sectionHeader
+				margin-bottom 16px
+
+			// Locator map (wt-maps), last in the section, under the place names.
+			.wt-map
+				margin-top 16px
 
 		.wt_text--label a
 			display inline-block
 
-	// Locator map (wt-maps), between Alternate Names and where the language is
-	// spoken; spaced like a .metadata block, which sits between dividers.
-	> .wt-map
-		margin-top 16px
 
 	strong
 		text--strong($black)
