@@ -153,6 +153,9 @@ function wt_map( array $args = array() ): string {
 		return '';
 	}
 
+	$origins = $args['primary'] ?? get_post_meta( $language, 'nations_of_origin', true );
+	$origins = wt_maps_record_ids( is_array( $origins ) ? $origins : array() );
+
 	$table = wt_maps_shape_table();
 	if ( isset( $args['territories'] ) ) {
 		$places = wt_maps_language_places( $table, '', wt_maps_record_ids( (array) $args['territories'] ) );
@@ -161,7 +164,8 @@ function wt_map( array $args = array() ): string {
 		$places = wt_maps_language_places(
 			$table,
 			(string) get_post_meta( $language, '_airtable_record_id', true ),
-			wt_maps_record_ids( is_array( $linked ) ? $linked : array() )
+			wt_maps_record_ids( is_array( $linked ) ? $linked : array() ),
+			$origins
 		);
 	}
 
@@ -171,10 +175,8 @@ function wt_map( array $args = array() ): string {
 		return '';
 	}
 
-	$origins = $args['primary'] ?? get_post_meta( $language, 'nations_of_origin', true );
-	$origins = wt_maps_record_ids( is_array( $origins ) ? $origins : array() );
-	$roles   = Renderer::roles( $places, $origins );
-	$names   = wt_maps_place_names( $places );
+	$roles = Renderer::roles( $places, $origins );
+	$names = wt_maps_place_names( $places );
 	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
 		$names = array_map( 'wt_prefix_the', $names );
 	}

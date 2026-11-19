@@ -347,6 +347,46 @@
     "sea": 2794
    }
   },
+  "rec3S9isvP26op2YP": {
+   "places": [
+    "rec3S9isvP26op2YP"
+   ],
+   "names": [
+    "Montenegro"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -19.238271,
+     -42.784874,
+     0
+    ],
+    "scale": 7703.944,
+    "translate": [
+     184.704,
+     138.626
+    ],
+    "cornerDeg": 2
+   },
+   "center": [
+    19.238271,
+    42.784874
+   ],
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 50,
+   "claimed": [],
+   "revealed": [
+    "Kosovo"
+   ],
+   "svg_bytes": 15323,
+   "svg_gzip": 5376,
+   "images": {
+    "relief": 17970,
+    "shade": 28426,
+    "sea": 4546
+   }
+  },
   "rec4371zoxxIbdCYk": {
    "places": [
     "rec4371zoxxIbdCYk"
@@ -3746,6 +3786,44 @@
     "relief": 22904,
     "shade": 6884,
     "sea": 5142
+   }
+  },
+  "reclOUejXNXWpF4mq": {
+   "places": [
+    "reclOUejXNXWpF4mq"
+   ],
+   "names": [
+    "Dominica"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     61.356891,
+     -15.436396,
+     0
+    ],
+    "scale": 16329.728,
+    "translate": [
+     200,
+     150
+    ],
+    "cornerDeg": 0.88
+   },
+   "center": [
+    -61.356891,
+    15.436396
+   ],
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 5877,
+   "svg_gzip": 2370,
+   "images": {
+    "relief": 4240,
+    "shade": 4140,
+    "sea": 4416
    }
   },
   "recm0Hbjg4DCF5Tv5": {
@@ -7667,6 +7745,46 @@
     "sea": 18698
    }
   },
+  "set-06da9ccf1d1b": {
+   "places": [
+    "rec6i3yPeD12Y2gn8",
+    "recdui5YjMtq7oAXZ"
+   ],
+   "names": [
+    "Guatemala",
+    "Mexico"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     101.523777,
+     -23.512356,
+     0
+    ],
+    "scale": 648.365,
+    "translate": [
+     196.594,
+     152.396
+    ],
+    "cornerDeg": 22.61
+   },
+   "center": [
+    -101.523777,
+    23.512356
+   ],
+   "fine": false,
+   "stretch": 4,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 14662,
+   "svg_gzip": 5584,
+   "images": {
+    "relief": 30282,
+    "shade": 12956,
+    "sea": 17036
+   }
+  },
   "set-0f7baface3a2": {
    "places": [
     "recWXnCW6MJeZ6bUK",
@@ -7753,6 +7871,115 @@
     "relief": 27486,
     "shade": 10166,
     "sea": 15920
+   }
+  },
+  "set-18f1845b5825": {
+   "places": [
+    "recU5dUl2dPwEqdFL",
+    "reckMaHEYWWoejWWB"
+   ],
+   "names": [
+    "India",
+    "Myanmar"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -82.356695,
+     -23.40184,
+     0
+    ],
+    "scale": 450.386,
+    "translate": [
+     182.671,
+     144.427
+    ],
+    "cornerDeg": 34.52
+   },
+   "center": [
+    82.356695,
+    23.40184
+   ],
+   "fine": false,
+   "stretch": 9.7,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Junagadh and Manavadar",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Siachen Glacier",
+    "Tirpani Valleys"
+   ],
+   "revealed": [],
+   "svg_bytes": 28253,
+   "svg_gzip": 8789,
+   "images": {
+    "relief": 28172,
+    "shade": 20212,
+    "sea": 13616
+   }
+  },
+  "set-19022dea8d29": {
+   "places": [
+    "recT44ZePtILKis80",
+    "recU5dUl2dPwEqdFL",
+    "recgRmIjeoX6gXqpx",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "Laos",
+    "Myanmar",
+    "Thailand"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -102.696939,
+     -34.24717,
+     0
+    ],
+    "scale": 266.663,
+    "translate": [
+     202.415,
+     132.238
+    ],
+    "cornerDeg": 59.07
+   },
+   "center": [
+    102.696939,
+    34.24717
+   ],
+   "fine": false,
+   "stretch": 32.1,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Siachen Glacier"
+   ],
+   "svg_bytes": 43117,
+   "svg_gzip": 14158,
+   "images": {
+    "relief": 30644,
+    "shade": 20286,
+    "sea": 27706
    }
   },
   "set-198c07e32564": {
@@ -7970,6 +8197,147 @@
     "sea": 27666
    }
   },
+  "set-276407579170": {
+   "places": [
+    "recc6lAeDMPAvqzgM",
+    "recoclLSNGFFGSdhs"
+   ],
+   "names": [
+    "France",
+    "Spain"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     0.699349,
+     -43.537791,
+     0
+    ],
+    "scale": 281.687,
+    "translate": [
+     314.721,
+     105.399
+    ],
+    "cornerDeg": 82.11
+   },
+   "center": [
+    -0.699349,
+    43.537791
+   ],
+   "fine": false,
+   "stretch": 75.9,
+   "scale_km": null,
+   "claimed": [
+    "Lawa Headwaters"
+   ],
+   "revealed": [
+    "Courantyne Headwaters",
+    "W. Sahara",
+    "W. Sahara"
+   ],
+   "svg_bytes": 36478,
+   "svg_gzip": 12521,
+   "images": {
+    "relief": 29144,
+    "shade": 12152,
+    "sea": 26994
+   }
+  },
+  "set-277aa0141225": {
+   "places": [
+    "rec8ero5EVEUaoKvR",
+    "recG1gcLtwu1SpVsk"
+   ],
+   "names": [
+    "Indonesia",
+    "Malaysia"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -115.903904,
+     1.14916,
+     0
+    ],
+    "scale": 383.795,
+    "translate": [
+     185.564,
+     147.486
+    ],
+    "cornerDeg": 40.1
+   },
+   "center": [
+    115.903904,
+    -1.14916
+   ],
+   "fine": false,
+   "stretch": 13.3,
+   "scale_km": null,
+   "claimed": [
+    "North Borneo"
+   ],
+   "revealed": [],
+   "svg_bytes": 22919,
+   "svg_gzip": 8935,
+   "images": {
+    "relief": 29264,
+    "shade": 16202,
+    "sea": 27644
+   }
+  },
+  "set-29699cb355e1": {
+   "places": [
+    "recXBouVfbs726rvF",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "Vietnam"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -103.415659,
+     -35.915998,
+     0
+    ],
+    "scale": 283.7,
+    "translate": [
+     205.087,
+     129.901
+    ],
+    "cornerDeg": 56.02
+   },
+   "center": [
+    103.415659,
+    35.915998
+   ],
+   "fine": false,
+   "stretch": 28.3,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Siachen Glacier"
+   ],
+   "svg_bytes": 40642,
+   "svg_gzip": 13331,
+   "images": {
+    "relief": 27864,
+    "shade": 20090,
+    "sea": 25556
+   }
+  },
   "set-2c01b8461fb0": {
    "places": [
     "rec2Z5ROfmHxTcvVq",
@@ -8073,6 +8441,49 @@
     "relief": 17224,
     "shade": 7462,
     "sea": 12206
+   }
+  },
+  "set-3178c9addfaf": {
+   "places": [
+    "recRhfOTy2FRr0lbx",
+    "recraxEufNuFmMXdb"
+   ],
+   "names": [
+    "Brazil",
+    "Venezuela"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     54.494123,
+     8.915964,
+     0
+    ],
+    "scale": 266.432,
+    "translate": [
+     193.768,
+     149.445
+    ],
+    "cornerDeg": 57.26
+   },
+   "center": [
+    -54.494123,
+    -8.915964
+   ],
+   "fine": false,
+   "stretch": 29.8,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Lawa Headwaters"
+   ],
+   "svg_bytes": 19031,
+   "svg_gzip": 6806,
+   "images": {
+    "relief": 28338,
+    "shade": 9480,
+    "sea": 21496
    }
   },
   "set-36aef38183cb": {
@@ -8195,6 +8606,93 @@
     "relief": 28480,
     "shade": 24320,
     "sea": 16710
+   }
+  },
+  "set-3c6af9f0ddf4": {
+   "places": [
+    "recc6lAeDMPAvqzgM",
+    "reccqMD6d9XQc83jL",
+    "recyfHOzIScvUD7pt"
+   ],
+   "names": [
+    "France",
+    "Italy",
+    "Monaco"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -5.835903,
+     -45.176323,
+     0
+    ],
+    "scale": 249.895,
+    "translate": [
+     309.863,
+     113.521
+    ],
+    "cornerDeg": 92.7
+   },
+   "center": [
+    5.835903,
+    45.176323
+   ],
+   "fine": false,
+   "stretch": 109.9,
+   "scale_km": null,
+   "claimed": [
+    "Lawa Headwaters"
+   ],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Kosovo"
+   ],
+   "svg_bytes": 43686,
+   "svg_gzip": 14984,
+   "images": {
+    "relief": 29844,
+    "shade": 13690,
+    "sea": 29164
+   }
+  },
+  "set-3cfc761faeca": {
+   "places": [
+    "rec486lgrIfSxlBRB",
+    "recvdVLzi2ZoJK90L"
+   ],
+   "names": [
+    "Ghana",
+    "Togo"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     0.79764,
+     -8.05956,
+     0
+    ],
+    "scale": 2033.708,
+    "translate": [
+     197.938,
+     146.152
+    ],
+    "cornerDeg": 7.16
+   },
+   "center": [
+    -0.79764,
+    8.05956
+   ],
+   "fine": true,
+   "stretch": 0.4,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 14768,
+   "svg_gzip": 5489,
+   "images": {
+    "relief": 13982,
+    "shade": 4816,
+    "sea": 4622
    }
   },
   "set-3d1ebe82b5c7": {
@@ -8366,6 +8864,60 @@
     "sea": 23730
    }
   },
+  "set-4c64a1e56ae0": {
+   "places": [
+    "rec69csgIMSP0BDGu",
+    "recSKVOrwnrkARONA",
+    "recnYOvoSM2DSwU2P",
+    "recqL1QZXod6jDrUs"
+   ],
+   "names": [
+    "Finland",
+    "Norway",
+    "Russian Federation",
+    "Sweden"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -91.189773,
+     -66.849401,
+     0
+    ],
+    "scale": 240.259,
+    "translate": [
+     200.837,
+     161.448
+    ],
+    "cornerDeg": 64.86
+   },
+   "center": [
+    91.189773,
+    66.849401
+   ],
+   "fine": false,
+   "stretch": 40.4,
+   "scale_km": null,
+   "claimed": [
+    "Crimea",
+    "Kuril Is."
+   ],
+   "revealed": [
+    "Abkhazia",
+    "Artsakh",
+    "Donetsk People's Republic",
+    "Luhansk People's Republic",
+    "South Ossetia",
+    "Transnistria"
+   ],
+   "svg_bytes": 55905,
+   "svg_gzip": 19353,
+   "images": {
+    "relief": 28162,
+    "shade": 21420,
+    "sea": 30162
+   }
+  },
   "set-516cf42e4786": {
    "places": [
     "rec3S9isvP26op2YP",
@@ -8406,6 +8958,56 @@
     "relief": 28118,
     "shade": 27140,
     "sea": 9272
+   }
+  },
+  "set-563149d51b1c": {
+   "places": [
+    "recN70nDH5xnvmgAg",
+    "recrV2IGyauIN7se1",
+    "recuD4d6xTSGcsVlB"
+   ],
+   "names": [
+    "Armenia",
+    "Iran",
+    "Turkey"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -48.522108,
+     -35.058686,
+     0
+    ],
+    "scale": 572.754,
+    "translate": [
+     220.684,
+     147.683
+    ],
+    "cornerDeg": 27.08
+   },
+   "center": [
+    48.522108,
+    35.058686
+   ],
+   "fine": false,
+   "stretch": 5.8,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [
+    "Abkhazia",
+    "Artsakh",
+    "Crimea",
+    "Golan Heights",
+    "N. Cyprus",
+    "N. Cyprus",
+    "South Ossetia"
+   ],
+   "svg_bytes": 37181,
+   "svg_gzip": 12131,
+   "images": {
+    "relief": 30686,
+    "shade": 20080,
+    "sea": 15386
    }
   },
   "set-58e0c2d4c192": {
@@ -8583,6 +9185,96 @@
     "sea": 4152
    }
   },
+  "set-68a471af29d1": {
+   "places": [
+    "rec69csgIMSP0BDGu",
+    "reccR9wctwkPdnZiy"
+   ],
+   "names": [
+    "Mongolia",
+    "Russian Federation"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -96.397206,
+     -64.236814,
+     0
+    ],
+    "scale": 241.735,
+    "translate": [
+     210.99,
+     153.82
+    ],
+    "cornerDeg": 65.38
+   },
+   "center": [
+    96.397206,
+    64.236814
+   ],
+   "fine": false,
+   "stretch": 41.2,
+   "scale_km": null,
+   "claimed": [
+    "Crimea",
+    "Kuril Is."
+   ],
+   "revealed": [
+    "Abkhazia",
+    "Artsakh",
+    "Donetsk People's Republic",
+    "Luhansk People's Republic",
+    "South Ossetia",
+    "Transnistria"
+   ],
+   "svg_bytes": 55861,
+   "svg_gzip": 19078,
+   "images": {
+    "relief": 28812,
+    "shade": 21760,
+    "sea": 29186
+   }
+  },
+  "set-6a403aefefbe": {
+   "places": [
+    "rec21sFtKUv6z7Z9A",
+    "recTIuOnlE10wY8Kq"
+   ],
+   "names": [
+    "Germany",
+    "Poland"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -14.539998,
+     -51.631378,
+     0
+    ],
+    "scale": 1513.499,
+    "translate": [
+     191.897,
+     140.896
+    ],
+    "cornerDeg": 9.93
+   },
+   "center": [
+    14.539998,
+    51.631378
+   ],
+   "fine": false,
+   "stretch": 0.8,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 25903,
+   "svg_gzip": 9173,
+   "images": {
+    "relief": 27286,
+    "shade": 14772,
+    "sea": 8262
+   }
+  },
   "set-6bc897efa1cc": {
    "places": [
     "recP34IsnD3x453AB",
@@ -8625,6 +9317,62 @@
     "relief": 30130,
     "shade": 23310,
     "sea": 17550
+   }
+  },
+  "set-6c206695aedc": {
+   "places": [
+    "rec3ng40ApF3SLyNo",
+    "rec5izOYzrMUfOVeN",
+    "rec69csgIMSP0BDGu",
+    "recMvARTpLcA3Zno4",
+    "reccnXXvlYyfyG6X8"
+   ],
+   "names": [
+    "Belarus",
+    "Estonia",
+    "Latvia",
+    "Lithuania",
+    "Russian Federation"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -93.514929,
+     -66.066859,
+     0
+    ],
+    "scale": 240.702,
+    "translate": [
+     205.321,
+     163.333
+    ],
+    "cornerDeg": 66.05
+   },
+   "center": [
+    93.514929,
+    66.066859
+   ],
+   "fine": false,
+   "stretch": 42.3,
+   "scale_km": null,
+   "claimed": [
+    "Crimea",
+    "Kuril Is."
+   ],
+   "revealed": [
+    "Abkhazia",
+    "Artsakh",
+    "Donetsk People's Republic",
+    "Luhansk People's Republic",
+    "South Ossetia",
+    "Transnistria"
+   ],
+   "svg_bytes": 56241,
+   "svg_gzip": 19523,
+   "images": {
+    "relief": 28242,
+    "shade": 21734,
+    "sea": 29946
    }
   },
   "set-7eca5f3831d6": {
@@ -8711,6 +9459,48 @@
     "sea": 16724
    }
   },
+  "set-88a79f35464e": {
+   "places": [
+    "rec2SYysDKkhFMaqY",
+    "recmcEaQRUhE2DkOj",
+    "recoRXPVK4SExszZ8"
+   ],
+   "names": [
+    "Cook Islands",
+    "New Zealand",
+    "Tonga"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -172.939538,
+     41.63817,
+     0
+    ],
+    "scale": 376.303,
+    "translate": [
+     118.074,
+     220.785
+    ],
+    "cornerDeg": 56.82
+   },
+   "center": [
+    172.939538,
+    -41.63817
+   ],
+   "fine": false,
+   "stretch": 29.3,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 5938,
+   "svg_gzip": 2422,
+   "images": {
+    "relief": 8406,
+    "shade": 3968,
+    "sea": 20442
+   }
+  },
   "set-8e7403dc82c3": {
    "places": [
     "rec3S9isvP26op2YP",
@@ -8791,6 +9581,55 @@
     "relief": 28860,
     "shade": 28356,
     "sea": 11000
+   }
+  },
+  "set-9937f61c7535": {
+   "places": [
+    "recErwkQpwxGCXW5F",
+    "recJtQF91RulZ6bYa",
+    "recc6lAeDMPAvqzgM",
+    "recqbHocuBCxgomYh"
+   ],
+   "names": [
+    "France",
+    "Netherlands",
+    "United Kingdom",
+    "United States"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     98.444516,
+     -47.8148,
+     0
+    ],
+    "scale": 169.381,
+    "translate": [
+     172.9,
+     165.257
+    ],
+    "cornerDeg": 112.01
+   },
+   "center": [
+    -98.444516,
+    47.8148
+   ],
+   "fine": false,
+   "stretch": 219.9,
+   "scale_km": null,
+   "claimed": [
+    "Lawa Headwaters"
+   ],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Kosovo"
+   ],
+   "svg_bytes": 47553,
+   "svg_gzip": 17086,
+   "images": {
+    "relief": 29214,
+    "shade": 16346,
+    "sea": 29134
    }
   },
   "set-a00a921b606b": {
@@ -8886,6 +9725,59 @@
     "sea": 14408
    }
   },
+  "set-b21607be8913": {
+   "places": [
+    "recgRmIjeoX6gXqpx",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "Thailand"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -103.148702,
+     -35.480701,
+     0
+    ],
+    "scale": 267.039,
+    "translate": [
+     203.916,
+     126.523
+    ],
+    "cornerDeg": 60.17
+   },
+   "center": [
+    103.148702,
+    35.480701
+   ],
+   "fine": false,
+   "stretch": 33.6,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Siachen Glacier"
+   ],
+   "svg_bytes": 42847,
+   "svg_gzip": 14142,
+   "images": {
+    "relief": 30486,
+    "shade": 20238,
+    "sea": 28132
+   }
+  },
   "set-b54b67f9d889": {
    "places": [
     "rec5W1xkVmT7Vt4U9",
@@ -8924,6 +9816,375 @@
     "relief": 23512,
     "shade": 10510,
     "sea": 8668
+   }
+  },
+  "set-b65527b01fd5": {
+   "places": [
+    "recj6khviR1QjrfO6",
+    "recraxEufNuFmMXdb"
+   ],
+   "names": [
+    "Brazil",
+    "Peru"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     56.023627,
+     10.509267,
+     0
+    ],
+    "scale": 336.707,
+    "translate": [
+     204.698,
+     128.317
+    ],
+    "cornerDeg": 46.75
+   },
+   "center": [
+    -56.023627,
+    -10.509267
+   ],
+   "fine": false,
+   "stretch": 18.7,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Lawa Headwaters"
+   ],
+   "svg_bytes": 14458,
+   "svg_gzip": 5422,
+   "images": {
+    "relief": 28508,
+    "shade": 9562,
+    "sea": 16222
+   }
+  },
+  "set-b76e6ca9a186": {
+   "places": [
+    "recPNNWU1DRT9M3PN",
+    "reckVtwkyIZ6ZEiyX"
+   ],
+   "names": [
+    "Egypt",
+    "Sudan"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -29.888281,
+     -19.596019,
+     0
+    ],
+    "scale": 570.039,
+    "translate": [
+     198.037,
+     156.411
+    ],
+    "cornerDeg": 25.9
+   },
+   "center": [
+    29.888281,
+    19.596019
+   ],
+   "fine": false,
+   "stretch": 5.3,
+   "scale_km": null,
+   "claimed": [
+    "Abyei"
+   ],
+   "revealed": [
+    "Gaza",
+    "Golan Heights",
+    "West Bank"
+   ],
+   "svg_bytes": 22869,
+   "svg_gzip": 7154,
+   "images": {
+    "relief": 27570,
+    "shade": 10952,
+    "sea": 8948
+   }
+  },
+  "set-bbd7add6aac0": {
+   "places": [
+    "reckMaHEYWWoejWWB",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "India"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -96.4015,
+     -33.614893,
+     0
+    ],
+    "scale": 283.018,
+    "translate": [
+     201.226,
+     146.063
+    ],
+    "cornerDeg": 53.18
+   },
+   "center": [
+    96.4015,
+    33.614893
+   ],
+   "fine": false,
+   "stretch": 25.1,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Junagadh and Manavadar",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Siachen Glacier",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [],
+   "svg_bytes": 44408,
+   "svg_gzip": 14320,
+   "images": {
+    "relief": 28814,
+    "shade": 20528,
+    "sea": 26134
+   }
+  },
+  "set-bc3ac8742854": {
+   "places": [
+    "recSxdvoRqQzgnOln",
+    "recraxEufNuFmMXdb"
+   ],
+   "names": [
+    "Brazil",
+    "Colombia"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     55.596044,
+     8.955671,
+     0
+    ],
+    "scale": 285.455,
+    "translate": [
+     207.18,
+     141.424
+    ],
+    "cornerDeg": 54.39
+   },
+   "center": [
+    -55.596044,
+    -8.955671
+   ],
+   "fine": false,
+   "stretch": 26.4,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Lawa Headwaters"
+   ],
+   "svg_bytes": 16103,
+   "svg_gzip": 5987,
+   "images": {
+    "relief": 28912,
+    "shade": 9204,
+    "sea": 19578
+   }
+  },
+  "set-bf71d8971935": {
+   "places": [
+    "rec9PuZGLQ7rzpJc3",
+    "recraxEufNuFmMXdb"
+   ],
+   "names": [
+    "Brazil",
+    "Guyana"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     53.362099,
+     10.233943,
+     0
+    ],
+    "scale": 310.928,
+    "translate": [
+     198.713,
+     137.32
+    ],
+    "cornerDeg": 49.19
+   },
+   "center": [
+    -53.362099,
+    -10.233943
+   ],
+   "fine": false,
+   "stretch": 20.9,
+   "scale_km": null,
+   "claimed": [
+    "Courantyne Headwaters"
+   ],
+   "revealed": [
+    "Lawa Headwaters"
+   ],
+   "svg_bytes": 15215,
+   "svg_gzip": 5686,
+   "images": {
+    "relief": 30298,
+    "shade": 8920,
+    "sea": 17582
+   }
+  },
+  "set-c367225e62d2": {
+   "places": [
+    "recWXnCW6MJeZ6bUK",
+    "rechn0RPKmrKUhPEm",
+    "reckyAadd2Rn93IiW"
+   ],
+   "names": [
+    "Côte d’Ivoire",
+    "Guinea",
+    "Liberia"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     8.088042,
+     -8.50344,
+     0
+    ],
+    "scale": 1406.204,
+    "translate": [
+     216.469,
+     150.687
+    ],
+    "cornerDeg": 10.76
+   },
+   "center": [
+    -8.088042,
+    8.50344
+   ],
+   "fine": false,
+   "stretch": 0.9,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 14757,
+   "svg_gzip": 5334,
+   "images": {
+    "relief": 15558,
+    "shade": 5904,
+    "sea": 6494
+   }
+  },
+  "set-c3dd68dfa4d1": {
+   "places": [
+    "recRhfOTy2FRr0lbx",
+    "recSxdvoRqQzgnOln",
+    "recraxEufNuFmMXdb"
+   ],
+   "names": [
+    "Brazil",
+    "Colombia",
+    "Venezuela"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     56.534416,
+     7.551015,
+     0
+    ],
+    "scale": 266.254,
+    "translate": [
+     202.382,
+     143.262
+    ],
+    "cornerDeg": 57.46
+   },
+   "center": [
+    -56.534416,
+    -7.551015
+   ],
+   "fine": false,
+   "stretch": 30.1,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [
+    "Courantyne Headwaters",
+    "Lawa Headwaters"
+   ],
+   "svg_bytes": 18316,
+   "svg_gzip": 6540,
+   "images": {
+    "relief": 28210,
+    "shade": 9502,
+    "sea": 21640
+   }
+  },
+  "set-c6a4bd722cb0": {
+   "places": [
+    "recT44ZePtILKis80",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "Laos"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -103.30532,
+     -36.157892,
+     0
+    ],
+    "scale": 320.057,
+    "translate": [
+     205.325,
+     140.709
+    ],
+    "cornerDeg": 47.9
+   },
+   "center": [
+    103.30532,
+    36.157892
+   ],
+   "fine": false,
+   "stretch": 19.7,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Siachen Glacier"
+   ],
+   "svg_bytes": 36815,
+   "svg_gzip": 12093,
+   "images": {
+    "relief": 28128,
+    "shade": 19844,
+    "sea": 22174
    }
   },
   "set-cca1b5694fac": {
@@ -8970,6 +10231,48 @@
     "relief": 28876,
     "shade": 23228,
     "sea": 27604
+   }
+  },
+  "set-ccade9d49984": {
+   "places": [
+    "recG1gcLtwu1SpVsk",
+    "recUkxf17bTf4I3C7"
+   ],
+   "names": [
+    "Brunei",
+    "Malaysia"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -110.606895,
+     -3.997828,
+     0
+    ],
+    "scale": 915.45,
+    "translate": [
+     214.182,
+     151.946
+    ],
+    "cornerDeg": 16.49
+   },
+   "center": [
+    110.606895,
+    3.997828
+   ],
+   "fine": false,
+   "stretch": 2.1,
+   "scale_km": 500,
+   "claimed": [
+    "North Borneo"
+   ],
+   "revealed": [],
+   "svg_bytes": 22135,
+   "svg_gzip": 8235,
+   "images": {
+    "relief": 29180,
+    "shade": 17954,
+    "sea": 22372
    }
   },
   "set-d2dcf53a8ebe": {
@@ -9067,6 +10370,60 @@
     "relief": 29038,
     "shade": 22030,
     "sea": 9258
+   }
+  },
+  "set-e1ad22d53604": {
+   "places": [
+    "recbbpkjYhL8k3oWf",
+    "reckMaHEYWWoejWWB",
+    "rectAmnj7NE1xpoSX"
+   ],
+   "names": [
+    "Bangladesh",
+    "India",
+    "Nepal"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -80.160151,
+     -23.894051,
+     0
+    ],
+    "scale": 451.086,
+    "translate": [
+     183.749,
+     140.025
+    ],
+    "cornerDeg": 34.69
+   },
+   "center": [
+    80.160151,
+    23.894051
+   ],
+   "fine": false,
+   "stretch": 9.8,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Junagadh and Manavadar",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Siachen Glacier",
+    "Tirpani Valleys"
+   ],
+   "revealed": [],
+   "svg_bytes": 28597,
+   "svg_gzip": 8864,
+   "images": {
+    "relief": 27996,
+    "shade": 19956,
+    "sea": 13564
    }
   },
   "set-e24caf64cabf": {
@@ -9253,6 +10610,88 @@
     "sea": 16890
    }
   },
+  "set-ec477c0ddf4d": {
+   "places": [
+    "recU5dUl2dPwEqdFL",
+    "rectAmnj7NE1xpoSX"
+   ],
+   "names": [
+    "Bangladesh",
+    "Myanmar"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -95.434501,
+     -21.612792,
+     0
+    ],
+    "scale": 705.611,
+    "translate": [
+     208.622,
+     121.407
+    ],
+    "cornerDeg": 22.44
+   },
+   "center": [
+    95.434501,
+    21.612792
+   ],
+   "fine": false,
+   "stretch": 3.9,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [
+    "Arunachal Pradesh"
+   ],
+   "svg_bytes": 25682,
+   "svg_gzip": 8977,
+   "images": {
+    "relief": 29374,
+    "shade": 21814,
+    "sea": 12080
+   }
+  },
+  "set-ed375e7b148f": {
+   "places": [
+    "recErwkQpwxGCXW5F",
+    "recdui5YjMtq7oAXZ"
+   ],
+   "names": [
+    "Mexico",
+    "United States"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     103.034163,
+     -40.944473,
+     0
+    ],
+    "scale": 209.353,
+    "translate": [
+     211.103,
+     170.486
+    ],
+    "cornerDeg": 80.79
+   },
+   "center": [
+    -103.034163,
+    40.944473
+   ],
+   "fine": false,
+   "stretch": 72.4,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 31565,
+   "svg_gzip": 12043,
+   "images": {
+    "relief": 28618,
+    "shade": 14774,
+    "sea": 28544
+   }
+  },
   "set-f01a816a324e": {
    "places": [
     "recc6lAeDMPAvqzgM",
@@ -9421,6 +10860,63 @@
     "relief": 17514,
     "shade": 6952,
     "sea": 8818
+   }
+  },
+  "set-fd98195d9a06": {
+   "places": [
+    "recT44ZePtILKis80",
+    "recXBouVfbs726rvF",
+    "recgRmIjeoX6gXqpx",
+    "recpwmL8YQeWhEyJ1"
+   ],
+   "names": [
+    "China",
+    "Laos",
+    "Thailand",
+    "Vietnam"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -103.28362,
+     -34.516677,
+     0
+    ],
+    "scale": 267.148,
+    "translate": [
+     204.317,
+     130.824
+    ],
+    "cornerDeg": 59.53
+   },
+   "center": [
+    103.28362,
+    34.516677
+   ],
+   "fine": false,
+   "stretch": 32.7,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Taiwan",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Siachen Glacier"
+   ],
+   "svg_bytes": 42943,
+   "svg_gzip": 14141,
+   "images": {
+    "relief": 30466,
+    "shade": 20168,
+    "sea": 28022
    }
   }
  }

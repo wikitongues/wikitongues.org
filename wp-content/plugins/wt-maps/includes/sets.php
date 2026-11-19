@@ -38,17 +38,20 @@ function wt_maps_set_key( array $place_ids ): string {
 }
 
 /**
- * Places a language's map draws: its focus when it has one, else its territories.
+ * Places a language's map draws: its focus when it has one, else its
+ * territories, else its nations of origin (Eteocypriot: no territories, origin
+ * Cyprus).
  *
  * @param Shape_Table  $table              The shape table.
  * @param string       $language_record_id The language's record ID ('' if none).
  * @param list<string> $territory_ids      Record IDs of its published territory links.
+ * @param list<string> $origin_ids         Record IDs of its published nations of origin.
  * @return list<string> Sorted record IDs.
  */
-function wt_maps_language_places( Shape_Table $table, string $language_record_id, array $territory_ids ): array {
+function wt_maps_language_places( Shape_Table $table, string $language_record_id, array $territory_ids, array $origin_ids = array() ): array {
 	$places = '' !== $language_record_id ? $table->focus( $language_record_id ) : array();
 	if ( array() === $places ) {
-		$places = $territory_ids;
+		$places = array() !== $territory_ids ? $territory_ids : $origin_ids;
 	}
 
 	$places = array_values( array_unique( array_filter( $places, 'is_string' ) ) );
@@ -63,7 +66,7 @@ function wt_maps_language_places( Shape_Table $table, string $language_record_id
  * partial one, and is listed under `unmapped`.
  *
  * @param Shape_Table                                                      $table     The shape table.
- * @param list<array{record_id: string, title: string, territories: list<string>}> $languages Published languages; `territories` are record IDs.
+ * @param list<array{record_id: string, title: string, territories: list<string>, origins?: list<string>}> $languages Published languages; `territories` and `origins` are record IDs.
  * @return array{sets: array<string, array{places: list<string>, languages: int}>, unmapped: list<string>, no_places: int}
  */
 function wt_maps_plan_sets( Shape_Table $table, array $languages ): array {
@@ -72,7 +75,7 @@ function wt_maps_plan_sets( Shape_Table $table, array $languages ): array {
 	$no_places = 0;
 
 	foreach ( $languages as $language ) {
-		$places = wt_maps_language_places( $table, $language['record_id'], $language['territories'] );
+		$places = wt_maps_language_places( $table, $language['record_id'], $language['territories'], $language['origins'] ?? array() );
 		if ( array() === $places ) {
 			++$no_places;
 			continue;

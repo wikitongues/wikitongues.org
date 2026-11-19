@@ -6,7 +6,7 @@ Built so far: the shape table, the `doctor` and `export` commands, the build (al
 
 ## Map sets and the build
 
-A map is built once per **set of places**, not per language. A language's set is its focus places when it has a focus, and otherwise its published territory links. The places are kept as record IDs, because the sync creates places separately on each environment, so their post IDs differ. A set with one place is keyed by that place's record ID (`recguDPgV3cIXLO34`). A set with several places is keyed `set-` plus 12 hex characters of the SHA-1 of the sorted IDs (`wt_maps_set_key()`, in PHP only). A language whose set includes a place with no shape gets no map, never a partial one.
+A map is built once per **set of places**, not per language. A language's set is its focus places when it has a focus, otherwise its published territory links, and when it has none of those, its nations of origin (Eteocypriot: no territory links, origin Cyprus). The places are kept as record IDs, because the sync creates places separately on each environment, so their post IDs differ. A set with one place is keyed by that place's record ID (`recguDPgV3cIXLO34`). A set with several places is keyed `set-` plus 12 hex characters of the SHA-1 of the sorted IDs (`wt_maps_set_key()`, in PHP only). A language whose set includes a place with no shape gets no map, never a partial one.
 
 ```bash
 cd wp-content/plugins/wt-maps/build
@@ -31,7 +31,7 @@ Every raster step reads the projection that `render.mjs` staged, so an SVG and i
 
 **What the renderer adds** (`WT\Maps\Renderer`, see below). The SVG is shared by every language with that set, so it has no primary or secondary styling. Highlighted shapes and rings have `data-place` (the record ID). A contested area that a place claims has `hatch-claimed` and `data-claimants` (the record IDs claiming it). PHP adds the `primary`/`secondary` classes per language, makes the relative image hrefs (`shade/<key>.webp`) absolute, and writes the language's own `<title>` and `<desc>`. The page needs the shared `#fog`, `#fog-edge` and hatch definitions, which are in the prototype template for now.
 
-**Sizes (2026-11-19, local data).** There are 237 maps for 7,582 languages; 40 have several places, and 507 languages have no territory link. With images they come to 10.8 MB, and the SVGs alone to 1.39 MB gzipped (median 6 KB). A full build took about 50 minutes on the first run, mostly fetching terrain tiles; with the tiles cached, about half that. The publish step encodes each image at the first quality that fits the 30 KB budget, stepping down and then shrinking to 600×450, and records the bytes in `index.json`. Two maps are still over budget. Tajikistan's hillshade is 32.9 KB even at the lowest step. French's six-place set (Andorra, Djibouti, France, Lebanon, Martinique, Monaco) has a 20.9 KB SVG.
+**Sizes (2026-11-19, local data).** There are 269 maps for 8,073 languages; 70 have several places. 491 of those languages have no territory link and are drawn from their nations of origin; 16 languages have neither and get no map. With images the maps come to 13.0 MB, and the SVGs alone to 1.71 MB gzipped (median 5 KB). A full build took about 50 minutes on the first run, mostly fetching terrain tiles; with the tiles cached, about half that. The publish step encodes each image at the first quality that fits the 30 KB budget, stepping down and then shrinking to 600×450, and records the bytes in `index.json`. Two maps are still over budget. Tajikistan's hillshade is 32.9 KB even at the lowest step. French's six-place set (Andorra, Djibouti, France, Lebanon, Martinique, Monaco) has a 20.9 KB SVG.
 
 **Rebuilding.** `node build.mjs` rebuilds every set; `--only=<keys>` limits it. Unchanged maps come out byte-identical, so the diff shows only what changed. A map no language uses any more stays in `maps/` until it is removed by hand: `wp wt-maps doctor` lists those, and lists any set in use that has no built map.
 
@@ -97,7 +97,7 @@ It exits with an error when anything but the informational list is non-empty. Ru
 | Argument | Default | |
 |---|---|---|
 | `language` | the current post | language post ID |
-| `territories` | the language's focus, else its territory links | place post IDs to draw instead |
+| `territories` | the language's focus, else its territory links, else its nations of origin | place post IDs to draw instead |
 | `primary` | its `nations_of_origin` | post IDs to highlight as primary |
 | `class` | | extra class on the figure |
 | `style` | the setting | `light-focused`, `light-full`, `dark-full`, `dark-focused` |
