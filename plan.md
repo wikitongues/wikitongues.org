@@ -602,6 +602,17 @@ Each language page should say three things about place, each edited once in Airt
 | **Subdivision**, where relevant | the part of a nation it belongs to (`Hawaii_US`, `Guam_US`, `Oaxaca_MX`) | Subject [Territories] → Territories | not synced yet | Phase B |
 | **Also spoken in** | everywhere else of note: cross-border communities, second-language use, official status, diaspora | nothing yet | `territories`: today a February 2026 copy that matches the origin for 7,550 of 7,570 languages | Phase C |
 
+**The model (decided 2026-11-19).** The table above is how the work was split; this is what the data means. It replaces "three separate lists" with one list of places and a role on each:
+
+- **Territories** are the canonical list of where a language is spoken by a local population, at any level. Each entry is an **ISO 3166-1 place**: a sovereign state or a coded territory such as Guam, Greenland, New Caledonia or Macao. Tahitian's territory is French Polynesia, not France.
+- **Origin** designates one (rarely more) of those territories as where the language comes from. Its purpose is semantic. Every origin is also a territory, so the WordPress sync writes `territories` as the source list plus the origins, every time, and a re-run changes nothing.
+- **Also spoken in** is derived: territories minus origins. It is never stored. The sidebar and summary sentence already compute it this way.
+- **Nation** is derived from the territory (each territory object holds its nation, phase B), never entered on the language. "Territory of origin: Guam, United States."
+- **Subdivisions** are below ISO level (Hawaii, Oaxaca, Catalonia) and are only a map focus: when a language has one, its map draws the subdivision in place of its territories. Guam and the Northern Mariana Islands are territories under this model, not subdivisions; the `Guam_US` example above predates it.
+- **Maps** draw the territories, with origins as the primary places, unless a subdivision overrides.
+
+What this means for the data (local check, 2026-11-19): the February `territories` copy already fits for 7,522 of 7,582 languages (it contains their origins). Of the 60 that don't, about 50 are ISO-coded places whose origin was recorded at sovereign level (New Caledonia, French Polynesia, Wallis and Futuna, Mayotte, Réunion, French Guiana → France; Guam and the Northern Mariana Islands → United States; Greenland → Denmark; Hong Kong and Macao → China). Their origin should move to the coded territory. The rest are phase A's old nation errors still sitting in `territories` (Yevanic, Judeo-Berber, Khalaj, Western Armenian, Northern Kurdish). 82 languages have more than one origin (French five, Standard Arabic six); most should come down to one. Airtable's Nation of Origin links only the Nations table (204 sovereign entries), so an origin at Guam or New Caledonia needs the presence table below, or a link that can reach the Territories table.
+
 **How the sync works today.** Make's "Wordpress Production Sync - Languages" polls the Languages table's Website Export view hourly, up to 50 records a run, triggered by `last_modified`, and posts to `wt-airtable-sync`, which resolves names to WordPress posts by exact title. A bulk edit of N languages takes about N/50 hours to reach the site. `last_modified` only moves when a field on `Last Modified`'s list changes; Nation of Origin joined that list on 2026-11-18, and a field added for phase B (Subject [Territories]) must join it too. Details in [airtable-sync.md](docs/airtable-sync.md#languages).
 
 ##### Phase A: finish country of origin
@@ -709,11 +720,12 @@ Each language page should say three things about place, each edited once in Airt
 After the maps launch.
 
 - [ ] **Separate origin from presence in Subject [Territories]** (found 2026-11-18). The field mixes two meanings: for Chamorro it is where the language comes from (Guam, Northern Mariana Islands); for French it lists 15 places where French is spoken (Jersey, U.S. Virgin Islands, Saint Martin, the French overseas territories). Shown as "Territory of origin", the second kind is wrong. Decide which links are origins, move the rest to "also spoken in", and only then backfill the roughly 2,757 languages that already have territories. Until then, phase B syncs only the launch cases, whose links are origins.
-- [ ] **Decide** how Airtable stores it: a presence table (one row per language and nation, with type, population or share, and source) or a single link field on Languages. The presence table is the one that can show second-language use.
+- [ ] **Decide** how Airtable stores it: a presence table (one row per language and ISO 3166-1 place, with a role of origin or present, population or share, and source) or a single link field on Languages. The presence table fits the model above: origins become rows with the origin role, and it is the one that can show second-language use.
 - [ ] Seed it from open sources, recording the source on every row: Glottolog's country lists (2,658 nation pairs beyond origin, across 1,548 languages), the Nations table's official and regionally official columns (318 pairs), and Unicode CLDR's population shares for major languages, including second-language use.
 - [ ] Ask SIL International about licensing Ethnologue's language-in-country data, which has first- and second-language populations per country. Its terms forbid redistributing the raw data, so nothing from Ethnologue is used without an agreement.
 - [ ] Make: sync it with the language, or as its own scenario if it's a table.
-- [ ] WordPress: `territories` becomes "also spoken in", synced from Airtable in place of the February copy; the sidebar and summary sentence show it.
+- [ ] WordPress: `territories` becomes the synced list of every place the language is spoken, origins included, in place of the February copy; \"also spoken in\" stays derived (territories minus origins). Before the sync changes shape, ship code that reads both: the maps draw territories with origins primary (their current origins-only fallback then goes), and territory pages list every language present, origin languages first.
+- [ ] Move the ~50 sovereign-level origins to their coded territory (New Caledonia, French Polynesia, Guam, Greenland, Macao…), and review the 82 languages with more than one origin. Airtable, sandbox first.
 
 ##### Out of scope
 
