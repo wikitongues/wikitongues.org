@@ -651,6 +651,7 @@ Two related gaps:
 5. Whether WordPress may edit synced archive data at all, or synced fields become read-only in wp-admin. Applies to every field `wt-airtable-sync` writes.
 6. Nagorno-Karabakh: a WordPress page with no Airtable record.
 7. The 2,641 subdivision proposals for languages with an origin and no subdivision, to review under the new rules.
+8. Phase A loose ends: check Ngundu, Darkhat and Korean Sign Language; 42 multi-origin records list their origins in reverse order; Slovenian Sign Language has no origin in Airtable; `yug` and `yim` have no WordPress post; six records share the identifier `wart`.
 
 ##### Out of scope
 
