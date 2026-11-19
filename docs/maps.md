@@ -6,7 +6,7 @@ Built so far: the shape table, the `doctor` and `export` commands, the build (al
 
 ## Map sets and the build
 
-A map is built once per **set of places**, not per language. A language's set is its focus places when it has a focus, otherwise its published territory links, and when it has none of those, its nations of origin (Eteocypriot: no territory links, origin Cyprus). The places are kept as record IDs, because the sync creates places separately on each environment, so their post IDs differ. A set with one place is keyed by that place's record ID (`recguDPgV3cIXLO34`). A set with several places is keyed `set-` plus 12 hex characters of the SHA-1 of the sorted IDs (`wt_maps_set_key()`, in PHP only). A language whose set includes a place with no shape gets no map, never a partial one.
+A map is built once per **set of places**, not per language. A language's set is its focus places when it has a focus, otherwise its published territory links, and when it has none of those, its nations of origin (Eteocypriot: no territory links, origin Cyprus). The origins fallback is temporary: plan 6.8 has the sync write territories as presence plus origins, after which every origin is a territory and the fallback is removed. The places are kept as record IDs, because the sync creates places separately on each environment, so their post IDs differ. A set with one place is keyed by that place's record ID (`recguDPgV3cIXLO34`). A set with several places is keyed `set-` plus 12 hex characters of the SHA-1 of the sorted IDs (`wt_maps_set_key()`, in PHP only). A language whose set includes a place with no shape gets no map, never a partial one.
 
 ```bash
 cd wp-content/plugins/wt-maps/build

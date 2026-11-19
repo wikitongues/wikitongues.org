@@ -42,6 +42,10 @@ function wt_maps_set_key( array $place_ids ): string {
  * territories, else its nations of origin (Eteocypriot: no territories, origin
  * Cyprus).
  *
+ * The origins fallback is temporary (plan 6.8): once the sync writes territories
+ * as presence plus origins, every origin is a territory and it never applies.
+ * Remove it then; a rebuild and `wp wt-maps doctor` should show no change.
+ *
  * @param Shape_Table  $table              The shape table.
  * @param string       $language_record_id The language's record ID ('' if none).
  * @param list<string> $territory_ids      Record IDs of its published territory links.
