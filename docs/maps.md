@@ -2,7 +2,7 @@
 
 Locator maps for language pages, plan item 3.2. The full spec, with the style, projection and contested-area decisions, is the 3.2 section of `plan.md`. This file describes what is built.
 
-Built so far: the shape table, the `doctor` and `export` commands, and the build that turns map sets into SVGs and terrain images (run for the three launch maps). Not yet built: the PHP renderer `wt_map()`, the `[wt_map]` shortcode, the style tokens, and the sidebar placement.
+Built so far: the shape table, the `doctor` and `export` commands, the build (run for the three launch maps), the renderer `wt_map()` with the `[wt_map]` shortcode, the styles, the settings page, and the sidebar placement. Not yet built: maps for every set, the claims table, credits, and the review tooling.
 
 ## Map sets and the build
 
@@ -29,7 +29,7 @@ Every raster step reads the projection that `render.mjs` stored in `index.json`,
 
 `maps/` is committed and deployed. `build/` is committed but not deployed (`.rsync-filter`), and `build/cache/` is gitignored.
 
-**What PHP adds at render time.** The SVG is shared by every language with that set, so it has no primary or secondary styling. Highlighted shapes and rings have `data-place` (the record ID). A contested area that a place claims has `hatch-claimed` and `data-claimants` (the record IDs claiming it). PHP adds the `primary`/`secondary` classes per language, makes the relative image hrefs (`shade/<key>.webp`) absolute, and writes the language's own `<title>` and `<desc>`. The page needs the shared `#fog`, `#fog-edge` and hatch definitions, which are in the prototype template for now.
+**What the renderer adds** (`WT\Maps\Renderer`, see below). The SVG is shared by every language with that set, so it has no primary or secondary styling. Highlighted shapes and rings have `data-place` (the record ID). A contested area that a place claims has `hatch-claimed` and `data-claimants` (the record IDs claiming it). PHP adds the `primary`/`secondary` classes per language, makes the relative image hrefs (`shade/<key>.webp`) absolute, and writes the language's own `<title>` and `<desc>`. The page needs the shared `#fog`, `#fog-edge` and hatch definitions, which are in the prototype template for now.
 
 **Sizes (2026-11-19, local data).** There are 237 sets for 7,582 languages; 40 sets have several places, and 507 languages have no territory link. All 237 SVGs come to 3.9 MB raw, 1.39 MB gzipped, with a median of 6 KB gzipped. One set is over the 20 KB budget: Andorra, Djibouti, France, Lebanon, Martinique and Monaco, at 20.9 KB. The three launch maps are 2.5–2.7 KB of SVG plus 1–14 KB per image, 108 KB on disk in all.
 
@@ -87,3 +87,29 @@ It exits with an error when anything but the informational list is non-empty. Ru
 2. Edit `data/shapes.json`: key on the place's Airtable record ID (on its post as `_airtable_record_id`, or in Airtable).
 3. Run `wp wt-maps doctor` and `composer test` (a test checks the committed table is clean).
 4. Rebuild the affected maps in the same PR, once the build exists.
+
+## Rendering
+
+`wt_map( $args )` returns a language's map as `<figure class="wt-map wt-map--<style>">`, or `''` when no map has been built for its set of places. The first map on a page is preceded by the shared `<svg class="wt-map-defs">` (hatches, the fog filter and its edge fade), which every map's CSS refers to by ID.
+
+| Argument | Default | |
+|---|---|---|
+| `language` | the current post | language post ID |
+| `territories` | the language's focus, else its territory links | place post IDs to draw instead |
+| `primary` | its `nations_of_origin` | post IDs to highlight as primary |
+| `class` | | extra class on the figure |
+| `style` | the setting | `light-focused`, `light-full`, `dark-full`, `dark-focused` |
+
+`[wt_map language="123" territories="1,2" primary="1" style="dark-full"]` takes the same arguments, with comma-separated IDs.
+
+**Roles.** Places that are also countries of origin are primary and the rest secondary. If none is a country of origin, all are primary (Chamorro: nation United States, map of Guam and the Northern Mariana Islands). A contested area's hatch follows its strongest claimant on the map.
+
+`WT\Maps\Renderer::decorate()` adds the roles, the absolute image URLs, and the language's `<title>` ("Where Hawaiian is spoken", from `standard_name`) and `<desc>`, all through `WP_HTML_Tag_Processor`. The result is cached in the object cache (group `wt_maps`), keyed on the set, the roles, the text, the class, `Renderer::VERSION` and the SVG's modification time. Bump `Renderer::VERSION` when `decorate()` changes its output.
+
+**Placement.** `modules/languages/meta--languages-single.php` prints `wt_maps_sidebar_map()` after the summary and before the endonyms, outside the mobile accordion, so it stays open on phones.
+
+**Settings → Maps** (`wt_maps` option): turn the sidebar map off, and pick the style. Both take effect without a deploy. The defaults are on and Light focused.
+
+**Styles.** `stylus/require/wt-maps.styl` in the theme. The rules were translated mechanically from the prototype page's CSS, so each style can be compared rule for rule with what was reviewed. The tokens use the site palette (`$parchment`, `$blue()`, `$yellow`) and sit on both the figure and the defs, because hatch patterns take their styles from where they are defined.
+
+**Tests.** `RendererTest` covers the roles, the description and `decorate()`. Core isn't in the repository, so `decorate()` is tested only where a local WordPress install sits at the repository root, and the test skips in CI.
