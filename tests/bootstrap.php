@@ -80,6 +80,7 @@ require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-s
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-place-sync.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-table.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/sets.php';
 
 // events-filter.php calls get_current_datetime() → wp_date() at file scope,
 // before WP_Mock has stubbed it. Define a shim so the include doesn't fatal.
