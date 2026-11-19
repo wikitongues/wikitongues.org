@@ -29,7 +29,7 @@ final class Renderer {
 	/**
 	 * Bumped when decorate() changes its output, so cached maps are rebuilt.
 	 */
-	public const VERSION = '1';
+	public const VERSION = '2';
 
 	public const STYLES = array(
 		'light-focused' => 'Light focused',
@@ -59,11 +59,16 @@ final class Renderer {
 	/**
 	 * The map's description: where it is centred and what else is marked.
 	 *
+	 * With `$max`, a role with more places than that is counted instead of
+	 * listed, for the visible caption: the full list is in the sidebar already.
+	 * Names may carry a leading "the" (wt_prefix_the()); it is ignored in sorting.
+	 *
 	 * @param array<string, string> $roles Place record ID → role.
 	 * @param array<string, string> $names Place record ID → name.
+	 * @param int                   $max   Most places to name per role.
 	 * @return string
 	 */
-	public static function describe( array $roles, array $names ): string {
+	public static function describe( array $roles, array $names, int $max = PHP_INT_MAX ): string {
 		$by_role = array(
 			'primary'   => array(),
 			'secondary' => array(),
@@ -73,18 +78,39 @@ final class Renderer {
 				$by_role[ $role ][] = $names[ $place ];
 			}
 		}
-		sort( $by_role['primary'] );
-		sort( $by_role['secondary'] );
+		$sort_key = static fn( string $name ): string => (string) preg_replace( '/^the /', '', $name );
+		foreach ( $by_role as $role => $list ) {
+			usort( $list, static fn( string $a, string $b ): int => strcmp( $sort_key( $a ), $sort_key( $b ) ) );
+			$by_role[ $role ] = $list;
+		}
 
-		if ( array() === $by_role['primary'] ) {
+		$primary   = $by_role['primary'];
+		$secondary = $by_role['secondary'];
+		if ( array() === $primary ) {
 			return '';
 		}
+		if ( count( $primary ) > $max ) {
+			return sprintf( 'Map of the %d places where it is spoken.', count( $primary ) + count( $secondary ) );
+		}
 
-		$text = 'Map centred on ' . self::list_names( $by_role['primary'] );
-		if ( array() !== $by_role['secondary'] ) {
-			$text .= ', with ' . self::list_names( $by_role['secondary'] ) . ' also marked';
+		$text = 'Map centred on ' . self::list_names( $primary );
+		if ( count( $secondary ) > $max ) {
+			$text .= sprintf( ', with %d other places also marked', count( $secondary ) );
+		} elseif ( array() !== $secondary ) {
+			$text .= ', with ' . self::list_names( $secondary ) . ' also marked';
 		}
 		return $text . '.';
+	}
+
+	/**
+	 * The visible caption: the description, naming at most three places per role.
+	 *
+	 * @param array<string, string> $roles Place record ID → role.
+	 * @param array<string, string> $names Place record ID → name.
+	 * @return string
+	 */
+	public static function caption( array $roles, array $names ): string {
+		return self::describe( $roles, $names, 3 );
 	}
 
 	/**

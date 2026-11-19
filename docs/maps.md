@@ -108,10 +108,12 @@ It exits with an error when anything but the informational list is non-empty. Ru
 
 `WT\Maps\Renderer::decorate()` adds the roles, the absolute image URLs, and the language's `<title>` ("Where Hawaiian is spoken", from `standard_name`) and `<desc>`, all through `WP_HTML_Tag_Processor`. The result is cached in the object cache (group `wt_maps`), keyed on the set, the roles, the text, the class, `Renderer::VERSION` and the SVG's modification time. Bump `Renderer::VERSION` when `decorate()` changes its output.
 
-**Placement.** `modules/languages/meta--languages-single.php` prints `wt_maps_sidebar_map()` after the summary and before the endonyms, outside the mobile accordion, so it stays open on phones.
+**Placement.** `modules/languages/meta--languages-single.php` prints `wt_maps_sidebar_map()` in the "Where it's spoken" section, under its heading and above the territories of origin and "also spoken in". The section isn't a mobile accordion, so the map stays open on phones.
+
+**Caption.** The sidebar map has a visible `<figcaption class="wt-map__caption">` (the `caption` argument of `wt_map()`, or `caption="1"` on the shortcode). It is `Renderer::caption()`: the description, but a role with more than three places is counted instead of listed ("Map centred on Spain, with 20 other places also marked."), since the sidebar lists them all just below. The `<desc>` keeps the full list. Place names go through the theme's `wt_prefix_the()` ("the Northern Mariana Islands"), and sorting ignores the "the".
 
 **Settings → Maps** (`wt_maps` option): turn the sidebar map off, and pick the style. Both take effect without a deploy. The defaults are on and Light focused.
 
 **Styles.** `stylus/require/wt-maps.styl` in the theme. The rules were translated mechanically from the prototype page's CSS, so each style can be compared rule for rule with what was reviewed. The tokens use the site palette (`$parchment`, `$blue()`, `$yellow`) and sit on both the figure and the defs, because hatch patterns take their styles from where they are defined.
 
-**Tests.** `RendererTest` covers the roles, the description and `decorate()`. Core isn't in the repository, so `decorate()` is tested only where a local WordPress install sits at the repository root, and the test skips in CI.
+**Tests.** `RendererTest` covers the roles, the description, the caption and `decorate()`. Core isn't in the repository, so `decorate()` is tested only where a local WordPress install sits at the repository root, and the test skips in CI.

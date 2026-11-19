@@ -69,6 +69,38 @@ class RendererTest extends TestCase {
 		$this->assertSame( '', Renderer::describe( array( self::US => 'primary' ), array() ) );
 	}
 
+	public function test_caption_counts_long_lists_and_sorts_past_the() {
+		$names = array(
+			self::US   => 'the United States',
+			self::GUAM => 'Guam',
+			self::NMI  => 'the Northern Mariana Islands',
+		);
+		$roles = array(
+			self::US   => 'primary',
+			self::GUAM => 'primary',
+			self::NMI  => 'primary',
+		);
+
+		$this->assertSame(
+			'Map centred on Guam, the Northern Mariana Islands, and the United States.',
+			Renderer::caption( $roles, $names ),
+			'three places are still named, sorted without "the"'
+		);
+
+		$many  = array( self::US => 'Spain' );
+		$roles = array( self::US => 'primary' );
+		for ( $i = 0; $i < 5; $i++ ) {
+			$id           = 'recSECONDARY' . $i . 'AAAA';
+			$many[ $id ]  = 'Place ' . $i;
+			$roles[ $id ] = 'secondary';
+		}
+		$this->assertSame( 'Map centred on Spain, with 5 other places also marked.', Renderer::caption( $roles, $many ) );
+		$this->assertStringContainsString( 'Place 0, Place 1', Renderer::describe( $roles, $many ), 'the description still lists them all' );
+
+		$all = array_fill_keys( array_keys( $roles ), 'primary' );
+		$this->assertSame( 'Map of the 6 places where it is spoken.', Renderer::caption( $all, $many ) );
+	}
+
 	public function test_decorate_adds_roles_urls_and_text() {
 		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
 			$this->markTestSkipped( 'WordPress HTML API not available (no local install at the repository root).' );

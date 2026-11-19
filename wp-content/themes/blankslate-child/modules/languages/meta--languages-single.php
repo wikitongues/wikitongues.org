@@ -106,9 +106,10 @@
 	$sidebar_map = function_exists( 'wt_maps_sidebar_map' ) ? wt_maps_sidebar_map( get_the_ID() ) : '';
 	?>
 	<?php if ( $origins || $also_spoken || $sidebar_map ) : ?>
-		<?php // Where it is spoken, then the map: read together, so not an accordion on mobile. ?>
+		<?php // The map, then the places it shows: read together, so not an accordion on mobile. ?>
 		<div class="metadata" id="geography">
 			<strong class="wt_sectionHeader">Where it&rsquo;s spoken</strong>
+			<?php echo $sidebar_map; // Built and escaped by the plugin. ?>
 			<?php if ( $origins ) : ?>
 				<strong>Territories of origin</strong>
 				<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
@@ -118,7 +119,6 @@
 				<strong><?php echo $origins ? 'Also spoken in' : 'Spoken in'; ?></strong>
 				<p class="wt_text--label territories"><?php echo wt_territory_links( $also_spoken ); ?></p>
 			<?php endif; ?>
-			<?php echo $sidebar_map; // Built and escaped by the plugin. ?>
 		</div>
 	<?php endif; ?>
 	<?php if ( ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>

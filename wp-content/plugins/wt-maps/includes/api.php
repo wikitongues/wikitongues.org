@@ -140,6 +140,7 @@ function wt_maps_defs(): string {
  *                                   the language's countries of origin.
  *     @type string     $class       Extra class on the figure.
  *     @type string     $style       A key of Renderer::STYLES. Default: the setting.
+ *     @type bool       $caption     Show the description as a visible caption. Default false.
  * }
  * @return string A `<figure class="wt-map">`, preceded by the shared defs the
  *                first time a map is printed on the page.
@@ -173,19 +174,25 @@ function wt_map( array $args = array() ): string {
 	$origins = $args['primary'] ?? get_post_meta( $language, 'nations_of_origin', true );
 	$roles   = Renderer::roles( $places, wt_maps_record_ids( is_array( $origins ) ? $origins : array() ) );
 	$names   = wt_maps_place_names( $places );
+	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
+		$names = array_map( 'wt_prefix_the', $names );
+	}
 	// A language's post title is its ISO code; its display name is standard_name.
 	$name  = (string) get_post_meta( $language, 'standard_name', true );
 	$title = sprintf( 'Where %s is spoken', '' !== $name ? $name : get_the_title( $language ) );
 	$desc  = Renderer::describe( $roles, $names );
+	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names );
 	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];
 	$class = trim( 'wt-map wt-map--' . $style . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
 
-	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $class, Renderer::VERSION, filemtime( $file ) ) ) );
+	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, Renderer::VERSION, filemtime( $file ) ) ) );
 	$figure    = wp_cache_get( $cache_key, 'wt_maps' );
 	if ( ! is_string( $figure ) ) {
 		$svg    = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local plugin file.
 		$svg    = Renderer::decorate( $svg, $roles, plugins_url( 'maps/', dirname( __DIR__ ) . '/wt-maps.php' ), $title, $desc );
-		$figure = '<figure class="' . esc_attr( $class ) . '">' . $svg . '</figure>';
+		$figure = '<figure class="' . esc_attr( $class ) . '">' . $svg
+			. ( '' !== $cap ? '<figcaption class="wt-map__caption">' . esc_html( ucfirst( $cap ) ) . '</figcaption>' : '' )
+			. '</figure>';
 		wp_cache_set( $cache_key, $figure, 'wt_maps', DAY_IN_SECONDS );
 	}
 
@@ -201,11 +208,18 @@ function wt_map( array $args = array() ): string {
  * @return string
  */
 function wt_maps_sidebar_map( int $language ): string {
-	return wt_maps_settings()['sidebar'] ? wt_map( array( 'language' => $language ) ) : '';
+	return wt_maps_settings()['sidebar']
+		? wt_map(
+			array(
+				'language' => $language,
+				'caption'  => true,
+			)
+		)
+		: '';
 }
 
 /**
- * [wt_map language="123" territories="1,2" primary="1" class="" style="dark-full"]
+ * [wt_map language="123" territories="1,2" primary="1" class="" style="dark-full" caption="1"]
  *
  * @param array<string, string>|string $atts Shortcode attributes.
  * @return string
@@ -218,13 +232,17 @@ function wt_map_shortcode( $atts ): string {
 			'primary'     => '',
 			'class'       => '',
 			'style'       => '',
+			'caption'     => '',
 		),
 		is_array( $atts ) ? $atts : array(),
 		'wt_map'
 	);
 
 	$ids  = static fn( string $csv ): array => array_values( array_filter( array_map( 'intval', explode( ',', $csv ) ) ) );
-	$args = array( 'class' => $atts['class'] );
+	$args = array(
+		'class'   => $atts['class'],
+		'caption' => '' !== $atts['caption'] && '0' !== $atts['caption'],
+	);
 	foreach ( array( 'language', 'style' ) as $name ) {
 		if ( '' !== $atts[ $name ] ) {
 			$args[ $name ] = $atts[ $name ];
