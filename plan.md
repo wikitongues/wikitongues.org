@@ -347,7 +347,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 - [x] Airtable nation renames that propagate to languages: Western Sahara, Cabo Verde, Federated States of Micronesia (2026-11-17).
 - [x] Airtable: Chamorro's and Carolinian's nation set to United States, with `Guam_US` and `Northern-Mariana-Islands_US` as their territories (checked 2026-11-18).
 - [x] Airtable: the nations Congo, Macedonia and Vatican State renamed to Republic of the Congo, North Macedonia and Vatican City (2026-11-17); nations of origin became territory links in WordPress (#671).
-- [ ] The subdivision objects, 6.8 phase B's three steps marked **Maps needs this**: the `subdivisions` post type and Territories sync, the language link field, and the launch cases synced (Hawaiian → `Hawaii_US` is done in Airtable).
+- [x] The subdivision objects, 6.8 phase B's maps slice: the `subdivisions` post type and Territories sync, the language link field, and the launch cases on production (2026-11-19; see the [archive](docs/plan-archive.md)).
 - [ ] The ACF fields: "Map shape" on territories and subdivisions, and the `subdivisions` link field on languages (JSON, with `modified` bumped).
 - [ ] Check the Airtable territory links with Kristen before the backfill.
 - [ ] The plugin's table from Airtable territories to Natural Earth sub-units (`Hawaii_US` → `USH`), starting with the ones linked at launch.
@@ -612,6 +612,8 @@ Each language page should say three things about place, each edited once in Airt
 
 *Redesigned 2026-11-18: subdivisions are objects, not strings.* The maps draw a language's subdivision in place of its whole nation, so the steps marked **Maps needs this** are the maps' only dependency on this item.
 
+**The maps slice is done** (2026-11-19, #687, #690, #693 and the Make scenarios; details in the [archive](docs/plan-archive.md)): places below a nation are objects keyed on their Airtable record ID, loaded on every environment, kept current by Make, and the launch cases link to them on production. Still to build for the maps: a Natural Earth sub-unit code on each place (plan 3.2's table). What follows is the history of that slice and the rest of phase B.
+
 **Already done (#687, live on every environment 2026-11-18).** Links resolve by Airtable record ID, with title matching kept as a logged fallback; `wp wt stamp-airtable-ids` stamped the 204 Nations onto their territory pages (a re-run changes nothing). In Airtable: Hawaiian → `Hawaii_US`; Subject [Territories] joined `Last Modified`; Territories gained an "ISO 3166-1 code" field (50 territories coded) and lost six duplicate records. #687 also shipped a `subdivisions` repeater of strings on languages. It was never populated, and this design replaces it, along with the two Languages lookups (`subdivision_identifiers`, `subdivision_names`) created for it.
 
 **Why objects.** A repeater copies each territory's name onto every language. A rename in Airtable never reaches WordPress, because renaming a territory does not touch the language's `Last Modified`; "languages in Guam" becomes a text search; and the territory has nowhere to keep its own data (ISO code, nation, map shape). Countries of origin are already links to objects; subdivisions should be too.
@@ -696,9 +698,6 @@ Each language page should say three things about place, each edited once in Airt
 
 **Steps**
 
-- [ ] **Maps needs this.** WordPress: the `subdivisions` post type; record ID, nation, ISO code and sub-unit code on both place types; a `/sync/territories` endpoint that upserts either type by record ID, choosing by ISO code; the language link field replacing the repeater, with the raw IDs kept and relinked when a subdivision arrives. Tests, then `/test`.
-- [ ] **Maps needs this.** Make: a Territories scenario posting to the new endpoint; in the Languages scenario, `nations_of_origin` and `subdivisions` as record IDs. Then retire the two Languages lookups.
-- [ ] **Maps needs this.** Stamp the 13 existing ISO-coded territory pages with their Territories record IDs, and sync the launch cases (Hawaiian, Chamorro, Carolinian).
 - [ ] Routes: nested views, the 301s from the 13 old URLs, old-slug redirects, nation-page groups, the language-page label.
 - [ ] The region sidebar rule, and WordPress regions for the newly coded territories (draft from UN M49 for review). **Decide** Greenland's region: it is filed under Northern America today and nests under Denmark (Northern Europe).
 - [ ] **Decide** Nagorno-Karabakh: a WordPress page with no Airtable record in either table.
