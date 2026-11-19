@@ -63,16 +63,39 @@ function wt_maps_doctor( Shape_Table $table, array $places, array $languages ): 
 /**
  * Whether a doctor report has anything a person must fix.
  *
- * `unpublished` is informational: a draft territory may wait for its region.
+ * `unpublished` and `unused` are informational: a draft territory may wait for
+ * its region, and a map no language uses does no harm until the next rebuild.
  *
  * @param array<string, list<string>> $report From wt_maps_doctor().
  * @return bool
  */
 function wt_maps_doctor_has_errors( array $report ): bool {
-	foreach ( array( 'table', 'missing', 'unknown', 'languages' ) as $key ) {
+	foreach ( array( 'table', 'missing', 'unknown', 'languages', 'unbuilt' ) as $key ) {
 		if ( ! empty( $report[ $key ] ) ) {
 			return true;
 		}
 	}
 	return false;
+}
+
+/**
+ * Compare the map sets languages use with the maps that have been built.
+ *
+ * @param array<string, array{places: list<string>, languages: int}> $sets  From wt_maps_plan_sets().
+ * @param list<string>                                               $built Keys of the built SVGs.
+ * @return array{unbuilt: list<string>, unused: list<string>}
+ */
+function wt_maps_build_report( array $sets, array $built ): array {
+	$unbuilt = array();
+	foreach ( array_diff_key( $sets, array_flip( $built ) ) as $key => $set ) {
+		$unbuilt[] = sprintf( '%s (%d %s)', $key, $set['languages'], 1 === $set['languages'] ? 'language' : 'languages' );
+	}
+	$unused = array_values( array_diff( $built, array_keys( $sets ) ) );
+
+	sort( $unbuilt );
+	sort( $unused );
+	return array(
+		'unbuilt' => $unbuilt,
+		'unused'  => $unused,
+	);
 }

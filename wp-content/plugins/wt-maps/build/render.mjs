@@ -2,9 +2,10 @@
 //
 //   node render.mjs [--only=key1,key2]
 //
-// Writes maps/<key>.svg and the set's entry in maps/index.json: its places,
-// its projection (the raster steps reproject into exactly this frame), the
-// contested areas it claims or reveals, and its size.
+// Writes cache/stage/<key>.svg and the set's frame in cache/stage/frames.json:
+// its places, its projection (the raster steps reproject into exactly this
+// frame), the contested areas it claims or reveals, and its size. mask.mjs
+// publishes the SVG to maps/ once its images exist.
 //
 // One SVG serves every language with that set of places, so it carries no
 // primary/secondary styling. Each highlighted shape has `data-place` (the
@@ -19,7 +20,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import * as d3 from 'd3-geo';
 import { choose, maxStretch, W, H } from './projection.mjs';
-import { CACHE, MAPS, INDEX, readJson, writeJson, readIndex, onlyKeys } from './common.mjs';
+import { CACHE, STAGE, FRAMES, readJson, writeJson, readFrames, onlyKeys } from './common.mjs';
 
 const R_EARTH = 6371000;
 const layer = (n, res = '50m') => readJson(path.join(CACHE, 'ne', `ne_${res}_admin_0_${n}.geojson`)).features;
@@ -340,9 +341,8 @@ function render(key, placeIds) {
 const estimate = process.argv.includes('--estimate');
 const only = onlyKeys();
 const keys = only ?? Object.keys(input.sets);
-const index = readIndex();
-index.natural_earth = input.natural_earth;
-fs.mkdirSync(MAPS, { recursive: true });
+const frames = readFrames();
+fs.mkdirSync(STAGE, { recursive: true });
 
 const SVG_BUDGET = 20 * 1024;
 let raw = 0, gz = 0;
@@ -354,14 +354,11 @@ for (const key of keys) {
   raw += entry.svg_bytes; gz += entry.svg_gzip;
   if (entry.svg_gzip > SVG_BUDGET) over.push(`${key} (${entry.names.join(' + ')}): ${(entry.svg_gzip / 1024).toFixed(1)} KB gz`);
   if (estimate) continue;
-  fs.writeFileSync(path.join(MAPS, `${key}.svg`), svg);
-  index.maps[key] = entry;
+  fs.writeFileSync(path.join(STAGE, `${key}.svg`), svg);
+  frames[key] = { ...entry, natural_earth: input.natural_earth };
   console.log(key.padEnd(18), `${(entry.svg_gzip / 1024).toFixed(1)} KB gz`.padStart(11), entry.names.join(' + '), entry.claimed.length ? `(claims: ${entry.claimed.join(', ')})` : '');
 }
 
 console.log(`${keys.length} maps: SVGs ${(raw / 1048576).toFixed(2)} MB raw, ${(gz / 1048576).toFixed(2)} MB gzipped; median ${(gz / keys.length / 1024).toFixed(1)} KB gz.`);
 if (over.length) console.log(`Over the ${SVG_BUDGET / 1024} KB budget:\n  ${over.join('\n  ')}`);
-if (!estimate) {
-  index.maps = Object.fromEntries(Object.entries(index.maps).sort(([a], [b]) => a.localeCompare(b)));
-  writeJson(INDEX, index);
-}
+if (!estimate) writeJson(FRAMES, frames);

@@ -192,4 +192,37 @@ class ShapeTableTest extends TestCase {
 		$this->assertSame( array( self::HAWAII ), $table->focus( self::HAWAIIAN ) );
 		$this->assertGreaterThanOrEqual( 218, count( $table->place_ids() ) );
 	}
+
+	public function test_build_report_lists_sets_without_maps_and_maps_without_sets() {
+		$report = wt_maps_build_report(
+			array(
+				self::GUAM         => array(
+					'places'    => array( self::GUAM ),
+					'languages' => 3,
+				),
+				self::HAWAII       => array(
+					'places'    => array( self::HAWAII ),
+					'languages' => 1,
+				),
+				'set-0123456789ab' => array(
+					'places'    => array( self::GUAM, self::HAWAII ),
+					'languages' => 2,
+				),
+			),
+			array( self::GUAM, 'recOLDOLDOLDOLDOL' )
+		);
+
+		$this->assertSame( array( self::HAWAII . ' (1 language)', 'set-0123456789ab (2 languages)' ), $report['unbuilt'] );
+		$this->assertSame( array( 'recOLDOLDOLDOLDOL' ), $report['unused'] );
+		$this->assertTrue( wt_maps_doctor_has_errors( $report ) );
+		$this->assertFalse(
+			wt_maps_doctor_has_errors(
+				array(
+					'unbuilt' => array(),
+					'unused'  => array( 'recOLDOLDOLDOLDOL' ),
+				)
+			),
+			'an unused map is informational'
+		);
+	}
 }
