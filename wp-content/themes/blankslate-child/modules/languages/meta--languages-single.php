@@ -110,8 +110,9 @@
 	<?php if ( $origins || $also_spoken ) : ?>
 		<?php // Where it is spoken: read with the map above, so it is not an accordion on mobile. ?>
 		<div class="metadata" id="geography">
+			<strong class="wt_sectionHeader">Geography</strong>
 			<?php if ( $origins ) : ?>
-				<strong>Countries of origin</strong>
+				<strong>Territories of origin</strong>
 				<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
 			<?php endif; ?>
 
