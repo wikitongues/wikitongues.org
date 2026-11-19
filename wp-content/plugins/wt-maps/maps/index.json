@@ -1361,8 +1361,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 4221,
-   "svg_gzip": 1728,
+   "svg_bytes": 4389,
+   "svg_gzip": 1762,
    "images": {
     "relief": 2094,
     "shade": 1140,
@@ -3895,8 +3895,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 5945,
-   "svg_gzip": 2362,
+   "svg_bytes": 6452,
+   "svg_gzip": 2439,
    "images": {
     "relief": 2346,
     "shade": 1406,
@@ -4320,8 +4320,8 @@
    "scale_km": 20,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 11954,
-   "svg_gzip": 4838,
+   "svg_bytes": 12124,
+   "svg_gzip": 4875,
    "images": {
     "relief": 12176,
     "shade": 16184,
@@ -8229,8 +8229,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 15447,
-   "svg_gzip": 5670,
+   "svg_bytes": 15530,
+   "svg_gzip": 5694,
    "images": {
     "relief": 24260,
     "shade": 29174,
@@ -8535,8 +8535,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12466,
-   "svg_gzip": 4487,
+   "svg_bytes": 12548,
+   "svg_gzip": 4508,
    "images": {
     "relief": 26068,
     "shade": 19082,
@@ -8878,8 +8878,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 7876,
-   "svg_gzip": 2638,
+   "svg_bytes": 7959,
+   "svg_gzip": 2654,
    "images": {
     "relief": 2220,
     "shade": 1186,
@@ -9147,8 +9147,8 @@
     "Artsakh",
     "South Ossetia"
    ],
-   "svg_bytes": 38165,
-   "svg_gzip": 11839,
+   "svg_bytes": 38248,
+   "svg_gzip": 11862,
    "images": {
     "relief": 29954,
     "shade": 22878,

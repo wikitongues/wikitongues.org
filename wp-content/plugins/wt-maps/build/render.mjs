@@ -208,13 +208,15 @@ function render(key, placeIds) {
 
   const markers = [];
   const highlight = hl.map(({ id, refs }) => geomFor(refs, ix).map((f) => {
-    // Too small to read as a shape: add rings. Judged by the largest island, not
-    // the total, so a chain of specks (the Northern Mariana Islands: twelve
-    // islands, none over 15 units) is ringed even when together they pass 40.
+    // Too small to read as a shape in the sidebar (under about 150 square units,
+    // some 6 px across at its 192 px width): add rings. Guam (43) had none, so
+    // the Chamorro and Carolinian maps looked the same. Judged by the largest
+    // island, not the total, so a chain of specks (the Northern Mariana Islands:
+    // twelve islands, none over 15 units) is ringed too.
     // One ring per island group, so a scattered archipelago (Tuvalu) shows its
     // spread instead of one ring in empty sea. Groups closer than 12 units merge.
     const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
-    if (Math.max(...polys.map((c) => path_.area({ type: 'Polygon', coordinates: c }))) < 40) {
+    if (Math.max(...polys.map((c) => path_.area({ type: 'Polygon', coordinates: c }))) < 150) {
       const pts = [];
       for (const c of polys) {
         const p = proj(d3.geoCentroid({ type: 'Polygon', coordinates: c }));
