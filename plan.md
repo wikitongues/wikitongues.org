@@ -608,7 +608,8 @@ Each language page should say three things about place, each edited once in Airt
 - **Origin** designates one (rarely more) of those territories as where the language comes from. Its purpose is semantic. Every origin is also a territory, so the WordPress sync writes `territories` as the source list plus the origins, every time, and a re-run changes nothing.
 - **Also spoken in** is derived: territories minus origins. It is never stored. The sidebar and summary sentence already compute it this way.
 - **Nation** is derived from the territory (each territory object holds its nation, phase B), never entered on the language. "Territory of origin: Guam, United States."
-- **Subdivisions** are below ISO level (Hawaii, Oaxaca, Catalonia) and are only a map focus: when a language has one, its map draws the subdivision in place of its territories. Guam and the Northern Mariana Islands are territories under this model, not subdivisions; the `Guam_US` example above predates it.
+- **Subdivisions** are below ISO level (Hawaii, Oaxaca, Catalonia). They have no pages or routes of their own (decided 2026-11-19). They do two things: a map focus (when a language has one, its map draws the subdivision in place of its territories), and a group on their territory's page ("Hawaii: Hawaiian" on the United States page). Guam and the Northern Mariana Islands are territories under this model, not subdivisions; the `Guam_US` example above predates it.
+- **The territory navigation sidebar** ("Territories in Micronesia") lists only UN member and observer states, 195 in all. That restores the old rule. Other places keep their pages and are reached from their languages and their nation, but are not in the sidebar: the nine de facto independent states (Taiwan, Kosovo, Abkhazia…) and ISO-coded dependencies (Guam, Greenland, New Caledonia).
 - **Maps** draw the territories, with origins as the primary places, unless a subdivision overrides.
 
 What this means for the data (local check, 2026-11-19): the February `territories` copy already fits for 7,522 of 7,582 languages (it contains their origins). Of the 60 that don't, about 50 are ISO-coded places whose origin was recorded at sovereign level (New Caledonia, French Polynesia, Wallis and Futuna, Mayotte, Réunion, French Guiana → France; Guam and the Northern Mariana Islands → United States; Greenland → Denmark; Hong Kong and Macao → China). Their origin should move to the coded territory. The rest are phase A's old nation errors still sitting in `territories` (Yevanic, Judeo-Berber, Khalaj, Western Armenian, Northern Kurdish). 82 languages have more than one origin (French five, Standard Arabic six); most should come down to one. Airtable's Nation of Origin links only the Nations table (204 sovereign entries), so an origin at Guam or New Caledonia needs the presence table below, or a link that can reach the Territories table.
@@ -638,7 +639,7 @@ What this means for the data (local check, 2026-11-19): the February `territorie
 - A new Make scenario syncs Airtable's Territories table to these objects: upsert by record ID, so a re-run changes nothing and a rename updates one post.
 - Languages' `subdivisions` becomes a link field, like `nations_of_origin`, pointing at either post type and matched by record ID. Make sends only the record IDs. The language also keeps the raw IDs, so a language that syncs before its subdivision exists is linked when the subdivision arrives, without re-saving the language.
 
-**Routes.** Each subdivision is a view nested under its nation: `/territories/{region}/{nation}/{subdivision}/`. It shows the subdivision with its nation as context ("Guam, in the United States"), the subdivision's map with the nation beside it, the subdivision's languages first, then a link to the nation. Context lives in the URL, not in how the reader arrived, so shared links, search results and reloads all show it. Rules:
+**Routes.** *Deferred 2026-11-19: subdivisions get no pages or routes for now; they appear on their territory's page instead (the model above). The design below is kept for when they do.* Each subdivision is a view nested under its nation: `/territories/{region}/{nation}/{subdivision}/`. It shows the subdivision with its nation as context ("Guam, in the United States"), the subdivision's map with the nation beside it, the subdivision's languages first, then a link to the nation. Context lives in the URL, not in how the reader arrived, so shared links, search results and reloads all show it. Rules:
 
 - Slugs come from the title, unique within the nation (`…/united-states/georgia/` and `/western-asia/georgia/` coexist; so do Punjab in India and in Pakistan).
 - A view with no languages does not exist (404) and is never linked.
@@ -648,7 +649,7 @@ What this means for the data (local check, 2026-11-19): the February `territorie
 - Language pages say "Territory of origin: Guam, United States", linking each part.
 - Nested post-type URLs need custom rewrite rules; WordPress has none for this.
 
-**Region sidebar rule.** A place appears in its region's sidebar ("Territories in Micronesia") when it has (1) an ISO 3166-1 code, (2) a WordPress region, and (3) at least one language. Today the rule is only "a published `territories` post with a region", which is why the Northern Mariana Islands shows with 0 languages. The new rule adds about 37 ISO-coded territories as they gain languages (Puerto Rico, the Faroe Islands, Bermuda, Aruba, the Cook Islands…), each needing a WordPress region; draft them from UN M49 for review.
+**Region sidebar rule** (decided 2026-11-19, replacing the three-part rule drafted on 2026-11-18). A place appears in its region's sidebar ("Territories in Micronesia", `modules/territories/territories-child-regions.php` and `taxonomy-region.php`) only when it is a UN member or observer state. The source is Airtable's Nations field Sovereign status: 193 "UN Member", 2 "UN Observer" (the Holy See and Palestine) and 9 "De facto independent", which are left out. It syncs onto each nation's territory page, matched by record ID like the origins. Today the rule is "a published `territories` post with a region", which is why the Northern Mariana Islands shows with 0 languages; the new rule drops it, Guam and the other coded dependencies, and the de facto states. Their pages stay, linked from their languages and from their nation's page. Coded dependencies still need a WordPress region for their URLs and breadcrumbs, not for the sidebar.
 
 <details><summary>50 example routes (2026-11-18)</summary>
 
@@ -700,7 +701,7 @@ What this means for the data (local check, 2026-11-19): the February `territorie
 | 44 | `/territories/northern-america/greenland/` | 301 → #15 |
 | 45 | `/territories/east-asia/hong-kong/` | 301 → #17 |
 | 46 | Old slug after a rename | 301 → new slug |
-| 47 | `/territories/micronesia/` | Region page; sidebar follows the three-part rule |
+| 47 | `/territories/micronesia/` | Region page; sidebar lists UN member and observer states only |
 | 48 | `/languages/cha/` | "Territory of origin: Guam, United States" (and the Northern Mariana Islands) |
 | 49 | `/languages/kal/` | "Territory of origin: Greenland, Denmark" |
 | 50 | `/languages/fra/` | Links 15 places it is spoken, not its origin: phase C |
@@ -709,8 +710,10 @@ What this means for the data (local check, 2026-11-19): the February `territorie
 
 **Steps**
 
-- [ ] Routes: nested views, the 301s from the 13 old URLs, old-slug redirects, nation-page groups, the language-page label.
-- [ ] The region sidebar rule, and WordPress regions for the newly coded territories (draft from UN M49 for review). **Decide** Greenland's region: it is filed under Northern America today and nests under Denmark (Northern Europe).
+- [ ] Territory pages list their subdivisions, each with its languages, then the rest of the territory's languages. No subdivision pages or routes (deferred).
+- [ ] The language-page label: "Territory of origin: Guam, United States".
+- [ ] The region sidebar rule: sync Nations' Sovereign status to territory pages (Make, by record ID), then show only UN members and observers. Ship the template change so it reads the field when present and falls back to today's list, then add the field to the sync.
+- [ ] Routes (deferred): nested views, the 301s from the 13 old URLs, old-slug redirects. **Decide** Greenland's region when they return: it is filed under Northern America today and would nest under Denmark (Northern Europe).
 - [ ] **Decide** Nagorno-Karabakh: a WordPress page with no Airtable record in either table.
 - [ ] **Decide** whether WordPress may edit archive data at all (raised 2026-11-19). Airtable is the source for languages, places and their links, and every sync overwrites WordPress, so an admin edit is silently lost on the next sync, or worse, survives until one. Options: make synced fields read-only in wp-admin (the `_airtable_record_id` field already is); or push admin edits back to Airtable and block the rest. Related: should a place's nation, and a subdivision's link to it, be required? The Territories table has a nation for all 854 records today, but nothing enforces it in either system. Applies beyond 6.8: every field `wt-airtable-sync` writes.
 - [ ] Review and paste the proposals into Subject [Territories]: `territory-proposals-for-languages.csv` (kept outside the repo; 2,641 of the 5,316 languages that have a nation and no territory, each with its evidence and confidence). Kristen reviews the 17 marked low. Waits for the origin/presence split in phase C.
