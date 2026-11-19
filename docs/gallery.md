@@ -103,14 +103,23 @@ It isn't exposed to editors, on purpose (#421). Gallery rows set it themselves: 
 
 | Template | Card shows |
 |---|---|
-| `gallery-languages.php` | The standard name, the ISO code, and a thumbnail from one random video of the language, which costs one extra query per card |
+| `gallery-languages.php` | The standard name, the ISO code, and a thumbnail from one random video of the language |
 | `gallery-videos.php` | Video thumbnail and title |
 | `gallery-fellows.php` | Banner image, name, language, categories, location and cohort (see the modes above) |
 | `gallery-people.php` | Hands off to the theme's `modules/people/person--{mode}.php`, so people look the same everywhere |
-| `gallery-territories.php` | The territory, its language count and a short preview, using two small queries per card (#491) |
+| `gallery-territories.php` | The territory, its language count (from the languages' `territories` field) and up to four languages with a random video thumbnail each |
 | `gallery-lexicons.php`, `gallery-resources.php`, `gallery-careers.php`, `gallery-faq.php` | Simpler items for those types |
 
 The card title comes from `get_custom_title()` in `wt-gallery.php`: `video_title` for videos, first plus last name for fellows, `standard_name` for languages, and the post title for people. Images come from `get_custom_image()`.
+
+### Card data is batched per gallery
+
+Language and territory cards don't query per card. `includes/queries.php` reads each ID-list meta field once per request and inverts it in PHP:
+
+- `wt_gallery_posts_by_meta_reference( $meta_key, $post_type )` gives target ID => published posts referencing it, ordered by title (`territories` on languages, `featured_languages` on videos).
+- `wt_gallery_language_previews( $ids )` gives each language's name and one random featured video (thumbnail URL and titles), with posts, the three meta keys and the attachments read in a few batched queries. The card templates pass the whole gallery's IDs, so only the first card queries.
+
+Before this (2026-11-19) each territory card ran about 20 queries, mostly `meta_value LIKE` scans over a million postmeta rows: the 100-card `/territories/` archive made 2,106 queries and took 35–49 s on production. Keep new card fields inside these helpers rather than adding a query to a template.
 
 ---
 
@@ -182,7 +191,7 @@ About two dozen template call sites (`grep -rn "create_gallery_instance(" wp-con
 
 - **Empty galleries** show a blank state rather than falling back to something useful, like the territory's languages or a random set (#377).
 - **Visitors can't filter, sort or search within a gallery (#378).** Design this together with the enhanced search page.
-- **Language cards cost one extra query each** for the video thumbnail.
+- **Territory cards count `territories`, territory pages list `nations_of_origin`.** The card's number can differ from the page it links to (locally on 2026-11-19, France's card said 25 and its page listed 90). Decide which the card should show as part of plan 6.8.
 - **Continent pages** build one fellows `LIKE` clause per territory (#533).
 - **Pagination needs jQuery**; it could move to vanilla JavaScript when the front-end build changes.
 - **Two sets of defaults.** The plugin and `wt_gallery_params()` disagree on defaults, which makes a bare shortcode behave differently from a template call. Moving the theme helper's defaults into the plugin would leave one source.

@@ -90,7 +90,9 @@ add_filter(
 			return $post_link;
 		}
 
-		$terms = wp_get_object_terms( $post->ID, 'region' );
+		// get_the_terms() reads the object term cache WP_Query primes; wp_get_object_terms()
+		// queried once per link (100 queries on the territories archive). Same name order.
+		$terms = get_the_terms( $post, 'region' );
 
 		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 			$region_slug = $terms[0]->slug;
