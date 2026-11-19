@@ -41,6 +41,32 @@ and migrations run local → staging → production and again after every stagin
 
 Apply this to new code and to code you touch; call out existing violations as follow-ups.
 
+## Working principles — plan before building
+
+Learned on the maps work (Nov 2026): a strong prototype went to production on an unsettled data
+model, through five stacked PRs, a fallback patched over a model problem, and plan text too long
+to review. These rules come first.
+
+- **Spec before code.** No build on a workstream until the user has approved a one-screen spec in
+  `plan.md`. When the model changes mid-build, stop and change the spec first; never patch around
+  a model problem in code (a fallback, a special case).
+- **One shape for every spec:** Entities · Rules · Example cases · Display · Open questions · Out
+  of scope. Tables and one-line rules. No history in a spec; history goes to
+  `docs/plan-archive.md`.
+- **Example cases are the test.** A handful of real records (Tahitian, Hawaiian, Chamorro…) that
+  every rule must answer. The user reviews the table, not the prose.
+- **Data before display.** Settle what is true and where it is stored before deciding what a page
+  shows. Keep the two in separate sections and separate PRs.
+- **Start from the source of truth** (Airtable for archive data) and work outward to Make, then
+  WordPress.
+- **Name each thing once.** A spec carries a short glossary; each term has one meaning, and the
+  same name in Airtable, Make and WordPress wherever possible. Flag a collision before building on
+  it.
+- **Decision log.** One line per decision: date, decision, why.
+- **Write for review.** Concise and didactic: lead with the decision needed, then the options, then
+  a recommendation. A prototype is evidence for a spec, not a spec.
+- **Small steps.** Ship one reviewable change at a time; don't stack PRs on an unapproved model.
+
 ## Dev commands
 ```bash
 composer test          # PHPUnit 9.6 (WP_Mock 1.x)
