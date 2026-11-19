@@ -57,10 +57,10 @@ final class Renderer {
 	}
 
 	/**
-	 * The map's description: where it is centred and what else is marked.
+	 * The map's description: the places it shows, and what else is marked.
 	 *
-	 * With `$max`, a role with more places than that is counted instead of
-	 * listed, for the visible caption: the full list is in the sidebar already.
+	 * With `$max`, the visible caption: past that many places in a role, the
+	 * rest are counted instead of listed, since the sidebar lists them all.
 	 * Names may carry a leading "the" (wt_prefix_the()); it is ignored in sorting.
 	 *
 	 * @param array<string, string> $roles Place record ID → role.
@@ -90,10 +90,11 @@ final class Renderer {
 			return '';
 		}
 		if ( count( $primary ) > $max ) {
-			return sprintf( 'Map of the %d places where it is spoken.', count( $primary ) + count( $secondary ) );
+			$rest = count( $primary ) - $max + count( $secondary );
+			return 'Map showing ' . implode( ', ', array_slice( $primary, 0, $max ) ) . sprintf( ', and %d other places.', $rest );
 		}
 
-		$text = 'Map centred on ' . self::list_names( $primary );
+		$text = 'Map showing ' . self::list_names( $primary );
 		if ( count( $secondary ) > $max ) {
 			$text .= sprintf( ', with %d other places also marked', count( $secondary ) );
 		} elseif ( array() !== $secondary ) {

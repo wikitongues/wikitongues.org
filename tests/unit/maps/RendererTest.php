@@ -46,7 +46,7 @@ class RendererTest extends TestCase {
 		);
 
 		$this->assertSame(
-			'Map centred on Guam and Northern Mariana Islands.',
+			'Map showing Guam and Northern Mariana Islands.',
 			Renderer::describe(
 				array(
 					self::NMI  => 'primary',
@@ -56,7 +56,7 @@ class RendererTest extends TestCase {
 			)
 		);
 		$this->assertSame(
-			'Map centred on United States, with Guam and Northern Mariana Islands also marked.',
+			'Map showing United States, with Guam and Northern Mariana Islands also marked.',
 			Renderer::describe(
 				array(
 					self::US   => 'primary',
@@ -82,7 +82,7 @@ class RendererTest extends TestCase {
 		);
 
 		$this->assertSame(
-			'Map centred on Guam, the Northern Mariana Islands, and the United States.',
+			'Map showing Guam, the Northern Mariana Islands, and the United States.',
 			Renderer::caption( $roles, $names ),
 			'three places are still named, sorted without "the"'
 		);
@@ -94,11 +94,11 @@ class RendererTest extends TestCase {
 			$many[ $id ]  = 'Place ' . $i;
 			$roles[ $id ] = 'secondary';
 		}
-		$this->assertSame( 'Map centred on Spain, with 5 other places also marked.', Renderer::caption( $roles, $many ) );
+		$this->assertSame( 'Map showing Spain, with 5 other places also marked.', Renderer::caption( $roles, $many ) );
 		$this->assertStringContainsString( 'Place 0, Place 1', Renderer::describe( $roles, $many ), 'the description still lists them all' );
 
 		$all = array_fill_keys( array_keys( $roles ), 'primary' );
-		$this->assertSame( 'Map of the 6 places where it is spoken.', Renderer::caption( $all, $many ) );
+		$this->assertSame( 'Map showing Place 0, Place 1, Place 2, and 3 other places.', Renderer::caption( $all, $many ) );
 	}
 
 	public function test_decorate_adds_roles_urls_and_text() {
