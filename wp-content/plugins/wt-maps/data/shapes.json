@@ -1,0 +1,1352 @@
+{
+	"natural_earth": "5.1.2",
+	"places": {
+		"recP34IsnD3x453AB": {
+			"name": "Abkhazia",
+			"shapes": [
+				"breakaway:B35"
+			],
+			"note": "Breakaway from Georgia"
+		},
+		"recrY5jg8GmprukMo": {
+			"name": "Afghanistan",
+			"shapes": [
+				"countries:AFG"
+			]
+		},
+		"recNOdQNktfrbycLW": {
+			"name": "Albania",
+			"shapes": [
+				"countries:ALB"
+			]
+		},
+		"recxYFxRo7hqiYkvY": {
+			"name": "Algeria",
+			"shapes": [
+				"countries:DZA"
+			]
+		},
+		"rec2Z5ROfmHxTcvVq": {
+			"name": "Andorra",
+			"shapes": [
+				"countries:AND"
+			]
+		},
+		"recLbBAQNC9scvGVh": {
+			"name": "Angola",
+			"shapes": [
+				"countries:AGO"
+			]
+		},
+		"recOgwicHgNrqkxJl": {
+			"name": "Antigua and Barbuda",
+			"shapes": [
+				"countries:ATG"
+			]
+		},
+		"recCvV2ZT3QSKsSsH": {
+			"name": "Argentina",
+			"shapes": [
+				"countries:ARG"
+			]
+		},
+		"recrV2IGyauIN7se1": {
+			"name": "Armenia",
+			"shapes": [
+				"countries:ARM"
+			]
+		},
+		"recx4k8KCf8MASWlf": {
+			"name": "Australia",
+			"shapes": [
+				"countries:AUS"
+			]
+		},
+		"recta54fvvZP8fKcC": {
+			"name": "Austria",
+			"shapes": [
+				"countries:AUT"
+			]
+		},
+		"recRzAeiS1JByblMX": {
+			"name": "Azerbaijan",
+			"shapes": [
+				"countries:AZE"
+			]
+		},
+		"recjCKArku4QiF6GA": {
+			"name": "Bahamas",
+			"shapes": [
+				"countries:BHS"
+			]
+		},
+		"rect7oCVaxJw57YTH": {
+			"name": "Bahrain",
+			"shapes": [
+				"countries:BHR"
+			]
+		},
+		"rectAmnj7NE1xpoSX": {
+			"name": "Bangladesh",
+			"shapes": [
+				"countries:BGD"
+			]
+		},
+		"recEkLS1lvjNtudcC": {
+			"name": "Barbados",
+			"shapes": [
+				"countries:BRB"
+			]
+		},
+		"rec3ng40ApF3SLyNo": {
+			"name": "Belarus",
+			"shapes": [
+				"countries:BLR"
+			]
+		},
+		"recmDdsdVFdJtKPXp": {
+			"name": "Belgium",
+			"shapes": [
+				"countries:BEL"
+			]
+		},
+		"reci4W4m2CwBS2WjP": {
+			"name": "Belize",
+			"shapes": [
+				"countries:BLZ"
+			]
+		},
+		"rechAfswREuaBsvXz": {
+			"name": "Benin",
+			"shapes": [
+				"countries:BEN"
+			]
+		},
+		"recI0Mr0xfb23bpFj": {
+			"name": "Bhutan",
+			"shapes": [
+				"countries:BTN"
+			]
+		},
+		"rec3iv2yc9KUdf6zI": {
+			"name": "Bolivia",
+			"shapes": [
+				"countries:BOL"
+			]
+		},
+		"recEq0RLRGvrXucqY": {
+			"name": "Bosnia and Herzegovina",
+			"shapes": [
+				"countries:BIH"
+			]
+		},
+		"rec1PTrUeYhmW9XFR": {
+			"name": "Botswana",
+			"shapes": [
+				"countries:BWA"
+			]
+		},
+		"recraxEufNuFmMXdb": {
+			"name": "Brazil",
+			"shapes": [
+				"countries:BRA"
+			]
+		},
+		"recUkxf17bTf4I3C7": {
+			"name": "Brunei",
+			"shapes": [
+				"countries:BRN"
+			]
+		},
+		"receHOYeeFs9v85yB": {
+			"name": "Bulgaria",
+			"shapes": [
+				"countries:BGR"
+			]
+		},
+		"rec1MiNxl5q26gVrZ": {
+			"name": "Burkina Faso",
+			"shapes": [
+				"countries:BFA"
+			]
+		},
+		"recnVyMngrt4i8Pxk": {
+			"name": "Burundi",
+			"shapes": [
+				"countries:BDI"
+			]
+		},
+		"rec707AfPUVf1LkYM": {
+			"name": "Cabo Verde",
+			"shapes": [
+				"countries:CPV"
+			]
+		},
+		"recA1g4rTTGXrc0KA": {
+			"name": "Cambodia",
+			"shapes": [
+				"countries:KHM"
+			]
+		},
+		"recVfONIfITU2d525": {
+			"name": "Cameroon",
+			"shapes": [
+				"countries:CMR"
+			]
+		},
+		"recZTdAZ7bgTXccgY": {
+			"name": "Canada",
+			"shapes": [
+				"countries:CAN"
+			]
+		},
+		"recbvUpyINT1cjatU": {
+			"name": "Central African Republic",
+			"shapes": [
+				"countries:CAF"
+			]
+		},
+		"recopzwOUlTWQgjYr": {
+			"name": "Chad",
+			"shapes": [
+				"countries:TCD"
+			]
+		},
+		"rec25DfUjqxyMwVpw": {
+			"name": "Chile",
+			"shapes": [
+				"countries:CHL"
+			]
+		},
+		"recpwmL8YQeWhEyJ1": {
+			"name": "China",
+			"shapes": [
+				"countries:CHN"
+			]
+		},
+		"recSxdvoRqQzgnOln": {
+			"name": "Colombia",
+			"shapes": [
+				"countries:COL"
+			]
+		},
+		"rec972001jTWjsTbn": {
+			"name": "Comoros",
+			"shapes": [
+				"countries:COM"
+			]
+		},
+		"recoRXPVK4SExszZ8": {
+			"name": "Cook Islands",
+			"shapes": [
+				"countries:COK"
+			]
+		},
+		"recuOEhIE7I2OnbLu": {
+			"name": "Costa Rica",
+			"shapes": [
+				"countries:CRI"
+			]
+		},
+		"recerkXXfpKn5JDWB": {
+			"name": "Croatia",
+			"shapes": [
+				"countries:HRV"
+			]
+		},
+		"recTSs7DXOT6Yqqh2": {
+			"name": "Cuba",
+			"shapes": [
+				"countries:CUB"
+			]
+		},
+		"rec7nz8fxMlng0hqv": {
+			"name": "Cyprus",
+			"shapes": [
+				"countries:CYP"
+			]
+		},
+		"reco26AIRIbaBD7fS": {
+			"name": "Czech Republic",
+			"shapes": [
+				"countries:CZE"
+			],
+			"note": "NE uses Czechia"
+		},
+		"reckyAadd2Rn93IiW": {
+			"name": "Côte d’Ivoire",
+			"shapes": [
+				"countries:CIV"
+			]
+		},
+		"recJo8mZ7XP6EOEbx": {
+			"name": "Democratic Republic of the Congo",
+			"shapes": [
+				"countries:COD"
+			]
+		},
+		"reczWaaBCq6QM2osG": {
+			"name": "Denmark",
+			"shapes": [
+				"countries:DNK"
+			]
+		},
+		"recytYRmVLMUlBEBl": {
+			"name": "Djibouti",
+			"shapes": [
+				"countries:DJI"
+			]
+		},
+		"reclOUejXNXWpF4mq": {
+			"name": "Dominica",
+			"shapes": [
+				"countries:DMA"
+			]
+		},
+		"rechHSSXGnuPXkXL8": {
+			"name": "Dominican Republic",
+			"shapes": [
+				"countries:DOM"
+			]
+		},
+		"rec2ND0RUlRcbwMQI": {
+			"name": "Ecuador",
+			"shapes": [
+				"countries:ECU"
+			]
+		},
+		"recPNNWU1DRT9M3PN": {
+			"name": "Egypt",
+			"shapes": [
+				"countries:EGY"
+			]
+		},
+		"recEAsOUXYoygGBOj": {
+			"name": "El Salvador",
+			"shapes": [
+				"countries:SLV"
+			]
+		},
+		"recaAmOswj0L9r1eN": {
+			"name": "Equatorial Guinea",
+			"shapes": [
+				"countries:GNQ"
+			]
+		},
+		"recgFqwE49UJicPd2": {
+			"name": "Eritrea",
+			"shapes": [
+				"countries:ERI"
+			]
+		},
+		"rec5izOYzrMUfOVeN": {
+			"name": "Estonia",
+			"shapes": [
+				"countries:EST"
+			]
+		},
+		"recFoVZR4ylJrQ5fY": {
+			"name": "Eswatini",
+			"shapes": [
+				"countries:SWZ"
+			]
+		},
+		"rechhgvJrXuKEIScU": {
+			"name": "Ethiopia",
+			"shapes": [
+				"countries:ETH"
+			]
+		},
+		"recCKPB1XdRcXo0b4": {
+			"name": "Federated States of Micronesia",
+			"shapes": [
+				"countries:FSM"
+			]
+		},
+		"recI6aTIMYwEDBN4p": {
+			"name": "Fiji",
+			"shapes": [
+				"countries:FJI"
+			]
+		},
+		"recSKVOrwnrkARONA": {
+			"name": "Finland",
+			"shapes": [
+				"countries:FIN"
+			]
+		},
+		"recc6lAeDMPAvqzgM": {
+			"name": "France",
+			"shapes": [
+				"units:FXX"
+			],
+			"note": "Metropolitan France only — Guadeloupe, Martinique, Réunion, Mayotte, French Guiana are their own territories here"
+		},
+		"recXzD7tp26iWiGoT": {
+			"name": "French Guiana",
+			"shapes": [
+				"units:GUF"
+			]
+		},
+		"recxJZFYc5RSOFGP6": {
+			"name": "French Polynesia",
+			"shapes": [
+				"countries:PYF"
+			]
+		},
+		"recnftKPqLrc5Eb0i": {
+			"name": "Gabon",
+			"shapes": [
+				"countries:GAB"
+			]
+		},
+		"recyC7ejf6MfVrO2O": {
+			"name": "Gambia",
+			"shapes": [
+				"countries:GMB"
+			]
+		},
+		"recthhqk0rgOEwuaw": {
+			"name": "Georgia",
+			"shapes": [
+				"countries:GEO"
+			]
+		},
+		"recTIuOnlE10wY8Kq": {
+			"name": "Germany",
+			"shapes": [
+				"countries:DEU"
+			]
+		},
+		"recvdVLzi2ZoJK90L": {
+			"name": "Ghana",
+			"shapes": [
+				"countries:GHA"
+			]
+		},
+		"rectHvWful079aST6": {
+			"name": "Greece",
+			"shapes": [
+				"countries:GRC"
+			]
+		},
+		"rect3iLm7jS9D3CHn": {
+			"name": "Greenland",
+			"shapes": [
+				"units:GRL"
+			]
+		},
+		"recEJgrDZr7NQdXzq": {
+			"name": "Grenada",
+			"shapes": [
+				"countries:GRD"
+			]
+		},
+		"recGqHr6OZPaSPazN": {
+			"name": "Guadeloupe",
+			"shapes": [
+				"units:GLP"
+			]
+		},
+		"recguDPgV3cIXLO34": {
+			"name": "Guam",
+			"shapes": [
+				"units:GUM"
+			]
+		},
+		"rec6i3yPeD12Y2gn8": {
+			"name": "Guatemala",
+			"shapes": [
+				"countries:GTM"
+			]
+		},
+		"rechn0RPKmrKUhPEm": {
+			"name": "Guinea",
+			"shapes": [
+				"countries:GIN"
+			]
+		},
+		"rect8Rz8xNJ6aXibr": {
+			"name": "Guinea-Bissau",
+			"shapes": [
+				"countries:GNB"
+			]
+		},
+		"rec9PuZGLQ7rzpJc3": {
+			"name": "Guyana",
+			"shapes": [
+				"countries:GUY"
+			]
+		},
+		"rec9oX4MmPHuEg22i": {
+			"name": "Haiti",
+			"shapes": [
+				"countries:HTI"
+			]
+		},
+		"recJdmrV257IxkekS": {
+			"name": "Hawaii",
+			"shapes": [
+				"subunits:USH"
+			],
+			"note": "Subdivision of the United States; drawn in place of the whole country"
+		},
+		"rec7MONifpxDiscRY": {
+			"name": "Honduras",
+			"shapes": [
+				"countries:HND"
+			]
+		},
+		"rectUHIEtLwdm988j": {
+			"name": "Hong Kong",
+			"shapes": [
+				"units:HKG"
+			],
+			"note": "Special administrative region of China"
+		},
+		"recaRnY3QVXNHDZJP": {
+			"name": "Hungary",
+			"shapes": [
+				"countries:HUN"
+			]
+		},
+		"recxOXb0I1T09Xsml": {
+			"name": "Iceland",
+			"shapes": [
+				"countries:ISL"
+			]
+		},
+		"reckMaHEYWWoejWWB": {
+			"name": "India",
+			"shapes": [
+				"countries:IND"
+			]
+		},
+		"rec8ero5EVEUaoKvR": {
+			"name": "Indonesia",
+			"shapes": [
+				"countries:IDN"
+			]
+		},
+		"recN70nDH5xnvmgAg": {
+			"name": "Iran",
+			"shapes": [
+				"countries:IRN"
+			]
+		},
+		"recR8CNdn3g99gWSl": {
+			"name": "Iraq",
+			"shapes": [
+				"countries:IRQ"
+			]
+		},
+		"recv60OCnWFkg8iSa": {
+			"name": "Ireland",
+			"shapes": [
+				"countries:IRL"
+			]
+		},
+		"recwDwR74miTv1oiP": {
+			"name": "Israel",
+			"shapes": [
+				"countries:ISR"
+			]
+		},
+		"reccqMD6d9XQc83jL": {
+			"name": "Italy",
+			"shapes": [
+				"countries:ITA"
+			]
+		},
+		"recyb4xVRKdCF2QKg": {
+			"name": "Jamaica",
+			"shapes": [
+				"countries:JAM"
+			]
+		},
+		"recWEA0L60oD7gYnF": {
+			"name": "Japan",
+			"shapes": [
+				"countries:JPN"
+			]
+		},
+		"recMoeqalMLzRsSQF": {
+			"name": "Jordan",
+			"shapes": [
+				"countries:JOR"
+			]
+		},
+		"recvo0WSLdObX2fSc": {
+			"name": "Kazakhstan",
+			"shapes": [
+				"countries:KAZ"
+			]
+		},
+		"recbarjI7aqHnvrY1": {
+			"name": "Kenya",
+			"shapes": [
+				"countries:KEN"
+			]
+		},
+		"recp0T4q6JtcPN6vo": {
+			"name": "Kiribati",
+			"shapes": [
+				"countries:KIR"
+			]
+		},
+		"recf98JmNx4oYooGg": {
+			"name": "Kosovo",
+			"shapes": [
+				"units:KOS"
+			],
+			"note": "No ISO 3166 code; XKX is the common user-assigned code"
+		},
+		"receWqqM2X0lb5iYo": {
+			"name": "Kuwait",
+			"shapes": [
+				"countries:KWT"
+			]
+		},
+		"recupofG86Mhx5QFk": {
+			"name": "Kyrgyzstan",
+			"shapes": [
+				"countries:KGZ"
+			]
+		},
+		"recT44ZePtILKis80": {
+			"name": "Laos",
+			"shapes": [
+				"countries:LAO"
+			]
+		},
+		"recMvARTpLcA3Zno4": {
+			"name": "Latvia",
+			"shapes": [
+				"countries:LVA"
+			]
+		},
+		"recW5gA7o2PTv8tHz": {
+			"name": "Lebanon",
+			"shapes": [
+				"countries:LBN"
+			]
+		},
+		"recZom69ryeGjn1gQ": {
+			"name": "Lesotho",
+			"shapes": [
+				"countries:LSO"
+			]
+		},
+		"recWXnCW6MJeZ6bUK": {
+			"name": "Liberia",
+			"shapes": [
+				"countries:LBR"
+			]
+		},
+		"recQzjjbu8Tw1YVPb": {
+			"name": "Libya",
+			"shapes": [
+				"countries:LBY"
+			]
+		},
+		"recWagJOm33XVNJpX": {
+			"name": "Liechtenstein",
+			"shapes": [
+				"countries:LIE"
+			]
+		},
+		"reccnXXvlYyfyG6X8": {
+			"name": "Lithuania",
+			"shapes": [
+				"countries:LTU"
+			]
+		},
+		"recd1tXwwCwYKoWjw": {
+			"name": "Luxembourg",
+			"shapes": [
+				"countries:LUX"
+			]
+		},
+		"recnWq5GJEVfX0EKI": {
+			"name": "Macao",
+			"shapes": [
+				"units:MAC"
+			],
+			"note": "Special administrative region of China"
+		},
+		"recmMti6bhakxv4Cy": {
+			"name": "Madagascar",
+			"shapes": [
+				"countries:MDG"
+			]
+		},
+		"recPMg7JxTMm2G8bB": {
+			"name": "Malawi",
+			"shapes": [
+				"countries:MWI"
+			]
+		},
+		"recG1gcLtwu1SpVsk": {
+			"name": "Malaysia",
+			"shapes": [
+				"countries:MYS"
+			]
+		},
+		"reczhyHJo8cwk1oNL": {
+			"name": "Maldives",
+			"shapes": [
+				"countries:MDV"
+			]
+		},
+		"recps3j5zWxBihJED": {
+			"name": "Mali",
+			"shapes": [
+				"countries:MLI"
+			]
+		},
+		"rec77GrMjBS5MRUsR": {
+			"name": "Malta",
+			"shapes": [
+				"countries:MLT"
+			]
+		},
+		"recxPpuHF1jFJK61w": {
+			"name": "Marshall Islands",
+			"shapes": [
+				"countries:MHL"
+			]
+		},
+		"reca7BL0NadFGP5iQ": {
+			"name": "Martinique",
+			"shapes": [
+				"units:MTQ"
+			]
+		},
+		"recCwWt16yyGrRxn4": {
+			"name": "Mauritania",
+			"shapes": [
+				"countries:MRT"
+			]
+		},
+		"recgZ2uZeU9NcsPK5": {
+			"name": "Mauritius",
+			"shapes": [
+				"countries:MUS"
+			]
+		},
+		"recQXJg5UVwRfFxUV": {
+			"name": "Mayotte",
+			"shapes": [
+				"units:MYT"
+			]
+		},
+		"recdui5YjMtq7oAXZ": {
+			"name": "Mexico",
+			"shapes": [
+				"countries:MEX"
+			]
+		},
+		"recdqBUvrSVil89n7": {
+			"name": "Moldova",
+			"shapes": [
+				"countries:MDA"
+			]
+		},
+		"recyfHOzIScvUD7pt": {
+			"name": "Monaco",
+			"shapes": [
+				"countries:MCO"
+			]
+		},
+		"reccR9wctwkPdnZiy": {
+			"name": "Mongolia",
+			"shapes": [
+				"countries:MNG"
+			]
+		},
+		"rec3S9isvP26op2YP": {
+			"name": "Montenegro",
+			"shapes": [
+				"countries:MNE"
+			]
+		},
+		"recm0Hbjg4DCF5Tv5": {
+			"name": "Morocco",
+			"shapes": [
+				"countries:MAR"
+			]
+		},
+		"recriHC9fIOvky6zf": {
+			"name": "Mozambique",
+			"shapes": [
+				"countries:MOZ"
+			]
+		},
+		"recU5dUl2dPwEqdFL": {
+			"name": "Myanmar",
+			"shapes": [
+				"countries:MMR"
+			]
+		},
+		"recCSNikypWT1ct0b": {
+			"name": "Namibia",
+			"shapes": [
+				"countries:NAM"
+			]
+		},
+		"recUn5uW1Q8SBC1Pu": {
+			"name": "Naoero",
+			"shapes": [
+				"countries:NRU"
+			],
+			"note": "Name is the Nauruan endonym; NE says Nauru"
+		},
+		"recbbpkjYhL8k3oWf": {
+			"name": "Nepal",
+			"shapes": [
+				"countries:NPL"
+			]
+		},
+		"recqbHocuBCxgomYh": {
+			"name": "Netherlands",
+			"shapes": [
+				"countries:NLD"
+			]
+		},
+		"recUTOrAESGE64Hlg": {
+			"name": "New Caledonia",
+			"shapes": [
+				"countries:NCL"
+			]
+		},
+		"rec2SYysDKkhFMaqY": {
+			"name": "New Zealand",
+			"shapes": [
+				"countries:NZL"
+			]
+		},
+		"recE5c2zNDNsHNppQ": {
+			"name": "Nicaragua",
+			"shapes": [
+				"countries:NIC"
+			]
+		},
+		"recVPVdaKl62cVS8c": {
+			"name": "Niger",
+			"shapes": [
+				"countries:NER"
+			]
+		},
+		"recIDi2k4LZErM6FF": {
+			"name": "Nigeria",
+			"shapes": [
+				"countries:NGA"
+			]
+		},
+		"recsS9sFgLue0jBha": {
+			"name": "North Korea",
+			"shapes": [
+				"countries:PRK"
+			]
+		},
+		"reczSBwFhUp1KYkSb": {
+			"name": "North Macedonia",
+			"shapes": [
+				"countries:MKD"
+			]
+		},
+		"recBC6OWGUZLbn4at": {
+			"name": "Northern Cyprus",
+			"shapes": [
+				"units:CYN"
+			],
+			"note": "Recognized only by Turkey"
+		},
+		"rec8BH6e7SD1A1J5I": {
+			"name": "Northern Mariana Islands",
+			"shapes": [
+				"units:MNP"
+			]
+		},
+		"recnYOvoSM2DSwU2P": {
+			"name": "Norway",
+			"shapes": [
+				"countries:NOR"
+			]
+		},
+		"recWDFAAEvzB2XW4v": {
+			"name": "Oman",
+			"shapes": [
+				"countries:OMN"
+			]
+		},
+		"recV8CplJ64NTneMK": {
+			"name": "Pakistan",
+			"shapes": [
+				"countries:PAK"
+			]
+		},
+		"recMHuLamshi5LVQU": {
+			"name": "Palau",
+			"shapes": [
+				"countries:PLW"
+			]
+		},
+		"recWJIucSTnaKY1PS": {
+			"name": "Palestine",
+			"shapes": [
+				"units:GAZ",
+				"units:WEB"
+			],
+			"note": "Two NE units: Gaza and the West Bank"
+		},
+		"recmj0OjKzG35FXUL": {
+			"name": "Panama",
+			"shapes": [
+				"countries:PAN"
+			]
+		},
+		"recNvAwtasGgBkbQE": {
+			"name": "Papua New Guinea",
+			"shapes": [
+				"countries:PNG"
+			]
+		},
+		"recJMU2VIo4QBlPXB": {
+			"name": "Paraguay",
+			"shapes": [
+				"countries:PRY"
+			]
+		},
+		"recj6khviR1QjrfO6": {
+			"name": "Peru",
+			"shapes": [
+				"countries:PER"
+			]
+		},
+		"recefuh0CXs07rCR9": {
+			"name": "Philippines",
+			"shapes": [
+				"countries:PHL"
+			]
+		},
+		"rec21sFtKUv6z7Z9A": {
+			"name": "Poland",
+			"shapes": [
+				"countries:POL"
+			]
+		},
+		"recIVAOvT9WAAlE1q": {
+			"name": "Portugal",
+			"shapes": [
+				"countries:PRT"
+			]
+		},
+		"rec7GI8wWDm0Nd7p3": {
+			"name": "Qatar",
+			"shapes": [
+				"countries:QAT"
+			]
+		},
+		"recoafI6S0g52pLak": {
+			"name": "Republic of the Congo",
+			"shapes": [
+				"countries:COG"
+			]
+		},
+		"recKYTEiCHCXrLxpI": {
+			"name": "Romania",
+			"shapes": [
+				"countries:ROU"
+			]
+		},
+		"rec69csgIMSP0BDGu": {
+			"name": "Russian Federation",
+			"shapes": [
+				"countries:RUS"
+			]
+		},
+		"recEHC2XlZC3C2hjr": {
+			"name": "Rwanda",
+			"shapes": [
+				"countries:RWA"
+			]
+		},
+		"rec4371zoxxIbdCYk": {
+			"name": "Réunion",
+			"shapes": [
+				"units:REU"
+			]
+		},
+		"recNl7OCQZAbCPuKZ": {
+			"name": "Saint Kitts and Nevis",
+			"shapes": [
+				"countries:KNA"
+			]
+		},
+		"recsxS1Tx4pmqUfQM": {
+			"name": "Saint Lucia",
+			"shapes": [
+				"countries:LCA"
+			]
+		},
+		"recgH58wMh6Q3Aw0W": {
+			"name": "Saint Vincent and the Grenadines",
+			"shapes": [
+				"countries:VCT"
+			]
+		},
+		"recMsYhIwZhssYbs6": {
+			"name": "Samoa",
+			"shapes": [
+				"countries:WSM"
+			]
+		},
+		"recgBq2adZ8VMEHFV": {
+			"name": "San Marino",
+			"shapes": [
+				"countries:SMR"
+			]
+		},
+		"recAHgt2hJpIvxKPl": {
+			"name": "Saudi Arabia",
+			"shapes": [
+				"countries:SAU"
+			]
+		},
+		"reciz6FLuH8tem4tM": {
+			"name": "Senegal",
+			"shapes": [
+				"countries:SEN"
+			]
+		},
+		"recbDhMn2Qt5ZS6Ce": {
+			"name": "Serbia",
+			"shapes": [
+				"countries:SRB"
+			]
+		},
+		"recJxuJhAjGVS3R3a": {
+			"name": "Seychelles",
+			"shapes": [
+				"countries:SYC"
+			]
+		},
+		"recRm0ylEWzk1U074": {
+			"name": "Sierra Leone",
+			"shapes": [
+				"countries:SLE"
+			]
+		},
+		"recPjLef8TWSdZEDN": {
+			"name": "Singapore",
+			"shapes": [
+				"countries:SGP"
+			]
+		},
+		"reciwzgNNDj2oo6Qt": {
+			"name": "Slovakia",
+			"shapes": [
+				"countries:SVK"
+			]
+		},
+		"recTR2SZ2jqpcTsSV": {
+			"name": "Slovenia",
+			"shapes": [
+				"countries:SVN"
+			]
+		},
+		"recuTKZkAZf8vTu51": {
+			"name": "Solomon Islands",
+			"shapes": [
+				"countries:SLB"
+			]
+		},
+		"rec5W1xkVmT7Vt4U9": {
+			"name": "Somalia",
+			"shapes": [
+				"countries:SOM"
+			]
+		},
+		"recZTjcbRkxAK2lvc": {
+			"name": "Somaliland",
+			"shapes": [
+				"units:SOL"
+			],
+			"note": "Self-governing, claimed by Somalia"
+		},
+		"recrSraEkaZUVBgq9": {
+			"name": "South Africa",
+			"shapes": [
+				"countries:ZAF"
+			]
+		},
+		"recgqZiOFNQBkVeLD": {
+			"name": "South Korea",
+			"shapes": [
+				"countries:KOR"
+			]
+		},
+		"rec2WHhFtdJAx4tJO": {
+			"name": "South Ossetia",
+			"shapes": [
+				"breakaway:B37"
+			],
+			"note": "Breakaway from Georgia"
+		},
+		"rec1iI0r31FHStjB1": {
+			"name": "South Sudan",
+			"shapes": [
+				"countries:SDS"
+			]
+		},
+		"recoclLSNGFFGSdhs": {
+			"name": "Spain",
+			"shapes": [
+				"countries:ESP"
+			]
+		},
+		"rectIlvjaNyiOju5f": {
+			"name": "Sri Lanka",
+			"shapes": [
+				"countries:LKA"
+			]
+		},
+		"reckVtwkyIZ6ZEiyX": {
+			"name": "Sudan",
+			"shapes": [
+				"countries:SDN"
+			]
+		},
+		"reckeHB2nxgdUdyUo": {
+			"name": "Suriname",
+			"shapes": [
+				"countries:SUR"
+			]
+		},
+		"recqL1QZXod6jDrUs": {
+			"name": "Sweden",
+			"shapes": [
+				"countries:SWE"
+			]
+		},
+		"recxvMgxvTQpWGqO5": {
+			"name": "Switzerland",
+			"shapes": [
+				"countries:CHE"
+			]
+		},
+		"rec72cKyzlEaLeNv9": {
+			"name": "Syria",
+			"shapes": [
+				"countries:SYR"
+			]
+		},
+		"recqmvPtui7vkhx54": {
+			"name": "São Tomé e Príncipe",
+			"shapes": [
+				"countries:STP"
+			],
+			"note": "Title is Portuguese"
+		},
+		"recgU0oaqvwT3YrW0": {
+			"name": "Taiwan",
+			"shapes": [
+				"units:TWN"
+			],
+			"note": "NE classes it Admin-1 under China in some views"
+		},
+		"recPMfnQ1l117hBBY": {
+			"name": "Tajikistan",
+			"shapes": [
+				"countries:TJK"
+			]
+		},
+		"reci6Xt7FwktaBCYG": {
+			"name": "Tanzania",
+			"shapes": [
+				"countries:TZA"
+			]
+		},
+		"recgRmIjeoX6gXqpx": {
+			"name": "Thailand",
+			"shapes": [
+				"countries:THA"
+			]
+		},
+		"recOJoUJoac1FZ48f": {
+			"name": "Timor-Leste",
+			"shapes": [
+				"countries:TLS"
+			]
+		},
+		"rec486lgrIfSxlBRB": {
+			"name": "Togo",
+			"shapes": [
+				"countries:TGO"
+			]
+		},
+		"recmcEaQRUhE2DkOj": {
+			"name": "Tonga",
+			"shapes": [
+				"countries:TON"
+			]
+		},
+		"recOrXNdRtfF1v9SD": {
+			"name": "Transnistria",
+			"shapes": [
+				"breakaway:B36"
+			],
+			"note": "Breakaway from Moldova"
+		},
+		"recgaXfPPnhuqiBmC": {
+			"name": "Trinidad and Tobago",
+			"shapes": [
+				"countries:TTO"
+			]
+		},
+		"recVEpcgKiwpv0Y2x": {
+			"name": "Tunisia",
+			"shapes": [
+				"countries:TUN"
+			]
+		},
+		"recuD4d6xTSGcsVlB": {
+			"name": "Turkey",
+			"shapes": [
+				"countries:TUR"
+			]
+		},
+		"recu6St8QXJjtVMHM": {
+			"name": "Turkmenistan",
+			"shapes": [
+				"countries:TKM"
+			]
+		},
+		"recHgM2M6jjhJGsJ0": {
+			"name": "Tuvalu",
+			"shapes": [
+				"countries:TUV"
+			]
+		},
+		"rec87CtK2xS4NWZqx": {
+			"name": "Uganda",
+			"shapes": [
+				"countries:UGA"
+			]
+		},
+		"recdl1SEYvXC9crUd": {
+			"name": "Ukraine",
+			"shapes": [
+				"countries:UKR"
+			]
+		},
+		"recZvcpmGeo2EKAK0": {
+			"name": "United Arab Emirates",
+			"shapes": [
+				"countries:ARE"
+			]
+		},
+		"recJtQF91RulZ6bYa": {
+			"name": "United Kingdom",
+			"shapes": [
+				"countries:GBR"
+			]
+		},
+		"recErwkQpwxGCXW5F": {
+			"name": "United States",
+			"shapes": [
+				"countries:USA"
+			],
+			"note": "The whole country, Alaska and Hawaii included; Guam and the Northern Mariana Islands are territories of their own"
+		},
+		"recSXaFgmSrKicSOr": {
+			"name": "Uruguay",
+			"shapes": [
+				"countries:URY"
+			]
+		},
+		"recAWl2HcDNSJG1Zd": {
+			"name": "Uzbekistan",
+			"shapes": [
+				"countries:UZB"
+			]
+		},
+		"rec9WVER7advJ07Bk": {
+			"name": "Vanuatu",
+			"shapes": [
+				"countries:VUT"
+			]
+		},
+		"recxUlTQk8PXfSETR": {
+			"name": "Vatican City",
+			"shapes": [
+				"countries:VAT"
+			]
+		},
+		"recRhfOTy2FRr0lbx": {
+			"name": "Venezuela",
+			"shapes": [
+				"countries:VEN"
+			]
+		},
+		"recXBouVfbs726rvF": {
+			"name": "Vietnam",
+			"shapes": [
+				"countries:VNM"
+			]
+		},
+		"recAYrs3mkR9EgY89": {
+			"name": "Wallis and Futuna",
+			"shapes": [
+				"units:WLF"
+			]
+		},
+		"recHt0cbUUGISJwb8": {
+			"name": "Western Sahara",
+			"shapes": [
+				"units:SAH"
+			],
+			"note": "All of Western Sahara, most of which Morocco administers"
+		},
+		"recRADHcsZM10ICSg": {
+			"name": "Yemen",
+			"shapes": [
+				"countries:YEM"
+			]
+		},
+		"reca3eVcgKzj6Hei6": {
+			"name": "Zambia",
+			"shapes": [
+				"countries:ZMB"
+			]
+		},
+		"rec6SPOPTCZeNE5nv": {
+			"name": "Zimbabwe",
+			"shapes": [
+				"countries:ZWE"
+			]
+		}
+	},
+	"focus": {
+		"recUC4moS37PaSogS": {
+			"name": "Hawaiian",
+			"places": [
+				"recJdmrV257IxkekS"
+			]
+		},
+		"recJ2dV8jRjLb0V1E": {
+			"name": "Chamorro",
+			"places": [
+				"recguDPgV3cIXLO34",
+				"rec8BH6e7SD1A1J5I"
+			]
+		},
+		"recQ3IjPtLCuF1RlW": {
+			"name": "Carolinian",
+			"places": [
+				"rec8BH6e7SD1A1J5I"
+			]
+		}
+	}
+}
