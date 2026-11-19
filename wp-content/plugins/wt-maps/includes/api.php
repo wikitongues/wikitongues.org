@@ -172,7 +172,8 @@ function wt_map( array $args = array() ): string {
 	}
 
 	$origins = $args['primary'] ?? get_post_meta( $language, 'nations_of_origin', true );
-	$roles   = Renderer::roles( $places, wt_maps_record_ids( is_array( $origins ) ? $origins : array() ) );
+	$origins = wt_maps_record_ids( is_array( $origins ) ? $origins : array() );
+	$roles   = Renderer::roles( $places, $origins );
 	$names   = wt_maps_place_names( $places );
 	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
 		$names = array_map( 'wt_prefix_the', $names );
@@ -180,8 +181,8 @@ function wt_map( array $args = array() ): string {
 	// A language's post title is its ISO code; its display name is standard_name.
 	$name  = (string) get_post_meta( $language, 'standard_name', true );
 	$title = sprintf( 'Where %s is spoken', '' !== $name ? $name : get_the_title( $language ) );
-	$desc  = Renderer::describe( $roles, $names );
-	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names );
+	$desc  = Renderer::describe( $roles, $names, PHP_INT_MAX, $origins );
+	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names, $origins );
 	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];
 	$class = trim( 'wt-map wt-map--' . $style . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
 

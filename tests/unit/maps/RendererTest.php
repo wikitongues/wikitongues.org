@@ -69,6 +69,33 @@ class RendererTest extends TestCase {
 		$this->assertSame( '', Renderer::describe( array( self::US => 'primary' ), array() ) );
 	}
 
+	public function test_origins_come_first_in_their_own_order() {
+		$names   = array(
+			'recFRANCEAAAAAAAA' => 'France',
+			'recLEBANONAAAAAAA' => 'Lebanon',
+			'recANDORRAAAAAAAA' => 'Andorra',
+			'recDJIBOUTIAAAAAA' => 'Djibouti',
+			'recMARTINIQUEAAAA' => 'Martinique',
+		);
+		$roles   = array(
+			'recANDORRAAAAAAAA' => 'primary',
+			'recDJIBOUTIAAAAAA' => 'primary',
+			'recFRANCEAAAAAAAA' => 'primary',
+			'recLEBANONAAAAAAA' => 'primary',
+			'recMARTINIQUEAAAA' => 'secondary',
+		);
+		$origins = array( 'recFRANCEAAAAAAAA', 'recLEBANONAAAAAAA', 'recANDORRAAAAAAAA', 'recDJIBOUTIAAAAAA' );
+
+		$this->assertSame(
+			'Map showing France, Lebanon, Andorra, and 2 other places.',
+			Renderer::caption( $roles, $names, $origins )
+		);
+		$this->assertSame(
+			'Map showing France, Lebanon, Andorra, and Djibouti, with Martinique also marked.',
+			Renderer::describe( $roles, $names, PHP_INT_MAX, $origins )
+		);
+	}
+
 	public function test_caption_counts_long_lists_and_sorts_past_the() {
 		$names = array(
 			self::US   => 'the United States',

@@ -61,27 +61,36 @@ final class Renderer {
 	 *
 	 * With `$max`, the visible caption: past that many places in a role, the
 	 * rest are counted instead of listed, since the sidebar lists them all.
-	 * Names may carry a leading "the" (wt_prefix_the()); it is ignored in sorting.
+	 * Origins come first, in the order the language lists them (French: France,
+	 * then Lebanon, …); the other places follow alphabetically, ignoring a
+	 * leading "the" (wt_prefix_the()).
 	 *
-	 * @param array<string, string> $roles Place record ID → role.
-	 * @param array<string, string> $names Place record ID → name.
-	 * @param int                   $max   Most places to name per role.
+	 * @param array<string, string> $roles   Place record ID → role.
+	 * @param array<string, string> $names   Place record ID → name.
+	 * @param int                   $max     Most places to name per role.
+	 * @param list<string>          $origins The language's origin record IDs, in its order.
 	 * @return string
 	 */
-	public static function describe( array $roles, array $names, int $max = PHP_INT_MAX ): string {
+	public static function describe( array $roles, array $names, int $max = PHP_INT_MAX, array $origins = array() ): string {
 		$by_role = array(
 			'primary'   => array(),
 			'secondary' => array(),
 		);
+		$rank    = array_flip( $origins );
+		$alpha   = static fn( string $name ): string => (string) preg_replace( '/^the /', '', $name );
+		$order   = static function ( string $a, string $b ) use ( $rank, $names, $alpha ): int {
+			$ra = $rank[ $a ] ?? PHP_INT_MAX;
+			$rb = $rank[ $b ] ?? PHP_INT_MAX;
+			return $ra <=> $rb ?: strcmp( $alpha( $names[ $a ] ), $alpha( $names[ $b ] ) );
+		};
 		foreach ( $roles as $place => $role ) {
 			if ( isset( $names[ $place ] ) && '' !== $names[ $place ] ) {
-				$by_role[ $role ][] = $names[ $place ];
+				$by_role[ $role ][] = (string) $place;
 			}
 		}
-		$sort_key = static fn( string $name ): string => (string) preg_replace( '/^the /', '', $name );
-		foreach ( $by_role as $role => $list ) {
-			usort( $list, static fn( string $a, string $b ): int => strcmp( $sort_key( $a ), $sort_key( $b ) ) );
-			$by_role[ $role ] = $list;
+		foreach ( $by_role as $role => $places ) {
+			usort( $places, $order );
+			$by_role[ $role ] = array_map( static fn( string $place ): string => $names[ $place ], $places );
 		}
 
 		$primary   = $by_role['primary'];
@@ -106,12 +115,13 @@ final class Renderer {
 	/**
 	 * The visible caption: the description, naming at most three places per role.
 	 *
-	 * @param array<string, string> $roles Place record ID → role.
-	 * @param array<string, string> $names Place record ID → name.
+	 * @param array<string, string> $roles   Place record ID → role.
+	 * @param array<string, string> $names   Place record ID → name.
+	 * @param list<string>          $origins The language's origin record IDs, in its order.
 	 * @return string
 	 */
-	public static function caption( array $roles, array $names ): string {
-		return self::describe( $roles, $names, 3 );
+	public static function caption( array $roles, array $names, array $origins = array() ): string {
+		return self::describe( $roles, $names, 3, $origins );
 	}
 
 	/**
