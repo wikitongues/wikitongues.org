@@ -29,7 +29,7 @@ final class Renderer {
 	/**
 	 * Bumped when decorate() changes its output, so cached maps are rebuilt.
 	 */
-	public const VERSION = '1';
+	public const VERSION = '2';
 
 	public const STYLES = array(
 		'light-focused' => 'Light focused',
@@ -57,34 +57,71 @@ final class Renderer {
 	}
 
 	/**
-	 * The map's description: where it is centred and what else is marked.
+	 * The map's description: the places it shows, and what else is marked.
 	 *
-	 * @param array<string, string> $roles Place record ID → role.
-	 * @param array<string, string> $names Place record ID → name.
+	 * With `$max`, the visible caption: past that many places in a role, the
+	 * rest are counted instead of listed, since the sidebar lists them all.
+	 * Origins come first, in the order the language lists them (French: France,
+	 * then Lebanon, …); the other places follow alphabetically, ignoring a
+	 * leading "the" (wt_prefix_the()).
+	 *
+	 * @param array<string, string> $roles   Place record ID → role.
+	 * @param array<string, string> $names   Place record ID → name.
+	 * @param int                   $max     Most places to name per role.
+	 * @param list<string>          $origins The language's origin record IDs, in its order.
 	 * @return string
 	 */
-	public static function describe( array $roles, array $names ): string {
+	public static function describe( array $roles, array $names, int $max = PHP_INT_MAX, array $origins = array() ): string {
 		$by_role = array(
 			'primary'   => array(),
 			'secondary' => array(),
 		);
+		$rank    = array_flip( $origins );
+		$alpha   = static fn( string $name ): string => (string) preg_replace( '/^the /', '', $name );
+		$order   = static function ( string $a, string $b ) use ( $rank, $names, $alpha ): int {
+			$ra = $rank[ $a ] ?? PHP_INT_MAX;
+			$rb = $rank[ $b ] ?? PHP_INT_MAX;
+			return $ra <=> $rb ?: strcmp( $alpha( $names[ $a ] ), $alpha( $names[ $b ] ) );
+		};
 		foreach ( $roles as $place => $role ) {
 			if ( isset( $names[ $place ] ) && '' !== $names[ $place ] ) {
-				$by_role[ $role ][] = $names[ $place ];
+				$by_role[ $role ][] = (string) $place;
 			}
 		}
-		sort( $by_role['primary'] );
-		sort( $by_role['secondary'] );
+		foreach ( $by_role as $role => $places ) {
+			usort( $places, $order );
+			$by_role[ $role ] = array_map( static fn( string $place ): string => $names[ $place ], $places );
+		}
 
-		if ( array() === $by_role['primary'] ) {
+		$primary   = $by_role['primary'];
+		$secondary = $by_role['secondary'];
+		if ( array() === $primary ) {
 			return '';
 		}
+		if ( count( $primary ) > $max ) {
+			$rest = count( $primary ) - $max + count( $secondary );
+			return 'Map showing ' . implode( ', ', array_slice( $primary, 0, $max ) ) . sprintf( ', and %d other places.', $rest );
+		}
 
-		$text = 'Map centred on ' . self::list_names( $by_role['primary'] );
-		if ( array() !== $by_role['secondary'] ) {
-			$text .= ', with ' . self::list_names( $by_role['secondary'] ) . ' also marked';
+		$text = 'Map showing ' . self::list_names( $primary );
+		if ( count( $secondary ) > $max ) {
+			$text .= sprintf( ', with %d other places also marked', count( $secondary ) );
+		} elseif ( array() !== $secondary ) {
+			$text .= ', with ' . self::list_names( $secondary ) . ' also marked';
 		}
 		return $text . '.';
+	}
+
+	/**
+	 * The visible caption: the description, naming at most three places per role.
+	 *
+	 * @param array<string, string> $roles   Place record ID → role.
+	 * @param array<string, string> $names   Place record ID → name.
+	 * @param list<string>          $origins The language's origin record IDs, in its order.
+	 * @return string
+	 */
+	public static function caption( array $roles, array $names, array $origins = array() ): string {
+		return self::describe( $roles, $names, 3, $origins );
 	}
 
 	/**

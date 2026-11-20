@@ -64,6 +64,18 @@ class MapSetsTest extends TestCase {
 		$this->assertSame( array( self::NMI, self::GUAM ), wt_maps_language_places( $table, '', array( self::GUAM, self::NMI, self::GUAM ) ), 'sorted, deduplicated' );
 	}
 
+	public function test_origins_are_drawn_only_when_there_are_no_territories() {
+		$table = $this->table();
+
+		$this->assertSame( array( self::US ), wt_maps_language_places( $table, '', array(), array( self::US ) ), 'Eteocypriot: no territories, an origin' );
+		$this->assertSame( array( self::GUAM ), wt_maps_language_places( $table, '', array( self::GUAM ), array( self::US ) ), 'territories win' );
+		$this->assertSame( array( self::HAWAII ), wt_maps_language_places( $table, self::HAWAIIAN, array(), array( self::US ) ), 'the focus wins' );
+
+		$plan = wt_maps_plan_sets( $table, array( $this->language( 'Origin only', array() ) + array( 'origins' => array( self::US ) ) ) );
+		$this->assertSame( array( self::US ), array_keys( $plan['sets'] ) );
+		$this->assertSame( 0, $plan['no_places'] );
+	}
+
 	public function test_plan_groups_languages_by_set_and_never_draws_part_of_one() {
 		$plan = wt_maps_plan_sets(
 			$this->table(),

@@ -32,27 +32,34 @@ function wt_maps_collect_languages(): array {
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
 	$language_rows = $wpdb->get_results(
-		"SELECT p.post_title AS title, r.meta_value AS record_id, t.meta_value AS territories
+		"SELECT p.post_title AS title, r.meta_value AS record_id, t.meta_value AS territories, o.meta_value AS origins
 		FROM {$wpdb->posts} p
 		LEFT JOIN {$wpdb->postmeta} r ON r.post_id = p.ID AND r.meta_key = '_airtable_record_id'
 		LEFT JOIN {$wpdb->postmeta} t ON t.post_id = p.ID AND t.meta_key = 'territories'
+		LEFT JOIN {$wpdb->postmeta} o ON o.post_id = p.ID AND o.meta_key = 'nations_of_origin'
 		WHERE p.post_type = 'languages' AND p.post_status = 'publish'",
 		ARRAY_A
 	);
 
-	$languages = array();
-	foreach ( (array) $language_rows as $row ) {
-		$linked      = maybe_unserialize( (string) $row['territories'] );
-		$territories = array();
+	// Linked post IDs (serialized) → published territories' record IDs, in order.
+	$records = static function ( ?string $meta ) use ( $record_of ): array {
+		$linked = maybe_unserialize( (string) $meta );
+		$ids    = array();
 		foreach ( is_array( $linked ) ? $linked : array() as $post_id ) {
 			if ( isset( $record_of[ (int) $post_id ] ) ) {
-				$territories[] = $record_of[ (int) $post_id ];
+				$ids[] = $record_of[ (int) $post_id ];
 			}
 		}
+		return $ids;
+	};
+
+	$languages = array();
+	foreach ( (array) $language_rows as $row ) {
 		$languages[] = array(
 			'record_id'   => (string) $row['record_id'],
 			'title'       => (string) $row['title'],
-			'territories' => $territories,
+			'territories' => $records( $row['territories'] ),
+			'origins'     => $records( $row['origins'] ),
 		);
 	}
 

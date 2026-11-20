@@ -46,7 +46,7 @@ class RendererTest extends TestCase {
 		);
 
 		$this->assertSame(
-			'Map centred on Guam and Northern Mariana Islands.',
+			'Map showing Guam and Northern Mariana Islands.',
 			Renderer::describe(
 				array(
 					self::NMI  => 'primary',
@@ -56,7 +56,7 @@ class RendererTest extends TestCase {
 			)
 		);
 		$this->assertSame(
-			'Map centred on United States, with Guam and Northern Mariana Islands also marked.',
+			'Map showing United States, with Guam and Northern Mariana Islands also marked.',
 			Renderer::describe(
 				array(
 					self::US   => 'primary',
@@ -67,6 +67,65 @@ class RendererTest extends TestCase {
 			)
 		);
 		$this->assertSame( '', Renderer::describe( array( self::US => 'primary' ), array() ) );
+	}
+
+	public function test_origins_come_first_in_their_own_order() {
+		$names   = array(
+			'recFRANCEAAAAAAAA' => 'France',
+			'recLEBANONAAAAAAA' => 'Lebanon',
+			'recANDORRAAAAAAAA' => 'Andorra',
+			'recDJIBOUTIAAAAAA' => 'Djibouti',
+			'recMARTINIQUEAAAA' => 'Martinique',
+		);
+		$roles   = array(
+			'recANDORRAAAAAAAA' => 'primary',
+			'recDJIBOUTIAAAAAA' => 'primary',
+			'recFRANCEAAAAAAAA' => 'primary',
+			'recLEBANONAAAAAAA' => 'primary',
+			'recMARTINIQUEAAAA' => 'secondary',
+		);
+		$origins = array( 'recFRANCEAAAAAAAA', 'recLEBANONAAAAAAA', 'recANDORRAAAAAAAA', 'recDJIBOUTIAAAAAA' );
+
+		$this->assertSame(
+			'Map showing France, Lebanon, Andorra, and 2 other places.',
+			Renderer::caption( $roles, $names, $origins )
+		);
+		$this->assertSame(
+			'Map showing France, Lebanon, Andorra, and Djibouti, with Martinique also marked.',
+			Renderer::describe( $roles, $names, PHP_INT_MAX, $origins )
+		);
+	}
+
+	public function test_caption_counts_long_lists_and_sorts_past_the() {
+		$names = array(
+			self::US   => 'the United States',
+			self::GUAM => 'Guam',
+			self::NMI  => 'the Northern Mariana Islands',
+		);
+		$roles = array(
+			self::US   => 'primary',
+			self::GUAM => 'primary',
+			self::NMI  => 'primary',
+		);
+
+		$this->assertSame(
+			'Map showing Guam, the Northern Mariana Islands, and the United States.',
+			Renderer::caption( $roles, $names ),
+			'three places are still named, sorted without "the"'
+		);
+
+		$many  = array( self::US => 'Spain' );
+		$roles = array( self::US => 'primary' );
+		for ( $i = 0; $i < 5; $i++ ) {
+			$id           = 'recSECONDARY' . $i . 'AAAA';
+			$many[ $id ]  = 'Place ' . $i;
+			$roles[ $id ] = 'secondary';
+		}
+		$this->assertSame( 'Map showing Spain, with 5 other places also marked.', Renderer::caption( $roles, $many ) );
+		$this->assertStringContainsString( 'Place 0, Place 1', Renderer::describe( $roles, $many ), 'the description still lists them all' );
+
+		$all = array_fill_keys( array_keys( $roles ), 'primary' );
+		$this->assertSame( 'Map showing Place 0, Place 1, Place 2, and 3 other places.', Renderer::caption( $all, $many ) );
 	}
 
 	public function test_decorate_adds_roles_urls_and_text() {
