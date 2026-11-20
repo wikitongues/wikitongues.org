@@ -61,6 +61,12 @@
 	<?php if ( $blurb ) : ?>
 		<p class="blurb"><?php echo esc_html( $blurb ); ?></p>
 	<?php endif; ?>
+	<?php
+	// Locator map from the wt-maps plugin (plan 3.2); empty when the language has none.
+	if ( function_exists( 'wt_maps_sidebar_map' ) ) {
+		echo wt_maps_sidebar_map( get_the_ID() ); // Built and escaped by the plugin.
+	}
+	?>
 	<?php if ( $wikipedia_description ) : ?>
 		<p>
 			<?php echo esc_html( $wikipedia_description ); ?> &nbsp;
