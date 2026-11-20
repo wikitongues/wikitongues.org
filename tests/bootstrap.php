@@ -62,6 +62,7 @@ if ( ! defined( 'DAY_IN_SECONDS' ) ) {
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/acf-helpers.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrations/resource-card-abilities.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/short-links.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/language-origins.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_gallery_items.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/queries.php';
@@ -71,6 +72,12 @@ require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/donate-content.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/taxonomies/form-990.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/content-bundle-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/stamp-airtable-ids-helpers.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/cli/sync-territories-helpers.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-logger.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-field-resolver.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-sync-controller.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-place-sync.php';
 
 // events-filter.php calls get_current_datetime() → wp_date() at file scope,
 // before WP_Mock has stubbed it. Define a shim so the include doesn't fatal.

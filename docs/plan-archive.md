@@ -10,6 +10,9 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Language geography, phase B (maps slice): subdivisions as objects, keyed on record IDs | 2026-11-18 – 19 | [#687], [#690], [#693] | [airtable-sync.md](airtable-sync.md#territories), [content-model.md](content-model.md#territories-and-regions) |
+| Native Language AI page | 2026-11-18 | [#676], [#678], [#681] | [content-model.md](content-model.md#redirects) (the `/ai` short link) |
+| Language geography, phase A: country of origin reconciled | 2026-11-18 | [#675], [#682], [#684] | [airtable-sync.md](airtable-sync.md#languages), [content-model.md](content-model.md#territories-and-regions) |
 | Nations of origin as territory links | 2026-11-17 | — | [content-model.md](content-model.md#languages) |
 | Plan and docs restructure | 2026-09-13 | [#643] | [plan.md](../plan.md), this file |
 | Deploy and backup hardening | 2026-09-12 | [#633]–[#636], [#639], [#640] | [deployment.md](deployment.md), [staging-sync.md](staging-sync.md) |
@@ -30,6 +33,45 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-19 (Language geography, phase B: the maps slice)
+
+### Language geography keyed on Airtable record IDs; places below a nation become objects (plan 6.8, phase B)
+**PRs:** [#687], [#690], [#693], released in [#688], [#691], [#694] (staging) and [#689], [#692], [#695] (production)
+
+- **Record IDs, not names** ([#687]). Links from languages resolve by Airtable record ID through `_airtable_record_id`; title matching is a logged fallback. `wp wt stamp-airtable-ids` stamped the 204 Nations onto their territory pages on every environment. `CLAUDE.md` gained the idempotency principle.
+- **Subdivisions as objects** ([#690]). A string repeater on languages was replaced, before it held any data, by objects: every Airtable Territories record is a `territories` post when it has an ISO 3166-1 code and a non-public `subdivisions` post otherwise, synced by `POST /sync/territories` (`Place_Sync`). Languages' `subdivisions` links to either type and keeps the raw IDs, so late arrivals relink.
+- **First load by WP-CLI** ([#693]). `wp wt sync-territories` loaded the 854 records on local, staging and production after a fresh backup, sync and dated dump: 804 subdivisions, 37 draft territories (waiting for a region), 13 existing pages stamped; a re-run changed nothing. It also fixed the title fallback so same-named places (Punjab in India and Pakistan) never share a post.
+- **Airtable.** Territories gained an ISO 3166-1 code field (50 coded), lost six duplicate records, and gained `Created`, `Last Modified` and `last_modified` for the sync. Hawaiian links to `Hawaii_US`. The two Languages lookups added for the repeater (`subdivision_identifiers`, `subdivision_names`) are unused and to be deleted in the Airtable UI.
+- **Make.** New Territories scenarios (staging on demand, production hourly); both Languages scenarios send `nations_of_origin` and `subdivisions` as record IDs. Tested on staging, then the launch cases synced to production: Hawaiian → Hawaii, Chamorro → Guam and the Northern Mariana Islands, Carolinian → the Northern Mariana Islands.
+- **Left open (plan 6.8):** nested routes and the region sidebar rule; regions for the 37 new territories and Greenland; Nagorno-Karabakh; whether WordPress may edit synced data; and, in phase C, separating origin from official and spoken-in links before any backfill.
+
+Described in [airtable-sync.md](airtable-sync.md#territories) and [content-model.md](content-model.md#territories-and-regions).
+
+---
+
+## 2026-11-18 (Native Language AI)
+
+### Native Language AI page published, with an `/ai` short link
+
+`/revitalization/resources/native-language-ai` went public on staging and production. Its banner and support-block photos come from Wikimedia Commons and were chosen for the project's idea rather than the Igala pilot: a Mozilla Common Voice training in Ghana (CC BY 4.0) and a Lingua Libre recording setup (CC BY-SA 4.0). Their credit captions stay shown because the licences require them. Block image captions now share the banner caption's style: a parchment tab in italic body text, replacing the yellow label ([#676]). `/ai` redirects to the page through a new short-link list in `includes/template/short-links.php`; it runs ahead of WordPress's canonical redirect, which had been guessing `/ai` into `/languages/aia/` ([#678]).
+
+---
+
+## 2026-11-18 (Language geography, phase A)
+
+### Country of origin matches Airtable everywhere; territory pages list languages by origin (plan 6.8, phase A)
+**PRs:** [#675], released in [#682] (staging) and [#684] (production)
+
+- **Why the 2026-11-17 fill didn't sync.** Only 15 of the 560 languages given a nation reached WordPress. Airtable's `Last Modified` watched six fields, not Nation of Origin, so nation edits never moved `last_modified`, the field Make's Languages scenario triggers on. Subject [Nation of Origin] was added to its list (tested in a duplicate base first). No Make change was needed: the payload already carried `nations_of_origin`.
+- **Airtable fixes.** Nine nation errors corrected: Urak Lawoi' (Thailand only), Khalaj (Iran), North Picene (Italy), Northern Kurdish (Turkey, Iraq, Syria, Iran), Dan (drop Guinea-Bissau), Judeo-Berber (Morocco), Yevanic (Greece), Western Armenian (Turkey), Monastic Sign Language (Vatican City, off the leftover "Vatican State" nation). Ngundu, Darkhat and Korean Sign Language were left as they are.
+- **WordPress reconcile.** A WP-CLI pass, using the sync plugin's own resolver and `update_field`, set `nations_of_origin` from an Airtable export on local, staging and production, after a fresh backup and sync: 574 languages each (503 filled, 6 gained a missing nation, 65 replaced, about 52 of them French and Chinese subdivisions moved to France or China). Order-only differences were left alone. A second pass found nothing left in each environment.
+- **Territory pages** list languages by `nations_of_origin` rather than the `territories` copy ([#675]).
+- **Left open:** Slovenian Sign Language has Slovenia in WordPress and no nation in Airtable; `yug` and `yim` have no WordPress post; six Airtable records share the identifier `wart`; 42 multi-nation records list their nations in reverse order.
+
+Described in [airtable-sync.md](airtable-sync.md#languages) and [content-model.md](content-model.md#territories-and-regions).
 
 ---
 
@@ -1028,3 +1070,18 @@ Minor fix to SSH agent action version in deployment workflow.
 [#639]: https://github.com/wikitongues/wikitongues.org/pull/639
 [#640]: https://github.com/wikitongues/wikitongues.org/pull/640
 [#643]: https://github.com/wikitongues/wikitongues.org/pull/643
+[#676]: https://github.com/wikitongues/wikitongues.org/pull/676
+[#678]: https://github.com/wikitongues/wikitongues.org/pull/678
+[#681]: https://github.com/wikitongues/wikitongues.org/pull/681
+[#675]: https://github.com/wikitongues/wikitongues.org/pull/675
+[#682]: https://github.com/wikitongues/wikitongues.org/pull/682
+[#684]: https://github.com/wikitongues/wikitongues.org/pull/684
+[#687]: https://github.com/wikitongues/wikitongues.org/pull/687
+[#688]: https://github.com/wikitongues/wikitongues.org/pull/688
+[#689]: https://github.com/wikitongues/wikitongues.org/pull/689
+[#690]: https://github.com/wikitongues/wikitongues.org/pull/690
+[#691]: https://github.com/wikitongues/wikitongues.org/pull/691
+[#692]: https://github.com/wikitongues/wikitongues.org/pull/692
+[#693]: https://github.com/wikitongues/wikitongues.org/pull/693
+[#694]: https://github.com/wikitongues/wikitongues.org/pull/694
+[#695]: https://github.com/wikitongues/wikitongues.org/pull/695

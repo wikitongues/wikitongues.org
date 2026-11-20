@@ -42,22 +42,19 @@
 		echo create_gallery_instance( $fellows_params );
 	}
 
-	// Languages gallery.
-	// Pass false to avoid hydrating full WP_Post objects — we only need IDs.
-	// Territories like India (403 languages) would otherwise time out.
-	$languages    = get_field( 'languages', get_the_ID(), false );
-	$language_ids = $languages ? implode( ',', $languages ) : '';
-	$params       = wt_gallery_params(
-		array(
-			'title'          => 'Languages of ' . $territory,
-			'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
-			'post_type'      => 'languages',
-			'columns'        => 3,
-			'posts_per_page' => 6,
-			'orderby'        => $language_ids,
-			'selected_posts' => $language_ids,
-			'display_blank'  => 'true',
-			'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
+	// Languages gallery: languages original to this territory.
+	$params = wt_gallery_params(
+		array_merge(
+			array(
+				'title'          => 'Languages of ' . $territory,
+				'subtitle'       => 'Wikitongues crowd-sources video samples of every language in the world.',
+				'post_type'      => 'languages',
+				'columns'        => 3,
+				'posts_per_page' => 6,
+				'display_blank'  => 'true',
+				'link_out'       => add_query_arg( 'territory', $territory_slug, get_post_type_archive_link( 'languages' ) ),
+			),
+			wt_origin_gallery_filter( $territory_id )
 		)
 	);
 	echo create_gallery_instance( $params );

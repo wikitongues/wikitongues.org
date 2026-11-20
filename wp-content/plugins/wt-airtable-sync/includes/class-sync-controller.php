@@ -31,27 +31,41 @@ class Sync_Controller {
 	 * preview of the action and meta values that would have been written,
 	 * which lets callers validate Make.com payloads without touching the DB.
 	 *
+	 * Options:
+	 *   - keep_existing_slug   (bool) An existing post keeps its slug when its title changes.
+	 *   - keep_existing_status (bool) An existing post keeps its status; the payload's status
+	 *                                 applies only to a new post.
+	 *   - title_match_unstamped (bool) The title fallback only matches posts with no Airtable
+	 *                                 record ID, so a record never takes over a post that
+	 *                                 belongs to another record with the same name.
+	 *
 	 * @param string               $post_type WP CPT slug.
 	 * @param array<string, mixed> $payload   Decoded JSON body from the request.
 	 * @param array<string, mixed> $field_map CPT entry from config/field-maps.php.
 	 * @param bool                 $dry_run   When true, no writes are made.
-	 * @return array{status: string, action: string, post_id: int}|\WP_Error
+	 * @param array<string, bool>  $options   See above.
+	 * @return array<string, mixed>|\WP_Error
 	 */
 	public function sync(
 		string $post_type,
 		array $payload,
 		array $field_map,
-		bool $dry_run = false
+		bool $dry_run = false,
+		array $options = array()
 	): array|\WP_Error {
 		$airtable_id = isset( $payload['airtable_id'] ) ? sanitize_text_field( (string) $payload['airtable_id'] ) : '';
 		$post_title  = isset( $payload['post_title'] ) ? sanitize_text_field( (string) $payload['post_title'] ) : '';
 		$post_status = isset( $payload['post_status'] ) ? sanitize_text_field( (string) $payload['post_status'] ) : 'publish';
 
 		// 1. Locate existing post (read-only — runs in both modes).
-		$post_id = $this->find_post( $post_type, $airtable_id, $post_title, $payload );
+		$post_id = $this->find_post( $post_type, $airtable_id, $post_title, $payload, ! empty( $options['title_match_unstamped'] ) );
 		$action  = $post_id ? 'updated' : 'created';
 
 		if ( $dry_run ) {
+			if ( $post_id && ! empty( $options['keep_existing_status'] ) ) {
+				$post_status = (string) get_post_status( $post_id );
+			}
+
 			$would_write = $this->preview_meta( $payload, $field_map );
 
 			if ( $airtable_id ) {
@@ -76,7 +90,7 @@ class Sync_Controller {
 		}
 
 		// 2. Create or update the core WP post.
-		$post_id = $this->upsert_post( $post_id, $post_type, $post_title, $post_status );
+		$post_id = $this->upsert_post( $post_id, $post_type, $post_title, $post_status, $options );
 
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
@@ -117,13 +131,15 @@ class Sync_Controller {
 	 * @param string               $airtable_id Airtable record ID.
 	 * @param string               $post_title  Post title from payload.
 	 * @param array<string, mixed> $payload     Full payload (used for iso_code fallback).
+	 * @param bool                 $unstamped   Title fallback matches only posts without a record ID.
 	 * @return int WP post ID, or 0.
 	 */
 	private function find_post(
 		string $post_type,
 		string $airtable_id,
 		string $post_title,
-		array $payload
+		array $payload,
+		bool $unstamped = false
 	): int {
 		// 1. Stable Airtable record ID.
 		if ( $airtable_id ) {
@@ -144,7 +160,7 @@ class Sync_Controller {
 
 		// 3. Post title fallback.
 		if ( $post_title ) {
-			$id = $this->find_by_title( $post_type, $post_title );
+			$id = $this->find_by_title( $post_type, $post_title, $unstamped );
 			if ( $id ) {
 				return $id;
 			}
@@ -191,20 +207,30 @@ class Sync_Controller {
 	 *
 	 * @param string $post_type  WP CPT slug.
 	 * @param string $post_title Exact title to match.
+	 * @param bool   $unstamped  Only match posts that have no Airtable record ID.
 	 * @return int Post ID, or 0.
 	 */
-	private function find_by_title( string $post_type, string $post_title ): int {
-		$query = new \WP_Query(
-			array(
-				'post_type'              => $post_type,
-				'title'                  => $post_title,
-				'post_status'            => 'any',
-				'posts_per_page'         => 1,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			)
+	private function find_by_title( string $post_type, string $post_title, bool $unstamped = false ): int {
+		$args = array(
+			'post_type'              => $post_type,
+			'title'                  => $post_title,
+			'post_status'            => 'any',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		);
+
+		if ( $unstamped ) {
+			$args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				array(
+					'key'     => self::AIRTABLE_ID_KEY,
+					'compare' => 'NOT EXISTS',
+				),
+			);
+		}
+
+		$query = new \WP_Query( $args );
 
 		if ( $query->have_posts() ) {
 			return (int) $query->posts[0]->ID;
@@ -220,26 +246,32 @@ class Sync_Controller {
 	/**
 	 * Insert a new post or update an existing one.
 	 *
-	 * @param int    $post_id     0 to create; existing ID to update.
-	 * @param string $post_type   WP CPT slug.
-	 * @param string $post_title  Post title.
-	 * @param string $post_status Post status.
+	 * @param int                 $post_id     0 to create; existing ID to update.
+	 * @param string              $post_type   WP CPT slug.
+	 * @param string              $post_title  Post title.
+	 * @param string              $post_status Post status.
+	 * @param array<string, bool> $options     See sync().
 	 * @return int|\WP_Error New or existing post ID on success; WP_Error on failure.
 	 */
 	private function upsert_post(
 		int $post_id,
 		string $post_type,
 		string $post_title,
-		string $post_status
+		string $post_status,
+		array $options = array()
 	): int|\WP_Error {
-		$args = array(
-			'post_type'   => $post_type,
-			'post_status' => $post_status,
-		);
+		$existing = $post_id > 0;
+		$args     = array( 'post_type' => $post_type );
+
+		if ( ! $existing || empty( $options['keep_existing_status'] ) ) {
+			$args['post_status'] = $post_status;
+		}
 
 		if ( $post_title ) {
 			$args['post_title'] = $post_title;
-			$args['post_name']  = sanitize_title( $post_title );
+			if ( ! $existing || empty( $options['keep_existing_slug'] ) ) {
+				$args['post_name'] = sanitize_title( $post_title );
+			}
 		}
 
 		if ( $post_id ) {
@@ -279,15 +311,9 @@ class Sync_Controller {
 				continue;
 			}
 
-			$raw_value = $payload[ $payload_key ];
-			$meta_key  = $field['meta_key'];
-			$acf_type  = $field['acf_type'] ?? null;
-			$cpt       = $field['post_type'] ?? null;
-
-			if ( 'post_object' === $acf_type && $cpt ) {
-				$preview[ $meta_key ] = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
-			} else {
-				$preview[ $meta_key ] = $raw_value;
+			$preview[ $field['meta_key'] ] = $this->resolve_value( $payload[ $payload_key ], $field );
+			if ( ! empty( $field['raw_ids'] ) ) {
+				$preview[ $field['raw_ids'] ] = Field_Resolver::record_ids( $payload[ $payload_key ] );
 			}
 		}
 
@@ -295,9 +321,33 @@ class Sync_Controller {
 	}
 
 	/**
+	 * Turn one payload value into the value written to WordPress.
+	 *
+	 * - post_object: record IDs or titles → WP post IDs (Field_Resolver);
+	 *   with 'single', the first match or ''.
+	 * - anything else: written as received.
+	 *
+	 * @param mixed                $raw_value Payload value under the field's own key.
+	 * @param array<string, mixed> $field     Field entry from config/field-maps.php.
+	 * @return mixed
+	 */
+	private function resolve_value( mixed $raw_value, array $field ): mixed {
+		$acf_type = $field['acf_type'] ?? null;
+		$cpt      = $field['post_type'] ?? null;
+
+		if ( 'post_object' === $acf_type && $cpt ) {
+			$ids = Field_Resolver::resolve( is_array( $raw_value ) ? $raw_value : (string) $raw_value, $cpt, $field['aliases'] ?? array() );
+
+			return empty( $field['single'] ) ? $ids : ( $ids[0] ?? '' );
+		}
+
+		return $raw_value;
+	}
+
+	/**
 	 * Write all mapped meta fields from the payload to the post.
 	 *
-	 * post_object fields are resolved to WP post IDs before writing.
+	 * Values are resolved first (see resolve_value()).
 	 * Fields absent from the payload are skipped (no clearing of existing values).
 	 *
 	 * @param int                  $post_id   WP post ID.
@@ -310,22 +360,18 @@ class Sync_Controller {
 				continue;
 			}
 
-			$raw_value = $payload[ $payload_key ];
-			$meta_key  = $field['meta_key'];
-			$is_acf    = (bool) $field['acf'];
-			$acf_type  = $field['acf_type'] ?? null;
-			$cpt       = $field['post_type'] ?? null;
-
-			if ( 'post_object' === $acf_type && $cpt ) {
-				$value = Field_Resolver::resolve( $raw_value, $cpt, $field['aliases'] ?? array() );
-			} else {
-				$value = $raw_value;
-			}
+			$meta_key = $field['meta_key'];
+			$is_acf   = (bool) $field['acf'];
+			$value    = $this->resolve_value( $payload[ $payload_key ], $field );
 
 			if ( $is_acf && function_exists( 'update_field' ) ) {
 				update_field( $meta_key, $value, $post_id );
 			} else {
 				update_post_meta( $post_id, $meta_key, $value );
+			}
+
+			if ( ! empty( $field['raw_ids'] ) ) {
+				update_post_meta( $post_id, $field['raw_ids'], Field_Resolver::record_ids( $payload[ $payload_key ] ) );
 			}
 		}
 	}

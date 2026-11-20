@@ -86,11 +86,6 @@ parameters:
 			path: wp-content/plugins/wt-gallery/includes/helpers.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$iso_code$#"
-			count: 1
-			path: wp-content/plugins/wt-gallery/includes/queries.php
-
-		-
 			message: "#^Function get_field not found\\.$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-careers.php
@@ -126,6 +121,11 @@ parameters:
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-languages.php
 
 		-
+			message: "#^Variable \\$query might not be defined\\.$#"
+			count: 1
+			path: wp-content/plugins/wt-gallery/includes/templates/gallery-languages.php
+
+		-
 			message: "#^Function get_field not found\\.$#"
 			count: 4
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-lexicons.php
@@ -141,18 +141,8 @@ parameters:
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-resources.php
 
 		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/plugins/wt-gallery/includes/templates/gallery-territories.php
-
-		-
-			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int given\\.$#"
-			count: 1
-			path: wp-content/plugins/wt-gallery/includes/templates/gallery-territories.php
-
-		-
 			message: "#^Variable \\$query might not be defined\\.$#"
-			count: 1
+			count: 2
 			path: wp-content/plugins/wt-gallery/includes/templates/gallery-territories.php
 
 		-
@@ -174,11 +164,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: wp-content/plugins/wt-gallery/wt-gallery.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/archive-languages.php
 
 		-
 			message: "#^Function get_field not found\\.$#"
@@ -883,11 +868,6 @@ parameters:
 			message: "#^Function get_field not found\\.$#"
 			count: 3
 			path: wp-content/themes/blankslate-child/single-languages.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/single-territories.php
 
 		-
 			message: "#^Function get_field not found\\.$#"

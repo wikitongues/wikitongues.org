@@ -18,12 +18,21 @@
  *       'meta_key'  => string,       WP postmeta key (ACF uses the field name as key)
  *       'acf'       => bool,         true  → update_field(); false → update_post_meta()
  *       'acf_type'  => string|null,  ACF field type — drives resolver selection
- *       'post_type' => string|null,  Target CPT for post_object resolution; null otherwise
+ *       'post_type' => string|array|null, Target CPT(s) for post_object resolution; null otherwise
  *       'aliases'   => array|null,   Optional post_object title map, incoming name => WP title
+ *       'single'    => bool|null,    post_object only: write the first match (or '') instead of a list
+ *       'raw_ids'   => string|null,  post_object only: postmeta key that also keeps the incoming record IDs,
+ *                                    so links to posts that do not exist yet resolve when they arrive
  *   ]
  *
- * post_object fields receive comma-separated titles (or an array) from the
- * payload; Field_Resolver::resolve() converts them to WP post IDs before writing.
+ * post_object fields receive Airtable record IDs (preferred) or titles, as an
+ * array or comma-separated; Field_Resolver::resolve() converts them to WP post
+ * IDs before writing. Record IDs match the target's `_airtable_record_id`, so
+ * renames never break a link: send IDs wherever the target CPT is stamped.
+ *
+ * The 'territories' map is special: POST /sync/territories carries one Airtable
+ * Territories record, and Place_Sync stores it as a `territories` post when it
+ * has an ISO 3166-1 code and as a `subdivisions` post otherwise.
  *
  * Phase 1: languages only.
  * Phase 2: videos, captions, lexicons (this file).
@@ -49,12 +58,26 @@ return array(
 			'acf_type'  => 'text',
 			'post_type' => null,
 		),
-		// Airtable Nation of Origin names → territory posts, matched by exact title.
+		// Airtable Subject [Nation of Origin] → territory posts. Make sends the
+		// Nations record IDs, matched against each territory's stamped
+		// `_airtable_record_id`; nation names still resolve by exact title.
 		'nations_of_origin'    => array(
 			'meta_key'  => 'nations_of_origin',
 			'acf'       => true,
 			'acf_type'  => 'post_object',
 			'post_type' => 'territories',
+		),
+		// Airtable Subject [Territories]: the parts of a nation a language comes
+		// from (Guam, Hawaii). Make sends the Territories record IDs; each links
+		// to the `territories` or `subdivisions` post synced from that record.
+		// The raw IDs are kept too, so a language that syncs before its
+		// subdivision exists is linked when the subdivision arrives.
+		'subdivisions'         => array(
+			'meta_key'  => 'subdivisions',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => array( 'territories', 'subdivisions' ),
+			'raw_ids'   => '_subdivision_record_ids',
 		),
 		'writing_systems'      => array(
 			'meta_key'  => 'writing_systems',
@@ -131,6 +154,26 @@ return array(
 	//
 	// Omitted fields (require special handling beyond this endpoint's scope):
 	// -------------------------------------------------------------------------
+
+	// One Airtable Territories record (see the header note on Place_Sync).
+	// post_title is the record's Title; airtable_id is required.
+	'territories' => array(
+		'iso_3166_code' => array(
+			'meta_key'  => 'iso_3166_code',
+			'acf'       => true,
+			'acf_type'  => 'text',
+			'post_type' => null,
+		),
+		// The Territories record's nation: Nations record IDs, matched against
+		// the nations' stamped territory pages.
+		'nation'        => array(
+			'meta_key'  => 'nation',
+			'acf'       => true,
+			'acf_type'  => 'post_object',
+			'post_type' => 'territories',
+			'single'    => true,
+		),
+	),
 
 	'videos'    => array(
 

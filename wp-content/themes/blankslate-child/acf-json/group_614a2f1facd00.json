@@ -143,6 +143,34 @@
             "ui": 1
         },
         {
+            "key": "field_6a1f3c2b8d401",
+            "label": "Subdivisions",
+            "name": "subdivisions",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Synced from Airtable (the language's Subject [Territories] links): the parts of a nation it comes from, such as Guam or Hawaii.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "territories",
+                "subdivisions"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
             "key": "field_6810db1a101e4",
             "label": "Writing System",
             "name": "writing_system_taxonomy",
@@ -536,5 +564,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1794947311
+    "modified": 1795040193
 }

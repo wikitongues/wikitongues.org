@@ -89,7 +89,24 @@ Every scenario follows the same structural pattern:
 - **WP CPT:** `languages`
 - **Blueprint file:** `WT Sync - Languages.blueprint.json`
 - **Flow:** Trigger → SetVariables → POST `/sync/languages`
-- **maxRecords:** 100
+- **Trigger:** the Website Export view, polled hourly, `last_modified` as the trigger field, up to 50 records a run (checked against the live scenario 2026-11-18; the 15-minute and 100-record figures above are out of date for this scenario).
+- **What counts as a change:** `last_modified` is `IF({Last Modified}=BLANK(), {Created}, {Last Modified})`, and `Last Modified` watches only specific fields: Ethnologue name, Wikitongues Code, Oral Histories, Lexicon Source, Lexicon Target, External Resources and, since 2026-11-18, Subject [Nation of Origin] and Subject [Territories]. An edit to any other field, or to a link made from the other table's side, never reaches WordPress. Add a field to `Last Modified`'s list before relying on the sync for it. Changing the list doesn't re-stamp existing records, so values edited before the change need a one-off reconcile.
+- **Geography payload** (keyed by Airtable record ID; see [Field maps](#field-maps)):
+  - `nations_of_origin` ← `{{join(1.`Subject [Nation of Origin]`; ",")}}`: Nations record IDs, comma-joined (the data structure's fields are text; record IDs never contain commas), matched to the territory posts' stamped `_airtable_record_id`. Live in both Languages scenarios since 2026-11-19; before that it sent the names formula.
+  - `subdivisions` ← `{{join(1.`Subject [Territories]`; ",")}}`: Territories record IDs, linked to the place posts written by [Territories](#territories). The IDs are also kept on the language (`_subdivision_record_ids`), so a language synced before its places exist is linked when they arrive. Note that Subject [Territories] mixes origin with official-language links (its inverse on Territories is "Subject [Official Languages: ISO 639-3]"); separating them is plan 6.8 phase C.
+- **Testing a few records in staging:** the staging scenario's trigger has a formula field. Set it to e.g. `OR({Identifier}='haw',{Identifier}='cha')` with the start point "All", run once, then clear it and reset the start point. `last_modified` is date-only here, so re-saving a record without changing a value doesn't register, and a start point partway through a day misses that day's earlier edits.
+
+### Territories
+
+- **Airtable table:** Territories (the places below a nation: Guam, Hawaii, Catalonia)
+- **WP CPT:** `territories` when the record has an ISO 3166-1 code, `subdivisions` otherwise (`Place_Sync`)
+- **Scenarios:** "Wordpress Production Sync - Territories" (hourly, production key; watching from 2026-11-19T00:20Z, after the first load) and "Wordpress Staging Sync - Territories" (on demand, staging key). Both read the real base, as the other staging scenarios do. Flow: Watch Records → Settings → POST `/sync/territories` with the "Territories" data structure; no Slack message per record.
+- **Mapping:** `airtable_id` ← `{{1.id}}`, `post_title` ← `{{1.Title}}`, `iso_3166_code` ← `{{1.`ISO 3166-1 code`}}`, `nation` ← `{{join(1.`Subject [Sovereignty]`; ",")}}`. Make leaves out empty fields, so a record without a code arrives without `iso_3166_code` and becomes a subdivision.
+- **First load: WP-CLI, not Make.** `wp wt sync-territories --file=<csv> [--execute]` runs every row of an export through `Place_Sync`, the same code as the endpoint. The CSV has the columns `airtable_id, post_title, iso_3166_code, nation`, with Nations record IDs in `nation` (export through the Airtable API: the Airtable UI's CSV export shows nation names, not IDs). It previews by default, lists creates, stamps (existing pages matched by title), updates with the changed fields, and type changes, and a second run reports every row unchanged. It is a bulk DB write, so it follows the refresh-first order in `CLAUDE.md`. Locally on 2026-11-19 the 854 records became 804 `subdivisions`, 37 draft `territories` and 13 stamped territory pages.
+- **Trigger field:** `last_modified` = `Last Modified` (watching Title, ISO 3166-1 code, Subject [Sovereignty]) or `Created`; added to both bases 2026-11-19. It keeps the time, unlike the Languages table's.
+- **Payload:** `airtable_id` (required: places are keyed on it, never on names), `post_title` ← Title, `iso_3166_code` ← ISO 3166-1 code, `nation` ← the Nations record IDs.
+- **Behaviour:** finds the post by record ID across both types, so re-runs change nothing; a record that gains or loses its code changes type in place, keeping its post ID and every link to it. An existing post keeps its slug and status (the 13 territory pages that predate the sync are edited in WordPress; their title match is the transition fallback that stamps them, and it only matches posts with no record ID, so two places with the same name, such as Punjab in India and in Pakistan, never share a post). A new `territories` post starts as a draft until it has a WordPress region; a new `subdivisions` post is published (the type is never public). After each write, languages already holding the record ID are relinked; the response reports `relinked_languages`.
+- **Date-only cursor:** `last_modified` has no time, so a batch of more than 50 records edited on the same day can straddle the cursor and leave some behind (see the bulk-touching note under [WP-CLI Backfill](#wp-cli-backfill)). After a bulk edit, compare values rather than trusting the sync.
 
 ### Videos (Oral Histories)
 
@@ -227,19 +244,24 @@ If a match is found the post is updated; if not, a new post is created. After ev
     'meta_key'  => string,   // WP postmeta key
     'acf'       => bool,     // true → update_field(); false → update_post_meta()
     'acf_type'  => string,   // ACF field type (drives resolver selection)
-    'post_type' => string|null, // For post_object fields: the target CPT to search
+    'post_type' => string|array|null, // For post_object fields: the target CPT(s) to search
+    'single'    => bool,     // post_object: write the first match instead of a list
+    'raw_ids'   => string,   // post_object: postmeta key that also keeps the incoming record IDs
 ]
 ```
 
 **Adding a new field:** add an entry to the relevant CPT array in `field-maps.php` and update the Make.com scenario body to include the new payload key. No other code changes required.
 
-**post_object fields** receive post titles (or comma-separated titles) from Make.com. `Field_Resolver::resolve()` converts them to WP post IDs via `WP_Query` before writing. Unresolved titles are logged as errors and skipped. A field entry may add `aliases` (incoming name => WordPress title) for names that differ between the systems. None is in use: Airtable's nation names match the WordPress territory titles.
+**post_object fields** receive Airtable record IDs (preferred) or post titles, as an array or a comma-separated string. `Field_Resolver::resolve()` converts each to a WP post ID before writing: a value shaped like a record ID (`recXXXXXXXXXXXXXX`) is matched against the target post's `_airtable_record_id`, anything else by exact title. Unresolved references are logged as errors and skipped. Send record IDs wherever the target posts are stamped, so renames on either side never break a link (see the idempotency principle in `CLAUDE.md`). Title matching remains as a fallback; a field entry may add `aliases` (incoming name => WordPress title) for it. None is in use.
+
+**Stamping posts the sync doesn't create.** Nations are not synced, so their territory posts get their Airtable record IDs once, from an export: `wp wt stamp-airtable-ids --file=<json> [--post-type=territories] [--execute]`, where the file is `[{"id": "rec…", "name": "<primary field>"}]`. It matches by exact title, never overwrites, reports conflicts, unmatched names and posts left unstamped, and plans nothing on a second run. It is a scripted DB write, so it follows the refresh-first order in `CLAUDE.md`. All 204 Nations match (run on every environment 2026-11-18). The territory pages for ISO-coded places (Guam, Greenland, Hong Kong and others) come from the Territories table instead, through `/sync/territories`.
 
 **Current field maps by CPT:**
 
 | CPT | Scalar fields | post_object fields |
 |---|---|---|
-| `languages` | standard_name, alternate_names, writing_systems, linguistic_genealogy, iso_code, glottocode, olac_url, wikipedia_url | nations_of_origin (→ territories), speakers_recorded (→ videos), lexicon_source (→ lexicons), lexicon_target (→ lexicons), external_resources (→ resources) |
+| `languages` | standard_name, alternate_names, writing_systems, linguistic_genealogy, iso_code, glottocode, olac_url, wikipedia_url | nations_of_origin (→ territories, by record ID), subdivisions (→ territories or subdivisions, by record ID; raw IDs kept), speakers_recorded (→ videos), lexicon_source (→ lexicons), lexicon_target (→ lexicons), external_resources (→ resources) |
+| `territories` (→ `territories` or `subdivisions`) | iso_3166_code | nation (→ territories, single, by record ID) |
 | `videos` | video_title, video_description, video_license, license_link, public_status, dropbox_link, wikimedia_commons_link, youtube_publish_date, youtube_id, youtube_link, video_thumbnail_v2, metadata | featured_languages (→ languages) |
 | `captions` | creator, file_url | source_video (→ videos), source_language (→ languages) |
 | `lexicons` | dropbox_link, external_link | source_languages (→ languages), target_languages (→ languages) |

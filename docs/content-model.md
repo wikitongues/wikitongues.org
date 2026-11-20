@@ -47,6 +47,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `lexicons` | A word list between languages | None: redirects to its source language | — | Yes |
 | `resources` | An external resource about a language (no longer listed on language pages) | None: redirects to its language | — | Yes |
 | `territories` | A country or territory | `/territories/{region}/{territory}/` | `single-territories.php` | Yes |
+| `subdivisions` | A part of a nation with no ISO code (Hawaii, Oaxaca) | None yet (nested route planned) | None | No |
 | `fellows` | A Revitalization Fellow | `/fellows/{slug}/` | `single-fellows.php` | Yes |
 | `people` | Staff, board, advisors, volunteers | None: redirects to the staff page | Sections of `template-people.php` pages | **No** |
 | `documents` | A downloadable resource, such as a toolkit guide | `/documents/{slug}/` | `single-documents.php` | Yes |
@@ -85,7 +86,7 @@ These are the documentation archive. The first four are synced from Airtable; th
 ### Languages
 
 - **Identity.** A language's `post_title` and slug are its ISO 639-3 code (`nch`); its display name is `standard_name`. A slug that doesn't match the ISO code serves the wrong content: 19 languages did in February 2026 (the `wblu`/`blu` fix in the [archive](plan-archive.md)). Other identifiers: `iso_code`, `glottocode`, `autonym`, `alternate_names`, `egids_status`, `olac_url`, `wikipedia_url`, `wikipedia_editions`, `wikipedia_description`.
-- **Geography.** Two links to territory posts. `nations_of_origin` (post_object, multiple, one-way) holds the countries a language is original to; the Airtable sync fills it from the language's Nation of Origin names, resolved by exact title. `territories` (post_object, bidirectional with each territory's `languages`) holds everywhere it is spoken; it came from a one-time import in February 2026 and is not synced. Territories also carry `official_languages`. Read nations of origin through `wt_language_origins()` (`includes/template/language-origins.php`), which also reads not-yet-migrated text. The language page lists both: "Countries of origin", then the other territories as "Also spoken in" (or "Spoken in" when there is no origin).
+- **Geography.** Two links to territory posts and one list of subdivisions. `nations_of_origin` (post_object, multiple, one-way) holds the countries a language is original to; the Airtable sync fills it from the language's Nation of Origin, sent as Nations record IDs and matched to each territory's stamped `_airtable_record_id` (names still resolve by exact title). `subdivisions` (post_object, multiple) links the parts of a nation the language comes from (Guam, Hawaii), synced from Airtable's Subject [Territories] by record ID: ISO-coded places are `territories` posts, the rest `subdivisions` posts (see below). The raw record IDs are kept in `_subdivision_record_ids`. Nothing displays it yet; the nested routes (plan 6.8 phase B) and the maps (plan 3.2) are its readers. `territories` (post_object, bidirectional with each territory's `languages`) holds everywhere it is spoken; it came from a one-time import in February 2026 and is not synced. Territories also carry `official_languages`. Read nations of origin through `wt_language_origins()` (`includes/template/language-origins.php`), which also reads not-yet-migrated text. The language page lists both: "Countries of origin", then the other territories as "Also spoken in" (or "Spoken in" when there is no origin).
 - **Classification.** The `writing-system` and `linguistic-genealogy` taxonomies are what templates read. The legacy text fields `writing_systems` and `linguistic_genealogy` are what Airtable still writes.
 - **Related content.** `speakers_recorded` (videos), `lexicon_source` and `lexicon_target` (lexicons), `external_resources` (resources). Counts are cached in `{field}_count` post meta for sorting the admin list.
 - **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons and "other languages from" each territory the language is linked to.
@@ -121,10 +122,12 @@ Territories arrived in February 2026 (#445, #491) and give the archive a geograp
 
 - **URLs.** `/territories/` lists all territories (`archive-territories.php`, filterable with `?region=`). `/territories/{region}/` is a region page, and `/territories/{region}/{territory}/` a territory. Custom rewrite rules in `territories.php` build these, and the permalink uses the territory's first `region` term.
 - **Fields.** `endonym`, `languages`, `official_languages`, `wikidata_id`, `region`.
-- **Source.** A one-time WP-CLI import (`temp/territories/import-territories.php`, not committed) built the continent → sub-region hierarchy and the territories. It is not synced from Airtable.
+- **Source.** A one-time WP-CLI import (`temp/territories/import-territories.php`, not committed) built the continent → sub-region hierarchy and the territories. Nations are not synced; they carry their Airtable Nations record ID, stamped once with `wp wt stamp-airtable-ids`. Places below a nation are synced from Airtable's Territories table (`/sync/territories`, see [airtable-sync.md](airtable-sync.md#territories)): an ISO-coded one (Guam, Greenland) is a `territories` post, new ones starting as drafts until they get a region; any other is a `subdivisions` post. Both carry `nation` and `iso_3166_code` (ACF group "Place: Airtable geography").
+- **Subdivisions.** The `subdivisions` post type (`includes/taxonomies/subdivisions.php`) holds the parts of a nation that have no ISO code. It is not public: no archive, no search, no menus, listed in admin under Territories. Its public view, nested under the nation, is planned in 6.8 phase B.
 - **Pages.** Territory and region pages show a fellows gallery and a languages gallery, each linking to a filtered archive. Continent pages aggregate every sub-region.
 - **Names.** `wt_prefix_the()` adds "the" where English needs it ("the Bahamas", "the Americas").
-- **Performance.** Territory pages read `get_field( 'languages', $id, false )` (raw IDs), because some territories list hundreds of languages (India: 403). Continent fellows queries are the known hot spot (#533).
+- **Languages on a territory.** The territory page's languages gallery and the `/languages/?territory=` archive list languages whose `nations_of_origin` includes the territory (`wt_origin_gallery_filter()` in `includes/template/language-origins.php`, #675). They no longer read the territory's `languages` relationship, the mirror of the February 2026 `territories` copy, so that field can later become "also spoken in" without emptying these pages. Subdivisions such as New Caledonia or Hong Kong list nothing until the subdivision level is synced: Airtable gives those languages the nation (France, China) as their origin.
+- **Performance.** Some territories list hundreds of languages (India: 403). The origin lookup is a quoted-ID `LIKE` on `nations_of_origin`, about 0.4 s on production; the cost of a long list is rendering its cards (France's 90-language archive took about 9 s on 2026-11-18). Continent fellows queries are the other known hot spot (#533).
 
 ---
 
@@ -279,6 +282,8 @@ From `includes/template/router.php`:
 | `/team`, `/team/*` | `/about/staff-and-volunteers/` (301) |
 | `/reports`, `/reports/*` | `/financials` (301) |
 | `/2024-fundraiser` | `/donate` (301) |
+
+Short links live in `includes/template/short-links.php`: `wt_short_links()` maps a top-level path to a page, e.g. `/ai` to `/revitalization/resources/native-language-ai/` (302, so the target can change). They apply only when the path is a 404, and run ahead of WordPress's canonical redirect, which would otherwise guess a nearby post (`/ai` used to land on `/languages/aia/`).
 
 ---
 

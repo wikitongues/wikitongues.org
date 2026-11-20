@@ -1,0 +1,80 @@
+{
+    "key": "group_6a2b4c5d6e701",
+    "title": "Place: Airtable geography",
+    "fields": [
+        {
+            "key": "field_6a2b4c5d6e702",
+            "label": "Nation",
+            "name": "nation",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Synced from Airtable (the Territories record's nation). Do not edit here.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "territories"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_6a2b4c5d6e703",
+            "label": "ISO 3166-1 code",
+            "name": "iso_3166_code",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Synced from Airtable. Set only for territories with their own ISO code (GU, GL); empty for internal subdivisions.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 2,
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "territories"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "subdivisions"
+            }
+        ]
+    ],
+    "menu_order": 5,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Where a place sits: its nation and ISO code. Written by the Airtable sync.",
+    "show_in_rest": 0,
+    "modified": 1795040193
+}
