@@ -12,6 +12,7 @@ wp-content/themes/blankslate-child/          # Child theme (PHP templates, funct
 wp-content/plugins/download-gateway/         # Download gate plugin
 wp-content/plugins/wt-airtable-sync/         # Airtable → WordPress sync plugin (Make.com webhooks)
 wp-content/plugins/wt-gallery/               # Gallery plugin
+wp-content/plugins/wt-maps/                  # Locator maps plugin (shape table, doctor)
 wp-content/plugins/typeahead/                # Search typeahead plugin
 tests/                                       # PHPUnit tests (unit layer)
 docs/                                        # Architecture docs (airtable-sync.md is authoritative)
@@ -129,6 +130,7 @@ bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
 - `docs/content-model.md` — every post type and taxonomy: where it's authored, templates, redirects, known data issues
 - `docs/content-styles.md` — the `.wt_prose` module: bare tags only inside it, prose vs layout, type/rhythm/link decisions
 - `docs/gallery.md` — wt-gallery parameters, templates, pagination, editorial gallery rows
+- `docs/maps.md` — wt-maps: the Natural Earth shape table keyed on record IDs, the curated focus list, `wp wt-maps doctor`
 - `docs/deployment.md` — release flow, CI checks, what a deploy does, post-deploy steps
 - `docs/staging-sync.md` — how to sync staging ↔ production
 - `docs/testing-strategy.md` — PHPUnit layer strategy and upgrade path

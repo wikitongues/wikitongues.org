@@ -78,6 +78,8 @@ require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-l
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-field-resolver.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-sync-controller.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-place-sync.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-table.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
 
 // events-filter.php calls get_current_datetime() → wp_date() at file scope,
 // before WP_Mock has stubbed it. Define a shim so the include doesn't fatal.
