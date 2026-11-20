@@ -1,0 +1,106 @@
+{
+ "natural_earth": "5.1.2",
+ "maps": {
+  "rec8BH6e7SD1A1J5I": {
+   "places": [
+    "rec8BH6e7SD1A1J5I"
+   ],
+   "names": [
+    "Northern Mariana Islands"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -145.599141,
+     -16.233034,
+     0
+    ],
+    "scale": 2027.108,
+    "translate": [
+     207.005,
+     188.928
+    ],
+    "cornerDeg": 7.93
+   },
+   "center": [
+    145.599141,
+    16.233034
+   ],
+   "fine": true,
+   "stretch": 0.5,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 7255,
+   "svg_gzip": 2567
+  },
+  "recJdmrV257IxkekS": {
+   "places": [
+    "recJdmrV257IxkekS"
+   ],
+   "names": [
+    "Hawaii"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     156.332612,
+     -20.250519,
+     0
+    ],
+    "scale": 3438.587,
+    "translate": [
+     266.097,
+     170.075
+    ],
+    "cornerDeg": 5.26
+   },
+   "center": [
+    -156.332612,
+    20.250519
+   ],
+   "fine": true,
+   "stretch": 0.2,
+   "scale_km": 100,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 8901,
+   "svg_gzip": 2796
+  },
+  "set-a279bac6a11f": {
+   "places": [
+    "rec8BH6e7SD1A1J5I",
+    "recguDPgV3cIXLO34"
+   ],
+   "names": [
+    "Guam",
+    "Northern Mariana Islands"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -145.188131,
+     -14.856599,
+     0
+    ],
+    "scale": 1786.667,
+    "translate": [
+     198.427,
+     213.639
+    ],
+    "cornerDeg": 9.43
+   },
+   "center": [
+    145.188131,
+    14.856599
+   ],
+   "fine": true,
+   "stretch": 0.7,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 7876,
+   "svg_gzip": 2638
+  }
+ }
+}

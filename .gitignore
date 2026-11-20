@@ -38,6 +38,9 @@ wp-config.php
 !/wp-content/plugins/wt-gallery/
 !/wp-content/plugins/wt-airtable-sync/
 !/wp-content/plugins/wt-maps/
+# wt-maps commits its build scripts (not its downloads); the maps/ output ships
+!/wp-content/plugins/wt-maps/build/
+/wp-content/plugins/wt-maps/build/cache/
 
 # Uploads
 /wp-content/uploads/

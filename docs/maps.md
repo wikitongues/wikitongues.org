@@ -2,7 +2,36 @@
 
 Locator maps for language pages, plan item 3.2. The full spec, with the style, projection and contested-area decisions, is the 3.2 section of `plan.md`. This file describes what is built.
 
-Built so far: the shape table and the `doctor` command. Not yet built: the map build scripts (prototype in `docs/maps-prototype/`), the PHP renderer `wt_map()`, the `[wt_map]` shortcode, and the sidebar placement.
+Built so far: the shape table, the `doctor` and `export` commands, and the build that turns map sets into SVGs and terrain images (run for the three launch maps). Not yet built: the PHP renderer `wt_map()`, the `[wt_map]` shortcode, the style tokens, and the sidebar placement.
+
+## Map sets and the build
+
+A map is built once per **set of places**, not per language. A language's set is its focus places when it has a focus, and otherwise its published territory links. The places are kept as record IDs, because the sync creates places separately on each environment, so their post IDs differ. A set with one place is keyed by that place's record ID (`recguDPgV3cIXLO34`). A set with several places is keyed `set-` plus 12 hex characters of the SHA-1 of the sorted IDs (`wt_maps_set_key()`, in PHP only). A language whose set includes a place with no shape gets no map, never a partial one.
+
+```bash
+cd wp-content/plugins/wt-maps/build
+npm ci
+node fetch.mjs                      # once: Natural Earth (at the table's version) into build/cache/
+wp --allow-root wt-maps export      # read-only: writes build/cache/sets.json
+node render.mjs --estimate          # count and size every set, writing nothing
+node build.mjs --only=<key>,<key>   # or no --only for every set
+```
+
+| Step | Writes |
+|---|---|
+| `render.mjs` | `maps/<key>.svg`, and the set's entry in `maps/index.json` (places, projection, contested areas claimed and revealed, size) |
+| `relief.mjs` | the coloured relief reprojected into the frame (cache) |
+| `dem.mjs` | the land hillshade from AWS Terrain Tiles, at a zoom matched to the frame (tiles cached in `build/cache/dem/`) |
+| `seafloor.mjs` | the ocean-floor shading (cache) |
+| `mask.mjs` | `maps/relief/`, `maps/shade/` and `maps/sea/<key>.webp`, cut to the SVG's own coastline |
+
+Every raster step reads the projection that `render.mjs` stored in `index.json`, so an SVG and its images always line up. They must ship together. A rebuild with the same inputs writes byte-identical files.
+
+`maps/` is committed and deployed. `build/` is committed but not deployed (`.rsync-filter`), and `build/cache/` is gitignored.
+
+**What PHP adds at render time.** The SVG is shared by every language with that set, so it has no primary or secondary styling. Highlighted shapes and rings have `data-place` (the record ID). A contested area that a place claims has `hatch-claimed` and `data-claimants` (the record IDs claiming it). PHP adds the `primary`/`secondary` classes per language, makes the relative image hrefs (`shade/<key>.webp`) absolute, and writes the language's own `<title>` and `<desc>`. The page needs the shared `#fog`, `#fog-edge` and hatch definitions, which are in the prototype template for now.
+
+**Sizes (2026-11-19, local data).** There are 237 sets for 7,582 languages; 40 sets have several places, and 507 languages have no territory link. All 237 SVGs come to 3.9 MB raw, 1.39 MB gzipped, with a median of 6 KB gzipped. One set is over the 20 KB budget: Andorra, Djibouti, France, Lebanon, Martinique and Monaco, at 20.9 KB. The three launch maps are 2.5–2.7 KB of SVG plus 1–14 KB per image, 108 KB on disk in all.
 
 ## The shape table
 
