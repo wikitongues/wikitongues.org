@@ -6,12 +6,66 @@
  */
 
 /**
+ * Every published language with its record ID and territory links as record IDs.
+ *
+ * One query each for territories and languages, so it suits a CLI run over
+ * thousands of languages.
+ *
+ * @return list<array{record_id: string, title: string, territories: list<string>}>
+ */
+function wt_maps_collect_languages(): array {
+	global $wpdb;
+
+	// Published territories' post ID → record ID; languages link to post IDs.
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
+	$territory_rows = $wpdb->get_results(
+		"SELECT p.ID AS id, m.meta_value AS record_id
+		FROM {$wpdb->posts} p
+		JOIN {$wpdb->postmeta} m ON m.post_id = p.ID AND m.meta_key = '_airtable_record_id'
+		WHERE p.post_type = 'territories' AND p.post_status = 'publish'",
+		ARRAY_A
+	);
+	$record_of      = array();
+	foreach ( (array) $territory_rows as $row ) {
+		$record_of[ (int) $row['id'] ] = (string) $row['record_id'];
+	}
+
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
+	$language_rows = $wpdb->get_results(
+		"SELECT p.post_title AS title, r.meta_value AS record_id, t.meta_value AS territories
+		FROM {$wpdb->posts} p
+		LEFT JOIN {$wpdb->postmeta} r ON r.post_id = p.ID AND r.meta_key = '_airtable_record_id'
+		LEFT JOIN {$wpdb->postmeta} t ON t.post_id = p.ID AND t.meta_key = 'territories'
+		WHERE p.post_type = 'languages' AND p.post_status = 'publish'",
+		ARRAY_A
+	);
+
+	$languages = array();
+	foreach ( (array) $language_rows as $row ) {
+		$linked      = maybe_unserialize( (string) $row['territories'] );
+		$territories = array();
+		foreach ( is_array( $linked ) ? $linked : array() as $post_id ) {
+			if ( isset( $record_of[ (int) $post_id ] ) ) {
+				$territories[] = $record_of[ (int) $post_id ];
+			}
+		}
+		$languages[] = array(
+			'record_id'   => (string) $row['record_id'],
+			'title'       => (string) $row['title'],
+			'territories' => $territories,
+		);
+	}
+
+	return $languages;
+}
+
+/**
  * Check the shape table against the places and languages in WordPress.
  *
  * Read-only. Lists published territories with no shape (they show no map),
  * table entries that match no place, entries whose territory is not
- * published, focus languages that don't exist, and problems in the file
- * itself. Run it after any territory change and before a maps release.
+ * published, focus languages that don't exist, problems in the file
+ * itself, and map sets languages use that have no built map. Run it after any territory change and before a maps release.
  *
  * Exits with an error when something needs fixing, so it can gate a script.
  *
@@ -61,13 +115,19 @@ function wt_maps_doctor_command(): void {
 		}
 	}
 
-	$report   = wt_maps_doctor( $table, $places, $languages );
+	$report = wt_maps_doctor( $table, $places, $languages );
+	$plan   = wt_maps_plan_sets( $table, wt_maps_collect_languages() );
+	$built  = array_map( fn( $f ) => basename( $f, '.svg' ), (array) glob( dirname( __DIR__ ) . '/maps/*.svg' ) );
+	$report = array_merge( $report, wt_maps_build_report( $plan['sets'], $built ) );
+
 	$headings = array(
 		'table'       => 'Problems in data/shapes.json',
 		'missing'     => 'Published territories with no shape (no map)',
 		'unknown'     => 'Table entries that match no place',
 		'unpublished' => 'Table entries whose territory is not published (informational)',
 		'languages'   => 'Focus languages not found',
+		'unbuilt'     => 'Map sets in use with no built map (rerun the build)',
+		'unused'      => 'Built maps no language uses (informational)',
 	);
 
 	WP_CLI::log( sprintf( 'Shape table: %d places, %d focus languages, Natural Earth %s.', count( $table->place_ids() ), count( $table->focus_language_ids() ), $table->natural_earth_version() ) );
@@ -82,9 +142,9 @@ function wt_maps_doctor_command(): void {
 
 	WP_CLI::log( '' );
 	if ( wt_maps_doctor_has_errors( $report ) ) {
-		WP_CLI::error( 'The shape table needs attention.' );
+		WP_CLI::error( 'The maps need attention.' );
 	}
-	WP_CLI::success( 'The shape table matches the places in WordPress.' );
+	WP_CLI::success( 'The shape table and the built maps match the places in WordPress.' );
 }
 
 /**
@@ -115,45 +175,7 @@ function wt_maps_export_command( array $args, array $assoc_args ): void {
 	$table = wt_maps_shape_table();
 	$file  = $assoc_args['file'] ?? dirname( __DIR__ ) . '/build/cache/sets.json';
 
-	// Published territories' post ID → record ID; languages link to post IDs.
-	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
-	$territory_rows = $wpdb->get_results(
-		"SELECT p.ID AS id, m.meta_value AS record_id
-		FROM {$wpdb->posts} p
-		JOIN {$wpdb->postmeta} m ON m.post_id = p.ID AND m.meta_key = '_airtable_record_id'
-		WHERE p.post_type = 'territories' AND p.post_status = 'publish'",
-		ARRAY_A
-	);
-	$record_of      = array();
-	foreach ( (array) $territory_rows as $row ) {
-		$record_of[ (int) $row['id'] ] = (string) $row['record_id'];
-	}
-
-	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
-	$language_rows = $wpdb->get_results(
-		"SELECT p.post_title AS title, r.meta_value AS record_id, t.meta_value AS territories
-		FROM {$wpdb->posts} p
-		LEFT JOIN {$wpdb->postmeta} r ON r.post_id = p.ID AND r.meta_key = '_airtable_record_id'
-		LEFT JOIN {$wpdb->postmeta} t ON t.post_id = p.ID AND t.meta_key = 'territories'
-		WHERE p.post_type = 'languages' AND p.post_status = 'publish'",
-		ARRAY_A
-	);
-
-	$languages = array();
-	foreach ( (array) $language_rows as $row ) {
-		$linked      = maybe_unserialize( (string) $row['territories'] );
-		$territories = array();
-		foreach ( is_array( $linked ) ? $linked : array() as $post_id ) {
-			if ( isset( $record_of[ (int) $post_id ] ) ) {
-				$territories[] = $record_of[ (int) $post_id ];
-			}
-		}
-		$languages[] = array(
-			'record_id'   => (string) $row['record_id'],
-			'title'       => (string) $row['title'],
-			'territories' => $territories,
-		);
-	}
+	$languages = wt_maps_collect_languages();
 
 	$plan   = wt_maps_plan_sets( $table, $languages );
 	$places = array();

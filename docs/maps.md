@@ -2,7 +2,7 @@
 
 Locator maps for language pages, plan item 3.2. The full spec, with the style, projection and contested-area decisions, is the 3.2 section of `plan.md`. This file describes what is built.
 
-Built so far: the shape table, the `doctor` and `export` commands, the build (run for the three launch maps), the renderer `wt_map()` with the `[wt_map]` shortcode, the styles, the settings page, and the sidebar placement. Not yet built: maps for every set, the claims table, credits, and the review tooling.
+Built so far: the shape table, the `doctor` and `export` commands, the build (all 237 maps, 2026-11-19), the renderer `wt_map()` with the `[wt_map]` shortcode, the styles, the settings page, and the sidebar placement. Not yet built: the claims table, credits, and the review tooling.
 
 ## Map sets and the build
 
@@ -19,19 +19,21 @@ node build.mjs --only=<key>,<key>   # or no --only for every set
 
 | Step | Writes |
 |---|---|
-| `render.mjs` | `maps/<key>.svg`, and the set's entry in `maps/index.json` (places, projection, contested areas claimed and revealed, size) |
+| `render.mjs` | `build/cache/stage/<key>.svg`, and the set's frame in `stage/frames.json` (places, projection, contested areas claimed and revealed, size) |
 | `relief.mjs` | the coloured relief reprojected into the frame (cache) |
 | `dem.mjs` | the land hillshade from AWS Terrain Tiles, at a zoom matched to the frame (tiles cached in `build/cache/dem/`) |
 | `seafloor.mjs` | the ocean-floor shading (cache) |
-| `mask.mjs` | `maps/relief/`, `maps/shade/` and `maps/sea/<key>.webp`, cut to the SVG's own coastline |
+| `mask.mjs` | `maps/relief/`, `maps/shade/` and `maps/sea/<key>.webp`, cut to the SVG's own coastline, and then **publishes** the map: it copies the SVG to `maps/` and adds its entry to `maps/index.json` |
 
-Every raster step reads the projection that `render.mjs` stored in `index.json`, so an SVG and its images always line up. They must ship together. A rebuild with the same inputs writes byte-identical files.
+Every raster step reads the projection that `render.mjs` staged, so an SVG and its images always line up. A map reaches `maps/` only after its three images are written, so an interrupted or unfinished build never leaves an SVG without its terrain: the site would show such a map with no relief and, in the focused styles, with no fill. A rebuild with the same inputs writes byte-identical files.
 
 `maps/` is committed and deployed. `build/` is committed but not deployed (`.rsync-filter`), and `build/cache/` is gitignored.
 
 **What the renderer adds** (`WT\Maps\Renderer`, see below). The SVG is shared by every language with that set, so it has no primary or secondary styling. Highlighted shapes and rings have `data-place` (the record ID). A contested area that a place claims has `hatch-claimed` and `data-claimants` (the record IDs claiming it). PHP adds the `primary`/`secondary` classes per language, makes the relative image hrefs (`shade/<key>.webp`) absolute, and writes the language's own `<title>` and `<desc>`. The page needs the shared `#fog`, `#fog-edge` and hatch definitions, which are in the prototype template for now.
 
-**Sizes (2026-11-19, local data).** There are 237 sets for 7,582 languages; 40 sets have several places, and 507 languages have no territory link. All 237 SVGs come to 3.9 MB raw, 1.39 MB gzipped, with a median of 6 KB gzipped. One set is over the 20 KB budget: Andorra, Djibouti, France, Lebanon, Martinique and Monaco, at 20.9 KB. The three launch maps are 2.5–2.7 KB of SVG plus 1–14 KB per image, 108 KB on disk in all.
+**Sizes (2026-11-19, local data).** There are 237 maps for 7,582 languages; 40 have several places, and 507 languages have no territory link. With images they come to 10.8 MB, and the SVGs alone to 1.39 MB gzipped (median 6 KB). A full build took about 50 minutes on the first run, mostly fetching terrain tiles; with the tiles cached, about half that. The publish step encodes each image at the first quality that fits the 30 KB budget, stepping down and then shrinking to 600×450, and records the bytes in `index.json`. Two maps are still over budget. Tajikistan's hillshade is 32.9 KB even at the lowest step. French's six-place set (Andorra, Djibouti, France, Lebanon, Martinique, Monaco) has a 20.9 KB SVG.
+
+**Rebuilding.** `node build.mjs` rebuilds every set; `--only=<keys>` limits it. Unchanged maps come out byte-identical, so the diff shows only what changed. A map no language uses any more stays in `maps/` until it is removed by hand: `wp wt-maps doctor` lists those, and lists any set in use that has no built map.
 
 ## The shape table
 
