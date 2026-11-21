@@ -221,12 +221,20 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 
 ##### Steps
 
-1. **Data contract** (by 22 November): this spec and the doc; the Held option, Credit line, Treaty actions, Changes and Archive Nation ID tried in the sandbox base, then the real one.
-2. **Project page live** for the 10 December announcement (2.1's Language Rights bullet).
-3. **Exporter and checks**, run first as a dry run of South and Central Asia on today's content.
-4. **WordPress:** `rights_reports` post type, `rights_region` taxonomy with release status, `wp wt rights-import`, the three templates, the territory block, totals, tests.
-5. **Launch tooling:** press role and embargo, the gated regional PDF through `documents`, `/rights` redirect, GTM rows, the Mailchimp "release updates" tag.
-6. **Rehearsal** on staging after the 15 January text lock; then `2027.1` to production as Embargoed, and Released on 19 February. Later regions repeat 6.
+Built in the week of 23 November 2026, unrelated to the release dates. One plugin, `wt-rights`; each PR passes `/test`.
+
+| PR | Ships | Status |
+|---|---|---|
+| 1 | Structure config, Docs adapter, Doc parser, validator, versioner, with tests on invented fixtures | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
+| 2 | Airtable and Google clients; `wp wt rights check` and `export` (release file, versions, changelogs) | Needs a Google service account with the report folders shared, and a read-only Airtable token |
+| 3 | `rights_reports` post type, `rights_region` taxonomy, one rewrite rule, press role and capability; `import` and `status` (region status sets post status: Upcoming = draft, Embargoed = private, Released = publish) | |
+| 4 | Hub, region and country templates from the prototype; territory card; donate band; `/rights` | |
+| 5 | `pdf` (headless Chrome, print stylesheet); PDFs kept in a private folder and published only when their region is Released; gateway lookup for `rights_reports` (Required); changelog display; embargo banner; press login redirect | |
+| 6 | Analytics: `content_type` rows, page details in the data layer, `rights_updates_signup`, `donate_cta_click` locations; checked in DebugView. Staging rehearsal | |
+
+**Data first:** the Held option and the Changes, Treaty actions and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
+
+**Decided for the build (2026-11-22):** the exporter is PHP WP-CLI in this repo, run locally; reports are posts with HTML content and one JSON meta value (no ACF); region and front-matter Docs are listed in an Airtable "Publishing Docs" table with each region's release date; embargo is WordPress post status; no PDF exists at any public URL until its region is released; region and Complete Edition PDFs, when designed, are ordinary `documents` posts.
 
 ##### Open questions
 
@@ -252,6 +260,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
+| 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
 | 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
 ### 3. Discovery

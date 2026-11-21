@@ -150,16 +150,16 @@ A row is needed only for reports that are already Released. Changes before relea
 
 ### Country Doc
 
-The current research template (v10.2026), with these rules made strict.
+The current research template (v10.2026), as the Docs are already written. A dry run over all 171 Docs on 2026-11-22 found 169 that pass; the rules below describe them, so nothing needs reformatting.
 
-1. **Title**, as the Doc's first line: *The State of Language Rights in {Country}*.
-2. **Six sections, as Heading 2, in this order, with these exact names:** Language inventory · Historical context · Current political context · Language rights dimensions · Overall Rating · Testimonies.
-3. **Under Language rights dimensions**, the five questions, as Heading 3, with the template's exact wording. Under each:
+1. **Title**, in the Title style: *The State of Language Rights in {Country}*.
+2. **Six sections, as Heading 1, in this order, with these exact names:** Language inventory · Historical context · Current political context · Language rights dimensions · Overall Rating · Testimonies.
+3. **Under Language rights dimensions**, the five questions as their own paragraphs, with the template's exact wording (any style; earlier wordings are accepted too). Under each:
    - one line `Your answer: Yes` (or No, Unclear, Not applicable), with no full stop;
    - the summary paragraphs;
-   - the sources, one URL per line, after the summary.
+   - the sources, after the summary: a paragraph of links only, one per line.
 4. **Under Overall Rating:**
-   - `Was the status quo ante negative, neutral, or positive? Your answer: Positive`;
+   - `Was the status quo ante negative, neutral, or positive? Your answer: Positive` (the answer may also go on the next line);
    - `… are politics trending negatively, neutrally, or positively for language rights? Your answer: Negative`;
    - **one bold sentence**: the headline shown in "At a glance" and in search results;
    - the explanation, then its sources.
@@ -173,7 +173,7 @@ The current research template (v10.2026), with these rules made strict.
 
 An optional second tab in the country Doc, named exactly **WordPress**, for text that appears only on the site and should stay out of the volunteers' report. Today it holds one thing:
 
-- **Story card.** A Heading 2 title (e.g. *A revised alphabet for Pashayi*), one paragraph of 60 words or fewer, then its links. Shown on the region page and the country report. A country without one simply has no card.
+- **Story card.** The country's name as Heading 1 (optional), then a Heading 2 title (e.g. *A revised alphabet for Pashayi*), one paragraph of 60 words or fewer, then its links. Shown on the region page and the country report. A country without one simply has no card.
 
 ### Region Doc
 
