@@ -70,18 +70,41 @@ wp wt rights-import <file>   dry run by default → local → staging → produc
 
 ### Research status (Airtable, per country)
 
-| Status | Means | Replaces today's |
-|---|---|---|
-| Not started | No research yet | Unitiated |
-| Researching | A researcher is writing the Doc | In progress |
-| In review | Draft complete; the editor is reviewing | Pending review |
-| Fact-checking | Text approved; sources and claims being verified | Fact checking |
-| **Locked** | Ready to publish. Text, answers and sources are final | Completed |
-| Held | Deliberately left out of its region's release; shown as "Report forthcoming" | — |
+| Status | Means |
+|---|---|
+| Not started | No research yet |
+| Researching | A researcher is writing the Doc |
+| In review | Draft complete; the editor is reviewing |
+| Fact-checking | Text approved; sources and claims being verified |
+| **Locked** | Ready to publish. Text, answers and sources are final |
+| Held | Deliberately left out of its region's release; shown as "Report forthcoming" |
 
 - Only **Locked** countries enter a release. A region can be released only when every country in it is Locked or Held.
-- The renames keep each row's value (Airtable renames a choice in place). They are tried in the sandbox base first.
 - Moving a Locked country back to In review is how a correction starts (see [below](#correcting-a-published-report)).
+
+#### Mapping from today's statuses
+
+Every current option is renamed in place; one is added. Counts are the sandbox base's 204 Reports rows on 2026-11-21.
+
+| Today's option | Rows | Becomes | Change |
+|---|---|---|---|
+| Unitiated | 28 | Not started | Rename (also fixes the typo) |
+| In progress | 3 | Researching | Rename |
+| Pending review | 173 | In review | Rename |
+| Fact checking | 0 | Fact-checking | Rename |
+| Completed | 0 | Locked | Rename |
+| — | — | Held | New option |
+
+No row changes value. In Airtable, renaming a single-select option (field → Edit field → edit the option's name) relabels every row that has it, so the 204 rows keep their place: the 173 Pending review rows become In review, and so on. Nothing is deleted, so nothing can be lost.
+
+Steps:
+
+1. In the **sandbox** base, rename the five options and add Held, in the order of the table.
+2. Check the counts: 28 / 3 / 173 / 0 / 0 / 0 under the new names, still 204 rows.
+3. Check every view, filter, grouping, automation and interface that names a status: a filter on an option follows the rename, but formulas and automations that compare the *text* (`{Research Status} = "Completed"`) do not, and must be edited.
+4. Kristen approves the result; then the same renames are made in the real base and checked the same way.
+
+No country is Locked yet. Each one becomes Locked by hand, as part of the [pre-flight checklist](#pre-flight-checklist).
 
 ### Release status (WordPress, per region and for the global synthesis)
 
