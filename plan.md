@@ -205,7 +205,7 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 | A Doc says `Your answer: Yes.`, Airtable says `yes` | Passes: answers are compared without case or trailing punctuation |
 | A country is Held | Left out of the release; its region page lists it as "Report forthcoming" |
 | *Naoero* (rights base) vs *Nauru* (territory) | Linked through the Archive Nation ID, never by name |
-| Europe is Embargoed | The public sees "Upcoming"; press accounts read the full region |
+| Europe is Embargoed | The public sees "Upcoming"; press accounts and admins read the full region |
 
 ##### Display
 
@@ -244,7 +244,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-18 | The global synthesis appears only at the Complete Edition | A synthesis updated for six months makes no launch (Kristen) |
 | 2026-11-21 | URLs under `/language-rights/report/`, with `/rights` as a redirect | One home beside the project page; country URLs leave out the region so they never move |
 | 2026-11-21 | Release files in a private repo; Google service-account access | Embargoed text stays out of the public repo |
-| 2026-11-21 | Embargoed access for press, built in WordPress | Press needs the region before launch day |
+| 2026-11-21 | Embargoed regions are readable by press accounts and admins, built in WordPress | Press needs the region before launch day; admins review it in place on production |
 | 2026-11-21 | Kristen enters treaty actions to a written contract | The treaty register needs actions and dates Airtable lacks |
 | 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |

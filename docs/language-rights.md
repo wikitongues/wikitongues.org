@@ -85,7 +85,7 @@ wp wt rights-import <file>   dry run by default → local → staging → produc
 
 ### Release status (WordPress, per region and for the global synthesis)
 
-| Status | Public sees | Press sees |
+| Status | Public sees | Press accounts and admins see |
 |---|---|---|
 | Upcoming | Release date, nation list, "Get release updates" | The same |
 | Embargoed | The same as Upcoming | The full region and its country reports, not indexed |
