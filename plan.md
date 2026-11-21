@@ -182,25 +182,28 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 
 - **Country report:** one country's or place's assessment: a Google Doc plus its Airtable Reports row.
 - **Region:** one of the seven publishing regions. A publishing group, not the archive's `region` taxonomy.
-- **Release:** a tagged, checked JSON file holding every Locked country so far (`2027.1` … `2027.8`, patches `2027.1.1`).
-- **Research status** (Airtable, per country) and **release status** (WordPress, per region): two separate lists.
+- **Release:** a tagged, checked JSON file holding every Completed country so far (`2027.1` … `2027.8`, patches `2027.1.1`).
+- **Research status** (Airtable, per country, Kristen's names unchanged) and **release status** (WordPress, per region): two separate lists.
+- **Version:** a report's own number (1.0, 1.1, 2.0), shown to readers. Not the release number.
 
 ##### Rules
 
 1. Nothing syncs live. The site changes only when a release is imported, local → staging → production.
 2. Airtable decides the answers; the Doc decides the text. A release fails if they disagree.
-3. Only Locked countries enter a release; a region releases only when every country in it is Locked or Held.
+3. Only Completed countries enter a release; a region releases only when every country in it is Completed or Held. Kristen's status names stay as they are; Held is the one addition.
 4. Release files hold embargoed text, so they live in a private repo, never in this one.
 5. The import keys on Airtable record IDs, writes absolute state, and is a no-op on a second run.
 6. Totals count Released regions only. The global synthesis appears only at the Complete Edition.
 7. Reports and territory pages link both ways, matched on the archive Nation's record ID.
+8. Every report has its own version. The exporter numbers it (minor for text, major when an answer changes); a released report that changes without a Changes note fails the release.
 
 ##### Example cases
 
 | Case | Result |
 |---|---|
-| Afghanistan: Locked, five answers matching Airtable, a story card in its WordPress tab | `/language-rights/report/afghanistan/` with "At a glance", six sections, the card; the Afghanistan territory page shows a report block |
-| An editor changes Afghanistan's Doc after release | Nothing changes on the site until a patch release is cut and imported |
+| Afghanistan: Completed, five answers matching Airtable, a story card in its WordPress tab | `/language-rights/report/afghanistan/` with "At a glance", six sections, the card; the Afghanistan territory page shows a report block |
+| An editor changes Afghanistan's Doc after release | Nothing changes on the site until a patch release is cut and imported. Without a Changes row the release fails; with one, Afghanistan goes to 1.1 and its page lists the note |
+| Afghanistan's Indicator 3 changes from unclear to yes after release | Version 2.0; the changelog names the changed answer |
 | Mexico's Doc has five answers, not seven | The Americas release fails, naming Mexico and the missing answers |
 | A Doc says `Your answer: Yes.`, Airtable says `yes` | Passes: answers are compared without case or trailing punctuation |
 | A country is Held | Left out of the release; its region page lists it as "Report forthcoming" |
@@ -218,7 +221,7 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 
 ##### Steps
 
-1. **Data contract** (by 22 November): this spec and the doc; status renames, Credit line, Treaty actions and Archive Nation ID tried in the sandbox base, then the real one.
+1. **Data contract** (by 22 November): this spec and the doc; the Held option, Credit line, Treaty actions, Changes and Archive Nation ID tried in the sandbox base, then the real one.
 2. **Project page live** for the 10 December announcement (2.1's Language Rights bullet).
 3. **Exporter and checks**, run first as a dry run of South and Central Asia on today's content.
 4. **WordPress:** `rights_reports` post type, `rights_region` taxonomy with release status, `wp wt rights-import`, the three templates, the territory block, totals, tests.
@@ -227,7 +230,7 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 
 ##### Open questions
 
-1. **Kristen:** approve the research statuses and the editorial contract in [docs/language-rights.md](docs/language-rights.md).
+1. **Kristen:** approve the editorial contract, the Held status and the Changes table in [docs/language-rights.md](docs/language-rights.md).
 2. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
 3. **Press access:** how journalist accounts are issued and revoked (tracked privately).
 4. **Google access:** a service account with read access to the report folders.
@@ -248,6 +251,8 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Kristen enters treaty actions to a written contract | The treaty register needs actions and dates Airtable lacks |
 | 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
+| 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
+| 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
 ### 3. Discovery
 
