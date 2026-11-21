@@ -2,7 +2,7 @@
 
 The live plan for wikitongues.org: what comes next, in order, and the spec for each piece of work. Finished work moves to [docs/plan-archive.md](docs/plan-archive.md); how the finished systems work is documented in `docs/`.
 
-**Docs:** [content model](docs/content-model.md) · [download gateway](docs/download-gateway.md) · [Airtable sync](docs/airtable-sync.md) · [galleries](docs/gallery.md) · [deployment](docs/deployment.md) · [staging sync](docs/staging-sync.md) · [testing](docs/testing-strategy.md) · [completed work](docs/plan-archive.md)
+**Docs:** [content model](docs/content-model.md) · [language rights](docs/language-rights.md) · [download gateway](docs/download-gateway.md) · [Airtable sync](docs/airtable-sync.md) · [galleries](docs/gallery.md) · [deployment](docs/deployment.md) · [staging sync](docs/staging-sync.md) · [testing](docs/testing-strategy.md) · [completed work](docs/plan-archive.md)
 
 ## Contents
 
@@ -59,12 +59,13 @@ Last reviewed 2026-11-18.
 | # | Item | Why now | Spec |
 |---|---|---|---|
 | 1 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 2 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 3 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 4 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 5 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 6 | Maps: a locator map on language pages, then interactive territory and region maps | Discovery by place. Its one data dependency is the subdivision sync slice of 6.8 | [3.2](#32-maps) |
-| 7 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 2 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 3 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 4 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 5 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 6 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 7 | Maps: a locator map on language pages, then interactive territory and region maps | Discovery by place. Its one data dependency is the subdivision sync slice of 6.8 | [3.2](#32-maps) |
+| 8 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
@@ -110,7 +111,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 #### 1.2 Giving page redesign
 
-*Now #3.*
+*Now #4.*
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
@@ -123,7 +124,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 #### 1.3 Donor recognition
 
-*Now #4. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
+*Now #5. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
 
 Donors are People: add a **Donor** term to `people-type`, so a board member who donates stays one record ([content-model.md → People](docs/content-model.md#people)).
 
@@ -141,7 +142,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 
 #### 2.1 Pages and navigation
 
-*Now #2, with minimal copy (decided 2026-09-13).*
+*Now #3, with minimal copy (decided 2026-09-13).*
 
 From the roadmap (step 6):
 
@@ -164,18 +165,95 @@ From the roadmap (step 6):
     - Confirm the list of languages the team reads, quoted in "Help us get it right".
 - **GTM `content_type` (open, done in GTM rather than in code).** `content_type` is a RegEx Table variable in GTM that maps `{{Page Path}}` to a content type and goes out on every `page_view`. Pages it doesn't match get no content type of their own, so their traffic can't be separated out in GA4.
   - **Native Language AI:** live since 2026-11-18 and not mapped yet. Match `/revitalization/resources/native-language-ai/`. The `/ai` short link redirects there before the page loads, so it needs no row of its own.
-  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches.
+  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches, and `/language-rights/report/` when the first region releases (2.2).
   - **Then:** publish the GTM container, and check the content type in GA4's real-time report or DebugView.
   - **Still open:** whether these pages get a shared type (for example `resource`) or one each.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).
 
+#### 2.2 Language Rights report
+
+*Now #2: dated. The project announcement is on 10 December 2026; South and Central Asia, the first of seven regional releases, goes to press under embargo on 5 February 2027 and launches on 19 February. Dates are from the publishing plan, kept outside the repo.*
+
+The *Report on the Global State of Language Rights* on wikitongues.org: a hub, seven region pages and one page per country or place (204 rows in Airtable, 171 Docs written). Content is authored in Airtable and Google Docs and reaches the site only through tagged releases, so editing never threatens production. How it works, the statuses and the editorial contract: [docs/language-rights.md](docs/language-rights.md).
+
+##### Glossary
+
+- **Country report:** one country's or place's assessment: a Google Doc plus its Airtable Reports row.
+- **Region:** one of the seven publishing regions. A publishing group, not the archive's `region` taxonomy.
+- **Release:** a tagged, checked JSON file holding every Locked country so far (`2027.1` … `2027.8`, patches `2027.1.1`).
+- **Research status** (Airtable, per country) and **release status** (WordPress, per region): two separate lists.
+
+##### Rules
+
+1. Nothing syncs live. The site changes only when a release is imported, local → staging → production.
+2. Airtable decides the answers; the Doc decides the text. A release fails if they disagree.
+3. Only Locked countries enter a release; a region releases only when every country in it is Locked or Held.
+4. Release files hold embargoed text, so they live in a private repo, never in this one.
+5. The import keys on Airtable record IDs, writes absolute state, and is a no-op on a second run.
+6. Totals count Released regions only. The global synthesis appears only at the Complete Edition.
+7. Reports and territory pages link both ways, matched on the archive Nation's record ID.
+
+##### Example cases
+
+| Case | Result |
+|---|---|
+| Afghanistan: Locked, five answers matching Airtable, a story card in its WordPress tab | `/language-rights/report/afghanistan/` with "At a glance", six sections, the card; the Afghanistan territory page shows a report block |
+| An editor changes Afghanistan's Doc after release | Nothing changes on the site until a patch release is cut and imported |
+| Mexico's Doc has five answers, not seven | The Americas release fails, naming Mexico and the missing answers |
+| A Doc says `Your answer: Yes.`, Airtable says `yes` | Passes: answers are compared without case or trailing punctuation |
+| A country is Held | Left out of the release; its region page lists it as "Report forthcoming" |
+| *Naoero* (rights base) vs *Nauru* (territory) | Linked through the Archive Nation ID, never by name |
+| Europe is Embargoed | The public sees "Upcoming"; press accounts read the full region |
+
+##### Display
+
+- **Hub** `/language-rights/report/`: the release schedule, methodology, indicators, answer key, director's letter, released regions; the global synthesis and global totals from the Complete Edition.
+- **Region** `/language-rights/report/{region}/`: headline, introduction, findings, evidence and story cards, indicator comparison across its countries, the country grid, the treaty register (collapsible).
+- **Country** `/language-rights/report/{country}/`: "At a glance" (headline sentence, language count, baseline and trend, five answers), the six sections with sources collapsed, story card, link to its territory and region.
+- **Territory pages:** a block linking to the country's Released report.
+- **Look** lifts the prototype's HTML into Stylus modules; the map is the 3.2 component; print CSS collapses sources and points to the PDF.
+- **Instrument:** GTM `content_type` for `/language-rights/report/` (see 2.1); the gated PDF reports through the download gateway's existing GA4 funnel events.
+
+##### Steps
+
+1. **Data contract** (by 22 November): this spec and the doc; status renames, Credit line, Treaty actions and Archive Nation ID tried in the sandbox base, then the real one.
+2. **Project page live** for the 10 December announcement (2.1's Language Rights bullet).
+3. **Exporter and checks**, run first as a dry run of South and Central Asia on today's content.
+4. **WordPress:** `rights_reports` post type, `rights_region` taxonomy with release status, `wp wt rights-import`, the three templates, the territory block, totals, tests.
+5. **Launch tooling:** press role and embargo, the gated regional PDF through `documents`, `/rights` redirect, GTM rows, the Mailchimp "release updates" tag.
+6. **Rehearsal** on staging after the 15 January text lock; then `2027.1` to production as Embargoed, and Released on 19 February. Later regions repeat 6.
+
+##### Open questions
+
+1. **Kristen:** approve the research statuses and the editorial contract in [docs/language-rights.md](docs/language-rights.md).
+2. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
+3. **Press access:** how journalist accounts are issued and revoked (tracked privately).
+4. **Google access:** a service account with read access to the report folders.
+
+##### Out of scope
+
+Live sync from Docs or Airtable; editing report text in WordPress; earlier editions online; a designed PDF beyond the existing download gateway; translations of the report.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-18 | Releases, not a live sync | Content edits must never threaten production; a release diff is the editorial review |
+| 2026-11-18 | The global synthesis appears only at the Complete Edition | A synthesis updated for six months makes no launch (Kristen) |
+| 2026-11-21 | URLs under `/language-rights/report/`, with `/rights` as a redirect | One home beside the project page; country URLs leave out the region so they never move |
+| 2026-11-21 | Release files in a private repo; Google service-account access | Embargoed text stays out of the public repo |
+| 2026-11-21 | Embargoed access for press, built in WordPress | Press needs the region before launch day |
+| 2026-11-21 | Kristen enters treaty actions to a written contract | The treaty register needs actions and dates Airtable lacks |
+| 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
+| 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
+
 ### 3. Discovery
 
 #### 3.1 Dynamic homepage
 
-*Now #5.*
+*Now #6.*
 
 The homepage is static. Surface recent oral histories, the active campaign (from 1.1), featured languages and fellows, with a donation CTA in the stream. Decide which signals to use, such as the publication date or an editor-curated featured flag, and build from galleries server-side where possible. A "most recent video" block is a quick first step.
 
@@ -184,7 +262,7 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 
 #### 3.2 Maps
 
-*Now #6. Spec drafted, prototyped and decided 2026-11-16.*
+*Now #7. Spec drafted, prototyped and decided 2026-11-16.*
 
 Maps in two steps, both from one new plugin, `wt-maps`:
 
@@ -400,7 +478,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
 
 #### 3.3 Enhanced search
 
-*Now #7.*
+*Now #8.*
 
 1. **Find languages by name (#379).** Full-page `?s=` results miss language pages, because a language's title is its ISO code, and WordPress search matches titles and content, not `standard_name` or `alternate_names`. The typeahead already matches names. Make the main search query match them too (`includes/template/search-filter.php`). In the same pass, fix the missing video thumbnails in results (#58) and the results page title that shows an ISO code.
 2. **A gallery-powered results page** across languages, territories, genealogies, writing systems, videos and fellows. It should be faceted (region, family, content type) and relevance-weighted. Design it together with in-gallery filtering (#378).
@@ -758,8 +836,8 @@ Open issues, and where each is tracked (2026-09-13):
 
 | Issue | Tracked in |
 |---|---|
-| [#379](https://github.com/wikitongues/wikitongues.org/issues/379) Searching "russian" finds nothing | 3.3 (Now #7) |
-| [#58](https://github.com/wikitongues/wikitongues.org/issues/58) Video thumbnails missing in search | 3.3 (Now #7) |
+| [#379](https://github.com/wikitongues/wikitongues.org/issues/379) Searching "russian" finds nothing | 3.3 (Now #8) |
+| [#58](https://github.com/wikitongues/wikitongues.org/issues/58) Video thumbnails missing in search | 3.3 (Now #8) |
 | [#378](https://github.com/wikitongues/wikitongues.org/issues/378) Gallery: dynamic querying | 3.3, designed with the results page |
 | [#377](https://github.com/wikitongues/wikitongues.org/issues/377) Gallery: post-type fallback | [gallery.md → Known gaps](docs/gallery.md#known-gaps) |
 | [#61](https://github.com/wikitongues/wikitongues.org/issues/61) "Processing" video page undesigned | 5.2 |
