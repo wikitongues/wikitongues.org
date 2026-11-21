@@ -82,6 +82,13 @@ require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-tabl
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/sets.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-renderer.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/structure.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-answers.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-docs-adapter.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-doc-parser.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-validator.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-versioner.php';
+require_once __DIR__ . '/unit/rights/RightsFixture.php';
 
 // WordPress's HTML API, for tests of code that uses WP_HTML_Tag_Processor. Core
 // is not in the repository, so this loads only where a local install sits at
