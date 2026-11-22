@@ -69,11 +69,12 @@ jobs:
                    wp-content/plugins/wt-airtable-sync/wt-airtable-sync.php \
                    wp-content/plugins/wt-gallery/wt-gallery.php \
                    wp-content/plugins/wt-maps/wt-maps.php \
+                   wp-content/plugins/wt-rights/wt-rights.php \
                    wp-content/plugins/typeahead/typeahead.php; do
             [ -f "$f" ] || { echo "::error::$f is missing from the checkout; not deleting anything"; exit 1; }
           done
           for dir in wp-content/themes/blankslate-child wp-content/plugins/download-gateway \
-                     wp-content/plugins/wt-airtable-sync wp-content/plugins/wt-gallery wp-content/plugins/wt-maps wp-content/plugins/typeahead; do
+                     wp-content/plugins/wt-airtable-sync wp-content/plugins/wt-gallery wp-content/plugins/wt-maps wp-content/plugins/wt-rights wp-content/plugins/typeahead; do
             rsync -rv --delete --existing --ignore-existing --max-delete=100 -e "ssh" \
               --filter='P error_log' --filter='merge .rsync-filter' \
               "$dir/" "${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ env.REMOTE_DIR }}$dir/"

@@ -13,6 +13,7 @@ wp-content/plugins/download-gateway/         # Download gate plugin
 wp-content/plugins/wt-airtable-sync/         # Airtable → WordPress sync plugin (Make.com webhooks)
 wp-content/plugins/wt-gallery/               # Gallery plugin
 wp-content/plugins/wt-maps/                  # Locator maps plugin (shape table, doctor)
+wp-content/plugins/wt-rights/                # Language Rights report (Doc parser, releases, import)
 wp-content/plugins/typeahead/                # Search typeahead plugin
 tests/                                       # PHPUnit tests (unit layer)
 docs/                                        # Architecture docs (airtable-sync.md is authoritative)
