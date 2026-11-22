@@ -135,12 +135,13 @@ final class Importer {
 			'post_content' => self::searchable_html( $report ),
 			'post_excerpt' => (string) ( $report['content']['rating']['headline'] ?? '' ),
 			'meta_input'   => array(
-				'_airtable_record_id' => (string) $report['record_id'],
-				'_rights_nation_id'   => (string) $report['nation_id'],
-				'_rights_version'     => (string) $report['version'],
-				'_rights_hash'        => (string) $report['hash'],
-				'_rights_draft'       => empty( $report['draft'] ) ? '0' : '1',
-				'_rights_report'      => wp_slash( (string) wp_json_encode( $report ) ),
+				'_airtable_record_id'       => (string) $report['record_id'],
+				'_rights_nation_id'         => (string) $report['nation_id'],
+				'_rights_archive_nation_id' => (string) ( $report['archive_nation_id'] ?? '' ),
+				'_rights_version'           => (string) $report['version'],
+				'_rights_hash'              => (string) $report['hash'],
+				'_rights_draft'             => empty( $report['draft'] ) ? '0' : '1',
+				'_rights_report'            => (string) wp_json_encode( $report ), // Slashed with the rest of $postarr below.
 			),
 		);
 		if ( 'update' === $action['action'] ) {
