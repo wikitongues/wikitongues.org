@@ -65,7 +65,25 @@ wp wt rights-import <file>   dry run by default → local → staging → produc
 - **Release numbers.** `2027.1`–`2027.7` are the regional releases in publication order; `2027.8` is the Complete Edition; a release carrying only corrections is a patch (`2027.1.1`). Release numbers track deploys and are internal. Readers see each report's own [version](#versions-and-the-changelog).
 - **A release is cumulative.** `2027.2` holds South and Central Asia *and* Europe, so any one file rebuilds the whole report on an empty site.
 - **Import is idempotent.** It matches each country by its Reports record ID, writes absolute state, and reports 0 changes when run twice. Countries are never deleted by an import; a country dropped from a release is unpublished and logged.
-- **Preview.** The exporter can also run nightly against live content and import to staging only, so work in progress can be read in place without production changing.
+- **Preview.** `--preview` exports unfinished countries as drafts, for reading on staging only.
+
+### Running the exporter
+
+The exporter runs on one machine only, with two secrets that live in 1Password and are filled in for the length of one command. Nothing goes in `wp-config.php`, and production never has them: it only imports.
+
+| What | Where |
+|---|---|
+| Google | Service account `rights-exporter@wikitongues-rights-worker.iam.gserviceaccount.com` (project `wikitongues-rights-worker`, Docs API only, no project roles). Viewer on `[1] Reports` and `[2] Notes & Templates`. Its JSON key is a 1Password Document item |
+| Airtable | A personal access token, read-only (`data.records:read`, `schema.bases:read`), limited to the sandbox base. A production token is lent only when needed, then revoked |
+| `~/.config/wikitongues/rights.env` | Two `op://` references, `WT_RIGHTS_GOOGLE_CREDENTIALS_JSON` and `WT_RIGHTS_AIRTABLE_TOKEN`, and no secrets |
+
+```bash
+op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights ping --allow-root
+op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights check --region=south-central-asia --allow-root
+op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights export --region=south-central-asia --release=2027.1 --out=<releases repo>/rights-2027.1.json --allow-root
+```
+
+`WT_RIGHTS_AIRTABLE_BASE` picks the base (default `sandbox`; field IDs per base are in `wt-rights/config/airtable.php`). `export` refuses to write inside the WordPress folder.
 
 ## Statuses
 
@@ -171,7 +189,7 @@ The current research template (v10.2026), as the Docs are already written. A dry
 
 ### The WordPress tab
 
-An optional second tab in the country Doc, named exactly **WordPress**, for text that appears only on the site and should stay out of the volunteers' report. Today it holds one thing:
+An optional second tab in the country Doc, named **WordPress** (any capitalization), for text that appears only on the site and should stay out of the volunteers' report. Today it holds one thing:
 
 - **Story card.** The country's name as Heading 1 (optional), then a Heading 2 title (e.g. *A revised alphabet for Pashayi*), one paragraph of 60 words or fewer, then its links. Shown on the region page and the country report. A country without one simply has no card.
 
