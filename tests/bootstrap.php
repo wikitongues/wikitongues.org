@@ -98,6 +98,7 @@ require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/content-model.
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/template-tags.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/press.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/pdf.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/analytics.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-pdf-resolver.php';
 require_once __DIR__ . '/unit/rights/RightsFixture.php';
 
