@@ -22,6 +22,8 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 - [Correcting a published report](#correcting-a-published-report)
 - [Brief for Kristen's Claude](#brief-for-kristens-claude)
 - [Links between reports and territories](#links-between-reports-and-territories)
+- [Analytics](#analytics)
+- [Staging rehearsal](#staging-rehearsal)
 
 ---
 
@@ -307,3 +309,36 @@ It reads and reports; it never edits. The exporter's own checks remain the gate.
 - **Report → territory.** Each country report links to its territory page (`/territories/{region}/{territory}/`). Plan 6.8 may turn some non-ISO places (Abkhazia, Transnistria) into subdivisions without pages; their reports then link to the parent territory, or to nothing.
 - **Territory → report.** Each territory page with a Released report shows a block linking to it, with the headline sentence and the five answers. An Upcoming or Embargoed report shows nothing.
 - **Matched on record IDs, never names.** Names differ between the bases: the report's *Naoero* is the archive's *Nauru*, and *Sahrawi Arab Democratic Republic* is the territory *Western Sahara*. The territory page carries the archive Nation's record ID in `_airtable_record_id`; the rights base's synced Nations get new IDs (Afghanistan is `recUTYgBN887C9IGv` there and `recrY5jg8GmprukMo` in the archive). So the archive's Nations table gets a formula field, `RECORD_ID()`, which syncs into the rights base as **Archive Nation ID**. A report whose ID matches no territory is listed by the import and shows no block.
+
+## Analytics
+
+The code only pushes to `window.dataLayer`; Google Tag Manager forwards to GA4, as everywhere on the site.
+
+| Data | Pushed | Where |
+|---|---|---|
+| `rights_page` (hub, region, report), `rights_region`, `rights_country`, `report_version`, `release_status`, `viewer_role` (press, admin or empty) | On report pages, before GTM loads | `wt-rights/includes/analytics.php`, through the `wt_head_before_analytics` action in `modules/page--head.php` |
+| `rights_updates_signup` with `rights_region` | "Get release updates" clicked | `wt-rights/assets/rights.js` |
+| `donate_cta_click` | Donate links, by `data-cta-location`: `rights-report`, `rights-report-sidebar`, `rights-region`, `rights-hub` | The site's existing donate tracking |
+| The gateway's four funnel events | PDF downloads, with `post_type=rights_reports` and `download_source=rights-report` | The download gateway |
+
+**To set up in GTM and GA4 (once):**
+
+1. `content_type` RegEx Table: add `^/language-rights/report/` → `language_rights_report`, and `^/language-rights/?$` → `language_rights`. `rights_page` tells hub, region and report apart.
+2. Data-layer variables for the six page details; add them as parameters on the GA4 page_view.
+3. A Custom Event trigger `rights_updates_signup`, and a GA4 event tag with `rights_region`.
+4. Check that the donate trigger fires on the four new `data-cta-location` values.
+5. Register `rights_page`, `rights_region`, `rights_country`, `report_version`, `release_status` and `viewer_role` as GA4 custom dimensions.
+6. Leave out our own and journalists' views: a comparison or report filter excluding `viewer_role` press and admin.
+7. Publish the container, then check every event in GA4 DebugView on staging.
+
+## Staging rehearsal
+
+Run once the build PRs are merged and deployed to staging, before South and Central Asia's text lock.
+
+1. On staging: define `WT_RIGHTS_PRIVATE_DIR` outside `public_html`, flush rewrite rules (Settings → Permalinks), and in Settings → Download Gateway set `rights_reports` to Required with the `documents` form.
+2. Locally: `wp wt rights export --region=south-central-asia --release=2027.1 --preview --out=<releases repo>/…` (through 1Password), import it locally, then `wp wt rights pdf --out=<releases repo>/pdf`.
+3. Copy the release file and PDFs to the server's home folder (never `public_html`), then on staging: `import <file> --execute`, `status south-central-asia embargoed --pdfs=<dir>`.
+4. Check, as an anonymous visitor, as a press account and as an admin: the hub lists seven regions; the region and reports follow the status table above; no PDF is downloadable.
+5. `status south-central-asia released`: pages public, the PDF downloads through the gateway after the email step, and GA4 DebugView shows the page details, `rights_updates_signup`, the donate click and the download funnel.
+6. `status south-central-asia upcoming`: everything is gone from public view, and the PDFs are gone from the server.
+

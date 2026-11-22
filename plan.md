@@ -225,12 +225,14 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 
 | PR | Ships | Status |
 |---|---|---|
-| 1 | Structure config, Docs adapter, Doc parser, validator, versioner, with tests on invented fixtures | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
-| 2 | Airtable and Google clients; `wp wt rights check` and `export` (release file, versions, changelogs) | Needs a Google service account with the report folders shared, and a read-only Airtable token |
-| 3 | `rights_reports` post type, `rights_region` taxonomy, one rewrite rule, press role and capability; `import` and `status` (region status sets post status: Upcoming = draft, Embargoed = private, Released = publish) | |
-| 4 | Hub, region and country templates from the prototype; territory card; donate band; `/rights` | |
-| 5 | `pdf` (headless Chrome, print stylesheet); PDFs kept in a private folder and published only when their region is Released; gateway lookup for `rights_reports` (Required); changelog display; embargo banner; press login redirect | |
-| 6 | Analytics: `content_type` rows, page details in the data layer, `rights_updates_signup`, `donate_cta_click` locations; checked in DebugView. Staging rehearsal | |
+| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
+| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
+| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
+| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
+| 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
+| 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
+
+Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md).
 
 **Data first:** the Held option and the Changes, Treaty actions and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
 
