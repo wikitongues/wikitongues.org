@@ -129,26 +129,36 @@ function wt_rights_build( array $assoc_args ): array {
 		$airtable = \WT\Rights\Airtable::from_env( \WT\Rights\Http::wordpress() );
 		$google   = \WT\Rights\Google_Docs::from_env( \WT\Rights\Http::wordpress() );
 		$records  = $airtable->records( $config['base'], $config['reports']['table'], array_values( $config['reports']['fields'] ) );
+		$publish  = $airtable->records( $config['base'], $config['publishing']['table'], array_values( $config['publishing']['fields'] ) );
+		$changes  = $airtable->records( $config['base'], $config['changes']['table'], array_values( $config['changes']['fields'] ) );
 	} catch ( \Throwable $e ) {
 		WP_CLI::error( $e->getMessage() );
 	}
 	$rows = array_map( static fn( array $r ): array => \WT\Rights\Exporter::row( $r, $config['reports']['fields'] ), $records );
-
-	WP_CLI::log( 'Airtable (' . $config['name'] . '): ' . count( $rows ) . ' Reports rows. Reading Docs as ' . $google->account() . '…' );
-	WP_CLI::log( 'Not yet in Airtable, so treated as empty: release dates (nothing counts as published) and Changes notes.' );
 
 	$exporter = new \WT\Rights\Exporter(
 		$structure,
 		static fn( string $id ): array => $google->document( $id ),
 		'sanitize_title'
 	);
+	$dates    = $exporter->release_dates( $publish, $config['publishing']['fields'] );
+	$notes    = \WT\Rights\Exporter::notes_since( $changes, $config['changes']['fields'], $previous );
+	$today    = gmdate( 'Y-m-d' );
+	$released = array_keys( array_filter( $dates, static fn( string $d ): bool => $d <= $today ) );
+
+	WP_CLI::log( 'Airtable (' . $config['name'] . '): ' . count( $rows ) . ' Reports rows, ' . count( $dates ) . ' release dates, ' . count( $notes ) . ' reports with Changes notes since the previous release.' );
+	WP_CLI::log( 'Published (release date passed): ' . ( $released ? implode( ', ', $released ) : 'none' ) . '. Reading Docs as ' . $google->account() . '…' );
+
 	return $exporter->build(
 		$rows,
 		$previous,
 		array(
-			'release' => (string) ( $assoc_args['release'] ?? '' ),
-			'regions' => array_values( $asked ),
-			'preview' => isset( $assoc_args['preview'] ),
+			'release'       => (string) ( $assoc_args['release'] ?? '' ),
+			'regions'       => array_values( $asked ),
+			'preview'       => isset( $assoc_args['preview'] ),
+			'today'         => $today,
+			'release_dates' => $dates,
+			'notes'         => $notes,
 		)
 	);
 }

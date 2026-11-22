@@ -248,4 +248,75 @@ class ExporterTest extends TestCase {
 		$this->assertSame( $first['reports'][0]['hash'], $second['reports'][0]['hash'] );
 		$this->assertSame( $first['reports'][0]['version'], $second['reports'][0]['version'] );
 	}
+
+	public function test_release_dates_map_publishing_rows_to_region_keys() {
+		$fields = array(
+			'region'       => 'fldRegion',
+			'release_date' => 'fldDate',
+		);
+		$dates  = $this->exporter()->release_dates(
+			array(
+				array(
+					'id'     => 'rec1',
+					'fields' => array(
+						'fldRegion' => 'South and Central Asia',
+						'fldDate'   => '2027-02-19',
+					),
+				),
+				array(
+					'id'     => 'rec2',
+					'fields' => array(
+						'fldRegion' => 'Middle East & North Africa',
+						'fldDate'   => '2027-04-29',
+					),
+				),
+				array(
+					'id'     => 'rec3',
+					'fields' => array( 'fldRegion' => 'Europe' ),
+				),
+			),
+			$fields
+		);
+
+		$this->assertSame(
+			array(
+				'south-central-asia'       => '2027-02-19',
+				'middle-east-north-africa' => '2027-04-29',
+			),
+			$dates
+		);
+	}
+
+	public function test_notes_since_the_previous_release_are_grouped_by_report_oldest_first() {
+		$fields  = array(
+			'note'   => 'fldNote',
+			'report' => 'fldReport',
+			'date'   => 'fldDate',
+		);
+		$change  = fn( string $note, string $date, string $report ): array => array(
+			'id'     => 'rec' . $date,
+			'fields' => array(
+				'fldNote'   => $note,
+				'fldDate'   => $date,
+				'fldReport' => array( $report ),
+			),
+		);
+		$records = array(
+			$change( 'Later fix.', '2027-03-10', 'recA' ),
+			$change( 'Old fix.', '2027-02-01', 'recA' ),
+			$change( 'First fix.', '2027-03-03', 'recA' ),
+			$change( 'Other country.', '2027-03-04', 'recB' ),
+		);
+
+		$notes = Exporter::notes_since( $records, $fields, array( 'built_at' => '2027-03-01T10:00:00+00:00' ) );
+
+		$this->assertSame(
+			array(
+				'recA' => array( 'First fix.', 'Later fix.' ),
+				'recB' => array( 'Other country.' ),
+			),
+			$notes
+		);
+		$this->assertCount( 3, Exporter::notes_since( $records, $fields, null )['recA'] );
+	}
 }

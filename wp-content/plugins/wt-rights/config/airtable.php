@@ -11,8 +11,8 @@
 
 return array(
 	'sandbox' => array(
-		'base'    => 'app7PsW1jeK3D2OA5',
-		'reports' => array(
+		'base'       => 'app7PsW1jeK3D2OA5',
+		'reports'    => array(
 			'table'  => 'tblHkzxWQ9AaC5WOP',
 			'fields' => array(
 				'name'        => 'fldnfQE4OlLxvNhX6',
@@ -27,6 +27,24 @@ return array(
 				'i5'          => 'fldOs6bUsl51ifXhR',
 				'ante'        => 'fld90a6GSjxqfb35p',
 				'trend'       => 'fld5X0Mgz3KcZYoWq',
+			),
+		),
+		'publishing' => array(
+			'table'  => 'tblIIDk1suyJJryF1',
+			'fields' => array(
+				'name'         => 'flddZ9AtUi3nZiETP',
+				'kind'         => 'fldRiVRz88EhDeSI0',
+				'region'       => 'fldlpYe63EhZEkSJO',
+				'doc_link'     => 'fldMlHmffgwH1qAE5',
+				'release_date' => 'fldU5Jztx2DEJEpa6',
+			),
+		),
+		'changes'    => array(
+			'table'  => 'tbl2qGRJDr1EIe0xZ',
+			'fields' => array(
+				'note'   => 'fldStYd9z1vdccyOc',
+				'report' => 'fldxGk6m9NgWV3Ea3',
+				'date'   => 'fld8gP9gVavV6d1v9',
 			),
 		),
 	),

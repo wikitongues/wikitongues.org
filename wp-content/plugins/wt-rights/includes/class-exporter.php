@@ -94,6 +94,55 @@ final class Exporter {
 	}
 
 	/**
+	 * Region key → release date (Y-m-d), from the Publishing Docs table.
+	 *
+	 * @param list<array{id: string, fields: array<string, mixed>}> $records Publishing Docs records, keyed by field ID.
+	 * @param array<string, string>                                $fields  Field key → field ID.
+	 * @return array<string, string>
+	 */
+	public function release_dates( array $records, array $fields ): array {
+		$region_of = array();
+		foreach ( $this->structure['regions'] as $region ) {
+			$region_of[ Doc_Parser::fold( $region['airtable'] ) ] = $region['key'];
+		}
+		$dates = array();
+		foreach ( $records as $record ) {
+			$region = $region_of[ Doc_Parser::fold( (string) ( $record['fields'][ $fields['region'] ] ?? '' ) ) ] ?? '';
+			$date   = (string) ( $record['fields'][ $fields['release_date'] ] ?? '' );
+			if ( '' !== $region && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
+				$dates[ $region ] = $date;
+			}
+		}
+		return $dates;
+	}
+
+	/**
+	 * Reports record ID → Changes notes dated on or after the previous release
+	 * was built (all notes when there is none), oldest first.
+	 *
+	 * @param list<array{id: string, fields: array<string, mixed>}> $records  Changes records, keyed by field ID.
+	 * @param array<string, string>                                $fields   Field key → field ID.
+	 * @param array<string, mixed>|null                            $previous The previous release.
+	 * @return array<string, list<string>>
+	 */
+	public static function notes_since( array $records, array $fields, ?array $previous ): array {
+		$since = substr( (string) ( $previous['built_at'] ?? '' ), 0, 10 );
+		usort( $records, static fn( array $a, array $b ): int => strcmp( (string) ( $a['fields'][ $fields['date'] ] ?? '' ), (string) ( $b['fields'][ $fields['date'] ] ?? '' ) ) );
+		$notes = array();
+		foreach ( $records as $record ) {
+			$date = (string) ( $record['fields'][ $fields['date'] ] ?? '' );
+			$note = trim( (string) ( $record['fields'][ $fields['note'] ] ?? '' ) );
+			if ( '' === $note || ( '' !== $since && $date < $since ) ) {
+				continue;
+			}
+			foreach ( (array) ( $record['fields'][ $fields['report'] ] ?? array() ) as $report_id ) {
+				$notes[ (string) $report_id ][] = $note;
+			}
+		}
+		return $notes;
+	}
+
+	/**
 	 * Builds a release.
 	 *
 	 * Options:
