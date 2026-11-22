@@ -241,11 +241,12 @@ final class Exporter {
 			}
 			$entries              = $reports[ $region['key'] ] ?? array();
 			$release['regions'][] = array(
-				'key'         => $region['key'],
-				'name'        => $region['name'],
-				'order'       => $order + 1,
-				'reports'     => array_column( $entries, 'record_id' ),
-				'forthcoming' => $forthcoming[ $region['key'] ] ?? array(),
+				'key'          => $region['key'],
+				'name'         => $region['name'],
+				'order'        => $order + 1,
+				'release_date' => (string) ( $options['release_dates'][ $region['key'] ] ?? '' ),
+				'reports'      => array_column( $entries, 'record_id' ),
+				'forthcoming'  => $forthcoming[ $region['key'] ] ?? array(),
 			);
 			$release['reports']   = array_merge( $release['reports'], $entries );
 		}

@@ -284,6 +284,182 @@ function wt_rights_export_command( array $args, array $assoc_args ): void {
 	WP_CLI::success( 'Wrote release ' . $assoc_args['release'] . ' (' . count( $result['release']['reports'] ) . ' reports' . ( isset( $assoc_args['preview'] ) ? ', preview' : '' ) . ') to ' . $out . '.' );
 }
 
+/**
+ * Imports a release file into this site.
+ *
+ * Dry run by default: prints what would change. Matches reports by Airtable
+ * record ID; a report no longer in the release is set to draft, never deleted.
+ * A second run changes nothing. Needs no credentials.
+ *
+ * ## OPTIONS
+ *
+ * <file>
+ * : The release file.
+ *
+ * [--execute]
+ * : Write the changes.
+ *
+ * ## EXAMPLES
+ *
+ *     wp wt rights import ~/rights/rights-2027.1.json
+ *     wp wt rights import ~/rights/rights-2027.1.json --execute
+ *
+ * @param list<string>          $args       The file.
+ * @param array<string, string> $assoc_args Options.
+ */
+function wt_rights_import_command( array $args, array $assoc_args ): void {
+	$raw     = (string) file_get_contents( $args[0] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local file.
+	$release = json_decode( $raw, true );
+	if ( ! is_array( $release ) || \WT\Rights\Exporter::SCHEMA !== ( $release['schema'] ?? null ) ) {
+		WP_CLI::error( 'Not a schema ' . \WT\Rights\Exporter::SCHEMA . ' release file: ' . $args[0] );
+	}
+	$execute = isset( $assoc_args['execute'] );
+
+	$statuses = \WT\Rights\Importer::region_statuses();
+	foreach ( $release['regions'] as $region ) {
+		if ( ! isset( $statuses[ $region['key'] ] ) ) {
+			WP_CLI::log( 'New region: ' . $region['name'] . ' (starts upcoming).' );
+			$statuses[ $region['key'] ] = \WT\Rights\Release_Status::UPCOMING;
+		}
+	}
+	$plan = \WT\Rights\Import_Plan::plan( $release, \WT\Rights\Importer::existing(), $statuses );
+
+	$rows = array();
+	foreach ( $plan as $action ) {
+		if ( 'unchanged' !== $action['action'] ) {
+			$rows[] = array(
+				'Action'  => $action['action'],
+				'Report'  => $action['name'],
+				'Status'  => $action['post_status'],
+				'Changes' => implode( '; ', $action['changes'] ),
+			);
+		}
+	}
+	if ( $rows ) {
+		WP_CLI\Utils\format_items( 'table', $rows, array( 'Action', 'Report', 'Status', 'Changes' ) );
+	}
+	$summary = \WT\Rights\Import_Plan::summary( $plan );
+	$counts  = array();
+	foreach ( $summary as $what => $count ) {
+		$counts[] = $count . ' ' . $what;
+	}
+	WP_CLI::log( 'Release ' . $release['release'] . ( ! empty( $release['preview'] ) ? ' (preview)' : '' ) . ': ' . implode( ', ', $counts ) . '.' );
+
+	if ( ! $execute ) {
+		WP_CLI::log( 'Dry run: nothing written. Add --execute to apply.' );
+		return;
+	}
+
+	$by_record = array();
+	foreach ( $release['reports'] as $report ) {
+		$by_record[ $report['record_id'] ] = $report;
+	}
+	try {
+		$regions = \WT\Rights\Importer::upsert_regions( $release );
+		foreach ( $plan as $action ) {
+			\WT\Rights\Importer::apply( $action, $by_record[ $action['record_id'] ] ?? array(), $regions );
+		}
+	} catch ( \Throwable $e ) {
+		WP_CLI::error( $e->getMessage() );
+	}
+	update_option(
+		'wt_rights_release',
+		array(
+			'release'     => (string) $release['release'],
+			'preview'     => ! empty( $release['preview'] ),
+			'built_at'    => (string) $release['built_at'],
+			'imported_at' => gmdate( 'c' ),
+			'sha1'        => sha1( $raw ),
+		),
+		false
+	);
+	WP_CLI::success( 'Imported release ' . $release['release'] . '.' );
+}
+
+/**
+ * Shows or sets a region's release status.
+ *
+ * Setting it also sets its reports' post status: upcoming = draft (admins
+ * only), embargoed = private (admins and press), released = publish. Running
+ * it again changes nothing.
+ *
+ * ## OPTIONS
+ *
+ * [<region>]
+ * : A region key, e.g. south-central-asia. Omit to list every region.
+ *
+ * [<status>]
+ * : upcoming, embargoed or released.
+ *
+ * ## EXAMPLES
+ *
+ *     wp wt rights status
+ *     wp wt rights status south-central-asia embargoed
+ *
+ * @param list<string>          $args       Region and status.
+ * @param array<string, string> $assoc_args Unused.
+ */
+function wt_rights_status_command( array $args, array $assoc_args ): void {
+	if ( ! $args ) {
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'rights_region',
+				'hide_empty' => false,
+				'meta_key'   => 'order', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- seven terms.
+				'orderby'    => 'meta_value_num',
+			)
+		);
+		$rows  = array();
+		foreach ( is_array( $terms ) ? $terms : array() as $term ) {
+			$rows[] = array(
+				'Region'       => $term->slug,
+				'Status'       => wt_rights_region_status( $term->term_id ),
+				'Release date' => (string) get_term_meta( $term->term_id, 'release_date', true ),
+				'Reports'      => count(
+					get_posts(
+						array(
+							'post_type'        => 'rights_reports',
+							'post_status'      => array( 'publish', 'private', 'draft' ),
+							'numberposts'      => -1,
+							'fields'           => 'ids',
+							'suppress_filters' => true,
+							'tax_query'        => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- seven regions, CLI only.
+								array(
+									'taxonomy' => 'rights_region',
+									'terms'    => array( $term->term_id ),
+								),
+							),
+						)
+					)
+				),
+			);
+		}
+		if ( ! $rows ) {
+			WP_CLI::log( 'No regions yet: import a release first.' );
+			return;
+		}
+		WP_CLI\Utils\format_items( 'table', $rows, array( 'Region', 'Status', 'Release date', 'Reports' ) );
+		$release = get_option( 'wt_rights_release' );
+		if ( is_array( $release ) ) {
+			WP_CLI::log( 'Release ' . $release['release'] . ( $release['preview'] ? ' (preview)' : '' ) . ', imported ' . $release['imported_at'] . '.' );
+		}
+		return;
+	}
+
+	if ( 2 !== count( $args ) || ! \WT\Rights\Release_Status::is_valid( $args[1] ) ) {
+		WP_CLI::error( 'Give a region and one of: ' . implode( ', ', \WT\Rights\Release_Status::all() ) . '.' );
+	}
+	$term = get_term_by( 'slug', $args[0], 'rights_region' );
+	if ( ! $term instanceof WP_Term ) {
+		WP_CLI::error( 'No region "' . $args[0] . '" on this site.' );
+	}
+	$was     = wt_rights_region_status( $term->term_id );
+	$changed = \WT\Rights\Importer::set_region_status( $term->term_id, $args[1] );
+	WP_CLI::success( $term->name . ': ' . $was . ' → ' . $args[1] . '; ' . $changed . ' reports changed post status.' );
+}
+
 WP_CLI::add_command( 'wt rights ping', 'wt_rights_ping_command' );
+WP_CLI::add_command( 'wt rights import', 'wt_rights_import_command' );
+WP_CLI::add_command( 'wt rights status', 'wt_rights_status_command' );
 WP_CLI::add_command( 'wt rights check', 'wt_rights_check_command' );
 WP_CLI::add_command( 'wt rights export', 'wt_rights_export_command' );
