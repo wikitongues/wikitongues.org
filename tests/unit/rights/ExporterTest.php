@@ -149,11 +149,31 @@ class ExporterTest extends TestCase {
 		$this->assertSame( 'warning', $result['countries'][0]['problems'][0]['severity'] );
 	}
 
-	public function test_regions_not_asked_for_are_left_out() {
-		$result = $this->build( array( $this->row( array( 'region' => 'Europe' ) ) ) );
+	public function test_every_region_is_listed_but_only_included_ones_carry_reports() {
+		$fetches = 0;
+		$result  = $this->exporter( null, $fetches )->build(
+			array(
+				$this->row(
+					array(
+						'region'    => 'Europe',
+						'name'      => 'Eurland',
+						'record_id' => 'recEur',
+					)
+				),
+			),
+			null,
+			array( 'regions' => array( 'south-central-asia' ) )
+		);
+		$europe  = $result['release']['regions'][1];
 
+		$this->assertSame( 0, $fetches );
 		$this->assertSame( array(), $result['countries'] );
-		$this->assertSame( array( 'south-central-asia' ), array_column( $result['release']['regions'], 'key' ) );
+		$this->assertSame( array(), $result['release']['reports'] );
+		$this->assertCount( 7, $result['release']['regions'] );
+		$this->assertSame( array( true, false ), array( $result['release']['regions'][0]['included'], $europe['included'] ) );
+		$this->assertSame( 'europe', $europe['key'] );
+		$this->assertSame( array( 'Eurland' ), $europe['nations'] );
+		$this->assertSame( array(), $europe['reports'] );
 	}
 
 	public function test_a_release_keeps_the_previous_releases_regions() {
@@ -176,7 +196,8 @@ class ExporterTest extends TestCase {
 			)
 		);
 
-		$this->assertSame( array( 'south-central-asia', 'europe' ), array_column( $second['release']['regions'], 'key' ) );
+		$included = array_column( array_filter( $second['release']['regions'], fn( array $r ): bool => $r['included'] ), 'key' );
+		$this->assertSame( array( 'south-central-asia', 'europe' ), array_values( $included ) );
 		$this->assertCount( 2, $second['release']['reports'] );
 	}
 

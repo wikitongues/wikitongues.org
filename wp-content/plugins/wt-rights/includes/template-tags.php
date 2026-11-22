@@ -144,6 +144,10 @@ function wt_rights_region_reports( int $term_id ): array {
  * @return list<string>
  */
 function wt_rights_region_names( int $term_id ): array {
+	$listed = json_decode( (string) get_term_meta( $term_id, 'nations', true ), true );
+	if ( is_array( $listed ) && $listed ) {
+		return array_values( array_map( 'strval', $listed ) );
+	}
 	$ids   = get_posts(
 		array(
 			'post_type'        => 'rights_reports',

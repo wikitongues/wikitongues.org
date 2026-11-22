@@ -178,6 +178,14 @@ final class Exporter {
 		$forthcoming = array();
 		$slugs       = array_fill_keys( array_column( $this->structure['regions'], 'key' ), 'region' );
 
+		$nations = array();
+		foreach ( $rows as $row ) {
+			$key = $region_of[ Doc_Parser::fold( $row['region'] ) ] ?? '';
+			if ( '' !== $key && '' !== $row['name'] ) {
+				$nations[ $key ][] = $row['name'];
+			}
+		}
+
 		foreach ( $rows as $row ) {
 			$region = $region_of[ Doc_Parser::fold( $row['region'] ) ] ?? '';
 			if ( '' === $region ) {
@@ -235,18 +243,23 @@ final class Exporter {
 			'regions'  => array(),
 			'reports'  => array(),
 		);
+		// Every region is listed, so the hub's schedule is complete; only the
+		// included ones carry reports. A region not included carries its name,
+		// date and nation names, and nothing else.
 		foreach ( $this->structure['regions'] as $order => $region ) {
-			if ( ! in_array( $region['key'], $regions, true ) ) {
-				continue;
-			}
-			$entries              = $reports[ $region['key'] ] ?? array();
+			$included = in_array( $region['key'], $regions, true );
+			$entries  = $included ? ( $reports[ $region['key'] ] ?? array() ) : array();
+			$names    = $nations[ $region['key'] ] ?? array();
+			sort( $names );
 			$release['regions'][] = array(
 				'key'          => $region['key'],
 				'name'         => $region['name'],
 				'order'        => $order + 1,
 				'release_date' => (string) ( $options['release_dates'][ $region['key'] ] ?? '' ),
+				'included'     => $included,
+				'nations'      => array_values( array_unique( $names ) ),
 				'reports'      => array_column( $entries, 'record_id' ),
-				'forthcoming'  => $forthcoming[ $region['key'] ] ?? array(),
+				'forthcoming'  => $included ? ( $forthcoming[ $region['key'] ] ?? array() ) : array(),
 			);
 			$release['reports']   = array_merge( $release['reports'], $entries );
 		}
@@ -346,7 +359,12 @@ final class Exporter {
 	 * @return list<string>
 	 */
 	private function regions_in_release( ?array $previous, array $asked ): array {
-		$keys    = array_column( (array) ( $previous['regions'] ?? array() ), 'key' );
+		$keys = array();
+		foreach ( (array) ( $previous['regions'] ?? array() ) as $region ) {
+			if ( ! empty( $region['included'] ) || ! array_key_exists( 'included', $region ) ) {
+				$keys[] = (string) $region['key'];
+			}
+		}
 		$keys    = array_merge( $keys, $asked );
 		$ordered = array();
 		foreach ( $this->structure['regions'] as $region ) {

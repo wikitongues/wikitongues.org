@@ -300,9 +300,10 @@ function wt_rights_export_command( array $args, array $assoc_args ): void {
  * : Write the changes.
  *
  * [--pdfs=<dir>]
- * : The folder `wp wt rights pdf` wrote to. Each report's PDF for its version
- * is copied into WT_RIGHTS_PRIVATE_DIR, and published only once its region is
- * released.
+ * : The folder `wp wt rights pdf` wrote to. For regions already embargoed or
+ * released, each report's PDF for its version is copied into
+ * WT_RIGHTS_PRIVATE_DIR (published once the region is released). Upcoming
+ * regions get none: stage them with `status <region> embargoed --pdfs=<dir>`.
  *
  * ## EXAMPLES
  *
@@ -364,11 +365,11 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
 		foreach ( $plan as $action ) {
 			\WT\Rights\Importer::apply( $action, $by_record[ $action['record_id'] ] ?? array(), $regions );
 		}
-		if ( ! empty( $assoc_args['pdfs'] ) ) {
-			$pdfs = \WT\Rights\Importer::stage_pdfs( $release, (string) $assoc_args['pdfs'] );
-			WP_CLI::log( 'PDFs: ' . $pdfs['found'] . ' staged privately, ' . $pdfs['missing'] . ' missing from ' . $assoc_args['pdfs'] . '.' );
-		}
-		foreach ( $regions as $term_id ) {
+		foreach ( $regions as $key => $term_id ) {
+			$pdfs = \WT\Rights\Importer::stage_region_pdfs( $term_id, empty( $assoc_args['pdfs'] ) ? null : (string) $assoc_args['pdfs'] );
+			if ( array_sum( $pdfs ) ) {
+				WP_CLI::log( 'PDFs, ' . $key . ': ' . $pdfs['staged'] . ' staged, ' . $pdfs['missing'] . ' missing, ' . $pdfs['removed'] . ' removed.' );
+			}
 			wt_rights_sync_region_pdfs( $term_id );
 		}
 	} catch ( \Throwable $e ) {
@@ -403,10 +404,14 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
  * [<status>]
  * : upcoming, embargoed or released.
  *
+ * [--pdfs=<dir>]
+ * : With embargoed or released: copy the region's PDFs into the private folder
+ * from here. Setting a region to upcoming deletes its PDFs from the server.
+ *
  * ## EXAMPLES
  *
  *     wp wt rights status
- *     wp wt rights status south-central-asia embargoed
+ *     wp wt rights status south-central-asia embargoed --pdfs=~/rights/pdf
  *
  * @param list<string>          $args       Region and status.
  * @param array<string, string> $assoc_args Unused.
@@ -467,6 +472,15 @@ function wt_rights_status_command( array $args, array $assoc_args ): void {
 	}
 	$was     = wt_rights_region_status( $term->term_id );
 	$changed = \WT\Rights\Importer::set_region_status( $term->term_id, $args[1] );
+	if ( ! empty( $assoc_args['pdfs'] ) ) {
+		try {
+			$pdfs = \WT\Rights\Importer::stage_region_pdfs( $term->term_id, (string) $assoc_args['pdfs'] );
+		} catch ( \Throwable $e ) {
+			WP_CLI::error( $e->getMessage() );
+		}
+		wt_rights_sync_region_pdfs( $term->term_id );
+		WP_CLI::log( 'PDFs: ' . $pdfs['staged'] . ' staged, ' . $pdfs['missing'] . ' missing.' );
+	}
 	WP_CLI::success( $term->name . ': ' . $was . ' → ' . $args[1] . '; ' . $changed . ' reports changed post status.' );
 }
 
