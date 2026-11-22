@@ -30,6 +30,7 @@ require_once WT_RIGHTS_DIR . 'includes/class-release-status.php';
 require_once WT_RIGHTS_DIR . 'includes/class-import-plan.php';
 require_once WT_RIGHTS_DIR . 'includes/class-importer.php';
 require_once WT_RIGHTS_DIR . 'includes/content-model.php';
+require_once WT_RIGHTS_DIR . 'includes/template-tags.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once WT_RIGHTS_DIR . 'includes/cli.php';
