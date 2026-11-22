@@ -120,8 +120,8 @@ class ClientsTest extends TestCase {
 	}
 
 	public function test_doc_ids_come_from_doc_links_only() {
-		$this->assertSame( '1BnNyEczvPjLPCFinz5mlnand_406L3N7xZYuBdDCgs0', Google_Docs::document_id( 'https://docs.google.com/document/d/1BnNyEczvPjLPCFinz5mlnand_406L3N7xZYuBdDCgs0' ) );
-		$this->assertSame( '1BnNyEczvPjLPCFinz5mlnand_406L3N7xZYuBdDCgs0', Google_Docs::document_id( 'https://docs.google.com/document/u/0/d/1BnNyEczvPjLPCFinz5mlnand_406L3N7xZYuBdDCgs0/edit?tab=t.0' ) );
-		$this->assertSame( '', Google_Docs::document_id( 'https://drive.google.com/file/d/1BnNyEczvPjLPCFinz5mlnand_406L3N7xZYuBdDCgs0/view' ) );
+		$this->assertSame( '1TestlandDocIdTestlandDocIdTestland0000', Google_Docs::document_id( 'https://docs.google.com/document/d/1TestlandDocIdTestlandDocIdTestland0000' ) );
+		$this->assertSame( '1TestlandDocIdTestlandDocIdTestland0000', Google_Docs::document_id( 'https://docs.google.com/document/u/0/d/1TestlandDocIdTestlandDocIdTestland0000/edit?tab=t.0' ) );
+		$this->assertSame( '', Google_Docs::document_id( 'https://drive.google.com/file/d/1TestlandDocIdTestlandDocIdTestland0000/view' ) );
 	}
 }
