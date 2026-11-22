@@ -31,6 +31,19 @@ require_once WT_RIGHTS_DIR . 'includes/class-import-plan.php';
 require_once WT_RIGHTS_DIR . 'includes/class-importer.php';
 require_once WT_RIGHTS_DIR . 'includes/content-model.php';
 require_once WT_RIGHTS_DIR . 'includes/template-tags.php';
+require_once WT_RIGHTS_DIR . 'includes/press.php';
+require_once WT_RIGHTS_DIR . 'includes/pdf.php';
+
+// The PDF download goes through the download gateway, when it is active.
+add_action(
+	'plugins_loaded',
+	static function (): void {
+		if ( interface_exists( '\\WT\\DownloadGateway\\FileResolver' ) && class_exists( '\\WT\\DownloadGateway\\FileResolverRegistry' ) ) {
+			require_once WT_RIGHTS_DIR . 'includes/class-pdf-resolver.php';
+			\WT\DownloadGateway\FileResolverRegistry::register( 'rights_reports', new \WT\Rights\Pdf_Resolver() );
+		}
+	}
+);
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once WT_RIGHTS_DIR . 'includes/cli.php';

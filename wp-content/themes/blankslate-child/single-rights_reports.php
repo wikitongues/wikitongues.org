@@ -79,6 +79,7 @@ $wt_headings = array(
 					<li><a href="#<?php echo esc_attr( $wt_item['key'] ); ?>"><?php echo esc_html( $wt_item['label'] ); ?></a> <?php echo wt_rights_answer_pill( (string) ( $wt_answers[ $wt_item['key'] ] ?? '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?></li>
 				<?php endforeach; ?>
 			</ul>
+			<?php echo wt_rights_pdf_link( $wt_post->ID, 'rights-report' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- gateway shortcode output. ?>
 			<?php echo wt_rights_donate_link_compact( 'rights-report-sidebar' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?>
 		</div>
 	</section>

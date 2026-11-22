@@ -187,7 +187,7 @@
 			overflow-wrap anywhere
 
 		a
-			color $blue()
+			text--body($blue())
 
 	&__support
 		background $blue(10)
@@ -352,15 +352,19 @@
 			display block
 			font-size $fontScale(6)
 
+	&__pdf
+		margin 16px 0 0
+
+		a
+			button--secondary($blue(22), $blue())
+			text-decoration none
+
 	@media print
-		&__toc, &__pager, &__support, &__support-compact, &__updates
+		&__toc, &__pager, &__support, &__support-compact, &__updates, &__pdf, &__back
 			display none
 
 		&__sources
 			font-size 1rem
-
-			&:not([open]) > ol
-				display block
 
 // The card on a territory page.
 .wt-rights-card
@@ -392,3 +396,12 @@
 	&__link
 		anchor($blue(), 4px)
 		text--strong($blue())
+
+// The print view `wp wt rights pdf` renders: the report alone, no site chrome.
+@media print
+	body.wt-rights-print
+		.wt_header, .wt_footer, #wpadminbar, .gateway-modal
+			display none !important
+
+		.wt-rights
+			padding 0

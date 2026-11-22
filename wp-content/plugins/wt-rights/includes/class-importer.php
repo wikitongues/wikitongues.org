@@ -101,6 +101,7 @@ final class Importer {
 			update_term_meta( $term_id, 'order', (int) $region['order'] );
 			update_term_meta( $term_id, 'release_date', (string) ( $region['release_date'] ?? '' ) );
 			update_term_meta( $term_id, 'forthcoming', wp_slash( (string) wp_json_encode( $region['forthcoming'] ) ) );
+			update_term_meta( $term_id, 'nations', wp_slash( (string) wp_json_encode( $region['nations'] ?? array() ) ) );
 			$ids[ (string) $region['key'] ] = $term_id;
 		}
 		return $ids;
@@ -159,6 +160,8 @@ final class Importer {
 	 *
 	 * @param int    $term_id The region term.
 	 * @param string $status  A release status.
+	 * Also publishes or removes the region's PDFs to match (see pdf.php).
+	 *
 	 * @return int How many reports changed post status.
 	 */
 	public static function set_region_status( int $term_id, string $status ): int {
@@ -191,7 +194,84 @@ final class Importer {
 				++$changed;
 			}
 		}
+		self::stage_region_pdfs( $term_id, null );
+		wt_rights_sync_region_pdfs( $term_id );
 		return $changed;
+	}
+
+	/**
+	 * Puts a region's PDFs in the private folder, or takes them out.
+	 *
+	 * PDFs reach the server only once their region is embargoed: while it is
+	 * upcoming, its PDFs are deleted from the private folder and none can be
+	 * staged. Otherwise each report's PDF for its current version is copied
+	 * from $source, when given; a report whose PDF isn't there has none
+	 * recorded, so an older version's PDF is never published for it.
+	 *
+	 * @param int         $term_id A region term.
+	 * @param string|null $source  The folder `wp wt rights pdf` wrote to, or null.
+	 * @return array{staged: int, missing: int, removed: int}
+	 */
+	public static function stage_region_pdfs( int $term_id, ?string $source ): array {
+		$counts  = array(
+			'staged'  => 0,
+			'missing' => 0,
+			'removed' => 0,
+		);
+		$private = wt_rights_private_dir();
+		if ( is_wp_error( $private ) ) {
+			if ( null === $source ) {
+				return $counts;
+			}
+			throw new \RuntimeException( $private->get_error_message() );
+		}
+		$upcoming = Release_Status::UPCOMING === wt_rights_region_status( $term_id );
+		$ids      = get_posts(
+			array(
+				'post_type'        => 'rights_reports',
+				'post_status'      => array( 'publish', 'private', 'draft' ),
+				'numberposts'      => -1,
+				'fields'           => 'ids',
+				'suppress_filters' => true,
+				'tax_query'        => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- one region, CLI only.
+					array(
+						'taxonomy' => 'rights_region',
+						'terms'    => array( $term_id ),
+					),
+				),
+			)
+		);
+		foreach ( $ids as $id ) {
+			$id      = (int) $id;
+			$current = (string) get_post_meta( $id, '_rights_pdf_file', true );
+			if ( $upcoming ) {
+				if ( '' !== $current ) {
+					wp_delete_file( $private . '/' . $current );
+					delete_post_meta( $id, '_rights_pdf_file' );
+					++$counts['removed'];
+				}
+				continue;
+			}
+			if ( null === $source ) {
+				continue;
+			}
+			$name = wt_rights_pdf_name( (string) get_post_field( 'post_name', $id ), (string) get_post_meta( $id, '_rights_version', true ), (string) get_post_meta( $id, '_rights_hash', true ) );
+			$from = rtrim( $source, '/' ) . '/' . $name;
+			if ( ! is_readable( $from ) ) {
+				delete_post_meta( $id, '_rights_pdf_file' );
+				++$counts['missing'];
+				continue;
+			}
+			if ( realpath( $from ) !== realpath( $private . '/' . $name ) && ! copy( $from, $private . '/' . $name ) ) {
+				throw new \RuntimeException( 'Could not copy ' . $name . ' into the private folder.' );
+			}
+			if ( '' !== $current && $current !== $name ) {
+				wp_delete_file( $private . '/' . $current ); // The previous version's file.
+			}
+			update_post_meta( $id, '_rights_pdf_file', $name );
+			++$counts['staged'];
+		}
+		return $counts;
 	}
 
 	/**

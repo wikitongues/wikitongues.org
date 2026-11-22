@@ -299,6 +299,12 @@ function wt_rights_export_command( array $args, array $assoc_args ): void {
  * [--execute]
  * : Write the changes.
  *
+ * [--pdfs=<dir>]
+ * : The folder `wp wt rights pdf` wrote to. For regions already embargoed or
+ * released, each report's PDF for its version is copied into
+ * WT_RIGHTS_PRIVATE_DIR (published once the region is released). Upcoming
+ * regions get none: stage them with `status <region> embargoed --pdfs=<dir>`.
+ *
  * ## EXAMPLES
  *
  *     wp wt rights import ~/rights/rights-2027.1.json
@@ -359,6 +365,13 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
 		foreach ( $plan as $action ) {
 			\WT\Rights\Importer::apply( $action, $by_record[ $action['record_id'] ] ?? array(), $regions );
 		}
+		foreach ( $regions as $key => $term_id ) {
+			$pdfs = \WT\Rights\Importer::stage_region_pdfs( $term_id, empty( $assoc_args['pdfs'] ) ? null : (string) $assoc_args['pdfs'] );
+			if ( array_sum( $pdfs ) ) {
+				WP_CLI::log( 'PDFs, ' . $key . ': ' . $pdfs['staged'] . ' staged, ' . $pdfs['missing'] . ' missing, ' . $pdfs['removed'] . ' removed.' );
+			}
+			wt_rights_sync_region_pdfs( $term_id );
+		}
 	} catch ( \Throwable $e ) {
 		WP_CLI::error( $e->getMessage() );
 	}
@@ -391,10 +404,14 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
  * [<status>]
  * : upcoming, embargoed or released.
  *
+ * [--pdfs=<dir>]
+ * : With embargoed or released: copy the region's PDFs into the private folder
+ * from here. Setting a region to upcoming deletes its PDFs from the server.
+ *
  * ## EXAMPLES
  *
  *     wp wt rights status
- *     wp wt rights status south-central-asia embargoed
+ *     wp wt rights status south-central-asia embargoed --pdfs=~/rights/pdf
  *
  * @param list<string>          $args       Region and status.
  * @param array<string, string> $assoc_args Unused.
@@ -455,10 +472,108 @@ function wt_rights_status_command( array $args, array $assoc_args ): void {
 	}
 	$was     = wt_rights_region_status( $term->term_id );
 	$changed = \WT\Rights\Importer::set_region_status( $term->term_id, $args[1] );
+	if ( ! empty( $assoc_args['pdfs'] ) ) {
+		try {
+			$pdfs = \WT\Rights\Importer::stage_region_pdfs( $term->term_id, (string) $assoc_args['pdfs'] );
+		} catch ( \Throwable $e ) {
+			WP_CLI::error( $e->getMessage() );
+		}
+		wt_rights_sync_region_pdfs( $term->term_id );
+		WP_CLI::log( 'PDFs: ' . $pdfs['staged'] . ' staged, ' . $pdfs['missing'] . ' missing.' );
+	}
 	WP_CLI::success( $term->name . ': ' . $was . ' → ' . $args[1] . '; ' . $changed . ' reports changed post status.' );
 }
 
+/**
+ * Prints each report's PDF with headless Chrome, from its print view.
+ *
+ * Writes {slug}-v{version}-{hash}.pdf for every report on this site (any
+ * status), skipping files that already exist, so a re-run prints only new
+ * versions. Run it on the machine that cuts releases, after importing the
+ * release locally, and keep the folder with the release files: never inside
+ * the web root.
+ *
+ * ## OPTIONS
+ *
+ * --out=<dir>
+ * : Where to write the PDFs.
+ *
+ * [--chrome=<path>]
+ * : Chrome's binary. Default: Google Chrome in /Applications.
+ *
+ * [--region=<key>]
+ * : Only this region's reports.
+ *
+ * ## EXAMPLES
+ *
+ *     wp wt rights pdf --out=../language-rights-releases/pdf
+ *
+ * @param list<string>          $args       Unused.
+ * @param array<string, string> $assoc_args Options.
+ */
+function wt_rights_pdf_command( array $args, array $assoc_args ): void {
+	$out = rtrim( (string) $assoc_args['out'], '/' );
+	if ( ! wp_mkdir_p( $out ) || ! wt_rights_outside_web_root( (string) realpath( $out ), (string) realpath( ABSPATH ) ) ) {
+		WP_CLI::error( 'Give an --out folder outside the web root: PDFs of unreleased reports must never be reachable by URL.' );
+	}
+	$out    = (string) realpath( $out );
+	$chrome = (string) ( $assoc_args['chrome'] ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' );
+	if ( ! is_executable( $chrome ) ) {
+		WP_CLI::error( 'Chrome not found at ' . $chrome . '. Pass --chrome=<path>.' );
+	}
+
+	$query = array(
+		'post_type'        => 'rights_reports',
+		'post_status'      => array( 'publish', 'private', 'draft' ),
+		'numberposts'      => -1,
+		'orderby'          => 'name',
+		'order'            => 'ASC',
+		'suppress_filters' => true,
+	);
+	if ( ! empty( $assoc_args['region'] ) ) {
+		$query['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- CLI only.
+			array(
+				'taxonomy' => 'rights_region',
+				'field'    => 'slug',
+				'terms'    => array( $assoc_args['region'] ),
+			),
+		);
+	}
+	// A throwaway profile: never the user's own Chrome, and no first-run delays.
+	$profile = get_temp_dir() . 'wt-rights-chrome-' . getmypid();
+	$printed = 0;
+	$skipped = 0;
+	foreach ( get_posts( $query ) as $post ) {
+		$name = wt_rights_pdf_name( $post->post_name, (string) get_post_meta( $post->ID, '_rights_version', true ), (string) get_post_meta( $post->ID, '_rights_hash', true ) );
+		$file = $out . '/' . $name;
+		if ( file_exists( $file ) ) {
+			++$skipped;
+			continue;
+		}
+		$chrome_args = ' --headless=new --disable-gpu --no-first-run --no-pdf-header-footer --user-data-dir=' . escapeshellarg( $profile ) . ' --print-to-pdf=' . escapeshellarg( $file ) . ' ' . escapeshellarg( wt_rights_print_url( $post ) );
+		$app         = (string) preg_replace( '#\.app/Contents/MacOS/.*$#', '.app', $chrome );
+		// On macOS, launch through LaunchServices: started directly by PHP, Chrome
+		// waits about 25 seconds per page (2026-11-22); through `open`, about 4.
+		$command = 'Darwin' === PHP_OS_FAMILY && str_ends_with( $app, '.app' )
+			? 'open -W -n -a ' . escapeshellarg( $app ) . ' --args' . $chrome_args . ' >/dev/null 2>&1 </dev/null'
+			: escapeshellarg( $chrome ) . $chrome_args . ' 2>&1 </dev/null';
+		$output  = array();
+		exec( $command, $output, $code ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec -- CLI-only call to a local browser with escaped arguments.
+		if ( 0 !== $code || ! file_exists( $file ) ) {
+			WP_CLI::warning( 'Could not print ' . $post->post_title . ': ' . implode( ' ', array_slice( (array) $output, -2 ) ) );
+			continue;
+		}
+		WP_CLI::log( 'Printed ' . $name );
+		++$printed;
+	}
+	if ( is_dir( $profile ) ) {
+		exec( 'rm -rf ' . escapeshellarg( $profile ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec -- removes the throwaway profile made above.
+	}
+	WP_CLI::success( $printed . ' printed, ' . $skipped . ' already there, in ' . $out . '.' );
+}
+
 WP_CLI::add_command( 'wt rights ping', 'wt_rights_ping_command' );
+WP_CLI::add_command( 'wt rights pdf', 'wt_rights_pdf_command' );
 WP_CLI::add_command( 'wt rights import', 'wt_rights_import_command' );
 WP_CLI::add_command( 'wt rights status', 'wt_rights_status_command' );
 WP_CLI::add_command( 'wt rights check', 'wt_rights_check_command' );
