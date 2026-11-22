@@ -22,6 +22,8 @@
  *   and any older wording still accepted.
  * - `ratings`: the overall rating's two answers, found by a phrase in their line.
  * - `statuses`: each Airtable Research Status and what it means for a release.
+ * - `regions`: the seven publishing regions in release order: URL key, display
+ *   name, and the Publishing Region option in Airtable.
  * - `wordpress_tab`: the title of the optional tab holding the story card.
  *
  * @return array{
@@ -30,6 +32,7 @@
  *     indicators: list<array{key: string, label: string, question: string, answers: list<string>, aliases?: list<string>}>,
  *     ratings: list<array{key: string, label: string, phrase: string, answers: list<string>}>,
  *     statuses: array<string, string>,
+ *     regions: list<array{key: string, name: string, airtable: string}>,
  *     wordpress_tab: string,
  *     story_card_max_words: int
  * }
@@ -137,6 +140,43 @@ function wt_rights_structure(): array {
 			'Fact checking'  => 'blocking',
 			'Completed'      => 'publish',
 			'Held'           => 'held',
+		),
+		'regions'              => array(
+			array(
+				'key'      => 'south-central-asia',
+				'name'     => 'South and Central Asia',
+				'airtable' => 'South and Central Asia',
+			),
+			array(
+				'key'      => 'europe',
+				'name'     => 'Europe',
+				'airtable' => 'Europe',
+			),
+			array(
+				'key'      => 'middle-east-north-africa',
+				'name'     => 'Middle East and North Africa',
+				'airtable' => 'Middle East & North Africa',
+			),
+			array(
+				'key'      => 'west-central-africa',
+				'name'     => 'West and Central Africa',
+				'airtable' => 'West & Central Africa',
+			),
+			array(
+				'key'      => 'east-southern-africa',
+				'name'     => 'East and Southern Africa',
+				'airtable' => 'East & Southern Africa',
+			),
+			array(
+				'key'      => 'east-asia-pacific',
+				'name'     => 'East Asia and Pacific',
+				'airtable' => 'East Asia & Pacific',
+			),
+			array(
+				'key'      => 'americas-caribbean',
+				'name'     => 'Americas and Caribbean',
+				'airtable' => 'Americas & Caribbean',
+			),
 		),
 		'wordpress_tab'        => 'WordPress',
 		'story_card_max_words' => 60,

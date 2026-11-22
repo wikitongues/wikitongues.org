@@ -25,6 +25,7 @@ require_once WT_RIGHTS_DIR . 'includes/class-versioner.php';
 require_once WT_RIGHTS_DIR . 'includes/class-http.php';
 require_once WT_RIGHTS_DIR . 'includes/class-google-docs.php';
 require_once WT_RIGHTS_DIR . 'includes/class-airtable.php';
+require_once WT_RIGHTS_DIR . 'includes/class-exporter.php';
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once WT_RIGHTS_DIR . 'includes/cli.php';

@@ -109,9 +109,16 @@ final class Google_Docs {
 		if ( null !== $this->token ) {
 			return $this->token;
 		}
-		$now    = time();
-		$header = self::base64url( (string) wp_json_encode( array( 'alg' => 'RS256', 'typ' => 'JWT' ) ) );
-		$claims = self::base64url(
+		$now       = time();
+		$header    = self::base64url(
+			(string) wp_json_encode(
+				array(
+					'alg' => 'RS256',
+					'typ' => 'JWT',
+				)
+			)
+		);
+		$claims    = self::base64url(
 			(string) wp_json_encode(
 				array(
 					'iss'   => $this->key['client_email'],
@@ -126,8 +133,8 @@ final class Google_Docs {
 		if ( ! openssl_sign( $header . '.' . $claims, $signature, (string) $this->key['private_key'], OPENSSL_ALGO_SHA256 ) ) {
 			throw new \RuntimeException( 'Could not sign with the Google key.' );
 		}
-		$jwt  = $header . '.' . $claims . '.' . self::base64url( $signature );
-		$data = Http::json(
+		$jwt         = $header . '.' . $claims . '.' . self::base64url( $signature );
+		$data        = Http::json(
 			( $this->http )(
 				'POST',
 				self::TOKEN_URL,
