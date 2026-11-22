@@ -159,6 +159,8 @@ final class Importer {
 	 *
 	 * @param int    $term_id The region term.
 	 * @param string $status  A release status.
+	 * Also publishes or removes the region's PDFs to match (see pdf.php).
+	 *
 	 * @return int How many reports changed post status.
 	 */
 	public static function set_region_status( int $term_id, string $status ): int {
@@ -191,7 +193,48 @@ final class Importer {
 				++$changed;
 			}
 		}
+		wt_rights_sync_region_pdfs( $term_id );
 		return $changed;
+	}
+
+	/**
+	 * Records each report's PDF for its current version, copying it from
+	 * $source into the private folder. A report whose PDF isn't in $source has
+	 * none recorded, so an older version's PDF is never published for it.
+	 *
+	 * @param array<string, mixed> $release A release file.
+	 * @param string               $source  The folder `wp wt rights pdf` wrote to.
+	 * @return array{found: int, missing: int}
+	 */
+	public static function stage_pdfs( array $release, string $source ): array {
+		$private = wt_rights_private_dir();
+		if ( is_wp_error( $private ) ) {
+			throw new \RuntimeException( $private->get_error_message() );
+		}
+		$existing = self::existing();
+		$counts   = array(
+			'found'   => 0,
+			'missing' => 0,
+		);
+		foreach ( (array) $release['reports'] as $report ) {
+			$post_id = $existing[ $report['record_id'] ]['post_id'] ?? 0;
+			if ( ! $post_id ) {
+				continue;
+			}
+			$name = wt_rights_pdf_name( (string) $report['slug'], (string) $report['version'], (string) $report['hash'] );
+			$from = rtrim( $source, '/' ) . '/' . $name;
+			if ( ! is_readable( $from ) ) {
+				delete_post_meta( $post_id, '_rights_pdf_file' );
+				++$counts['missing'];
+				continue;
+			}
+			if ( realpath( $from ) !== realpath( $private . '/' . $name ) && ! copy( $from, $private . '/' . $name ) ) {
+				throw new \RuntimeException( 'Could not copy ' . $name . ' into the private folder.' );
+			}
+			update_post_meta( $post_id, '_rights_pdf_file', $name );
+			++$counts['found'];
+		}
+		return $counts;
 	}
 
 	/**
