@@ -12,6 +12,7 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
   - [Airtable: Reports](#airtable-reports)
   - [Airtable: Treaty actions](#airtable-treaty-actions)
   - [Airtable: Changes](#airtable-changes)
+  - [Airtable: Publishing Docs](#airtable-publishing-docs)
   - [Country Doc](#country-doc)
   - [The WordPress tab](#the-wordpress-tab)
   - [Region Doc](#region-doc)
@@ -166,6 +167,18 @@ One row per action. A country that signed and later ratified has two rows.
 
 A row is needed only for reports that are already Released. Changes before release are not logged.
 
+### Airtable: Publishing Docs
+
+*New table (created in the sandbox 2026-11-22).* One row per region, plus one for the front matter.
+
+| Field | Contract |
+|---|---|
+| Name | The region's name, or "Front matter" |
+| Kind | Region / Front matter |
+| Publishing Region | For a Region row: the same option as in Reports |
+| Doc link | The region overview Doc, or the front-matter Doc |
+| Release date | For a Region row: the public release date. From that day, the region's reports count as published: a change needs a Changes row and raises the version |
+
 ### Country Doc
 
 The current research template (v10.2026), as the Docs are already written. A dry run over all 171 Docs on 2026-11-22 found 169 that pass; the rules below describe them, so nothing needs reformatting.
@@ -195,7 +208,7 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 
 ### Region Doc
 
-*New, one per region,* in that region's folder, named *{Region}: regional overview*.
+*New, one per region,* in that region's folder, named *{Region}: regional overview*, with its link in the region's Publishing Docs row.
 
 | Heading 2 | Content |
 |---|---|
@@ -206,7 +219,7 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 
 ### Front-matter Doc
 
-*New, one for the edition,* in `[2] Notes & Templates/`, named *Report front matter*. Its Heading 2 sections:
+*New, one for the edition,* in `[2] Notes & Templates/`, named *Report front matter*, with its link in the Publishing Docs row "Front matter". Its Heading 2 sections:
 
 - **Methodology.**
 - **Indicators.** Five Heading 3 entries, each with the question, how it is assessed, and an example.
