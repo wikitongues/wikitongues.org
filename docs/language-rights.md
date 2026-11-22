@@ -64,7 +64,7 @@ wp wt rights-import <file>   dry run by default → local → staging → produc
 
 - **The private repo.** Release files hold embargoed text, so they never enter this public repo. The exporter's code can live here.
 - **Release numbers.** `2027.1`–`2027.7` are the regional releases in publication order; `2027.8` is the Complete Edition; a release carrying only corrections is a patch (`2027.1.1`). Release numbers track deploys and are internal. Readers see each report's own [version](#versions-and-the-changelog).
-- **A release is cumulative.** `2027.2` holds South and Central Asia *and* Europe, so any one file rebuilds the whole report on an empty site.
+- **A release is cumulative.** `2027.2` holds South and Central Asia *and* Europe, so any one file rebuilds the whole report on an empty site. Every release also lists all seven regions with their planned dates and nation names, without any report text for regions it doesn't include, so the hub's schedule is always complete.
 - **Import is idempotent.** It matches each country by its Reports record ID, writes absolute state, and reports 0 changes when run twice. Countries are never deleted by an import; a country dropped from a release is unpublished and logged.
 - **Preview.** `--preview` exports unfinished countries as drafts, for reading on staging only.
 
@@ -85,6 +85,23 @@ op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights export --regi
 ```
 
 `WT_RIGHTS_AIRTABLE_BASE` picks the base (default `sandbox`; field IDs per base are in `wt-rights/config/airtable.php`). `export` refuses to write inside the WordPress folder.
+
+### When files reach a server
+
+A region's report text and PDFs are on a server only once that region goes to embargo. Before that, the server has its name, planned date and nation list, and nothing else. Staging previews are the one exception.
+
+| When | Step | On the server afterwards |
+|---|---|---|
+| Any time | Import any release | The schedule: all seven regions, their dates and nation lists |
+| Embargo (about two weeks before launch) | Export the release and its PDFs locally; copy them to the server's home folder (never `public_html`); `wp wt rights import <file> --execute`, then `wp wt rights status <region> embargoed --pdfs=<dir>` | Report text, readable by press and admins; PDFs in `WT_RIGHTS_PRIVATE_DIR` only |
+| Launch day | `wp wt rights status <region> released` | Pages public; PDFs in the media library, downloadable through the gateway (email required) |
+| If a region is pulled back to upcoming | `wp wt rights status <region> upcoming` | Its PDFs are deleted from the private folder and the media library |
+
+`import --pdfs` stages PDFs only for regions already embargoed or released, so a re-import with corrections works without a separate step.
+
+**Each environment needs, once:** `WT_RIGHTS_PRIVATE_DIR` in `wp-config.php`, outside `public_html` (staging sits inside production's `public_html`, so neither can use a folder under it); and, in Settings → Download Gateway, the `rights_reports` row Required, with the `documents` follow-up form.
+
+**PDFs** come from `wp wt rights pdf --out=<dir>`, run locally after importing the release: headless Chrome prints each report's print view (sources open, no site chrome) as `{slug}-v{version}-{hash}.pdf`.
 
 ## Statuses
 
