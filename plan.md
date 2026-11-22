@@ -234,13 +234,14 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 
 Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md).
 
-**Data first:** the Held option and the Changes, Treaty actions and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
+**Data first:** the Held option and the Changes and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
 
 **Decided for the build (2026-11-22):** the exporter is PHP WP-CLI in this repo, run locally; reports are posts with HTML content and one JSON meta value (no ACF); region and front-matter Docs are listed in an Airtable "Publishing Docs" table with each region's release date; embargo is WordPress post status; no PDF exists at any public URL until its region is released; region and Complete Edition PDFs, when designed, are ordinary `documents` posts.
 
 ##### Open questions
 
 1. **Kristen:** approve the editorial contract, the Held status and the Changes table in [docs/language-rights.md](docs/language-rights.md).
+1. **Kristen:** is the list of treaties each nation is party to enough for region pages, or are actions and dates needed (and from where)?
 2. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
 3. **Press access:** how journalist accounts are issued and revoked (tracked privately).
 4. **Google access:** a service account with read access to the report folders.
@@ -259,6 +260,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Release files in a private repo; Google service-account access | Embargoed text stays out of the public repo |
 | 2026-11-21 | Embargoed regions are readable by press accounts and admins, built in WordPress | Press needs the region before launch day; admins review it in place on production |
 | 2026-11-21 | Kristen enters treaty actions to a written contract | The treaty register needs actions and dates Airtable lacks |
+| 2026-11-23 | Proposed, open for Kristen: no Treaty actions table; region pages list the treaties each nation is party to, from the existing Nations ↔ Treaties links, without action or date | Supersedes the row above if she agrees. Keeps her work to Changes and Publishing Docs; if she wants actions and dates, look at fetching them from the UN Treaty Collection before asking anyone to type them |
 | 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |

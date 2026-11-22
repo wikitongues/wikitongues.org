@@ -10,7 +10,6 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 - [Statuses](#statuses)
 - [Editorial contract](#editorial-contract)
   - [Airtable: Reports](#airtable-reports)
-  - [Airtable: Treaty actions](#airtable-treaty-actions)
   - [Airtable: Changes](#airtable-changes)
   - [Airtable: Publishing Docs](#airtable-publishing-docs)
   - [Country Doc](#country-doc)
@@ -43,7 +42,7 @@ A country's URL leaves out its region: regions are publishing groups a later edi
 
 | Source | Holds | Owner |
 |---|---|---|
-| Airtable, *Language Rights Reports* base | One row per country: indicators, overall rating, region, status, Doc link, credit; treaties and treaty actions | Kristen |
+| Airtable, *Language Rights Reports* base | One row per country: indicators, overall rating, region, status, Doc link, credit; treaties linked to each nation | Kristen |
 | Google Docs, Drive `[1] Reports/{region}/` | One Doc per country (the report text and its WordPress tab), and one Doc per region | Kristen |
 | Google Docs, Drive `[2] Notes & Templates/` | The front-matter Doc: methodology, indicator definitions, answer key, director's letter, global synthesis | Kristen |
 | WordPress | Region release status, press access, the project page | Frederico |
@@ -159,21 +158,6 @@ One row per country or place.
 
 All indicator and rating fields are required for a Completed row.
 
-### Airtable: Treaty actions
-
-*New table.* The treaty register on region pages needs what each country did and when; today the base only links treaties to nations.
-
-| Field | Contract |
-|---|---|
-| Nation | One linked Nation |
-| Treaty | One linked Language Rights Treaty |
-| Action | signature / ratification / accession / succession |
-| Date | The date of the action |
-| Reservations or declarations | Short text, or empty |
-| Source | URL of the depositary record (e.g. the UN Treaty Collection) |
-
-One row per action. A country that signed and later ratified has two rows.
-
 ### Airtable: Changes
 
 *New table.* One row per change to a report after its region is released. It is the "why" in the public changelog; the release works out the "what" and the version number itself.
@@ -259,10 +243,9 @@ Run by Kristen, with Frederico, before a region's text lock. Kristen's Claude ca
 7. Credit lines are confirmed with each researcher, including anyone who asked to stay anonymous.
 8. Story cards are written, or deliberately absent.
 9. The region Doc is complete.
-10. Treaty actions are entered for every country in the region.
-11. Every Released report that changed has a Changes row since the last release. ✓auto
-12. A preview release is built and read on staging: every country page, the region page, the totals.
-13. Sign-off: Kristen confirms by name and date in the release pull request.
+10. Every Released report that changed has a Changes row since the last release. ✓auto
+11. A preview release is built and read on staging: every country page, the region page, the totals.
+12. Sign-off: Kristen confirms by name and date in the release pull request.
 
 Frederico then tags the release, imports it to production as **Embargoed** for press, and switches it to **Released** on launch day.
 
@@ -300,7 +283,7 @@ The log is cumulative: version 1.2's page lists 1.2 and 1.1, each with its date 
 
 Kristen's own Claude can do the pre-flight check before anything reaches Frederico. Give it this file's [Editorial contract](#editorial-contract), [Pre-flight checklist](#pre-flight-checklist) and [Versions](#versions-and-the-changelog) sections, read access to the region's Docs and the Airtable base, and this request:
 
-> For the region {Region}, check every country against the editorial contract and the pre-flight checklist. For each country, read its Airtable Reports row and its Google Doc. Report, as a table: the country, its Research Status, and every problem you find (missing or misnamed sections, a missing answer, a Doc answer that differs from Airtable, open suggestions or comments, a source link that doesn't open, a missing story card, a missing treaty action, a Released report that changed without a Changes row). Don't change anything; list what needs fixing and who should fix it.
+> For the region {Region}, check every country against the editorial contract and the pre-flight checklist. For each country, read its Airtable Reports row and its Google Doc. Report, as a table: the country, its Research Status, and every problem you find (missing or misnamed sections, a missing answer, a Doc answer that differs from Airtable, open suggestions or comments, a source link that doesn't open, a missing story card, a Released report that changed without a Changes row). Don't change anything; list what needs fixing and who should fix it.
 
 It reads and reports; it never edits. The exporter's own checks remain the gate.
 
