@@ -30,6 +30,7 @@ Field definitions live in `wp-content/themes/blankslate-child/acf-json/` (one JS
 | Source | Post types | How it reaches WordPress |
 |---|---|---|
 | **Airtable** (the archive base) | `languages`, `videos`, `captions`, `lexicons` | Make.com watches for changed records every 15 minutes and posts them to `wt-airtable-sync`, which maps and writes the fields. **Edit these in Airtable, not WordPress**: the next sync overwrites WordPress edits. See [airtable-sync.md](airtable-sync.md). |
+| **Airtable and Google Docs** (the Language Rights base) | `rights_reports` and the `rights_region` taxonomy | No sync. `wp wt rights export` builds a tagged release file and `wp wt rights import` writes it, local → staging → production. **Edit the Docs and Airtable, never these posts.** See [language-rights.md](language-rights.md). |
 | **One-time imports** | `resources`, `territories` and the `region` taxonomy | Imported once, not synced. Resources came from the retired Make v1 scenarios; territories from a WP-CLI script. Edit in WordPress. |
 | **WordPress** | Everything else: `fellows`, `people`, `documents`, `document_files`, `form_990`, `events`, `careers`, `faq`, `partners`, `blog`, pages | Authored in the admin. |
 
@@ -58,6 +59,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `faq` | A question and answer | None: redirects to `/about/faq/` | `faq-page.php`, the `[faqs]` shortcode, FAQ gallery rows | Yes |
 | `partners` | A partner organization | None: redirects home | `[partners]` shortcode, `template-about-partners.php` | Yes |
 | `blog` | A blog post | `/blog/` and `/blog/{slug}/` | `archive-blog.php`, `single-blog.php` | Yes |
+| `rights_reports` | A country report from the Language Rights report | `/language-rights/report/{country}/` | Rendered from the `_rights_report` meta (templates in PR 4) | **No**: unreleased reports are embargoed |
 
 Archive URLs mostly redirect; see [Redirects](#redirects).
 
@@ -73,6 +75,7 @@ Archive URLs mostly redirect; see [Redirects](#redirects).
 | `fellow-category` | `fellows` | Program categories | `/fellow-category/{term}/` (`taxonomy-fellow-category.php`) | Registered in ACF (`taxonomy_6708065ac1b54.json`), not PHP. The bare `/fellow-category/` redirects to the first term. |
 | `people-type` | `people` | Board Member, Staff, Volunteer, Advisor; Donor planned | None, deliberately | Drives page sections; see [People](#people) |
 | `career_type` | `careers` | Kinds of opening | `/career-type/{term}/` | |
+| `rights_region` | `rights_reports` | The seven publishing regions; term meta `release_status` (upcoming, embargoed, released), `release_date`, `order`, `forthcoming` | `/language-rights/report/{region}/` | A region's status sets its reports' post status: draft, private (readable by the `press` role) or publish |
 | `faq_category` | `faq` | FAQ groupings | `/faq-category/{term}/` | |
 
 WordPress's own categories and tags are also registered for `languages`.

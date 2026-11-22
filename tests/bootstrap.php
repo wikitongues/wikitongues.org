@@ -92,6 +92,9 @@ require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-http.php
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-google-docs.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-airtable.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-exporter.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-release-status.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-import-plan.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/content-model.php';
 require_once __DIR__ . '/unit/rights/RightsFixture.php';
 
 // WordPress's HTML API, for tests of code that uses WP_HTML_Tag_Processor. Core
