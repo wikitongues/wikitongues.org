@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Maps, step 1: a locator map on every language page (`wt-maps`) | 2026-11-16 – 23 | [#669], [#698]–[#702], [#720] | [maps.md](maps.md) |
 | Shared editorial styles: one set of tokens and mixins for the donate page and the Language Rights report | 2026-11-23 | [#716], [#717], [#718] | [content-styles.md](content-styles.md#editorial-pages-shared-tokens) |
 | Language geography, phase B (maps slice): subdivisions as objects, keyed on record IDs | 2026-11-18 – 19 | [#687], [#690], [#693] | [airtable-sync.md](airtable-sync.md#territories), [content-model.md](content-model.md#territories-and-regions) |
 | Native Language AI page | 2026-11-18 | [#676], [#678], [#681] | [content-model.md](content-model.md#redirects) (the `/ai` short link) |
@@ -34,6 +35,23 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-23 (Maps, step 1)
+
+### A locator map on every language page (plan 3.2, step 1)
+**PRs:** [#669] (spec and prototype), [#698]–[#702] (plugin, build, renderer, maps, sidebar), [#720] (doctor fix); on staging 2026-11-23, production with the next release.
+
+- **The plugin** ([#698]). `wt-maps`: a shape table in the repo (`data/shapes.json`) mapping Airtable record IDs to Natural Earth 5.1.2 codes, in place of the planned ACF "Map shape" field; `wp wt-maps doctor` and `export`.
+- **The build** ([#699], [#701]). Node and d3-geo render one SVG per distinct set of places, Lambert azimuthal equal-area, with hillshade, sea floor and coloured relief cut to the coast. A map is staged and published whole, SVG and images together, within budget (SVG ≤ 20 KB gzipped, images ≤ 30 KB; two maps still over). 269 maps for 8,073 languages, 13 MB, committed beside the plugin.
+- **The renderer** ([#700]). `wt_map()` and `[wt_map]` add per-language roles (origins primary), absolute image URLs and the title and description through `WP_HTML_Tag_Processor`, cached in the object cache. Four styles as a setting (Light focused by default); Settings → Maps turns the sidebar map off without a deploy.
+- **The sidebar** ([#702]). The language sidebar was reordered: name, summary, identifiers, endonyms, alternate names, then a "Where it's spoken" section with the map, a caption ("Map showing Guam and the Northern Mariana Islands"), "Traditionally spoken in" and "Also spoken in". Rings mark places whose largest island is under 150 square units. Languages with no territory links draw their origins, a fallback marked temporary in plan 6.8.
+- **Content changes** (2026-11-17, scripted in `docs/maps-prototype/territory-edits.php`, run on every environment): Nagorno-Karabakh folded into Azerbaijan and removed from Armenian; Greenland, Guam and the Northern Mariana Islands added as territories, with Greenlandic, Chamorro and Carolinian moved to them; Hawaiian linked to `Hawaii_US`; "Sahrawi Arab Democratic Republic" renamed Western Sahara (with a redirect), "Cape Verde Islands" Cabo Verde, and "Federated Staes of Micronesia" fixed; the Airtable nations Congo, Macedonia and Vatican State renamed to match WordPress.
+- **Doctor on staging** ([#720]). Its language query joined `postmeta` three times and ran for minutes on staging's MySQL; two plain reads joined in PHP give the same result in a tenth of a second.
+- **The process lesson.** The prototype went to production on an unsettled data model through five stacked PRs; the working principles in CLAUDE.md ([#703]) and the plan 6.8 spec came out of it.
+
+Described in [maps.md](maps.md). Left open (plan 3.2): step 2, the claims table, credits, review tooling, two over-budget maps, and the `decorate()` test in CI.
 
 ---
 
@@ -1104,3 +1122,11 @@ Minor fix to SSH agent action version in deployment workflow.
 [#716]: https://github.com/wikitongues/wikitongues.org/pull/716
 [#717]: https://github.com/wikitongues/wikitongues.org/pull/717
 [#718]: https://github.com/wikitongues/wikitongues.org/pull/718
+[#669]: https://github.com/wikitongues/wikitongues.org/pull/669
+[#698]: https://github.com/wikitongues/wikitongues.org/pull/698
+[#699]: https://github.com/wikitongues/wikitongues.org/pull/699
+[#700]: https://github.com/wikitongues/wikitongues.org/pull/700
+[#701]: https://github.com/wikitongues/wikitongues.org/pull/701
+[#702]: https://github.com/wikitongues/wikitongues.org/pull/702
+[#703]: https://github.com/wikitongues/wikitongues.org/pull/703
+[#720]: https://github.com/wikitongues/wikitongues.org/pull/720
