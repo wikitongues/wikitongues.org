@@ -281,34 +281,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -42.184891,
-     -42.840624,
+     -44.078367,
+     -42.329457,
      0
     ],
-    "scale": 5090.498,
+    "scale": 17442.828,
     "translate": [
-     190.376,
-     146.707
+     194.103,
+     163.231
     ],
-    "cornerDeg": 2.92
+    "cornerDeg": 0.86
    },
    "center": [
-    42.184891,
-    42.840624
+    44.078367,
+    42.329457
    ],
    "fine": true,
-   "stretch": 0.1,
-   "scale_km": 100,
-   "claimed": [
-    "Abkhazia"
-   ],
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
    "revealed": [],
-   "svg_bytes": 13527,
-   "svg_gzip": 4449,
+   "svg_bytes": 9706,
+   "svg_gzip": 3268,
    "images": {
-    "relief": 19352,
-    "shade": 28994,
-    "sea": 4236
+    "relief": 10842,
+    "shade": 31568,
+    "sea": 1616
    }
   },
   "rec2Z5ROfmHxTcvVq": {
@@ -475,36 +473,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     14.211313,
-     12.328022,
+     -55.541602,
+     21.119428,
      0
     ],
-    "scale": 173.91,
+    "scale": 16329.728,
     "translate": [
-     168.941,
-     140.539
+     200,
+     150
     ],
-    "cornerDeg": 107.64
+    "cornerDeg": 0.88
    },
    "center": [
-    -14.211313,
-    -12.328022
+    55.541602,
+    -21.119428
    ],
-   "fine": false,
-   "stretch": 186.9,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 34139,
-   "svg_gzip": 11387,
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 5798,
+   "svg_gzip": 2092,
    "images": {
-    "relief": 27618,
-    "shade": 9896,
-    "sea": 24274
+    "relief": 4556,
+    "shade": 5608,
+    "sea": 4504
    }
   },
   "rec486lgrIfSxlBRB": {
@@ -1341,34 +1335,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     55.784851,
-     -5.46349,
+     61.017547,
+     -14.656375,
      0
     ],
-    "scale": 1022.508,
+    "scale": 16329.728,
     "translate": [
-     231.088,
-     204.393
+     200,
+     150
     ],
-    "cornerDeg": 17.35
+    "cornerDeg": 0.88
    },
    "center": [
-    -55.784851,
-    5.46349
+    -61.017547,
+    14.656375
    ],
-   "fine": false,
-   "stretch": 2.3,
-   "scale_km": 200,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
    "revealed": [],
-   "svg_bytes": 15473,
-   "svg_gzip": 5092,
+   "svg_bytes": 7155,
+   "svg_gzip": 2469,
    "images": {
-    "relief": 16932,
-    "shade": 7256,
-    "sea": 9908
+    "relief": 4208,
+    "shade": 4022,
+    "sea": 4412
    }
   },
   "recaAmOswj0L9r1eN": {
@@ -1771,36 +1763,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -2.122862,
-     -46.369932,
+     -2.570482,
+     -46.506034,
      0
     ],
-    "scale": 278.37,
+    "scale": 1373.111,
     "translate": [
-     325.239,
-     99.08
+     199.058,
+     145.768
     ],
-    "cornerDeg": 86.73
+    "cornerDeg": 10.58
    },
    "center": [
-    2.122862,
-    46.369932
+    2.570482,
+    46.506034
    ],
    "fine": false,
-   "stretch": 89.2,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 37090,
-   "svg_gzip": 12661,
+   "stretch": 0.9,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 23770,
+   "svg_gzip": 7679,
    "images": {
-    "relief": 29228,
-    "shade": 12526,
-    "sea": 27352
+    "relief": 29946,
+    "shade": 18918,
+    "sea": 11994
    }
   },
   "recCKPB1XdRcXo0b4": {
@@ -2931,34 +2919,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     56.486887,
-     -6.958073,
+     61.529624,
+     -16.208264,
      0
     ],
-    "scale": 906.649,
+    "scale": 19612.29,
     "translate": [
-     220.703,
-     187.559
+     155.321,
+     140.344
     ],
-    "cornerDeg": 18.38
+    "cornerDeg": 0.85
    },
    "center": [
-    -56.486887,
-    6.958073
+    -61.529624,
+    16.208264
    ],
-   "fine": false,
-   "stretch": 2.6,
-   "scale_km": 500,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
    "revealed": [],
-   "svg_bytes": 16859,
-   "svg_gzip": 5638,
+   "svg_bytes": 8099,
+   "svg_gzip": 2677,
    "images": {
-    "relief": 17080,
-    "shade": 7514,
-    "sea": 11966
+    "relief": 6072,
+    "shade": 6014,
+    "sea": 6476
    }
   },
   "recgqZiOFNQBkVeLD": {
@@ -5260,34 +5246,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -42.184891,
-     -42.840624,
+     -41.168394,
+     -43.098875,
      0
     ],
-    "scale": 5090.498,
+    "scale": 11111.03,
     "translate": [
-     190.376,
-     146.707
+     218.002,
+     128.193
     ],
-    "cornerDeg": 2.92
+    "cornerDeg": 1.43
    },
    "center": [
-    42.184891,
-    42.840624
+    41.168394,
+    43.098875
    ],
    "fine": true,
-   "stretch": 0.1,
-   "scale_km": 100,
-   "claimed": [
-    "South Ossetia"
-   ],
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
    "revealed": [],
-   "svg_bytes": 13396,
-   "svg_gzip": 4441,
+   "svg_bytes": 9365,
+   "svg_gzip": 3368,
    "images": {
-    "relief": 19354,
-    "shade": 29020,
-    "sea": 4216
+    "relief": 10834,
+    "shade": 24830,
+    "sea": 4126
    }
   },
   "recPjLef8TWSdZEDN": {
@@ -5660,36 +5644,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     47.921267,
-     -1.18383,
+     -45.142169,
+     12.817377,
      0
     ],
-    "scale": 197.855,
+    "scale": 16329.728,
     "translate": [
-     71.088,
-     121.493
+     200,
+     150
     ],
-    "cornerDeg": 142.07
+    "cornerDeg": 0.88
    },
    "center": [
-    -47.921267,
-    1.18383
+    45.142169,
+    -12.817377
    ],
-   "fine": false,
-   "stretch": 846.8,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 29130,
-   "svg_gzip": 9653,
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 20,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 5985,
+   "svg_gzip": 2118,
    "images": {
-    "relief": 30148,
-    "shade": 9300,
-    "sea": 22644
+    "relief": 3574,
+    "shade": 2676,
+    "sea": 4222
    }
   },
   "recQzjjbu8Tw1YVPb": {
@@ -8556,8 +8536,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 39039,
-   "svg_gzip": 14464,
+   "svg_bytes": 44445,
+   "svg_gzip": 16459,
    "images": {
     "relief": 30548,
     "shade": 15270,
@@ -8648,36 +8628,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -26.55726,
-     19.578223,
+     -26.590009,
+     19.581237,
      0
     ],
-    "scale": 166.644,
+    "scale": 397.162,
     "translate": [
-     266.811,
-     149.076
+     149.187,
+     147.806
     ],
-    "cornerDeg": 133.78
+    "cornerDeg": 43.35
    },
    "center": [
-    26.55726,
-    -19.578223
+    26.590009,
+    -19.581237
    ],
    "fine": false,
-   "stretch": 549.1,
+   "stretch": 15.8,
    "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 32629,
-   "svg_gzip": 10796,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 17009,
+   "svg_gzip": 6105,
    "images": {
-    "relief": 28302,
-    "shade": 8962,
-    "sea": 25616
+    "relief": 25676,
+    "shade": 7780,
+    "sea": 14844
    }
   },
   "set-15aef6ff7bf2": {
@@ -9059,8 +9035,8 @@
     "Arunachal Pradesh",
     "Taiwan"
    ],
-   "svg_bytes": 30296,
-   "svg_gzip": 11103,
+   "svg_bytes": 35146,
+   "svg_gzip": 12865,
    "images": {
     "relief": 26104,
     "shade": 18890,
@@ -9079,36 +9055,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -1.97879,
-     -46.353505,
+     -2.425094,
+     -46.489994,
      0
     ],
-    "scale": 276.326,
+    "scale": 276.356,
     "translate": [
-     324.923,
-     99.299
+     326.508,
+     137.869
     ],
-    "cornerDeg": 87.43
+    "cornerDeg": 82.53
    },
    "center": [
-    1.97879,
-    46.353505
+    2.425094,
+    46.489994
    ],
    "fine": false,
-   "stretch": 91.4,
+   "stretch": 77,
    "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 37563,
-   "svg_gzip": 12861,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 39199,
+   "svg_gzip": 13614,
    "images": {
-    "relief": 30338,
-    "shade": 12608,
-    "sea": 27666
+    "relief": 28672,
+    "shade": 13988,
+    "sea": 29202
    }
   },
   "set-276407579170": {
@@ -9123,38 +9095,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     0.699349,
-     -43.537791,
+     0.484023,
+     -43.610661,
      0
     ],
-    "scale": 281.687,
+    "scale": 820.914,
     "translate": [
-     314.721,
-     105.399
+     192.909,
+     143.557
     ],
-    "cornerDeg": 82.11
+    "cornerDeg": 18.19
    },
    "center": [
-    -0.699349,
-    43.537791
+    -0.484023,
+    43.610661
    ],
    "fine": false,
-   "stretch": 75.9,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters",
-    "W. Sahara",
-    "W. Sahara"
-   ],
-   "svg_bytes": 36478,
-   "svg_gzip": 12521,
+   "stretch": 2.6,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 28598,
+   "svg_gzip": 9772,
    "images": {
-    "relief": 29144,
-    "shade": 12152,
-    "sea": 26994
+    "relief": 27964,
+    "shade": 15630,
+    "sea": 19112
    }
   },
   "set-277aa0141225": {
@@ -9333,8 +9299,8 @@
     "Somaliland",
     "Somaliland"
    ],
-   "svg_bytes": 42419,
-   "svg_gzip": 12830,
+   "svg_bytes": 47754,
+   "svg_gzip": 14734,
    "images": {
     "relief": 29744,
     "shade": 20124,
@@ -9361,31 +9327,28 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -4.630563,
-     -45.332252,
+     -5.062525,
+     -45.450482,
      0
     ],
-    "scale": 178.703,
+    "scale": 178.864,
     "translate": [
-     232.724,
-     117.864
+     233.825,
+     117.245
     ],
-    "cornerDeg": 111.55
+    "cornerDeg": 112.12
    },
    "center": [
-    4.630563,
-    45.332252
+    5.062525,
+    45.450482
    ],
    "fine": false,
-   "stretch": 216.1,
+   "stretch": 220.8,
    "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
+   "claimed": [],
    "revealed": [
     "Abkhazia",
     "Artsakh",
-    "Courantyne Headwaters",
     "Golan Heights",
     "Ilemi Triangle",
     "Kosovo",
@@ -9396,12 +9359,12 @@
     "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 64606,
-   "svg_gzip": 21420,
+   "svg_bytes": 64415,
+   "svg_gzip": 21401,
    "images": {
-    "relief": 28446,
-    "shade": 18324,
-    "sea": 30584
+    "relief": 28758,
+    "shade": 18208,
+    "sea": 30088
    }
   },
   "set-3034b0b1224f": {
@@ -9416,34 +9379,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     57.267694,
-     -8.315474,
+     61.324677,
+     -15.590091,
      0
     ],
-    "scale": 907.279,
+    "scale": 6207.287,
     "translate": [
-     208.55,
-     166.12
+     197.629,
+     135.999
     ],
-    "cornerDeg": 16.9
+    "cornerDeg": 2.4
    },
    "center": [
-    -57.267694,
-    8.315474
+    -61.324677,
+    15.590091
    ],
-   "fine": false,
-   "stretch": 2.2,
-   "scale_km": 500,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
+   "fine": true,
+   "stretch": 0,
+   "scale_km": 50,
+   "claimed": [],
    "revealed": [],
-   "svg_bytes": 17163,
-   "svg_gzip": 5714,
+   "svg_bytes": 8722,
+   "svg_gzip": 2916,
    "images": {
-    "relief": 17224,
-    "shade": 7462,
-    "sea": 12206
+    "relief": 5018,
+    "shade": 3862,
+    "sea": 7474
    }
   },
   "set-3178c9addfaf": {
@@ -9625,37 +9586,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -5.835903,
-     -45.176323,
+     -6.130498,
+     -45.253075,
      0
     ],
-    "scale": 249.895,
+    "scale": 927.241,
     "translate": [
-     309.863,
-     113.521
+     183.834,
+     131.223
     ],
-    "cornerDeg": 92.7
+    "cornerDeg": 17.01
    },
    "center": [
-    5.835903,
-    45.176323
+    6.130498,
+    45.253075
    ],
    "fine": false,
-   "stretch": 109.9,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters",
-    "Kosovo"
-   ],
-   "svg_bytes": 43686,
-   "svg_gzip": 14984,
+   "stretch": 2.2,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 34599,
+   "svg_gzip": 11684,
    "images": {
-    "relief": 29844,
-    "shade": 13690,
-    "sea": 29164
+    "relief": 30422,
+    "shade": 22788,
+    "sea": 18302
    }
   },
   "set-3cfc761faeca": {
@@ -9784,8 +9740,8 @@
     "Shaksam Valley",
     "Siachen Glacier"
    ],
-   "svg_bytes": 32592,
-   "svg_gzip": 9740,
+   "svg_bytes": 39177,
+   "svg_gzip": 11997,
    "images": {
     "relief": 27748,
     "shade": 19380,
@@ -10269,8 +10225,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 23291,
-   "svg_gzip": 8151,
+   "svg_bytes": 26942,
+   "svg_gzip": 9438,
    "images": {
     "relief": 22980,
     "shade": 8362,
@@ -10539,36 +10495,35 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -24.573778,
-     -39.500822,
+     -23.987327,
+     -39.359122,
      0
     ],
-    "scale": 941.431,
+    "scale": 1059.094,
     "translate": [
-     110.457,
-     154.321
+     109.944,
+     158.207
     ],
-    "cornerDeg": 20.07
+    "cornerDeg": 17.95
    },
    "center": [
-    24.573778,
-    39.500822
+    23.987327,
+    39.359122
    ],
    "fine": false,
-   "stretch": 3.1,
-   "scale_km": 500,
-   "claimed": [
+   "stretch": 2.5,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [
+    "Kosovo",
     "South Ossetia"
    ],
-   "revealed": [
-    "Kosovo"
-   ],
-   "svg_bytes": 37277,
-   "svg_gzip": 11789,
+   "svg_bytes": 33188,
+   "svg_gzip": 10576,
    "images": {
-    "relief": 30130,
-    "shade": 23310,
-    "sea": 17550
+    "relief": 28456,
+    "shade": 23418,
+    "sea": 17270
    }
   },
   "set-6c206695aedc": {
@@ -10661,8 +10616,8 @@
     "South Ossetia"
    ],
    "revealed": [],
-   "svg_bytes": 17130,
-   "svg_gzip": 5720,
+   "svg_bytes": 17112,
+   "svg_gzip": 5716,
    "images": {
     "relief": 26322,
     "shade": 29794,
@@ -10873,8 +10828,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 10304,
-   "svg_gzip": 3797,
+   "svg_bytes": 14502,
+   "svg_gzip": 5240,
    "images": {
     "relief": 16382,
     "shade": 7326,
@@ -10897,37 +10852,34 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     98.444516,
-     -47.8148,
+     98.467135,
+     -47.82569,
      0
     ],
-    "scale": 169.381,
+    "scale": 199.225,
     "translate": [
-     172.9,
-     165.257
+     168.12,
+     188.057
     ],
-    "cornerDeg": 112.01
+    "cornerDeg": 97.06
    },
    "center": [
-    -98.444516,
-    47.8148
+    -98.467135,
+    47.82569
    ],
    "fine": false,
-   "stretch": 219.9,
+   "stretch": 128,
    "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
+   "claimed": [],
    "revealed": [
-    "Courantyne Headwaters",
     "Kosovo"
    ],
-   "svg_bytes": 47553,
-   "svg_gzip": 17086,
+   "svg_bytes": 45091,
+   "svg_gzip": 16503,
    "images": {
-    "relief": 29214,
-    "shade": 16346,
-    "sea": 29134
+    "relief": 26848,
+    "shade": 18110,
+    "sea": 28408
    }
   },
   "set-9c18efefa001": {
@@ -10990,8 +10942,8 @@
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 59389,
-   "svg_gzip": 20593,
+   "svg_bytes": 65195,
+   "svg_gzip": 22846,
    "images": {
     "relief": 28768,
     "shade": 21182,
@@ -11133,8 +11085,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 16277,
-   "svg_gzip": 6070,
+   "svg_bytes": 20824,
+   "svg_gzip": 7691,
    "images": {
     "relief": 20138,
     "shade": 9648,
@@ -11181,8 +11133,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 4551,
-   "svg_gzip": 1537,
+   "svg_bytes": 7904,
+   "svg_gzip": 2645,
    "images": {
     "relief": 3660,
     "shade": 1636,
@@ -11221,37 +11173,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -3.990569,
-     -49.666675,
+     -4.179836,
+     -49.720138,
      0
     ],
-    "scale": 256.727,
+    "scale": 724.399,
     "translate": [
-     312.773,
-     113.388
+     202.023,
+     160.021
     ],
-    "cornerDeg": 90.36
+    "cornerDeg": 20.49
    },
    "center": [
-    3.990569,
-    49.666675
+    4.179836,
+    49.720138
    ],
    "fine": false,
-   "stretch": 101.3,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters",
-    "Kosovo"
-   ],
-   "svg_bytes": 44162,
-   "svg_gzip": 15325,
+   "stretch": 3.3,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 41656,
+   "svg_gzip": 14481,
    "images": {
-    "relief": 30174,
-    "shade": 14454,
-    "sea": 29460
+    "relief": 28076,
+    "shade": 17972,
+    "sea": 23102
    }
   },
   "set-b21607be8913": {
@@ -11570,36 +11517,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     74.840683,
-     -20.049221,
+     75.186568,
+     -20.304982,
      0
     ],
-    "scale": 550.358,
+    "scale": 715.003,
     "translate": [
-     144.448,
-     102.293
+     160.882,
+     130.383
     ],
-    "cornerDeg": 34.14
+    "cornerDeg": 23.66
    },
    "center": [
-    -74.840683,
-    20.049221
+    -75.186568,
+    20.304982
    ],
    "fine": false,
-   "stretch": 9.4,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 21380,
-   "svg_gzip": 7510,
+   "stretch": 4.4,
+   "scale_km": 500,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 21628,
+   "svg_gzip": 7677,
    "images": {
-    "relief": 26954,
-    "shade": 12002,
-    "sea": 24016
+    "relief": 20890,
+    "shade": 11892,
+    "sea": 22902
    }
   },
   "set-bf71d8971935": {
@@ -11784,8 +11727,8 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 42261,
-   "svg_gzip": 13684,
+   "svg_bytes": 47127,
+   "svg_gzip": 15401,
    "images": {
     "relief": 27428,
     "shade": 15044,
@@ -12011,41 +11954,41 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -95.228961,
-     -65.875248,
+     -95.27289,
+     -65.878638,
      0
     ],
-    "scale": 241.194,
+    "scale": 241.208,
     "translate": [
-     208.646,
-     163.252
+     208.731,
+     163.218
     ],
-    "cornerDeg": 66.62
+    "cornerDeg": 66.63
    },
    "center": [
-    95.228961,
-    65.875248
+    95.27289,
+    65.878638
    ],
    "fine": false,
    "stretch": 43.2,
    "scale_km": null,
    "claimed": [
-    "Abkhazia",
     "Crimea",
     "Kuril Is."
    ],
    "revealed": [
+    "Abkhazia",
     "Artsakh",
     "Donetsk People's Republic",
     "Luhansk People's Republic",
     "Transnistria"
    ],
-   "svg_bytes": 56277,
-   "svg_gzip": 19403,
+   "svg_bytes": 56274,
+   "svg_gzip": 19482,
    "images": {
-    "relief": 28488,
-    "shade": 21756,
-    "sea": 30026
+    "relief": 28454,
+    "shade": 21916,
+    "sea": 29996
    }
   },
   "set-d4a1b8082bf4": {
@@ -12098,8 +12041,8 @@
    "revealed": [
     "Abyei"
    ],
-   "svg_bytes": 18655,
-   "svg_gzip": 6253,
+   "svg_bytes": 22780,
+   "svg_gzip": 7675,
    "images": {
     "relief": 27284,
     "shade": 10084,
@@ -12120,38 +12063,37 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -42.429525,
-     -39.750115,
+     -42.282607,
+     -39.509177,
      0
     ],
-    "scale": 1267.767,
+    "scale": 1266.816,
     "translate": [
-     232.198,
-     120.976
+     229.553,
+     126.175
     ],
-    "cornerDeg": 13.28
+    "cornerDeg": 13.05
    },
    "center": [
-    42.429525,
-    39.750115
+    42.282607,
+    39.509177
    ],
    "fine": false,
-   "stretch": 1.4,
+   "stretch": 1.3,
    "scale_km": 200,
-   "claimed": [
-    "South Ossetia"
-   ],
+   "claimed": [],
    "revealed": [
     "Artsakh",
     "Golan Heights",
+    "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 23612,
-   "svg_gzip": 6920,
+   "svg_bytes": 23656,
+   "svg_gzip": 6931,
    "images": {
-    "relief": 29038,
-    "shade": 22030,
-    "sea": 9258
+    "relief": 29430,
+    "shade": 21970,
+    "sea": 9404
    }
   },
   "set-da04f2d82e3c": {
@@ -12251,8 +12193,8 @@
     "W. Sahara",
     "W. Sahara"
    ],
-   "svg_bytes": 21254,
-   "svg_gzip": 7170,
+   "svg_bytes": 26105,
+   "svg_gzip": 8856,
    "images": {
     "relief": 26924,
     "shade": 7636,
@@ -12316,8 +12258,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 34955,
-   "svg_gzip": 11380,
+   "svg_bytes": 41493,
+   "svg_gzip": 13633,
    "images": {
     "relief": 27668,
     "shade": 18998,
@@ -12372,8 +12314,8 @@
    "revealed": [
     "Abyei"
    ],
-   "svg_bytes": 20193,
-   "svg_gzip": 7160,
+   "svg_bytes": 24090,
+   "svg_gzip": 8460,
    "images": {
     "relief": 27130,
     "shade": 9236,
@@ -12568,8 +12510,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 18561,
-   "svg_gzip": 6033,
+   "svg_bytes": 23034,
+   "svg_gzip": 7600,
    "images": {
     "relief": 18856,
     "shade": 5138,
@@ -12630,8 +12572,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 32657,
-   "svg_gzip": 10392,
+   "svg_bytes": 38114,
+   "svg_gzip": 12366,
    "images": {
     "relief": 26844,
     "shade": 17940,
@@ -12830,36 +12772,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -2.123051,
-     -46.369846,
+     -2.570656,
+     -46.505942,
      0
     ],
-    "scale": 278.37,
+    "scale": 1373.109,
     "translate": [
-     325.24,
-     99.08
+     199.061,
+     145.77
     ],
-    "cornerDeg": 86.73
+    "cornerDeg": 10.58
    },
    "center": [
-    2.123051,
-    46.369846
+    2.570656,
+    46.505942
    ],
    "fine": false,
-   "stretch": 89.2,
-   "scale_km": null,
-   "claimed": [
-    "Lawa Headwaters"
-   ],
-   "revealed": [
-    "Courantyne Headwaters"
-   ],
-   "svg_bytes": 37172,
-   "svg_gzip": 12732,
+   "stretch": 0.9,
+   "scale_km": 200,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 23858,
+   "svg_gzip": 7738,
    "images": {
-    "relief": 29302,
-    "shade": 12508,
-    "sea": 27374
+    "relief": 29926,
+    "shade": 18920,
+    "sea": 12020
    }
   },
   "set-f06654bea15c": {
