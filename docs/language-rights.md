@@ -38,6 +38,8 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 
 A country's URL leaves out its region: regions are publishing groups a later edition may regroup, and an indexed URL should never move. Region and country slugs share one namespace, so the import refuses a country slug that equals a region slug.
 
+**A report the visitor can't read redirects to its region.** That covers a region not yet released, one set back to upcoming or embargoed, and a report dropped from a release. The redirect is temporary (302), to the region page's country list, which shows only the release date and nation names until release, so no report text leaks and search engines keep the URL for when it returns. A slug no report has stays a 404, as does the print view with a wrong token.
+
 ## Sources
 
 | Source | Holds | Owner |

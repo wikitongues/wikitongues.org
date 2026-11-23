@@ -126,6 +126,61 @@ function wt_rights_resolve_request( array $query_vars ): array {
 add_filter( 'request', 'wt_rights_resolve_request' );
 
 /**
+ * Where to send a visitor who asks for a report they can't read: its region's
+ * country list. '' when no report has that slug, so an unknown URL stays a 404.
+ *
+ * A report is never deleted and its URL never changes, so the only reports
+ * that vanish are withdrawn or not yet released ones: a region set back to
+ * upcoming or embargoed, a report dropped from a release, or a link shared
+ * before launch. The region page shows only the release date and the nation
+ * names until release, so the redirect reveals no report text.
+ *
+ * @param string $slug A report slug.
+ */
+function wt_rights_withdrawn_target( string $slug ): string {
+	if ( '' === $slug ) {
+		return '';
+	}
+	$ids = get_posts(
+		array(
+			'post_type'        => 'rights_reports',
+			'name'             => $slug,
+			'post_status'      => array( 'publish', 'private', 'draft' ),
+			'numberposts'      => 1,
+			'fields'           => 'ids',
+			'suppress_filters' => true,
+		)
+	);
+	if ( ! $ids ) {
+		return '';
+	}
+	$region = wt_rights_report_region( (int) $ids[0] );
+	if ( ! $region ) {
+		return '';
+	}
+	$link = get_term_link( $region );
+	return is_string( $link ) ? $link . '#countries' : '';
+}
+
+/**
+ * Sends a report URL that would 404 for this visitor to its region, with a
+ * temporary redirect (302): the report may be released or restored later, so
+ * search engines keep the URL. The PDF print view keeps its own 404.
+ */
+function wt_rights_redirect_withdrawn(): void {
+	if ( ! is_404() || '' !== (string) get_query_var( 'wt_rights_print' ) ) {
+		return;
+	}
+	$target = wt_rights_withdrawn_target( (string) get_query_var( 'rights_reports' ) );
+	if ( '' === $target ) {
+		return;
+	}
+	wp_safe_redirect( $target, 302, 'Wikitongues language rights' );
+	exit;
+}
+add_action( 'template_redirect', 'wt_rights_redirect_withdrawn' );
+
+/**
  * A report's URL.
  *
  * @param string  $url  The default URL.
