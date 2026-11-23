@@ -1,0 +1,4091 @@
+[
+ {
+  "id": 20436,
+  "title": "Abkhazia",
+  "slug": "abkhazia",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "breakaway",
+    "B35"
+   ]
+  ],
+  "how": "override",
+  "note": "Breakaway from Georgia",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20437,
+  "title": "Afghanistan",
+  "slug": "afghanistan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 30,
+  "refs": [
+   [
+    "countries",
+    "AFG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AFG"
+ },
+ {
+  "id": 20438,
+  "title": "Albania",
+  "slug": "albania",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "ALB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ALB"
+ },
+ {
+  "id": 20439,
+  "title": "Algeria",
+  "slug": "algeria",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 13,
+  "refs": [
+   [
+    "countries",
+    "DZA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DZA"
+ },
+ {
+  "id": 20440,
+  "title": "Andorra",
+  "slug": "andorra",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "AND"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AND"
+ },
+ {
+  "id": 20441,
+  "title": "Angola",
+  "slug": "angola",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 25,
+  "refs": [
+   [
+    "countries",
+    "AGO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AGO"
+ },
+ {
+  "id": 20442,
+  "title": "Antigua and Barbuda",
+  "slug": "antigua-and-barbuda",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "ATG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ATG"
+ },
+ {
+  "id": 20443,
+  "title": "Argentina",
+  "slug": "argentina",
+  "region": [
+   "South America"
+  ],
+  "langs": 14,
+  "refs": [
+   [
+    "countries",
+    "ARG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ARG"
+ },
+ {
+  "id": 20444,
+  "title": "Armenia",
+  "slug": "armenia",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "ARM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ARM"
+ },
+ {
+  "id": 20445,
+  "title": "Australia",
+  "slug": "australia",
+  "region": [
+   "Australia &amp; New Zealand"
+  ],
+  "langs": 393,
+  "refs": [
+   [
+    "countries",
+    "AUS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AUS"
+ },
+ {
+  "id": 20446,
+  "title": "Austria",
+  "slug": "austria",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "AUT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AUT"
+ },
+ {
+  "id": 20447,
+  "title": "Azerbaijan",
+  "slug": "azerbaijan",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 9,
+  "refs": [
+   [
+    "countries",
+    "AZE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "AZE"
+ },
+ {
+  "id": 20448,
+  "title": "Bahamas",
+  "slug": "bahamas",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BHS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BHS"
+ },
+ {
+  "id": 20449,
+  "title": "Bahrain",
+  "slug": "bahrain",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BHR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BHR"
+ },
+ {
+  "id": 20450,
+  "title": "Bangladesh",
+  "slug": "bangladesh",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 15,
+  "refs": [
+   [
+    "countries",
+    "BGD"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BGD"
+ },
+ {
+  "id": 20451,
+  "title": "Barbados",
+  "slug": "barbados",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BRB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BRB"
+ },
+ {
+  "id": 20452,
+  "title": "Belarus",
+  "slug": "belarus",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BLR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BLR"
+ },
+ {
+  "id": 20453,
+  "title": "Belgium",
+  "slug": "belgium",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "BEL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BEL"
+ },
+ {
+  "id": 20454,
+  "title": "Belize",
+  "slug": "belize",
+  "region": [
+   "Central America"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "BLZ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BLZ"
+ },
+ {
+  "id": 20455,
+  "title": "Benin",
+  "slug": "benin",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 40,
+  "refs": [
+   [
+    "countries",
+    "BEN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BEN"
+ },
+ {
+  "id": 20456,
+  "title": "Bhutan",
+  "slug": "bhutan",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 21,
+  "refs": [
+   [
+    "countries",
+    "BTN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BTN"
+ },
+ {
+  "id": 20457,
+  "title": "Bolivia",
+  "slug": "bolivia",
+  "region": [
+   "South America"
+  ],
+  "langs": 38,
+  "refs": [
+   [
+    "countries",
+    "BOL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BOL"
+ },
+ {
+  "id": 20458,
+  "title": "Bosnia and Herzegovina",
+  "slug": "bosnia-and-herzegovina",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BIH"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BIH"
+ },
+ {
+  "id": 20459,
+  "title": "Botswana",
+  "slug": "botswana",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 15,
+  "refs": [
+   [
+    "countries",
+    "BWA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BWA"
+ },
+ {
+  "id": 20460,
+  "title": "Brazil",
+  "slug": "brazil",
+  "region": [
+   "South America"
+  ],
+  "langs": 200,
+  "refs": [
+   [
+    "countries",
+    "BRA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BRA"
+ },
+ {
+  "id": 20461,
+  "title": "Brunei",
+  "slug": "brunei",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "BRN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BRN"
+ },
+ {
+  "id": 20462,
+  "title": "Bulgaria",
+  "slug": "bulgaria",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "BGR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BGR"
+ },
+ {
+  "id": 20463,
+  "title": "Burkina Faso",
+  "slug": "burkina-faso",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 52,
+  "refs": [
+   [
+    "countries",
+    "BFA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BFA"
+ },
+ {
+  "id": 20464,
+  "title": "Burundi",
+  "slug": "burundi",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "BDI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "BDI"
+ },
+ {
+  "id": 20465,
+  "title": "Cambodia",
+  "slug": "cambodia",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 12,
+  "refs": [
+   [
+    "countries",
+    "KHM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KHM"
+ },
+ {
+  "id": 20466,
+  "title": "Cameroon",
+  "slug": "cameroon",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 243,
+  "refs": [
+   [
+    "countries",
+    "CMR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CMR"
+ },
+ {
+  "id": 20467,
+  "title": "Canada",
+  "slug": "canada",
+  "region": [
+   "Northern America"
+  ],
+  "langs": 74,
+  "refs": [
+   [
+    "countries",
+    "CAN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CAN"
+ },
+ {
+  "id": 20468,
+  "title": "Cape Verde Islands",
+  "slug": "cape-verde-islands",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "CPV"
+   ]
+  ],
+  "how": "override",
+  "note": "NE uses Cabo Verde",
+  "flag": null,
+  "iso": "CPV"
+ },
+ {
+  "id": 20469,
+  "title": "Central African Republic",
+  "slug": "central-african-republic",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 56,
+  "refs": [
+   [
+    "countries",
+    "CAF"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CAF"
+ },
+ {
+  "id": 20470,
+  "title": "Chad",
+  "slug": "chad",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 109,
+  "refs": [
+   [
+    "countries",
+    "TCD"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TCD"
+ },
+ {
+  "id": 20471,
+  "title": "Chile",
+  "slug": "chile",
+  "region": [
+   "South America"
+  ],
+  "langs": 9,
+  "refs": [
+   [
+    "countries",
+    "CHL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CHL"
+ },
+ {
+  "id": 20472,
+  "title": "China",
+  "slug": "china",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 250,
+  "refs": [
+   [
+    "countries",
+    "CHN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CHN"
+ },
+ {
+  "id": 20473,
+  "title": "Colombia",
+  "slug": "colombia",
+  "region": [
+   "South America"
+  ],
+  "langs": 83,
+  "refs": [
+   [
+    "countries",
+    "COL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "COL"
+ },
+ {
+  "id": 20474,
+  "title": "Comoros",
+  "slug": "comoros",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "COM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "COM"
+ },
+ {
+  "id": 20476,
+  "title": "Cook Islands",
+  "slug": "cook-islands",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "COK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "COK"
+ },
+ {
+  "id": 20477,
+  "title": "Costa Rica",
+  "slug": "costa-rica",
+  "region": [
+   "Central America"
+  ],
+  "langs": 5,
+  "refs": [
+   [
+    "countries",
+    "CRI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CRI"
+ },
+ {
+  "id": 20478,
+  "title": "Côte d’Ivoire",
+  "slug": "cote-divoire",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 66,
+  "refs": [
+   [
+    "countries",
+    "CIV"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "CIV"
+ },
+ {
+  "id": 20479,
+  "title": "Croatia",
+  "slug": "croatia",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "HRV"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "HRV"
+ },
+ {
+  "id": 20480,
+  "title": "Cuba",
+  "slug": "cuba",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "CUB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CUB"
+ },
+ {
+  "id": 20481,
+  "title": "Cyprus",
+  "slug": "cyprus",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "CYP"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CYP"
+ },
+ {
+  "id": 20482,
+  "title": "Czech Republic",
+  "slug": "czech-republic",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "CZE"
+   ]
+  ],
+  "how": "override",
+  "note": "NE uses Czechia",
+  "flag": null,
+  "iso": "CZE"
+ },
+ {
+  "id": 20483,
+  "title": "Democratic Republic of the Congo",
+  "slug": "democratic-republic-of-the-congo",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 183,
+  "refs": [
+   [
+    "countries",
+    "COD"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "COD"
+ },
+ {
+  "id": 20484,
+  "title": "Denmark",
+  "slug": "denmark",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "DNK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DNK"
+ },
+ {
+  "id": 20485,
+  "title": "Djibouti",
+  "slug": "djibouti",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "DJI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DJI"
+ },
+ {
+  "id": 20486,
+  "title": "Dominica",
+  "slug": "dominica",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "DMA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DMA"
+ },
+ {
+  "id": 20487,
+  "title": "Dominican Republic",
+  "slug": "dominican-republic",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "DOM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DOM"
+ },
+ {
+  "id": 20488,
+  "title": "Ecuador",
+  "slug": "ecuador",
+  "region": [
+   "South America"
+  ],
+  "langs": 18,
+  "refs": [
+   [
+    "countries",
+    "ECU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ECU"
+ },
+ {
+  "id": 20489,
+  "title": "Egypt",
+  "slug": "egypt",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "EGY"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "EGY"
+ },
+ {
+  "id": 20490,
+  "title": "El Salvador",
+  "slug": "el-salvador",
+  "region": [
+   "Central America"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "SLV"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SLV"
+ },
+ {
+  "id": 20491,
+  "title": "Equatorial Guinea",
+  "slug": "equatorial-guinea",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "GNQ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GNQ"
+ },
+ {
+  "id": 20492,
+  "title": "Eritrea",
+  "slug": "eritrea",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "ERI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ERI"
+ },
+ {
+  "id": 20493,
+  "title": "Estonia",
+  "slug": "estonia",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "EST"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "EST"
+ },
+ {
+  "id": 20620,
+  "title": "Eswatini",
+  "slug": "eswatini",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "SWZ"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "SWZ"
+ },
+ {
+  "id": 20494,
+  "title": "Ethiopia",
+  "slug": "ethiopia",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 80,
+  "refs": [
+   [
+    "countries",
+    "ETH"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ETH"
+ },
+ {
+  "id": 20557,
+  "title": "Federated Staes of Micronesia",
+  "slug": "federated-staes-of-micronesia",
+  "region": [
+   "Micronesia"
+  ],
+  "langs": 18,
+  "refs": [
+   [
+    "countries",
+    "FSM"
+   ]
+  ],
+  "how": "override",
+  "note": "Typo in our title (\"Staes\")",
+  "flag": "fix title",
+  "iso": "FSM"
+ },
+ {
+  "id": 20495,
+  "title": "Fiji",
+  "slug": "fiji",
+  "region": [
+   "Melanesia"
+  ],
+  "langs": 9,
+  "refs": [
+   [
+    "countries",
+    "FJI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "FJI"
+ },
+ {
+  "id": 20496,
+  "title": "Finland",
+  "slug": "finland",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 7,
+  "refs": [
+   [
+    "countries",
+    "FIN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "FIN"
+ },
+ {
+  "id": 20498,
+  "title": "France",
+  "slug": "france",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 25,
+  "refs": [
+   [
+    "units",
+    "FXX"
+   ]
+  ],
+  "how": "override",
+  "note": "Metropolitan France only — Guadeloupe, Martinique, Réunion, Mayotte, French Guiana are their own territories here",
+  "flag": "confirm",
+  "iso": "FRA"
+ },
+ {
+  "id": 20499,
+  "title": "French Guiana",
+  "slug": "french-guiana",
+  "region": [
+   "South America"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "GUF"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GUF"
+ },
+ {
+  "id": 20500,
+  "title": "French Polynesia",
+  "slug": "french-polynesia",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 7,
+  "refs": [
+   [
+    "countries",
+    "PYF"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PYF"
+ },
+ {
+  "id": 20501,
+  "title": "Gabon",
+  "slug": "gabon",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 30,
+  "refs": [
+   [
+    "countries",
+    "GAB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GAB"
+ },
+ {
+  "id": 20502,
+  "title": "Gambia",
+  "slug": "gambia",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "GMB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GMB"
+ },
+ {
+  "id": 20503,
+  "title": "Georgia",
+  "slug": "georgia",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 7,
+  "refs": [
+   [
+    "countries",
+    "GEO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GEO"
+ },
+ {
+  "id": 20504,
+  "title": "Germany",
+  "slug": "germany",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 19,
+  "refs": [
+   [
+    "countries",
+    "DEU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "DEU"
+ },
+ {
+  "id": 20505,
+  "title": "Ghana",
+  "slug": "ghana",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 66,
+  "refs": [
+   [
+    "countries",
+    "GHA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GHA"
+ },
+ {
+  "id": 20506,
+  "title": "Greece",
+  "slug": "greece",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 10,
+  "refs": [
+   [
+    "countries",
+    "GRC"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GRC"
+ },
+ {
+  "id": 20507,
+  "title": "Grenada",
+  "slug": "grenada",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "GRD"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GRD"
+ },
+ {
+  "id": 20508,
+  "title": "Guadeloupe",
+  "slug": "guadeloupe",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "units",
+    "GLP"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GLP"
+ },
+ {
+  "id": 20509,
+  "title": "Guatemala",
+  "slug": "guatemala",
+  "region": [
+   "Central America"
+  ],
+  "langs": 23,
+  "refs": [
+   [
+    "countries",
+    "GTM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GTM"
+ },
+ {
+  "id": 20510,
+  "title": "Guinea",
+  "slug": "guinea",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 30,
+  "refs": [
+   [
+    "countries",
+    "GIN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GIN"
+ },
+ {
+  "id": 20511,
+  "title": "Guinea-Bissau",
+  "slug": "guinea-bissau",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 13,
+  "refs": [
+   [
+    "countries",
+    "GNB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GNB"
+ },
+ {
+  "id": 20512,
+  "title": "Guyana",
+  "slug": "guyana",
+  "region": [
+   "South America"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "GUY"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GUY"
+ },
+ {
+  "id": 20513,
+  "title": "Haiti",
+  "slug": "haiti",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "HTI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "HTI"
+ },
+ {
+  "id": 20514,
+  "title": "Honduras",
+  "slug": "honduras",
+  "region": [
+   "Central America"
+  ],
+  "langs": 5,
+  "refs": [
+   [
+    "countries",
+    "HND"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "HND"
+ },
+ {
+  "id": 20515,
+  "title": "Hong Kong",
+  "slug": "hong-kong",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "HKG"
+   ]
+  ],
+  "how": "override",
+  "note": "Special administrative region of China",
+  "flag": null,
+  "iso": "HKG"
+ },
+ {
+  "id": 20516,
+  "title": "Hungary",
+  "slug": "hungary",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "HUN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "HUN"
+ },
+ {
+  "id": 20517,
+  "title": "Iceland",
+  "slug": "iceland",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "ISL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ISL"
+ },
+ {
+  "id": 20518,
+  "title": "India",
+  "slug": "india",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 402,
+  "refs": [
+   [
+    "countries",
+    "IND"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "IND"
+ },
+ {
+  "id": 20519,
+  "title": "Indonesia",
+  "slug": "indonesia",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 709,
+  "refs": [
+   [
+    "countries",
+    "IDN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "IDN"
+ },
+ {
+  "id": 20520,
+  "title": "Iran",
+  "slug": "iran",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 57,
+  "refs": [
+   [
+    "countries",
+    "IRN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "IRN"
+ },
+ {
+  "id": 20521,
+  "title": "Iraq",
+  "slug": "iraq",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 11,
+  "refs": [
+   [
+    "countries",
+    "IRQ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "IRQ"
+ },
+ {
+  "id": 20522,
+  "title": "Ireland",
+  "slug": "ireland",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "IRL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "IRL"
+ },
+ {
+  "id": 20523,
+  "title": "Israel",
+  "slug": "israel",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 23,
+  "refs": [
+   [
+    "countries",
+    "ISR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ISR"
+ },
+ {
+  "id": 20524,
+  "title": "Italy",
+  "slug": "italy",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 21,
+  "refs": [
+   [
+    "countries",
+    "ITA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ITA"
+ },
+ {
+  "id": 20525,
+  "title": "Jamaica",
+  "slug": "jamaica",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "JAM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "JAM"
+ },
+ {
+  "id": 20526,
+  "title": "Japan",
+  "slug": "japan",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 14,
+  "refs": [
+   [
+    "countries",
+    "JPN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "JPN"
+ },
+ {
+  "id": 20527,
+  "title": "Jordan",
+  "slug": "jordan",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "JOR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "JOR"
+ },
+ {
+  "id": 20528,
+  "title": "Kazakhstan",
+  "slug": "kazakhstan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "KAZ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KAZ"
+ },
+ {
+  "id": 20529,
+  "title": "Kenya",
+  "slug": "kenya",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 56,
+  "refs": [
+   [
+    "countries",
+    "KEN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KEN"
+ },
+ {
+  "id": 20530,
+  "title": "Kiribati",
+  "slug": "kiribati",
+  "region": [
+   "Micronesia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "KIR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KIR"
+ },
+ {
+  "id": 20531,
+  "title": "Kosovo",
+  "slug": "kosovo",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "units",
+    "KOS"
+   ]
+  ],
+  "how": "override",
+  "note": "No ISO 3166 code; XKX is the common user-assigned code",
+  "flag": "disputed",
+  "iso": "XKX"
+ },
+ {
+  "id": 20532,
+  "title": "Kuwait",
+  "slug": "kuwait",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "KWT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KWT"
+ },
+ {
+  "id": 20533,
+  "title": "Kyrgyzstan",
+  "slug": "kyrgyzstan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "KGZ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KGZ"
+ },
+ {
+  "id": 20534,
+  "title": "Laos",
+  "slug": "laos",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 51,
+  "refs": [
+   [
+    "countries",
+    "LAO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LAO"
+ },
+ {
+  "id": 20535,
+  "title": "Latvia",
+  "slug": "latvia",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "LVA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LVA"
+ },
+ {
+  "id": 20536,
+  "title": "Lebanon",
+  "slug": "lebanon",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "LBN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LBN"
+ },
+ {
+  "id": 20537,
+  "title": "Lesotho",
+  "slug": "lesotho",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "LSO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LSO"
+ },
+ {
+  "id": 20538,
+  "title": "Liberia",
+  "slug": "liberia",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 27,
+  "refs": [
+   [
+    "countries",
+    "LBR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LBR"
+ },
+ {
+  "id": 20539,
+  "title": "Libya",
+  "slug": "libya",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "LBY"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LBY"
+ },
+ {
+  "id": 20540,
+  "title": "Liechtenstein",
+  "slug": "liechtenstein",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "LIE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LIE"
+ },
+ {
+  "id": 20541,
+  "title": "Lithuania",
+  "slug": "lithuania",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "LTU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LTU"
+ },
+ {
+  "id": 20542,
+  "title": "Luxembourg",
+  "slug": "luxembourg",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "LUX"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LUX"
+ },
+ {
+  "id": 20543,
+  "title": "Macao",
+  "slug": "macao",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "units",
+    "MAC"
+   ]
+  ],
+  "how": "override",
+  "note": "Special administrative region of China",
+  "flag": null,
+  "iso": "MAC"
+ },
+ {
+  "id": 20545,
+  "title": "Madagascar",
+  "slug": "madagascar",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 12,
+  "refs": [
+   [
+    "countries",
+    "MDG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MDG"
+ },
+ {
+  "id": 20546,
+  "title": "Malawi",
+  "slug": "malawi",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 10,
+  "refs": [
+   [
+    "countries",
+    "MWI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MWI"
+ },
+ {
+  "id": 20547,
+  "title": "Malaysia",
+  "slug": "malaysia",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 107,
+  "refs": [
+   [
+    "countries",
+    "MYS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MYS"
+ },
+ {
+  "id": 20548,
+  "title": "Maldives",
+  "slug": "maldives",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "MDV"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MDV"
+ },
+ {
+  "id": 20549,
+  "title": "Mali",
+  "slug": "mali",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 45,
+  "refs": [
+   [
+    "countries",
+    "MLI"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MLI"
+ },
+ {
+  "id": 20550,
+  "title": "Malta",
+  "slug": "malta",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "MLT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MLT"
+ },
+ {
+  "id": 20551,
+  "title": "Marshall Islands",
+  "slug": "marshall-islands",
+  "region": [
+   "Micronesia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "MHL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MHL"
+ },
+ {
+  "id": 20552,
+  "title": "Martinique",
+  "slug": "martinique",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "units",
+    "MTQ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MTQ"
+ },
+ {
+  "id": 20553,
+  "title": "Mauritania",
+  "slug": "mauritania",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "MRT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MRT"
+ },
+ {
+  "id": 20554,
+  "title": "Mauritius",
+  "slug": "mauritius",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "MUS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MUS"
+ },
+ {
+  "id": 20555,
+  "title": "Mayotte",
+  "slug": "mayotte",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "MYT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MYT"
+ },
+ {
+  "id": 20556,
+  "title": "Mexico",
+  "slug": "mexico",
+  "region": [
+   "Northern America"
+  ],
+  "langs": 278,
+  "refs": [
+   [
+    "countries",
+    "MEX"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MEX"
+ },
+ {
+  "id": 20558,
+  "title": "Moldova",
+  "slug": "moldova",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "MDA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MDA"
+ },
+ {
+  "id": 20559,
+  "title": "Monaco",
+  "slug": "monaco",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "MCO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MCO"
+ },
+ {
+  "id": 20560,
+  "title": "Mongolia",
+  "slug": "mongolia",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "MNG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MNG"
+ },
+ {
+  "id": 20561,
+  "title": "Montenegro",
+  "slug": "montenegro",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "MNE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MNE"
+ },
+ {
+  "id": 20562,
+  "title": "Morocco",
+  "slug": "morocco",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "MAR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MAR"
+ },
+ {
+  "id": 20563,
+  "title": "Mozambique",
+  "slug": "mozambique",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 30,
+  "refs": [
+   [
+    "countries",
+    "MOZ"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MOZ"
+ },
+ {
+  "id": 20564,
+  "title": "Myanmar",
+  "slug": "myanmar",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 93,
+  "refs": [
+   [
+    "countries",
+    "MMR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MMR"
+ },
+ {
+  "id": 20565,
+  "title": "Nagorno-Karabakh",
+  "slug": "nagorno-karabakh",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "breakaway",
+    "B38"
+   ]
+  ],
+  "how": "override",
+  "note": "NE 5.1.2 still draws the pre-2023 Artsakh area; it has been under Azerbaijani control since Sept 2023 and the republic dissolved Jan 2024",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20566,
+  "title": "Namibia",
+  "slug": "namibia",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 17,
+  "refs": [
+   [
+    "countries",
+    "NAM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NAM"
+ },
+ {
+  "id": 20567,
+  "title": "Naoero",
+  "slug": "naoero",
+  "region": [
+   "Micronesia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "NRU"
+   ]
+  ],
+  "how": "override",
+  "note": "Name is the Nauruan endonym; NE says Nauru",
+  "flag": "rename?",
+  "iso": "NRU"
+ },
+ {
+  "id": 20568,
+  "title": "Nepal",
+  "slug": "nepal",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 105,
+  "refs": [
+   [
+    "countries",
+    "NPL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NPL"
+ },
+ {
+  "id": 20569,
+  "title": "Netherlands",
+  "slug": "netherlands",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 14,
+  "refs": [
+   [
+    "countries",
+    "NLD"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NLD"
+ },
+ {
+  "id": 20570,
+  "title": "New Caledonia",
+  "slug": "new-caledonia",
+  "region": [
+   "Melanesia"
+  ],
+  "langs": 35,
+  "refs": [
+   [
+    "countries",
+    "NCL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NCL"
+ },
+ {
+  "id": 20571,
+  "title": "New Zealand",
+  "slug": "new-zealand",
+  "region": [
+   "Australia &amp; New Zealand"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "NZL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NZL"
+ },
+ {
+  "id": 20572,
+  "title": "Nicaragua",
+  "slug": "nicaragua",
+  "region": [
+   "Central America"
+  ],
+  "langs": 9,
+  "refs": [
+   [
+    "countries",
+    "NIC"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NIC"
+ },
+ {
+  "id": 20573,
+  "title": "Niger",
+  "slug": "niger",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 10,
+  "refs": [
+   [
+    "countries",
+    "NER"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NER"
+ },
+ {
+  "id": 20574,
+  "title": "Nigeria",
+  "slug": "nigeria",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 493,
+  "refs": [
+   [
+    "countries",
+    "NGA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NGA"
+ },
+ {
+  "id": 20575,
+  "title": "North Korea",
+  "slug": "north-korea",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "PRK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PRK"
+ },
+ {
+  "id": 20544,
+  "title": "North Macedonia",
+  "slug": "north-macedonia",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "MKD"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "MKD"
+ },
+ {
+  "id": 20576,
+  "title": "Northern Cyprus",
+  "slug": "northern-cyprus",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "units",
+    "CYN"
+   ]
+  ],
+  "how": "override",
+  "note": "Recognized only by Turkey",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20577,
+  "title": "Norway",
+  "slug": "norway",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "NOR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "NOR"
+ },
+ {
+  "id": 20578,
+  "title": "Oman",
+  "slug": "oman",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "OMN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "OMN"
+ },
+ {
+  "id": 20579,
+  "title": "Pakistan",
+  "slug": "pakistan",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 57,
+  "refs": [
+   [
+    "countries",
+    "PAK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PAK"
+ },
+ {
+  "id": 20580,
+  "title": "Palau",
+  "slug": "palau",
+  "region": [
+   "Micronesia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "PLW"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PLW"
+ },
+ {
+  "id": 20581,
+  "title": "Palestine",
+  "slug": "palestine",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "GAZ"
+   ],
+   [
+    "units",
+    "WEB"
+   ]
+  ],
+  "how": "override",
+  "note": "Two NE units: Gaza and the West Bank",
+  "flag": "disputed",
+  "iso": "PSE"
+ },
+ {
+  "id": 20582,
+  "title": "Panama",
+  "slug": "panama",
+  "region": [
+   "Central America"
+  ],
+  "langs": 7,
+  "refs": [
+   [
+    "countries",
+    "PAN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PAN"
+ },
+ {
+  "id": 20583,
+  "title": "Papua New Guinea",
+  "slug": "papua-new-guinea",
+  "region": [
+   "Melanesia"
+  ],
+  "langs": 848,
+  "refs": [
+   [
+    "countries",
+    "PNG"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PNG"
+ },
+ {
+  "id": 20584,
+  "title": "Paraguay",
+  "slug": "paraguay",
+  "region": [
+   "South America"
+  ],
+  "langs": 16,
+  "refs": [
+   [
+    "countries",
+    "PRY"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PRY"
+ },
+ {
+  "id": 20585,
+  "title": "Peru",
+  "slug": "peru",
+  "region": [
+   "South America"
+  ],
+  "langs": 97,
+  "refs": [
+   [
+    "countries",
+    "PER"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PER"
+ },
+ {
+  "id": 20586,
+  "title": "Philippines",
+  "slug": "philippines",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 179,
+  "refs": [
+   [
+    "countries",
+    "PHL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PHL"
+ },
+ {
+  "id": 20587,
+  "title": "Poland",
+  "slug": "poland",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 9,
+  "refs": [
+   [
+    "countries",
+    "POL"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "POL"
+ },
+ {
+  "id": 20588,
+  "title": "Portugal",
+  "slug": "portugal",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "PRT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "PRT"
+ },
+ {
+  "id": 20589,
+  "title": "Qatar",
+  "slug": "qatar",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "QAT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "QAT"
+ },
+ {
+  "id": 20475,
+  "title": "Republic of the Congo",
+  "slug": "republic-of-the-congo",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 37,
+  "refs": [
+   [
+    "countries",
+    "COG"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "COG"
+ },
+ {
+  "id": 20590,
+  "title": "Réunion",
+  "slug": "reunion",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "units",
+    "REU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "REU"
+ },
+ {
+  "id": 20591,
+  "title": "Romania",
+  "slug": "romania",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "ROU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ROU"
+ },
+ {
+  "id": 20592,
+  "title": "Russian Federation",
+  "slug": "russian-federation",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 92,
+  "refs": [
+   [
+    "countries",
+    "RUS"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "RUS"
+ },
+ {
+  "id": 20593,
+  "title": "Rwanda",
+  "slug": "rwanda",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "RWA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "RWA"
+ },
+ {
+  "id": 20594,
+  "title": "Sahrawi Arab Democratic Republic",
+  "slug": "sahrawi-arab-democratic-republic",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "units",
+    "SAH"
+   ]
+  ],
+  "how": "override",
+  "note": "Our title names the state (SADR); the shape is all of Western Sahara, most of which Morocco administers",
+  "flag": "disputed",
+  "iso": "ESH"
+ },
+ {
+  "id": 20595,
+  "title": "Saint Kitts and Nevis",
+  "slug": "saint-kitts-and-nevis",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "KNA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KNA"
+ },
+ {
+  "id": 20596,
+  "title": "Saint Lucia",
+  "slug": "saint-lucia",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "LCA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LCA"
+ },
+ {
+  "id": 20597,
+  "title": "Saint Vincent and the Grenadines",
+  "slug": "saint-vincent-and-the-grenadines",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "VCT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "VCT"
+ },
+ {
+  "id": 20598,
+  "title": "Samoa",
+  "slug": "samoa",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "WSM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "WSM"
+ },
+ {
+  "id": 20599,
+  "title": "San Marino",
+  "slug": "san-marino",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "SMR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SMR"
+ },
+ {
+  "id": 20600,
+  "title": "São Tomé e Príncipe",
+  "slug": "sao-tome-e-principe",
+  "region": [
+   "Central Africa"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "STP"
+   ]
+  ],
+  "how": "override",
+  "note": "Title is Portuguese",
+  "flag": null,
+  "iso": "STP"
+ },
+ {
+  "id": 20601,
+  "title": "Saudi Arabia",
+  "slug": "saudi-arabia",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "SAU"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SAU"
+ },
+ {
+  "id": 20602,
+  "title": "Senegal",
+  "slug": "senegal",
+  "region": [
+   "Sahel"
+  ],
+  "langs": 25,
+  "refs": [
+   [
+    "countries",
+    "SEN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SEN"
+ },
+ {
+  "id": 20603,
+  "title": "Serbia",
+  "slug": "serbia",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 5,
+  "refs": [
+   [
+    "countries",
+    "SRB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SRB"
+ },
+ {
+  "id": 20604,
+  "title": "Seychelles",
+  "slug": "seychelles",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "SYC"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SYC"
+ },
+ {
+  "id": 20605,
+  "title": "Sierra Leone",
+  "slug": "sierra-leone",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 12,
+  "refs": [
+   [
+    "countries",
+    "SLE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SLE"
+ },
+ {
+  "id": 20606,
+  "title": "Singapore",
+  "slug": "singapore",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "SGP"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SGP"
+ },
+ {
+  "id": 20607,
+  "title": "Slovakia",
+  "slug": "slovakia",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "SVK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SVK"
+ },
+ {
+  "id": 20608,
+  "title": "Slovenia",
+  "slug": "slovenia",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "SVN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SVN"
+ },
+ {
+  "id": 20609,
+  "title": "Solomon Islands",
+  "slug": "solomon-islands",
+  "region": [
+   "Melanesia"
+  ],
+  "langs": 73,
+  "refs": [
+   [
+    "countries",
+    "SLB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SLB"
+ },
+ {
+  "id": 20610,
+  "title": "Somalia",
+  "slug": "somalia",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "SOM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SOM"
+ },
+ {
+  "id": 20611,
+  "title": "Somaliland",
+  "slug": "somaliland",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "SOL"
+   ]
+  ],
+  "how": "override",
+  "note": "Self-governing, claimed by Somalia",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20612,
+  "title": "South Africa",
+  "slug": "south-africa",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 19,
+  "refs": [
+   [
+    "countries",
+    "ZAF"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ZAF"
+ },
+ {
+  "id": 20613,
+  "title": "South Korea",
+  "slug": "south-korea",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "KOR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "KOR"
+ },
+ {
+  "id": 20614,
+  "title": "South Ossetia",
+  "slug": "south-ossetia",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "breakaway",
+    "B37"
+   ]
+  ],
+  "how": "override",
+  "note": "Breakaway from Georgia",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20615,
+  "title": "South Sudan",
+  "slug": "south-sudan",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 52,
+  "refs": [
+   [
+    "countries",
+    "SDS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SSD"
+ },
+ {
+  "id": 20616,
+  "title": "Spain",
+  "slug": "spain",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 14,
+  "refs": [
+   [
+    "countries",
+    "ESP"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ESP"
+ },
+ {
+  "id": 20617,
+  "title": "Sri Lanka",
+  "slug": "sri-lanka",
+  "region": [
+   "South Asia"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "LKA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "LKA"
+ },
+ {
+  "id": 20618,
+  "title": "Sudan",
+  "slug": "sudan",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 64,
+  "refs": [
+   [
+    "countries",
+    "SDN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SDN"
+ },
+ {
+  "id": 20619,
+  "title": "Suriname",
+  "slug": "suriname",
+  "region": [
+   "South America"
+  ],
+  "langs": 11,
+  "refs": [
+   [
+    "countries",
+    "SUR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SUR"
+ },
+ {
+  "id": 20621,
+  "title": "Sweden",
+  "slug": "sweden",
+  "region": [
+   "Northern Europe"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "SWE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SWE"
+ },
+ {
+  "id": 20622,
+  "title": "Switzerland",
+  "slug": "switzerland",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "CHE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "CHE"
+ },
+ {
+  "id": 20623,
+  "title": "Syria",
+  "slug": "syria",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "SYR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "SYR"
+ },
+ {
+  "id": 20624,
+  "title": "Taiwan",
+  "slug": "taiwan",
+  "region": [
+   "East Asia"
+  ],
+  "langs": 23,
+  "refs": [
+   [
+    "units",
+    "TWN"
+   ]
+  ],
+  "how": "override",
+  "note": "NE classes it Admin-1 under China in some views",
+  "flag": "disputed",
+  "iso": "TWN"
+ },
+ {
+  "id": 20625,
+  "title": "Tajikistan",
+  "slug": "tajikistan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "TJK"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TJK"
+ },
+ {
+  "id": 20626,
+  "title": "Tanzania",
+  "slug": "tanzania",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 111,
+  "refs": [
+   [
+    "countries",
+    "TZA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TZA"
+ },
+ {
+  "id": 20627,
+  "title": "Thailand",
+  "slug": "thailand",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 35,
+  "refs": [
+   [
+    "countries",
+    "THA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "THA"
+ },
+ {
+  "id": 20628,
+  "title": "Timor-Leste",
+  "slug": "timor-leste",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 18,
+  "refs": [
+   [
+    "countries",
+    "TLS"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TLS"
+ },
+ {
+  "id": 20629,
+  "title": "Togo",
+  "slug": "togo",
+  "region": [
+   "Western Africa"
+  ],
+  "langs": 19,
+  "refs": [
+   [
+    "countries",
+    "TGO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TGO"
+ },
+ {
+  "id": 20630,
+  "title": "Tonga",
+  "slug": "tonga",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "TON"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TON"
+ },
+ {
+  "id": 20631,
+  "title": "Transnistria",
+  "slug": "transnistria",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "breakaway",
+    "B36"
+   ]
+  ],
+  "how": "override",
+  "note": "Breakaway from Moldova",
+  "flag": "disputed",
+  "iso": null
+ },
+ {
+  "id": 20632,
+  "title": "Trinidad and Tobago",
+  "slug": "trinidad-and-tobago",
+  "region": [
+   "Caribbean"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "TTO"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TTO"
+ },
+ {
+  "id": 20633,
+  "title": "Tunisia",
+  "slug": "tunisia",
+  "region": [
+   "Northern Africa"
+  ],
+  "langs": 4,
+  "refs": [
+   [
+    "countries",
+    "TUN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TUN"
+ },
+ {
+  "id": 20634,
+  "title": "Turkey",
+  "slug": "turkey",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 10,
+  "refs": [
+   [
+    "countries",
+    "TUR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TUR"
+ },
+ {
+  "id": 20635,
+  "title": "Turkmenistan",
+  "slug": "turkmenistan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "countries",
+    "TKM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TKM"
+ },
+ {
+  "id": 20636,
+  "title": "Tuvalu",
+  "slug": "tuvalu",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "TUV"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "TUV"
+ },
+ {
+  "id": 20637,
+  "title": "Uganda",
+  "slug": "uganda",
+  "region": [
+   "Eastern Africa"
+  ],
+  "langs": 35,
+  "refs": [
+   [
+    "countries",
+    "UGA"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "UGA"
+ },
+ {
+  "id": 20638,
+  "title": "Ukraine",
+  "slug": "ukraine",
+  "region": [
+   "Eastern Europe"
+  ],
+  "langs": 7,
+  "refs": [
+   [
+    "countries",
+    "UKR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "UKR"
+ },
+ {
+  "id": 20639,
+  "title": "United Arab Emirates",
+  "slug": "united-arab-emirates",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "ARE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ARE"
+ },
+ {
+  "id": 20640,
+  "title": "United Kingdom",
+  "slug": "united-kingdom",
+  "region": [
+   "Western Europe"
+  ],
+  "langs": 12,
+  "refs": [
+   [
+    "countries",
+    "GBR"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "GBR"
+ },
+ {
+  "id": 20641,
+  "title": "United States",
+  "slug": "united-states",
+  "region": [
+   "Northern America"
+  ],
+  "langs": 197,
+  "refs": [
+   [
+    "countries",
+    "USA"
+   ]
+  ],
+  "how": "override",
+  "note": "Includes Alaska, Hawaii; territories like Puerto Rico and Guam are separate NE units and not in our list",
+  "flag": "framing",
+  "iso": "USA"
+ },
+ {
+  "id": 20642,
+  "title": "Uruguay",
+  "slug": "uruguay",
+  "region": [
+   "South America"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "URY"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "URY"
+ },
+ {
+  "id": 20643,
+  "title": "Uzbekistan",
+  "slug": "uzbekistan",
+  "region": [
+   "Central Asia"
+  ],
+  "langs": 3,
+  "refs": [
+   [
+    "countries",
+    "UZB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "UZB"
+ },
+ {
+  "id": 20644,
+  "title": "Vanuatu",
+  "slug": "vanuatu",
+  "region": [
+   "Melanesia"
+  ],
+  "langs": 140,
+  "refs": [
+   [
+    "countries",
+    "VUT"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "VUT"
+ },
+ {
+  "id": 20645,
+  "title": "Vatican City",
+  "slug": "vatican-city",
+  "region": [
+   "Southern Europe"
+  ],
+  "langs": 1,
+  "refs": [
+   [
+    "countries",
+    "VAT"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "VAT"
+ },
+ {
+  "id": 20646,
+  "title": "Venezuela",
+  "slug": "venezuela",
+  "region": [
+   "South America"
+  ],
+  "langs": 28,
+  "refs": [
+   [
+    "countries",
+    "VEN"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "VEN"
+ },
+ {
+  "id": 20647,
+  "title": "Vietnam",
+  "slug": "vietnam",
+  "region": [
+   "Southeast Asia"
+  ],
+  "langs": 78,
+  "refs": [
+   [
+    "countries",
+    "VNM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "VNM"
+ },
+ {
+  "id": 20648,
+  "title": "Wallis and Futuna",
+  "slug": "wallis-and-futuna",
+  "region": [
+   "Polynesia"
+  ],
+  "langs": 2,
+  "refs": [
+   [
+    "units",
+    "WLF"
+   ]
+  ],
+  "how": "override",
+  "note": null,
+  "flag": null,
+  "iso": "WLF"
+ },
+ {
+  "id": 20649,
+  "title": "Yemen",
+  "slug": "yemen",
+  "region": [
+   "Western Asia"
+  ],
+  "langs": 6,
+  "refs": [
+   [
+    "countries",
+    "YEM"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "YEM"
+ },
+ {
+  "id": 20650,
+  "title": "Zambia",
+  "slug": "zambia",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 25,
+  "refs": [
+   [
+    "countries",
+    "ZMB"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ZMB"
+ },
+ {
+  "id": 20651,
+  "title": "Zimbabwe",
+  "slug": "zimbabwe",
+  "region": [
+   "Southern Africa"
+  ],
+  "langs": 8,
+  "refs": [
+   [
+    "countries",
+    "ZWE"
+   ]
+  ],
+  "how": "name",
+  "note": null,
+  "flag": null,
+  "iso": "ZWE"
+ }
+]

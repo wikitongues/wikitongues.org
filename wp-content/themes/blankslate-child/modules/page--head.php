@@ -1,4 +1,9 @@
 <head>
+	<?php
+	// Page details for the data layer, pushed before Google Tag Manager loads so the
+	// page_view carries them (the Language Rights pages use this; see wt-rights/includes/analytics.php).
+	do_action( 'wt_head_before_analytics' );
+	?>
 	<!-- Google Analytics Script -->
 	<?php echo get_field( 'analytics_header_script', 'options' ); ?>
 	<!-- Language and browser view meta tags -->

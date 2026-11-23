@@ -1,0 +1,12 @@
+{
+  "name": "wt-maps-build",
+  "private": true,
+  "description": "Builds the wt-maps SVGs and terrain images ahead of time. See docs/maps.md.",
+  "scripts": {
+    "fetch": "node fetch.mjs",
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "d3-geo": "3.1.1"
+  }
+}

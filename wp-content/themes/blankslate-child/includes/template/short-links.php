@@ -15,7 +15,8 @@
  */
 function wt_short_links() {
 	return array(
-		'ai' => '/revitalization/resources/native-language-ai/',
+		'ai'     => '/revitalization/resources/native-language-ai/',
+		'rights' => '/language-rights/report/',
 	);
 }
 

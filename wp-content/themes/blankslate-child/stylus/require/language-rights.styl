@@ -1,0 +1,407 @@
+// Language Rights report: hub, region and country pages, and the territory card.
+// Running text goes through .wt_prose; this file styles only its own classes.
+
+.wt-rights
+	max-width $content
+	margin 0 auto
+	padding 0 24px 64px
+	box-sizing border-box
+
+	h1, h2, h3
+		margin 0
+
+	&__hero
+		padding 48px 0 32px
+		border-bottom 1px solid $border-color
+
+		h1
+			text--header($black)
+			font-size $fontScale(8)
+			line-height 1.1
+			margin 8px 0 0
+
+	&__kicker
+		text--strong($red)
+		text-transform uppercase
+		letter-spacing .04em
+		font-size 1.2rem
+		margin 0
+
+		a
+			color inherit
+			text-decoration none
+
+	&__back, &__territory a
+		anchor($blue(), 4px)
+		text--strong($blue())
+		display inline-block
+		margin-bottom 16px
+
+	&__release
+		text--body($grey-50)
+		font-size 1.8rem
+		margin 12px 0 0
+
+	&__embargo
+		text--caption()
+		display inline-block
+		margin 0 0 16px
+
+	&__toc
+		display flex
+		flex-wrap wrap
+		gap 8px 24px
+		padding 16px 0
+		border-bottom 1px solid $border-color
+		font-size 1.4rem
+
+		strong
+			text--strong($black)
+
+		a
+			anchor($blue(), 4px)
+			text--body($blue())
+
+	&__glance
+		display grid
+		grid-template-columns 3fr 2fr
+		gap 48px
+		padding 40px 0
+		border-bottom 1px solid $border-color
+
+		h2
+			text--header($black)
+			font-size $fontScale(6)
+
+		h3
+			text--strong($black)
+			font-size 1.6rem
+			margin-bottom 12px
+
+		@media (max-width: $tablet)
+			grid-template-columns 1fr
+			gap 32px
+
+	&__headline
+		text--body($black)
+		font-size 2.2rem
+		line-height 1.4
+		margin 16px 0 24px
+
+	&__stats
+		display flex
+		gap 32px
+		margin 0
+
+		dt
+			text--body($grey-50)
+			font-size 1.3rem
+
+		dd
+			margin 4px 0 0
+
+	&__version
+		text--body($grey-50)
+		font-size 1.3rem
+		margin 24px 0 0
+
+		a
+			anchor($blue(), 2px)
+
+	&__glance-answers ul
+		list-style none
+		margin 0
+		padding 0
+
+		li
+			display flex
+			justify-content space-between
+			align-items center
+			gap 16px
+			padding 8px 0
+			border-bottom 1px solid $border-color
+			font-size 1.4rem
+
+			a
+				anchor($blue(), 2px)
+				text--body($blue())
+
+	&__answer
+		text--strong($black)
+		font-size 1.2rem
+		padding 2px 8px
+		border-radius 4px
+		white-space nowrap
+		background $blue(22)
+
+		&--yes, &--positive
+			background $blue()
+			color $parchment
+
+		&--negative
+			background $parchment
+			color $red
+			border 1px solid $red
+
+		&--none
+			background none
+			color $grey-50
+
+	&__body
+		max-width $measure
+		margin 0 auto
+
+	&__section
+		padding 48px 0 0
+
+		> h2
+			text--header($black)
+			font-size $fontScale(6)
+			margin-bottom 24px
+
+	&__dimension
+		padding 0 0 32px
+
+		h3
+			text--strong($black)
+			font-size 2rem
+			margin-bottom 12px
+
+	&__dimension-answer
+		display flex
+		align-items center
+		gap 12px
+		font-size 1.4rem
+		margin 0 0 16px
+
+	&__sources
+		font-size 1.3rem
+		margin 8px 0 0
+
+		summary
+			text--strong($blue())
+			cursor pointer
+
+		ol
+			padding-left 2rem
+			overflow-wrap anywhere
+
+		a
+			text--body($blue())
+
+	&__support
+		background $blue(10)
+		border-radius 8px
+		padding 32px
+		margin 48px 0 0
+
+		h2
+			text--header($black)
+			font-size $fontScale(5)
+			margin-bottom 8px
+
+		p
+			text--body($black)
+			font-size 1.6rem
+			max-width $measure
+
+	&__donate
+		button--secondary($blue(), $parchment)
+		margin-top 16px
+		text-decoration none
+
+	&__support-compact
+		text--body($grey-50)
+		font-size 1.3rem
+		margin 16px 0 0
+
+		a
+			anchor($blue(), 2px)
+
+	&__story
+		border-left 4px solid $blue()
+		padding 8px 0 8px 24px
+		margin 48px 0 0
+
+		h2
+			text--header($black)
+			font-size $fontScale(5)
+			margin 8px 0
+
+	&__story-links
+		font-size 1.3rem
+
+		a
+			anchor($blue(), 2px)
+
+	&__changes ol
+		font-size 1.4rem
+		padding-left 2rem
+
+	&__pager
+		display flex
+		justify-content space-between
+		gap 24px
+		max-width $measure
+		margin 48px auto 0
+		padding-top 24px
+		border-top 1px solid $border-color
+
+		a
+			anchor($blue(), 4px)
+			text--strong($blue())
+
+	&__next span
+		text--body($grey-50)
+		display block
+		font-size 1.2rem
+
+	&__nations, &__countries
+		list-style none
+		padding 0
+		margin 0
+		display grid
+		grid-template-columns repeat(auto-fill, minmax(200px, 1fr))
+		gap 8px 24px
+		font-size 1.6rem
+
+		a
+			anchor($blue(), 4px)
+			text--strong($blue())
+
+	&__forthcoming
+		color $grey-50
+
+		span
+			display block
+			font-size 1.2rem
+
+	&__updates
+		button--secondary($blue(22), $blue())
+		margin-top 24px
+		text-decoration none
+
+	&__cards
+		display grid
+		grid-template-columns repeat(auto-fill, minmax(280px, 1fr))
+		gap 24px
+
+	&__card
+		border 1px solid $border-color
+		border-radius 8px
+		padding 24px
+
+		h3
+			text--strong($black)
+			font-size 1.8rem
+			margin 8px 0
+
+	&__tally
+		width 100%
+		border-collapse collapse
+		font-size 1.4rem
+
+		caption
+			text-align left
+			color $grey-50
+			padding-bottom 8px
+
+		th, td
+			padding 8px
+			border-bottom 1px solid $border-color
+
+		td
+			text-align right
+			font-variant-numeric tabular-nums
+
+		th[scope=row]
+			text-align left
+			font-weight 400
+
+	&__releases
+		list-style none
+		padding 0
+		margin 0
+
+	&__release-item
+		display flex
+		justify-content space-between
+		flex-wrap wrap
+		gap 8px 24px
+		padding 16px 0
+		border-bottom 1px solid $border-color
+
+		a
+			anchor($blue(), 4px)
+			text--strong($blue())
+			font-size 1.8rem
+
+		span
+			text--body($grey-50)
+			font-size 1.4rem
+
+	&__totals
+		list-style none
+		padding 0
+		display grid
+		grid-template-columns repeat(auto-fill, minmax(200px, 1fr))
+		gap 16px
+
+		strong
+			text--header($blue())
+			display block
+			font-size $fontScale(6)
+
+	&__pdf
+		margin 16px 0 0
+
+		a
+			button--secondary($blue(22), $blue())
+			text-decoration none
+
+	@media print
+		&__toc, &__pager, &__support, &__support-compact, &__updates, &__pdf, &__back
+			display none
+
+		&__sources
+			font-size 1rem
+
+// The card on a territory page.
+.wt-rights-card
+	border 1px solid $border-color
+	border-radius 8px
+	padding 24px
+	margin 0 0 32px
+
+	h2
+		text--header($black)
+		font-size $fontScale(5)
+		margin 8px 0
+
+		a
+			color inherit
+			text-decoration none
+
+	ul
+		list-style none
+		padding 0
+		margin 16px 0
+
+		li
+			display flex
+			justify-content space-between
+			padding 4px 0
+			font-size 1.4rem
+
+	&__link
+		anchor($blue(), 4px)
+		text--strong($blue())
+
+// The print view `wp wt rights pdf` renders: the report alone, no site chrome.
+@media print
+	body.wt-rights-print
+		.wt_header, .wt_footer, #wpadminbar, .gateway-modal
+			display none !important
+
+		.wt-rights
+			padding 0

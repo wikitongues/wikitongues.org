@@ -7,6 +7,8 @@
   <file>wp-content/plugins/wt-gallery</file>
   <file>wp-content/plugins/typeahead/typeahead.php</file>
   <file>wp-content/plugins/download-gateway</file>
+  <file>wp-content/plugins/wt-maps</file>
+  <file>wp-content/plugins/wt-rights</file>
   <file>tests</file>
 
   <!-- Exclusions -->

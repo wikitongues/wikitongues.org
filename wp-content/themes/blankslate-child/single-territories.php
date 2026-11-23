@@ -11,6 +11,12 @@
 
 	echo '<main class="wt_single-territories__content">';
 
+	// Language Rights report card, once this territory's report is released.
+	$wt_rights_report = function_exists( 'wt_rights_territory_report' ) ? wt_rights_territory_report( $territory_id ) : null;
+if ( $wt_rights_report ) {
+	require 'modules/territories/rights-report-card.php';
+}
+
 	// Fellows gallery — shown first if any fellows are linked to this territory.
 	$fellows_query = new WP_Query(
 		array(

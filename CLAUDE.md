@@ -12,6 +12,8 @@ wp-content/themes/blankslate-child/          # Child theme (PHP templates, funct
 wp-content/plugins/download-gateway/         # Download gate plugin
 wp-content/plugins/wt-airtable-sync/         # Airtable → WordPress sync plugin (Make.com webhooks)
 wp-content/plugins/wt-gallery/               # Gallery plugin
+wp-content/plugins/wt-maps/                  # Locator maps plugin (shape table, doctor)
+wp-content/plugins/wt-rights/                # Language Rights report (Doc parser, releases, import)
 wp-content/plugins/typeahead/                # Search typeahead plugin
 tests/                                       # PHPUnit tests (unit layer)
 docs/                                        # Architecture docs (airtable-sync.md is authoritative)
@@ -40,6 +42,32 @@ and migrations run local → staging → production and again after every stagin
   accepts both the old and new shape first, then change the sender.
 
 Apply this to new code and to code you touch; call out existing violations as follow-ups.
+
+## Working principles — plan before building
+
+Learned on the maps work (Nov 2026): a strong prototype went to production on an unsettled data
+model, through five stacked PRs, a fallback patched over a model problem, and plan text too long
+to review. These rules come first.
+
+- **Spec before code.** No build on a workstream until the user has approved a one-screen spec in
+  `plan.md`. When the model changes mid-build, stop and change the spec first; never patch around
+  a model problem in code (a fallback, a special case).
+- **One shape for every spec:** Entities · Rules · Example cases · Display · Open questions · Out
+  of scope. Tables and one-line rules. No history in a spec; history goes to
+  `docs/plan-archive.md`.
+- **Example cases are the test.** A handful of real records (Tahitian, Hawaiian, Chamorro…) that
+  every rule must answer. The user reviews the table, not the prose.
+- **Data before display.** Settle what is true and where it is stored before deciding what a page
+  shows. Keep the two in separate sections and separate PRs.
+- **Start from the source of truth** (Airtable for archive data) and work outward to Make, then
+  WordPress.
+- **Name each thing once.** A spec carries a short glossary; each term has one meaning, and the
+  same name in Airtable, Make and WordPress wherever possible. Flag a collision before building on
+  it.
+- **Decision log.** One line per decision: date, decision, why.
+- **Write for review.** Concise and didactic: lead with the decision needed, then the options, then
+  a recommendation. A prototype is evidence for a spec, not a spec.
+- **Small steps.** Ship one reviewable change at a time; don't stack PRs on an unapproved model.
 
 ## Dev commands
 ```bash
@@ -103,6 +131,8 @@ bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
 - `docs/content-model.md` — every post type and taxonomy: where it's authored, templates, redirects, known data issues
 - `docs/content-styles.md` — the `.wt_prose` module: bare tags only inside it, prose vs layout, type/rhythm/link decisions
 - `docs/gallery.md` — wt-gallery parameters, templates, pagination, editorial gallery rows
+- `docs/maps.md` — wt-maps: the Natural Earth shape table keyed on record IDs, the curated focus list, `wp wt-maps doctor`
+- `docs/language-rights.md` — the Language Rights report: pages, tagged releases (no live sync), statuses, the editorial contract and pre-flight checklist
 - `docs/deployment.md` — release flow, CI checks, what a deploy does, post-deploy steps
 - `docs/staging-sync.md` — how to sync staging ↔ production
 - `docs/testing-strategy.md` — PHPUnit layer strategy and upgrade path

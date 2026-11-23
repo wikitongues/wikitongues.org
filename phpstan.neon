@@ -14,6 +14,8 @@ parameters:
         - wp-content/plugins/wt-gallery
         - wp-content/plugins/wt-airtable-sync
         - wp-content/plugins/download-gateway
+        - wp-content/plugins/wt-maps
+        - wp-content/plugins/wt-rights
         - wp-content/plugins/typeahead/typeahead.php
         - tests
     excludePaths:
