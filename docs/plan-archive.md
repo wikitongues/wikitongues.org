@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Shared editorial styles: one set of tokens and mixins for the donate page and the Language Rights report | 2026-11-23 | [#716], [#717], [#718] | [content-styles.md](content-styles.md#editorial-pages-shared-tokens) |
 | Language geography, phase B (maps slice): subdivisions as objects, keyed on record IDs | 2026-11-18 – 19 | [#687], [#690], [#693] | [airtable-sync.md](airtable-sync.md#territories), [content-model.md](content-model.md#territories-and-regions) |
 | Native Language AI page | 2026-11-18 | [#676], [#678], [#681] | [content-model.md](content-model.md#redirects) (the `/ai` short link) |
 | Language geography, phase A: country of origin reconciled | 2026-11-18 | [#675], [#682], [#684] | [airtable-sync.md](airtable-sync.md#languages), [content-model.md](content-model.md#territories-and-regions) |
@@ -33,6 +34,21 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-23 (Shared editorial styles)
+
+### The donate page and the Language Rights report share one set of editorial styles (plan 7.8)
+**PRs:** [#716], [#717], [#718]
+
+- **Tokens and mixins** ([#716]). `global.styl` gained `$wash`, `$rule`, `$grey-65`, `$red-text`, `$content-wide`, a px type scale, `$space(n)`, and `eyebrow()`, `focus-ring()`, `disclosure()`, `signup-field()` and `signup-button()`. The compiled CSS was unchanged until the pages used them.
+- **The report** ([#717]). `language-rights.styl` dropped its own palette and kicker mixin. Visible changes: muted text `#64635e`, eyebrows at weight 600, the hero eyebrow in `$red-text` (AA), a focus ring, `+`/× markers on every `<details>`, the dialog field and button from the newsletter, breakpoints on `$mobile`/`$tablet`. Every bare `min()` had compiled to 100% (the dialog to 68%); the column, locator map, caption, pager and dialog now render at their stated widths. The territory card got its own `__kicker` class, and `newsletter.styl` now uses the signup mixins.
+- **Donate** ([#718]). Column 1240 → 1200px, wash `#f2ead6` → `#f3eee0`, eyebrow tracking `.065` → `.06em`, focus ring red → blue (parchment on dark sections), breakpoints on `$mobile`/`$tablet`. The FAQ uses `disclosure()`, so its template dropped the `+` span.
+- **Signup field on phones.** `signup-field()` is 16px at every width; the mobile rem shrink had taken it to about 13px, so iOS zoomed in on focus (newsletter and report dialog).
+- **Left open (plan 7.6):** editorial sizes in rem, one link colour, what red means in the brand, report button corners and heading sizes.
+
+Described in [content-styles.md](content-styles.md#editorial-pages-shared-tokens).
 
 ---
 
@@ -1085,3 +1101,6 @@ Minor fix to SSH agent action version in deployment workflow.
 [#693]: https://github.com/wikitongues/wikitongues.org/pull/693
 [#694]: https://github.com/wikitongues/wikitongues.org/pull/694
 [#695]: https://github.com/wikitongues/wikitongues.org/pull/695
+[#716]: https://github.com/wikitongues/wikitongues.org/pull/716
+[#717]: https://github.com/wikitongues/wikitongues.org/pull/717
+[#718]: https://github.com/wikitongues/wikitongues.org/pull/718
