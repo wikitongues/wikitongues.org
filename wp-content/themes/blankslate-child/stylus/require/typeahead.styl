@@ -3,6 +3,11 @@
   display inline-block
   margin-left 2rem
 
+  // Hidden until React mounts the form. CSS, not a script: a DOMContentLoaded
+  // hide script raced the app and could hide the box after it was shown.
+  &:empty
+    display none
+
   .typeahead-form
     position initial
     width initial
