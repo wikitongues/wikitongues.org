@@ -156,9 +156,7 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
-- **Built locally, not yet on production.** Language Rights exists only in the local database and travels as a content bundle ([content-model.md](docs/content-model.md#content-bundles)). Its bundle is in `docs/local_docs/content/`.
-  - **Language Rights** (`/language-rights`, plus nine FAQs). Built, with banner and block images; it depends on the banner caption style (#660) and Numbered Columns (#661) being deployed. Before it goes to production:
-    - Upload `2026/11/language-rights-banner.jpg` and `2026/11/hilario-poot-cahun-class.jpg` there; the import matches images by path.
+- **On production as a draft.** **Language Rights** (`/language-rights`) is a draft on production, with its nine FAQs published and its banner and block images uploaded; going live is publishing it. While it is a draft, a logged-out visit is guessed by WordPress into one of the FAQs. Before publishing:
     - Decide whether this is the pre-launch page or the launch page: the banner says "First edition forthcoming", but parts of the body read as if the report is already out.
     - Identify the delegate in the banner photo, then name them in its alt text and caption.
     - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
@@ -268,6 +266,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
 | 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
+| 2026-11-23 | Production stays dark until the release plan calls for it; `/rights` points to the project page | wt-rights is deployed but set up on production by hand: once it is active with a release imported, the hub shows names, dates and nations even while upcoming, so activating it is itself a release step. A short link to the hub would 404 until then |
 | 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
 | 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
 | 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |

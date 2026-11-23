@@ -16,7 +16,7 @@
 function wt_short_links() {
 	return array(
 		'ai'     => '/revitalization/resources/native-language-ai/',
-		'rights' => '/language-rights/report/',
+		'rights' => '/language-rights/', // The project page, which leads to the report; stays put through releases.
 	);
 }
 
