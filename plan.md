@@ -298,6 +298,16 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 - **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
 - **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
 
+##### Step 1b: territory and sub-region pages
+
+Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, continents held). Built on `feature/cc/maps-place-pages`; see [maps.md](docs/maps.md#territory-and-region-pages). Follow-ups:
+
+- [ ] Continent pages: no map until the world view below. Building them as they are fails on Europe (a cloud of rings, frame to the Pacific); a ring rule for large sets would change `render.mjs` for every map.
+- [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
+- [ ] Andorra's hillshade is 33.4 KB, over the 30 KB image budget (like Tajikistan's).
+- [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
+- [ ] Australia & New Zealand is a top-level region term, so it is treated as a continent and has no map.
+
 ##### Step 1 follow-ups
 
 - [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh).
