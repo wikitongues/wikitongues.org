@@ -36,4 +36,8 @@ class ReleasesAdminTest extends TestCase {
 		$this->assertSame( 'Embargo', wt_rights_status_action( Release_Status::EMBARGOED ) );
 		$this->assertSame( 'Back to upcoming', wt_rights_status_action( Release_Status::UPCOMING ) );
 	}
+
+	public function test_the_screen_names_who_stages_pdfs() {
+		$this->assertSame( 'Frederico', wt_rights_release_contact() );
+	}
 }

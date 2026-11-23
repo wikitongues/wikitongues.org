@@ -14,6 +14,20 @@
 const WT_RIGHTS_RELEASES_PAGE = 'wt-rights-releases';
 
 /**
+ * Who stages report PDFs on the server, named on the Releases screen so that
+ * others know whom to ask. Change it here, or with the
+ * `wt_rights_release_contact` filter.
+ */
+const WT_RIGHTS_RELEASE_CONTACT = 'Frederico';
+
+/**
+ * The person to ask about release files and PDFs.
+ */
+function wt_rights_release_contact(): string {
+	return (string) apply_filters( 'wt_rights_release_contact', WT_RIGHTS_RELEASE_CONTACT );
+}
+
+/**
  * Adds the Releases screen under Language Rights Reports, for admins only.
  */
 function wt_rights_releases_menu(): void {
@@ -138,12 +152,20 @@ function wt_rights_releases_page(): void {
 			</div>
 			<?php if ( \WT\Rights\Release_Status::UPCOMING !== $done && $counts['staged'] < $counts['reports'] ) : ?>
 				<div class="notice notice-warning">
-					<p><?php echo esc_html( sprintf( '%d of %d reports have no PDF on the server, so they have no download button.', $counts['reports'] - $counts['staged'], $counts['reports'] ) ); ?> Stage them from the release machine: copy the PDFs to the server’s home folder, then run <code>wp wt rights import &lt;release file&gt; --execute --pdfs=&lt;dir&gt;</code>.</p>
+					<p><?php echo esc_html( sprintf( '%d of %d reports have no PDF on the server, so they show no download button. PDFs can’t be added from this screen: ask %s to stage them.', $counts['reports'] - $counts['staged'], $counts['reports'], wt_rights_release_contact() ) ); ?></p>
 				</div>
 			<?php endif; ?>
 		<?php elseif ( 'error' === $done ) : ?>
 			<div class="notice notice-error"><p>That change could not be made. Nothing was changed.</p></div>
 		<?php endif; ?>
+
+		<div class="notice notice-info inline">
+			<p><strong>Report PDFs aren’t added here.</strong> They are printed and copied to the server from the machine that cuts releases, and published by this screen once a region is released. If a region is missing PDFs, ask <?php echo esc_html( wt_rights_release_contact() ); ?> before you release it.</p>
+			<details>
+				<summary>For whoever stages them</summary>
+				<p>Copy the PDFs to the server’s home folder (never <code>public_html</code>), then run <code>wp wt rights import &lt;release file&gt; --execute --pdfs=&lt;dir&gt;</code>. Only embargoed and released regions get PDFs; see <em>docs/language-rights.md</em>.</p>
+			</details>
+		</div>
 
 		<table class="widefat striped">
 			<thead>
@@ -176,7 +198,12 @@ function wt_rights_releases_page(): void {
 								<br><small><?php echo esc_html( sprintf( '%d preview %s: stay hidden at any status', $counts['drafts'], 1 === $counts['drafts'] ? 'draft' : 'drafts' ) ); ?></small>
 							<?php endif; ?>
 						</td>
-						<td><?php echo esc_html( sprintf( '%d staged · %d published', $counts['staged'], $counts['published'] ) ); ?></td>
+						<td>
+							<?php echo esc_html( sprintf( '%d staged · %d published', $counts['staged'], $counts['published'] ) ); ?>
+							<?php if ( \WT\Rights\Release_Status::UPCOMING !== $status && $counts['staged'] < $counts['reports'] - $counts['drafts'] ) : ?>
+								<br><small><?php echo esc_html( sprintf( '%d missing: ask %s', $counts['reports'] - $counts['drafts'] - $counts['staged'], wt_rights_release_contact() ) ); ?></small>
+							<?php endif; ?>
+						</td>
 						<td>
 							<?php if ( is_array( $last ) ) : ?>
 								<?php echo esc_html( sprintf( '%s → %s', ucfirst( (string) $last['from'] ), ucfirst( (string) $last['to'] ) ) ); ?><br>
