@@ -6,8 +6,13 @@ Version: 1.0
 Author: Frederico Andrade
 */
 
-require_once __DIR__ . '/includes/class-wt-typeahead-proxy.php';
-WT_Typeahead_Proxy::init();
+require_once __DIR__ . '/includes/class-wt-typeahead-index.php';
+WT_Typeahead_Index::init();
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once __DIR__ . '/includes/class-wt-typeahead-cli.php';
+	WP_CLI::add_command( 'typeahead', 'WT_Typeahead_CLI' );
+}
 
 function react_typeahead_enqueue_scripts() {
 	$plugin_dir = plugin_dir_url( __FILE__ );
@@ -40,7 +45,6 @@ function react_typeahead_shortcode( $atts ) {
 		array(
 			'id'           => 'react_typeahead_root_' . uniqid(),
 			'custom_class' => '',
-			'data_source'  => 'wordpress',
 		),
 		$atts,
 		'react_typeahead'
@@ -48,17 +52,25 @@ function react_typeahead_shortcode( $atts ) {
 
 	$unique_id    = esc_attr( $atts['id'] );
 	$custom_class = esc_attr( $atts['custom_class'] );
-	$data_source  = esc_attr( $atts['data_source'] );
+
+	// Search runs in the browser against a static index (plan 7.9). If the
+	// index hasn't been built on this environment yet, schedule a build.
+	$index_url = WT_Typeahead_Index::url();
+	if ( '' === $index_url ) {
+		WT_Typeahead_Index::schedule();
+	}
+	$samples = get_option( WT_Typeahead_Index::SAMPLES_OPTION, array() );
 
 	$settings = array(
-		'customClass' => $custom_class,
-		'uniqueId'    => $unique_id,
-		'dataSource'  => $data_source,
+		'customClass'        => $custom_class,
+		'uniqueId'           => $unique_id,
+		'indexUrl'           => $index_url,
+		'placeholderSamples' => is_array( $samples ) ? array_values( $samples ) : array(),
 	);
 
 	$settings_var_name = 'wpTypeaheadSettings_' . preg_replace( '/[^a-zA-Z0-9_]/', '_', $unique_id );
 
-	wp_localize_script( 'react-typeahead-script', 'wpTypeaheadSettings_' . $unique_id, $settings );
+	wp_localize_script( 'react-typeahead-script', $settings_var_name, $settings );
 	return '<div id="' . $unique_id . '" class="react-typeahead-container ' . $custom_class . '"></div>';
 }
 
