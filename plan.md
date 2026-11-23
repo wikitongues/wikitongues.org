@@ -664,7 +664,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 #### 7.9 Typeahead: Airtable lookups through WordPress
 
-*Now, #1.* The typeahead's Airtable mode called Airtable from the browser, so its credential shipped in the built JS. Airtable revoked it on 2026-11-23, and header and archive search have been down since. Move the call to the server and keep the query, so results don't change. Two repos: `wikitongues/typeahead` (the app) and this one (the plugin and its committed build).
+*Now, #1. In review: #726, wikitongues/typeahead#9.* The typeahead's Airtable mode called Airtable from the browser, so its credential shipped in the built JS. Airtable revoked it on 2026-11-23, and header and archive search have been down since. Move the call to the server and keep the query, so results don't change. Two repos: `wikitongues/typeahead` (the app) and this one (the plugin and its committed build).
 
 **Entities**
 
@@ -680,7 +680,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - The new token is read-only (`data.records:read`) on one base.
 - The endpoint runs the app's current query (`FIND` on the label and identifier fields, same fields returned), so results match.
 - The query is escaped before it goes into `filterByFormula`. Today it is interpolated raw.
-- A query under 2 characters returns `[]` without calling Airtable.
+- A 1-character query, or one over 100 characters, returns `[]` without calling Airtable. The empty query is allowed: the app uses it once to pick placeholder examples.
 - Answers are cached per normalised query (trimmed, lowercase) in a transient for 10 minutes. With the app's 300 ms debounce, this keeps us under Airtable's 5 requests/second per base.
 - On an Airtable error or timeout: return `[]` and write an `error_log` line. Never pass Airtable's error body to the browser.
 - The app drops `apiKey`, base, table and field IDs from its settings and `.env`, calls the endpoint, and stops logging API responses to the console.
@@ -694,6 +694,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 | `tahitian` | Tahitian |
 | `cha` | Chamorro among the results |
 | `h` | `[]`, no Airtable call |
+| empty | A page of languages, for the placeholder |
 | `a"b` | Normal results or `[]`; no formula error |
 | Same query twice within 10 minutes | One Airtable call |
 | Token missing, or Airtable down | `[]`; the search box still renders; error logged |
