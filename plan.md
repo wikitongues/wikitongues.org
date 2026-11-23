@@ -846,6 +846,75 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
+#### 7.8 Shared editorial styles
+
+*In progress; spec approved 2026-11-23.* The donate page and the Language Rights report (2.2) share a look but not code: each defines its own eyebrow label, wash, rule, focus ring, disclosure toggle and px sizes, with slightly different values. Promote one set into `global.styl` and switch both pages to it.
+
+##### Glossary
+
+- **Eyebrow:** the small uppercase label above a heading (the report's "kicker").
+- **Wash:** the tinted section background. **Rule:** a thin warm divider, not the blue `$border-color`.
+- **Wide column:** the editorial page width, `$content-wide`. `$content` stays the site default.
+
+##### Entities (new in `global.styl`)
+
+| Name | Value | Replaces |
+|---|---|---|
+| `$wash` · `$rule` | `#f3eee0` · `#dcd5c3` | the report's wash and rule; donate's `#f2ead6` |
+| `$grey-65` · `$red-text` | `blend(rgba($black,.65), $parchment)` = `#64635e` · `#b54a35` (AA on parchment and wash) | the report's muted text and red |
+| `$content-wide` | `1200px` | the report wrap, donate's `1240px` |
+| `$type-label/-small/-body/-lead/-deck` · `$space(n)` | 13/14/16/18/21px · `n × 8px` | literal sizes and spacing in both files |
+| `eyebrow(color)` · `focus-ring(color)` | 13px/600, `.06em`, uppercase, links inherit · 3px outline on `:focus-visible` | the report kicker, donate eyebrow, donate's red ring |
+| `disclosure()` · `signup-field()` / `signup-button()` | `+` that turns to × when open, reduced motion · the newsletter field and button | donate FAQ and report toggles · the report dialog's own field |
+
+##### Rules
+
+1. A colour, width or size is a literal in one place, its token; page files never rename a token.
+2. PR 1 adds tokens only: the compiled CSS is unchanged.
+3. PRs 2 and 3 change no rendered value except those listed in Display.
+4. Breakpoints use `$mobile` / `$tablet` / `$smallScreen`; the report's own 640/780/940px queries move to the nearest.
+5. `.wt_prose` owns bare tags; page files style their own classes. Sizes stay px (no rem shrink).
+
+##### Example cases
+
+| Element | Before | After |
+|---|---|---|
+| Hub hero eyebrow | `$red` 13px/700, 4.43:1 | `eyebrow($red-text)`, ≈5.4:1 |
+| Region eyebrow with its report link | 13px text, 16px link | 13px throughout |
+| Donate FAQ | `#f2ead6`, its own `+` | `$wash`, `disclosure()`; looks the same |
+| Hub methodology indicators | no open/closed marker | `disclosure()` `+` |
+| Report wrap at 1800px | 1657px wide | 1200px |
+| Release-updates dialog field | black box, no focus style | the newsletter field |
+
+##### Display
+
+- **Donate:** wash `#f2ead6` → `#f3eee0`, column 1240 → 1200px, eyebrow tracking `.065` → `.06em`, focus ring red → blue.
+- **Report:** muted text → `#64635e`, eyebrow weight 700 → 600, a focus ring and disclosure markers, the dialog field restyled, the column capped at 1200px.
+
+##### Steps
+
+| PR | Ships |
+|---|---|
+| 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged |
+| 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` |
+| 3 `refactor/cc/donate-use-tokens` | `donate.styl` |
+
+Each passes `/test` and a before/after check at 375, 1024 and 1280px on the hub, a region, a country, donate and one territory page. No database changes.
+
+##### Out of scope
+
+Moving editorial sizes to rem; link colour, button corners, what red means in the brand, report heading sizes; the report's other layout bugs; any other page's look.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-23 | Promote shared editorial styles to `global.styl` | One system instead of two pages each inventing one |
+| 2026-11-23 | Focus ring `$blue()`, `$parchment` on dark sections; donate switches from red | Red's brand meaning is undecided; blue is the site's interaction colour |
+| 2026-11-23 | `$content-wide` 1200px; donate narrows from 1240px | One editorial width |
+| 2026-11-23 | `$wash` `#f3eee0` | Used on more surfaces |
+| 2026-11-23 | `signup-field()` carries the input reset (`border none`, `appearance none`) so it stands alone; `newsletter.styl` switches in PR 2 | Using it in the newsletter adds those two declarations, so PR 1 could not keep the compiled CSS byte-identical |
+
 ### 8. Membership (blocked on the board)
 
 What membership means for Wikitongues (its scope, benefits, feel and impact) is a board decision that sits above website work. Nothing here starts until the board makes it. The contributor program's identity progression (email-known → contributor → member → fellow) and the visitor engagement profile (4.3) prepare the ground.
