@@ -304,7 +304,10 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 
 - [ ] Continent pages: no map until the world view below. Building them as they are fails on Europe (a cloud of rings, frame to the Pacific); a ring rule for large sets would change `render.mjs` for every map.
 - [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
-- [ ] Andorra's hillshade is 33.4 KB, over the 30 KB image budget (like Tajikistan's).
+- [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
+- [ ] Continent maps, lookdev 2026-11-23: a fixed frame per continent, sub-regions in their own tints, no rings, reads well for Africa, Asia, Europe and the Americas (Russia runs off Europe's edge). Oceania needs rings, and Australia & New Zealand moved under it as a sub-region (UN M49). An Equal Earth world view with the continent highlighted was weaker. Needs a spec: the tint palette (contrast, colour blindness), frames as data, the ring rule.
+- [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
+- [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
 - [ ] Australia & New Zealand is a top-level region term, so it is treated as a continent and has no map.
 
