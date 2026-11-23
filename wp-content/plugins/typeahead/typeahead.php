@@ -6,6 +6,9 @@ Version: 1.0
 Author: Frederico Andrade
 */
 
+require_once __DIR__ . '/includes/class-wt-typeahead-proxy.php';
+WT_Typeahead_Proxy::init();
+
 function react_typeahead_enqueue_scripts() {
 	$plugin_dir = plugin_dir_url( __FILE__ );
 

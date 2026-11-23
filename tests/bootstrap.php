@@ -26,6 +26,9 @@ if ( ! defined( 'GATEWAY_ENABLED' ) ) {
 require_once __DIR__ . '/unit/FakeQuery.php';
 require_once __DIR__ . '/unit/WP_Error.php';
 
+// Typeahead proxy.
+require_once __DIR__ . '/../wp-content/plugins/typeahead/includes/class-wt-typeahead-proxy.php';
+
 // Gateway plugin classes.
 require_once GATEWAY_DIR . 'includes/class-logger.php';
 require_once GATEWAY_DIR . 'includes/class-ip-hasher.php';
