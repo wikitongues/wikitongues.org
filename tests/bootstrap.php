@@ -86,6 +86,7 @@ require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-tabl
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/sets.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-renderer.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/interactive.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/structure.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-answers.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-docs-adapter.php';

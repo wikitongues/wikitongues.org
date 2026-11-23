@@ -194,15 +194,15 @@ function wt_maps_export_command( array $args, array $assoc_args ): void {
 
 	$languages = wt_maps_collect_languages();
 
-	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, $languages ), wt_maps_extra_sets() );
+	$plan = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, $languages ), wt_maps_extra_sets() );
+	// Every place in the table, not only those in a set: the build tags the
+	// neighbouring countries on each map with their places (plan 3.2, step 2a).
 	$places = array();
-	foreach ( $plan['sets'] as $set ) {
-		foreach ( $set['places'] as $place_id ) {
-			$places[ $place_id ] = array(
-				'name'   => $table->name( $place_id ),
-				'shapes' => $table->shapes( $place_id ),
-			);
-		}
+	foreach ( $table->place_ids() as $place_id ) {
+		$places[ $place_id ] = array(
+			'name'   => $table->name( $place_id ),
+			'shapes' => $table->shapes( $place_id ),
+		);
 	}
 	ksort( $places );
 

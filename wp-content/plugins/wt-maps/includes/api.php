@@ -10,7 +10,7 @@ use WT\Maps\Renderer;
 /**
  * Plugin settings, with defaults.
  *
- * @return array{sidebar: bool, style: string}
+ * @return array{sidebar: bool, style: string, interactive: bool}
  */
 function wt_maps_settings(): array {
 	$saved = get_option( 'wt_maps', array() );
@@ -18,8 +18,9 @@ function wt_maps_settings(): array {
 	$style = isset( $saved['style'] ) && isset( Renderer::STYLES[ $saved['style'] ] ) ? $saved['style'] : Renderer::DEFAULT_STYLE;
 
 	return array(
-		'sidebar' => ! isset( $saved['sidebar'] ) || (bool) $saved['sidebar'],
-		'style'   => $style,
+		'sidebar'     => ! isset( $saved['sidebar'] ) || (bool) $saved['sidebar'],
+		'style'       => $style,
+		'interactive' => ! isset( $saved['interactive'] ) || (bool) $saved['interactive'],
 	);
 }
 
@@ -47,42 +48,14 @@ function wt_maps_record_ids( array $post_ids ): array {
 /**
  * Current names of places, by record ID, from their posts.
  *
- * Falls back to the shape table's label for a place with no post.
+ * Falls back to the shape table's label for a place with no post. Shares its
+ * one query with an interactive map's links (wt_maps_place_links()).
  *
  * @param list<string> $record_ids Place record IDs.
  * @return array<string, string>
  */
 function wt_maps_place_names( array $record_ids ): array {
-	$names = array();
-	if ( array() === $record_ids ) {
-		return $names;
-	}
-
-	$posts = get_posts(
-		array(
-			'post_type'      => array( 'territories', 'subdivisions' ),
-			'post_status'    => 'publish',
-			'posts_per_page' => count( $record_ids ),
-			'no_found_rows'  => true,
-			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-				array(
-					'key'     => '_airtable_record_id',
-					'value'   => $record_ids,
-					'compare' => 'IN',
-				),
-			),
-		)
-	);
-	foreach ( $posts as $post ) {
-		$names[ (string) get_post_meta( $post->ID, '_airtable_record_id', true ) ] = get_the_title( $post );
-	}
-
-	foreach ( $record_ids as $record_id ) {
-		if ( ! isset( $names[ $record_id ] ) ) {
-			$names[ $record_id ] = wt_maps_shape_table()->name( $record_id );
-		}
-	}
-	return $names;
+	return array_map( static fn( array $link ): string => $link['n'], wt_maps_place_links( $record_ids ) );
 }
 
 /**
@@ -178,7 +151,7 @@ function wt_map( array $args = array() ): string {
 			'class'   => $args['class'] ?? '',
 			'style'   => $args['style'] ?? '',
 			'caption' => ! empty( $args['caption'] ),
-		)
+		) + array_intersect_key( $args, array( 'interactive' => true ) )
 	);
 }
 
@@ -187,10 +160,11 @@ function wt_map( array $args = array() ): string {
  * language, for pages that aren't one (a Language Rights report region or
  * country). '' when the set has no built map.
  *
- * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string} $args
+ * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string, interactive?: bool} $args
  *     Places and primary places as record IDs; the map's accessible title;
  *     `inset` scales the locator globe (1.2 on territory pages); `view` picks
  *     another drawing of the places (`continent`), see wt_maps_set_key().
+ *     `interactive` adds hover labels and links (default: Settings → Maps).
  * @return string
  */
 function wt_map_places( array $args ): string {
@@ -207,28 +181,39 @@ function wt_map_places( array $args ): string {
 	}
 
 	$roles = Renderer::roles( $places, $origins );
-	$names = wt_maps_place_names( $places );
+	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];
+	$inter = (bool) ( $args['interactive'] ?? wt_maps_settings()['interactive'] );
+
+	// An interactive map links every place the build tagged, neighbours included,
+	// resolved with the place names in one query. The focused styles fog the
+	// neighbours out, so they link only the places.
+	$svg    = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local plugin file.
+	$tagged = $inter && in_array( $style, array( 'light-full', 'dark-full' ), true ) ? wt_maps_tagged_places( $svg ) : array();
+	$links  = wt_maps_place_links( array_values( array_unique( array_merge( $places, $tagged ) ) ) );
+	$names  = array_map( static fn( array $link ): string => $link['n'], array_intersect_key( $links, array_flip( $places ) ) );
 	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
 		$names = array_map( 'wt_prefix_the', $names );
 	}
 	$title = $args['title'];
 	$desc  = Renderer::describe( $roles, $names, PHP_INT_MAX, $origins );
 	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names, $origins );
-	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];
-	$class = trim( 'wt-map wt-map--' . $style . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
+	$class = trim( 'wt-map wt-map--' . $style . ( $inter ? ' wt-map--interactive' : '' ) . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
 	$inset = (float) ( $args['inset'] ?? 1.0 );
+	$data  = $inter ? wt_maps_interaction_json( $links ) : '';
 
-	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, $inset, Renderer::VERSION, filemtime( $file ) ) ) );
+	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, $inset, $data, Renderer::VERSION, filemtime( $file ) ) ) );
 	$figure    = wp_cache_get( $cache_key, 'wt_maps' );
 	if ( ! is_string( $figure ) ) {
-		$svg    = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local plugin file.
 		$svg    = Renderer::decorate( $svg, $roles, plugins_url( 'maps/', dirname( __DIR__ ) . '/wt-maps.php' ), $title, $desc, $inset );
-		$figure = '<figure class="' . esc_attr( $class ) . '">' . $svg
+		$figure = '<figure class="' . esc_attr( $class ) . '"' . ( '' !== $data ? ' data-wt-map="' . esc_attr( $data ) . '"' : '' ) . '>' . $svg
 			. ( '' !== $cap ? '<figcaption class="wt-map__caption">' . esc_html( ucfirst( $cap ) ) . '</figcaption>' : '' )
 			. '</figure>';
 		wp_cache_set( $cache_key, $figure, 'wt_maps', DAY_IN_SECONDS );
 	}
 
+	if ( $inter ) {
+		wt_maps_enqueue_script();
+	}
 	$defs         = $defs_printed ? '' : wt_maps_defs();
 	$defs_printed = true;
 	return $defs . $figure;

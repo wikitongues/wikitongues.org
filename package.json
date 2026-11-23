@@ -5,7 +5,7 @@
   "scripts": {
     "stylus:watch": "stylus -w wp-content/themes/blankslate-child/stylus",
     "stylus:build": "stylus wp-content/themes/blankslate-child/stylus",
-    "lint:js": "eslint wp-content/themes/blankslate-child/js wp-content/plugins/wt-gallery/js"
+    "lint:js": "eslint wp-content/themes/blankslate-child/js wp-content/plugins/wt-gallery/js wp-content/plugins/wt-maps/assets"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

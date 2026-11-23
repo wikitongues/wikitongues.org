@@ -20,6 +20,7 @@ require_once WT_MAPS_DIR . 'includes/class-shape-table.php';
 require_once WT_MAPS_DIR . 'includes/doctor.php';
 require_once WT_MAPS_DIR . 'includes/sets.php';
 require_once WT_MAPS_DIR . 'includes/class-renderer.php';
+require_once WT_MAPS_DIR . 'includes/interactive.php';
 require_once WT_MAPS_DIR . 'includes/api.php';
 require_once WT_MAPS_DIR . 'includes/settings.php';
 
