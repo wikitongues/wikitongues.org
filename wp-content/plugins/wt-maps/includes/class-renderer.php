@@ -38,7 +38,7 @@ final class Renderer {
 		'dark-focused'  => 'Dark focused',
 	);
 
-	public const DEFAULT_STYLE = 'light-focused';
+	public const DEFAULT_STYLE = 'light-full';
 
 	/**
 	 * Primary or secondary for each place.
