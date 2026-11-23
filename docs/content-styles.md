@@ -58,3 +58,36 @@ The defaults come from the blog, the most-read prose surface.
 Every rule in `prose.styl` goes through `:where()`, so the whole module
 weighs one class. A component can override any prose rule with a single
 class of its own, without `!important` or longer selectors.
+
+## Editorial pages: shared tokens
+
+Pages laid out as editorial spreads rather than prose (the donate page and the
+Language Rights report) build from one set of tokens and mixins in
+`global.styl`, instead of each defining its own. A colour, width or size is a
+literal in one place, its token; page files never rename a token.
+
+| Token | Value | Use |
+|---|---|---|
+| `$wash` | `#f3eee0` | tinted section background |
+| `$rule` | `#dcd5c3` | warm divider (`$border-color` is the blue one) |
+| `$grey-65` | `#64635e` | muted text |
+| `$red-text` | `#b54a35` | red as text; passes AA on `$parchment` and `$wash` (`$red` is for fills) |
+| `$content-wide` | 1200px | the editorial column (`$content` stays the site default) |
+| `$type-label` … `$type-deck` | 13 / 14 / 16 / 18 / 21px | editorial type scale |
+| `$space(n)` | `n × 8px` | spacing |
+
+| Mixin | Does |
+|---|---|
+| `eyebrow(color)` | the small uppercase label above a heading; links inside keep its size and colour. Pass `inherit` on dark boxes |
+| `focus-ring(color)` | 3px outline on `:focus-visible`; blue by default, `$parchment` on dark sections |
+| `disclosure(toggle-size, spread)` | on a `<details>`: hides the marker and adds a `+` that turns to × when open, with reduced motion. `spread` puts the `+` at the far edge; `false` keeps it beside the text |
+| `signup-field()` / `signup-button()` | the newsletter's email field and button, used by the report's signup dialog. The field is 16px at every width so iOS doesn't zoom on focus |
+
+- **Sizes stay px.** The site's mobile rem shrink would change these pages;
+  moving editorial sizes to rem is a separate decision.
+- **Breakpoints** use `$mobile`, `$tablet` and `$smallScreen`.
+- **Never bare `min()` or `max()`.** Stylus evaluates them at compile time:
+  `min(100%, 1200px)` compiles to `100%`. Use `max-width`, or `unquote()`.
+- **No `$token/1.4` in a `font` shorthand.** Stylus divides it; write the
+  properties out.
+
