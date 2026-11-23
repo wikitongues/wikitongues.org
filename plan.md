@@ -58,18 +58,21 @@ Last reviewed 2026-11-23.
 
 | # | Item | Why now | Spec |
 |---|---|---|---|
-| 1 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 2 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
-| 3 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 4 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 5 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 6 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 7 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 8 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 1 | Typeahead: Airtable lookups through WordPress | Header and archive search are down; the fix keeps the Airtable credential on the server | [7.9](#79-typeahead-airtable-lookups-through-wordpress) |
+| 2 | Secret scanning in CI | Stop credentials, including ones inside build output, before they're committed | [7.10](#710-secret-scanning-in-ci) |
+| 3 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
+| 4 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 5 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 6 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 7 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 8 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 9 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 10 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 11 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
-The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
+The order follows the product roadmap, with two exceptions: the typeahead and scanning work (#1–3) goes first because search is down, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
-**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#2), maps (#7), language geography (6.8) and shared styles. #1 hasn't started, and #3–6 haven't moved since the donate redesign. Either return to the order or re-order the queue.
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#5), maps (#10), language geography (6.8) and shared styles. #4 hasn't started, and #6–9 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -658,6 +661,95 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Careers**, **Archive success** and the **giving campaign**.
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
+
+#### 7.9 Typeahead: Airtable lookups through WordPress
+
+*Now, #1.* The typeahead's Airtable mode called Airtable from the browser, so its credential shipped in the built JS. Airtable revoked it on 2026-11-23, and header and archive search have been down since. Move the call to the server and keep the query, so results don't change. Two repos: `wikitongues/typeahead` (the app) and this one (the plugin and its committed build).
+
+**Entities**
+
+| Term | Meaning |
+|---|---|
+| Typeahead app | The React app in `wikitongues/typeahead`; its build is committed to `wp-content/plugins/typeahead/build` |
+| Proxy endpoint | New: `GET /wp-json/wt/v1/typeahead?q=…`, in the typeahead plugin |
+| Search settings | The existing ACF options page *Custom Search*: token, base, table, field IDs. Unused by code today |
+
+**Rules**
+
+- The token lives only in Custom Search, entered per environment. It never reaches the browser, a build or a repo.
+- The new token is read-only (`data.records:read`) on one base.
+- The endpoint runs the app's current query (`FIND` on the label and identifier fields, same fields returned), so results match.
+- The query is escaped before it goes into `filterByFormula`. Today it is interpolated raw.
+- A query under 2 characters returns `[]` without calling Airtable.
+- Answers are cached per normalised query (trimmed, lowercase) in a transient for 10 minutes. With the app's 300 ms debounce, this keeps us under Airtable's 5 requests/second per base.
+- On an Airtable error or timeout: return `[]` and write an `error_log` line. Never pass Airtable's error body to the browser.
+- The app drops `apiKey`, base, table and field IDs from its settings and `.env`, calls the endpoint, and stops logging API responses to the console.
+- Order: the endpoint ships first, then the rebuilt app.
+
+**Example cases**
+
+| Input | Expected |
+|---|---|
+| `haw` | Hawaiian in the results, same order as the old Airtable mode |
+| `tahitian` | Tahitian |
+| `cha` | Chamorro among the results |
+| `h` | `[]`, no Airtable call |
+| `a"b` | Normal results or `[]`; no formula error |
+| Same query twice within 10 minutes | One Airtable call |
+| Token missing, or Airtable down | `[]`; the search box still renders; error logged |
+
+**Display:** no change.
+
+**Open questions:** is 10 minutes the right cache, or hours, since language names rarely change? Retire the WordPress mode (`custom/v1/search`) or keep it as a fallback?
+
+**Out of scope:** better search results, which belong to [3.3](#33-enhanced-search).
+
+#### 7.10 Secret scanning in CI
+
+*Now, #2.* Catch credentials before they're committed, including in committed build output.
+
+**Rules**
+
+- gitleaks runs on every PR in this repo and in `wikitongues/typeahead`. A finding fails the check. It scans `build/` folders too.
+- At setup, one full-history scan of each repo. Findings are reviewed privately, never in issues.
+- GitHub secret scanning and push protection turned on in both repos, where the plan allows it for the private repo.
+- Allowlist in `.gitleaks.toml`, one reason per entry. Public identifiers (Airtable base, table and field IDs, GA4 measurement ID, publishable keys) are allowed by name.
+
+**Example cases**
+
+| Change | Expected |
+|---|---|
+| A PR whose built JS contains an Airtable `pat…` token | Fails |
+| A PR that adds an Airtable base ID (`app…`) | Passes |
+| A PR that adds a private key or `.env` file | Fails |
+
+**Open question:** does the organization's GitHub plan include push protection on private repos?
+
+**Out of scope:** secrets in the database, and moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)).
+
+#### 7.11 Browser credential scan
+
+*Now, #3.* Check what visitors actually download, which a repo scan can miss.
+
+**Rules**
+
+- A Playwright script loads a fixed page list on a target URL (local or staging): home, archive search, a language, a video, a territory, the giving page, the Language Rights hub.
+- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and checks them against the gitleaks rules from 7.10.
+- It reports the URL and the rule that matched, never the matched value.
+- It runs from the deploy workflow against staging; a hit blocks the production deploy. It can also be run by hand.
+- This is the first Layer 4 piece of [7.3](#73-tests).
+
+**Example cases**
+
+| Target | Expected |
+|---|---|
+| A page loading the old typeahead bundle | Flagged |
+| The site after 7.9 ships | Clean |
+| A page with the GA4 measurement ID | Clean (allowlisted) |
+
+**Open question:** do third-party scripts (FundraiseUp, GTM) get scanned, or skipped as not ours?
+
+**Out of scope:** logged-in and admin pages.
 
 ### 8. Membership (blocked on the board)
 
