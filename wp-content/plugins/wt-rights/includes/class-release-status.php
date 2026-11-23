@@ -63,4 +63,17 @@ final class Release_Status {
 		}
 		return self::POST_STATUS[ $region_status ] ?? 'draft';
 	}
+
+	/**
+	 * A region's change log with one more entry, newest first, at most $max long.
+	 *
+	 * @param list<array{at: string, by: string, from: string, to: string}> $log   The stored log.
+	 * @param array{at: string, by: string, from: string, to: string}       $entry The change.
+	 * @param int                                                           $max   Entries kept.
+	 * @return list<array{at: string, by: string, from: string, to: string}>
+	 */
+	public static function log( array $log, array $entry, int $max = 20 ): array {
+		array_unshift( $log, $entry );
+		return array_slice( $log, 0, $max );
+	}
 }

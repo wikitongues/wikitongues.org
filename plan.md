@@ -213,8 +213,8 @@ The *Report on the Global State of Language Rights* on wikitongues.org: a hub, s
 ##### Display
 
 - **Hub** `/language-rights/report/`: the release schedule, methodology, indicators, answer key, director's letter, released regions; the global synthesis and global totals from the Complete Edition.
-- **Region** `/language-rights/report/{region}/`: headline, introduction, findings, evidence and story cards, indicator comparison across its countries, the country grid, the treaty register (collapsible).
-- **Country** `/language-rights/report/{country}/`: "At a glance" (headline sentence, language count, baseline and trend, five answers), the six sections with sources collapsed, story card, link to its territory and region.
+- **Region** `/language-rights/report/{region}/`: a map of its countries, headline, introduction, findings, evidence and story cards, indicator comparison across its countries, the country grid, the treaty register (collapsible), the region's letter from the director.
+- **Country** `/language-rights/report/{country}/`: its territory's map, "At a glance" (headline sentence, language count, baseline and trend, five answers), the six sections with sources collapsed, story card, link to its territory and region.
 - **Territory pages:** a block linking to the country's Released report.
 - **Look** lifts the prototype's HTML into Stylus modules; the map is the 3.2 component; print CSS collapses sources and points to the PDF.
 - **Instrument:** GTM `content_type` for `/language-rights/report/` (see 2.1); the gated PDF reports through the download gateway's existing GA4 funnel events.
@@ -231,8 +231,11 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 | 4 | Hub, region and country templates; territory card; donate placements; `/rights` | [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
 | 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
 | 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
+| 7 | Match the review prototype; region overview and front matter in the release; region maps | [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
+| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
+| 9 | The exporter reads the region and front-matter Docs into the release file's `overview` and `front_matter` | Next |
 
-Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md).
+Merge in order (#715 is stacked on #714). Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
 
 **Data first:** the Held option and the Changes and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
 
@@ -241,10 +244,9 @@ Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both 
 ##### Open questions
 
 1. **Kristen:** approve the editorial contract, the Held status and the Changes table in [docs/language-rights.md](docs/language-rights.md).
-1. **Kristen:** is the list of treaties each nation is party to enough for region pages, or are actions and dates needed (and from where)?
-2. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
-3. **Press access:** how journalist accounts are issued and revoked (tracked privately).
-4. **Google access:** a service account with read access to the report folders.
+2. **Kristen:** is the list of treaties each nation is party to enough for region pages, or are actions and dates needed (and from where)?
+3. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
+4. **Press access:** how journalist accounts are issued and revoked (tracked privately).
 5. **Kristen: global findings before the Complete Edition?** The latest prototype's hub shows key findings and per-indicator charts across all 170 scored reports now; the decision log (2026-11-18) says global numbers appear only at the Complete Edition. *Impact:* showing them early puts unreleased regions' answers in public aggregates before those regions are fact-checked or embargoed; keeping the rule means the hub shows only the schedule, methodology and letter until 25 August 2027. The component can be built either way.
 
 ##### Out of scope
@@ -267,7 +269,8 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
 | 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
 | 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
-| 2026-11-23 | No automatic release on the planned date; a person releases each region | Launch day stays a deliberate act |
+| 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
+| 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
 | 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
 ### 3. Discovery
