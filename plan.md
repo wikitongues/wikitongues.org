@@ -895,8 +895,8 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 | PR | Ships |
 |---|---|
-| 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged |
-| 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` |
+| 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged ([#716](https://github.com/wikitongues/wikitongues.org/pull/716), merged 2026-11-23) |
+| 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` (PR 2) |
 | 3 `refactor/cc/donate-use-tokens` | `donate.styl` |
 
 Each passes `/test` and a before/after check at 375, 1024 and 1280px on the hub, a region, a country, donate and one territory page. No database changes.
@@ -914,6 +914,9 @@ Moving editorial sizes to rem; link colour, button corners, what red means in th
 | 2026-11-23 | `$content-wide` 1200px; donate narrows from 1240px | One editorial width |
 | 2026-11-23 | `$wash` `#f3eee0` | Used on more surfaces |
 | 2026-11-23 | `signup-field()` carries the input reset (`border none`, `appearance none`) so it stands alone; `newsletter.styl` switches in PR 2 | Using it in the newsletter adds those two declarations, so PR 1 could not keep the compiled CSS byte-identical |
+| 2026-11-23 | Every report `<details>` gets `disclosure()`, not only the three named: indicators, sources and "Browse N", plus the chart table, "About the figures" and the director's letter | One marker for one control |
+| 2026-11-23 | Every bare `min()` in the report becomes `max-width`, not only the wrap: the locator map (300px), its caption (270px), the pager (960px), the dialog (480px; it compiled to 68%) | The same compile bug; each now renders at the width its rule names |
+| 2026-11-23 | `disclosure()` pins the `+` with `margin-left: auto`, not `space-between` | `space-between` centred the indicator label between its number and the `+` |
 
 ### 8. Membership (blocked on the board)
 
