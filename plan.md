@@ -58,7 +58,7 @@ Last reviewed 2026-11-23.
 
 | # | Item | Why now | Spec |
 |---|---|---|---|
-| 1 | Typeahead: Airtable lookups through WordPress | Header and archive search are down; the fix keeps the Airtable credential on the server | [7.9](#79-typeahead-airtable-lookups-through-wordpress) |
+| 1 | Typeahead: a search index built from WordPress | Production search is down, and the staging fix is too slow; a local index is instant and needs no token | [7.9](#79-typeahead-a-search-index-built-from-wordpress) |
 | 2 | Secret scanning in CI | Stop credentials, including ones inside build output, before they're committed | [7.10](#710-secret-scanning-in-ci) |
 | 3 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
 | 4 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
@@ -662,48 +662,60 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
-#### 7.9 Typeahead: Airtable lookups through WordPress
+#### 7.9 Typeahead: a search index built from WordPress
 
-*Now, #1. In review: #726, wikitongues/typeahead#9.* The typeahead's Airtable mode called Airtable from the browser, so its credential shipped in the built JS. Airtable revoked it on 2026-11-23, and header and archive search have been down since. Move the call to the server and keep the query, so results don't change. Two repos: `wikitongues/typeahead` (the app) and this one (the plugin and its committed build).
+*Now, #1. Spec for review. Production release #728 is on hold until this ships.* Search needs to be fast, keep the Airtable search's results, and hold no credential in the browser. The per-keystroke Airtable proxy (#726, on staging) is too slow: 1–3.6 s per search and 3–6 s while typing. WordPress already holds the same data, synced from Airtable: 8,088 languages, with `alternate_names` matching Airtable's names field (Hawaiian: "Hawaiian, ’Olelo Hawai’i, …"). So the server builds one index from WordPress, and the browser searches it locally. The old WordPress mode's results were weaker because it ran a `LIKE` query on post meta for every keystroke, not because of the data. Two repos: `wikitongues/typeahead` (the app) and this one.
 
 **Entities**
 
 | Term | Meaning |
 |---|---|
 | Typeahead app | The React app in `wikitongues/typeahead`; its build is committed to `wp-content/plugins/typeahead/build` |
-| Proxy endpoint | New: `GET /wp-json/wt/v1/typeahead?q=…`, in the typeahead plugin |
-| Search settings | The existing ACF options page *Custom Search*: token, base, table, field IDs. Unused by code today |
+| Search index | `wp-content/uploads/typeahead/index.json`: one row per published language, `{id, label, identifier, resourced}` |
+| Rebuild | Writes the index from WordPress: `wp typeahead rebuild`, and automatically after a language is saved |
+| Placeholder samples | 50 random language names saved by each rebuild and passed to the page by `wp_localize_script` |
 
 **Rules**
 
-- The token lives only in Custom Search, entered per environment. It never reaches the browser, a build or a repo.
-- The new token is read-only (`data.records:read`) on one base.
-- The endpoint runs the app's current query (`FIND` on the label and identifier fields, same fields returned), so results match.
-- The query is escaped before it goes into `filterByFormula`. Today it is interpolated raw.
-- A 1-character query, or one over 100 characters, returns `[]` without calling Airtable. The empty query is allowed: the app uses it once to pick placeholder examples.
-- Answers are cached per normalised query (trimmed, lowercase) in a transient for 10 minutes. With the app's 300 ms debounce, this keeps us under Airtable's 5 requests/second per base.
-- On an Airtable error or timeout: return `[]` and write an `error_log` line. Never pass Airtable's error body to the browser.
-- The app drops `apiKey`, base, table and field IDs from its settings and `.env`, calls the endpoint, and stops logging API responses to the console.
-- Order: the endpoint ships first, then the rebuilt app.
+*Data*
+- Source: published `languages` posts. `identifier` is `iso_code`, `label` is `alternate_names` (falling back to `standard_name`), `resourced` is true when `speakers_recorded` is not empty, and `id` is the post ID. Posts without an ISO code or a label are skipped.
+- No Airtable call and no token. The Custom Search token can be revoked, and the field removed later.
+- The index is written from scratch each time (absolute state): first to a temporary file, then renamed into place, so a failed run leaves the old index.
+- Rows are sorted by `id`, so two rebuilds of unchanged data produce byte-identical files. `wp typeahead rebuild --dry-run` prints added, removed and changed counts; a second run reports 0.
+- Saving, trashing or publishing a language schedules one rebuild a minute later, so a sync batch causes one rebuild rather than hundreds.
+
+*Search, in the browser*
+- The app downloads the index the first time someone focuses the search box, then filters it locally. That's one request per visit, cached by the browser between visits, with the file's modified time as the cache key.
+- Matching follows the Airtable search: case-insensitive substring of any comma-separated name or the ISO code. Results sort by label, with an exact ISO match first. At most 100 are shown.
+- The placeholder uses the samples in the page, so no request happens on page load.
+- Removed in the same PR: the proxy endpoint `wt/v1/typeahead`, the Airtable mode, and `custom/v1/search`. The shortcodes' `data_source` attribute goes too.
 
 **Example cases**
 
-| Input | Expected |
+| Case | Expected |
 |---|---|
-| `haw` | Hawaiian in the results, same order as the old Airtable mode |
-| `tahitian` | Tahitian |
-| `cha` | Chamorro among the results |
-| `h` | `[]`, no Airtable call |
-| empty | A page of languages, for the placeholder |
-| `a"b` | Normal results or `[]`; no formula error |
-| Same query twice within 10 minutes | One Airtable call |
-| Token missing, or Airtable down | `[]`; the search box still renders; error logged |
+| Type `haw` | Hawaiian first (exact ISO match), under 50 ms once the index is loaded |
+| Type `be → ben → beng → benga` quickly | No network requests after the first focus |
+| `tahitian`, `cha` | Tahitian; Chamorro among the results |
+| `a"b` | No error, no results |
+| A language without `alternate_names` | Found by its `standard_name` and ISO code |
+| Rebuild twice with no changes | Second run: 0 changes, identical file |
+| Airtable sync renames a language | New name in the index about a minute after the sync saves the post |
+| Make updates 300 languages in one batch | One rebuild, not 300 |
+| Page load | No typeahead request until the box is focused |
 
-**Display:** no change.
+**Display:** no visual change. Search feels instant after the index loads on first focus.
 
-**Open questions:** is 10 minutes the right cache, or hours, since language names rarely change? Retire the WordPress mode (`custom/v1/search`) or keep it as a fallback?
+**Open questions**
+1. **Index size.** The estimate is about 92 bytes per language, roughly 750 KB raw and 250–300 KB compressed. Confirm that production compresses `.json`. If it doesn't, shorten the field names or pre-compress the file.
+2. **Capped results.** The Airtable search returned only its first page of 100 matches. The index finds every match, then shows the top 100 by label. Keep that cap?
+3. **The ~500 languages without `alternate_names`.** Is falling back to `standard_name` right, or is that a data gap to fix in Airtable?
 
-**Out of scope:** better search results, which belong to [3.3](#33-enhanced-search).
+**Out of scope:** better ranking (typo tolerance, popularity), which belongs to [3.3](#33-enhanced-search).
+
+**Decisions**
+- 2026-11-23: rejected the per-keystroke Airtable proxy. Staging measured 1–3.6 s per search and 3–6 s while typing.
+- 2026-11-23: build the index from WordPress, not Airtable. The data is the same, freshness comes for free on save, and no credential or rate limit is involved.
 
 #### 7.10 Secret scanning in CI
 
