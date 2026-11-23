@@ -256,6 +256,42 @@ final class Importer {
 	}
 
 	/**
+	 * Changes a region's release status from WP-CLI or the Releases screen,
+	 * and logs who changed it. Setting the status it already has repairs its
+	 * reports' post statuses and logs nothing, so a repeat is a no-op.
+	 *
+	 * @param int    $term_id A region term.
+	 * @param string $status  A release status.
+	 * @param string $by      Who changed it, e.g. a user's login or "WP-CLI".
+	 * @return array{from: string, to: string, changed: int}
+	 */
+	public static function change_region_status( int $term_id, string $status, string $by ): array {
+		if ( ! Release_Status::is_valid( $status ) ) {
+			throw new \InvalidArgumentException( 'Not a release status: ' . $status );
+		}
+		$from    = wt_rights_region_status( $term_id );
+		$changed = self::set_region_status( $term_id, $status );
+		if ( $from !== $status ) {
+			$log = json_decode( (string) get_term_meta( $term_id, 'status_log', true ), true );
+			$log = Release_Status::log(
+				is_array( $log ) ? $log : array(),
+				array(
+					'at'   => gmdate( 'c' ),
+					'by'   => $by,
+					'from' => $from,
+					'to'   => $status,
+				)
+			);
+			update_term_meta( $term_id, 'status_log', wp_slash( (string) wp_json_encode( $log ) ) );
+		}
+		return array(
+			'from'    => $from,
+			'to'      => $status,
+			'changed' => $changed,
+		);
+	}
+
+	/**
 	 * Puts a region's PDFs in the private folder, or takes them out.
 	 *
 	 * PDFs reach the server only once their region is embargoed: while it is

@@ -36,6 +36,7 @@ require_once WT_RIGHTS_DIR . 'includes/display.php';
 require_once WT_RIGHTS_DIR . 'includes/press.php';
 require_once WT_RIGHTS_DIR . 'includes/pdf.php';
 require_once WT_RIGHTS_DIR . 'includes/analytics.php';
+require_once WT_RIGHTS_DIR . 'includes/admin.php';
 
 // The PDF download goes through the download gateway, when it is active.
 add_action(

@@ -476,8 +476,7 @@ function wt_rights_status_command( array $args, array $assoc_args ): void {
 	if ( ! $term instanceof WP_Term ) {
 		WP_CLI::error( 'No region "' . $args[0] . '" on this site.' );
 	}
-	$was     = wt_rights_region_status( $term->term_id );
-	$changed = \WT\Rights\Importer::set_region_status( $term->term_id, $args[1] );
+	$result = \WT\Rights\Importer::change_region_status( $term->term_id, $args[1], 'WP-CLI' );
 	if ( ! empty( $assoc_args['pdfs'] ) ) {
 		try {
 			$pdfs = \WT\Rights\Importer::stage_region_pdfs( $term->term_id, (string) $assoc_args['pdfs'] );
@@ -487,7 +486,7 @@ function wt_rights_status_command( array $args, array $assoc_args ): void {
 		wt_rights_sync_region_pdfs( $term->term_id );
 		WP_CLI::log( 'PDFs: ' . $pdfs['staged'] . ' staged, ' . $pdfs['missing'] . ' missing.' );
 	}
-	WP_CLI::success( $term->name . ': ' . $was . ' → ' . $args[1] . '; ' . $changed . ' reports changed post status.' );
+	WP_CLI::success( $term->name . ': ' . $result['from'] . ' → ' . $result['to'] . '; ' . $result['changed'] . ' reports changed post status.' );
 }
 
 /**

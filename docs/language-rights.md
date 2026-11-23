@@ -95,10 +95,12 @@ A region's report text and PDFs are on a server only once that region goes to em
 |---|---|---|
 | Any time | Import any release | The schedule: all seven regions, their dates and nation lists |
 | Embargo (about two weeks before launch) | Export the release and its PDFs locally; copy them to the server's home folder (never `public_html`); `wp wt rights import <file> --execute`, then `wp wt rights status <region> embargoed --pdfs=<dir>` | Report text, readable by press and admins; PDFs in `WT_RIGHTS_PRIVATE_DIR` only |
-| Launch day | `wp wt rights status <region> released` | Pages public; PDFs in the media library, downloadable through the gateway (email required) |
+| Launch day | **Language Rights Reports → Releases → Release**, or `wp wt rights status <region> released` | Pages public; PDFs in the media library, downloadable through the gateway (email required) |
 | If a region is pulled back to upcoming | `wp wt rights status <region> upcoming` | Its PDFs are deleted from the private folder and the media library |
 
 `import --pdfs` stages PDFs only for regions already embargoed or released, so a re-import with corrections works without a separate step.
+
+**The Releases screen** (Language Rights Reports → Releases, admins only) shows each region's status, planned date, reports, PDFs staged and published, and its last change. Its buttons run the same code as `wp wt rights status`, after a confirmation that says what the change does; a repeat changes nothing. Every change, from the screen or WP-CLI, is logged on the region (term meta `status_log`, newest first, last 20) with who made it: a user's login, or `WP-CLI`. PDFs still reach the server only from the command line: after embargoing from the screen, run `import <file> --execute --pdfs=<dir>` to stage them; the screen warns when a region has reports without a PDF. Nothing is released automatically on the planned date.
 
 **Each environment needs, once:** `WT_RIGHTS_PRIVATE_DIR` in `wp-config.php`, outside `public_html` (staging sits inside production's `public_html`, so neither can use a folder under it); and, in Settings → Download Gateway, the `rights_reports` row Required, with the `documents` follow-up form.
 
