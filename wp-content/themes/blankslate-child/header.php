@@ -71,7 +71,7 @@
 								transparent-background<?php endif; ?>" src="<?php the_field( 'header_logo_dark', 'options' ); ?>" alt="Wikitongues logo: dark color scheme">
 						</a>
 					</div>
-					<?php echo do_shortcode( '[react_typeahead id="typeahead_nav" custom_class="nav-style" data_source="airtable"]' ); ?>
+					<?php echo do_shortcode( '[react_typeahead id="typeahead_nav" custom_class="nav-style"]' ); ?>
 					<?php
 					if ( is_front_page() ) {
 						wp_nav_menu(
