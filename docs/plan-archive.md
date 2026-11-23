@@ -41,11 +41,11 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 ## 2026-11-23 (Maps, step 1)
 
 ### A locator map on every language page (plan 3.2, step 1)
-**PRs:** [#669] (spec and prototype), [#698]–[#702] (plugin, build, renderer, maps, sidebar), [#720] (doctor fix); on staging 2026-11-23, production with the next release.
+**PRs:** [#669] (spec and prototype), [#698]–[#702] (plugin, build, renderer, maps, sidebar), [#720] (doctor fix); on staging ([#721]) and production ([#723]) 2026-11-23; `doctor` and spot checks clean on production.
 
 - **The plugin** ([#698]). `wt-maps`: a shape table in the repo (`data/shapes.json`) mapping Airtable record IDs to Natural Earth 5.1.2 codes, in place of the planned ACF "Map shape" field; `wp wt-maps doctor` and `export`.
 - **The build** ([#699], [#701]). Node and d3-geo render one SVG per distinct set of places, Lambert azimuthal equal-area, with hillshade, sea floor and coloured relief cut to the coast. A map is staged and published whole, SVG and images together, within budget (SVG ≤ 20 KB gzipped, images ≤ 30 KB; two maps still over). 269 maps for 8,073 languages, 13 MB, committed beside the plugin.
-- **The renderer** ([#700]). `wt_map()` and `[wt_map]` add per-language roles (origins primary), absolute image URLs and the title and description through `WP_HTML_Tag_Processor`, cached in the object cache. Four styles as a setting (Light focused by default); Settings → Maps turns the sidebar map off without a deploy.
+- **The renderer** ([#700]). `wt_map()` and `[wt_map]` add per-language roles (origins primary), absolute image URLs and the title and description through `WP_HTML_Tag_Processor`, cached in the object cache. Four styles as a setting (Light focused at launch, Light full from 2026-11-23); Settings → Maps turns the sidebar map off without a deploy.
 - **The sidebar** ([#702]). The language sidebar was reordered: name, summary, identifiers, endonyms, alternate names, then a "Where it's spoken" section with the map, a caption ("Map showing Guam and the Northern Mariana Islands"), "Traditionally spoken in" and "Also spoken in". Rings mark places whose largest island is under 150 square units. Languages with no territory links draw their origins, a fallback marked temporary in plan 6.8.
 - **Content changes** (2026-11-17, scripted in `docs/maps-prototype/territory-edits.php`, run on every environment): Nagorno-Karabakh folded into Azerbaijan and removed from Armenian; Greenland, Guam and the Northern Mariana Islands added as territories, with Greenlandic, Chamorro and Carolinian moved to them; Hawaiian linked to `Hawaii_US`; "Sahrawi Arab Democratic Republic" renamed Western Sahara (with a redirect), "Cape Verde Islands" Cabo Verde, and "Federated Staes of Micronesia" fixed; the Airtable nations Congo, Macedonia and Vatican State renamed to match WordPress.
 - **Doctor on staging** ([#720]). Its language query joined `postmeta` three times and ran for minutes on staging's MySQL; two plain reads joined in PHP give the same result in a tenth of a second.
@@ -1130,3 +1130,5 @@ Minor fix to SSH agent action version in deployment workflow.
 [#702]: https://github.com/wikitongues/wikitongues.org/pull/702
 [#703]: https://github.com/wikitongues/wikitongues.org/pull/703
 [#720]: https://github.com/wikitongues/wikitongues.org/pull/720
+[#721]: https://github.com/wikitongues/wikitongues.org/pull/721
+[#723]: https://github.com/wikitongues/wikitongues.org/pull/723

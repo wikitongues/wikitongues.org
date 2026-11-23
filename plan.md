@@ -48,7 +48,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
 - **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-Last reviewed 2026-11-18.
+Last reviewed 2026-11-23.
 
 ---
 
@@ -68,6 +68,8 @@ Last reviewed 2026-11-18.
 | 8 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
+
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#2), maps (#7), language geography (6.8) and shared styles. #1 hasn't started, and #3–6 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -95,7 +97,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 
 #### 1.1 FundraiseUp configuration and campaign banner
 
-*Now #1. On production by mid-November.*
+*Now #1. On production by mid-November. **Not started as of 2026-11-23**: the date has passed, and the organization ID is still hardcoded in `modules/page--head.php`.*
 
 The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a campaign change needs a deploy. Move all FundraiseUp configuration into an ACF options page ("Fundraising"), and add a campaign banner that editors control.
 
@@ -115,7 +117,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
-- **Status (2026-11-06):** the new layout is in, built from editorial blocks like the homepage ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story photo consent, social proof (1.3), the frequency test, and the design's Graphik Light (body text) and Schnyder Wide L (section labels) web fonts. Our Commercial Type licence covers neither, so the page uses Graphik Regular and Schnyder Wide M until they're licensed. The gift box's campaign ID is a block field for now, and should move to `wt_active_campaign()` once 1.1 lands.
+- **Status (2026-11-06; styles updated 2026-11-23 to the shared editorial tokens, #718):** the new layout is in, built from editorial blocks like the homepage ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story photo consent, social proof (1.3), the frequency test, and the design's Graphik Light (body text) and Schnyder Wide L (section labels) web fonts. Our Commercial Type licence covers neither, so the page uses Graphik Regular and Schnyder Wide M until they're licensed. The gift box's campaign ID is a block field for now, and should move to `wt_active_campaign()` once 1.1 lands.
 
 - **Content:** recurring vs. one-time giving, biased toward monthly; impact framing; social proof from donor recognition (1.3); the FundraiseUp modal.
 - **Copy:** ship with minimal copy and iterate (decided 2026-09-13). The impact statement needs sign-off before it is final.
@@ -223,17 +225,17 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 
 | PR | Ships | Status |
 |---|---|---|
-| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
-| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
-| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
-| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
-| 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
-| 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
-| 7 | Match the review prototype; region overview and front matter in the release; region maps | [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
-| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
+| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | Merged, [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
+| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | Merged, [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
+| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | Merged, [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
+| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | Merged, [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
+| 5 | Gated PDFs, private until embargo and public at release; press login redirect | Merged, [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
+| 6 | Data-layer page details and `rights_updates_signup` | Merged, [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
+| 7 | Match the review prototype; region overview and front matter in the release; region maps | Merged, [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
+| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | Merged, [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
 | 9 | The exporter reads the region and front-matter Docs into the release file's `overview` and `front_matter` | Next |
 
-Merge in order (#715 is stacked on #714). Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
+PRs 1–8 are merged and deployed; production stays dark until a release is imported (decision log, 2026-11-23). Next: PR 9, then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
 
 **Data first:** the Held option and the Changes and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
 
@@ -296,6 +298,8 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 - **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
 - **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
 - **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
+- **Choose the approach first (open, 2026-11-23).** The bullets above assume MapLibre GL. Two explorations on 2026-11-23 built on the static step 1 SVGs instead: hover labels and click-through on the sidebar map (spec approved and parked on branch `claude/maps-interactivity-01b803`), and prebuilt maps on every territory page and the 22 sub-region pages (spec on branch `claude/maps-place-pages-b22447`). The Language Rights region maps (#714) already build a wt-maps set per release region. Settle one approach here before building.
+- **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
 
 ##### Step 1 follow-ups
 
