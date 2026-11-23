@@ -210,7 +210,9 @@
 		font-family 'Graphik Web'
 		color $blue()
 		padding 1.6rem 1.6rem
-		font-size 1.6rem
+		// px, not 1.6rem: the mobile rem shrink takes 1.6rem to ~13px, and iOS
+		// zooms the page into any field under 16px when it gets focus
+		font-size $type-body
 		line-height 1.3
 		text-transform none
 		border-bottom 2px solid $blue()
