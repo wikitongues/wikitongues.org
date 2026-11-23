@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wikitongues Language Rights
  * Description: The Report on the Global State of Language Rights: exported from Airtable and Google Docs as tagged releases, imported into WordPress (plan 2.2, docs/language-rights.md).
- * Version: 0.1.0
+ * Version: 0.2.0
  * Author: Wikitongues
  * Requires PHP: 8.2
  *
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WT_RIGHTS_VERSION', '0.1.0' );
+define( 'WT_RIGHTS_VERSION', '0.2.0' );
 define( 'WT_RIGHTS_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once WT_RIGHTS_DIR . 'includes/structure.php';
@@ -28,12 +28,15 @@ require_once WT_RIGHTS_DIR . 'includes/class-airtable.php';
 require_once WT_RIGHTS_DIR . 'includes/class-exporter.php';
 require_once WT_RIGHTS_DIR . 'includes/class-release-status.php';
 require_once WT_RIGHTS_DIR . 'includes/class-import-plan.php';
+require_once WT_RIGHTS_DIR . 'includes/class-editorial.php';
 require_once WT_RIGHTS_DIR . 'includes/class-importer.php';
 require_once WT_RIGHTS_DIR . 'includes/content-model.php';
 require_once WT_RIGHTS_DIR . 'includes/template-tags.php';
+require_once WT_RIGHTS_DIR . 'includes/display.php';
 require_once WT_RIGHTS_DIR . 'includes/press.php';
 require_once WT_RIGHTS_DIR . 'includes/pdf.php';
 require_once WT_RIGHTS_DIR . 'includes/analytics.php';
+require_once WT_RIGHTS_DIR . 'includes/admin.php';
 
 // The PDF download goes through the download gateway, when it is active.
 add_action(

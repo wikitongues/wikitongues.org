@@ -8,8 +8,8 @@
 /**
  * Every published language with its record ID and territory links as record IDs.
  *
- * One query each for territories and languages, so it suits a CLI run over
- * thousands of languages.
+ * A few plain queries, joined in PHP, so it suits a CLI run over thousands of
+ * languages on a slow database.
  *
  * @return list<array{record_id: string, title: string, territories: list<string>}>
  */
@@ -30,16 +30,25 @@ function wt_maps_collect_languages(): array {
 		$record_of[ (int) $row['id'] ] = (string) $row['record_id'];
 	}
 
+	// Published languages, then their three meta values in one indexed read,
+	// joined here by post ID. A three-way self-join of postmeta ran for minutes
+	// on staging's MySQL (2026-11-23); these two plain reads take a second.
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
 	$language_rows = $wpdb->get_results(
-		"SELECT p.post_title AS title, r.meta_value AS record_id, t.meta_value AS territories, o.meta_value AS origins
-		FROM {$wpdb->posts} p
-		LEFT JOIN {$wpdb->postmeta} r ON r.post_id = p.ID AND r.meta_key = '_airtable_record_id'
-		LEFT JOIN {$wpdb->postmeta} t ON t.post_id = p.ID AND t.meta_key = 'territories'
-		LEFT JOIN {$wpdb->postmeta} o ON o.post_id = p.ID AND o.meta_key = 'nations_of_origin'
-		WHERE p.post_type = 'languages' AND p.post_status = 'publish'",
+		"SELECT ID AS id, post_title AS title FROM {$wpdb->posts}
+		WHERE post_type = 'languages' AND post_status = 'publish'",
 		ARRAY_A
 	);
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- one read-only export.
+	$meta_rows = $wpdb->get_results(
+		"SELECT post_id, meta_key, meta_value FROM {$wpdb->postmeta}
+		WHERE meta_key IN ('_airtable_record_id', 'territories', 'nations_of_origin')",
+		ARRAY_A
+	);
+	$meta_of   = array();
+	foreach ( (array) $meta_rows as $row ) {
+		$meta_of[ (int) $row['post_id'] ][ (string) $row['meta_key'] ] = (string) $row['meta_value'];
+	}
 
 	// Linked post IDs (serialized) → published territories' record IDs, in order.
 	$records = static function ( ?string $meta ) use ( $record_of ): array {
@@ -55,11 +64,12 @@ function wt_maps_collect_languages(): array {
 
 	$languages = array();
 	foreach ( (array) $language_rows as $row ) {
+		$own         = $meta_of[ (int) $row['id'] ] ?? array();
 		$languages[] = array(
-			'record_id'   => (string) $row['record_id'],
+			'record_id'   => $own['_airtable_record_id'] ?? '',
 			'title'       => (string) $row['title'],
-			'territories' => $records( $row['territories'] ),
-			'origins'     => $records( $row['origins'] ),
+			'territories' => $records( $own['territories'] ?? null ),
+			'origins'     => $records( $own['nations_of_origin'] ?? null ),
 		);
 	}
 
@@ -123,7 +133,7 @@ function wt_maps_doctor_command(): void {
 	}
 
 	$report = wt_maps_doctor( $table, $places, $languages );
-	$plan   = wt_maps_plan_sets( $table, wt_maps_collect_languages() );
+	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, wt_maps_collect_languages() ), wt_maps_extra_sets() );
 	$built  = array_map( fn( $f ) => basename( $f, '.svg' ), (array) glob( dirname( __DIR__ ) . '/maps/*.svg' ) );
 	$report = array_merge( $report, wt_maps_build_report( $plan['sets'], $built ) );
 
@@ -184,7 +194,7 @@ function wt_maps_export_command( array $args, array $assoc_args ): void {
 
 	$languages = wt_maps_collect_languages();
 
-	$plan   = wt_maps_plan_sets( $table, $languages );
+	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, $languages ), wt_maps_extra_sets() );
 	$places = array();
 	foreach ( $plan['sets'] as $set ) {
 		foreach ( $set['places'] as $place_id ) {

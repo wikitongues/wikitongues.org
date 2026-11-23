@@ -146,4 +146,22 @@ class ImportPlanTest extends TestCase {
 		$this->assertSame( 'update', $plan[0]['action'] );
 		$this->assertSame( array( 'no longer a preview draft' ), $plan[0]['changes'] );
 	}
+
+	public function test_a_new_archive_nation_id_updates_an_unchanged_report() {
+		$plan = Import_Plan::plan(
+			$this->release( $this->report( array( 'archive_nation_id' => 'recArchive000001' ) ) ),
+			array( 'recTestland00001' => $this->existing() ),
+			array( 'south-central-asia' => Release_Status::UPCOMING )
+		);
+
+		$this->assertSame( 'update', $plan[0]['action'] );
+		$this->assertSame( array( 'archive Nation ID (none) → recArchive000001' ), $plan[0]['changes'] );
+
+		$again = Import_Plan::plan(
+			$this->release( $this->report( array( 'archive_nation_id' => 'recArchive000001' ) ) ),
+			array( 'recTestland00001' => $this->existing( array( 'archive_nation_id' => 'recArchive000001' ) ) ),
+			array( 'south-central-asia' => Release_Status::UPCOMING )
+		);
+		$this->assertSame( 'unchanged', $again[0]['action'] );
+	}
 }

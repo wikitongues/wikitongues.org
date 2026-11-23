@@ -348,13 +348,15 @@ function wt_rights_sources( array $sources, string $summary = 'Sources' ): strin
  * The donate band, linking to /donate/.
  *
  * @param string $location data-cta-location for analytics, e.g. rights-report.
+ * @param bool   $dark     The dark band (the hub) rather than the light one.
  */
-function wt_rights_donate_band( string $location ): string {
-	return '<aside class="wt-rights__support" aria-labelledby="wt-rights-support-' . esc_attr( $location ) . '">'
-		. '<h2 id="wt-rights-support-' . esc_attr( $location ) . '">Support this research</h2>'
-		. '<p>Wikitongues researches language rights so that language communities and advocates can use the evidence. Your gift keeps this work going.</p>'
+function wt_rights_donate_band( string $location, bool $dark = false ): string {
+	return '<section class="wt-rights__support' . ( $dark ? ' wt-rights__support--dark' : '' ) . '" id="support" aria-labelledby="wt-rights-support-' . esc_attr( $location ) . '"><div class="wt-rights__wrap">'
+		. '<p class="wt-rights__kicker">Support Wikitongues</p>'
+		. '<h2 id="wt-rights-support-' . esc_attr( $location ) . '">Help sustain language rights research</h2>'
+		. '<p class="wt-rights__intro">Give $25 to support Wikitongues’ work, including researching language rights and making the findings available to the communities and advocates who use them. You can give once or become a monthly supporter.</p>'
 		. '<a class="wt-rights__donate" href="' . esc_url( home_url( '/donate/' ) ) . '" data-cta-location="' . esc_attr( $location ) . '">Donate to Wikitongues</a>'
-		. '</aside>';
+		. '</div></section>';
 }
 
 /**

@@ -16,7 +16,7 @@ namespace WT\Rights;
 /**
  * Plans an import.
  *
- * @phpstan-type Existing array{post_id: int, slug: string, title: string, status: string, hash: string, version: string, region: string, draft: bool}
+ * @phpstan-type Existing array{post_id: int, slug: string, title: string, status: string, hash: string, version: string, region: string, draft: bool, archive_nation_id?: string}
  * @phpstan-type Action array{action: string, record_id: string, post_id: int, name: string, changes: list<string>, post_status: string}
  */
 final class Import_Plan {
@@ -52,6 +52,12 @@ final class Import_Plan {
 				'status' => array( $current['status'], $post_status ),
 				'hash'   => array( $current['hash'], (string) $report['hash'] ),
 			);
+			// The archive Nation ID links a report to its territory and map. It
+			// isn't part of the content hash, so compare it on its own.
+			$archive = array( $current['archive_nation_id'] ?? '', (string) ( $report['archive_nation_id'] ?? '' ) );
+			if ( $archive[0] !== $archive[1] ) {
+				$changes[] = 'archive Nation ID ' . ( '' !== $archive[0] ? $archive[0] : '(none)' ) . ' → ' . ( '' !== $archive[1] ? $archive[1] : '(none)' );
+			}
 			foreach ( $compare as $what => [ $was, $now ] ) {
 				if ( $was !== $now ) {
 					$changes[] = 'hash' === $what ? 'content' : $what . ' ' . $was . ' → ' . $now;

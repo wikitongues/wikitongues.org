@@ -146,8 +146,6 @@ function wt_maps_defs(): string {
  *                first time a map is printed on the page.
  */
 function wt_map( array $args = array() ): string {
-	static $defs_printed = false;
-
 	$language = (int) ( $args['language'] ?? get_the_ID() );
 	if ( $language <= 0 ) {
 		return '';
@@ -169,6 +167,37 @@ function wt_map( array $args = array() ): string {
 		);
 	}
 
+	// A language's post title is its ISO code; its display name is standard_name.
+	$name = (string) get_post_meta( $language, 'standard_name', true );
+
+	return wt_map_places(
+		array(
+			'places'  => $places,
+			'primary' => $origins,
+			'title'   => sprintf( 'Where %s is spoken', '' !== $name ? $name : get_the_title( $language ) ),
+			'class'   => $args['class'] ?? '',
+			'style'   => $args['style'] ?? '',
+			'caption' => ! empty( $args['caption'] ),
+		)
+	);
+}
+
+/**
+ * The map for any set of places, by record ID: what wt_map() draws for a
+ * language, for pages that aren't one (a Language Rights report region or
+ * country). '' when the set has no built map.
+ *
+ * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool} $args
+ *     Places and primary places as record IDs; the map's accessible title.
+ * @return string
+ */
+function wt_map_places( array $args ): string {
+	static $defs_printed = false;
+
+	$places  = array_values( array_unique( $args['places'] ) );
+	$origins = $args['primary'] ?? array();
+	sort( $places );
+
 	$key  = wt_maps_set_key( $places );
 	$file = dirname( __DIR__ ) . '/maps/' . $key . '.svg';
 	if ( '' === $key || ! is_readable( $file ) ) {
@@ -180,9 +209,7 @@ function wt_map( array $args = array() ): string {
 	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
 		$names = array_map( 'wt_prefix_the', $names );
 	}
-	// A language's post title is its ISO code; its display name is standard_name.
-	$name  = (string) get_post_meta( $language, 'standard_name', true );
-	$title = sprintf( 'Where %s is spoken', '' !== $name ? $name : get_the_title( $language ) );
+	$title = $args['title'];
 	$desc  = Renderer::describe( $roles, $names, PHP_INT_MAX, $origins );
 	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names, $origins );
 	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];

@@ -44,27 +44,10 @@
 					-webkit-appearance none
 
 					&[type="email"]
-						width 100%
-						background $parchment
-						font-family 'Graphik Web'
-						color $blue()
-						padding 1.6rem 1.6rem
-						font-size 1.6rem
-						line-height 1.3
-						text-transform none
-						border-bottom 2px solid $blue()
-						margin-right 8px
-						border-radius 4px 4px 0 0
-						transition background .1s ease-in-out
-
-						&:focus,
-						&:hover
-							outline none
-							background $blue(10)
+						signup-field()
 
 				button
-					button--secondary($blue(),$parchment)
-					cursor pointer
+					signup-button()
 
 @media all and (max-width $mobile)
 	.wt_newsletter
