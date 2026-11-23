@@ -178,12 +178,9 @@
 		> summary
 			display flex
 			align-items center
-			gap $space(2)
+			gap spread ? $space(2) : $space(1)
 			cursor pointer
 			list-style none
-
-			if spread
-				justify-content space-between
 
 			&::-webkit-details-marker
 				display none
@@ -191,6 +188,8 @@
 			&::after
 				content '+'
 				flex none
+				if spread
+					margin-left auto
 				font-size toggle-size
 				line-height 1
 				transition transform .2s
