@@ -1,6 +1,6 @@
 # Language Rights report
 
-How the *Report on the Global State of Language Rights* reaches wikitongues.org: its pages, its sources, how a release is cut, and the editorial contract the research team works to. The spec, phases and decision log are plan item [2.2](../plan.md#22-language-rights-report). Nothing here is built yet; this file describes the agreed design and becomes the reference as it ships.
+How the *Report on the Global State of Language Rights* reaches wikitongues.org: its pages, its sources, how a release is cut, and the editorial contract the research team works to. The spec, phases and decision log are plan item [2.2](../plan.md#22-language-rights-report). The plugin is `wt-rights`; the pages are built (PRs #704–#715). Not built yet: the exporter reading the region and front-matter Docs, global findings on the hub, the treaty register, language counts, and "last changed" dates on the hub and region pages.
 
 ## Table of Contents
 
@@ -31,12 +31,13 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 | Page | URL | Built from |
 |---|---|---|
 | Project | `/language-rights/` | The existing editorial page (`template-editorial.php`) |
-| Report hub, and the global synthesis from the Complete Edition | `/language-rights/report/` | Front-matter Doc, released regions, and the synthesis once released |
-| Region (7) | `/language-rights/report/{region}/`, e.g. `/language-rights/report/south-central-asia/` | Region Doc, plus totals computed from its country reports |
-| Country report (one per Reports row) | `/language-rights/report/{country}/`, e.g. `/language-rights/report/afghanistan/` | Country Doc and its Airtable row |
+| Report hub, and the global synthesis from the Complete Edition | `/language-rights/report/` | Front-matter Doc and the release schedule; global findings and the synthesis only from the Complete Edition |
+| Region (7) | `/language-rights/report/{region}/`, e.g. `/language-rights/report/south-central-asia/` | Region Doc, plus answer counts computed from its country reports, and a map of its countries |
+| Country report (one per Reports row) | `/language-rights/report/{country}/`, e.g. `/language-rights/report/afghanistan/` | Country Doc and its Airtable row, and its territory's map |
+| Releases (admin) | Language Rights Reports → Releases | Each region's release status; see [below](#when-files-reach-a-server) |
 | Short link | `/rights` | Redirects to `/language-rights/report/`, like `/ai` |
 
-A country's URL leaves out its region: regions are publishing groups a later edition may regroup, and an indexed URL should never move. Region and country slugs share one namespace, so the import refuses a country slug that equals a region slug.
+A country's URL leaves out its region: regions are publishing groups a later edition may regroup, and an indexed URL should never move. Region and country slugs share one namespace, so the exporter never gives a country a region's slug.
 
 **A report the visitor can't read redirects to its region.** That covers a region not yet released, one set back to upcoming or embargoed, and a report dropped from a release. The redirect is temporary (302), to the region page's country list, which shows only the release date and nation names until release, so no report text leaks and search engines keep the URL for when it returns. A slug no report has stays a 404, as does the print view with a wrong token.
 
@@ -62,13 +63,13 @@ Airtable + Google Docs
 release file, e.g. rights-2027.1.json  ── private content repo, git tag rights-v2027.1
         │  the pull request diff is the editorial review
         ▼
-wp wt rights-import <file>   dry run by default → local → staging → production
+wp wt rights import <file>   dry run by default → local → staging → production
 ```
 
 - **The private repo.** Release files hold embargoed text, so they never enter this public repo. The exporter's code can live here.
 - **Release numbers.** `2027.1`–`2027.7` are the regional releases in publication order; `2027.8` is the Complete Edition; a release carrying only corrections is a patch (`2027.1.1`). Release numbers track deploys and are internal. Readers see each report's own [version](#versions-and-the-changelog).
 - **A release is cumulative.** `2027.2` holds South and Central Asia *and* Europe, so any one file rebuilds the whole report on an empty site. Every release also lists all seven regions with their planned dates and nation names, without any report text for regions it doesn't include, so the hub's schedule is always complete.
-- **Import is idempotent.** It matches each country by its Reports record ID, writes absolute state, and reports 0 changes when run twice. Countries are never deleted by an import; a country dropped from a release is unpublished and logged.
+- **Import is idempotent.** It matches each country by its Reports record ID, writes absolute state, and reports 0 changes when run twice. Countries are never deleted by an import; a country dropped from a release is unpublished (set to draft) and listed in the dry run, and its URL then redirects to its region.
 - **Preview.** `--preview` exports unfinished countries as drafts, for reading on staging only.
 
 ### Running the exporter
@@ -133,11 +134,13 @@ Kristen's existing options stay exactly as they are. Only **Held** is added. The
 
 | Status | Public sees | Press accounts and admins see |
 |---|---|---|
-| Upcoming | Release date, nation list, "Get release updates" | The same |
-| Embargoed | The same as Upcoming | The full region and its country reports, not indexed |
+| Upcoming | Release date, nation list, "Get release updates"; report URLs redirect to the region | Press: the same as the public. Admins: the full region and its reports, under a "Preview: not yet released" banner |
+| Embargoed | The same as Upcoming | The full region and its reports, under an "Embargoed until…" banner, not indexed |
 | Released | Everything | Everything |
 
-The hub's global totals count **Released** regions only, so no unreleased finding leaks into an aggregate. The global synthesis has its own status and stays Upcoming until the Complete Edition.
+A report exported with `--preview` stays a draft at every status: only admins can read it.
+
+The hub shows no global findings before the Complete Edition (decision 2026-11-18; Kristen is asked to confirm it, plan 2.2 open question 5), so no unreleased answer reaches an aggregate. The global synthesis has no status of its own yet: the hub lists it as release 08 with its planned date from the front matter.
 
 ## Editorial contract
 
@@ -211,7 +214,7 @@ The current research template (v10.2026), as the Docs are already written. A dry
 
 An optional second tab in the country Doc, named **WordPress** (any capitalization), for text that appears only on the site and should stay out of the volunteers' report. Today it holds one thing:
 
-- **Story card.** The country's name as Heading 1 (optional), then a Heading 2 title (e.g. *A revised alphabet for Pashayi*), one paragraph of 60 words or fewer, then its links. Shown on the region page and the country report. A country without one simply has no card.
+- **Story card.** The country's name as Heading 1 (optional), then a Heading 2 title (e.g. *A revised alphabet for Pashayi*), one paragraph of 60 words or fewer, then its links. Shown on the country report, and on the region page when the region Doc has no evidence cards of its own. A country without one simply has no card.
 
 ### Region Doc
 
@@ -219,8 +222,8 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 
 | Heading 2 | Content |
 |---|---|
-| Headline | One sentence, shown at the top of the region page |
-| Introduction | Two or three paragraphs |
+| Headline | One sentence, shown as the heading of the region's findings |
+| Introduction | Two or three paragraphs, then an optional line of links |
 | Findings | One Heading 3 per finding, each with its paragraphs and sources |
 | Evidence cards | Optional. One Heading 3 per card, titled with the country's name, then the card's title as one bold line, one paragraph, and its links. When the region Doc has cards, the region page shows only these; without any, it shows each country's WordPress-tab story card |
 | Director's letter | Optional. The letter for this region's release, shown at the foot of the region page, ending with the signature line (name, then role) |
@@ -229,10 +232,11 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 
 *New, one for the edition,* in `[2] Notes & Templates/`, named *Report front matter*, with its link in the Publishing Docs row "Front matter". Its Heading 2 sections:
 
-- **Methodology.**
-- **Indicators.** Five Heading 3 entries, each with the question, how it is assessed, and an example.
-- **Answer key.** Yes, No, Unclear, Not applicable, each with one sentence.
-- **Director's letter.**
+- **Summary.** One sentence: the line under the hub and region titles.
+- **Methodology.** Opening paragraphs, then one Heading 3 per part (the first is shown as text, the rest as notes).
+- **Indicators.** Five Heading 3 entries, each with how it is assessed and an example. The question itself comes from the site, so it can't drift from the country Docs.
+- **Answer key.** An opening sentence, then Yes, No, Unclear, Not applicable, each with one sentence.
+- **Director's letter.** The edition's letter, on the hub, ending with the signature line (name, then role). Each region's own letter goes in its region Doc.
 - **Global synthesis.** Written for the Complete Edition; empty until then. Its text is exported but not shown until the synthesis is Released. Its planned date goes in the Publishing Docs row "Front matter".
 
 ### In the release file
@@ -269,7 +273,7 @@ Frederico then tags the release, imports it to production as **Embargoed** for p
 
 ## Versions and the changelog
 
-Every country report has its own version, shown on its page ("Version 1.1 · updated 3 March 2027") with a list of its changes. Region pages and the hub show the date of their last change.
+Every country report has its own version, shown on its page ("Version 1.1 · updated 3 March 2027") with a list of its changes.
 
 | Part | Lives in | Written by |
 |---|---|---|
@@ -311,7 +315,7 @@ It reads and reports; it never edits. The exporter's own checks remain the gate.
 
 - **Report → territory.** Each country report links to its territory page (`/territories/{region}/{territory}/`). Plan 6.8 may turn some non-ISO places (Abkhazia, Transnistria) into subdivisions without pages; their reports then link to the parent territory, or to nothing.
 - **Territory → report.** Each territory page with a Released report shows a block linking to it, with the headline sentence and the five answers. An Upcoming or Embargoed report shows nothing.
-- **Matched on record IDs, never names.** Names differ between the bases: the report's *Naoero* is the archive's *Nauru*, and *Sahrawi Arab Democratic Republic* is the territory *Western Sahara*. The territory page carries the archive Nation's record ID in `_airtable_record_id`; the rights base's synced Nations get new IDs (Afghanistan is `recUTYgBN887C9IGv` there and `recrY5jg8GmprukMo` in the archive). So the archive's Nations table gets a formula field, `RECORD_ID()`, which syncs into the rights base as **Archive Nation ID**. A report whose ID matches no territory is listed by the import and shows no block.
+- **Matched on record IDs, never names.** Names differ between the bases: the report's *Naoero* is the archive's *Nauru*, and *Sahrawi Arab Democratic Republic* is the territory *Western Sahara*. The territory page carries the archive Nation's record ID in `_airtable_record_id`; the rights base's synced Nations get new IDs (Afghanistan is `recUTYgBN887C9IGv` there and `recrY5jg8GmprukMo` in the archive). So the archive's Nations table gets a formula field, `RECORD_ID()`, which syncs into the rights base as **Archive Nation ID**. A report without one, or whose ID matches no territory, has no territory link, no block and no map. Adding the ID later updates the report on the next import, even when its text is unchanged.
 
 ## Analytics
 
@@ -320,7 +324,7 @@ The code only pushes to `window.dataLayer`; Google Tag Manager forwards to GA4, 
 | Data | Pushed | Where |
 |---|---|---|
 | `rights_page` (hub, region, report), `rights_region`, `rights_country`, `report_version`, `release_status`, `viewer_role` (press, admin or empty) | On report pages, before GTM loads | `wt-rights/includes/analytics.php`, through the `wt_head_before_analytics` action in `modules/page--head.php` |
-| `rights_updates_signup` with `rights_region` | "Get release updates" clicked | `wt-rights/assets/rights.js` |
+| `rights_updates_signup` with `rights_region` (`synthesis` for the Complete Edition card) | "Get release updates" clicked; it then opens the Mailchimp signup dialog | `wt-rights/assets/rights.js` |
 | `donate_cta_click` | Donate links, by `data-cta-location`: `rights-report`, `rights-report-sidebar`, `rights-region`, `rights-hub` | The site's existing donate tracking |
 | The gateway's four funnel events | PDF downloads, with `post_type=rights_reports` and `download_source=rights-report` | The download gateway |
 
@@ -339,9 +343,9 @@ The code only pushes to `window.dataLayer`; Google Tag Manager forwards to GA4, 
 Run once the build PRs are merged and deployed to staging, before South and Central Asia's text lock.
 
 1. On staging: define `WT_RIGHTS_PRIVATE_DIR` outside `public_html`, flush rewrite rules (Settings → Permalinks), and in Settings → Download Gateway set `rights_reports` to Required with the `documents` form.
-2. Locally: `wp wt rights export --region=south-central-asia --release=2027.1 --preview --out=<releases repo>/…` (through 1Password), import it locally, then `wp wt rights pdf --out=<releases repo>/pdf`.
+2. Locally: `wp wt rights export --region=south-central-asia --release=2027.1 --preview --out=<releases repo>/…` (through 1Password), import it locally, then `wp wt rights pdf --out=<releases repo>/pdf`. A preview export's reports stay drafts at every status, so press and the public never see them: to rehearse the press and public steps, import a copy with `draft` set to false, or the demo release (non-draft reports plus mock region and front-matter text, kept outside the repo).
 3. Copy the release file and PDFs to the server's home folder (never `public_html`), then on staging: `import <file> --execute`, `status south-central-asia embargoed --pdfs=<dir>`.
 4. Check, as an anonymous visitor, as a press account and as an admin: the hub lists seven regions; the region and reports follow the status table above; no PDF is downloadable.
-5. `status south-central-asia released`: pages public, the PDF downloads through the gateway after the email step, and GA4 DebugView shows the page details, `rights_updates_signup`, the donate click and the download funnel.
-6. `status south-central-asia upcoming`: everything is gone from public view, and the PDFs are gone from the server.
+5. **Releases → Release** (or `status south-central-asia released`): pages public, the PDF downloads through the gateway after the email step, and GA4 DebugView shows the page details, `rights_updates_signup`, the donate click and the download funnel.
+6. **Back to upcoming** (or `status south-central-asia upcoming`): everything is gone from public view, report URLs redirect to the region, and the PDFs are gone from the server.
 

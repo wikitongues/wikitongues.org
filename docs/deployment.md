@@ -163,6 +163,7 @@ The deploy only moves files. Some changes need a manual step on **each** environ
 | Edits ACF JSON | Optional: ACF → Field Groups shows "Sync available"; syncing reconciles the database copy. The front end already uses the JSON. |
 | Ships a data migration (`wp wt …`) | Run it on staging, then production: dry run first, then `--execute`. Take a dated backup before production (see [staging-sync.md](staging-sync.md)). |
 | Adds a setting stored in the database (gateway policies, options pages, menus) | Set it in the admin on each environment. |
+| Is the first deploy of the Language Rights report (`wt-rights`) | Once per environment: `WT_RIGHTS_PRIVATE_DIR` in `wp-config.php` (outside `public_html`), the `rights_reports` gateway row, and a rewrite flush. See [language-rights.md](language-rights.md#when-files-reach-a-server). |
 | Changes the modal script or a plugin asset | Bump the plugin version constant, which sets the asset's `?ver=`, so browsers fetch the new file. |
 | Changes CSS | Hard-refresh to check. The theme's `style.css` `@import`s `main.css` without a version string, so browsers can keep the old file. |
 
