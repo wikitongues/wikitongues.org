@@ -896,8 +896,8 @@ Set baselines for the language, territory, region and search pages, and monitor 
 | PR | Ships |
 |---|---|
 | 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged ([#716](https://github.com/wikitongues/wikitongues.org/pull/716), merged 2026-11-23) |
-| 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` (PR 2) |
-| 3 `refactor/cc/donate-use-tokens` | `donate.styl` |
+| 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` ([#717](https://github.com/wikitongues/wikitongues.org/pull/717)) |
+| 3 `refactor/cc/donate-use-tokens` | `donate.styl`; the FAQ layout drops its `+` span for `disclosure()` (PR 3) |
 
 Each passes `/test` and a before/after check at 375, 1024 and 1280px on the hub, a region, a country, donate and one territory page. No database changes.
 
@@ -917,6 +917,7 @@ Moving editorial sizes to rem; link colour, button corners, what red means in th
 | 2026-11-23 | Every report `<details>` gets `disclosure()`, not only the three named: indicators, sources and "Browse N", plus the chart table, "About the figures" and the director's letter | One marker for one control |
 | 2026-11-23 | Every bare `min()` in the report becomes `max-width`, not only the wrap: the locator map (300px), its caption (270px), the pager (960px), the dialog (480px; it compiled to 68%) | The same compile bug; each now renders at the width its rule names |
 | 2026-11-23 | `disclosure()` pins the `+` with `margin-left: auto`, not `space-between` | `space-between` centred the indicator label between its number and the `+` |
+| 2026-11-23 | Donate's breakpoints move too: 760px → `$mobile`, 960px → `$tablet` | Rule 4 applies to every page this work touches; at 900–960px the hero keeps its desktop grid, which fits |
 
 ### 8. Membership (blocked on the board)
 
