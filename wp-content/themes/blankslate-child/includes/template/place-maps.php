@@ -64,8 +64,8 @@ function wt_region_territory_ids( WP_Term $region ): array {
  * One per published territory (most are already built for languages) and one
  * per sub-region. Absolute state: rebuilt from the posts on every export.
  *
- * @param array<string, list<string>> $sets Label → place record IDs.
- * @return array<string, list<string>>
+ * @param array<string, list<string>|array{places: list<string>, globe?: bool}> $sets Label → places, or places and options.
+ * @return array<string, list<string>|array{places: list<string>, globe?: bool}>
  */
 function wt_place_map_sets( array $sets ): array {
 	if ( ! function_exists( 'wt_maps_record_ids' ) ) {
@@ -100,7 +100,12 @@ function wt_place_map_sets( array $sets ): array {
 		}
 		$places = wt_maps_record_ids( wt_region_territory_ids( $region ) );
 		if ( count( $places ) > 1 ) {
-			$sets[ 'Region: ' . html_entity_decode( $region->name ) ] = $places;
+			// The locator globe whatever the frame's size: Polynesia is islands in an
+			// empty sea. A territory's map keeps the language rule (small frames only).
+			$sets[ 'Region: ' . html_entity_decode( $region->name ) ] = array(
+				'places' => $places,
+				'globe'  => true,
+			);
 		}
 	}
 
@@ -126,8 +131,9 @@ function wt_territory_map( int $territory_id ): string {
 		array(
 			'places'  => $places,
 			'primary' => $places,
-			'title'   => 'Where ' . wt_prefix_the( get_the_title( $territory_id ) ) . ' is',
+			'title'   => 'Map of ' . wt_prefix_the( get_the_title( $territory_id ) ),
 			'class'   => 'wt-place-map',
+			'inset'   => 1.2, // The locator globe 20% larger than on language pages.
 		)
 	);
 }
@@ -153,7 +159,7 @@ function wt_region_map( WP_Term $region, ?array $territory_ids = null ): string 
 		array(
 			'places'  => $places,
 			'primary' => $places,
-			'title'   => 'Territories in ' . wt_prefix_the( html_entity_decode( $region->name ) ),
+			'title'   => 'Map of ' . wt_prefix_the( html_entity_decode( $region->name ) ),
 			'class'   => 'wt-place-map', // One class: wt_map_places() sanitizes it as one.
 		)
 	);

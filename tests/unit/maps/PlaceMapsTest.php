@@ -59,7 +59,10 @@ class PlaceMapsTest extends TestCase {
 				'Territory: T10'         => array( 'rec10' ),
 				'Territory: T11'         => array( 'rec11' ),
 				'Territory: T12'         => array( 'rec12' ),
-				'Region: Eastern Europe' => array( 'rec11', 'rec12' ),
+				'Region: Eastern Europe' => array(
+					'places' => array( 'rec11', 'rec12' ),
+					'globe'  => true,
+				),
 			),
 			wt_place_map_sets( array() )
 		);
@@ -79,7 +82,7 @@ class PlaceMapsTest extends TestCase {
 					array(
 						'places'  => array( 'rec11', 'rec12' ),
 						'primary' => array( 'rec11', 'rec12' ),
-						'title'   => 'Territories in Polynesia',
+						'title'   => 'Map of Polynesia',
 						'class'   => 'wt-place-map',
 					),
 				),

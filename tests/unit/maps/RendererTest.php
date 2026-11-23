@@ -159,4 +159,19 @@ class RendererTest extends TestCase {
 		$this->assertStringContainsString( 'class="disputed hatch hatch-land" d="M3 3"', $out, 'no claimant on the map' );
 		$this->assertStringNotContainsString( 'hatch-claimed', $out );
 	}
+
+	public function test_decorate_scales_the_globe_from_its_corner() {
+		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+			$this->markTestSkipped( 'WordPress HTML API not available (no local install at the repository root).' );
+		}
+		WP_Mock::userFunction( 'wp_kses_uri_attributes' )->andReturn( array( 'href', 'src' ) );
+		WP_Mock::userFunction( 'wp_has_noncharacters' )->andReturn( false );
+		$svg = '<svg viewBox="0 0 400 300"><title>t</title><g class="inset"><circle class="globe-halo" cx="346" cy="54" r="45.5"/></g></svg>';
+
+		$this->assertStringContainsString( '<g transform="translate(-80 0) scale(1.2)" class="inset">', Renderer::decorate( $svg, array(), '/', '', '', 1.2 ), 'top right: anchored at (400, 0)' );
+		$this->assertStringNotContainsString( 'transform', Renderer::decorate( $svg, array(), '/', '', '' ), 'as built by default' );
+
+		$bottom_right = str_replace( 'cy="54"', 'cy="246"', $svg );
+		$this->assertStringContainsString( 'translate(-80 -60) scale(1.2)', Renderer::decorate( $bottom_right, array(), '/', '', '', 1.2 ) );
+	}
 }
