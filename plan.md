@@ -678,7 +678,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 **Rules**
 
 *Data*
-- Source: published `languages` posts. `identifier` is `iso_code`, `label` is `alternate_names` (falling back to `standard_name`), `resourced` is true when `speakers_recorded` is not empty, and `id` is the post ID. Posts without an ISO code or a label are skipped.
+- Source: published `languages` posts. `identifier` is the post slug, which is the language's URL and the Airtable Identifier; 136 languages have no `iso_code`. `label` is `alternate_names`, falling back to `standard_name` and then the title. `resourced` is true when `speakers_recorded` is not empty, and `id` is the post ID.
 - No Airtable call and no token. The Custom Search token can be revoked, and the field removed later.
 - The index is written from scratch each time (absolute state): first to a temporary file, then renamed into place, so a failed run leaves the old index.
 - Rows are sorted by `id`, so two rebuilds of unchanged data produce byte-identical files. `wp typeahead rebuild --dry-run` prints added, removed and changed counts; a second run reports 0.
@@ -698,7 +698,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 | Type `be → ben → beng → benga` quickly | No network requests after the first focus |
 | `tahitian`, `cha` | Tahitian; Chamorro among the results |
 | `a"b` | No error, no results |
-| A language without `alternate_names` | Found by its `standard_name` and ISO code |
+| A language without `alternate_names` | Found by its `standard_name` (or title) and its identifier |
 | Rebuild twice with no changes | Second run: 0 changes, identical file |
 | Airtable sync renames a language | New name in the index about a minute after the sync saves the post |
 | Make updates 300 languages in one batch | One rebuild, not 300 |
@@ -709,7 +709,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 **Open questions**
 1. **Index size.** The estimate is about 92 bytes per language, roughly 750 KB raw and 250–300 KB compressed. Confirm that production compresses `.json`. If it doesn't, shorten the field names or pre-compress the file.
 2. **Capped results.** The Airtable search returned only its first page of 100 matches. The index finds every match, then shows the top 100 by label. Keep that cap?
-3. **The ~500 languages without `alternate_names`.** Is falling back to `standard_name` right, or is that a data gap to fix in Airtable?
+3. **The ~500 languages without `alternate_names`.** They fall back to `standard_name`, then the title (300 have neither name field). Is that a data gap to fix in Airtable?
 
 **Out of scope:** better ranking (typo tolerance, popularity), which belongs to [3.3](#33-enhanced-search).
 
