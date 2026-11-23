@@ -156,47 +156,165 @@ function get_custom_gallery_query( $atts = array() ) {
 
 
 /**
- * Retrieves a random video for a given language ISO code.
+ * Invert stored ID lists: each row's serialized array of target IDs becomes
+ * target ID => post IDs, keeping row order and dropping duplicates.
  *
- * @param string $iso_code The ISO code of the language.
- * @return WP_Query The query result.
+ * ACF relationship and post_object fields store a serialized array of ID
+ * strings. Reading them once and inverting in PHP replaces one `LIKE` scan
+ * of wp_postmeta per gallery card.
+ *
+ * @param array<int, object> $rows Rows with `post_id` and `meta_value`.
+ * @return array<int, int[]> Target ID => post IDs.
  */
-function get_videos_by_featured_language( $language_title ) {
-	// Use WP_Query to find the language post by title
-	$language_query = new WP_Query(
-		array(
-			'post_type'      => 'languages', // Adjust this to your custom post type if needed
-			'title'          => $language_title,
-			'posts_per_page' => 1, // Only need one post
-			'fields'         => 'ids', // Only get the ID to optimize performance
+function wt_gallery_invert_id_lists( array $rows ): array {
+	$map = array();
+	foreach ( $rows as $row ) {
+		$targets = maybe_unserialize( $row->meta_value );
+		if ( ! is_array( $targets ) ) {
+			continue;
+		}
+		$post_id = (int) $row->post_id;
+		foreach ( $targets as $target ) {
+			$target = is_scalar( $target ) ? (int) $target : 0;
+			if ( $target > 0 ) {
+				$map[ $target ][ $post_id ] = $post_id;
+			}
+		}
+	}
+	return array_map( 'array_values', $map );
+}
+
+/**
+ * Published posts of a type that reference each target ID through a
+ * serialized ID-list meta field, ordered by post title.
+ *
+ * One query per meta key and post type per request; the result is kept in
+ * a static cache, so every card in a gallery shares it.
+ *
+ * @param string $meta_key  Meta key holding a serialized ID array.
+ * @param string $post_type Post type of the referencing posts.
+ * @return array<int, int[]> Target ID => referencing post IDs.
+ */
+function wt_gallery_posts_by_meta_reference( string $meta_key, string $post_type ): array {
+	static $cache = array();
+	$key          = $meta_key . '|' . $post_type;
+	if ( isset( $cache[ $key ] ) ) {
+		return $cache[ $key ];
+	}
+
+	global $wpdb;
+	$rows          = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT m.post_id, m.meta_value FROM {$wpdb->postmeta} m
+			INNER JOIN {$wpdb->posts} p ON p.ID = m.post_id
+			WHERE m.meta_key = %s AND p.post_type = %s AND p.post_status = 'publish'
+			ORDER BY p.post_title ASC, p.ID ASC",
+			$meta_key,
+			$post_type
+		)
+	);
+	$cache[ $key ] = wt_gallery_invert_id_lists( is_array( $rows ) ? $rows : array() );
+	return $cache[ $key ];
+}
+
+/**
+ * Values of a few meta keys for a set of posts, in one query.
+ *
+ * Reads only the named keys, unlike update_meta_cache(), which loads every
+ * meta row of every post (languages carry dozens).
+ *
+ * @param string[] $meta_keys Meta keys to read.
+ * @param int[]    $post_ids  Post IDs.
+ * @return array<int, array<string, string>> Post ID => meta key => first value.
+ */
+function wt_gallery_meta_values( array $meta_keys, array $post_ids ): array {
+	$post_ids = array_values( array_unique( array_filter( array_map( 'intval', $post_ids ) ) ) );
+	if ( ! $post_ids || ! $meta_keys ) {
+		return array();
+	}
+
+	global $wpdb;
+	$key_placeholders = implode( ',', array_fill( 0, count( $meta_keys ), '%s' ) );
+	$id_placeholders  = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
+	$rows             = $wpdb->get_results(
+		$wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- only %s/%d placeholder lists built above.
+			"SELECT post_id, meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_key IN ($key_placeholders) AND post_id IN ($id_placeholders) ORDER BY meta_id ASC",
+			array_merge( array_values( $meta_keys ), $post_ids )
 		)
 	);
 
-	// Check if a language post is found
-	if ( ! $language_query->have_posts() ) {
-		// If no post is found with the given title, return an empty WP_Query
-		return new WP_Query();
+	$values = array();
+	foreach ( is_array( $rows ) ? $rows : array() as $row ) {
+		$post_id = (int) $row->post_id;
+		if ( ! isset( $values[ $post_id ][ $row->meta_key ] ) ) {
+			$values[ $post_id ][ $row->meta_key ] = (string) $row->meta_value;
+		}
+	}
+	return $values;
+}
+
+/**
+ * Card preview data for languages: display name and one random featured
+ * video (thumbnail and titles).
+ *
+ * Replaces a title lookup plus a `featured_languages` LIKE query per
+ * language with a handful of batched queries for the whole gallery. Results
+ * are cached per language for the request, so calling it once per card with
+ * the gallery's full ID list only queries on the first card.
+ *
+ * @param int[] $language_ids Language post IDs.
+ * @return array<int, array{name: string, video_id: int, video_title: string, video_post_title: string, thumbnail: string}>
+ */
+function wt_gallery_language_previews( array $language_ids ): array {
+	static $cache = array();
+
+	$language_ids = array_values( array_unique( array_filter( array_map( 'intval', $language_ids ) ) ) );
+	$missing      = array_values( array_diff( $language_ids, array_keys( $cache ) ) );
+
+	if ( $missing ) {
+		$videos_by_language = wt_gallery_posts_by_meta_reference( 'featured_languages', 'videos' );
+		$video_for          = array();
+		foreach ( $missing as $language_id ) {
+			$pool = $videos_by_language[ $language_id ] ?? array();
+			if ( $pool ) {
+				// Same effect as the former ORDER BY RAND() LIMIT 1.
+				$video_for[ $language_id ] = $pool[ array_rand( $pool ) ];
+			}
+		}
+
+		_prime_post_caches( array_merge( $missing, array_values( $video_for ) ), false, false );
+		$meta = wt_gallery_meta_values(
+			array( 'standard_name', 'video_title', 'video_thumbnail_v2' ),
+			array_merge( $missing, array_values( $video_for ) )
+		);
+
+		$attachment_ids = array();
+		foreach ( $video_for as $video_id ) {
+			$attachment_id = (int) ( $meta[ $video_id ]['video_thumbnail_v2'] ?? 0 );
+			if ( $attachment_id > 0 ) {
+				$attachment_ids[] = $attachment_id;
+			}
+		}
+		if ( $attachment_ids ) {
+			_prime_post_caches( $attachment_ids, false, true );
+		}
+
+		foreach ( $missing as $language_id ) {
+			$video_id      = $video_for[ $language_id ] ?? 0;
+			$attachment_id = $video_id ? (int) ( $meta[ $video_id ]['video_thumbnail_v2'] ?? 0 ) : 0;
+			$thumbnail     = $attachment_id ? wp_get_attachment_url( $attachment_id ) : '';
+			$name          = $meta[ $language_id ]['standard_name'] ?? '';
+
+			$cache[ $language_id ] = array(
+				'name'             => '' !== $name ? $name : get_the_title( $language_id ),
+				'video_id'         => $video_id,
+				'video_title'      => $video_id ? ( $meta[ $video_id ]['video_title'] ?? '' ) : '',
+				'video_post_title' => $video_id ? get_the_title( $video_id ) : '',
+				'thumbnail'        => is_string( $thumbnail ) ? $thumbnail : '',
+			);
+		}
 	}
 
-	// Get the language post ID
-	$language_post_id = $language_query->posts[0];
-
-	// Prepare the meta query to match the 'featured_languages' field by the language post ID
-	$args = array(
-		'post_type'      => 'videos',
-		'posts_per_page' => 1, // Adjust as needed to control the number of videos returned
-		'orderby'        => 'rand', // Random order
-		'meta_query'     => array(
-			array(
-				'key'     => 'featured_languages', // ACF relationship field
-				'value'   => '"' . $language_post_id . '"', // Match against the serialized ID in the array
-				'compare' => 'LIKE', // Partial match to find serialized post IDs
-			),
-		),
-	);
-
-	// Execute the query
-	$video_query = new WP_Query( $args );
-
-	return $video_query;
+	return array_intersect_key( $cache, array_flip( $language_ids ) );
 }

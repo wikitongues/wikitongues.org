@@ -16,6 +16,7 @@
 		videos:         'oral history',
 		captions:       'caption file',
 		document_files: 'document',
+		rights_reports: 'language rights report',
 	};
 
 	// Fields in the intake step shown only to first-time visitors.

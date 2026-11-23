@@ -1,12 +1,14 @@
 <?php
 	$territory_query     = new WP_Query(
 		array(
-			'post_type'      => 'territories',
-			'posts_per_page' => -1,
-			'post_status'    => 'publish',
-			'orderby'        => 'slug',
-			'order'          => 'ASC',
-			'tax_query'      => array(
+			'post_type'              => 'territories',
+			'posts_per_page'         => -1,
+			'post_status'            => 'publish',
+			'orderby'                => 'slug',
+			'order'                  => 'ASC',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'tax_query'              => array(
 				array(
 					'taxonomy' => 'region',
 					'field'    => 'term_id',

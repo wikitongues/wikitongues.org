@@ -2,7 +2,7 @@
 
 The live plan for wikitongues.org: what comes next, in order, and the spec for each piece of work. Finished work moves to [docs/plan-archive.md](docs/plan-archive.md); how the finished systems work is documented in `docs/`.
 
-**Docs:** [content model](docs/content-model.md) · [download gateway](docs/download-gateway.md) · [Airtable sync](docs/airtable-sync.md) · [galleries](docs/gallery.md) · [deployment](docs/deployment.md) · [staging sync](docs/staging-sync.md) · [testing](docs/testing-strategy.md) · [completed work](docs/plan-archive.md)
+**Docs:** [content model](docs/content-model.md) · [language rights](docs/language-rights.md) · [download gateway](docs/download-gateway.md) · [Airtable sync](docs/airtable-sync.md) · [galleries](docs/gallery.md) · [deployment](docs/deployment.md) · [staging sync](docs/staging-sync.md) · [testing](docs/testing-strategy.md) · [completed work](docs/plan-archive.md)
 
 ## Contents
 
@@ -48,7 +48,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
 - **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-Last reviewed 2026-09-13.
+Last reviewed 2026-11-18.
 
 ---
 
@@ -59,12 +59,13 @@ Last reviewed 2026-09-13.
 | # | Item | Why now | Spec |
 |---|---|---|---|
 | 1 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 2 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 3 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 4 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 5 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 6 | Maps on territory and region pages | Discovery by place | [3.2](#32-maps-on-territory-and-region-pages) |
-| 7 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 2 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 3 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 4 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 5 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 6 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 7 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 8 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
@@ -77,6 +78,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 | Operations: server cron, vulnerability monitoring, a third-party plugin audit | [7.1](#71-operations) |
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
+| Language geography cleanup across Airtable, Make and WordPress: origins, subdivisions, "also spoken in" | [6.8](#68-language-geography-across-airtable-make-and-wordpress) |
 | GTM: give Native Language AI (live since 2026-11-18) its own `content_type`, and Language Rights when it launches | [2.1](#21-pages-and-navigation) |
 
 ### Blocked on a decision
@@ -109,7 +111,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 #### 1.2 Giving page redesign
 
-*Now #3.*
+*Now #4.*
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
@@ -122,7 +124,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 #### 1.3 Donor recognition
 
-*Now #4. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
+*Now #5. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
 
 Donors are People: add a **Donor** term to `people-type`, so a board member who donates stays one record ([content-model.md → People](docs/content-model.md#people)).
 
@@ -140,7 +142,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 
 #### 2.1 Pages and navigation
 
-*Now #2, with minimal copy (decided 2026-09-13).*
+*Now #3, with minimal copy (decided 2026-09-13).*
 
 From the roadmap (step 6):
 
@@ -163,38 +165,153 @@ From the roadmap (step 6):
     - Confirm the list of languages the team reads, quoted in "Help us get it right".
 - **GTM `content_type` (open, done in GTM rather than in code).** `content_type` is a RegEx Table variable in GTM that maps `{{Page Path}}` to a content type and goes out on every `page_view`. Pages it doesn't match get no content type of their own, so their traffic can't be separated out in GA4.
   - **Native Language AI:** live since 2026-11-18 and not mapped yet. Match `/revitalization/resources/native-language-ai/`. The `/ai` short link redirects there before the page loads, so it needs no row of its own.
-  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches.
+  - **Language Rights:** add `/language-rights` (and its FAQs) when it launches, and `/language-rights/report/` when the first region releases (2.2).
   - **Then:** publish the GTM container, and check the content type in GA4's real-time report or DebugView.
   - **Still open:** whether these pages get a shared type (for example `resource`) or one each.
 - **Later in this workstream:**
   - Move the blog from Medium and Substack onto `/blog`, for search value.
   - Turn the translate-a-document invitation, now a `mailto:` link, into a form (see 4.2).
 
+#### 2.2 Language Rights report
+
+*Now #2: dated. The project announcement is on 10 December 2026; South and Central Asia, the first of seven regional releases, goes to press under embargo on 5 February 2027 and launches on 19 February. Dates are from the publishing plan, kept outside the repo.*
+
+The *Report on the Global State of Language Rights* on wikitongues.org: a hub, seven region pages and one page per country or place (204 rows in Airtable, 171 Docs written). Content is authored in Airtable and Google Docs and reaches the site only through tagged releases, so editing never threatens production. How it works, the statuses and the editorial contract: [docs/language-rights.md](docs/language-rights.md).
+
+##### Glossary
+
+- **Country report:** one country's or place's assessment: a Google Doc plus its Airtable Reports row.
+- **Region:** one of the seven publishing regions. A publishing group, not the archive's `region` taxonomy.
+- **Release:** a tagged, checked JSON file holding every Completed country so far (`2027.1` … `2027.8`, patches `2027.1.1`).
+- **Research status** (Airtable, per country, Kristen's names unchanged) and **release status** (WordPress, per region): two separate lists.
+- **Version:** a report's own number (1.0, 1.1, 2.0), shown to readers. Not the release number.
+
+##### Rules
+
+1. Nothing syncs live. The site changes only when a release is imported, local → staging → production.
+2. Airtable decides the answers; the Doc decides the text. A release fails if they disagree.
+3. Only Completed countries enter a release; a region releases only when every country in it is Completed or Held. Kristen's status names stay as they are; Held is the one addition.
+4. Release files hold embargoed text, so they live in a private repo, never in this one.
+5. The import keys on Airtable record IDs, writes absolute state, and is a no-op on a second run.
+6. Totals count Released regions only. The global synthesis appears only at the Complete Edition.
+7. Reports and territory pages link both ways, matched on the archive Nation's record ID.
+8. Every report has its own version. The exporter numbers it (minor for text, major when an answer changes); a released report that changes without a Changes note fails the release.
+
+##### Example cases
+
+| Case | Result |
+|---|---|
+| Afghanistan: Completed, five answers matching Airtable, a story card in its WordPress tab | `/language-rights/report/afghanistan/` with "At a glance", six sections, the card; the Afghanistan territory page shows a report block |
+| An editor changes Afghanistan's Doc after release | Nothing changes on the site until a patch release is cut and imported. Without a Changes row the release fails; with one, Afghanistan goes to 1.1 and its page lists the note |
+| Afghanistan's Indicator 3 changes from unclear to yes after release | Version 2.0; the changelog names the changed answer |
+| Mexico's Doc has five answers, not seven | The Americas release fails, naming Mexico and the missing answers |
+| A Doc says `Your answer: Yes.`, Airtable says `yes` | Passes: answers are compared without case or trailing punctuation |
+| A country is Held | Left out of the release; its region page lists it as "Report forthcoming" |
+| *Naoero* (rights base) vs *Nauru* (territory) | Linked through the Archive Nation ID, never by name |
+| Europe is Embargoed | The public sees "Upcoming"; press accounts and admins read the full region |
+
+##### Display
+
+- **Hub** `/language-rights/report/`: the release schedule, methodology, indicators, answer key, director's letter, released regions; the global synthesis and global totals from the Complete Edition.
+- **Region** `/language-rights/report/{region}/`: a map of its countries, headline, introduction, findings, evidence and story cards, indicator comparison across its countries, the country grid, the treaty register (collapsible), the region's letter from the director.
+- **Country** `/language-rights/report/{country}/`: its territory's map, "At a glance" (headline sentence, language count, baseline and trend, five answers), the six sections with sources collapsed, story card, link to its territory and region.
+- **Territory pages:** a block linking to the country's Released report.
+- **Look** lifts the prototype's HTML into Stylus modules; the map is the 3.2 component; print CSS collapses sources and points to the PDF.
+- **Instrument:** GTM `content_type` for `/language-rights/report/` (see 2.1); the gated PDF reports through the download gateway's existing GA4 funnel events.
+
+##### Steps
+
+Built in the week of 23 November 2026, unrelated to the release dates. One plugin, `wt-rights`; each PR passes `/test`.
+
+| PR | Ships | Status |
+|---|---|---|
+| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
+| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
+| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
+| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
+| 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
+| 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
+| 7 | Match the review prototype; region overview and front matter in the release; region maps | [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
+| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
+| 9 | The exporter reads the region and front-matter Docs into the release file's `overview` and `front_matter` | Next |
+
+Merge in order (#715 is stacked on #714). Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
+
+**Data first:** the Held option and the Changes and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
+
+**Decided for the build (2026-11-22):** the exporter is PHP WP-CLI in this repo, run locally; reports are posts with HTML content and one JSON meta value (no ACF); region and front-matter Docs are listed in an Airtable "Publishing Docs" table with each region's release date; embargo is WordPress post status; no PDF exists at any public URL until its region is released; region and Complete Edition PDFs, when designed, are ordinary `documents` posts.
+
+##### Open questions
+
+1. **Kristen:** approve the editorial contract, the Held status and the Changes table in [docs/language-rights.md](docs/language-rights.md).
+2. **Kristen:** is the list of treaties each nation is party to enough for region pages, or are actions and dates needed (and from where)?
+3. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
+4. **Press access:** how journalist accounts are issued and revoked (tracked privately).
+5. **Kristen: global findings before the Complete Edition?** The latest prototype's hub shows key findings and per-indicator charts across all 170 scored reports now; the decision log (2026-11-18) says global numbers appear only at the Complete Edition. *Impact:* showing them early puts unreleased regions' answers in public aggregates before those regions are fact-checked or embargoed; keeping the rule means the hub shows only the schedule, methodology and letter until 25 August 2027. The component can be built either way.
+
+##### Out of scope
+
+Live sync from Docs or Airtable; editing report text in WordPress; earlier editions online; a designed PDF beyond the existing download gateway; translations of the report.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-18 | Releases, not a live sync | Content edits must never threaten production; a release diff is the editorial review |
+| 2026-11-18 | The global synthesis appears only at the Complete Edition | A synthesis updated for six months makes no launch (Kristen) |
+| 2026-11-21 | URLs under `/language-rights/report/`, with `/rights` as a redirect | One home beside the project page; country URLs leave out the region so they never move |
+| 2026-11-21 | Release files in a private repo; Google service-account access | Embargoed text stays out of the public repo |
+| 2026-11-21 | Embargoed regions are readable by press accounts and admins, built in WordPress | Press needs the region before launch day; admins review it in place on production |
+| 2026-11-21 | Kristen enters treaty actions to a written contract | The treaty register needs actions and dates Airtable lacks |
+| 2026-11-23 | Proposed, open for Kristen: no Treaty actions table; region pages list the treaties each nation is party to, from the existing Nations ↔ Treaties links, without action or date | Supersedes the row above if she agrees. Keeps her work to Changes and Publishing Docs; if she wants actions and dates, look at fetching them from the UN Treaty Collection before asking anyone to type them |
+| 2026-11-21 | Kristen, with Frederico, locks countries, following a pre-flight checklist | One owner for "ready", checked automatically where possible |
+| 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
+| 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
+| 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
+| 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
+| 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
+| 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
+| 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
+
 ### 3. Discovery
 
 #### 3.1 Dynamic homepage
 
-*Now #5.*
+*Now #6.*
 
 The homepage is static. Surface recent oral histories, the active campaign (from 1.1), featured languages and fellows, with a donation CTA in the stream. Decide which signals to use, such as the publication date or an editor-curated featured flag, and build from galleries server-side where possible. A "most recent video" block is a quick first step.
 
 - **Measure:** homepage exit rate, pages per session, and the rate of homepage entries that end in a donation.
 - **Evaluate** 60–90 days after launch by comparing donation rates for visitors who use discovery features against those who don't. That comparison is the thesis test, and its result decides what follows this queue.
 
-#### 3.2 Maps on territory and region pages
+#### 3.2 Maps
 
-*Now #6.*
+*Now #7. Step 1, the locator map on language pages, shipped 2026-11-23 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). Step 2 is next.*
 
-An embedded map on `single-territories.php` and `taxonomy-region.php`, with markers that link to language pages.
+##### Step 2: interactive maps
 
-- **Library:** Leaflet with OpenStreetMap tiles, or Mapbox GL. No unrestricted API key in the browser.
-- **Data:** territories have a `wikidata_id` but no coordinates or shapes yet. Sourcing them, from Wikidata coordinates or a country-boundaries dataset keyed by ISO code, is part of this work.
-- **Performance:** some territories list hundreds of languages (India: 403).
-- **Instrument:** `map_interaction` (`territory`, `action`).
+- **MapLibre GL** with vector tiles that we host ourselves: a Protomaps PMTiles file served from the plugin or from uploads. No API key in the browser and no third-party tile server. The style reuses the Brand colors and the hillshade.
+- **Territory pages:** the territory highlighted, with the languages listed beside the map. Languages don't have coordinates, so link from shaded countries, not language markers, until there's a source for language locations (Glottolog has some, keyed by `glottocode`).
+- **Region pages:** each territory shaded by how many languages it has, linking to its territory page.
+- **A world view**, if one is wanted (homepage, region index): compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
+- **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
+- **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
+- **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
+
+##### Step 1 follow-ups
+
+- [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh).
+- [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
+- [ ] Review tooling: a territory-request issue template, and the contested-areas diff the build writes for each PR.
+- [ ] Put the yearly claims review on Kristen's calendar.
+- [ ] Two maps over budget: Tajikistan's hillshade (32.9 KB) and French's six-place set (20.9 KB gzipped SVG).
+- [ ] Run the `decorate()` test in CI; it skips there because WordPress core isn't in the repository.
+- [ ] The deploy's delete pass stops at 100 files, so a rebuild that drops more than about 25 maps fails it. Handle before the subdivision rebuild (6.8, Maps step).
+- [ ] Remove the origins fallback (6.8 Steps).
 
 #### 3.3 Enhanced search
 
-*Now #7.*
+*Now #8.*
 
 1. **Find languages by name (#379).** Full-page `?s=` results miss language pages, because a language's title is its ISO code, and WordPress search matches titles and content, not `standard_name` or `alternate_names`. The typeahead already matches names. Make the main search query match them too (`includes/template/search-filter.php`). In the same pass, fix the missing video thumbnails in results (#58) and the results page title that shows an ISO code.
 2. **A gallery-powered results page** across languages, territories, genealogies, writing systems, videos and fellows. It should be faceted (region, family, content type) and relevance-weighted. Design it together with in-gallery filtering (#378).
@@ -222,6 +339,7 @@ An embedded map on `single-territories.php` and `taxonomy-region.php`, with mark
   - Unused schema.
   - Uninstall leaves settings behind.
 - **Airtable cleanup.** Dedupe the Download records duplicated by the 2026-09-08 replay, on `download_event_id` ([airtable-sync.md](docs/airtable-sync.md#gateway-webhook-router)).
+- **A follow-up question set for the Language Rights report.** Today report PDFs use the general `documents` follow-up form. Design a report-specific set asking who the reader is (journalist, advocate, researcher, government, community member) and what they'll use it for; start from the intake brief in `docs/local_docs/`.
 - **For the Mailchimp work (roadmap step 3):** add the language slug to the `intake` webhook payload, so Make can set the `LANG_SLUG` merge field.
 - **Security hardening** from the March 2026 review is tracked privately.
 
@@ -388,6 +506,94 @@ Two related gaps:
 
 *Long-term.* A specification for a sourced language registry lives in `docs/local_docs/` (not committed): Glottolog, Wikidata and ISO 639-3 identifiers, with per-field provenance and licensing. It would inform 6.3–6.5 and replace hand-maintained language data. No website work is scheduled.
 
+#### 6.8 Language geography across Airtable, Make and WordPress
+
+*Spec approved 2026-11-20. Phases A and B's maps slice are done; history is in the [archive](docs/plan-archive.md). Working files (Airtable exports, the origin review and its results) are kept outside the repo.*
+
+##### Glossary
+
+| Term | Meaning | Airtable | WordPress |
+|---|---|---|---|
+| **Territory** | An officially assigned ISO 3166-1 place (249) | Territories (renamed from Nations, plus the 49 coded rows moved in) | `territories` post |
+| **Subdivision** | A place below ISO level, inside one territory | Subdivisions (renamed from Territories, plus 6 non-ISO states moved in) | `subdivisions` post |
+| **Origin** | The territories where a language is traditionally spoken (indigenous to) | Subject [Nation of Origin] (name kept) | `nations_of_origin` |
+| **Also spoken in** | A language's territories minus its origin | derived | derived |
+
+##### Rules
+
+1. A territory is an officially assigned ISO 3166-1 place.
+2. A language's territories are every place a local population speaks it. Origin is a subset of them, and may be empty (diaspora languages such as Romani).
+3. A subdivision means "spoken in this part of the territory", whether or not the territory is an origin. Its territory is always one of the language's territories.
+4. Never stored, always derived: "also spoken in", and a territory's nation.
+5. Non-ISO states are subdivisions of their ISO territory, following ISO 3166-2 where it lists them (Abkhazia GE-AB, Kosovo RS-KM, Transnistria MD-SN).
+6. Everything is keyed on Airtable record IDs. A row that moves table gets a new record and ID; one cutover re-stamps WordPress while Make is paused. No dual-ID support.
+
+##### Example cases
+
+| Language | Territories | Origin | Subdivisions |
+|---|---|---|---|
+| Tahitian | French Polynesia | French Polynesia | — |
+| Hawaiian | United States | United States | Hawaii |
+| Chamorro | Guam, Northern Mariana Islands | Guam, Northern Mariana Islands | — |
+| Abkhaz | Georgia, Russia, Turkey | Georgia | Abkhazia |
+| Tibetan | China, India, Nepal | China | Tibet AR; Sikkim and three more (India) |
+| English | UK, Dominica, Saint Kitts and Nevis… | UK | — |
+| French | France, Belgium, Switzerland, Lebanon… | France, Belgium, Switzerland | — |
+| Romani | several | — | — |
+
+##### Display
+
+- **Language page:** "Traditionally spoken in" (origin), then "Also spoken in"; "Spoken in" when there is no origin.
+- **Map:** for each territory, draw the subdivisions the language lists there, else the whole territory; origins primary. No per-language map setting.
+- **Territory sidebar:** ISO territories with at least one language.
+- **Territory pages:** their subdivisions, each with its languages, then the rest. Subdivisions have no pages or routes of their own.
+- A non-ISO subdivision may be named on its own on a page; maps keep its disputed-area hatching.
+
+##### Steps
+
+- [ ] **Airtable sandbox:** rename Territories → Subdivisions, then Nations → Territories; move the 49 coded rows and the 6 non-ISO states as new records; add South Sudan's code (SS).
+- [ ] **Origins:** apply the reviewed changes for the 46 multi-origin languages (2026-11-20) in the sandbox, then in the real base after approval.
+- [ ] **Also spoken in:** decide its storage, a presence table (one row per language and territory, with a source) or a link field; seed it from open sources (Glottolog, the Nations official-language columns, Unicode CLDR).
+- [ ] **Sync territories:** Make sends each language's origins (Nation of Origin) and presence as two complete lists of record IDs; the sync writes `nations_of_origin` = origins and `territories` = presence ∪ origins, through ACF so the territory pages' Languages field updates too. Rule 2 is enforced here and nowhere else. Until presence exists in Airtable, `territories` stays the February 2026 copy.
+- [ ] **WordPress**, in small PRs that read both data shapes: the map rule, territory pages, the sidebar rule, the labels.
+- [ ] **Cutover:** pause Make, move the rows in the real base, re-stamp WordPress posts and the map shape table, resume Make.
+- [ ] **Maps:** add the province-level layer and subdivision shape codes, then rebuild (about 626 maps). Gets its own spec.
+- [ ] **Remove the maps' origins fallback** (temporary since maps v1: a language with no territories draws its origins). Do it after the territories sync, once every origin is a territory; a rebuild and `wp wt-maps doctor` should show no change. Removing it earlier drops the maps of the ~490 languages with origins and no territories.
+
+##### Open questions
+
+1. About 50 single-origin languages record the sovereign instead of the coded territory (New Caledonia's ~35 languages and Tahitian → France). The 2026-11-20 review covered only multi-origin languages.
+2. Retired ISO 639-3 codes (229 records): merge each into its successor, or keep it as historical?
+3. Records that aren't single languages: `apa` (a collective code), `fre` (a duplicate of `fra`), and the macrolanguages Akan, Latvian, Norwegian and Sanskrit.
+4. Storage for "also spoken in" (Steps).
+5. Whether WordPress may edit synced archive data at all, or synced fields become read-only in wp-admin. Applies to every field `wt-airtable-sync` writes.
+6. Nagorno-Karabakh: a WordPress page with no Airtable record.
+7. The 2,641 subdivision proposals for languages with an origin and no subdivision, to review under the new rules.
+8. Phase A loose ends: check Ngundu, Darkhat and Korean Sign Language; 42 multi-origin records list their origins in reverse order; Slovenian Sign Language has no origin in Airtable; `yug` and `yim` have no WordPress post; six records share the identifier `wart`.
+
+##### Out of scope
+
+Subdivision pages and routes; historical origin as a field; cell-based geography (H3); Ethnologue data without a licence; reorganizing Airtable beyond the two renames and row moves.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-19 | A territory is an officially assigned ISO 3166-1 place | One standard; Greenland and Guam are places in their own right |
+| 2026-11-19 | The territory sidebar lists ISO territories with at least one language | Not only UN members; empty places add noise |
+| 2026-11-19 | Subdivisions get no pages or routes; they are listed on their territory's page | Keeps the work finishable |
+| 2026-11-19 | Non-ISO states are subdivisions of their ISO territory | Follows rule 1; display may still name them alone |
+| 2026-11-19 | Origin means traditionally spoken in (indigenous to), not historical origin | Attestable; historical origin is contested and belongs in prose |
+| 2026-11-19 | The Airtable origin field keeps its name; "Traditionally spoken in" is a label | Archival policy |
+| 2026-11-19 | Map focus is per territory: its listed subdivisions, else the whole territory | Precise without dropping territories; no per-language setting |
+| 2026-11-19 | Subdivisions outside the origin are kept | One meaning for subdivisions |
+| 2026-11-19 | Rename the Airtable tables; moved rows become new records with new IDs | Each name means one thing; no dual-ID support |
+| 2026-11-19 | Make is paused during the cutover | Nothing syncs mid-change |
+| 2026-11-19 | A diaspora language may have no origin | Choosing one by convention would be a false claim |
+| 2026-11-20 | Make sends origins and presence as two lists; the sync writes territories as their union | Rule 2 in one place; absolute state; the archival origin field stays the only source of origins |
+| 2026-11-20 | Maps v1 ships with the origins fallback, documented as temporary; `territories` stays the February copy until presence exists | Nothing new to build now; the February copy holds ~66 real extra places the review hasn't replaced |
+| 2026-11-20 | Origin review approved for 46 languages (186 decisions); retired codes, `apa` and Wikitongues codes set aside | Evidence from Glottolog; one decision per card |
+
 ### 7. Engineering foundations
 
 None of this blocks feature work (decided 2026-09-13).
@@ -436,6 +642,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 - Move secrets from `wp-config.php` into a `.env` file (`vlucas/phpdotenv`), the separable part of the Bedrock evaluation.
 - An accessibility (ADA) evaluation.
+- **Editorial styles, left open by 7.8** (shipped; [content-styles.md](docs/content-styles.md#editorial-pages-shared-tokens)): move editorial sizes to rem with the mobile type shrink; one link colour (the report's `$rights-note` or `$blue()`); what red means in the brand; report button corners and heading sizes.
 - A deploy health check that covers more than the homepage.
 - Internationalization (long-term).
 - **Resource card ability dedupes on URL.** `wikitongues/add-resource-card` refuses any URL already on the Resources page. That one check does two jobs: making retries safe, and an unplanned "one card per URL" content rule. It wrongly refuses genuine cards that share a URL, and lets the same resource through under a variant URL. When a second write ability lands, give all write abilities a caller-supplied request ID for retries, and add content rules only where someone asks for them.
@@ -464,8 +671,8 @@ Open issues, and where each is tracked (2026-09-13):
 
 | Issue | Tracked in |
 |---|---|
-| [#379](https://github.com/wikitongues/wikitongues.org/issues/379) Searching "russian" finds nothing | 3.3 (Now #7) |
-| [#58](https://github.com/wikitongues/wikitongues.org/issues/58) Video thumbnails missing in search | 3.3 (Now #7) |
+| [#379](https://github.com/wikitongues/wikitongues.org/issues/379) Searching "russian" finds nothing | 3.3 (Now #8) |
+| [#58](https://github.com/wikitongues/wikitongues.org/issues/58) Video thumbnails missing in search | 3.3 (Now #8) |
 | [#378](https://github.com/wikitongues/wikitongues.org/issues/378) Gallery: dynamic querying | 3.3, designed with the results page |
 | [#377](https://github.com/wikitongues/wikitongues.org/issues/377) Gallery: post-type fallback | [gallery.md → Known gaps](docs/gallery.md#known-gaps) |
 | [#61](https://github.com/wikitongues/wikitongues.org/issues/61) "Processing" video page undesigned | 5.2 |

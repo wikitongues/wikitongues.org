@@ -4,15 +4,13 @@
 	$thumbnail_object = '';
 	$iso_code         = get_the_title();
 	$iso_code_element = '<aside>' . esc_html( $iso_code ) . '</aside>';
-	$video_query      = get_videos_by_featured_language( $iso_code );
 
-	if ( $video_query->have_posts() ) {
-		while ( $video_query->have_posts() ) {
-			$video_query->the_post();
-			$thumbnail         = get_custom_image( 'videos' );
-			$video_title       = get_custom_title( 'videos' );
-			$thumbnail_object .= '<div class="thumbnail" style="background-image:url(' . esc_url( $thumbnail ) . ');" alt="' . get_the_title() . '" title=""> <p>' . $video_title . '</p></div>';
-		}
+	// Previews for the whole gallery are fetched together on the first card.
+	$previews = wt_gallery_language_previews( wp_list_pluck( $query->posts, 'ID' ) );
+	$preview  = $previews[ get_the_ID() ] ?? null;
+
+	if ( $preview && $preview['video_id'] ) {
+		$thumbnail_object .= '<div class="thumbnail" style="background-image:url(' . esc_url( $preview['thumbnail'] ) . ');" alt="' . esc_attr( $preview['video_post_title'] ) . '" title=""> <p>' . esc_html( $preview['video_title'] ) . '</p></div>';
 	} else {
 		$thumbnail_object .= '<div class="no-thumbnail"><p>No resources found to display – Yet.</p></div>';
 	}

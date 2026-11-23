@@ -1,0 +1,1116 @@
+// Language Rights report: hub, region and country pages, and the territory card.
+// Running text goes through .wt_prose; this file styles only its own classes.
+//
+// Translated from the review prototype (Nov 2026): full-width sections with a
+// $content-wide inner column, a sticky "On this page" bar, bordered cards and
+// boxes. Colours, sizes and the editorial mixins come from global.styl
+// (plan.md 7.8). $rights-note is the report's own link colour until the site
+// decides between it and $blue().
+
+$rights-note = #54479e
+
+rights-kicker(color = $rights-note)
+	eyebrow(color)
+	margin 0 0 15px
+
+	a:hover
+		text-decoration underline
+
+rights-link()
+	color $rights-note
+	text-decoration underline
+	text-underline-offset 3px
+	text-decoration-thickness 1px
+
+	&:hover
+		color $black
+
+.wt-rights
+	text--body($black)
+	background $parchment
+
+	h1, h2, h3, h4
+		margin 0
+
+	p
+		margin 0 0 .9em
+
+	a
+		rights-link()
+
+	a, button, summary, input
+		focus-ring()
+
+	// The site sizes strong and em at 1.6rem everywhere; inside the report
+	// they follow the text around them.
+	strong, em
+		font-size inherit
+
+	&__wrap
+		width 100%
+		max-width $content-wide
+		margin-inline auto
+		padding-inline $space(8)
+		box-sizing border-box
+
+		@media (max-width: $tablet)
+			padding-inline $space(4)
+
+		@media (max-width: $mobile)
+			padding-inline 20px
+
+	&__kicker
+		rights-kicker()
+
+	&__intro
+		max-width 790px
+
+		&, p
+			font-size $type-body
+			line-height 1.6
+
+	// Hero
+	&__hero
+		padding 42px 0 44px
+
+		.wt-rights__kicker
+			color $red-text
+
+		h1
+			text--header($black)
+			font-size clamp(34px, 5vw, 68px)
+			line-height 1.02
+			text-transform uppercase
+			text-wrap balance
+			margin 0 0 19px
+
+		&--report
+			padding-top 54px
+
+			h1
+				text-transform none
+				font-size clamp(36px, 5.4vw, 78px)
+				line-height .98
+
+		@media (max-width: $mobile)
+			padding $space(4) 0
+
+	&__hero-grid
+		display grid
+		grid-template-columns minmax(0, 1fr) minmax(0, 340px)
+		gap $space(5)
+		align-items center
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+			gap $space(2)
+
+	&__deck
+		font-size $type-deck !important
+		line-height 1.5 !important
+		max-width 560px
+
+		@media (max-width: $mobile)
+			font-size $type-lead !important
+
+	&__hero-link, &__back
+		text--strong($rights-note)
+		font-size $type-small
+
+	&__back
+		display inline-block
+		margin-bottom 22px
+
+	&__release-line
+		text--body($grey-65)
+		font-size $type-body
+
+	&__territory a
+		font-size $type-small
+
+	&__locator
+		text-align center
+
+		.wt-map
+			width 100%
+			max-width 300px
+			margin-inline auto
+
+	&__locator-caption
+		max-width 270px
+		margin 8px auto 0 !important
+		padding-top $space(1)
+		border-top 1px solid $rule
+		color $grey-65
+		font-size 11px !important
+
+	&__embargo
+		text--caption()
+		display inline-block
+		font-size $type-label
+		margin 0 0 $space(2) !important
+
+	// The sticky "On this page" bar, under the site's sticky masthead.
+	&__jumpnav
+		position sticky
+		top calc(var(--wp-admin--admin-bar--height, 0px) + var(--wt-rights-header, 56px))
+		z-index 5
+		background $parchment
+		border-block 1px solid $rule
+
+		.wt-rights__wrap
+			display flex
+			align-items center
+			gap 20px
+			min-height 44px
+			overflow-x auto
+			scrollbar-width none
+			white-space nowrap
+			font-size $type-label
+
+			> *
+				flex none
+
+		strong
+			text--strong($black)
+			font-size $type-label
+
+		a
+			color $black
+			text-decoration none
+			display inline-flex
+			align-items center
+			min-height 44px
+			font-size $type-label
+
+			&:hover
+				text-decoration underline
+
+	// Sections
+	&__section
+		padding 76px 0
+		border-bottom 1px solid $rule
+		scroll-margin-top calc(var(--wp-admin--admin-bar--height, 0px) + var(--wt-rights-header, 56px) + 46px)
+
+		> .wt-rights__wrap > h2
+			text--header($black)
+			font-size clamp(30px, 4vw, 51px)
+			line-height 1.1
+			margin 0 0 $space(3)
+
+		&--wash
+			background $wash
+
+		&--ink
+			background $black
+			color $parchment
+
+			h2
+				color $parchment !important
+
+			.wt-rights__kicker
+				color $border-color
+
+			a
+				color $border-color
+
+			a, button, summary
+				focus-ring($parchment)
+
+		@media (max-width: $mobile)
+			padding $space(6) 0
+
+	// Hub: release schedule
+	&__releases
+		list-style none
+		padding 0
+		margin $space(4) 0 0
+		display grid
+		grid-template-columns repeat(2, minmax(0, 1fr))
+		gap $space(3)
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+			gap $space(2)
+
+	&__release
+		display flex
+		gap 20px
+		align-items flex-start
+		background $parchment
+		border 1.5px solid $black
+		padding 30px
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			line-height 1.4
+			margin 0 0 9px
+
+		.wt-rights__kicker
+			margin-bottom 10px
+
+		p
+			font-size $type-small
+
+		@media (max-width: $mobile)
+			padding $space(2)
+
+	&__release-index
+		text--header($red-text)
+		font-size 44px
+		line-height 1
+
+	&__release-actions
+		display flex
+		flex-direction column
+		align-items flex-start
+		gap 10px
+		font-size $type-small
+
+		a
+			text--strong($rights-note)
+			font-size $type-small
+
+		details
+			disclosure(1.2em, false)
+			margin 0
+
+		summary
+			text--strong($rights-note)
+			font-size $type-small
+
+		ul
+			columns 2
+			column-gap 24px
+			padding-left 1.2em
+			margin 10px 0 0
+
+			li
+				font-size $type-small
+				line-height 1.6
+
+	&__updates
+		text--strong($rights-note) !important
+		background none
+		border 0
+		padding 0
+		cursor pointer
+		font-size $type-small
+
+	// Donate band
+	&__support
+		padding 76px 0
+		border-bottom 1px solid $rule
+
+		h2
+			text--header($black)
+			font-size clamp(30px, 4vw, 51px)
+			line-height 1.1
+			margin 0 0 $space(3)
+
+		&--dark
+			background $black
+
+			h2, p
+				color $parchment
+
+			.wt-rights__kicker
+				color $border-color
+
+			.wt-rights__donate
+				background $parchment
+				color $black !important
+
+			a, button, summary
+				focus-ring($parchment)
+
+		@media (max-width: $mobile)
+			padding $space(6) 0
+
+	&__donate
+		display inline-block
+		margin-top $space(1)
+		padding 10px 18px
+		background $black
+		color $parchment !important
+		text--strong($parchment)
+		font-size $type-small
+		text-decoration none !important
+
+		&:hover
+			text-decoration underline !important
+
+	&__support-compact
+		text--body($grey-65)
+		font-size $type-label !important
+		margin 0 !important
+
+	// Hub: methodology
+	&__method
+		display grid
+		grid-template-columns minmax(0, 5fr) minmax(0, 7fr)
+		gap $space(5)
+		margin-top $space(4)
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			line-height 1.4
+			margin 0 0 9px
+
+		@media (max-width: $tablet)
+			grid-template-columns 1fr
+
+	&__method-note
+		margin-top $space(3)
+		padding 20px 24px
+		background $wash
+		border-top 1.5px solid $black
+
+		h3
+			font-size 15px
+
+		p
+			font-size $type-small
+
+	&__indicator
+		disclosure()
+		border-top 1px solid $rule
+
+		&:last-child
+			border-bottom 1px solid $rule
+
+		summary
+			align-items baseline
+			padding 14px 0
+			text--strong($black)
+			font-size $type-body
+
+		&-number
+			color $red-text
+			font-size $type-label
+
+		&-body
+			padding 0 0 18px 34px
+
+			h4
+				text--strong($black)
+				font-size 15px
+				margin-bottom 9px
+
+			p
+				font-size $type-small
+
+	&__example
+		font-size $type-small
+
+	&__answer-key
+		margin-top $space(6)
+		max-width 790px
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			margin-bottom 9px
+
+		dl
+			display grid
+			grid-template-columns repeat(2, minmax(0, 1fr))
+			gap 12px 24px
+			margin $space(2) 0 0
+
+			@media (max-width: $mobile)
+				grid-template-columns 1fr
+
+			> div
+				display flex
+				gap 12px
+				align-items baseline
+
+		dt
+			flex none
+			width 112px
+
+		dd
+			margin 0
+			font-size $type-small
+
+	// Letters from the director
+	&__letter
+		max-width 700px
+		border-left 1px solid $border-color
+		padding-left $space(3)
+
+		p
+			color $parchment
+			font-size 17px !important
+			line-height 1.6
+
+		details
+			disclosure(1.2em, false)
+
+		summary
+			text--strong($border-color)
+			font-size $type-small
+			margin 4px 0 16px
+
+	&__signature
+		margin-top $space(3) !important
+
+		strong
+			color $parchment
+
+	// Region: findings and cards
+	&__cards
+		display grid
+		grid-template-columns repeat(2, minmax(0, 1fr))
+		gap $space(3)
+		margin-top $space(4)
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+			gap $space(2)
+
+	&__card
+		display flex
+		flex-direction column
+		background $parchment
+		border 1.5px solid $black
+		padding 30px
+
+		.wt-rights__kicker
+			color $red-text
+			margin-bottom 10px
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			line-height 1.4
+			margin 0 0 9px
+
+		.wt_prose p
+			font-size $type-body
+
+		@media (max-width: $mobile)
+			padding $space(2)
+
+	&__card-links
+		margin-top auto !important
+		padding-top 12px
+
+	&__links
+		font-size $type-small
+
+		&--small
+			font-size $type-label !important
+			line-height 1.55
+
+	&__finding
+		max-width 790px
+		margin-top $space(4)
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			margin-bottom 9px
+
+	// Region: indicator comparison
+	&__split
+		display grid
+		grid-template-columns minmax(0, 5fr) minmax(0, 7fr)
+		gap $space(3)
+		align-items stretch
+
+		@media (max-width: $tablet)
+			grid-template-columns 1fr
+
+	&__box, &__chart
+		border 1.5px solid $black
+		padding 30px
+		margin 0
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			margin 0 0 9px
+
+		@media (max-width: $mobile)
+			padding $space(2)
+
+	&__box
+		background $wash
+
+		p, li
+			font-size $type-small
+
+		ol
+			padding-left 1.5em
+
+		li
+			padding-left .2em
+			margin-bottom .7em
+
+			&::marker
+				color $red-text
+				font-weight 600
+
+	&__chart
+		background $parchment
+
+		h4
+			text--strong($black)
+			font-size 15px
+			margin 20px 0 9px
+
+	&__key
+		display flex
+		flex-wrap wrap
+		gap 14px
+		font-size $type-label
+
+		span
+			font-size $type-label
+
+			&::before
+				content ''
+				display inline-block
+				width .75rem
+				height .75rem
+				margin-right .35rem
+				border 1px solid #8f849a
+				vertical-align -.03em
+				background var(--answer)
+
+	[data-answer=yes]
+		--answer $blue()
+
+	[data-answer=no]
+		--answer $black
+
+	[data-answer=unclear]
+		--answer $border-color
+
+	[data-answer=not-applicable]
+		--answer $rule
+
+	&__bar-row
+		display grid
+		grid-template-columns 1.25fr 1fr
+		gap 9px
+		align-items center
+		margin 10px 0
+		font-size $type-label
+
+		> span
+			font-size $type-label
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr 1fr
+
+	&__bar
+		display flex
+		height 25px
+
+		span
+			text--strong($black)
+			flex-basis 0
+			min-width 0
+			text-align center
+			line-height 25px
+			font-size $type-label
+			background var(--answer)
+
+			&[data-answer=yes], &[data-answer=no]
+				color $parchment
+
+	&__chart-table
+		disclosure(1.2em, false)
+		margin-top $space(2)
+
+		summary
+			text--strong($rights-note)
+			font-size $type-small
+
+		table
+			border-collapse collapse
+			width 100%
+			margin 12px 0
+
+		caption
+			text-align left
+			font-weight 600
+			margin-bottom $space(1)
+
+		th, td
+			border-bottom 1px solid $rule
+			padding 9px
+			text-align left
+			vertical-align top
+			font-size $type-small
+
+		thead th
+			background $wash
+			border-bottom 1.5px solid $black
+
+	// Region: country list
+	&__countries
+		display grid
+		grid-template-columns repeat(3, minmax(0, 1fr))
+		gap 12px
+		list-style none
+		padding 0
+		margin $space(4) 0 $space(3)
+		counter-reset country
+
+		li
+			counter-increment country
+			display flex
+			flex-wrap wrap
+			align-items baseline
+			gap 9px 13px
+			border 1.5px solid $black
+			padding $space(2)
+			font-size $type-body
+
+			&::before
+				content counter(country, decimal-leading-zero)
+				text--strong($red-text)
+				font-size $type-label
+
+		a
+			text--strong($rights-note)
+			font-size $type-body
+
+		.wt-rights__trend
+			margin-left auto
+
+		@media (max-width: $mobile)
+			grid-template-columns repeat(2, minmax(0, 1fr))
+
+			li
+				padding 9px
+				gap 7px
+				font-size $type-label
+
+	&__forthcoming
+		color $grey-65
+
+		em
+			font-style normal
+			font-size 12px
+			margin-left auto
+
+	// Answers and ratings
+	&__answer
+		display inline-block
+		padding 2px 8px
+		font-size 12px !important
+		font-weight 600
+		line-height 1.5
+		white-space nowrap
+		background $wash
+		color $black
+
+		&--yes
+			background $blue()
+			color $parchment
+
+		&--no
+			background $black
+			color $parchment
+
+		&--unclear
+			background $border-color
+
+		&--not-applicable
+			background $rule
+
+		&--none
+			background none
+			color $grey-65
+
+	&__trend
+		display inline-block
+		width fit-content
+		padding .15em .5em
+		border 1px solid currentColor
+		font-size 12px
+		font-weight 600
+		line-height 1.4
+
+		&[data-trend=positive]
+			color $blue()
+
+		&[data-trend=neutral]
+			color $black
+
+		&[data-trend=negative]
+			color $red-text
+
+	// Country: at a glance
+	&__glance
+		margin-top 44px
+		padding 0 0 $space(3)
+		border-bottom 1px solid $rule
+
+		h2
+			text--header($black)
+			font-size clamp(28px, 3vw, 38px)
+			line-height 1.1
+			margin-bottom 12px
+
+	&__glance-layout
+		display grid
+		grid-template-columns minmax(0, 1.25fr) minmax(0, 1fr)
+		gap clamp(20px, 4vw, 52px)
+		margin-bottom 20px
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+
+	&__headline
+		font-size $type-lead !important
+		line-height 1.55 !important
+
+	&__stats
+		display grid
+		grid-template-columns repeat(3, minmax(0, 1fr))
+		gap 14px
+		margin $space(3) 0 0
+
+		> div
+			border-top 2px solid $rights-note
+			padding 12px 0 4px
+
+		dt
+			font-size $type-label
+			line-height 1.4
+
+		dd
+			margin 5px 0 0
+			text--strong($black)
+			font-size clamp(19px, 2.1vw, 29px)
+
+			.wt-rights__trend
+				font-size clamp(14px, 1.8vw, 20px)
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+			gap 6px
+
+			> div
+				display flex
+				justify-content space-between
+				align-items baseline
+
+			dd
+				font-size $type-lead
+
+	&__glance-answers
+		padding-left 20px
+		border-left 1px solid $rule
+
+		h3
+			text--strong($black)
+			font-size 15px
+			margin 0 0 9px
+
+		ul
+			list-style none
+			margin 0
+			padding 0
+
+		li
+			display flex
+			align-items baseline
+			justify-content space-between
+			gap 10px
+			padding 7px 0
+			border-top 1px solid $rule
+			font-size $type-label
+
+			a
+				font-size $type-label
+
+		@media (max-width: $mobile)
+			padding-left 0
+			border-left 0
+
+	&__glance-more
+		display grid
+		grid-template-columns repeat(2, minmax(0, 1fr))
+		gap $space(3)
+
+		details
+			disclosure(1.2em, false)
+			padding-top 10px
+			border-top 1px solid $rule
+
+			summary
+				text--strong($rights-note)
+				font-size $type-small
+
+			p
+				font-size $type-label
+				margin 10px 0 0
+
+		@media (max-width: $mobile)
+			grid-template-columns 1fr
+			gap 10px
+
+	&__glance-actions
+		padding-top 10px
+		border-top 1px solid $rule
+		display flex
+		flex-direction column
+		gap 10px
+
+	&__version
+		text--body($grey-65)
+		font-size $type-label !important
+		margin 0 !important
+
+	&__pdf
+		margin 0 !important
+
+		a
+			text--strong($parchment) !important
+			display inline-block
+			padding 10px 18px
+			background $blue()
+			font-size $type-small
+			text-decoration none !important
+
+	// Country: the report body
+	&__body
+		max-width 960px
+		margin-inline 0
+
+		> .wt-rights__section
+			padding $space(5) 0
+			border-bottom 1px solid $rule
+
+			> h2
+				text--header($black)
+				font-size clamp(30px, 4vw, 51px)
+				line-height 1.1
+				margin 0 0 $space(3)
+
+		> .wt-rights__support
+			margin 0
+			padding $space(5) 0
+
+			.wt-rights__wrap
+				padding-inline 0
+
+	&__dimension
+		margin-top 28px
+
+		h3
+			text--strong($black)
+			font-size $type-lead
+			line-height 1.4
+			margin-bottom 9px
+
+	&__dimension-answer
+		display flex
+		align-items center
+		gap 5px
+		font-size $type-label !important
+
+	&__sources
+		disclosure(1.2em, false)
+		margin 12px 0 24px
+
+		summary
+			text--strong($rights-note)
+			font-size $type-small
+
+		ol
+			margin $space(1) 0
+			padding-left 1.2em
+
+			li
+				font-size $type-small
+
+		a
+			overflow-wrap anywhere
+
+	&__story
+		margin $space(5) 0
+
+	&__changes ol
+		padding-left 2rem
+
+		li
+			font-size $type-small
+
+	// Country: pager
+	&__pager
+		width 100%
+		max-width 960px
+		margin-inline auto
+		padding 22px 64px 32px
+		box-sizing border-box
+		display grid
+		grid-template-columns 1fr auto 1fr
+		align-items center
+		gap $space(2)
+
+		a
+			color $rights-note
+			text-decoration none
+
+			&:hover
+				color $black
+
+		span
+			display block
+			font-size 12px
+
+		strong
+			text--strong($rights-note)
+			font-size $type-body
+
+		@media (max-width: $mobile)
+			padding-inline 20px
+			grid-template-columns 1fr 1fr
+
+	&__pager-prev
+		grid-column 1
+
+	&__pager-region
+		grid-column 2
+		font-size $type-label
+		text-align center
+
+		@media (max-width: $mobile)
+			grid-row 2
+			grid-column 1 / -1
+
+	&__pager-next
+		grid-column 3
+		text-align right
+
+		@media (max-width: $mobile)
+			grid-row 1
+			grid-column 2
+
+	@media print
+		&__jumpnav, &__pager, &__support, &__support-compact, &__updates, &__pdf, &__back, &__release-actions
+			display none
+
+		&__hero, &__section
+			padding 22px 0
+
+		&__wrap
+			padding-inline 0
+
+		&__card, &__box, &__chart, &__letter
+			break-inside avoid
+
+		&__bar span, &__box, &__section--ink
+			print-color-adjust exact
+
+		&__sources
+			font-size 1rem
+
+// The release-updates signup dialog.
+.wt-rights-dialog
+	width calc(100% - 32px)
+	max-width 480px
+	border 1.5px solid $black
+	padding $space(3)
+	background $parchment
+
+	&::backdrop
+		background rgba($black, .5)
+
+	h2
+		text--header($black)
+		font-size 28px
+		margin 0
+
+	p, label
+		text--body($black)
+		font-size $type-small
+
+	&__head
+		display flex
+		justify-content space-between
+		align-items center
+		margin-bottom 12px
+
+	&__close
+		background none
+		border 0
+		font-size $type-lead
+		cursor pointer
+		focus-ring()
+
+	&__fields
+		display flex
+		gap $space(1)
+		margin 6px 0 8px
+
+		input
+			signup-field()
+			flex 1
+			min-width 0
+			margin-right 0
+
+		button
+			signup-button()
+			focus-ring()
+
+	&__trap
+		position absolute
+		left -5000px
+
+	&__note
+		color $grey-65 !important
+		font-size 12px !important
+
+// The card on a territory page.
+.wt-rights-card
+	border 1px solid $border-color
+	border-radius 8px
+	padding $space(3)
+	margin 0 0 $space(4)
+
+	&__kicker
+		rights-kicker()
+
+	h2
+		text--header($black)
+		font-size $fontScale(5)
+		margin $space(1) 0
+
+		a
+			color inherit
+			text-decoration none
+
+	ul
+		list-style none
+		padding 0
+		margin $space(2) 0
+
+		li
+			display flex
+			justify-content space-between
+			padding 4px 0
+			font-size 1.4rem
+
+	&__link
+		anchor($blue(), 4px)
+		text--strong($blue())
+
+// The print view `wp wt rights pdf` renders: the report alone, no site chrome.
+@media print
+	body.wt-rights-print
+		.wt_header, .wt_footer, #wpadminbar, .gateway-modal
+			display none !important
+
+		.wt-rights
+			padding 0

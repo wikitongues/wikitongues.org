@@ -78,6 +78,43 @@ require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-l
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-field-resolver.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-sync-controller.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-airtable-sync/includes/class-place-sync.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-table.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/sets.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-renderer.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/structure.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-answers.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-docs-adapter.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-doc-parser.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-validator.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-versioner.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-http.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-google-docs.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-airtable.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-exporter.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-release-status.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-import-plan.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-editorial.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/content-model.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/template-tags.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/display.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/press.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/pdf.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/analytics.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/admin.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-pdf-resolver.php';
+require_once __DIR__ . '/unit/rights/RightsFixture.php';
+
+// WordPress's HTML API, for tests of code that uses WP_HTML_Tag_Processor. Core
+// is not in the repository, so this loads only where a local install sits at
+// the repository root; those tests skip elsewhere (CI).
+if ( file_exists( __DIR__ . '/../wp-includes/html-api/class-wp-html-tag-processor.php' ) && ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+	require_once __DIR__ . '/../wp-includes/class-wp-token-map.php';
+	require_once __DIR__ . '/../wp-includes/html-api/html5-named-character-references.php';
+	foreach ( array( 'class-wp-html-attribute-token', 'class-wp-html-span', 'class-wp-html-text-replacement', 'class-wp-html-decoder', 'class-wp-html-tag-processor' ) as $wt_html_api_file ) {
+		require_once __DIR__ . "/../wp-includes/html-api/{$wt_html_api_file}.php";
+	}
+}
 
 // events-filter.php calls get_current_datetime() → wp_date() at file scope,
 // before WP_Mock has stubbed it. Define a shim so the include doesn't fatal.

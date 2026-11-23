@@ -67,18 +67,6 @@
 			<a href="<?php echo esc_url( $wikipedia ); ?>">Read more on Wikipedia</a>
 		</p>
 	<?php endif; ?>
-	<?php if ( $endonym ) : ?>
-		<div class="metadata" id="endonym">
-			<strong class="mobile-accordion-header">Endonyms</strong>
-			<p class="mobile-accordion-content"><?php echo esc_html( $endonym ); ?></p>
-		</div>
-	<?php endif; ?>
-	<?php if ( $alternate_names ) : ?>
-		<div class="metadata" id="alternate-names">
-			<strong class="mobile-accordion-header">Alternate Names</strong>
-			<p class="mobile-accordion-content"><?php echo esc_html( $alternate_names ); ?></p>
-		</div>
-	<?php endif; ?>
 	<?php if ( $iso_code || $glottocode ) : ?>
 		<div class="metadata" id="identifiers">
 			<strong class="wt_sectionHeader mobile-accordion-header">Identifiers</strong>
@@ -101,20 +89,42 @@
 
 		</div>
 	<?php endif; ?>
-	<?php if ( $origins || $also_spoken || ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>
+	<?php if ( $endonym ) : ?>
+		<div class="metadata" id="endonym">
+			<strong class="mobile-accordion-header">Endonyms</strong>
+			<p class="mobile-accordion-content"><?php echo esc_html( $endonym ); ?></p>
+		</div>
+	<?php endif; ?>
+	<?php if ( $alternate_names ) : ?>
+		<div class="metadata" id="alternate-names">
+			<strong class="mobile-accordion-header">Alternate Names</strong>
+			<p class="mobile-accordion-content"><?php echo esc_html( $alternate_names ); ?></p>
+		</div>
+	<?php endif; ?>
+	<?php
+	// Locator map from the wt-maps plugin (plan 3.2); empty when the language has none.
+	$sidebar_map = function_exists( 'wt_maps_sidebar_map' ) ? wt_maps_sidebar_map( get_the_ID() ) : '';
+	?>
+	<?php if ( $origins || $also_spoken || $sidebar_map ) : ?>
+		<?php // The map, then the places it shows: read together, so not an accordion on mobile. ?>
+		<div class="metadata" id="geography">
+			<strong class="wt_sectionHeader">Where it&rsquo;s spoken</strong>
+			<?php echo $sidebar_map; // Built and escaped by the plugin. ?>
+			<?php if ( $origins ) : ?>
+				<strong>Territories of origin</strong>
+				<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
+			<?php endif; ?>
+
+			<?php if ( $also_spoken ) : ?>
+				<strong><?php echo $origins ? 'Also spoken in' : 'Spoken in'; ?></strong>
+				<p class="wt_text--label territories"><?php echo wt_territory_links( $also_spoken ); ?></p>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+	<?php if ( ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) || ( $linguistic_genealogy_terms && ! is_wp_error( $linguistic_genealogy_terms ) ) || $egids ) : ?>
 		<div class="metadata" id="metadata">
 			<strong class="wt_sectionHeader mobile-accordion-header">Metadata</strong>
 			<div class="mobile-accordion-content">
-				<?php if ( $origins ) : ?>
-					<strong>Countries of origin</strong>
-					<p class="wt_text--label"><?php echo wt_territory_links( $origins ); ?></p>
-				<?php endif; ?>
-
-				<?php if ( $also_spoken ) : ?>
-					<strong><?php echo $origins ? 'Also spoken in' : 'Spoken in'; ?></strong>
-					<p class="wt_text--label territories"><?php echo wt_territory_links( $also_spoken ); ?></p>
-				<?php endif; ?>
-
 				<?php if ( $writing_system_terms && ! is_wp_error( $writing_system_terms ) ) : ?>
 					<strong>Writing systems</strong>
 					<p class="wt_text--label">

@@ -10,6 +10,9 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Maps, step 1: a locator map on every language page (`wt-maps`) | 2026-11-16 – 23 | [#669], [#698]–[#702], [#720] | [maps.md](maps.md) |
+| Shared editorial styles: one set of tokens and mixins for the donate page and the Language Rights report | 2026-11-23 | [#716], [#717], [#718] | [content-styles.md](content-styles.md#editorial-pages-shared-tokens) |
+| Language geography, phase B (maps slice): subdivisions as objects, keyed on record IDs | 2026-11-18 – 19 | [#687], [#690], [#693] | [airtable-sync.md](airtable-sync.md#territories), [content-model.md](content-model.md#territories-and-regions) |
 | Native Language AI page | 2026-11-18 | [#676], [#678], [#681] | [content-model.md](content-model.md#redirects) (the `/ai` short link) |
 | Language geography, phase A: country of origin reconciled | 2026-11-18 | [#675], [#682], [#684] | [airtable-sync.md](airtable-sync.md#languages), [content-model.md](content-model.md#territories-and-regions) |
 | Nations of origin as territory links | 2026-11-17 | — | [content-model.md](content-model.md#languages) |
@@ -32,6 +35,54 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-23 (Maps, step 1)
+
+### A locator map on every language page (plan 3.2, step 1)
+**PRs:** [#669] (spec and prototype), [#698]–[#702] (plugin, build, renderer, maps, sidebar), [#720] (doctor fix); on staging 2026-11-23, production with the next release.
+
+- **The plugin** ([#698]). `wt-maps`: a shape table in the repo (`data/shapes.json`) mapping Airtable record IDs to Natural Earth 5.1.2 codes, in place of the planned ACF "Map shape" field; `wp wt-maps doctor` and `export`.
+- **The build** ([#699], [#701]). Node and d3-geo render one SVG per distinct set of places, Lambert azimuthal equal-area, with hillshade, sea floor and coloured relief cut to the coast. A map is staged and published whole, SVG and images together, within budget (SVG ≤ 20 KB gzipped, images ≤ 30 KB; two maps still over). 269 maps for 8,073 languages, 13 MB, committed beside the plugin.
+- **The renderer** ([#700]). `wt_map()` and `[wt_map]` add per-language roles (origins primary), absolute image URLs and the title and description through `WP_HTML_Tag_Processor`, cached in the object cache. Four styles as a setting (Light focused by default); Settings → Maps turns the sidebar map off without a deploy.
+- **The sidebar** ([#702]). The language sidebar was reordered: name, summary, identifiers, endonyms, alternate names, then a "Where it's spoken" section with the map, a caption ("Map showing Guam and the Northern Mariana Islands"), "Traditionally spoken in" and "Also spoken in". Rings mark places whose largest island is under 150 square units. Languages with no territory links draw their origins, a fallback marked temporary in plan 6.8.
+- **Content changes** (2026-11-17, scripted in `docs/maps-prototype/territory-edits.php`, run on every environment): Nagorno-Karabakh folded into Azerbaijan and removed from Armenian; Greenland, Guam and the Northern Mariana Islands added as territories, with Greenlandic, Chamorro and Carolinian moved to them; Hawaiian linked to `Hawaii_US`; "Sahrawi Arab Democratic Republic" renamed Western Sahara (with a redirect), "Cape Verde Islands" Cabo Verde, and "Federated Staes of Micronesia" fixed; the Airtable nations Congo, Macedonia and Vatican State renamed to match WordPress.
+- **Doctor on staging** ([#720]). Its language query joined `postmeta` three times and ran for minutes on staging's MySQL; two plain reads joined in PHP give the same result in a tenth of a second.
+- **The process lesson.** The prototype went to production on an unsettled data model through five stacked PRs; the working principles in CLAUDE.md ([#703]) and the plan 6.8 spec came out of it.
+
+Described in [maps.md](maps.md). Left open (plan 3.2): step 2, the claims table, credits, review tooling, two over-budget maps, and the `decorate()` test in CI.
+
+---
+
+## 2026-11-23 (Shared editorial styles)
+
+### The donate page and the Language Rights report share one set of editorial styles (plan 7.8)
+**PRs:** [#716], [#717], [#718]
+
+- **Tokens and mixins** ([#716]). `global.styl` gained `$wash`, `$rule`, `$grey-65`, `$red-text`, `$content-wide`, a px type scale, `$space(n)`, and `eyebrow()`, `focus-ring()`, `disclosure()`, `signup-field()` and `signup-button()`. The compiled CSS was unchanged until the pages used them.
+- **The report** ([#717]). `language-rights.styl` dropped its own palette and kicker mixin. Visible changes: muted text `#64635e`, eyebrows at weight 600, the hero eyebrow in `$red-text` (AA), a focus ring, `+`/× markers on every `<details>`, the dialog field and button from the newsletter, breakpoints on `$mobile`/`$tablet`. Every bare `min()` had compiled to 100% (the dialog to 68%); the column, locator map, caption, pager and dialog now render at their stated widths. The territory card got its own `__kicker` class, and `newsletter.styl` now uses the signup mixins.
+- **Donate** ([#718]). Column 1240 → 1200px, wash `#f2ead6` → `#f3eee0`, eyebrow tracking `.065` → `.06em`, focus ring red → blue (parchment on dark sections), breakpoints on `$mobile`/`$tablet`. The FAQ uses `disclosure()`, so its template dropped the `+` span.
+- **Signup field on phones.** `signup-field()` is 16px at every width; the mobile rem shrink had taken it to about 13px, so iOS zoomed in on focus (newsletter and report dialog).
+- **Left open (plan 7.6):** editorial sizes in rem, one link colour, what red means in the brand, report button corners and heading sizes.
+
+Described in [content-styles.md](content-styles.md#editorial-pages-shared-tokens).
+
+---
+
+## 2026-11-19 (Language geography, phase B: the maps slice)
+
+### Language geography keyed on Airtable record IDs; places below a nation become objects (plan 6.8, phase B)
+**PRs:** [#687], [#690], [#693], released in [#688], [#691], [#694] (staging) and [#689], [#692], [#695] (production)
+
+- **Record IDs, not names** ([#687]). Links from languages resolve by Airtable record ID through `_airtable_record_id`; title matching is a logged fallback. `wp wt stamp-airtable-ids` stamped the 204 Nations onto their territory pages on every environment. `CLAUDE.md` gained the idempotency principle.
+- **Subdivisions as objects** ([#690]). A string repeater on languages was replaced, before it held any data, by objects: every Airtable Territories record is a `territories` post when it has an ISO 3166-1 code and a non-public `subdivisions` post otherwise, synced by `POST /sync/territories` (`Place_Sync`). Languages' `subdivisions` links to either type and keeps the raw IDs, so late arrivals relink.
+- **First load by WP-CLI** ([#693]). `wp wt sync-territories` loaded the 854 records on local, staging and production after a fresh backup, sync and dated dump: 804 subdivisions, 37 draft territories (waiting for a region), 13 existing pages stamped; a re-run changed nothing. It also fixed the title fallback so same-named places (Punjab in India and Pakistan) never share a post.
+- **Airtable.** Territories gained an ISO 3166-1 code field (50 coded), lost six duplicate records, and gained `Created`, `Last Modified` and `last_modified` for the sync. Hawaiian links to `Hawaii_US`. The two Languages lookups added for the repeater (`subdivision_identifiers`, `subdivision_names`) are unused and to be deleted in the Airtable UI.
+- **Make.** New Territories scenarios (staging on demand, production hourly); both Languages scenarios send `nations_of_origin` and `subdivisions` as record IDs. Tested on staging, then the launch cases synced to production: Hawaiian → Hawaii, Chamorro → Guam and the Northern Mariana Islands, Carolinian → the Northern Mariana Islands.
+- **Left open (plan 6.8):** nested routes and the region sidebar rule; regions for the 37 new territories and Greenland; Nagorno-Karabakh; whether WordPress may edit synced data; and, in phase C, separating origin from official and spoken-in links before any backfill.
+
+Described in [airtable-sync.md](airtable-sync.md#territories) and [content-model.md](content-model.md#territories-and-regions).
 
 ---
 
@@ -1059,3 +1110,23 @@ Minor fix to SSH agent action version in deployment workflow.
 [#675]: https://github.com/wikitongues/wikitongues.org/pull/675
 [#682]: https://github.com/wikitongues/wikitongues.org/pull/682
 [#684]: https://github.com/wikitongues/wikitongues.org/pull/684
+[#687]: https://github.com/wikitongues/wikitongues.org/pull/687
+[#688]: https://github.com/wikitongues/wikitongues.org/pull/688
+[#689]: https://github.com/wikitongues/wikitongues.org/pull/689
+[#690]: https://github.com/wikitongues/wikitongues.org/pull/690
+[#691]: https://github.com/wikitongues/wikitongues.org/pull/691
+[#692]: https://github.com/wikitongues/wikitongues.org/pull/692
+[#693]: https://github.com/wikitongues/wikitongues.org/pull/693
+[#694]: https://github.com/wikitongues/wikitongues.org/pull/694
+[#695]: https://github.com/wikitongues/wikitongues.org/pull/695
+[#716]: https://github.com/wikitongues/wikitongues.org/pull/716
+[#717]: https://github.com/wikitongues/wikitongues.org/pull/717
+[#718]: https://github.com/wikitongues/wikitongues.org/pull/718
+[#669]: https://github.com/wikitongues/wikitongues.org/pull/669
+[#698]: https://github.com/wikitongues/wikitongues.org/pull/698
+[#699]: https://github.com/wikitongues/wikitongues.org/pull/699
+[#700]: https://github.com/wikitongues/wikitongues.org/pull/700
+[#701]: https://github.com/wikitongues/wikitongues.org/pull/701
+[#702]: https://github.com/wikitongues/wikitongues.org/pull/702
+[#703]: https://github.com/wikitongues/wikitongues.org/pull/703
+[#720]: https://github.com/wikitongues/wikitongues.org/pull/720

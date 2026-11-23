@@ -27,8 +27,19 @@
 				width 50%
 				float left
 
+		// Not an accordion, so its heading takes the gap an open section's
+		// content would (.mobile-accordion-content.active).
+		&#geography
+			.wt_sectionHeader
+				margin-bottom 16px
+
+			// Locator map (wt-maps), under the heading and above the places it shows.
+			.wt-map
+				margin-bottom 16px
+
 		.wt_text--label a
 			display inline-block
+
 
 	strong
 		text--strong($black)
