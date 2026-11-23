@@ -232,7 +232,7 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 | 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
 | 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
 | 7 | Match the review prototype; region overview and front matter in the release; region maps | [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
-| 8 | Releases screen: set a region's status from the admin, logged | This PR |
+| 8 | Releases screen: set a region's status from the admin, logged | [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
 
 Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md).
 
