@@ -21,6 +21,7 @@ import zlib from 'node:zlib';
 import * as d3 from 'd3-geo';
 import { choose, maxStretch, W, H } from './projection.mjs';
 import { CACHE, STAGE, FRAMES, readJson, writeJson, readFrames, onlyKeys } from './common.mjs';
+import { claimResolver } from './claims.mjs';
 
 const R_EARTH = 6371000;
 const layer = (n, res = '50m') => readJson(path.join(CACHE, 'ne', `ne_${res}_admin_0_${n}.geojson`)).features;
@@ -78,8 +79,9 @@ const geomFor = (refs, ix = idx) => refs.map(([l, c]) => {
   if (!f) throw new Error(`Natural Earth has no ${l}:${c}`);
   return f;
 });
-// Codes a highlighted place answers to when an overlay names an owner.
-const ownerCodes = (refs) => new Set(geomFor(refs).flatMap((f) => [f.properties.ADM0_A3, f.properties.GU_A3, f.properties.BRK_A3, f.properties.SOV_A3]).filter(Boolean));
+// Whether a highlighted place claims a contested area (claims.mjs): a country's
+// claim belongs to its part nearest the area.
+const placeClaims = claimResolver(subunits);
 
 // Split into polygons, keep the main body and anything big or close to it.
 function framingParts(feature) {
@@ -149,9 +151,8 @@ function render(key, placeIds) {
   // always inside the frame, and revealed by the fog. Leaving one out (Crimea fogged
   // on a Ukrainian page) would be a statement. The rule is symmetric: a Russian page
   // frames and reveals Crimea too, hatched.
-  const claimCodes = new Set(hl.flatMap(({ refs }) => [...ownerCodes(refs)]));
   const isSelf = (d) => hl.some(({ refs }) => refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
-  const claimed = disputed.filter((d) => !isSelf(d) && [...d.claimants].some((c) => claimCodes.has(c)));
+  const claimed = disputed.filter((d) => !isSelf(d) && hl.some(({ refs }) => placeClaims(refs, d)));
   const claimedSet = new Set(claimed);
 
   // Frame on the main body of every highlighted place, plus the areas it claims.
@@ -249,7 +250,7 @@ function render(key, placeIds) {
     let cls, extra = ` data-area="${esc(d.name)}"`;
     if (isSelf(d)) cls = 'edge'; // already filled in the highlight layer; only its dashed edge here
     else {
-      const by = hl.filter(({ refs }) => [...d.claimants].some((c) => ownerCodes(refs).has(c))).map(({ id }) => id);
+      const by = hl.filter(({ refs }) => placeClaims(refs, d)).map(({ id }) => id);
       cls = by.length ? 'hatch hatch-claimed' : 'hatch hatch-land';
       if (by.length) extra += ` data-claimants="${by.join(' ')}"`;
     }
@@ -274,10 +275,12 @@ function render(key, placeIds) {
   const scale = stretch > 5 ? '' : `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
     + `<text class="scale-label" x="${(20 + len).toFixed(1)}" y="290">${nice.toLocaleString('en')} km</text></g>`;
 
-  // Locator globe on frames with a corner radius under 30°, in whichever of three
-  // corners the places and claims crowd least (the scale bar has bottom-left).
+  // Locator globe on frames with a corner radius under 30°, or on any frame whose
+  // set asks for it (`globe` in sets.json: region maps, where a sea of islands
+  // has no other context), in whichever of three corners the places and claims
+  // crowd least (the scale bar has bottom-left).
   let inset = '';
-  if (spec.cornerDeg < 30) {
+  if (spec.cornerDeg < 30 || input.sets[key]?.globe === true) {
     const GR = 44, PADI = 10;
     const corners = [[W - PADI - GR, PADI + GR], [PADI + GR, PADI + GR], [W - PADI - GR, H - PADI - GR]];
     const busy = [...hl.flatMap(({ refs }) => geomFor(refs, ix)), ...claimed.map((d) => d.f)].flatMap(ptsOf);
