@@ -218,7 +218,8 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 | Headline | One sentence, shown at the top of the region page |
 | Introduction | Two or three paragraphs |
 | Findings | One Heading 3 per finding, each with its paragraphs and sources |
-| Evidence cards | Optional. One Heading 3 per card, titled with the country's name, then one paragraph and sources. Use this for region-specific cards; a country's WordPress-tab story card is pulled in automatically |
+| Evidence cards | Optional. One Heading 3 per card, titled with the country's name, then the card's title as one bold line, one paragraph, and its links. When the region Doc has cards, the region page shows only these; without any, it shows each country's WordPress-tab story card |
+| Director's letter | Optional. The letter for this region's release, shown at the foot of the region page, ending with the signature line (name, then role) |
 
 ### Front-matter Doc
 
@@ -228,7 +229,20 @@ An optional second tab in the country Doc, named **WordPress** (any capitalizati
 - **Indicators.** Five Heading 3 entries, each with the question, how it is assessed, and an example.
 - **Answer key.** Yes, No, Unclear, Not applicable, each with one sentence.
 - **Director's letter.**
-- **Global synthesis.** Written for the Complete Edition; empty until then. Its text is exported but not shown until the synthesis is Released.
+- **Global synthesis.** Written for the Complete Edition; empty until then. Its text is exported but not shown until the synthesis is Released. Its planned date goes in the Publishing Docs row "Front matter".
+
+### In the release file
+
+The exporter turns the region and front-matter Docs into two optional parts of the release file. Both are written as absolute state: a release without them removes them from the site. The dry run lists them as "Region overview, {region}: create/update/remove" and "Front matter: …".
+
+| Part | Shape | Stored as |
+|---|---|---|
+| `regions[].overview` | `headline`, `html` (introduction), `sources`, `findings[]` (`title`, `html`, `sources`), `cards[]` (`report_id`, `country`, `title`, `html`, `links`), `letter` (`html`, `name`, `role`) | Term meta `overview` and `overview_hash`. Shown only to visitors who may read the region, like its reports |
+| `front_matter` | `summary` (the deck), `methodology` (`html`, `sections[]`), `indicators` (by key: `html`, `example`), `answer_key` (`html`, `answers`), `letter`, `synthesis.release_date` | The option `wt_rights_front_matter`. Public on the hub |
+
+Links are `{url, label}`. Cards name their report by record ID, never by country name. `Editorial` (`class-editorial.php`) normalizes both parts and plans the change.
+
+Until the exporter reads these Docs (the next step), a demo release with mock text can carry them: it is built outside the repo and imported like any release.
 
 ## Pre-flight checklist
 
@@ -288,6 +302,8 @@ Kristen's own Claude can do the pre-flight check before anything reaches Frederi
 It reads and reports; it never edits. The exporter's own checks remain the gate.
 
 ## Links between reports and territories
+
+**Maps.** Region and country pages draw their maps with wt-maps (docs/maps.md), from the reports' Archive Nation IDs. A country uses its territory's map. Each region with two or more mapped countries adds a map set through the `wt_maps_extra_sets` filter, so `wp wt-maps export` and `doctor` include it; build it with `node build.mjs --only=<key>` and commit `maps/`. A region or report without IDs shows no map.
 
 - **Report → territory.** Each country report links to its territory page (`/territories/{region}/{territory}/`). Plan 6.8 may turn some non-ISO places (Abkhazia, Transnistria) into subdivisions without pages; their reports then link to the parent territory, or to nothing.
 - **Territory → report.** Each territory page with a Released report shows a block linking to it, with the headline sentence and the five answers. An Upcoming or Embargoed report shows nothing.

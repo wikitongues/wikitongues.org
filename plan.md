@@ -245,6 +245,7 @@ Stacked: merge in order. Then GTM and GA4 setup and the staging rehearsal, both 
 2. **Language count:** the prototype shows 30 languages for Afghanistan; the Nations table says 34. Which is shown?
 3. **Press access:** how journalist accounts are issued and revoked (tracked privately).
 4. **Google access:** a service account with read access to the report folders.
+5. **Kristen: global findings before the Complete Edition?** The latest prototype's hub shows key findings and per-indicator charts across all 170 scored reports now; the decision log (2026-11-18) says global numbers appear only at the Complete Edition. *Impact:* showing them early puts unreleased regions' answers in public aggregates before those regions are fact-checked or embargoed; keeping the rule means the hub shows only the schedule, methodology and letter until 25 August 2027. The component can be built either way.
 
 ##### Out of scope
 
@@ -265,6 +266,8 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
 | 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
+| 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
+| 2026-11-23 | No automatic release on the planned date; a person releases each region | Launch day stays a deliberate act |
 | 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
 ### 3. Discovery
@@ -524,6 +527,7 @@ Tracked live on a private claude.ai checklist page (updated 2026-11-17); this li
   - Unused schema.
   - Uninstall leaves settings behind.
 - **Airtable cleanup.** Dedupe the Download records duplicated by the 2026-09-08 replay, on `download_event_id` ([airtable-sync.md](docs/airtable-sync.md#gateway-webhook-router)).
+- **A follow-up question set for the Language Rights report.** Today report PDFs use the general `documents` follow-up form. Design a report-specific set asking who the reader is (journalist, advocate, researcher, government, community member) and what they'll use it for; start from the intake brief in `docs/local_docs/`.
 - **For the Mailchimp work (roadmap step 3):** add the language slug to the `intake` webhook payload, so Make can set the `LANG_SLUG` merge field.
 - **Security hardening** from the March 2026 review is tracked privately.
 

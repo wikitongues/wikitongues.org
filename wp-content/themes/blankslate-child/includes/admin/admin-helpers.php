@@ -49,6 +49,7 @@ function custom_reorder_admin_menu( array $menu_order ): array {
 		'edit.php?post_type=events',          // Events
 		'edit.php?post_type=faq',             // FAQ
 		'edit.php?post_type=form_990',        // Form 990s
+		'edit.php?post_type=rights_reports',  // Language Rights Reports
 		'upload.php',                         // Media
 		'wt-section-documents',               // ── Documents ────────────────────
 		'edit.php?post_type=documents',       // Documents

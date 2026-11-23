@@ -123,7 +123,7 @@ function wt_maps_doctor_command(): void {
 	}
 
 	$report = wt_maps_doctor( $table, $places, $languages );
-	$plan   = wt_maps_plan_sets( $table, wt_maps_collect_languages() );
+	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, wt_maps_collect_languages() ), wt_maps_extra_sets() );
 	$built  = array_map( fn( $f ) => basename( $f, '.svg' ), (array) glob( dirname( __DIR__ ) . '/maps/*.svg' ) );
 	$report = array_merge( $report, wt_maps_build_report( $plan['sets'], $built ) );
 
@@ -184,7 +184,7 @@ function wt_maps_export_command( array $args, array $assoc_args ): void {
 
 	$languages = wt_maps_collect_languages();
 
-	$plan   = wt_maps_plan_sets( $table, $languages );
+	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, $languages ), wt_maps_extra_sets() );
 	$places = array();
 	foreach ( $plan['sets'] as $set ) {
 		foreach ( $set['places'] as $place_id ) {

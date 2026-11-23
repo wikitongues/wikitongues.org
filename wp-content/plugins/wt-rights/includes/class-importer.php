@@ -42,14 +42,15 @@ final class Importer {
 			}
 			$regions           = wp_get_object_terms( (int) $id, 'rights_region', array( 'fields' => 'slugs' ) );
 			$out[ $record_id ] = array(
-				'post_id' => (int) $id,
-				'slug'    => $post->post_name,
-				'title'   => $post->post_title,
-				'status'  => $post->post_status,
-				'hash'    => (string) get_post_meta( (int) $id, '_rights_hash', true ),
-				'version' => (string) get_post_meta( (int) $id, '_rights_version', true ),
-				'region'  => is_array( $regions ) && $regions ? (string) $regions[0] : '',
-				'draft'   => '1' === get_post_meta( (int) $id, '_rights_draft', true ),
+				'post_id'           => (int) $id,
+				'slug'              => $post->post_name,
+				'title'             => $post->post_title,
+				'status'            => $post->post_status,
+				'hash'              => (string) get_post_meta( (int) $id, '_rights_hash', true ),
+				'version'           => (string) get_post_meta( (int) $id, '_rights_version', true ),
+				'region'            => is_array( $regions ) && $regions ? (string) $regions[0] : '',
+				'draft'             => '1' === get_post_meta( (int) $id, '_rights_draft', true ),
+				'archive_nation_id' => (string) get_post_meta( (int) $id, '_rights_archive_nation_id', true ),
 			);
 		}
 		return $out;
@@ -102,9 +103,64 @@ final class Importer {
 			update_term_meta( $term_id, 'release_date', (string) ( $region['release_date'] ?? '' ) );
 			update_term_meta( $term_id, 'forthcoming', wp_slash( (string) wp_json_encode( $region['forthcoming'] ) ) );
 			update_term_meta( $term_id, 'nations', wp_slash( (string) wp_json_encode( $region['nations'] ?? array() ) ) );
+			self::write_overview( $term_id, Editorial::overview( $region ) );
 			$ids[ (string) $region['key'] ] = $term_id;
 		}
 		return $ids;
+	}
+
+	/**
+	 * Hashes of the stored region overviews and front matter, for Editorial::plan().
+	 *
+	 * @return array{regions: array<string, string>, front: string}
+	 */
+	public static function editorial_state(): array {
+		$terms   = get_terms(
+			array(
+				'taxonomy'   => 'rights_region',
+				'hide_empty' => false,
+			)
+		);
+		$regions = array();
+		foreach ( is_array( $terms ) ? $terms : array() as $term ) {
+			$regions[ $term->slug ] = (string) get_term_meta( $term->term_id, 'overview_hash', true );
+		}
+		$front = get_option( 'wt_rights_front_matter' );
+		return array(
+			'regions' => $regions,
+			'front'   => is_array( $front ) ? Editorial::hash( $front ) : '',
+		);
+	}
+
+	/**
+	 * Stores the release's front matter, or removes it when the release has none.
+	 *
+	 * @param array<string, mixed> $release A release file.
+	 */
+	public static function write_front_matter( array $release ): void {
+		$front = Editorial::front_matter( $release );
+		if ( null === $front ) {
+			delete_option( 'wt_rights_front_matter' );
+			return;
+		}
+		update_option( 'wt_rights_front_matter', $front, false );
+	}
+
+	/**
+	 * Stores a region's overview, or removes it when the release has none.
+	 *
+	 * @param int        $term_id  The region.
+	 * @param array|null $overview From Editorial::overview().
+	 * @phpstan-param array<string, mixed>|null $overview
+	 */
+	private static function write_overview( int $term_id, ?array $overview ): void {
+		if ( null === $overview ) {
+			delete_term_meta( $term_id, 'overview' );
+			delete_term_meta( $term_id, 'overview_hash' );
+			return;
+		}
+		update_term_meta( $term_id, 'overview', wp_slash( (string) wp_json_encode( $overview ) ) );
+		update_term_meta( $term_id, 'overview_hash', Editorial::hash( $overview ) );
 	}
 
 	/**

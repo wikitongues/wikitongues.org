@@ -344,12 +344,17 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
 	if ( $rows ) {
 		WP_CLI\Utils\format_items( 'table', $rows, array( 'Action', 'Report', 'Status', 'Changes' ) );
 	}
+	$state     = \WT\Rights\Importer::editorial_state();
+	$editorial = \WT\Rights\Editorial::plan( $release, $state['regions'], $state['front'] );
+	foreach ( $editorial as $line ) {
+		WP_CLI::log( $line );
+	}
 	$summary = \WT\Rights\Import_Plan::summary( $plan );
 	$counts  = array();
 	foreach ( $summary as $what => $count ) {
 		$counts[] = $count . ' ' . $what;
 	}
-	WP_CLI::log( 'Release ' . $release['release'] . ( ! empty( $release['preview'] ) ? ' (preview)' : '' ) . ': ' . implode( ', ', $counts ) . '.' );
+	WP_CLI::log( 'Release ' . $release['release'] . ( ! empty( $release['preview'] ) ? ' (preview)' : '' ) . ': ' . implode( ', ', $counts ) . ', ' . count( $editorial ) . ' editorial ' . ( 1 === count( $editorial ) ? 'change' : 'changes' ) . '.' );
 
 	if ( ! $execute ) {
 		WP_CLI::log( 'Dry run: nothing written. Add --execute to apply.' );
@@ -362,6 +367,7 @@ function wt_rights_import_command( array $args, array $assoc_args ): void {
 	}
 	try {
 		$regions = \WT\Rights\Importer::upsert_regions( $release );
+		\WT\Rights\Importer::write_front_matter( $release );
 		foreach ( $plan as $action ) {
 			\WT\Rights\Importer::apply( $action, $by_record[ $action['record_id'] ] ?? array(), $regions );
 		}
