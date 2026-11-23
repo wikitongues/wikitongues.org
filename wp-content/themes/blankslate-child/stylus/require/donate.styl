@@ -1,6 +1,6 @@
 .wt-donate
-	background #fffcef
-	color #101010
+	background $parchment
+	color $black
 	font 400 17px/1.6 'Graphik Web', Arial, sans-serif
 
 	*
@@ -30,20 +30,19 @@
 		line-height inherit
 
 	a:not(.wt-donate__button)
-		color #3814a5
+		color $blue()
 
-	a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible
-		outline 3px solid #e52600
-		outline-offset 4px
+	a, button, summary, input
+		focus-ring()
 
 	&__wrap
 		width 100%
-		max-width 1240px
+		max-width $content-wide
 		margin-inline auto
 		padding-inline clamp(16px, 4vw, 32px)
 
 		// Outside the Donate page these blocks sit between editorial text rows,
-		// so they share the reading column instead of jogging out to 1240px.
+		// so they share the reading column instead of jogging out to $content-wide.
 		body:not(.page-template-template-donate) &
 			max-width $measure + 64px // the column plus the 32px side padding it has at this width
 
@@ -54,16 +53,16 @@
 
 	&__hero
 		grid-template-columns minmax(0, 1fr) minmax(0, 440px)
-		padding-block 56px 40px
+		padding-block $space(7) $space(5)
 		align-items start
 
 	&__intro, &__gift, &__heading, &__story-copy, &__pair > div
 		display grid
-		gap 16px
+		gap $space(2)
 		align-content start
 
 	&__intro
-		gap 24px
+		gap $space(3)
 		padding-top 12px
 
 		h1
@@ -77,18 +76,20 @@
 			font-size clamp(19px, 2vw, 24px)
 			line-height 1.3
 
+	// inherit: eyebrows also sit on the dark monthly box
 	& &__eyebrow
-		font 600 13px/1.4 'Graphik Web', Arial, sans-serif
-		letter-spacing .065em
-		text-transform uppercase
+		eyebrow(inherit)
 
 	// Large serif label above a section heading: "Gifts.", "Fellows.", "Questions."
 	&__label
 		font 300 clamp(40px, 6vw, 56px)/1 'Schnyder Wide L Web', 'Schnyder Wide M Web', Georgia, serif
 
 	&__number
-		color #3814a5
-		font 600 13px/1.4 'Graphik Web', Arial, sans-serif
+		typeface('')
+		color $blue()
+		font-size $type-label
+		font-weight 600
+		line-height 1.4
 		letter-spacing .06em
 
 	&__highlight
@@ -105,7 +106,7 @@
 		display flex
 		align-items center
 		gap 20px
-		font-size 14px
+		font-size $type-small
 
 		img
 			display block
@@ -131,7 +132,7 @@
 			background url('../img/donate/arrow.png') center / contain no-repeat
 
 	&__gift
-		border 2px solid #101010
+		border 2px solid $black
 		padding clamp(16px, 3vw, 28px)
 		gap 20px
 
@@ -144,12 +145,12 @@
 			min-width 0
 			display grid
 			grid-template-columns repeat(2, minmax(0, 1fr))
-			gap 8px
+			gap $space(1)
 
 		legend
 			padding 0
-			margin-bottom 8px
-			font-size 13px
+			margin-bottom $space(1)
+			font-size $type-label
 
 		label
 			position relative
@@ -165,16 +166,16 @@
 				place-items center
 				min-height 48px
 				padding 6px
-				border 1px solid #101010
+				border 1px solid $black
 				font-weight 600
 				cursor pointer
 
 			&:checked + span
-				background #101010
-				color #fffcef
+				background $black
+				color $parchment
 
 			&:focus-visible + span
-				outline 3px solid #e52600
+				outline 3px solid $blue()
 				outline-offset 2px
 
 		.wt-donate__amounts span
@@ -188,13 +189,13 @@
 			min-width 0
 			width 100%
 			padding 10px 12px
-			border 1px solid #101010
+			border 1px solid $black
 			background transparent
 			color inherit
 			font inherit
 
 	&__legal
-		font-size 13px
+		font-size $type-label
 
 	&__button
 		display inline-flex
@@ -203,10 +204,10 @@
 		justify-self start
 		min-height 52px
 		padding 14px 28px
-		border 1px solid #101010
+		border 1px solid $black
 		border-radius 0
-		background #101010
-		color #fffcef
+		background $black
+		color $parchment
 		font inherit
 		font-weight 600
 		text-align center
@@ -214,32 +215,35 @@
 		cursor pointer
 
 		&:hover
-			background #3814a5
-			color #fffcef
+			background $blue()
+			color $parchment
 
 	&__gift
-		font-size 16px
+		font-size $type-body
 
 		.wt-donate__button
 			width 100%
 
 	&__button--outline
 		background transparent
-		color #101010
+		color $black
 
 	&__grid
 		display grid
 		grid-template-columns repeat(3, minmax(0, 1fr))
 
 	&__reach
-		background #101010
-		color #fffcef
+		background $black
+		color $parchment
+
+		a, button
+			focus-ring($parchment)
 
 		ul
-			padding-block 64px
+			padding-block $space(8)
 			padding-inline clamp(16px, 4vw, 32px)
 			margin-inline auto
-			gap 32px
+			gap $space(4)
 
 		li
 			max-width 28ch
@@ -252,11 +256,11 @@
 		font-size .4em
 
 	&__rule
-		border-top 1px solid #101010
+		border-top 1px solid $black
 
 	&__section
 		display grid
-		gap 40px
+		gap $space(5)
 		padding-block clamp(52px, 8vw, 96px)
 
 	&__heading
@@ -264,23 +268,23 @@
 
 	&__programs
 		grid-template-columns repeat(var(--columns, 3), minmax(0, 1fr))
-		border-top 1px solid #101010
-		border-left 1px solid #101010
+		border-top 1px solid $black
+		border-left 1px solid $black
 
 		li
 			display grid
 			align-content start
 			gap 12px
 			padding clamp(16px, 3vw, 32px)
-			border-right 1px solid #101010
-			border-bottom 1px solid #101010
+			border-right 1px solid $black
+			border-bottom 1px solid $black
 
 	&__story-art
 		display grid
 		place-items center
 		min-height 185px
-		padding 16px
-		background #f2ead6
+		padding $space(2)
+		background $wash
 		text-align center
 		font 300 clamp(25px, 4vw, 52px)/1.15 'Schnyder Wide M Web', Georgia, serif
 
@@ -299,7 +303,7 @@
 
 		.wt-donate__story-art
 			min-height clamp(185px, 32vw, 420px)
-			border 1px solid #101010
+			border 1px solid $black
 
 		.wt-donate__story-art--photo
 			min-height 0
@@ -311,20 +315,20 @@
 			font-size 19px
 
 	&__stories
-		gap 24px
+		gap $space(3)
 
 		article
-			border 1px solid #101010
+			border 1px solid $black
 
 		.wt-donate__story-art
-			border-bottom 1px solid #101010
+			border-bottom 1px solid $black
 			font-size clamp(24px, 3vw, 36px)
 
 		.wt-donate__story-copy
-			padding 24px
+			padding $space(3)
 
 			p:not([class])
-				font-size 16px
+				font-size $type-body
 
 	&__pair
 		align-items stretch
@@ -346,62 +350,45 @@
 
 	&__monthly
 		padding clamp(22px, 4vw, 40px)
-		background #101010
-		color #fffcef
+		background $black
+		color $parchment
+
+		a, button, input
+			focus-ring($parchment)
 
 		.wt-donate__button
-			background #fffcef
-			color #101010
+			background $parchment
+			color $black
 
 			&:hover
-				background #ffff00
+				background $yellow
 
 	&__faq
 		max-width 880px
 		gap 0
 
 		.wt-donate__heading
-			gap 16px
-			margin-bottom 32px
+			gap $space(2)
+			margin-bottom $space(4)
 
 		details
-			border-bottom 1.5px solid #101010
+			disclosure(28px)
+			border-bottom 1.5px solid $black
 
 			&:first-of-type
-				border-top 1.5px solid #101010
-
-			&[open] .wt-donate__faq-toggle
-				transform rotate(45deg)
+				border-top 1.5px solid $black
 
 		summary
-			display flex
-			justify-content space-between
-			align-items center
-			gap 16px
 			padding-block 22px
-			cursor pointer
-			list-style none
 			font-size 19px
 			font-weight 400
 
-			&::-webkit-details-marker
-				display none
-
-		&-toggle
-			flex none
-			font-size 28px
-			line-height 1
-			transition transform .2s
-
-			@media (prefers-reduced-motion: reduce)
-				transition none
-
 		details p
 			max-width 64ch
-			margin 0 0 24px
+			margin 0 0 $space(3)
 
 	&__close
-		max-width 1240px
+		max-width $content-wide
 		justify-items center
 		text-align center
 		gap 26px
@@ -420,17 +407,17 @@
 		display flex
 		flex-wrap wrap
 		justify-content center
-		gap 16px
+		gap $space(2)
 
 	[data-donate-share-status]:empty
 		display none
 
-@media (max-width: 960px)
+@media (max-width: $tablet)
 	.wt-donate__hero
 		grid-template-columns minmax(0, 1fr) minmax(0, .9fr)
-		gap 24px
+		gap $space(3)
 
-@media (max-width: 760px)
+@media (max-width: $mobile)
 	.wt-donate
 		&__hero, &__pair, &__feature, &__grid
 			grid-template-columns minmax(0, 1fr)
@@ -439,4 +426,4 @@
 			padding-top 28px
 
 		&__reach ul
-			padding-block 40px
+			padding-block $space(5)

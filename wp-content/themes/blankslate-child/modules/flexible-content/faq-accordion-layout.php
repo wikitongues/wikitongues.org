@@ -20,7 +20,7 @@ $faq_title_id = 'faq-' . wp_unique_id();
 			}
 			?>
 			<details<?php echo 0 === $i ? ' open' : ''; ?>>
-				<summary><?php echo esc_html( get_the_title( $faq ) ); ?><span class="wt-donate__faq-toggle" aria-hidden="true">+</span></summary>
+				<summary><?php echo esc_html( get_the_title( $faq ) ); ?></summary>
 				<?php echo wp_kses_post( wpautop( $faq->post_content ) ); ?>
 			</details>
 		<?php endforeach; ?>
