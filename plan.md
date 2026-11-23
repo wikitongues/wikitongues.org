@@ -549,7 +549,7 @@ Two related gaps:
 
 ##### Display
 
-- **Language page:** "Traditionally spoken in" (origin), then "Also spoken in"; "Spoken in" when there is no origin.
+- **Language page:** "Place of origin" or "Places of origin", by count (replaces today's "Territories of origin" in `meta--languages-single.php`), then "Also spoken in"; "Spoken in" when there is no origin.
 - **Map:** for each territory, draw the subdivisions the language lists there, else the whole territory; origins primary. No per-language map setting.
 - **Territory sidebar:** ISO territories with at least one language.
 - **Territory pages:** their subdivisions, each with its languages, then the rest. Subdivisions have no pages or routes of their own.
@@ -599,6 +599,7 @@ Subdivision pages and routes; historical origin as a field; cell-based geography
 | 2026-11-20 | Make sends origins and presence as two lists; the sync writes territories as their union | Rule 2 in one place; absolute state; the archival origin field stays the only source of origins |
 | 2026-11-20 | Maps v1 ships with the origins fallback, documented as temporary; `territories` stays the February copy until presence exists | Nothing new to build now; the February copy holds ~66 real extra places the review hasn't replaced |
 | 2026-11-20 | Origin review approved for 46 languages (186 decisions); retired codes, `apa` and Wikitongues codes set aside | Evidence from Glottolog; one decision per card |
+| 2026-11-23 | The sidebar origin header reads "Place of origin" or "Places of origin", by count | Frederico's request; ships with the WordPress label step |
 
 ### 7. Engineering foundations
 
