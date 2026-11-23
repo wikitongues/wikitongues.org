@@ -75,18 +75,3 @@ function react_typeahead_shortcode( $atts ) {
 }
 
 add_shortcode( 'react_typeahead', 'react_typeahead_shortcode' );
-
-function hide_shortcode_container() {
-	?>
-	<script type="text/javascript">
-		document.addEventListener('DOMContentLoaded', function() {
-			let instances = document.querySelectorAll('.react-typeahead-container');
-			instances.forEach(function(instance) {
-				instance.style.display = 'none';
-			});
-		});
-	</script>
-	<?php
-}
-
-add_action( 'wp_head', 'hide_shortcode_container' );
