@@ -9145,6 +9145,86 @@
     "sea": 10894
    }
   },
+  "set-6319d86daa7d": {
+   "places": [
+    "recAWl2HcDNSJG1Zd",
+    "recI0Mr0xfb23bpFj",
+    "recPMfnQ1l117hBBY",
+    "recV8CplJ64NTneMK",
+    "recbbpkjYhL8k3oWf",
+    "reckMaHEYWWoejWWB",
+    "recrY5jg8GmprukMo",
+    "rectAmnj7NE1xpoSX",
+    "rectIlvjaNyiOju5f",
+    "recu6St8QXJjtVMHM",
+    "recupofG86Mhx5QFk",
+    "recvo0WSLdObX2fSc",
+    "reczhyHJo8cwk1oNL"
+   ],
+   "names": [
+    "Afghanistan",
+    "Bangladesh",
+    "Bhutan",
+    "India",
+    "Kazakhstan",
+    "Kyrgyzstan",
+    "Maldives",
+    "Nepal",
+    "Pakistan",
+    "Sri Lanka",
+    "Tajikistan",
+    "Turkmenistan",
+    "Uzbekistan"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -73.039205,
+     -34.572252,
+     0
+    ],
+    "scale": 235.341,
+    "translate": [
+     192.132,
+     121.442
+    ],
+    "cornerDeg": 71.21
+   },
+   "center": [
+    73.039205,
+    34.572252
+   ],
+   "fine": false,
+   "stretch": 51.3,
+   "scale_km": null,
+   "claimed": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Bara Hotii Valleys",
+    "Demchok",
+    "Gilgit-Baltistan",
+    "Jammu and Kashmir",
+    "Junagadh and Manavadar",
+    "Samdu Valleys",
+    "Shaksam Valley",
+    "Siachen Glacier",
+    "Tirpani Valleys"
+   ],
+   "revealed": [
+    "Abkhazia",
+    "Artsakh",
+    "Donetsk People's Republic",
+    "Luhansk People's Republic",
+    "South Ossetia"
+   ],
+   "svg_bytes": 58633,
+   "svg_gzip": 19205,
+   "images": {
+    "relief": 30244,
+    "shade": 22124,
+    "sea": 28650
+   }
+  },
   "set-655e3b42c52b": {
    "places": [
     "recKYTEiCHCXrLxpI",

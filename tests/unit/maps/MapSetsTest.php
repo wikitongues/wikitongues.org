@@ -108,4 +108,40 @@ class MapSetsTest extends TestCase {
 		$this->assertSame( array( 'Papiamento: no shape for ' . self::ARUBA ), $plan['unmapped'] );
 		$this->assertSame( 1, $plan['no_places'] );
 	}
+
+	public function test_extra_sets_join_the_plan_with_their_labels() {
+		$plan = wt_maps_plan_sets( $this->table(), array( $this->language( 'Chamorro', array( self::GUAM, self::NMI ) ) ) );
+		$plan = wt_maps_add_extra_sets(
+			$this->table(),
+			$plan,
+			array(
+				'Region A' => array( self::NMI, self::GUAM ),
+				'Region B' => array( self::US, self::HAWAII ),
+				'Region C' => array( self::US, self::ARUBA ),
+				'Region D' => array(),
+			)
+		);
+
+		$shared = wt_maps_set_key( array( self::GUAM, self::NMI ) );
+		$this->assertSame( 1, $plan['sets'][ $shared ]['languages'], 'a set a language uses keeps its count' );
+		$this->assertSame( array( 'Region A' ), $plan['sets'][ $shared ]['pages'] );
+		$this->assertSame( 0, $plan['sets'][ wt_maps_set_key( array( self::US, self::HAWAII ) ) ]['languages'] );
+		$this->assertSame( array( 'Region C: no shape for ' . self::ARUBA ), $plan['unmapped'], 'a place with no shape means no map, never a partial one' );
+		$this->assertCount( 2, $plan['sets'] );
+	}
+
+	public function test_the_build_report_names_the_pages_of_an_unbuilt_set() {
+		$report = wt_maps_build_report(
+			array(
+				'set-abc' => array(
+					'places'    => array( self::US, self::HAWAII ),
+					'languages' => 0,
+					'pages'     => array( 'Region B' ),
+				),
+			),
+			array()
+		);
+
+		$this->assertSame( array( 'set-abc (Region B)' ), $report['unbuilt'] );
+	}
 }

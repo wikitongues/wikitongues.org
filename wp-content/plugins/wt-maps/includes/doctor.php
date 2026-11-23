@@ -81,14 +81,19 @@ function wt_maps_doctor_has_errors( array $report ): bool {
 /**
  * Compare the map sets languages use with the maps that have been built.
  *
- * @param array<string, array{places: list<string>, languages: int}> $sets  From wt_maps_plan_sets().
+ * @param array<string, array{places: list<string>, languages: int, pages?: list<string>}> $sets  From wt_maps_plan_sets().
  * @param list<string>                                               $built Keys of the built SVGs.
  * @return array{unbuilt: list<string>, unused: list<string>}
  */
 function wt_maps_build_report( array $sets, array $built ): array {
 	$unbuilt = array();
 	foreach ( array_diff_key( $sets, array_flip( $built ) ) as $key => $set ) {
-		$unbuilt[] = sprintf( '%s (%d %s)', $key, $set['languages'], 1 === $set['languages'] ? 'language' : 'languages' );
+		$users = array();
+		if ( $set['languages'] ) {
+			$users[] = sprintf( '%d %s', $set['languages'], 1 === $set['languages'] ? 'language' : 'languages' );
+		}
+		$users     = array_merge( $users, $set['pages'] ?? array() );
+		$unbuilt[] = sprintf( '%s (%s)', $key, implode( ', ', $users ) );
 	}
 	$unused = array_values( array_diff( $built, array_keys( $sets ) ) );
 

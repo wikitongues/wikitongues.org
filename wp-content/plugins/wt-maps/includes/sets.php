@@ -110,3 +110,53 @@ function wt_maps_plan_sets( Shape_Table $table, array $languages ): array {
 		'no_places' => $no_places,
 	);
 }
+
+/**
+ * Add map sets that pages other than languages draw, such as a Language Rights
+ * report region, to a plan from wt_maps_plan_sets().
+ *
+ * Each entry is a label and its places. A set with a place that has no shape
+ * is listed under `unmapped`, like a language's; a set a language already uses
+ * keeps its language count and gains the label.
+ *
+ * @param Shape_Table                                                                 $table The shape table.
+ * @param array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>}>, unmapped: list<string>, no_places: int} $plan  From wt_maps_plan_sets().
+ * @param array<string, list<string>>                                                 $extra Label → place record IDs.
+ * @return array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>}>, unmapped: list<string>, no_places: int}
+ */
+function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra ): array {
+	foreach ( $extra as $label => $places ) {
+		$places = array_values( array_unique( array_filter( $places, 'is_string' ) ) );
+		sort( $places );
+		if ( array() === $places ) {
+			continue;
+		}
+		$missing = array_filter( $places, fn( $id ) => array() === $table->shapes( $id ) );
+		if ( array() !== $missing ) {
+			$plan['unmapped'][] = sprintf( '%s: no shape for %s', $label, implode( ', ', $missing ) );
+			continue;
+		}
+		$key = wt_maps_set_key( $places );
+		if ( ! isset( $plan['sets'][ $key ] ) ) {
+			$plan['sets'][ $key ] = array(
+				'places'    => $places,
+				'languages' => 0,
+			);
+		}
+		$plan['sets'][ $key ]['pages'][] = (string) $label;
+	}
+	ksort( $plan['sets'] );
+	sort( $plan['unmapped'] );
+	return $plan;
+}
+
+/**
+ * Map sets other plugins' pages need, as label → place record IDs, from the
+ * `wt_maps_extra_sets` filter. Used by `export` and `doctor`.
+ *
+ * @return array<string, list<string>>
+ */
+function wt_maps_extra_sets(): array {
+	$extra = apply_filters( 'wt_maps_extra_sets', array() );
+	return is_array( $extra ) ? $extra : array();
+}

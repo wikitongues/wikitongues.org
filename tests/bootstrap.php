@@ -94,8 +94,10 @@ require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-airtable
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-exporter.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-release-status.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-import-plan.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-editorial.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/content-model.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/template-tags.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/display.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/press.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/pdf.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/analytics.php';
