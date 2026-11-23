@@ -895,7 +895,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 
 | PR | Ships |
 |---|---|
-| 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged ([#716](https://github.com/wikitongues/wikitongues.org/pull/716)) |
+| 1 `refactor/cc/editorial-tokens` | `global.styl` tokens and mixins; compiled CSS unchanged ([#716](https://github.com/wikitongues/wikitongues.org/pull/716), merged 2026-11-23) |
 | 2 `refactor/cc/rights-use-tokens` | `language-rights.styl`, the territory card class, the dialog; `newsletter.styl` moves to `signup-*()` (PR 2) |
 | 3 `refactor/cc/donate-use-tokens` | `donate.styl` |
 
