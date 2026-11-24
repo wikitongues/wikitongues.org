@@ -67,7 +67,7 @@ Last reviewed 2026-11-23.
 | 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
 | 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
 | 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 10 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 10 | Search results redesign | Answer what was searched, with context; turn the 91% of languages with no recording into the ask | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
@@ -412,12 +412,93 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 #### 3.3 Enhanced search
 
-*Now #8.*
+*Now #10. Spec approved 2026-11-24; a clickable mockup is the design reference. Next: step 1.*
 
-1. **Find languages by name (#379).** Full-page `?s=` results miss language pages, because a language's title is its ISO code, and WordPress search matches titles and content, not `standard_name` or `alternate_names`. The typeahead already matches names. Make the main search query match them too (`includes/template/search-filter.php`). In the same pass, fix the missing video thumbnails in results (#58) and the results page title that shows an ISO code.
-2. **A gallery-powered results page** across languages, territories, genealogies, writing systems, videos and fellows. It should be faceted (region, family, content type) and relevance-weighted. Design it together with in-gallery filtering (#378).
+**Decision needed:** the gap CTA (open question 1), before step 3.
 
-- **Instrument:** `search_performed` (`query`, `results_count`) and `search_result_click` (`result_position`, `result_type`). The dimensions are already registered.
+**The idea.** Today `?s=` returns a flat list of languages and videos with an ISO code for a title. Instead, work out *what* the visitor searched for, answer that first with rich context, then show everything around it. 759 of 8,088 languages (9%) have an oral history, so most language searches land on a gap. The gap is the most honest fundraising pitch the site has: "No one has recorded Tahitian yet."
+
+##### Glossary
+
+| Term | Means |
+|---|---|
+| **Kind** | What an entity is: language, territory, region, family (`linguistic-genealogy` term), fellow |
+| **Match** | An entity the query hits, with a strength (below) |
+| **Answer** | The single strongest match, shown first as a rich card |
+| **Recorded** | A language with at least one video in `speakers_recorded` (the typeahead's `resourced`) |
+| **Gap** | A language that isn't recorded |
+
+##### Rules
+
+| # | Rule |
+|---|---|
+| 1 | One **search index** of every public entity of every kind, built from WordPress as absolute state (extends the typeahead index, shipped 2026-11-23; see [content-model.md](docs/content-model.md#search)). The results page and the typeahead read the same index and the same resolver. |
+| 2 | Match strength, strongest first: exact identifier (ISO 639-3, glottocode, slug) → exact name (`standard_name`, territory title, term name, fellow full name) → exact alternate name or autonym/endonym → name prefix → substring. |
+| 3 | Queries and names are compared folded: case, diacritics and apostrophe variants (`’ ' ʻ`) are ignored, so `Maori`, `Māori` and `maori` match alike. |
+| 4 | Ties break by kind (language → territory → family → region → fellow), then recorded before gap, then name. |
+| 5 | **The answer** is the strongest match, but only when it is exact (rule 2, first three levels). A prefix or substring match gets no answer card, only the grouped list. |
+| 6 | Every other exact match of a different kind shows as **"Also"** chips under the answer (`Georgia` the country, `Georgian` the language). |
+| 7 | Results group by kind with counts; videos show inside their language's group, not as a separate kind. |
+| 8 | A search never dead-ends: zero matches shows the closest names (edit distance ≤ 2) and a way to tell us about a missing language. |
+| 9 | Private and non-public types (people, subdivisions, documents, resources) never match. |
+| 10 | Context figures (counts, recorded share) are computed at render from stored fields; nothing new is stored on posts. |
+
+##### Example cases
+
+| Query | Answer | Also / list | Why |
+|---|---|---|---|
+| `haw` | Hawaiian (language) | — | Exact ISO |
+| `hawa1245` | Hawaiian | — | Exact glottocode |
+| `Maori` / `Māori` | Maori (`mri`) | New Zealand (territory) in the list | Folding, rule 3 |
+| `Georgia` | Georgia (territory) | Also: Georgian (`kat`) | Two kinds, rule 6 |
+| `French` | French (`fra`, 39 videos) | French Polynesia in the list (prefix) | Exact name beats prefix |
+| `Tahitian` | Tahitian (`tah`): **gap** | Polynesia, Austronesian | The gap card, rule 5 |
+| `Austronesian` | Austronesian (family, 1,262 languages) | — | Family answer |
+| `Polynesia` | Polynesia (region) | — | Region answer |
+| `Kagiso Malefo` | Kagiso Malefo (fellow, Tshila, 2025) | — | Fellow answer |
+| `Euskara` | Basque (`eus`) | — | Autonym match |
+| `austro` | none | Austronesian, Austroasiatic… | Prefix only: no answer card |
+| `xyzzy` | none | Closest names, "tell us" | Rule 8 |
+
+##### Display
+
+1. **Answer card**, by kind:
+   - *Language:* name and autonym, the summary (`wt_language_blurb()`), the locator map (wt-maps), family and territory chips, and the first video. **Gap:** no video; instead "No one has recorded *Tahitian* yet", the gap CTA, and the nearest recorded relatives.
+   - *Territory:* the territory summary sentence, map, languages of origin with their recorded share, fellows.
+   - *Region / family:* language count, recorded share ("N of 1,262 Austronesian languages are recorded"), top territories, a handful of languages, recorded first.
+   - *Fellow:* headshot, language, cohort, territory, link to the story.
+2. **Also** chips (rule 6).
+3. **Grouped results** with kind tabs and counts; language rows show name, ISO, family, territory and a recorded mark.
+4. **Keep exploring:** one row of neighbours (same family or territory), recorded first.
+5. **Zero results** (rule 8).
+
+**Measure.** Events: `search_performed` (`query`, `results_count`, `answer_kind`, `match_level`), `search_result_click` (`result_position`, `result_type`, `section`), `search_gap_cta`. Success: search sessions reach the gateway, email capture or a donation more often than the site average; zero-result rate falls; answer-card click-through.
+
+##### Steps
+
+| # | PR | Done when |
+|---|---|---|
+| 1 | **Data:** the multi-kind index and a PHP resolver, unit-tested against the example cases | Every row above resolves as written |
+| 2 | **Page:** answer card, Also chips, grouped results, events; server-rendered | Example cases render on staging, events in DebugView |
+| 3 | **Gap and zero-result CTAs** | Open question 1 settled |
+| 4 | **Typeahead** suggests every kind from the same index | Header box shows kinds |
+
+##### Open questions
+
+1. **Gap CTA:** "help record it" (contribute), "notify me when it's recorded" (email capture), or donate? Recommend notify-me as primary, because email capture is the leading indicator, with donate secondary; contribute once `/contribute` exists (2.1).
+2. Should an exact ISO or glottocode jump straight to the language page? Recommend no: the answer card is one click, adds context, and keeps the search measurable.
+3. Include writing systems as a kind? Recommend later; few people search by script.
+4. Subdivisions (Hawaii, Guam's languages) aren't public yet (6.8). Until then, a subdivision name matches nothing of its own.
+5. Queue: this is Now #10, and the 2026-11-23 audit says the order isn't being followed. Keep it there, or move it up?
+
+##### Out of scope
+
+Resources, documents, lexicons and captions; blog and pages; in-gallery filtering on archive pages (#378); semantic or AI search.
+
+##### Decision log
+
+- 2026-11-24: Draft. One index and resolver for the typeahead and the results page; the gap is the fundraising surface.
+- 2026-11-24: Spec approved. Open questions stay open; 1 must be settled before step 3.
 
 ### 4. Email capture & engagement
 
