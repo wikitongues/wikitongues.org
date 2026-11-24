@@ -8935,9 +8935,9 @@
    "svg_bytes": 43887,
    "svg_gzip": 15031,
    "images": {
-    "relief": 28170,
-    "shade": 15642,
-    "sea": 30048
+    "relief": 28140,
+    "shade": 15700,
+    "sea": 29814
    }
   },
   "set-208f3f6e2730": {
@@ -9362,9 +9362,9 @@
    "svg_bytes": 64415,
    "svg_gzip": 21401,
    "images": {
-    "relief": 28758,
-    "shade": 18208,
-    "sea": 30088
+    "relief": 28768,
+    "shade": 18220,
+    "sea": 30446
    }
   },
   "set-3034b0b1224f": {

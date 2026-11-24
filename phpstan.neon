@@ -17,6 +17,7 @@ parameters:
         - wp-content/plugins/wt-maps
         - wp-content/plugins/wt-rights
         - wp-content/plugins/typeahead/typeahead.php
+        - wp-content/plugins/typeahead/includes
         - tests
     excludePaths:
         - */vendor/*

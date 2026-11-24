@@ -5,7 +5,7 @@ class ShortLinksTest extends TestCase {
 
 	public function test_ai_points_to_native_language_ai() {
 		$this->assertSame( '/revitalization/resources/native-language-ai/', wt_short_link_target( 'ai' ) );
-		$this->assertSame( '/language-rights/report/', wt_short_link_target( '/rights/' ) );
+		$this->assertSame( '/language-rights/', wt_short_link_target( '/rights/' ) );
 	}
 
 	public function test_slashes_and_case_are_ignored() {

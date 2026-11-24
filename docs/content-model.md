@@ -259,7 +259,9 @@ Options live in the database, so each environment has its own values, and a prod
 ### Search
 
 - **Site search** (`?s=`, `search.php`) is limited to languages and videos (`includes/template/search-filter.php`). It matches WordPress titles and content, which means a language, whose title is its ISO code, isn't found by its name (#379).
-- **The typeahead** (`GET /wp-json/custom/v1/search`) searches languages by `standard_name` and `alternate_names`.
+- **The typeahead** (header and archive search boxes) searches a static index of every published language, `wp-content/uploads/typeahead/index.json`, in the browser. Each row is `{id, label, identifier, resourced}`: `label` is `alternate_names`, falling back to `standard_name` and then the title; `identifier` is the post slug (the URL); `resourced` means `speakers_recorded` isn't empty. The index downloads on first focus of a search box. A query matches when it's a substring of any comma-separated name or the identifier, with an exact identifier match listed first.
+  - **Rebuilds** run a minute after any language is saved or deleted (a batch makes one rebuild), and on first page view if the file is missing. To rebuild by hand: `wp typeahead rebuild` (dry run) or `wp typeahead rebuild --execute`. Every rebuild writes the whole file, so a second run reports 0 changes. Code: `wp-content/plugins/typeahead/includes/class-wt-typeahead-index.php`; plan 7.9.
+  - The React app lives in `wikitongues/typeahead`; its build is committed to `wp-content/plugins/typeahead/build`. No credentials belong in that build.
 - People, Form 990s and document files never appear in search.
 
 ### REST

@@ -35,7 +35,7 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 | Region (7) | `/language-rights/report/{region}/`, e.g. `/language-rights/report/south-central-asia/` | Region Doc, plus answer counts computed from its country reports, and a map of its countries |
 | Country report (one per Reports row) | `/language-rights/report/{country}/`, e.g. `/language-rights/report/afghanistan/` | Country Doc and its Airtable row, and its territory's map |
 | Releases (admin) | Language Rights Reports → Releases | Each region's release status; see [below](#when-files-reach-a-server) |
-| Short link | `/rights` | Redirects to `/language-rights/report/`, like `/ai` |
+| Short link | `/rights` | Redirects to the project page, `/language-rights/`, like `/ai`. Not to the report hub, which stays a 404 on production until a release makes it public |
 
 A country's URL leaves out its region: regions are publishing groups a later edition may regroup, and an indexed URL should never move. Region and country slugs share one namespace, so the exporter never gives a country a region's slug.
 

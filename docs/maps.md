@@ -15,6 +15,7 @@ node fetch.mjs                      # once: Natural Earth (at the table's versio
 wp --allow-root wt-maps export      # read-only: writes build/cache/sets.json
 node render.mjs --estimate          # count and size every set, writing nothing
 node build.mjs --only=<key>,<key>   # or no --only for every set
+npm test                            # node --test: the build's own checks (build/test/)
 ```
 
 | Step | Writes |
@@ -25,7 +26,7 @@ node build.mjs --only=<key>,<key>   # or no --only for every set
 | `seafloor.mjs` | the ocean-floor shading (cache) |
 | `mask.mjs` | `maps/relief/`, `maps/shade/` and `maps/sea/<key>.webp`, cut to the SVG's own coastline, and then **publishes** the map: it copies the SVG to `maps/` and adds its entry to `maps/index.json` |
 
-Every raster step reads the projection that `render.mjs` staged, so an SVG and its images always line up. A map reaches `maps/` only after its three images are written, so an interrupted or unfinished build never leaves an SVG without its terrain: the site would show such a map with no relief and, in the focused styles, with no fill. A rebuild with the same inputs writes byte-identical files.
+Every raster step reads the projection that `render.mjs` staged, so an SVG and its images always line up. The azimuthal is clipped 100° from its centre (`CLIP_DEG`), and its inverse returns nothing past the clip, so on wide frames the images stop where the shapes do instead of painting the far hemisphere round the rim. A map reaches `maps/` only after its three images are written, so an interrupted or unfinished build never leaves an SVG without its terrain: the site would show such a map with no relief and, in the focused styles, with no fill. A rebuild with the same inputs writes byte-identical files.
 
 `maps/` is committed and deployed. `build/` is committed but not deployed (`.rsync-filter`), and `build/cache/` is gitignored.
 
@@ -124,7 +125,7 @@ It exits with an error when anything but the informational list is non-empty. Ru
 
 **Caption.** The sidebar map has a visible `<figcaption class="wt-map__caption">` (the `caption` argument of `wt_map()`, or `caption="1"` on the shortcode). It is `Renderer::caption()`: the description, but it reads "Map showing Guam and the Northern Mariana Islands.", and origins come first, in the order the language lists them, then the other places alphabetically; past three places in a role the rest are counted instead of listed ("Map showing Spain, with 20 other places also marked."; "Map showing A, B, C, and 4 other places."), since the sidebar lists them all just below. The `<desc>` keeps the full list. Place names go through the theme's `wt_prefix_the()` ("the Northern Mariana Islands"), and sorting ignores the "the".
 
-**Settings → Maps** (`wt_maps` option): turn the sidebar map off, and pick the style. Both take effect without a deploy. The defaults are on and Light focused.
+**Settings → Maps** (`wt_maps` option): turn the sidebar map off, and pick the style. Both take effect without a deploy. The defaults are on and Light full.
 
 **Styles.** `stylus/require/wt-maps.styl` in the theme. The rules were translated mechanically from the prototype page's CSS, so each style can be compared rule for rule with what was reviewed. The tokens use the site palette (`$parchment`, `$blue()`, `$yellow`) and sit on both the figure and the defs, because hatch patterns take their styles from where they are defined.
 
@@ -141,7 +142,7 @@ From plan 3.2 (decided 2026-11-16 – 19), kept here as the reference for change
 | Imagery or vector | **Vector** country shapes, colored by CSS, with a raster terrain layer cut to the coast. Satellite tiles are licensed, heavy, can't highlight a single country, and lose their detail at sidebar width. |
 | Rendering | **Ahead of time, no JavaScript.** SVG files made by a build script and placed inline by PHP. No tile server, no API key, no request to a third party. |
 | Where the code lives | **A plugin**, `wt-maps`, following the `wt-gallery` pattern: a PHP API plus a shortcode. **In this repo** (2026-11-17), with the generated maps committed beside it, so a territory change, its rebuilt maps and the `doctor` output land in one PR. |
-| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Kristen's preference (2026-11-17): Dark full, then Light full; she isn't a fan of the focused styles. **Launch default: Light focused** (2026-11-17). Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
+| Style | **Deferred; a setting, not a build choice** (2026-11-17). The plugin ships every image layer the four candidate styles use (hillshade, sea floor, coloured relief) and sets the style as a class on the map, chosen in the plugin's settings, so switching between them needs no rebuild or deploy. **Names** (2026-11-17): two axes, light or dark (a parchment world or a brand-blue one) and full or focused (the whole frame, or the map falling away around the language's territories): **Light full** (was Shaded), **Light focused** (was Fog parchment), **Dark full** (was Brand), **Dark focused** (was Fog). The working names stay in the Look notes below and in the prototype's code. Kristen's preference (2026-11-17): Dark full, then Light full; she isn't a fan of the focused styles. **Launch default: Light focused** (2026-11-17); **Light full** from 2026-11-23, on production and as the plugin default. Relief, Fog relief, flat, outline and a gray inverted style were tried and dropped. |
 | Dark mode | **Not supported** (2026-11-17): the site has no dark mode, so the maps have one look, on parchment. |
 | Territory coverage | **A cheap, steady review process over a complete list at launch** (2026-11-17). Launched with a set of content changes (the [archive](plan-archive.md) lists them); add the remaining ISO 3166-1 entries and map focuses later, one small reviewed change at a time (see "Territory review process"). |
 | Labels and caption | **No labels, and no caption from the plugin.** Any text around the map is composed by the theme template (2026-11-17); the summary sentence above it already says where the language is spoken. The SVG carries the same text as its accessible description. |

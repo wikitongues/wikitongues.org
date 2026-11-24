@@ -48,7 +48,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
 - **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-Last reviewed 2026-11-18.
+Last reviewed 2026-11-23.
 
 ---
 
@@ -58,16 +58,20 @@ Last reviewed 2026-11-18.
 
 | # | Item | Why now | Spec |
 |---|---|---|---|
-| 1 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 2 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
-| 3 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 4 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 5 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 6 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 7 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 8 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 1 | Secret scanning: act on alerts, close the gaps | Scanning flagged the leaked token in February and nobody saw the alert | [7.10](#710-secret-scanning-act-on-alerts-close-the-gaps) |
+| 2 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
+| 3 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 4 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 5 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 6 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 10 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
-The order follows the product roadmap, except that the small FundraiseUp piece moves first because of the year-end campaign. Search's first step (#379) is small and can ship early.
+The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
+
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#4), maps (#9), language geography (6.8) and shared styles. #3 hasn't started, and #5–8 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -95,7 +99,7 @@ The order follows the product roadmap, except that the small FundraiseUp piece m
 
 #### 1.1 FundraiseUp configuration and campaign banner
 
-*Now #1. On production by mid-November.*
+*Now #1. On production by mid-November. **Not started as of 2026-11-23**: the date has passed, and the organization ID is still hardcoded in `modules/page--head.php`.*
 
 The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a campaign change needs a deploy. Move all FundraiseUp configuration into an ACF options page ("Fundraising"), and add a campaign banner that editors control.
 
@@ -115,7 +119,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
-- **Status (2026-11-06):** the new layout is in, built from editorial blocks like the homepage ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story photo consent, social proof (1.3), the frequency test, and the design's Graphik Light (body text) and Schnyder Wide L (section labels) web fonts. Our Commercial Type licence covers neither, so the page uses Graphik Regular and Schnyder Wide M until they're licensed. The gift box's campaign ID is a block field for now, and should move to `wt_active_campaign()` once 1.1 lands.
+- **Status (2026-11-06; styles updated 2026-11-23 to the shared editorial tokens, #718):** the new layout is in, built from editorial blocks like the homepage ([content-model.md → Donate page](docs/content-model.md#donate-page)). Still open: copy sign-off, story photo consent, social proof (1.3), the frequency test, and the design's Graphik Light (body text) and Schnyder Wide L (section labels) web fonts. Our Commercial Type licence covers neither, so the page uses Graphik Regular and Schnyder Wide M until they're licensed. The gift box's campaign ID is a block field for now, and should move to `wt_active_campaign()` once 1.1 lands.
 
 - **Content:** recurring vs. one-time giving, biased toward monthly; impact framing; social proof from donor recognition (1.3); the FundraiseUp modal.
 - **Copy:** ship with minimal copy and iterate (decided 2026-09-13). The impact statement needs sign-off before it is final.
@@ -156,9 +160,7 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
-- **Built locally, not yet on production.** Language Rights exists only in the local database and travels as a content bundle ([content-model.md](docs/content-model.md#content-bundles)). Its bundle is in `docs/local_docs/content/`.
-  - **Language Rights** (`/language-rights`, plus nine FAQs). Built, with banner and block images; it depends on the banner caption style (#660) and Numbered Columns (#661) being deployed. Before it goes to production:
-    - Upload `2026/11/language-rights-banner.jpg` and `2026/11/hilario-poot-cahun-class.jpg` there; the import matches images by path.
+- **On production as a draft.** **Language Rights** (`/language-rights`) is a draft on production, with its nine FAQs published and its banner and block images uploaded; going live is publishing it. While it is a draft, a logged-out visit is guessed by WordPress into one of the FAQs. Before publishing:
     - Decide whether this is the pre-launch page or the launch page: the banner says "First edition forthcoming", but parts of the body read as if the report is already out.
     - Identify the delegate in the banner photo, then name them in its alt text and caption.
     - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
@@ -225,17 +227,17 @@ Built in the week of 23 November 2026, unrelated to the release dates. One plugi
 
 | PR | Ships | Status |
 |---|---|---|
-| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
-| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
-| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
-| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
-| 5 | Gated PDFs, private until embargo and public at release; press login redirect | [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
-| 6 | Data-layer page details and `rights_updates_signup` | [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
-| 7 | Match the review prototype; region overview and front matter in the release; region maps | [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
-| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
+| 1 | Structure config, Docs adapter, Doc parser, validator, versioner | Merged, [#705](https://github.com/wikitongues/wikitongues.org/pull/705) |
+| 2 | Airtable and Google clients; `ping`, `check`, `export`; release dates and Changes notes | Merged, [#706](https://github.com/wikitongues/wikitongues.org/pull/706) |
+| 3 | Post type, regions, routes, press role; `import`, `status` (region status sets post status) | Merged, [#707](https://github.com/wikitongues/wikitongues.org/pull/707) |
+| 4 | Hub, region and country templates; territory card; donate placements; `/rights` | Merged, [#708](https://github.com/wikitongues/wikitongues.org/pull/708) |
+| 5 | Gated PDFs, private until embargo and public at release; press login redirect | Merged, [#709](https://github.com/wikitongues/wikitongues.org/pull/709) |
+| 6 | Data-layer page details and `rights_updates_signup` | Merged, [#710](https://github.com/wikitongues/wikitongues.org/pull/710) |
+| 7 | Match the review prototype; region overview and front matter in the release; region maps | Merged, [#714](https://github.com/wikitongues/wikitongues.org/pull/714) |
+| 8 | Releases screen: set a region's status from the admin, logged; reports a visitor can't read redirect to their region | Merged, [#715](https://github.com/wikitongues/wikitongues.org/pull/715) |
 | 9 | The exporter reads the region and front-matter Docs into the release file's `overview` and `front_matter` | Next |
 
-Merge in order (#715 is stacked on #714). Then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
+PRs 1–8 are merged and deployed; production stays dark until a release is imported (decision log, 2026-11-23). Next: PR 9, then GTM and GA4 setup and the staging rehearsal, both in [docs/language-rights.md](docs/language-rights.md). Not built yet: global findings on the hub (open question 5), the treaty register (open question 2), language counts (open question 3), "last changed" dates on the hub and region pages, and a report-specific gateway question set (4.1).
 
 **Data first:** the Held option and the Changes and Publishing Docs tables go into the sandbox base before PR 2 reads them. **Project page** live for the 10 December announcement (2.1).
 
@@ -268,6 +270,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-21 | Territory pages link to their Released report | Two-way discovery between the archive and the report |
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
 | 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
+| 2026-11-23 | Production stays dark until the release plan calls for it; `/rights` points to the project page | wt-rights is deployed but set up on production by hand: once it is active with a release imported, the hub shows names, dates and nations even while upcoming, so activating it is itself a release step. A short link to the hub would 404 until then |
 | 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
 | 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
 | 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
@@ -297,6 +300,8 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 - **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
 - **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
 - **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
+- **Choose the approach first (open, 2026-11-23).** The bullets above assume MapLibre GL. Two explorations on 2026-11-23 built on the static step 1 SVGs instead: hover labels and click-through on the sidebar map (spec approved and parked on branch `claude/maps-interactivity-01b803`), and prebuilt maps on every territory page and the 22 sub-region pages (spec on branch `claude/maps-place-pages-b22447`). The Language Rights region maps (#714) already build a wt-maps set per release region. Settle one approach here before building.
+- **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
 
 ##### Step 1b: territory and sub-region pages
 
@@ -556,7 +561,7 @@ Two related gaps:
 
 ##### Display
 
-- **Language page:** "Traditionally spoken in" (origin), then "Also spoken in"; "Spoken in" when there is no origin.
+- **Language page:** "Place of origin" or "Places of origin", by count (replaces today's "Territories of origin" in `meta--languages-single.php`), then "Also spoken in"; "Spoken in" when there is no origin.
 - **Map:** for each territory, draw the subdivisions the language lists there, else the whole territory; origins primary. No per-language map setting.
 - **Territory sidebar:** ISO territories with at least one language.
 - **Territory pages:** their subdivisions, each with its languages, then the rest. Subdivisions have no pages or routes of their own.
@@ -606,6 +611,7 @@ Subdivision pages and routes; historical origin as a field; cell-based geography
 | 2026-11-20 | Make sends origins and presence as two lists; the sync writes territories as their union | Rule 2 in one place; absolute state; the archival origin field stays the only source of origins |
 | 2026-11-20 | Maps v1 ships with the origins fallback, documented as temporary; `territories` stays the February copy until presence exists | Nothing new to build now; the February copy holds ~66 real extra places the review hasn't replaced |
 | 2026-11-20 | Origin review approved for 46 languages (186 decisions); retired codes, `apa` and Wikitongues codes set aside | Evidence from Glottolog; one decision per card |
+| 2026-11-23 | The sidebar origin header reads "Place of origin" or "Places of origin", by count | Frederico's request; ships with the WordPress label step |
 
 ### 7. Engineering foundations
 
@@ -668,6 +674,66 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Careers**, **Archive success** and the **giving campaign**.
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
+
+#### 7.10 Secret scanning: act on alerts, close the gaps
+
+*Now, #1.* Detection already exists. Since February 2026 ([#459](https://github.com/wikitongues/wikitongues.org/pull/459)), this repo has had GitHub secret scanning and push protection, plus a TruffleHog check on every PR to `main`. That check scans only the PR's diff and reports only secrets it can verify are live (`--only-verified`). The typeahead token was flagged the day scanning was turned on, and the alert sat unread until Airtable revoked the token nine months later. What's missing is someone acting on alerts, and coverage for the private repo.
+
+**Entities**
+
+| Term | Meaning |
+|---|---|
+| Alert | A GitHub secret-scanning alert on this repo (Security tab). It covers full history, not just new commits |
+| PR scan | `.github/workflows/security.yml`: TruffleHog on the PR diff |
+| `wikitongues/typeahead` | Private, on GitHub's free plan, so it has no GitHub secret scanning or push protection |
+
+**Rules**
+
+- **Clear the backlog.** Every open alert is resolved at the provider (revoked or rotated), then closed on GitHub with the reason "revoked". Done when no alerts are open. Details are tracked privately, not in this file.
+- **Alerts reach a person.** Repo admins watch the repo with *Custom → Security alerts* turned on, so a new alert sends an email. Validity checks are on, so each alert shows whether the secret still works.
+- **The PR scan fails on unverifiable secrets too.** Replace `--only-verified` with `--results=verified,unknown`: a revoked or unreachable key also fails the check. Known false positives go in an exclusions file, one reason per entry.
+- **Cover the private repo.** The same TruffleHog workflow runs on every PR in `wikitongues/typeahead`.
+- Public identifiers (Airtable base, table and field IDs, the GA4 measurement ID, publishable keys) are not secrets and must not fail a check.
+
+**Example cases**
+
+| Case | Expected |
+|---|---|
+| A push contains a live Airtable token, even inside built JS | Push protection blocks it; if pushed anyway, the PR check fails |
+| A PR adds a revoked or unverifiable token | PR check fails (today it passes) |
+| A PR adds an Airtable base ID or the GA4 measurement ID | Passes |
+| GitHub flags a secret in an old commit | A repo admin gets an email that day and resolves it |
+| A PR to `wikitongues/typeahead` adds a key | PR check fails |
+
+**Open questions**
+1. Who watches the alerts: one named person, or two for cover?
+2. Add a weekly scheduled job that fails while any alert is open? Reading alerts needs a token with secret-scanning access (the default `GITHUB_TOKEN` may not have it), so that's one more credential to manage.
+
+**Out of scope:** secrets in the database; moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)); what visitors download ([7.11](#711-browser-credential-scan)).
+
+#### 7.11 Browser credential scan
+
+*Now, #2.* Check what visitors actually download, which a repo scan can miss.
+
+**Rules**
+
+- A Playwright script loads a fixed page list on a target URL (local or staging): home, archive search, a language, a video, a territory, the giving page, the Language Rights hub.
+- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and scans them with TruffleHog, the same detectors as the PR scan in 7.10.
+- It reports the URL and the rule that matched, never the matched value.
+- It runs from the deploy workflow against staging; a hit blocks the production deploy. It can also be run by hand.
+- This is the first Layer 4 piece of [7.3](#73-tests).
+
+**Example cases**
+
+| Target | Expected |
+|---|---|
+| A page loading the old typeahead bundle | Flagged |
+| The site today (search index shipped 2026-11-23) | Clean |
+| A page with the GA4 measurement ID | Clean (allowlisted) |
+
+**Open question:** do third-party scripts (FundraiseUp, GTM) get scanned, or skipped as not ours?
+
+**Out of scope:** logged-in and admin pages.
 
 ### 8. Membership (blocked on the board)
 
