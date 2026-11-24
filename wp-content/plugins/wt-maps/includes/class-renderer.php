@@ -10,7 +10,9 @@
  *   - on a contested area tagged `data-claimants`, `hatch-claimed` becomes
  *     `hatch-primary` or `hatch-secondary` after the strongest claimant;
  *   - relative image hrefs (`shade/<key>.webp`) become absolute;
- *   - the `<title>` and `<desc>` text name this language and its places.
+ *   - the map's accessible name (`aria-label`) and `<desc>` name this language
+ *     and its places. The `<title>` is emptied: browsers show an SVG title as a
+ *     tooltip over every shape, which talked over the hover labels (2026-11-24).
  *
  * The role rule (plan 3.2): places that are also the language's countries of
  * origin are primary and the rest secondary; if none is a country of origin,
@@ -29,7 +31,7 @@ final class Renderer {
 	/**
 	 * Bumped when decorate() changes its output, so cached maps are rebuilt.
 	 */
-	public const VERSION = '4';
+	public const VERSION = '5';
 
 	/**
 	 * Primary or secondary for each place.
@@ -121,7 +123,7 @@ final class Renderer {
 	 * @param string                $svg      The built SVG.
 	 * @param array<string, string> $roles    Place record ID → 'primary' | 'secondary'.
 	 * @param string                $base_url URL of the maps/ folder, with a trailing slash.
-	 * @param string                $title    Text for `<title>`.
+	 * @param string                $title    The map's accessible name (`aria-label`); '' keeps the built `<title>`.
 	 * @param string                $desc     Text for `<desc>`; '' keeps the built one.
 	 * @param float                 $inset    Scale for the locator globe, anchored at its
 	 *                                        frame corner so the margin grows with it (1: as built).
@@ -131,6 +133,7 @@ final class Renderer {
 		$anchor  = 1.0 !== $inset ? self::inset_anchor( $svg ) : null;
 		$p       = new \WP_HTML_Tag_Processor( $svg );
 		$in_desc = false;
+		$root    = true;
 
 		while ( $p->next_token() ) {
 			$token = $p->get_token_name();
@@ -150,8 +153,22 @@ final class Renderer {
 				continue;
 			}
 
+			// The name goes on the <svg> as aria-label, and the <desc> stays its
+			// description; the <title> is emptied so no tooltip shows on hover.
+			if ( $root && 'SVG' === $token ) {
+				$root = false;
+				if ( '' !== $title ) {
+					$labelled = $p->get_attribute( 'aria-labelledby' );
+					$p->remove_attribute( 'aria-labelledby' );
+					$p->set_attribute( 'aria-label', $title );
+					$ids = is_string( $labelled ) ? explode( ' ', $labelled ) : array();
+					if ( isset( $ids[1] ) ) {
+						$p->set_attribute( 'aria-describedby', $ids[1] );
+					}
+				}
+			}
 			if ( 'TITLE' === $token && '' !== $title ) {
-				$p->set_modifiable_text( $title );
+				$p->set_modifiable_text( '' );
 				continue;
 			}
 			if ( 'DESC' === $token ) {
