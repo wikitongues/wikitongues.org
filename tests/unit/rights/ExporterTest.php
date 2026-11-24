@@ -340,4 +340,10 @@ class ExporterTest extends TestCase {
 		);
 		$this->assertCount( 3, Exporter::notes_since( $records, $fields, null )['recA'] );
 	}
+
+	public function test_every_base_maps_the_same_tables_and_fields() {
+		$bases = require __DIR__ . '/../../../wp-content/plugins/wt-rights/config/airtable.php';
+		$shape = static fn( array $base ): array => array_map( static fn( array $table ): array => array_keys( $table['fields'] ), array_diff_key( $base, array( 'base' => true ) ) );
+		$this->assertSame( $shape( $bases['sandbox'] ), $shape( $bases['production'] ) );
+	}
 }

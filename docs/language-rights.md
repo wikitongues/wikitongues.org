@@ -88,7 +88,7 @@ op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights check --regio
 op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights export --region=south-central-asia --release=2027.1 --out=<releases repo>/rights-2027.1.json --allow-root
 ```
 
-`WT_RIGHTS_AIRTABLE_BASE` picks the base (default `sandbox`; field IDs per base are in `wt-rights/config/airtable.php`). `export` refuses to write inside the WordPress folder.
+`WT_RIGHTS_AIRTABLE_BASE` picks the base: `sandbox` (default) or `production`, the real Language Rights Reports base; field IDs per base are in `wt-rights/config/airtable.php`. Real exports use `production`, with the lent read-only token. `export` refuses to write inside the WordPress folder.
 
 ### When files reach a server
 
