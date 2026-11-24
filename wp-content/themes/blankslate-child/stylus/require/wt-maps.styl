@@ -1,11 +1,10 @@
-// wt-maps: the language-page locator map (plan 3.2, docs/maps.md).
+// wt-maps: the locator maps (plan 3.2, docs/maps.md).
 //
-// The SVGs come from wt-maps/build; PHP adds .primary/.secondary to the
-// language's places and a style modifier to the figure, chosen in
-// Settings → Maps: --light-focused (default), --light-full, --dark-full,
-// --dark-focused. The rules below were translated mechanically from the
-// prototype page's CSS (docs/maps-prototype/build/template.html, PR #669),
-// so a style can be compared rule for rule with what was reviewed.
+// The SVGs come from wt-maps/build; PHP adds .primary/.secondary to a page's
+// places. One style, Light full (decided 2026-11-24): a parchment world with
+// hillshade, the places filled with their coloured relief and outlined in the
+// brand blue. Light focused, Dark full and Dark focused were retired that day;
+// docs/plan-archive.md records them.
 //
 // Tokens live on the figure and on the shared <defs> (.wt-map-defs), because
 // the hatch patterns are styled where they are defined, not where they are used.
@@ -13,16 +12,11 @@
 .wt-map, .wt-map-defs {
 	--paper: $parchment;
 	--ink-2: #57534a;
-	/* Light full */
 	--sea: #e9e6ef; --land: #fbf7e8; --border: #c9c0d9;
 	--primary: $blue(); --secondary: #9c8ad2; --dispute: #6b6478;
-	/* Dark styles: the brand hue at lower chroma for the sea; land is $blue(50) */
-	--brd-sea: oklch(0.33 0.11 285); --brd-land: #9c88ca; --brd-border: #7f6ab8; --brd-edge: #24107a;
-	--brd-primary: $parchment; --brd-secondary: #d6cdee; --brd-dispute: #e6e0f3;
-	--brd-contested: #24107a; --brd-dot: $yellow;
-	--brd-secondary-fill: #baabd5; /* 30% parchment over --brd-land (Stylus cannot parse color-mix) */
-	/* Light focused: a parchment world, neutral grey sea */
-	--fp-land: #fbf7e8; --fp-sea: #e5e5e5; --fp-border: #cfc6dc; --brand-ink: $blue();
+	--edge: #24107a; // deep blue: the globe's rim and view, continent dots and halos
+	--dot: $yellow; // the globe's marker
+	--globe-sea: #d6cdee; --globe-land: oklch(0.33 0.11 285);
 }
 
 .wt-map-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -31,11 +25,15 @@
 .wt-map__caption { font-family: 'Graphik Web', sans-serif; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
 .wt-map__svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 3px; }
 .wt-map .sea { fill: var(--sea); }
-.wt-map .relief { display: none; }
+.wt-map .seashade { mix-blend-mode: hard-light; opacity: .65; }
 .wt-map .land { fill: var(--land); stroke: var(--border); stroke-width: .6; stroke-linejoin: round; }
-.wt-map .hl { stroke: var(--paper); stroke-width: .7; stroke-linejoin: round; }
-.wt-map .hl.primary { fill: var(--primary); }
-.wt-map .hl.secondary { fill: var(--secondary); }
+// The places: their coloured relief, outlined in the brand blue; others dashed.
+.wt-map .hl { fill: var(--relief); stroke: var(--primary); stroke-width: .7; stroke-linejoin: round; }
+.wt-map .hl.secondary { stroke-dasharray: 2.4 1.6; stroke-width: 1; }
+// The hillshade 60% lighter and half-toned brown, so land outside the places
+// reads as parchment. The places keep their depth: their relief (HYP_50M_SR)
+// has its own shading.
+.wt-map .shade { mix-blend-mode: hard-light; opacity: .4; filter: sepia(.5) saturate(.7); }
 .wt-map .disputed { stroke: var(--dispute); stroke-width: .7; stroke-dasharray: 2 1.6; }
 .wt-map .disputed.land { fill: var(--land); }
 .wt-map .disputed.edge { fill: none; }
@@ -49,93 +47,29 @@
 .wt-map-defs .hs-line { stroke: var(--secondary); stroke-width: 1.3; }
 .wt-map-defs .hl-line { stroke: var(--dispute); stroke-width: .8; opacity: .7; }
 .wt-map-defs .hatch-bg-land { fill: var(--land); }
-.wt-map .shade { display: none; }
-.wt-map--light-full .shade { display: inline; mix-blend-mode: hard-light; }
-/* Light full: the hillshade 60% lighter and half-toned brown, so land outside the places
-   reads as parchment. The places keep their depth: their relief (HYP_50M_SR) has its own shading. */
-.wt-map--light-full .shade { opacity: .4; filter: sepia(.5) saturate(.7); }
-.wt-map--light-full .hl.primary { fill: var(--relief); }
-.wt-map--light-full .hl.secondary { fill: var(--relief); stroke-dasharray: 2.4 1.6; stroke-width: 1; }
-.wt-map--light-full .hl { stroke: var(--primary); stroke-width: .7; }
-.wt-map--light-focused, .wt-map--dark-full, .wt-map--dark-focused { --sea: var(--brd-sea); --land: var(--brd-land); --border: var(--brd-border); --primary: var(--brd-primary); --secondary: var(--brd-secondary); --dispute: var(--brd-dispute); }
-.wt-map--light-focused .shade, .wt-map--dark-full .shade, .wt-map--dark-focused .shade { display: inline; mix-blend-mode: hard-light; }
-.wt-map--light-focused .hl, .wt-map--dark-full .hl, .wt-map--dark-focused .hl { stroke: var(--brd-edge); stroke-width: .5; }
-.wt-map--light-focused .hatch-land, .wt-map--dark-full .hatch-land, .wt-map--dark-focused .hatch-land { fill: url(#bhatch-land); }
-.wt-map--light-focused .hatch-primary, .wt-map--dark-full .hatch-primary, .wt-map--dark-focused .hatch-primary { fill: url(#bhatch-primary); }
-.wt-map--light-focused .hatch-secondary, .wt-map--dark-full .hatch-secondary, .wt-map--dark-focused .hatch-secondary { fill: url(#bhatch-secondary); }
-.wt-map-defs .bhl-bg { fill: var(--brd-land); }
-.wt-map-defs .bhl-line { stroke: var(--brd-dispute); stroke-width: .8; opacity: .6; }
-.wt-map-defs .bhp-line { stroke: var(--brd-primary); stroke-width: 1.3; }
-.wt-map-defs .bhs-line { stroke: var(--brd-secondary); stroke-width: 1.3; }
-.wt-map-defs .bhp-bg { fill: var(--brd-primary); }
-.wt-map-defs .bhs-bg { fill: var(--brd-secondary); }
-.wt-map-defs .bhc-line { stroke: var(--brd-contested); stroke-width: .9; opacity: .8; }
-.wt-map-defs .bhcl-line { stroke: var(--brd-contested); stroke-width: .8; opacity: .7; }
-.wt-map .dispute-casing, .wt-map .dispute-line { display: none; fill: none; stroke-linejoin: round; }
-.wt-map--light-focused .disputed, .wt-map--dark-full .disputed, .wt-map--dark-focused .disputed { stroke: none; }
-.wt-map--light-focused .dispute-casing, .wt-map--dark-full .dispute-casing, .wt-map--dark-focused .dispute-casing { display: inline; stroke: var(--brd-primary); stroke-width: 2.6; }
-.wt-map--light-focused .dispute-line, .wt-map--dark-full .dispute-line, .wt-map--dark-focused .dispute-line { display: inline; stroke: var(--brd-contested); stroke-width: 1.4; stroke-dasharray: 3.6 2.2; stroke-linecap: round; }
-.wt-map--light-focused .hl.secondary, .wt-map--dark-full .hl.secondary, .wt-map--dark-focused .hl.secondary { fill: var(--brd-secondary-fill); stroke: var(--brd-primary); stroke-width: 1.3; }
-.wt-map--light-focused .markers, .wt-map--dark-full .markers, .wt-map--dark-focused .markers { filter: drop-shadow(0 0 .7px var(--brd-edge)) drop-shadow(0 0 .7px var(--brd-edge)); }
-.wt-map--light-focused .marker.primary, .wt-map--dark-full .marker.primary, .wt-map--dark-focused .marker.primary { stroke: var(--brd-dot); stroke-width: 2.2; }
-.wt-map--light-focused .marker.secondary, .wt-map--dark-full .marker.secondary, .wt-map--dark-focused .marker.secondary { stroke: var(--brd-dot); stroke-width: 1.4; stroke-dasharray: 2.5 1.8; }
-.wt-map .seashade { display: none; }
-.wt-map--light-focused .seashade, .wt-map--dark-full .seashade, .wt-map--dark-focused .seashade, .wt-map--light-full .seashade { display: inline; mix-blend-mode: hard-light; opacity: .65; }
-.wt-map--light-focused .world, .wt-map--dark-focused .world { mask: var(--fog); }
-.wt-map--light-focused .wt-map__svg, .wt-map--dark-focused .wt-map__svg { border-radius: 0; }
-.wt-map--light-focused .land, .wt-map--light-focused .disputed.land { fill: var(--brd-land); fill-opacity: .62; stroke: var(--brd-border); }
-.wt-map--light-focused .relief { display: inline; }
-.wt-map--light-focused .hl.primary { fill: var(--relief); stroke: var(--brd-primary); stroke-width: .9; }
-.wt-map--light-focused .hl.secondary { fill: var(--relief); stroke: var(--brd-primary); stroke-width: 1.3; stroke-dasharray: 2.4 1.6; }
-.wt-map--light-focused .shade { opacity: .75; }
-.wt-map--light-focused .sea { fill: var(--fp-sea); }
-.wt-map--light-focused .seashade { opacity: .35; }
-.wt-map--light-focused .land, .wt-map--light-focused .disputed.land { fill: var(--fp-land); fill-opacity: 1; stroke: var(--fp-border); stroke-width: .5; }
-.wt-map--light-focused .shade { opacity: .8; }
-.wt-map--light-focused .hl.primary { stroke: var(--brd-edge); stroke-width: .7; }
-.wt-map--light-focused .hl.secondary { stroke: var(--brd-edge); stroke-width: 1; stroke-dasharray: 2.4 1.6; }
-.wt-map--light-focused .hatch-land { fill: url(#hatch-land); }
-.wt-map--light-focused .hatch-primary, .wt-map--light-focused .hatch-secondary { fill: url(#fphatch-terr); }
-.wt-map-defs .fph-bg { fill: var(--fp-land); }
-.wt-map-defs .fph-line { stroke: var(--brd-edge); stroke-width: .9; opacity: .75; }
-.wt-map--light-focused .marker.primary, .wt-map--light-focused .marker.secondary { stroke: var(--brand-ink); }
-.wt-map--light-focused .markers { filter: drop-shadow(0 0 .8px var(--fp-land)) drop-shadow(0 0 .8px var(--fp-land)); }
-.wt-map .globe-halo { fill: var(--brd-primary); }
-.wt-map .globe-sea { fill: var(--brd-sea); }
-.wt-map .globe-land { fill: var(--brd-land); }
-.wt-map .globe-rim { fill: none; stroke: none; }
-.wt-map circle.globe-mark { fill: var(--brd-dot); stroke: var(--brd-edge); stroke-width: 1.2; }
+.wt-map .globe-halo { fill: var(--paper); }
+.wt-map .globe-sea { fill: var(--globe-sea); }
+.wt-map .globe-land { fill: var(--globe-land); }
+.wt-map .globe-rim { fill: none; stroke: var(--edge); stroke-width: .9; }
+.wt-map circle.globe-mark { fill: var(--dot); stroke: var(--edge); stroke-width: 1.2; }
 .wt-map circle.globe-casing { fill: none; stroke: none; }
-.wt-map .globe-view { fill: none; stroke: var(--brd-dot); stroke-width: 2; stroke-linejoin: round; }
-.wt-map path.globe-casing { fill: none; stroke: var(--brd-edge); stroke-width: 4; stroke-linejoin: round; }
-.wt-map--light-full .globe-sea, .wt-map--light-focused .globe-sea { fill: var(--brd-secondary); }
-.wt-map--light-full .globe-land, .wt-map--light-focused .globe-land { fill: var(--brd-sea); }
-.wt-map--light-full .globe-rim, .wt-map--light-focused .globe-rim { stroke: var(--brd-edge); stroke-width: .9; }
-.wt-map .scale-bar { stroke: var(--paper); stroke-width: 2.4; stroke-linecap: round; }
-.wt-map .scale-label { font-family: 'Graphik Web', sans-serif; font-weight: 600; font-size: 12px; fill: var(--paper); paint-order: stroke; stroke: rgba(16,16,16,.35); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
-.wt-map--light-full .scale-bar { stroke: var(--ink-2); }
-.wt-map--light-full .scale-label { fill: var(--ink-2); stroke: var(--paper); }
-.wt-map--light-focused .scale-bar, .wt-map--dark-focused .scale-bar { stroke: var(--ink-2); }
-.wt-map--light-focused .scale-label, .wt-map--dark-focused .scale-label { fill: var(--ink-2); stroke: none; }
+.wt-map .globe-view { fill: none; stroke: var(--dot); stroke-width: 2; stroke-linejoin: round; }
+.wt-map path.globe-casing { fill: none; stroke: var(--edge); stroke-width: 4; stroke-linejoin: round; }
+.wt-map .scale-bar { stroke: var(--ink-2); stroke-width: 2.4; stroke-linecap: round; }
+.wt-map .scale-label { font-family: 'Graphik Web', sans-serif; font-weight: 600; font-size: 12px; fill: var(--ink-2); paint-order: stroke; stroke: var(--paper); stroke-width: 2.5px; stroke-linejoin: round; letter-spacing: .02em; }
 
 /* Grouped maps (continents, plan 3.2 step 1c): each sub-region drawn as one shape.
    The borders inside a group are stroked in the group's own fill, so they vanish;
-   the build draws the borders between groups and round them as lines (.grp-mesh)
-   and a halo round island groups (.gh-fill, .gh-edge); small places are dots. Each style uses its
-   own palette: the light ones deep blue on parchment, the dark ones their
-   primary (parchment) and lavender on the brand blue. */
-.wt-map .grp .hl { stroke-dasharray: none; stroke-width: .6; }
-.wt-map--light-full .grp .hl, .wt-map--light-focused .grp .hl { stroke: var(--relief); }
-.wt-map--dark-full .grp .hl, .wt-map--dark-focused .grp .hl { stroke: var(--brd-primary); }
-.wt-map .dot { fill: var(--brd-edge); }
+   the build draws the borders between groups and round them as lines (.grp-mesh),
+   at the weight of a territory border, and a halo round island groups (.gh-fill,
+   .gh-edge); small places are dots. */
+.wt-map .grp .hl { stroke: var(--relief); stroke-dasharray: none; stroke-width: .6; }
+.wt-map .grp-mesh { fill: none; stroke: var(--primary); stroke-width: .7; stroke-linejoin: round; stroke-linecap: round; }
+// The land round a continent is drawn by sub-region too: no country borders
+// (stroked in the land's own colour to close the seams), only region borders.
+.wt-map .lands--regions .land { stroke: var(--land); }
+.wt-map .grp-mesh--out { stroke: var(--border); stroke-width: .6; }
+.wt-map .dot { fill: var(--edge); }
 .wt-map .gh-fill { flood-color: var(--paper); flood-opacity: .55; }
-.wt-map .gh-edge { flood-color: var(--brd-edge); flood-opacity: .55; }
-.wt-map--dark-full .dot, .wt-map--dark-focused .dot { fill: var(--brd-primary); }
-.wt-map--dark-full .gh-fill, .wt-map--dark-focused .gh-fill { flood-color: var(--brd-secondary); flood-opacity: .22; }
-.wt-map--dark-full .gh-edge, .wt-map--dark-focused .gh-edge { flood-color: var(--brd-secondary); flood-opacity: .6; }
-/* Continent borders between sub-regions and round them, as lines at the weight
-   of any territory border in that style. */
-.wt-map .grp-mesh { fill: none; stroke-linejoin: round; stroke-linecap: round; }
-.wt-map--light-full .grp-mesh { stroke: var(--primary); stroke-width: .7; }
-.wt-map--light-focused .grp-mesh { stroke: var(--brd-edge); stroke-width: .7; }
-.wt-map--dark-full .grp-mesh, .wt-map--dark-focused .grp-mesh { stroke: var(--brd-edge); stroke-width: .5; }
+.wt-map .gh-edge { flood-color: var(--edge); flood-opacity: .55; }
+.wt-map .halo-hit { fill: none; stroke: none; } // A halo's hit area: never painted.

@@ -50,9 +50,10 @@
 			+ '<feMerge><feMergeNode in="cf"/><feMergeNode in="lf"/></feMerge></filter>';
 		svg.insertBefore( defs, svg.firstChild );
 
-		// Every shape of a group: its territories and their dots, not the land around.
+		// Every shape of a group: its territories and their dots, or, for a group
+		// outside the continent, its countries on the base map.
 		function groupEls( g ) {
-			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place]' ), function ( el ) {
+			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place], .lands [data-place]' ), function ( el ) {
 				const p = places[ el.dataset.place ];
 				return p && p.g === g;
 			} );
@@ -79,8 +80,12 @@
 			if ( area && ! area.classList.contains( 'edge' ) && fig.contains( area ) ) {
 				return { key: 'area:' + area.dataset.area, n: area.dataset.area, area: true, els: [ area ] };
 			}
+			const halo = el.closest( '[data-group]' ); // A continent's island halo.
 			const place = el.closest( '[data-place]' );
-			const g = place && places[ place.dataset.place ] ? places[ place.dataset.place ].g : null;
+			let g = place && places[ place.dataset.place ] ? places[ place.dataset.place ].g : null;
+			if ( halo && fig.contains( halo ) ) {
+				g = Number( halo.dataset.group );
+			}
 			if ( g && groups[ g ] ) {
 				return Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] );
 			}

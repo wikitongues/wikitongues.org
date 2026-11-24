@@ -41,9 +41,13 @@ const index = readIndex();
 for (const { key, natural_earth: version, ...entry } of framesToBuild()) {
   const svg = fs.readFileSync(path.join(STAGE, `${key}.svg`), 'utf8');
   const paths = ['lands', 'hls', 'disputes', 'claims'].flatMap((g) => {
-    // Up to the next top-level group: `hls` may hold nested groups (continent maps, `groups`).
-    const m = svg.match(new RegExp(`<g class="${g}"[^>]*>(.*?)</g><g class="(?:hls|disputes|claims|dispute-casing)"`));
-    return m ? [...m[1].matchAll(/ d="([^"]+)"/g)].map((x) => `<path d="${x[1]}"/>`) : [];
+    // Up to the next top-level layer: `hls` may hold nested groups (continent maps,
+    // `groups`), and `lands` may carry a modifier (`lands--regions`). Every layer is
+    // in every map, so a miss means the SVG changed shape: stop rather than cut
+    // the images to a partial coastline.
+    const m = svg.match(new RegExp(`<g class="${g}(?: [^"]*)?">(.*?)</g>(?:<g class="(?:hls|disputes|claims)"|<image class="shade")`));
+    if (!m) throw new Error(`${key}: no <g class="${g}"> layer in the SVG`);
+    return [...m[1].matchAll(/ d="([^"]+)"/g)].map((x) => `<path d="${x[1]}"/>`);
   }).join('');
   const maskSvg = path.join(R, 'mask', `${key}.svg`), mask = path.join(R, 'mask', `${key}.png`);
   fs.writeFileSync(maskSvg, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="800" height="600">`

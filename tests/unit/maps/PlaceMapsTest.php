@@ -19,6 +19,16 @@ class PlaceMapsTest extends TestCase {
 		return $term;
 	}
 
+	/**
+	 * A territory post (Mockery stands in for WP_Post).
+	 */
+	private static function post( int $id ): WP_Post {
+		/** @var WP_Post $post */
+		$post     = Mockery::mock( 'WP_Post' );
+		$post->ID = $id;
+		return $post;
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 		// Post ID → record ID, as the plugin's wt_maps_record_ids() reads them.
@@ -44,6 +54,9 @@ class PlaceMapsTest extends TestCase {
 			'get_posts',
 			array(
 				'return' => static function ( array $args ): array {
+					if ( ! isset( $args['fields'] ) ) {
+						return array_map( array( self::class, 'post' ), array( 10, 11, 12 ) ); // With their terms (wt_sub_region_places()).
+					}
 					if ( ! isset( $args['tax_query'] ) ) {
 						return array( 10, 11, 12 ); // Every published territory.
 					}
@@ -64,6 +77,8 @@ class PlaceMapsTest extends TestCase {
 			)
 		);
 		WP_Mock::userFunction( 'get_the_title', array( 'return' => static fn( int $id ): string => 'T' . $id ) );
+		WP_Mock::userFunction( 'get_post_meta' )->andReturnUsing( static fn( $id ) => 'rec' . $id );
+		WP_Mock::userFunction( 'get_the_terms' )->andReturnUsing( static fn( $post ) => 10 === $post->ID ? array( $one_place ) : array( $eastern ) );
 
 		$this->assertSame(
 			array(
@@ -71,13 +86,20 @@ class PlaceMapsTest extends TestCase {
 				'Territory: T11'         => array( 'rec11' ),
 				'Territory: T12'         => array( 'rec12' ),
 				'Continent: Europe'      => array(
-					'places' => array( 'rec11', 'rec12' ),
-					'view'   => 'continent',
-					'groups' => array(
+					'places'  => array( 'rec11', 'rec12' ),
+					'view'    => 'continent',
+					'groups'  => array(
 						'rec11' => 1,
 						'rec12' => 1,
 					),
-					'frame'  => wt_continent_frames()['europe'],
+					'frame'   => wt_continent_frames()['europe'],
+					// Every territory's sub-region: the land round the continent
+					// is drawn by sub-region, without country borders.
+					'regions' => array(
+						'rec10' => 'one-territory',
+						'rec11' => 'eastern-europe',
+						'rec12' => 'eastern-europe',
+					),
 				),
 				'Region: Eastern Europe' => array(
 					'places' => array( 'rec11', 'rec12' ),
@@ -99,10 +121,25 @@ class PlaceMapsTest extends TestCase {
 		$europe  = self::term( 1, 0, 'Europe' );
 		$eastern = self::term( 2, 1, 'Eastern Europe' );
 		$western = self::term( 3, 1, 'Western Europe' );
+		$w_asia  = self::term( 9, 8, 'Western Asia' );
 		WP_Mock::userFunction( 'get_terms', array( 'return' => array( $eastern, $western ) ) );
 		WP_Mock::userFunction(
 			'get_posts',
-			array( 'return' => static fn( array $args ): array => 2 === $args['tax_query'][0]['terms'][0] ? array( 11 ) : array( 12, 13 ) )
+			array(
+				'return' => static function ( array $args ): array {
+					if ( ! isset( $args['tax_query'] ) ) {
+						return array_map( array( self::class, 'post' ), array( 11, 12, 13, 14 ) );
+					}
+					return 2 === $args['tax_query'][0]['terms'][0] ? array( 11 ) : array( 12, 13 );
+				},
+			)
+		);
+		WP_Mock::userFunction( 'get_post_meta' )->andReturnUsing( static fn( $id ) => 'rec' . $id );
+		WP_Mock::userFunction( 'get_the_terms' )->andReturnUsing(
+			static fn( $post ) => array(
+				11 => array( $eastern ),
+				14 => array( $w_asia ),
+			)[ $post->ID ] ?? array( $western )
 		);
 		WP_Mock::userFunction( 'wt_prefix_the', array( 'return_arg' => 0 ) );
 		// A continent links its sub-regions (step 2a), never its territories.
@@ -128,6 +165,12 @@ class PlaceMapsTest extends TestCase {
 								'n'      => 'Western Europe',
 								'u'      => 'https://wikitongues.org/territories/western-europe/',
 								'places' => array( 'rec12', 'rec13' ),
+							),
+							// Outside the continent: its countries open their sub-region.
+							array(
+								'n'      => 'Western Asia',
+								'u'      => 'https://wikitongues.org/territories/western-asia/',
+								'places' => array( 'rec14' ),
 							),
 						),
 					),

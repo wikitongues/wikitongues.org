@@ -1,35 +1,26 @@
-// wt-maps interaction (prototype, docs/maps.md): hover labels and links.
+// wt-maps interaction (plan 3.2 step 2a, docs/maps.md): hover labels and links.
 //
-// Kept apart from wt-maps.styl, which holds the four styles. The plugin's
+// Kept apart from wt-maps.styl, which holds the map's look. The plugin's
 // script (wt-maps/assets/wt-maps.js) adds the label (.wt-map__tip) and an
 // outline layer (.wt-map__hot) drawn above everything, so a hovered place
-// reads on any style without restyling its fill.
+// reads without restyling its fill.
 
 .wt-map--interactive {
 	position: relative;
 	--hot: $blue();
 	--hot-casing: $parchment;
 }
-.wt-map--dark-full.wt-map--interactive, .wt-map--dark-focused.wt-map--interactive {
-	--hot: $yellow;
-	--hot-casing: #24107a;
-}
 
-// Only shapes take the pointer: the raster layers, dashed edges, scale and
-// globe sit on top of them and would otherwise swallow every hover.
+// Only shapes take the pointer: the raster layers, the scale and the globe sit
+// on top of them and would otherwise swallow every hover.
 .wt-map--interactive .world > image,
-.wt-map--interactive .dispute-casing,
-.wt-map--interactive .dispute-line,
 .wt-map--interactive .scale,
 .wt-map--interactive .inset { pointer-events: none; }
 // A ring (a small island) answers inside the ring, not only on its stroke.
 .wt-map--interactive .marker { pointer-events: visible; }
-// Focused styles fog out the world around the places; what the fog hides
-// takes no pointer (a CSS mask does not stop hit-testing).
-.wt-map--light-focused.wt-map--interactive .lands,
-.wt-map--light-focused.wt-map--interactive .disputes,
-.wt-map--dark-focused.wt-map--interactive .lands,
-.wt-map--dark-focused.wt-map--interactive .disputes { pointer-events: none; }
+// A continent's island halo (the Caribbean, Polynesia) answers for its region:
+// its unpainted hit path, stroked about as wide as the halo.
+.wt-map--interactive .halo-hit { stroke-width: 13; stroke-linecap: round; stroke-linejoin: round; pointer-events: stroke; }
 .wt-map--interactive .wt-map__svg.is-link { cursor: pointer; }
 
 .wt-map__hot { pointer-events: none; }

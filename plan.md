@@ -347,12 +347,12 @@ Maps for the five continent pages.
 | Asia | five outlines, no halo; the Maldives and Singapore as dots |
 | Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
 
-**Display.** In the sidebar under the title, as on sub-region pages. Each style draws outlines, halos and dots in its own palette: the light styles in brand deep blue on parchment, the dark styles in their own primary and edge colours.
+**Display.** In the sidebar under the title, as on sub-region pages. Outlines, halos and dots in brand deep blue on parchment. Region borders only (2026-11-24): no country borders inside the continent or round it.
 
 **Decisions (2026-11-24)**
 - Small territories outside island sub-regions get dots too.
 - Sidebar, like sub-region maps.
-- The dark styles follow their own palettes, consistent with the rest of each style.
+- One style, Light full (2026-11-24); the dark styles' palettes were dropped with them.
 - Australia & New Zealand is a sub-region of Oceania.
 
 **Out of scope:** tints, the world view, interactivity (step 2).
@@ -367,7 +367,6 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 - Places and neighbours resolve by record ID, never by title. Neighbours get `data-place` in the build (`render.mjs`, on land shapes), so map units such as France (`units:FXX`) resolve too. That needs a full rebuild.
 - A territory links to its page. A subdivision links to its nation's page and is labelled "Part of" the nation. A place with no published page gets a label and no link.
 - A contested area shows its Natural Earth name and "Contested area", and never links.
-- In the focused styles, what the fog hides takes no pointer.
 - The SVG stays `role="img"` with no tab stops. The place links next to the map are the keyboard and screen reader path; focusing one outlines its place.
 - Mouse: hover labels, click opens. Touch: the first tap labels with an "Open" link, a second tap opens.
 - On/off in Settings → Maps, like the sidebar map.
@@ -383,7 +382,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Ukrainian | Poland (neighbour) | Poland | Poland page |
 | Spanish | France (neighbour, unit FXX) | France | France page |
 
-**Display.** An outline above all layers: blue on parchment in the light styles, yellow on dark blue in the dark styles. Fills don't change. A black label chip. No other affordance than the pointer cursor. The CSS is its own partial, `wt-maps-interactive.styl`.
+**Display.** An outline above all layers: brand blue on a parchment casing. Fills don't change. A black label chip. No other affordance than the pointer cursor. The CSS is its own partial, `wt-maps-interactive.styl`.
 
 **Costs (prototype, local data).** Places: no extra queries, 0.14–0.30 KB gzipped per map. Neighbours resolved in PHP measured +1 to +5 queries and up to 2.5 KB (French); tagging them in the build removes the queries. Script 2.7 KB gzipped, deferred.
 
@@ -396,6 +395,8 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-23 | Contested areas use Natural Earth names and never link | Neutral borders |
 | 2026-11-23 | No extra affordance; on/off in Settings → Maps | Quiet by default; can be turned off without a deploy |
 | 2026-11-23 | Keyboard and screen readers use the links next to the map | No duplicate tab stops |
+| 2026-11-24 | One map style, Light full; the other three, the fog and their files are retired | Organizational buy-in for Light full |
+| 2026-11-24 | Continent maps label and open regions, inside and outside the continent, and draw region borders only | A continent page is about its regions, not its countries |
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 
 ##### Step 1 follow-ups

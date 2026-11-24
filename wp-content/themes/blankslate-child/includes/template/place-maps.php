@@ -188,6 +188,15 @@ function wt_place_map_sets( array $sets ): array {
 			'hide_empty' => false,
 		)
 	);
+	// Every territory's sub-region, by record ID: a continent map draws the land
+	// around it by sub-region, with no country borders (2026-11-24).
+	$sub_regions = array();
+	foreach ( wt_sub_region_places() as $sub_region ) {
+		foreach ( $sub_region['places'] as $place ) {
+			$sub_regions[ $place ] = $sub_region['term']->slug;
+		}
+	}
+	ksort( $sub_regions );
 	foreach ( is_array( $regions ) ? $regions : array() as $region ) {
 		if ( ! $region instanceof WP_Term ) {
 			continue;
@@ -195,6 +204,7 @@ function wt_place_map_sets( array $sets ): array {
 		if ( ! wt_region_has_map( $region ) ) {
 			$continent = wt_continent_set( $region );
 			if ( null !== $continent ) {
+				$continent['regions']                                        = $sub_regions;
 				$sets[ 'Continent: ' . html_entity_decode( $region->name ) ] = $continent;
 			}
 			continue;
@@ -304,8 +314,10 @@ function wt_region_map( WP_Term $region, ?array $territory_ids = null ): string 
 }
 
 /**
- * A continent map's links: each sub-region, in group order, with its page and
- * its places, so a click on any of its territories opens the sub-region.
+ * A continent map's links: each sub-region with its page and its places, so a
+ * click on any territory opens its sub-region. The continent's own sub-regions
+ * come first, in group order; then every other sub-region, so the countries
+ * around the continent open theirs too (Turkey on Europe's map: Western Asia).
  *
  * @param WP_Term            $continent A top-level `region` term.
  * @param array<string, int> $groups    Place record ID → group number, from wt_continent_set().
@@ -314,12 +326,62 @@ function wt_region_map( WP_Term $region, ?array $territory_ids = null ): string 
 function wt_continent_link_groups( WP_Term $continent, array $groups ): array {
 	$out = array();
 	foreach ( wt_continent_sub_regions( $continent ) as $i => $sub_region ) {
-		$link  = get_term_link( $sub_region );
-		$out[] = array(
-			'n'      => html_entity_decode( $sub_region->name ),
-			'u'      => is_string( $link ) ? $link : '',
-			'places' => array_keys( array_filter( $groups, static fn( int $n ): bool => $n === $i + 1 ) ),
-		);
+		$out[] = wt_link_group( $sub_region, array_keys( array_filter( $groups, static fn( int $n ): bool => $n === $i + 1 ) ) );
 	}
+	foreach ( wt_sub_region_places() as $term_id => $sub_region ) {
+		if ( (int) $sub_region['term']->parent !== (int) $continent->term_id ) {
+			$out[] = wt_link_group( $sub_region['term'], $sub_region['places'] );
+		}
+	}
+	return $out;
+}
+
+/**
+ * One sub-region as a map link group.
+ *
+ * @param WP_Term      $sub_region A `region` term.
+ * @param list<string> $places     Place record IDs.
+ * @return array{n: string, u: string, places: list<string>}
+ */
+function wt_link_group( WP_Term $sub_region, array $places ): array {
+	$link = get_term_link( $sub_region );
+	return array(
+		'n'      => html_entity_decode( $sub_region->name ),
+		'u'      => is_string( $link ) ? $link : '',
+		'places' => $places,
+	);
+}
+
+/**
+ * Every sub-region with the record IDs of its published territories, by term
+ * ID, in slug order. One posts query primes the posts, their meta and their
+ * terms.
+ *
+ * @return array<int, array{term: WP_Term, places: list<string>}>
+ */
+function wt_sub_region_places(): array {
+	$out   = array();
+	$posts = get_posts(
+		array(
+			'post_type'      => 'territories',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+		)
+	);
+	foreach ( $posts as $post ) {
+		$record_id = (string) get_post_meta( $post->ID, '_airtable_record_id', true );
+		$terms     = get_the_terms( $post, 'region' );
+		if ( '' === $record_id || ! is_array( $terms ) ) {
+			continue;
+		}
+		foreach ( $terms as $term ) {
+			if ( 0 !== (int) $term->parent ) {
+				$out[ $term->term_id ]['term']     = $term;
+				$out[ $term->term_id ]['places'][] = $record_id;
+			}
+		}
+	}
+	uasort( $out, static fn( array $a, array $b ): int => strcmp( $a['term']->slug, $b['term']->slug ) );
 	return $out;
 }

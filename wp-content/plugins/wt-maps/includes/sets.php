@@ -135,9 +135,9 @@ function wt_maps_plan_sets( Shape_Table $table, array $languages ): array {
  * shared by several pages has it if any of them asks.
  *
  * @param Shape_Table                                                                 $table The shape table.
- * @param array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, halo?: bool, rings?: string, frame?: array<string, mixed>, groups?: array<string, int>}>, unmapped: list<string>, no_places: int} $plan  From wt_maps_plan_sets().
- * @param array<string, list<string>|array{places: list<string>, globe?: bool, halo?: bool, rings?: string, view?: string, frame?: array<string, mixed>, groups?: array<string, int>}> $extra Label → place record IDs, or places and options.
- * @return array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, halo?: bool, rings?: string, frame?: array<string, mixed>, groups?: array<string, int>}>, unmapped: list<string>, no_places: int}
+ * @param array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, halo?: bool, rings?: string, frame?: array<string, mixed>, groups?: array<string, int>, regions?: array<string, string>}>, unmapped: list<string>, no_places: int} $plan  From wt_maps_plan_sets().
+ * @param array<string, list<string>|array{places: list<string>, globe?: bool, halo?: bool, rings?: string, view?: string, frame?: array<string, mixed>, groups?: array<string, int>, regions?: array<string, string>}> $extra Label → place record IDs, or places and options.
+ * @return array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, halo?: bool, rings?: string, frame?: array<string, mixed>, groups?: array<string, int>, regions?: array<string, string>}>, unmapped: list<string>, no_places: int}
  */
 function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra ): array {
 	foreach ( $extra as $label => $entry ) {
@@ -147,6 +147,7 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
 		$rings  = isset( $entry['places'], $entry['rings'] ) ? (string) $entry['rings'] : '';
 		$frame  = isset( $entry['places'], $entry['frame'] ) && is_array( $entry['frame'] ) ? $entry['frame'] : null;
 		$groups = isset( $entry['places'], $entry['groups'] ) && is_array( $entry['groups'] ) ? $entry['groups'] : null;
+		$subreg = isset( $entry['places'], $entry['regions'] ) && is_array( $entry['regions'] ) ? $entry['regions'] : null;
 		$places = isset( $entry['places'] ) ? (array) $entry['places'] : $entry;
 		$places = array_values( array_unique( array_filter( $places, 'is_string' ) ) );
 		sort( $places );
@@ -182,6 +183,10 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
 			ksort( $groups );
 			$plan['sets'][ $key ]['groups'] = $groups;
 		}
+		if ( null !== $subreg ) {
+			ksort( $subreg );
+			$plan['sets'][ $key ]['regions'] = $subreg;
+		}
 	}
 	ksort( $plan['sets'] );
 	sort( $plan['unmapped'] );
@@ -192,7 +197,7 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
  * Map sets other plugins' pages need, as label → place record IDs, from the
  * `wt_maps_extra_sets` filter. Used by `export` and `doctor`.
  *
- * @return array<string, list<string>|array{places: list<string>, globe?: bool, halo?: bool, rings?: string, view?: string, frame?: array<string, mixed>, groups?: array<string, int>}>
+ * @return array<string, list<string>|array{places: list<string>, globe?: bool, halo?: bool, rings?: string, view?: string, frame?: array<string, mixed>, groups?: array<string, int>, regions?: array<string, string>}>
  */
 function wt_maps_extra_sets(): array {
 	$extra = apply_filters( 'wt_maps_extra_sets', array() );

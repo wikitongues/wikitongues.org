@@ -97,22 +97,29 @@ function wt_maps_tagged_places( string $svg ): array {
  *
  * With groups (a continent map), each place leads to its group instead of its
  * own page: `places` maps a record ID to its group's number (`g`), and `groups`
- * holds each group's label and URL. A place in no group is left out.
+ * holds each group's label and URL. Only places on the map are listed (the
+ * groups can name every territory), and a group with none is left out.
  *
- * @param array<string, array{n: string, u?: string, v?: string}>      $links  From wt_maps_place_links().
- * @param list<array{n: string, u: string, places: list<string>}>       $groups Groups in map order (the build's `grp-1`, `grp-2`, …).
+ * @param array<string, array{n: string, u?: string, v?: string}>      $links   From wt_maps_place_links().
+ * @param list<array{n: string, u: string, places: list<string>}>       $groups  Groups: the map's own first, in its order (`grp-1`, …).
+ * @param list<string>|null                                             $present Record IDs on the map; null keeps every group's places.
  * @return string JSON, not yet escaped for the attribute.
  */
-function wt_maps_interaction_json( array $links, array $groups = array() ): string {
+function wt_maps_interaction_json( array $links, array $groups = array(), ?array $present = null ): string {
 	if ( array() !== $groups ) {
+		$on     = null === $present ? null : array_flip( $present );
 		$places = array();
 		$labels = array();
 		foreach ( $groups as $i => $group ) {
+			$mine = null === $on ? $group['places'] : array_values( array_filter( $group['places'], static fn( string $p ): bool => isset( $on[ $p ] ) ) );
+			if ( array() === $mine ) {
+				continue;
+			}
 			$labels[ (string) ( $i + 1 ) ] = array(
 				'n' => $group['n'],
 				'u' => $group['u'],
 			);
-			foreach ( $group['places'] as $place ) {
+			foreach ( $mine as $place ) {
 				$places[ $place ] = array( 'g' => $i + 1 );
 			}
 		}
