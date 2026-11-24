@@ -11301,8 +11301,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21980,
-   "svg_gzip": 6848,
+   "svg_bytes": 25445,
+   "svg_gzip": 7879,
    "images": {
     "relief": 16382,
     "shade": 7326,
@@ -11675,8 +11675,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 23955,
-   "svg_gzip": 8707,
+   "svg_bytes": 25683,
+   "svg_gzip": 9180,
    "images": {
     "relief": 20138,
     "shade": 9648,
@@ -11723,8 +11723,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 10579,
-   "svg_gzip": 3374,
+   "svg_bytes": 11932,
+   "svg_gzip": 3729,
    "images": {
     "relief": 3660,
     "shade": 1636,
@@ -12203,8 +12203,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 24791,
-   "svg_gzip": 8646,
+   "svg_bytes": 26966,
+   "svg_gzip": 9169,
    "images": {
     "relief": 20894,
     "shade": 11882,

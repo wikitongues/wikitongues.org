@@ -396,40 +396,54 @@ function render(key, placeIds) {
     // mainland is "small", and Cuba isn't. The islands are joined along a minimum
     // spanning tree by thin corridors, so the halo is a single shape however far
     // apart they are (Polynesia), and stays narrow.
-    const bridges = (n) => {
-      const pts = members(n).flatMap(({ id }) => ptsBy[id] ?? []);
-      if (pts.length < 2) return '';
+    // Prim's minimum spanning tree over the points: the corridors, as [a, b] pairs.
+    const tree = (pts) => {
+      if (pts.length < 2) return [];
       const inTree = new Set([0]), out = [];
       const best = pts.map((p) => [Math.hypot(p[0] - pts[0][0], p[1] - pts[0][1]), 0]);
       while (inTree.size < pts.length) {
         let j = -1;
         for (let i = 0; i < pts.length; i++) if (!inTree.has(i) && (j < 0 || best[i][0] < best[j][0])) j = i;
         inTree.add(j);
-        const a = pts[best[j][1]], b = pts[j];
-        out.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}"/>`);
+        out.push([pts[best[j][1]], pts[j]]);
         for (let i = 0; i < pts.length; i++) {
           if (inTree.has(i)) continue;
-          const d = Math.hypot(pts[i][0] - b[0], pts[i][1] - b[1]);
+          const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]);
           if (d < best[i][0]) best[i] = [d, j];
         }
       }
-      return `<g stroke="#000" stroke-width=".6" stroke-linecap="round">${out.join('')}</g>`;
+      return out;
+    };
+    const f1 = (v) => v.toFixed(1);
+    const groupPts = (n) => members(n).flatMap(({ id }) => ptsBy[id] ?? []);
+    const bridges = (n) => {
+      const segs = tree(groupPts(n));
+      return segs.length ? `<g stroke="#000" stroke-width=".6" stroke-linecap="round">${segs.map(([a, b]) => `<line x1="${f1(a[0])}" y1="${f1(a[1])}" x2="${f1(b[0])}" y2="${f1(b[1])}"/>`).join('')}</g>` : '';
     };
     const islands = nums.filter((n) => {
       const m = members(n), span = hullArea(m.flatMap(({ id }) => ptsBy[id] ?? []));
       return span > 0 && m.reduce((t, { id }) => t + (areaBy[id] ?? 0), 0) < 0.15 * span;
     });
-    // A halo's hit area for the page (plan 3.2, step 2a): a filter's glow takes no
-    // pointer, so each halo also gets an unpainted path through its islands and
-    // corridors, which the page's CSS strokes wide enough to cover the halo. It
-    // sits under the land, so a country still answers for itself.
-    const haloHit = (n) => {
-      const pts = members(n).flatMap(({ id }) => ptsBy[id] ?? []);
-      const lines = [...bridges(n).matchAll(/x1="([^"]+)" y1="([^"]+)" x2="([^"]+)" y2="([^"]+)"/g)].map((m) => `M${m[1]} ${m[2]}L${m[3]} ${m[4]}`);
-      const d = lines.join('') + pts.map(([x, y]) => `M${x.toFixed(1)} ${y.toFixed(1)}h0`).join('');
-      return d ? `<path class="halo-hit" data-group="${n}" d="${d}"/>` : '';
+    // Hit areas for the page (plan 3.2, step 2a): unpainted paths through islands
+    // and their corridors, which the page's CSS strokes about as wide as a halo.
+    // A filter's glow takes no pointer, and an island drawn as a dot is a pixel
+    // or two. They sit under the land, so an island still answers for itself.
+    // On a continent, one per halo, for its region. On an island sub-region map
+    // (Micronesia, Melanesia), one per territory, for itself: the archipelagos
+    // are dots, so without it a territory could hardly be pointed at. The widest
+    // territories go first, so a compact one keeps its edge where two overlap.
+    const hitPath = (pts, attr) => {
+      const d = tree(pts).map(([a, b]) => `M${f1(a[0])} ${f1(a[1])}L${f1(b[0])} ${f1(b[1])}`).join('')
+        + pts.map(([x, y]) => `M${f1(x)} ${f1(y)}h0`).join('');
+      return d ? `<path class="halo-hit" ${attr} d="${d}"/>` : '';
     };
-    groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}${outlined ? islands.map(haloHit).join('') : ''}</g>`;
+    const extent = (pts) => (pts.length ? Math.max(...pts.map((p) => p[0])) - Math.min(...pts.map((p) => p[0])) + Math.max(...pts.map((p) => p[1])) - Math.min(...pts.map((p) => p[1])) : 0);
+    const hits = outlined
+      ? islands.map((n) => hitPath(groupPts(n), `data-group="${n}"`))
+      : islands.flatMap(members).map(({ id }) => ({ id, pts: ptsBy[id] ?? [] }))
+        .sort((a, b) => extent(b.pts) - extent(a.pts))
+        .map(({ id, pts }) => hitPath(pts, `data-place="${id}"`));
+    groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}${hits.join('')}</g>`;
   }
 
   // A contested area within about 30 units of a place or a claimed area goes in

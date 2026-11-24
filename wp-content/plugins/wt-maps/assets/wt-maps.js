@@ -154,6 +154,9 @@
 			}
 			[ 'casing', 'line' ].forEach( function ( layer ) {
 				t.els.forEach( function ( el ) {
+					if ( el.classList.contains( 'halo-hit' ) ) {
+						return; // A hit area: it places the label, but isn't drawn.
+					}
 					const c = el.cloneNode( false );
 					c.removeAttribute( 'id' );
 					Object.keys( c.dataset ).forEach( function ( k ) {
