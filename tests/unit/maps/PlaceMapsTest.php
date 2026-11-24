@@ -82,6 +82,8 @@ class PlaceMapsTest extends TestCase {
 				'Region: Eastern Europe' => array(
 					'places' => array( 'rec11', 'rec12' ),
 					'globe'  => true,
+					'halo'   => true,
+					'rings'  => 'detached',
 				),
 			),
 			wt_place_map_sets( array() )

@@ -236,25 +236,46 @@ function render(key, placeIds) {
     .map((f) => pathEl(f, 'land', ` data-a3="${f.properties.ADM0_A3}"`)).join('');
 
   const markers = [];
+  const set = input.sets[key] ?? {};
+  // Each highlighted feature: its place, whether it is too small to read as a
+  // shape (its largest island under 150 square units, some 6 px across at the
+  // sidebar's 192 px width), its parts' centres and its area.
+  const feats = hl.map(({ id, refs }) => geomFor(refs, ix).map((f) => {
+    const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+    return {
+      id, f,
+      small: Math.max(...polys.map((c) => path_.area({ type: 'Polygon', coordinates: c }))) < 150,
+      centroids: polys.map((c) => proj(d3.geoCentroid({ type: 'Polygon', coordinates: c })))
+        .filter((p) => p && p[0] >= -50 && p[0] <= W + 50 && p[1] >= -50 && p[1] <= H + 50),
+      area: path_.area(f),
+    };
+  }));
   // A set with `groups` (place → group number in sets.json: a continent's
   // sub-regions) is drawn as groups: each outlined as one shape, no rings, every
-  // small place a dot, and island groups in a halo (plan 3.2, step 1c).
-  const groups = input.sets[key]?.groups ?? null;
+  // small place a dot, and island groups in a halo (plan 3.2, step 1c). A set
+  // with `halo` (a sub-region map) whose land is under 15% of the area its places
+  // span is drawn as one island group, with its borders kept and no outline: the
+  // Caribbean, Micronesia, Melanesia and Polynesia.
+  let groups = set.groups ?? null;
+  const outlined = groups !== null;
+  if (!groups && set.halo) {
+    const all = feats.flat(), span = hullArea(all.flatMap((x) => x.centroids));
+    if (span > 0 && all.reduce((t, x) => t + x.area, 0) < 0.15 * span) groups = Object.fromEntries(hl.map(({ id }) => [id, 1]));
+  }
+  // `rings: detached` (sub-region maps): a small place that touches another place
+  // on the map is part of the main body and needs no ring (Moldova and
+  // Transnistria in Eastern Europe). Touching: within 1.5 units.
+  const project = (f) => { const out = []; d3.geoStream(f, proj.stream({ point(x, y) { out.push([x, y]); }, lineStart() {}, lineEnd() {}, polygonStart() {}, polygonEnd() {}, sphere() {} })); return out; };
+  const detachedOnly = set.rings === 'detached' && !groups;
+  const vertsBy = detachedOnly ? feats.map((list) => list.flatMap((x) => project(x.f))) : [];
+  const touches = (i, f) => {
+    const mine = project(f);
+    return vertsBy.some((verts, j) => j !== i && verts.some(([x, y]) => mine.some(([u, v]) => Math.abs(u - x) < 1.5 && Math.abs(v - y) < 1.5 && Math.hypot(u - x, v - y) < 1.5)));
+  };
   const dotsBy = {}, ptsBy = {}, areaBy = {};
-  const hlParts = hl.map(({ id, refs }) => geomFor(refs, ix).map((f) => {
-    // Too small to read as a shape in the sidebar (under about 150 square units,
-    // some 6 px across at its 192 px width): add rings. Guam (43) had none, so
-    // the Chamorro and Carolinian maps looked the same. Judged by the largest
-    // island, not the total, so a chain of specks (the Northern Mariana Islands:
-    // twelve islands, none over 15 units) is ringed too.
-    // One ring per island group, so a scattered archipelago (Tuvalu) shows its
-    // spread instead of one ring in empty sea. Groups closer than 12 units merge.
-    const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
-    const small = Math.max(...polys.map((c) => path_.area({ type: 'Polygon', coordinates: c }))) < 150;
-    const centroids = polys.map((c) => proj(d3.geoCentroid({ type: 'Polygon', coordinates: c })))
-      .filter((p) => p && p[0] >= -50 && p[0] <= W + 50 && p[1] >= -50 && p[1] <= H + 50);
+  const hlParts = feats.map((list, i) => list.map(({ id, f, small, centroids, area }) => {
     if (groups) {
-      areaBy[id] = (areaBy[id] ?? 0) + path_.area(f);
+      areaBy[id] = (areaBy[id] ?? 0) + area;
       (ptsBy[id] ??= []).push(...centroids);
       if (small) {
         // A dot per island, one per 3 units: a ring at continent scale is clutter.
@@ -262,7 +283,13 @@ function render(key, placeIds) {
         for (const p of centroids) if (p[0] >= 0 && p[0] <= W && p[1] >= 0 && p[1] <= H && !dots.some((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 3)) dots.push(p);
         dotsBy[id] = (dotsBy[id] ?? '') + dots.map(([x, y]) => `<circle class="dot" data-place="${id}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1"/>`).join('');
       }
-    } else if (small) {
+    } else if (small && !(detachedOnly && touches(i, f))) {
+      // Too small to read as a shape: add rings. Guam (43) had none, so the
+      // Chamorro and Carolinian maps looked the same. Judged by the largest
+      // island, not the total, so a chain of specks (the Northern Mariana
+      // Islands: twelve islands, none over 15 units) is ringed too.
+      // One ring per island group, so a scattered archipelago (Tuvalu) shows its
+      // spread instead of one ring in empty sea. Groups closer than 12 units merge.
       const pts = [];
       for (const p of centroids) if (p[0] >= 0 && p[0] <= W && p[1] >= 0 && p[1] <= H && !pts.some((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 12)) pts.push(p);
       const r = pts.length > 1 ? 4.5 : 7;
@@ -277,7 +304,7 @@ function render(key, placeIds) {
     const members = (n) => hl.filter(({ id }) => groups[id] === n);
     // Each group's shapes in one <g>, so a filter can outline their union and the
     // borders inside a sub-region can be hidden.
-    highlight = nums.map((n) => `<g class="grp grp-${n}" id="grp-${n}-${key}">${hl.map(({ id }, i) => (groups[id] === n ? hlParts[i] : '')).join('')}</g>`).join('')
+    highlight = nums.map((n) => `<g${outlined ? ` class="grp grp-${n}"` : ''} id="grp-${n}-${key}">${hl.map(({ id }, i) => (groups[id] === n ? hlParts[i] : '')).join('')}</g>`).join('')
       + hl.map(({ id }, i) => (groups[id] === undefined ? hlParts[i] : '')).join('')
       + `<g class="dots">${nums.map((n) => `<use href="#dots-${n}-${key}"/>`).join('')}</g>`;
     groupDefs = nums.map((n) => `<g id="dots-${n}-${key}">${members(n).map(({ id }) => dotsBy[id] ?? '').join('')}</g>`).join('')
@@ -293,7 +320,7 @@ function render(key, placeIds) {
       + '<feFlood class="gh-fill" result="ff"/><feComposite in="ff" in2="s" operator="in" result="fill"/>'
       + '<feFlood class="gh-edge" result="fe"/><feComposite in="fe" in2="o" operator="in" result="edge"/>'
       + '<feMerge><feMergeNode in="fill"/><feMergeNode in="edge"/></feMerge></filter>';
-    groupEdges = `<g class="grp-edges">${nums.map((n) => `<use href="#grp-${n}-${key}" filter="url(#ge-${key})"/>`).join('')}</g>`;
+    if (outlined) groupEdges = `<g class="grp-edges">${nums.map((n) => `<use href="#grp-${n}-${key}" filter="url(#ge-${key})"/>`).join('')}</g>`;
     // An island group gets one halo: its land covers under 15% of the area its
     // places span (the convex hull of their parts' centres). On the 2026-11-24
     // continents the island groups measured 0–11% (Micronesia, Polynesia,
@@ -371,7 +398,7 @@ function render(key, placeIds) {
   const len = nice / kmPerUnit;
   // Hidden where shapes stretch more than 5% anywhere in the frame (continent scale).
   const stretch = maxStretch(proj);
-  const scale = stretch > 5 ? '' : `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
+  let scale = stretch > 5 ? '' : `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M14 286H${(14 + len).toFixed(1)}"/>`
     + `<text class="scale-label" x="${(20 + len).toFixed(1)}" y="290">${nice.toLocaleString('en')} km</text></g>`;
 
   // Locator globe on frames with a corner radius under 30°, or on any frame whose
@@ -384,7 +411,33 @@ function render(key, placeIds) {
     const corners = [[W - PADI - GR, PADI + GR], [PADI + GR, PADI + GR], [W - PADI - GR, H - PADI - GR]];
     const busy = [...hl.flatMap(({ refs }) => geomFor(refs, ix)), ...claimed.map((d) => d.f)].flatMap(ptsOf);
     const crowd = ([cx, cy]) => busy.filter(([x, y]) => Math.hypot(x - cx, y - cy) < GR + 6).length;
-    const [gx, gy] = corners.reduce((a, b) => (crowd(b) < crowd(a) ? b : a));
+    let [gx, gy] = corners.reduce((a, b) => (crowd(b) < crowd(a) ? b : a));
+    // The outline count misses a corner that is quiet but still on a place (Libya).
+    // When the globe would cover highlighted land, take the corner that covers
+    // least, sampled every 4 units. A globe a region map asked for on a wide frame
+    // (over 30°, so the map already shows where it is) is left off when every
+    // corner would cover a place: Northern Europe, where all three hid Norway,
+    // Finland, Iceland or the Baltics.
+    const shapes = hl.flatMap(({ refs }) => geomFor(refs, ix));
+    const covered = ([cx, cy]) => {
+      let n = 0;
+      for (let x = cx - GR; x <= cx + GR; x += 4) for (let y = cy - GR; y <= cy + GR; y += 4) {
+        if (Math.hypot(x - cx, y - cy) > GR) continue;
+        const ll = proj.invert([x, y]);
+        if (ll && shapes.some((f) => d3.geoContains(f, ll))) n++;
+      }
+      return n;
+    };
+    if (covered([gx, gy]) > 0) [gx, gy] = corners.reduce((a, b) => (covered(b) < covered(a) ? b : a));
+    // Still on a place: try the scale bar's corner, and move the bar to the
+    // bottom right (Northern Europe, a small frame, so its globe stays).
+    const bl = [PADI + GR, H - PADI - GR];
+    if (covered([gx, gy]) > 0 && covered(bl) < covered([gx, gy])) {
+      [gx, gy] = bl;
+      if (scale) scale = `<g class="scale" aria-hidden="true"><path class="scale-bar" d="M${(W - 14 - len).toFixed(1)} 286H${W - 14}"/>`
+        + `<text class="scale-label" x="${(W - 20 - len).toFixed(1)}" y="290" text-anchor="end">${nice.toLocaleString('en')} km</text></g>`;
+    }
+    if (spec.cornerDeg < 30 || covered([gx, gy]) === 0) {
     const globe = d3.geoOrthographic().rotate([-center[0], -center[1]]).scale(GR).translate([gx, gy]).clipAngle(90);
     const gpath = d3.geoPath({ stream: (st) => globe.stream(thin(st)) }).digits(1);
     const gland = land110.map((f) => gpath(f)).filter(Boolean).join('');
@@ -404,6 +457,7 @@ function render(key, placeIds) {
     inset = `<g class="inset" aria-hidden="true"><circle class="globe-halo" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR + 1.5}"/>`
       + `<circle class="globe-sea" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/><path class="globe-land" d="${gland}"/>`
       + `${mark}<circle class="globe-rim" cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${GR}"/></g>`;
+    }
   }
 
   const names = list(hl.map(({ name }) => name).sort());

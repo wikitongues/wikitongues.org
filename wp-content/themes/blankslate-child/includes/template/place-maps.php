@@ -154,11 +154,12 @@ function wt_region_territory_ids( WP_Term $region ): array {
 /**
  * Map sets for territory and region pages, for `wt_maps_extra_sets`.
  *
- * One per published territory (most are already built for languages) and one
- * per sub-region. Absolute state: rebuilt from the posts on every export.
+ * One per published territory (most are already built for languages), one
+ * per sub-region and one per continent. Absolute state: rebuilt from the posts
+ * on every export.
  *
- * @param array<string, list<string>|array{places: list<string>, globe?: bool}> $sets Label → places, or places and options.
- * @return array<string, list<string>|array{places: list<string>, globe?: bool}>
+ * @param array<string, list<string>|array<string, mixed>> $sets Label → places, or places and options.
+ * @return array<string, list<string>|array<string, mixed>>
  */
 function wt_place_map_sets( array $sets ): array {
 	if ( ! function_exists( 'wt_maps_record_ids' ) ) {
@@ -202,9 +203,13 @@ function wt_place_map_sets( array $sets ): array {
 		if ( count( $places ) > 1 ) {
 			// The locator globe whatever the frame's size: Polynesia is islands in an
 			// empty sea. A territory's map keeps the language rule (small frames only).
+			// Island sub-regions take the continent maps' halo; elsewhere only places
+			// apart from the main body are ringed (not Moldova in Eastern Europe).
 			$sets[ 'Region: ' . html_entity_decode( $region->name ) ] = array(
 				'places' => $places,
 				'globe'  => true,
+				'halo'   => true,
+				'rings'  => 'detached',
 			);
 		}
 	}

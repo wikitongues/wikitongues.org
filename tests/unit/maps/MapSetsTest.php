@@ -139,6 +139,8 @@ class MapSetsTest extends TestCase {
 				'Region: Micronesia' => array(
 					'places' => array( self::GUAM, self::NMI ),
 					'globe'  => true,
+					'halo'   => true,
+					'rings'  => 'detached',
 				),
 				'Territory: Guam'    => array( self::GUAM ),
 				'Rights region'      => array( self::NMI, self::GUAM ),
@@ -147,8 +149,11 @@ class MapSetsTest extends TestCase {
 
 		$region = $plan['sets'][ wt_maps_set_key( array( self::GUAM, self::NMI ) ) ];
 		$this->assertTrue( $region['globe'] );
+		$this->assertTrue( $region['halo'] );
+		$this->assertSame( 'detached', $region['rings'] );
 		$this->assertSame( array( 'Region: Micronesia', 'Rights region' ), $region['pages'], 'a shared set keeps the globe' );
 		$this->assertArrayNotHasKey( 'globe', $plan['sets'][ self::GUAM ], 'a list of IDs asks for nothing' );
+		$this->assertArrayNotHasKey( 'rings', $plan['sets'][ self::GUAM ] );
 	}
 
 	public function test_a_view_fixes_the_frame_and_groups_in_its_own_set() {

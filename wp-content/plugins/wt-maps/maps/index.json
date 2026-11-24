@@ -5702,8 +5702,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 9339,
-   "svg_gzip": 3410,
+   "svg_bytes": 8905,
+   "svg_gzip": 3376,
    "images": {
     "relief": 17082,
     "shade": 4868,
@@ -8376,8 +8376,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 10601,
-   "svg_gzip": 3347,
+   "svg_bytes": 10357,
+   "svg_gzip": 3335,
    "images": {
     "relief": 12380,
     "shade": 8246,
@@ -8648,8 +8648,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 17009,
-   "svg_gzip": 6105,
+   "svg_bytes": 16843,
+   "svg_gzip": 6074,
    "images": {
     "relief": 25676,
     "shade": 7780,
@@ -9203,8 +9203,8 @@
     "Arunachal Pradesh",
     "Taiwan"
    ],
-   "svg_bytes": 35146,
-   "svg_gzip": 12865,
+   "svg_bytes": 34897,
+   "svg_gzip": 12815,
    "images": {
     "relief": 26104,
     "shade": 18890,
@@ -9629,8 +9629,8 @@
     "Somaliland",
     "Somaliland"
    ],
-   "svg_bytes": 47754,
-   "svg_gzip": 14734,
+   "svg_bytes": 46846,
+   "svg_gzip": 14589,
    "images": {
     "relief": 29744,
     "shade": 20124,
@@ -10698,8 +10698,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 26942,
-   "svg_gzip": 9438,
+   "svg_bytes": 26778,
+   "svg_gzip": 9403,
    "images": {
     "relief": 22980,
     "shade": 8362,
@@ -11301,8 +11301,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 14502,
-   "svg_gzip": 5240,
+   "svg_bytes": 22825,
+   "svg_gzip": 6978,
    "images": {
     "relief": 16382,
     "shade": 7326,
@@ -11532,8 +11532,8 @@
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 65195,
-   "svg_gzip": 22846,
+   "svg_bytes": 64703,
+   "svg_gzip": 22750,
    "images": {
     "relief": 28768,
     "shade": 21182,
@@ -11675,8 +11675,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 20824,
-   "svg_gzip": 7691,
+   "svg_bytes": 24936,
+   "svg_gzip": 8688,
    "images": {
     "relief": 20138,
     "shade": 9648,
@@ -11723,8 +11723,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 7904,
-   "svg_gzip": 2645,
+   "svg_bytes": 11421,
+   "svg_gzip": 3488,
    "images": {
     "relief": 3660,
     "shade": 1636,
@@ -11783,8 +11783,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 41656,
-   "svg_gzip": 14481,
+   "svg_bytes": 41324,
+   "svg_gzip": 14397,
    "images": {
     "relief": 28076,
     "shade": 17972,
@@ -12203,8 +12203,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21628,
-   "svg_gzip": 7677,
+   "svg_bytes": 25893,
+   "svg_gzip": 8721,
    "images": {
     "relief": 20890,
     "shade": 11892,
@@ -12552,8 +12552,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 41928,
-   "svg_gzip": 14462,
+   "svg_bytes": 41596,
+   "svg_gzip": 14373,
    "images": {
     "relief": 29458,
     "shade": 18484,
@@ -12747,8 +12747,8 @@
    "revealed": [
     "Abyei"
    ],
-   "svg_bytes": 22780,
-   "svg_gzip": 7675,
+   "svg_bytes": 22698,
+   "svg_gzip": 7654,
    "images": {
     "relief": 27284,
     "shade": 10084,
@@ -12846,8 +12846,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 31190,
-   "svg_gzip": 11800,
+   "svg_bytes": 31211,
+   "svg_gzip": 11805,
    "images": {
     "relief": 30038,
     "shade": 13368,
@@ -12899,8 +12899,8 @@
     "W. Sahara",
     "W. Sahara"
    ],
-   "svg_bytes": 26105,
-   "svg_gzip": 8856,
+   "svg_bytes": 26023,
+   "svg_gzip": 8835,
    "images": {
     "relief": 26924,
     "shade": 7636,
@@ -12964,8 +12964,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 41493,
-   "svg_gzip": 13633,
+   "svg_bytes": 41157,
+   "svg_gzip": 13559,
    "images": {
     "relief": 27668,
     "shade": 18998,
@@ -13020,8 +13020,8 @@
    "revealed": [
     "Abyei"
    ],
-   "svg_bytes": 24090,
-   "svg_gzip": 8460,
+   "svg_bytes": 23920,
+   "svg_gzip": 8436,
    "images": {
     "relief": 27130,
     "shade": 9236,
@@ -13278,8 +13278,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 38114,
-   "svg_gzip": 12366,
+   "svg_bytes": 38032,
+   "svg_gzip": 12351,
    "images": {
     "relief": 26844,
     "shade": 17940,
