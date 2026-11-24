@@ -8818,21 +8818,21 @@
     "rotate": [
      -87,
      -31,
-     0
+     -10
     ],
-    "scale": 203.704,
+    "scale": 178.729,
     "translate": [
-     200,
-     150
+     190.579,
+     132.262
     ],
-    "cornerDeg": 75.71
+    "cornerDeg": 97.29
    },
    "center": [
     87,
     31
    ],
    "fine": false,
-   "stretch": 60.4,
+   "stretch": 129.1,
    "scale_km": null,
    "claimed": [
     "Aksai Chin",
@@ -8860,12 +8860,12 @@
     "Somaliland",
     "Transnistria"
    ],
-   "svg_bytes": 69679,
-   "svg_gzip": 22073,
+   "svg_bytes": 64375,
+   "svg_gzip": 20422,
    "images": {
-    "relief": 30408,
-    "shade": 22014,
-    "sea": 29306
+    "relief": 29374,
+    "shade": 18620,
+    "sea": 28772
    }
   },
   "set-18f1845b5825": {
@@ -9461,19 +9461,19 @@
      -2,
      0
     ],
-    "scale": 231.572,
+    "scale": 184.456,
     "translate": [
      200,
      150
     ],
-    "cornerDeg": 65.34
+    "cornerDeg": 85.32
    },
    "center": [
     18,
     2
    ],
    "fine": false,
-   "stretch": 41.1,
+   "stretch": 84.9,
    "scale_km": null,
    "claimed": [
     "Abyei",
@@ -9482,16 +9482,17 @@
    ],
    "revealed": [
     "Golan Heights",
+    "Kosovo",
     "N. Cyprus",
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 41603,
-   "svg_gzip": 12996,
+   "svg_bytes": 52692,
+   "svg_gzip": 16221,
    "images": {
-    "relief": 30230,
-    "shade": 11272,
-    "sea": 22142
+    "relief": 30378,
+    "shade": 12516,
+    "sea": 24900
    }
   },
   "set-29699cb355e1": {
@@ -10005,10 +10006,10 @@
      -67.501926,
      0
     ],
-    "scale": 185.703,
+    "scale": 206.337,
     "translate": [
-     208.918,
-     160.608
+     187.687,
+     161.786
     ],
     "cornerDeg": 90.39
    },
@@ -10017,7 +10018,7 @@
     67.501926
    ],
    "fine": false,
-   "stretch": 101.4,
+   "stretch": 71.9,
    "scale_km": null,
    "claimed": [
     "Crimea",
@@ -10032,16 +10033,14 @@
     "N. Cyprus",
     "N. Cyprus",
     "South Ossetia",
-    "W. Sahara",
-    "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 78561,
-   "svg_gzip": 26077,
+   "svg_bytes": 73085,
+   "svg_gzip": 24525,
    "images": {
-    "relief": 28672,
-    "shade": 20460,
-    "sea": 29874
+    "relief": 29634,
+    "shade": 21278,
+    "sea": 29750
    }
   },
   "set-3c6af9f0ddf4": {
@@ -11444,31 +11443,31 @@
      -12,
      0
     ],
-    "scale": 125.553,
+    "scale": 104.656,
     "translate": [
      200,
      150
     ],
-    "cornerDeg": 169.24
+    "cornerDeg": 180
    },
    "center": [
     -82,
     12
    ],
    "fine": false,
-   "stretch": 11275.2,
+   "stretch": 3239.6,
    "scale_km": null,
    "claimed": [
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 47832,
-   "svg_gzip": 15761,
+   "svg_bytes": 46803,
+   "svg_gzip": 15429,
    "images": {
-    "relief": 30030,
-    "shade": 11698,
-    "sea": 29898
+    "relief": 27458,
+    "shade": 10800,
+    "sea": 26860
    }
   },
   "set-9c18efefa001": {
@@ -11978,28 +11977,28 @@
      14,
      0
     ],
-    "scale": 175.079,
+    "scale": 177.149,
     "translate": [
-     200,
-     150
+     191.023,
+     150.196
     ],
-    "cornerDeg": 91.12
+    "cornerDeg": 93.17
    },
    "center": [
     166,
     -14
    ],
    "fine": false,
-   "stretch": 104,
+   "stretch": 111.7,
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 35328,
-   "svg_gzip": 9986,
+   "svg_bytes": 34342,
+   "svg_gzip": 9673,
    "images": {
-    "relief": 21978,
-    "shade": 9594,
-    "sea": 29180
+    "relief": 21002,
+    "shade": 9120,
+    "sea": 28456
    }
   },
   "set-b76e6ca9a186": {

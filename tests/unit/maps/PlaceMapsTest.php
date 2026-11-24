@@ -77,6 +77,7 @@ class PlaceMapsTest extends TestCase {
 						'rec11' => 1,
 						'rec12' => 1,
 					),
+					'frame'  => wt_continent_frames()['europe'],
 				),
 				'Region: Eastern Europe' => array(
 					'places' => array( 'rec11', 'rec12' ),

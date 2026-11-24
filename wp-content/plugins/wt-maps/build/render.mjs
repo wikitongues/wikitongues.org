@@ -173,11 +173,15 @@ function render(key, placeIds) {
     ...hl.flatMap(({ refs }) => geomFor(refs, idx10).flatMap(framingParts)),
     ...claimed.map((d) => d.f),
   ] };
-  // A set may fix its frame (`frame: {center, radius}` in sets.json): a continent
-  // is an editorial view, not fitted to its territories.
+  // A set may adjust its frame (`frame` in sets.json, continent maps): `center`
+  // fixes the view's centre ([lon, lat]); `radius` (degrees) frames a circle
+  // round it instead of fitting the places, which still fit with equal margins
+  // without it; `roll` turns the view (degrees, positive is clockwise); `crop`
+  // ([x0, y0, x1, y1], fractions of the frame) keeps part of the fitted view.
   const opts = input.sets[key] ?? {};
-  const center = opts.frame ? opts.frame.center : d3.geoCentroid(focus);
-  let frame = opts.frame ? d3.geoCircle().center(center).radius(opts.frame.radius)() : focus;
+  const fopt = opts.frame ?? {};
+  const center = fopt.center ?? d3.geoCentroid(focus);
+  let frame = fopt.radius ? d3.geoCircle().center(center).radius(fopt.radius)() : focus;
   // Minimum frame radius ~45 km: small countries zoom until they read as a shape.
   const MIN_DEG = 0.4;
   const focusDeg = (maxRadius(focus, center) * 180) / Math.PI;
@@ -186,7 +190,13 @@ function render(key, placeIds) {
   const ix = fine ? idx10 : idx;
   const base = fine ? countries10 : countries;
 
-  const { proj, spec } = choose(frame, center);
+  const { proj, spec } = choose(frame, center, fopt.roll ?? 0);
+  if (fopt.crop) {
+    // Scale the kept rectangle up to the whole frame: screen' = (screen - corner) × z.
+    const [x0, y0, x1] = fopt.crop, z = 1 / (x1 - x0), [tx, ty] = proj.translate();
+    proj.scale(proj.scale() * z).translate([(tx - x0 * W) * z, (ty - y0 * H) * z]);
+    spec.scale = proj.scale(); spec.translate = proj.translate();
+  }
   proj.clipExtent([[0, 0], [W, H]]);
   // Drop points closer than TOL px to the last kept one, rings under MIN_RING px,
   // then Douglas–Peucker at EPS px: sidebar resolution.

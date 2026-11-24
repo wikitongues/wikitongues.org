@@ -18,32 +18,37 @@
  */
 
 /**
- * Continent frames: an editorial view per continent, cropped to the land
- * rather than fitted with a margin. Keyed on the term slug; centre is
- * [longitude, latitude], radius in degrees. An empty frame means fitted to the
- * territories like any map: Europe, whose Russia is continental in size and is
- * drawn whole (2026-11-24).
+ * Continent frames, keyed on the term slug (the build reads them, render.mjs):
+ * `center` [lon, lat] fixes the view's centre and orientation; without a
+ * `radius` the territories are fitted with equal margins round it; `radius`
+ * (degrees) frames a circle instead, for continents too tall for a 4:3 frame;
+ * `roll` turns the view (degrees, positive clockwise); `crop` keeps part of the
+ * fitted view, [x0, y0, x1, y1] as fractions. Tuned by eye, 2026-11-24.
  *
- * @return array<string, array{center: array{0: float, 1: float}, radius: float}|array{}>
+ * @return array<string, array{center?: array{0: float, 1: float}, radius?: float, roll?: float, crop?: array{0: float, 1: float, 2: float, 3: float}}>
  */
 function wt_continent_frames(): array {
 	return array(
+		// Tall: a circle, so the Atlas and the Cape keep a margin.
 		'africa'   => array(
 			'center' => array( 18.0, 2.0 ),
-			'radius' => 28.5,
+			'radius' => 36.0,
 		),
 		'americas' => array(
 			'center' => array( -82.0, 12.0 ),
-			'radius' => 54.0,
+			'radius' => 66.0,
 		),
+		// Fitted, turned so Japan isn't pushed up the right edge.
 		'asia'     => array(
 			'center' => array( 87.0, 31.0 ),
-			'radius' => 32.5,
+			'roll'   => -10.0,
 		),
-		'europe'   => array(),
+		// Fitted, so Russia is drawn whole; the empty Atlantic is cropped off.
+		'europe'   => array(
+			'crop' => array( 0.1, 0.05, 1.0, 0.95 ),
+		),
 		'oceania'  => array(
 			'center' => array( 166.0, -14.0 ),
-			'radius' => 38.0,
 		),
 	);
 }
@@ -68,11 +73,11 @@ function wt_continent_sub_regions( WP_Term $continent ): array {
 
 /**
  * A continent's map set: its sub-regions' territories, its frame (none when
- * fitted), and each place's group (its sub-region's position, from 1). null
+ * simply fitted), and each place's group (its sub-region's position, from 1). null
  * for a region not in wt_continent_frames(), or with fewer than two places.
  *
  * @param WP_Term $continent A top-level `region` term.
- * @return array{places: list<string>, view: string, groups: array<string, int>, frame?: array{center: array{0: float, 1: float}, radius: float}}|null
+ * @return array{places: list<string>, view: string, groups: array<string, int>, frame?: array<string, mixed>}|null
  */
 function wt_continent_set( WP_Term $continent ): ?array {
 	$frame = wt_continent_frames()[ $continent->slug ] ?? null;
