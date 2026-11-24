@@ -2,7 +2,7 @@
 
 Locator maps for language pages (plan 3.2, step 1; shipped 2026-11-23), territory pages and sub-region pages (step 1b, 2026-11-23). This file describes what is built and the decisions behind it ([Design decisions](#design-decisions)). The data model they follow, territories, origins and subdivisions, is [plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress). Step 2, interactive maps on territory and region pages, is still in the plan.
 
-Built: the shape table, the `doctor` and `export` commands, the build (312 maps: 270 for languages and the Language Rights report, 42 more for territory and sub-region pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the styles, the settings page, and the sidebar map with its caption. Not yet built (plan 3.2 follow-ups): the claims table, credits, and the review tooling.
+Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the styles, the settings page, and the sidebar map with its caption. Not yet built (plan 3.2 follow-ups): the claims table, credits, and the review tooling.
 
 ## Map sets and the build
 
@@ -113,15 +113,22 @@ It exits with an error when anything but the informational list is non-empty. Ru
 
 **Placement.** `modules/languages/meta--languages-single.php` prints `wt_maps_sidebar_map()` in the "Where it's spoken" section, under its heading and above the territories of origin and "also spoken in". The section isn't a mobile accordion, so the map stays open on phones.
 
-**Territory and region pages** (`includes/template/place-maps.php` in the theme). Approved 2026-11-23; continents are left for the step 2 world view.
+**Territory and region pages** (`includes/template/place-maps.php` in the theme). Approved 2026-11-23; continent maps approved and built 2026-11-24 (plan 3.2 step 1c).
 
 | Page | Map | Where |
 |---|---|---|
 | Territory | `wt_territory_map()`: the territory's one-place set, primary. The same file a language spoken only there uses, so 198 of 217 were already built. Then `wt_territory_region_map()`: its sub-region's map, the whole region active, with no new file | Sidebar: the territory's map under the title; the sub-region's map under the "Other territories in…" heading, above the list |
 | Sub-region | `wt_region_map()`: every published territory in the term, all primary, framed together. Key: the hash of their record IDs | Sidebar, under the title, as on territory pages |
-| Continent | None (`wt_region_has_map()`): at continent scale the small-place rings crowd the map, and Russia stretches Europe's frame to the Pacific | |
+| Continent | `wt_region_map()` with `wt_continent_set()`: every territory in its sub-regions, all primary, in a fixed frame (`wt_continent_frames()`), grouped by sub-region. Key: the hash of the record IDs plus `-continent` | Sidebar, under the title |
 
 `wt_place_map_sets()` registers both kinds through `wt_maps_extra_sets`, rebuilt from the posts on every export ("Territory: Guam", "Region: Polynesia"). Region terms have no record ID, so a region's set is named by what it draws: when a territory joins or leaves a sub-region its key changes, `doctor` lists the new set as unbuilt, and the old map is left over until removed by hand. Rebuild with `wp wt-maps export`, then `node build.mjs --only=<key>`. No visible caption: the page heading names the place. The SVG title (the hover tooltip) is "Map of Guam", "Map of Polynesia". Languages aren't drawn (they have no coordinates); the languages gallery below lists them. Subdivisions get maps when they get pages (6.8 phase B); Hawaii's set already exists. **Sizes (2026-11-23, local data):** the 41 added maps (19 territories, 22 sub-regions) took 2.7 MB, bringing `maps/` from 16.4 to 19.1 MB, and about 8 minutes to build with terrain tiles cached. Over budget: Andorra's hillshade (33.4 KB) and the Eastern Europe SVG (20.1 KB gzipped). **Australia & New Zealand** became a sub-region of Oceania on 2026-11-24 (it had been a top-level term since the import): its map is the 42nd.
+
+**Continent maps** (step 1c, 2026-11-24). Drawn as groups, one per sub-region, so a continent reads as four to six shapes:
+- **Sets.** `wt_place_map_sets()` adds "Continent: Europe" with `view: continent`, a `frame` (`{center, radius}`, editorial, from `wt_continent_frames()`) and `groups` (record ID → its sub-region's position by slug). The view goes into the key (`wt_maps_set_key( $places, 'continent' )`), so a language whose map draws the same places never gets the continent's drawing.
+- **Build** (`render.mjs`). A set with `groups` wraps each group's shapes in a `<g>`; a filter outlines the union of each group, and the borders inside it are stroked in the fill, so they vanish. No rings: every place under the ring threshold is a dot. A group whose land covers under 15% of the area its places span (the convex hull of their parts' centres) is an island group and gets one halo: a narrow field grown from its islands, joined along a minimum spanning tree so it is one shape (Polynesia), drawn under the land with a thin edge. Measured 2026-11-24: island groups 0–11% (Micronesia, Polynesia, Melanesia, the Caribbean), all others 21% or more. A count of small places failed both ways: at continent scale much of the mainland is under the ring threshold, and Cuba isn't.
+- **Styles.** `.grp`, `.ge-flood`, `.gh-fill`, `.gh-edge` and `.dot` in `wt-maps.styl`. The light styles draw outlines, halo edges and dots in deep blue (`--brd-edge`) with a parchment halo; the dark ones keep the outline and use their primary (parchment) for dots and lavender (`--brd-secondary`) for the halo.
+- **Sizes.** Asia's SVG is 27.2 KB gzipped (54 territories), over the 20 KB budget.
+- **Australia & New Zealand** is a sub-region of Oceania (moved 2026-11-24, a term edit per environment; see plan 3.2).
 
 **Caption.** The sidebar map has a visible `<figcaption class="wt-map__caption">` (the `caption` argument of `wt_map()`, or `caption="1"` on the shortcode). It is `Renderer::caption()`: the description, but it reads "Map showing Guam and the Northern Mariana Islands.", and origins come first, in the order the language lists them, then the other places alphabetically; past three places in a role the rest are counted instead of listed ("Map showing Spain, with 20 other places also marked."; "Map showing A, B, C, and 4 other places."), since the sidebar lists them all just below. The `<desc>` keeps the full list. Place names go through the theme's `wt_prefix_the()` ("the Northern Mariana Islands"), and sorting ignores the "the".
 

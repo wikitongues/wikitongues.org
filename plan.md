@@ -309,17 +309,17 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 
 - [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
 - [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
-- [ ] Continent maps: spec below, **awaiting approval**. Lookdev rounds 1–3 (2026-11-23/24) on the review page.
+- [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Asia's SVG is over budget (27.2 KB gzipped).
 - [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
 - [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
 - [ ] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done locally. On staging and production, after this PR deploys: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
 
-##### Step 1c: continent maps (spec, awaiting approval)
+##### Step 1c: continent maps (approved and built 2026-11-24)
 
-**Decision needed:** approve this to build maps for the five continent pages.
+Maps for the five continent pages.
 
-**Glossary.** *Continent:* a top-level `region` term. *Sub-region:* its child term. *Small territory:* under the ring threshold in the frame (largest island under 150 square units). *Island sub-region:* more than half its territories are small.
+**Glossary.** *Continent:* a top-level `region` term. *Sub-region:* its child term. *Small territory:* under the ring threshold in the frame (largest island under 150 square units). *Island sub-region:* its land covers under 15% of the area its territories span (measured 2026-11-24: island groups 0–11%, all others 21% or more).
 
 **Entities**
 
@@ -327,12 +327,12 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 |---|---|---|
 | Continent frame (centre, radius in degrees) | a table in `place-maps.php`, keyed on the term slug | editorial |
 | Group: territory → sub-region | `sets.json`, rebuilt on every export | `region` taxonomy |
-| Halo sub-regions | `sets.json`, rebuilt on every export | the island rule |
+| Halo sub-regions | worked out by the build (`render.mjs`) | the island rule, on the drawn areas |
 
 **Rules**
 - A continent map draws every published territory in its sub-regions, all active.
 - One strong outline per sub-region; country borders inside it are hidden. **No tints**: sub-regions differ by outline only.
-- No rings. An island sub-region gets one **halo**: a narrow parchment field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge. Its islands show as dots.
+- No rings. Every small territory shows as a dot. An island sub-region also gets one **halo**: a narrow field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge.
 - The frame is fixed per continent, not fitted. The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
 
 **Example cases**
@@ -341,17 +341,18 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 |---|---|
 | Americas | four outlines; the Caribbean is one halo (seen in round 3) |
 | Oceania | Micronesia, Melanesia and Polynesia are one halo each; Polynesia touches Melanesia near Fiji (round 3) |
-| Africa | six outlines, no halo; Comoros, Mauritius and Seychelles are too small to see (open question 1) |
+| Africa | six outlines, no halo; Comoros, Mauritius and Seychelles as dots |
 | Europe | four outlines; Russia runs off the east edge |
-| Asia | five outlines, no halo; the Maldives and Singapore are too small to see (open question 1) |
+| Asia | five outlines, no halo; the Maldives and Singapore as dots |
 | Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
 
-**Display.** In the sidebar under the title, as on sub-region pages. Light full: the halo parchment at 55%, its edge and the outlines brand deep blue.
+**Display.** In the sidebar under the title, as on sub-region pages. Each style draws outlines, halos and dots in its own palette: the light styles in brand deep blue on parchment, the dark styles in their own primary and edge colours.
 
-**Open questions**
-1. Small territories outside island sub-regions (Comoros, Malta, Singapore) vanish without rings. Accept, or give them dots too?
-2. Sidebar width (as sub-regions) or the main column (about twice as wide)?
-3. Values for the dark styles (round 3: halos too bright, dots lost).
+**Decisions (2026-11-24)**
+- Small territories outside island sub-regions get dots too.
+- Sidebar, like sub-region maps.
+- The dark styles follow their own palettes, consistent with the rest of each style.
+- Australia & New Zealand is a sub-region of Oceania.
 
 **Out of scope:** tints, the world view, interactivity (step 2).
 

@@ -15,6 +15,7 @@ class PlaceMapsTest extends TestCase {
 		$term->term_id = $id;
 		$term->parent  = $parent_id;
 		$term->name    = $name;
+		$term->slug    = strtolower( str_replace( ' ', '-', $name ) );
 		return $term;
 	}
 
@@ -34,7 +35,7 @@ class PlaceMapsTest extends TestCase {
 		$this->assertTrue( wt_region_has_map( self::term( 2, 1, 'Eastern Europe' ) ) );
 	}
 
-	public function test_sets_are_one_per_territory_and_one_per_sub_region() {
+	public function test_sets_are_one_per_territory_sub_region_and_continent() {
 		$europe    = self::term( 1, 0, 'Europe' );
 		$eastern   = self::term( 2, 1, 'Eastern Europe' );
 		$one_place = self::term( 3, 5, 'One territory' );
@@ -51,7 +52,17 @@ class PlaceMapsTest extends TestCase {
 				},
 			)
 		);
-		WP_Mock::userFunction( 'get_terms', array( 'return' => array( $europe, $eastern, $one_place ) ) );
+		WP_Mock::userFunction(
+			'get_terms',
+			array(
+				'return' => static function ( array $args ) use ( $europe, $eastern, $one_place ): array {
+					if ( isset( $args['parent'] ) ) {
+						return 1 === $args['parent'] ? array( $eastern ) : array();
+					}
+					return array( $europe, $eastern, $one_place );
+				},
+			)
+		);
 		WP_Mock::userFunction( 'get_the_title', array( 'return' => static fn( int $id ): string => 'T' . $id ) );
 
 		$this->assertSame(
@@ -59,6 +70,15 @@ class PlaceMapsTest extends TestCase {
 				'Territory: T10'         => array( 'rec10' ),
 				'Territory: T11'         => array( 'rec11' ),
 				'Territory: T12'         => array( 'rec12' ),
+				'Continent: Europe'      => array(
+					'places' => array( 'rec11', 'rec12' ),
+					'view'   => 'continent',
+					'frame'  => wt_continent_frames()['europe'],
+					'groups' => array(
+						'rec11' => 1,
+						'rec12' => 1,
+					),
+				),
 				'Region: Eastern Europe' => array(
 					'places' => array( 'rec11', 'rec12' ),
 					'globe'  => true,
@@ -68,8 +88,47 @@ class PlaceMapsTest extends TestCase {
 		);
 	}
 
-	public function test_continent_has_no_map() {
-		$this->assertSame( '', wt_region_map( self::term( 1, 0, 'Europe' ), array( 10, 11 ) ) );
+	public function test_continent_without_a_frame_has_no_map() {
+		WP_Mock::userFunction( 'wt_map_places', array( 'times' => 0 ) );
+		$this->assertSame( '', wt_region_map( self::term( 1, 0, 'Atlantis' ), array( 10, 11 ) ) );
+	}
+
+	public function test_continent_map_is_its_own_view() {
+		$europe  = self::term( 1, 0, 'Europe' );
+		$eastern = self::term( 2, 1, 'Eastern Europe' );
+		$western = self::term( 3, 1, 'Western Europe' );
+		WP_Mock::userFunction( 'get_terms', array( 'return' => array( $eastern, $western ) ) );
+		WP_Mock::userFunction(
+			'get_posts',
+			array( 'return' => static fn( array $args ): array => 2 === $args['tax_query'][0]['terms'][0] ? array( 11 ) : array( 12, 13 ) )
+		);
+		WP_Mock::userFunction( 'wt_prefix_the', array( 'return_arg' => 0 ) );
+		WP_Mock::userFunction(
+			'wt_map_places',
+			array(
+				'times'  => 1,
+				'args'   => array(
+					array(
+						'places'  => array( 'rec11', 'rec12', 'rec13' ),
+						'primary' => array( 'rec11', 'rec12', 'rec13' ),
+						'title'   => 'Map of Europe',
+						'class'   => 'wt-place-map',
+						'view'    => 'continent',
+					),
+				),
+				'return' => '<figure></figure>',
+			)
+		);
+
+		$this->assertSame(
+			array(
+				'rec11' => 1,
+				'rec12' => 2,
+				'rec13' => 2,
+			),
+			wt_continent_set( $europe )['groups'] ?? null
+		);
+		$this->assertSame( '<figure></figure>', wt_region_map( $europe ) );
 	}
 
 	public function test_region_map_draws_its_territories_as_primary() {
@@ -84,6 +143,7 @@ class PlaceMapsTest extends TestCase {
 						'primary' => array( 'rec11', 'rec12' ),
 						'title'   => 'Map of Polynesia',
 						'class'   => 'wt-place-map',
+						'view'    => '',
 					),
 				),
 				'return' => '<figure></figure>',
@@ -107,6 +167,7 @@ class PlaceMapsTest extends TestCase {
 						'primary' => array( 'rec11', 'rec12' ),
 						'title'   => 'Map of Polynesia',
 						'class'   => 'wt-place-map',
+						'view'    => '',
 					),
 				),
 				'return' => '<figure></figure>',

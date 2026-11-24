@@ -187,9 +187,10 @@ function wt_map( array $args = array() ): string {
  * language, for pages that aren't one (a Language Rights report region or
  * country). '' when the set has no built map.
  *
- * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float} $args
+ * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string} $args
  *     Places and primary places as record IDs; the map's accessible title;
- *     `inset` scales the locator globe (1.2 on territory pages).
+ *     `inset` scales the locator globe (1.2 on territory pages); `view` picks
+ *     another drawing of the places (`continent`), see wt_maps_set_key().
  * @return string
  */
 function wt_map_places( array $args ): string {
@@ -199,7 +200,7 @@ function wt_map_places( array $args ): string {
 	$origins = $args['primary'] ?? array();
 	sort( $places );
 
-	$key  = wt_maps_set_key( $places );
+	$key  = wt_maps_set_key( $places, (string) ( $args['view'] ?? '' ) );
 	$file = dirname( __DIR__ ) . '/maps/' . $key . '.svg';
 	if ( '' === $key || ! is_readable( $file ) ) {
 		return '';

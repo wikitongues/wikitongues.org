@@ -20,21 +20,23 @@ use WT\Maps\Shape_Table;
  * One place: its record ID (`recguDPgV3cIXLO34`), so the common case is
  * readable in a file listing. Several: `set-` and a hash of the sorted IDs,
  * so the key doesn't grow with the set and doesn't depend on link order.
+ * A `view` names a different drawing of the same places (`continent`: a fixed
+ * frame, grouped), so it never shares a file with a language's map of them.
  *
  * @param list<string> $place_ids Place record IDs.
+ * @param string       $view      Optional view name, [a-z0-9-].
  * @return string Empty for an empty set.
  */
-function wt_maps_set_key( array $place_ids ): string {
+function wt_maps_set_key( array $place_ids, string $view = '' ): string {
 	$place_ids = array_values( array_unique( $place_ids ) );
 	sort( $place_ids );
 
 	if ( array() === $place_ids ) {
 		return '';
 	}
-	if ( 1 === count( $place_ids ) ) {
-		return $place_ids[0];
-	}
-	return 'set-' . substr( sha1( implode( ',', $place_ids ) ), 0, 12 );
+	$key  = 1 === count( $place_ids ) ? $place_ids[0] : 'set-' . substr( sha1( implode( ',', $place_ids ) ), 0, 12 );
+	$view = (string) preg_replace( '/[^a-z0-9-]/', '', $view );
+	return '' === $view ? $key : $key . '-' . $view;
 }
 
 /**
@@ -116,21 +118,29 @@ function wt_maps_plan_sets( Shape_Table $table, array $languages ): array {
  * report region, to a plan from wt_maps_plan_sets().
  *
  * Each entry is a label and its places: a list of record IDs, or
- * `array{places: list<string>, globe?: bool}` to ask for the locator globe
- * whatever the frame's size (region maps; a language's map shows it only on
- * small frames). A set with a place that has no shape is listed under
+ * `array{places: list<string>, globe?: bool, view?: string, frame?: array, groups?: array}`:
+ * `globe` asks for the locator globe whatever the frame's size (region maps; a
+ * language's map shows it only on small frames); `frame` fixes the view
+ * (`{center: [lon, lat], radius: degrees}`) instead of fitting it; `groups`
+ * maps each place to a group number, and the build outlines each group as one
+ * shape (continent maps: one group per sub-region). `view` names that drawing
+ * and goes into the key (wt_maps_set_key()), so a language's map of the same
+ * places is never changed by it. A set with a place that has no shape is listed under
  * `unmapped`, like a language's; a set a language already uses keeps its
  * language count and gains the label. Asking for the globe is sticky: a set
  * shared by several pages has it if any of them asks.
  *
  * @param Shape_Table                                                                 $table The shape table.
- * @param array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool}>, unmapped: list<string>, no_places: int} $plan  From wt_maps_plan_sets().
- * @param array<string, list<string>|array{places: list<string>, globe?: bool}>       $extra Label → place record IDs, or places and options.
- * @return array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool}>, unmapped: list<string>, no_places: int}
+ * @param array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, frame?: array<string, mixed>, groups?: array<string, int>}>, unmapped: list<string>, no_places: int} $plan  From wt_maps_plan_sets().
+ * @param array<string, list<string>|array{places: list<string>, globe?: bool, view?: string, frame?: array<string, mixed>, groups?: array<string, int>}> $extra Label → place record IDs, or places and options.
+ * @return array{sets: array<string, array{places: list<string>, languages: int, pages?: list<string>, globe?: bool, frame?: array<string, mixed>, groups?: array<string, int>}>, unmapped: list<string>, no_places: int}
  */
 function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra ): array {
 	foreach ( $extra as $label => $entry ) {
 		$globe  = isset( $entry['places'] ) && ! empty( $entry['globe'] );
+		$view   = isset( $entry['places'], $entry['view'] ) ? (string) $entry['view'] : '';
+		$frame  = isset( $entry['places'], $entry['frame'] ) && is_array( $entry['frame'] ) ? $entry['frame'] : null;
+		$groups = isset( $entry['places'], $entry['groups'] ) && is_array( $entry['groups'] ) ? $entry['groups'] : null;
 		$places = isset( $entry['places'] ) ? (array) $entry['places'] : $entry;
 		$places = array_values( array_unique( array_filter( $places, 'is_string' ) ) );
 		sort( $places );
@@ -142,7 +152,7 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
 			$plan['unmapped'][] = sprintf( '%s: no shape for %s', $label, implode( ', ', $missing ) );
 			continue;
 		}
-		$key = wt_maps_set_key( $places );
+		$key = wt_maps_set_key( $places, $view );
 		if ( ! isset( $plan['sets'][ $key ] ) ) {
 			$plan['sets'][ $key ] = array(
 				'places'    => $places,
@@ -152,6 +162,13 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
 		$plan['sets'][ $key ]['pages'][] = (string) $label;
 		if ( $globe ) {
 			$plan['sets'][ $key ]['globe'] = true;
+		}
+		if ( null !== $frame ) {
+			$plan['sets'][ $key ]['frame'] = $frame;
+		}
+		if ( null !== $groups ) {
+			ksort( $groups );
+			$plan['sets'][ $key ]['groups'] = $groups;
 		}
 	}
 	ksort( $plan['sets'] );
@@ -163,7 +180,7 @@ function wt_maps_add_extra_sets( Shape_Table $table, array $plan, array $extra )
  * Map sets other plugins' pages need, as label → place record IDs, from the
  * `wt_maps_extra_sets` filter. Used by `export` and `doctor`.
  *
- * @return array<string, list<string>|array{places: list<string>, globe?: bool}>
+ * @return array<string, list<string>|array{places: list<string>, globe?: bool, view?: string, frame?: array<string, mixed>, groups?: array<string, int>}>
  */
 function wt_maps_extra_sets(): array {
 	$extra = apply_filters( 'wt_maps_extra_sets', array() );
