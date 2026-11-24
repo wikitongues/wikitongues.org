@@ -155,7 +155,7 @@ At render, `wt_map_places()` reads the tagged record IDs (`wt_maps_tagged_places
 
 **Styles.** `stylus/require/wt-maps-interactive.styl`, apart from the four styles: raster layers, dashed edges, the scale and the globe take no pointer; rings answer inside the ring; in the focused styles the fogged land takes no pointer (a CSS mask doesn't stop hit-testing). The outline is brand blue on parchment in the light styles and yellow on dark blue in the dark ones.
 
-**Cost.** The link table adds no query. The neighbour tags add 0.2 KB gzipped to a typical SVG and 1.7 KB to French's six-place set; the JSON up to about 2.5 KB gzipped on the widest maps. The script is 2.7 KB gzipped.
+**Cost (local data, 2026-11-24).** The links share the place-names query, so a map adds no query in the focused styles and at most 2 in the full styles (priming the neighbours' post caches; French and Ukrainian). The rebuild with neighbour tags added a median 83 bytes gzipped per SVG, 1.7 KB on French's six-place set; it pushed Russian's set (20.0 KB) and the Asia continent map (20.6 KB) just over the 20 KB budget. The JSON is 0.15–0.3 KB gzipped with places only, 0.5 KB for Ukrainian's neighbours, 4 KB for French's. The script is 2.7 KB gzipped.
 
 ## Design decisions
 
