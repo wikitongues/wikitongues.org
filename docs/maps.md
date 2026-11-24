@@ -15,6 +15,7 @@ node fetch.mjs                      # once: Natural Earth (at the table's versio
 wp --allow-root wt-maps export      # read-only: writes build/cache/sets.json
 node render.mjs --estimate          # count and size every set, writing nothing
 node build.mjs --only=<key>,<key>   # or no --only for every set
+npm test                            # node --test: the build's own checks (build/test/)
 ```
 
 | Step | Writes |
@@ -25,7 +26,7 @@ node build.mjs --only=<key>,<key>   # or no --only for every set
 | `seafloor.mjs` | the ocean-floor shading (cache) |
 | `mask.mjs` | `maps/relief/`, `maps/shade/` and `maps/sea/<key>.webp`, cut to the SVG's own coastline, and then **publishes** the map: it copies the SVG to `maps/` and adds its entry to `maps/index.json` |
 
-Every raster step reads the projection that `render.mjs` staged, so an SVG and its images always line up. A map reaches `maps/` only after its three images are written, so an interrupted or unfinished build never leaves an SVG without its terrain: the site would show such a map with no relief and, in the focused styles, with no fill. A rebuild with the same inputs writes byte-identical files.
+Every raster step reads the projection that `render.mjs` staged, so an SVG and its images always line up. The azimuthal is clipped 100° from its centre (`CLIP_DEG`), and its inverse returns nothing past the clip, so on wide frames the images stop where the shapes do instead of painting the far hemisphere round the rim. A map reaches `maps/` only after its three images are written, so an interrupted or unfinished build never leaves an SVG without its terrain: the site would show such a map with no relief and, in the focused styles, with no fill. A rebuild with the same inputs writes byte-identical files.
 
 `maps/` is committed and deployed. `build/` is committed but not deployed (`.rsync-filter`), and `build/cache/` is gitignored.
 
