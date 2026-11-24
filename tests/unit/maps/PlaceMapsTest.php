@@ -92,4 +92,32 @@ class PlaceMapsTest extends TestCase {
 
 		$this->assertSame( '<figure></figure>', wt_region_map( self::term( 2, 1, 'Polynesia' ), array( 11, 12 ) ) );
 	}
+
+	public function test_territory_sidebar_shows_its_whole_sub_region() {
+		WP_Mock::userFunction( 'get_the_terms', array( 'return' => array( self::term( 2, 1, 'Polynesia' ) ) ) );
+		WP_Mock::userFunction( 'get_posts', array( 'return' => array( 11, 12 ) ) );
+		WP_Mock::userFunction( 'wt_prefix_the', array( 'return_arg' => 0 ) );
+		WP_Mock::userFunction(
+			'wt_map_places',
+			array(
+				'times'  => 1,
+				'args'   => array(
+					array(
+						'places'  => array( 'rec11', 'rec12' ),
+						'primary' => array( 'rec11', 'rec12' ),
+						'title'   => 'Map of Polynesia',
+						'class'   => 'wt-place-map',
+					),
+				),
+				'return' => '<figure></figure>',
+			)
+		);
+
+		$this->assertSame( '<figure></figure>', wt_territory_region_map( 11 ) );
+	}
+
+	public function test_territory_under_a_continent_has_no_region_map() {
+		WP_Mock::userFunction( 'get_the_terms', array( 'return' => array( self::term( 1, 0, 'Australia & New Zealand' ) ) ) );
+		$this->assertSame( '', wt_territory_region_map( 20 ) );
+	}
 }

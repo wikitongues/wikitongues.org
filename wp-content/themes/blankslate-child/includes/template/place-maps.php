@@ -139,6 +139,26 @@ function wt_territory_map( int $territory_id ): string {
 }
 
 /**
+ * A territory page's second map: its sub-region, the whole region active (the
+ * region page's map), above the "Other territories in…" list. '' when the
+ * territory is filed under a continent, or the set is unbuilt.
+ *
+ * @param int $territory_id Territory post ID.
+ * @return string
+ */
+function wt_territory_region_map( int $territory_id ): string {
+	if ( ! function_exists( 'wt_map_places' ) ) {
+		return '';
+	}
+	$terms = get_the_terms( $territory_id, 'region' );
+	$term  = is_array( $terms ) ? $terms[0] : null;
+	if ( ! $term instanceof WP_Term || ! wt_region_has_map( $term ) ) {
+		return '';
+	}
+	return wt_region_map( $term );
+}
+
+/**
  * A sub-region page's map: every territory in it, primary, framed together.
  * '' for a continent, or when the set is unbuilt.
  *

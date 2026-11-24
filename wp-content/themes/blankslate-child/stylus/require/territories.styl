@@ -39,31 +39,6 @@
 .wt_single-territories__content
 	// Width from single-languages.styl: three quarters, beside the sidebar.
 
-// Sub-region pages with a map: the sidebar on the left across two rows, the
-// map (wider than the sidebar, so small islands read) above the galleries.
-.wt_region-layout
-	display grid
-	grid-template-columns 1fr 3fr
-	align-items start
-
-	> .wt_meta--territories-single
-		grid-column 1
-		grid-row 1 / span 2
-		width auto
-		float none
-
-	> .wt-place-map
-		grid-column 2
-		grid-row 1
-		max-width 640px
-		margin 0 6rem 4.8rem
-
-	> .wt_single-territories__content
-		grid-column 2
-		grid-row 2
-		width auto !important
-		float none
-
 .container
 	width calc(100%/5 * 4)
 	padding 0 6rem 6rem
@@ -102,27 +77,3 @@
 		float none !important
 		width 100% !important
 		padding 0 3rem !important
-
-	// Region map between the title and the lists: the sidebar's own box
-	// gives way (display contents) so its children can be ordered around it.
-	.wt_region-layout
-		display flex
-		flex-direction column
-
-		> .wt_meta--territories-single
-			display contents
-
-			> *
-				order 3
-				padding 0 3rem
-				box-sizing border-box
-
-			> h1
-				order 1
-
-		> .wt-place-map
-			order 2
-			margin 0 3rem 3rem
-
-		> .wt_single-territories__content
-			order 4

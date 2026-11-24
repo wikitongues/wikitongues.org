@@ -51,6 +51,9 @@
 .wt-map-defs .hatch-bg-land { fill: var(--land); }
 .wt-map .shade { display: none; }
 .wt-map--light-full .shade { display: inline; mix-blend-mode: hard-light; }
+/* Light full: the hillshade 60% lighter and toned brown, so land outside the places
+   reads as parchment. The places keep their depth: their relief (HYP_50M_SR) has its own shading. */
+.wt-map--light-full .shade { opacity: .4; filter: sepia(1) saturate(.7); }
 .wt-map--light-full .hl.primary { fill: var(--relief); }
 .wt-map--light-full .hl.secondary { fill: var(--relief); stroke-dasharray: 2.4 1.6; stroke-width: 1; }
 .wt-map--light-full .hl { stroke: var(--primary); stroke-width: .7; }

@@ -43,20 +43,15 @@ $territory_query = new WP_Query(
 	)
 );
 
-// Locator map (plan 3.2): a sub-region's territories, framed together; '' for a
-// continent and until its set is built. Beside the sidebar on desktop, and
-// between the title and the lists on phones (territories.styl).
-$region_map = wt_region_map( $current_region, wp_list_pluck( $territory_query->posts, 'ID' ) );
-echo $region_map ? '<div class="wt_region-layout">' : '';
-
 echo '<div class="wt_meta--territories-single">';
 echo '<h1>' . esc_html( $current_region->name ) . '</h1>';
+// Locator map (plan 3.2): a sub-region's territories, framed together, under the
+// title as on territory pages; '' for a continent and until its set is built.
+echo wt_region_map( $current_region, wp_list_pluck( $territory_query->posts, 'ID' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup built by wt-maps.
 $current_region->parent !== 0 ? require 'modules/territories/territories-child-regions.php' : '';
 require 'modules/territories/territories-sibling-regions.php';
 require 'modules/territories/territories-parent-regions.php';
 echo '</div>';
-
-echo $region_map; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup built by wt-maps.
 
 echo '<main class="wt_single-territories__content">';
 
@@ -127,6 +122,5 @@ if ( $territory_query->have_posts() ) :
 endif;
 
 echo '</main>';
-echo $region_map ? '</div>' : '';
 
 get_footer();
