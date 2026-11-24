@@ -58,21 +58,20 @@ Last reviewed 2026-11-23.
 
 | # | Item | Why now | Spec |
 |---|---|---|---|
-| 1 | Typeahead: a search index built from WordPress | Production search is down, and the staging fix is too slow; a local index is instant and needs no token | [7.9](#79-typeahead-a-search-index-built-from-wordpress) |
-| 2 | Secret scanning in CI | Stop credentials, including ones inside build output, before they're committed | [7.10](#710-secret-scanning-in-ci) |
-| 3 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
-| 4 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 5 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
-| 6 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 7 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 8 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 9 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 10 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 11 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 1 | Secret scanning: act on alerts, close the gaps | Scanning flagged the leaked token in February and nobody saw the alert | [7.10](#710-secret-scanning-act-on-alerts-close-the-gaps) |
+| 2 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
+| 3 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 4 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 5 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 6 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 10 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
-The order follows the product roadmap, with two exceptions: the typeahead and scanning work (#1–3) goes first because search is down, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
+The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
-**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#5), maps (#10), language geography (6.8) and shared styles. #4 hasn't started, and #6–9 haven't moved since the donate redesign. Either return to the order or re-order the queue.
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#4), maps (#9), language geography (6.8) and shared styles. #3 hasn't started, and #5–8 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -662,92 +661,50 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
-#### 7.9 Typeahead: a search index built from WordPress
+#### 7.10 Secret scanning: act on alerts, close the gaps
 
-*Now, #1. Spec for review. Production release #728 is on hold until this ships.* Search needs to be fast, keep the Airtable search's results, and hold no credential in the browser. The per-keystroke Airtable proxy (#726, on staging) is too slow: 1–3.6 s per search and 3–6 s while typing. WordPress already holds the same data, synced from Airtable: 8,088 languages, with `alternate_names` matching Airtable's names field (Hawaiian: "Hawaiian, ’Olelo Hawai’i, …"). So the server builds one index from WordPress, and the browser searches it locally. The old WordPress mode's results were weaker because it ran a `LIKE` query on post meta for every keystroke, not because of the data. Two repos: `wikitongues/typeahead` (the app) and this one.
+*Now, #1.* Detection already exists. Since February 2026 ([#459](https://github.com/wikitongues/wikitongues.org/pull/459)), this repo has had GitHub secret scanning and push protection, plus a TruffleHog check on every PR to `main`. That check scans only the PR's diff and reports only secrets it can verify are live (`--only-verified`). The typeahead token was flagged the day scanning was turned on, and the alert sat unread until Airtable revoked the token nine months later. What's missing is someone acting on alerts, and coverage for the private repo.
 
 **Entities**
 
 | Term | Meaning |
 |---|---|
-| Typeahead app | The React app in `wikitongues/typeahead`; its build is committed to `wp-content/plugins/typeahead/build` |
-| Search index | `wp-content/uploads/typeahead/index.json`: one row per published language, `{id, label, identifier, resourced}` |
-| Rebuild | Writes the index from WordPress: `wp typeahead rebuild`, and automatically after a language is saved |
-| Placeholder samples | 50 random language names saved by each rebuild and passed to the page by `wp_localize_script` |
+| Alert | A GitHub secret-scanning alert on this repo (Security tab). It covers full history, not just new commits |
+| PR scan | `.github/workflows/security.yml`: TruffleHog on the PR diff |
+| `wikitongues/typeahead` | Private, on GitHub's free plan, so it has no GitHub secret scanning or push protection |
 
 **Rules**
 
-*Data*
-- Source: published `languages` posts. `identifier` is the post slug, which is the language's URL and the Airtable Identifier; 136 languages have no `iso_code`. `label` is `alternate_names`, falling back to `standard_name` and then the title. `resourced` is true when `speakers_recorded` is not empty, and `id` is the post ID.
-- No Airtable call and no token. The Custom Search token can be revoked, and the field removed later.
-- The index is written from scratch each time (absolute state): first to a temporary file, then renamed into place, so a failed run leaves the old index.
-- Rows are sorted by `id`, so two rebuilds of unchanged data produce byte-identical files. `wp typeahead rebuild --dry-run` prints added, removed and changed counts; a second run reports 0.
-- Saving, trashing or publishing a language schedules one rebuild a minute later, so a sync batch causes one rebuild rather than hundreds.
-
-*Search, in the browser*
-- The app downloads the index the first time someone focuses the search box, then filters it locally. That's one request per visit, cached by the browser between visits, with the file's modified time as the cache key.
-- Matching follows the Airtable search: case-insensitive substring of any comma-separated name or the ISO code. Results sort by label, with an exact ISO match first. At most 100 are shown.
-- The placeholder uses the samples in the page, so no request happens on page load.
-- Removed in the same PR: the proxy endpoint `wt/v1/typeahead`, the Airtable mode, and `custom/v1/search`. The shortcodes' `data_source` attribute goes too.
+- **Clear the backlog.** Every open alert is resolved at the provider (revoked or rotated), then closed on GitHub with the reason "revoked". Done when no alerts are open. Details are tracked privately, not in this file.
+- **Alerts reach a person.** Repo admins watch the repo with *Custom → Security alerts* turned on, so a new alert sends an email. Validity checks are on, so each alert shows whether the secret still works.
+- **The PR scan fails on unverifiable secrets too.** Replace `--only-verified` with `--results=verified,unknown`: a revoked or unreachable key also fails the check. Known false positives go in an exclusions file, one reason per entry.
+- **Cover the private repo.** The same TruffleHog workflow runs on every PR in `wikitongues/typeahead`.
+- Public identifiers (Airtable base, table and field IDs, the GA4 measurement ID, publishable keys) are not secrets and must not fail a check.
 
 **Example cases**
 
 | Case | Expected |
 |---|---|
-| Type `haw` | Hawaiian first (exact ISO match), under 50 ms once the index is loaded |
-| Type `be → ben → beng → benga` quickly | No network requests after the first focus |
-| `tahitian`, `cha` | Tahitian; Chamorro among the results |
-| `a"b` | No error, no results |
-| A language without `alternate_names` | Found by its `standard_name` (or title) and its identifier |
-| Rebuild twice with no changes | Second run: 0 changes, identical file |
-| Airtable sync renames a language | New name in the index about a minute after the sync saves the post |
-| Make updates 300 languages in one batch | One rebuild, not 300 |
-| Page load | No typeahead request until the box is focused |
-
-**Display:** no visual change. Search feels instant after the index loads on first focus.
+| A push contains a live Airtable token, even inside built JS | Push protection blocks it; if pushed anyway, the PR check fails |
+| A PR adds a revoked or unverifiable token | PR check fails (today it passes) |
+| A PR adds an Airtable base ID or the GA4 measurement ID | Passes |
+| GitHub flags a secret in an old commit | A repo admin gets an email that day and resolves it |
+| A PR to `wikitongues/typeahead` adds a key | PR check fails |
 
 **Open questions**
-1. **Index size.** The estimate is about 92 bytes per language, roughly 750 KB raw and 250–300 KB compressed. Confirm that production compresses `.json`. If it doesn't, shorten the field names or pre-compress the file.
-2. **Capped results.** The Airtable search returned only its first page of 100 matches. The index finds every match, then shows the top 100 by label. Keep that cap?
-3. **The ~500 languages without `alternate_names`.** They fall back to `standard_name`, then the title (300 have neither name field). Is that a data gap to fix in Airtable?
+1. Who watches the alerts: one named person, or two for cover?
+2. Add a weekly scheduled job that fails while any alert is open? Reading alerts needs a token with secret-scanning access (the default `GITHUB_TOKEN` may not have it), so that's one more credential to manage.
 
-**Out of scope:** better ranking (typo tolerance, popularity), which belongs to [3.3](#33-enhanced-search).
-
-**Decisions**
-- 2026-11-23: rejected the per-keystroke Airtable proxy. Staging measured 1–3.6 s per search and 3–6 s while typing.
-- 2026-11-23: build the index from WordPress, not Airtable. The data is the same, freshness comes for free on save, and no credential or rate limit is involved.
-
-#### 7.10 Secret scanning in CI
-
-*Now, #2.* Catch credentials before they're committed, including in committed build output.
-
-**Rules**
-
-- gitleaks runs on every PR in this repo and in `wikitongues/typeahead`. A finding fails the check. It scans `build/` folders too.
-- At setup, one full-history scan of each repo. Findings are reviewed privately, never in issues.
-- GitHub secret scanning and push protection turned on in both repos, where the plan allows it for the private repo.
-- Allowlist in `.gitleaks.toml`, one reason per entry. Public identifiers (Airtable base, table and field IDs, GA4 measurement ID, publishable keys) are allowed by name.
-
-**Example cases**
-
-| Change | Expected |
-|---|---|
-| A PR whose built JS contains an Airtable `pat…` token | Fails |
-| A PR that adds an Airtable base ID (`app…`) | Passes |
-| A PR that adds a private key or `.env` file | Fails |
-
-**Open question:** does the organization's GitHub plan include push protection on private repos?
-
-**Out of scope:** secrets in the database, and moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)).
+**Out of scope:** secrets in the database; moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)); what visitors download ([7.11](#711-browser-credential-scan)).
 
 #### 7.11 Browser credential scan
 
-*Now, #3.* Check what visitors actually download, which a repo scan can miss.
+*Now, #2.* Check what visitors actually download, which a repo scan can miss.
 
 **Rules**
 
 - A Playwright script loads a fixed page list on a target URL (local or staging): home, archive search, a language, a video, a territory, the giving page, the Language Rights hub.
-- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and checks them against the gitleaks rules from 7.10.
+- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and scans them with TruffleHog, the same detectors as the PR scan in 7.10.
 - It reports the URL and the rule that matched, never the matched value.
 - It runs from the deploy workflow against staging; a hit blocks the production deploy. It can also be run by hand.
 - This is the first Layer 4 piece of [7.3](#73-tests).
@@ -757,7 +714,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 | Target | Expected |
 |---|---|
 | A page loading the old typeahead bundle | Flagged |
-| The site after 7.9 ships | Clean |
+| The site today (search index shipped 2026-11-23) | Clean |
 | A page with the GA4 measurement ID | Clean (allowlisted) |
 
 **Open question:** do third-party scripts (FundraiseUp, GTM) get scanned, or skipped as not ours?
