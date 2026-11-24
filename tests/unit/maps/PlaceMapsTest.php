@@ -105,6 +105,8 @@ class PlaceMapsTest extends TestCase {
 			array( 'return' => static fn( array $args ): array => 2 === $args['tax_query'][0]['terms'][0] ? array( 11 ) : array( 12, 13 ) )
 		);
 		WP_Mock::userFunction( 'wt_prefix_the', array( 'return_arg' => 0 ) );
+		// A continent links its sub-regions (step 2a), never its territories.
+		WP_Mock::userFunction( 'get_term_link' )->andReturnUsing( static fn( $t ) => 'https://wikitongues.org/territories/' . $t->slug . '/' );
 		WP_Mock::userFunction(
 			'wt_map_places',
 			array(
@@ -116,6 +118,18 @@ class PlaceMapsTest extends TestCase {
 						'title'   => 'Map of Europe',
 						'class'   => 'wt-place-map',
 						'view'    => 'continent',
+						'groups'  => array(
+							array(
+								'n'      => 'Eastern Europe',
+								'u'      => 'https://wikitongues.org/territories/eastern-europe/',
+								'places' => array( 'rec11' ),
+							),
+							array(
+								'n'      => 'Western Europe',
+								'u'      => 'https://wikitongues.org/territories/western-europe/',
+								'places' => array( 'rec12', 'rec13' ),
+							),
+						),
 					),
 				),
 				'return' => '<figure></figure>',

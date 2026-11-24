@@ -11,6 +11,9 @@
  *
  *     { "places": { "recxJZFYc5RSOFGP6": { "n": "French Polynesia", "u": "https://…" } } }
  *
+ * A continent map links its sub-regions, not its territories: the theme passes
+ * the groups, and each place leads to its group's page.
+ *
  * Resolved by record ID (`_airtable_record_id`), never by title. A subdivision
  * has no page (plan 6.8), so it leads to its nation's page and says so (`v`,
  * "via"). A place with no published page gets a label and no URL. Contested
@@ -92,12 +95,37 @@ function wt_maps_tagged_places( string $svg ): array {
 /**
  * The figure's `data-wt-map` value.
  *
- * @param array<string, array{n: string, u?: string, v?: string}> $links From wt_maps_place_links().
+ * With groups (a continent map), each place leads to its group instead of its
+ * own page: `places` maps a record ID to its group's number (`g`), and `groups`
+ * holds each group's label and URL. A place in no group is left out.
+ *
+ * @param array<string, array{n: string, u?: string, v?: string}>      $links  From wt_maps_place_links().
+ * @param list<array{n: string, u: string, places: list<string>}>       $groups Groups in map order (the build's `grp-1`, `grp-2`, …).
  * @return string JSON, not yet escaped for the attribute.
  */
-function wt_maps_interaction_json( array $links ): string {
-	ksort( $links );
-	return (string) wp_json_encode( array( 'places' => $links ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+function wt_maps_interaction_json( array $links, array $groups = array() ): string {
+	if ( array() !== $groups ) {
+		$places = array();
+		$labels = array();
+		foreach ( $groups as $i => $group ) {
+			$labels[ (string) ( $i + 1 ) ] = array(
+				'n' => $group['n'],
+				'u' => $group['u'],
+			);
+			foreach ( $group['places'] as $place ) {
+				$places[ $place ] = array( 'g' => $i + 1 );
+			}
+		}
+		ksort( $places );
+		$data = array(
+			'places' => $places,
+			'groups' => $labels,
+		);
+	} else {
+		ksort( $links );
+		$data = array( 'places' => $links );
+	}
+	return (string) wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 }
 
 /**

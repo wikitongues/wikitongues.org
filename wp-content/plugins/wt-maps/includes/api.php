@@ -160,11 +160,13 @@ function wt_map( array $args = array() ): string {
  * language, for pages that aren't one (a Language Rights report region or
  * country). '' when the set has no built map.
  *
- * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string, interactive?: bool} $args
+ * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string, interactive?: bool, groups?: list<array{n: string, u: string, places: list<string>}>} $args
  *     Places and primary places as record IDs; the map's accessible title;
  *     `inset` scales the locator globe (1.2 on territory pages); `view` picks
  *     another drawing of the places (`continent`), see wt_maps_set_key().
- *     `interactive` adds hover labels and links (default: Settings → Maps).
+ *     `interactive` adds hover labels and links (default: Settings → Maps);
+ *     `groups` makes each place lead to its group (a continent's sub-regions),
+ *     and leaves the neighbours unlinked.
  * @return string
  */
 function wt_map_places( array $args ): string {
@@ -188,7 +190,8 @@ function wt_map_places( array $args ): string {
 	// resolved with the place names in one query. The focused styles fog the
 	// neighbours out, so they link only the places.
 	$svg    = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local plugin file.
-	$tagged = $inter && in_array( $style, array( 'light-full', 'dark-full' ), true ) ? wt_maps_tagged_places( $svg ) : array();
+	$groups = $args['groups'] ?? array();
+	$tagged = $inter && array() === $groups && in_array( $style, array( 'light-full', 'dark-full' ), true ) ? wt_maps_tagged_places( $svg ) : array();
 	$links  = wt_maps_place_links( array_values( array_unique( array_merge( $places, $tagged ) ) ) );
 	$names  = array_map( static fn( array $link ): string => $link['n'], array_intersect_key( $links, array_flip( $places ) ) );
 	if ( function_exists( 'wt_prefix_the' ) ) { // The theme's "the Northern Mariana Islands".
@@ -199,7 +202,7 @@ function wt_map_places( array $args ): string {
 	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names, $origins );
 	$class = trim( 'wt-map wt-map--' . $style . ( $inter ? ' wt-map--interactive' : '' ) . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
 	$inset = (float) ( $args['inset'] ?? 1.0 );
-	$data  = $inter ? wt_maps_interaction_json( $links ) : '';
+	$data  = $inter ? wt_maps_interaction_json( $links, $groups ) : '';
 
 	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, $inset, $data, Renderer::VERSION, filemtime( $file ) ) ) );
 	$figure    = wp_cache_get( $cache_key, 'wt_maps' );

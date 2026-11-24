@@ -277,24 +277,49 @@ function wt_region_map( WP_Term $region, ?array $territory_ids = null ): string 
 	if ( ! function_exists( 'wt_map_places' ) ) {
 		return '';
 	}
-	$view = '';
+	$view   = '';
+	$groups = array();
 	if ( wt_region_has_map( $region ) ) {
 		$places = wt_maps_record_ids( $territory_ids ?? wt_region_territory_ids( $region ) );
 	} else {
 		$continent = wt_continent_set( $region );
 		$places    = null === $continent ? array() : $continent['places'];
 		$view      = 'continent';
+		$groups    = null === $continent ? array() : wt_continent_link_groups( $region, $continent['groups'] );
 	}
 	if ( count( $places ) < 2 ) {
 		return '';
 	}
-	return wt_map_places(
-		array(
-			'places'  => $places,
-			'primary' => $places,
-			'title'   => 'Map of ' . wt_prefix_the( html_entity_decode( $region->name ) ),
-			'class'   => 'wt-place-map', // One class: wt_map_places() sanitizes it as one.
-			'view'    => $view,
-		)
+	$args = array(
+		'places'  => $places,
+		'primary' => $places,
+		'title'   => 'Map of ' . wt_prefix_the( html_entity_decode( $region->name ) ),
+		'class'   => 'wt-place-map', // One class: wt_map_places() sanitizes it as one.
+		'view'    => $view,
 	);
+	if ( array() !== $groups ) {
+		$args['groups'] = $groups; // A continent: clicks open its sub-regions, not territories.
+	}
+	return wt_map_places( $args );
+}
+
+/**
+ * A continent map's links: each sub-region, in group order, with its page and
+ * its places, so a click on any of its territories opens the sub-region.
+ *
+ * @param WP_Term            $continent A top-level `region` term.
+ * @param array<string, int> $groups    Place record ID → group number, from wt_continent_set().
+ * @return list<array{n: string, u: string, places: list<string>}>
+ */
+function wt_continent_link_groups( WP_Term $continent, array $groups ): array {
+	$out = array();
+	foreach ( wt_continent_sub_regions( $continent ) as $i => $sub_region ) {
+		$link  = get_term_link( $sub_region );
+		$out[] = array(
+			'n'      => html_entity_decode( $sub_region->name ),
+			'u'      => is_string( $link ) ? $link : '',
+			'places' => array_keys( array_filter( $groups, static fn( int $n ): bool => $n === $i + 1 ) ),
+		);
+	}
+	return $out;
 }
