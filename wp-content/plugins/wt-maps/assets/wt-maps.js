@@ -50,13 +50,24 @@
 			+ '<feMerge><feMergeNode in="cf"/><feMergeNode in="lf"/></feMerge></filter>';
 		svg.insertBefore( defs, svg.firstChild );
 
-		// Every shape of a group: its territories and their dots, or, for a group
-		// outside the continent, its countries on the base map.
+		// Every shape of a group: its territories, or, for a group outside the
+		// continent, its countries on the base map; and its dots and halo, which
+		// are all some groups have (Micronesia: islands too small to draw).
 		function groupEls( g ) {
-			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place], .lands [data-place]' ), function ( el ) {
+			const els = Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .markers [data-place], .lands [data-place]' ), function ( el ) {
 				const p = places[ el.dataset.place ];
 				return p && p.g === g;
 			} );
+			// The dots are drawn by a <use> per group (`#dots-<g>-<map>`).
+			svg.querySelectorAll( '.dots use' ).forEach( function ( use ) {
+				if ( 0 === ( use.getAttribute( 'href' ) || '' ).indexOf( '#dots-' + g + '-' ) ) {
+					els.push( use );
+				}
+			} );
+			svg.querySelectorAll( '.halo-hit[data-group="' + g + '"]' ).forEach( function ( hit ) {
+				els.push( hit );
+			} );
+			return els;
 		}
 
 		const tip = document.createElement( 'div' );
@@ -181,6 +192,10 @@
 				top = Math.min( top, b.top );
 			} );
 			const s = svg.getBoundingClientRect();
+			if ( l > r ) { // Nothing to anchor to: the middle of the map.
+				place( s.left + s.width / 2 - f.left, s.top + s.height / 2 - f.top );
+				return;
+			}
 			place( ( Math.max( l, s.left ) + Math.min( r, s.right ) ) / 2 - f.left, Math.max( top, s.top ) - f.top );
 		}
 
