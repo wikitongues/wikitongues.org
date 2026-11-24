@@ -45,9 +45,11 @@ function wt_continent_frames(): array {
 			'roll'   => -10.0,
 		),
 		// Fitted, so Russia is drawn whole, and out to Spain's Canary Islands,
-		// which the fit (main bodies only) would leave off the west edge.
+		// which the fit (main bodies only) would leave off the west edge; then
+		// 20% closer, into the fit's margin.
 		'europe'   => array(
 			'include' => array( array( -18.2, 27.6 ) ),
+			'crop'    => array( 0.0833, 0.0833, 0.9167, 0.9167 ), // 20% closer, centred.
 		),
 		'oceania'  => array(
 			'center' => array( 166.0, -14.0 ),

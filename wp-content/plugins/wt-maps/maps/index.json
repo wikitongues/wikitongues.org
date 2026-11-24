@@ -10006,10 +10006,10 @@
      -67.501926,
      0
     ],
-    "scale": 167.909,
+    "scale": 201.474,
     "translate": [
-     222.629,
-     159.591
+     227.152,
+     161.509
     ],
     "cornerDeg": 109.31
    },
@@ -10018,7 +10018,7 @@
     67.501926
    ],
    "fine": false,
-   "stretch": 198.8,
+   "stretch": 91.7,
    "scale_km": null,
    "claimed": [
     "Crimea",
@@ -10037,12 +10037,12 @@
     "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 82147,
-   "svg_gzip": 26882,
+   "svg_bytes": 77541,
+   "svg_gzip": 25429,
    "images": {
-    "relief": 30144,
-    "shade": 20008,
-    "sea": 30532
+    "relief": 28976,
+    "shade": 20794,
+    "sea": 30384
    }
   },
   "set-3c6af9f0ddf4": {
