@@ -135,6 +135,7 @@ Use this when you know the dump is recent enough (e.g. within the same day as a 
 4. **Rsync uploads** from `~/public_html/wp-content/uploads/` → `~/public_html/staging.wikitongues.org/wp-content/uploads/`
 5. **Search-replace** `https://wikitongues.org` → `https://staging.wikitongues.org` (and http variant)
 6. **Verifies** `siteurl` and `home` options point to `staging.wikitongues.org`
+7. **Restores the Language Rights release** when `~/wikitongues-private/staging/releases/current.json` exists: activates wt-rights, sets the gateway's `rights_reports` row (Required, documents form), flushes rewrites and imports that release. Production keeps no reports until a release makes them public, so without this every sync empties the report on staging. Point the symlink at another file to change what staging shows (`ln -sfn rights-2027.1-demo.json current.json`); remove it to stop. Regions come back **upcoming**, and press accounts do not come back: users are production's
 
 ---
 
