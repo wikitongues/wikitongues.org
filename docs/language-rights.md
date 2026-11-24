@@ -349,3 +349,5 @@ Run once the build PRs are merged and deployed to staging, before South and Cent
 5. **Releases → Release** (or `status south-central-asia released`): pages public, the PDF downloads through the gateway after the email step, and GA4 DebugView shows the page details, `rights_updates_signup`, the donate click and the download funnel.
 6. **Back to upcoming** (or `status south-central-asia upcoming`): everything is gone from public view, report URLs redirect to the region, and the PDFs are gone from the server.
 
+**Staging keeps its release across syncs.** Each sync from production empties the report on staging, since production has no reports until a release makes them public. Release files for staging live in `~/wikitongues-private/staging/releases/`; the symlink `current.json` names the one staging shows, and the sync re-imports it ([staging-sync.md](staging-sync.md#what-the-sync-does)). Regions come back upcoming; re-run any `status` change and recreate press accounts after a sync.
+

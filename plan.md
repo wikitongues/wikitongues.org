@@ -58,21 +58,20 @@ Last reviewed 2026-11-23.
 
 | # | Item | Why now | Spec |
 |---|---|---|---|
-| 1 | Typeahead: a search index built from WordPress | Production search is down, and the staging fix is too slow; a local index is instant and needs no token | [7.9](#79-typeahead-a-search-index-built-from-wordpress) |
-| 2 | Secret scanning in CI | Stop credentials, including ones inside build output, before they're committed | [7.10](#710-secret-scanning-in-ci) |
-| 3 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
-| 4 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
-| 5 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
-| 6 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 7 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 8 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 9 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 10 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 11 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 1 | Secret scanning: act on alerts, close the gaps | Scanning flagged the leaked token in February and nobody saw the alert | [7.10](#710-secret-scanning-act-on-alerts-close-the-gaps) |
+| 2 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
+| 3 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 4 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
+| 5 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 6 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 10 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
 
-The order follows the product roadmap, with two exceptions: the typeahead and scanning work (#1–3) goes first because search is down, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
+The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
-**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#5), maps (#10), language geography (6.8) and shared styles. #4 hasn't started, and #6–9 haven't moved since the donate redesign. Either return to the order or re-order the queue.
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#4), maps (#9), language geography (6.8) and shared styles. #3 hasn't started, and #5–8 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -272,6 +271,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-22 | Keep Kristen's research status names; add only Held, and map the rest in code | No renames to coordinate or retrain; nothing in Airtable moves |
 | 2026-11-22 | Build plan approved: see Steps. Simplified to WordPress post statuses for embargo, local export, no admin screen | Every goal met with the least machinery |
 | 2026-11-23 | Production stays dark until the release plan calls for it; `/rights` points to the project page | wt-rights is deployed but set up on production by hand: once it is active with a release imported, the hub shows names, dates and nations even while upcoming, so activating it is itself a release step. A short link to the hub would 404 until then |
+| 2026-11-24 | The staging sync re-imports the release `current.json` points to, instead of putting reports on production | Production stays dark and keeps no unreviewed text; staging keeps its demo across weekly syncs |
 | 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
 | 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
 | 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
@@ -294,15 +294,110 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 
 ##### Step 2: interactive maps
 
-- **MapLibre GL** with vector tiles that we host ourselves: a Protomaps PMTiles file served from the plugin or from uploads. No API key in the browser and no third-party tile server. The style reuses the Brand colors and the hillshade.
-- **Territory pages:** the territory highlighted, with the languages listed beside the map. Languages don't have coordinates, so link from shaded countries, not language markers, until there's a source for language locations (Glottolog has some, keyed by `glottocode`).
-- **Region pages:** each territory shaded by how many languages it has, linking to its territory page.
-- **A world view**, if one is wanted (homepage, region index): compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
-- **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
-- **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
-- **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
-- **Choose the approach first (open, 2026-11-23).** The bullets above assume MapLibre GL. Two explorations on 2026-11-23 built on the static step 1 SVGs instead: hover labels and click-through on the sidebar map (spec approved and parked on branch `claude/maps-interactivity-01b803`), and prebuilt maps on every territory page and the 22 sub-region pages (spec on branch `claude/maps-place-pages-b22447`). The Language Rights region maps (#714) already build a wt-maps set per release region. Settle one approach here before building.
+**Decided 2026-11-24: prebuilt maps plus a small script, not MapLibre.** Every map stays a wt-maps SVG built ahead of time, and one deferred script (about 3 KB gzipped) adds hover labels and clicks to any map on the page. No tile hosting, no second visual style, and without JavaScript each map is the step 1 image. MapLibre (self-hosted PMTiles) comes back only if pan and zoom, or language point markers, become goals.
+
+- **Every map:** hover labels and clicks, per the step 2a spec below.
+- **Territory pages:** the territory's map (step 1b, shipped in [#741](https://github.com/wikitongues/wikitongues.org/pull/741)), with its neighbouring countries clickable. Languages have no coordinates, so links go from shapes, not language markers.
+- **Region pages:** each territory on the sub-region map links to its page (step 2a). Shading each territory by how many languages it has is a class PHP adds at render, with no rebuild; it gets its own spec. Some territories list hundreds of languages (India: 403): count raw IDs, as territory pages already do.
+- **A world view**, if one is wanted (homepage, region index): one more prebuilt map. Compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
+- **Instrument:** `map_interaction` (`place`, `action`: `hover` or `click`), sent by the script.
+- **Order:** step 2a (the settings switch, neighbours tagged in the build, a full rebuild, the script and its CSS); then region shading; then instrumentation.
 - **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
+
+##### Step 1b: territory and sub-region pages
+
+Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, continents held). Built on `feature/cc/maps-place-pages`; see [maps.md](docs/maps.md#territory-and-region-pages). Follow-ups:
+
+- [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
+- [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
+- [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Europe's SVG is over budget.
+- [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
+- [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
+- [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
+- [ ] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done locally. On staging and production, after this PR deploys: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
+
+##### Step 1c: continent maps (approved and built 2026-11-24)
+
+Maps for the five continent pages.
+
+**Glossary.** *Continent:* a top-level `region` term. *Sub-region:* its child term. *Small territory:* under the ring threshold in the frame (largest island under 150 square units). *Island sub-region:* its land covers under 15% of the area its territories span (measured 2026-11-24: island groups 0–11%, all others 21% or more).
+
+**Entities**
+
+| Thing | Stored | Source |
+|---|---|---|
+| Continent frame (centre, radius in degrees) | a table in `place-maps.php`, keyed on the term slug | editorial |
+| Group: territory → sub-region | `sets.json`, rebuilt on every export | `region` taxonomy |
+| Halo sub-regions | worked out by the build (`render.mjs`) | the island rule, on the drawn areas |
+
+**Rules**
+- A continent map draws every published territory in its sub-regions, all active.
+- One strong outline per sub-region; country borders inside it are hidden. **No tints**: sub-regions differ by outline only.
+- No rings. Every small territory shows as a dot. An island sub-region also gets one **halo**: a narrow field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge.
+- The frame is set per continent (centre, radius, roll, crop, include), tuned by eye so margins are even; Europe's is fitted, so Russia is drawn whole, and includes the Canary Islands (2026-11-24). The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
+
+**Example cases**
+
+| Continent | Expected |
+|---|---|
+| Americas | four outlines; the Caribbean is one halo (seen in round 3) |
+| Oceania | Micronesia, Melanesia and Polynesia are one halo each; Polynesia touches Melanesia near Fiji (round 3) |
+| Africa | six outlines, no halo; Comoros, Mauritius and Seychelles as dots |
+| Europe | four outlines; Russia whole, so the frame reaches the Pacific |
+| Asia | five outlines, no halo; the Maldives and Singapore as dots |
+| Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
+
+**Display.** In the sidebar under the title, as on sub-region pages. Outlines, halos and dots in brand deep blue on parchment. Region borders only (2026-11-24): no country borders inside the continent or round it.
+
+**Decisions (2026-11-24)**
+- Small territories outside island sub-regions get dots too.
+- Sidebar, like sub-region maps.
+- One style, Light full (2026-11-24); the dark styles' palettes were dropped with them.
+- Australia & New Zealand is a sub-region of Oceania.
+
+**Out of scope:** tints, the world view, interactivity (step 2).
+
+##### Step 2a: hover labels and clicks (approved 2026-11-23)
+
+Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF). Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
+
+**Glossary.** *Place:* a territory or subdivision a map highlights (`data-place` = its record ID). *Neighbour:* any other country in the frame. *Contested area:* a Natural Earth disputed area (`data-area`). *Link table:* per figure, record ID → label and URL (`data-wt-map` JSON), built at render.
+
+**Rules**
+- Places and neighbours resolve by record ID, never by title. Neighbours get `data-place` in the build (`render.mjs`, on land shapes), so map units such as France (`units:FXX`) resolve too. That needs a full rebuild.
+- A territory links to its page. A subdivision links to its nation's page and is labelled "Part of" the nation. A place with no published page gets a label and no link.
+- A contested area shows its Natural Earth name and "Contested area", and never links.
+- The SVG stays `role="img"` with no tab stops. The place links next to the map are the keyboard and screen reader path; focusing one outlines its place.
+- Mouse: hover labels, click opens. Touch: the first tap labels with an "Open" link, a second tap opens.
+- On/off in Settings → Maps, like the sidebar map.
+
+**Example cases**
+
+| Language | Shape | Label | Click |
+|---|---|---|---|
+| Tahitian | French Polynesia (rings) | French Polynesia | its territory page |
+| Hawaiian | Hawaii (subdivision) | Hawaii · Part of the United States | United States page |
+| French | six places | each name | each page |
+| Ukrainian | Crimea | Crimea · Contested area | none |
+| Ukrainian | Poland (neighbour) | Poland | Poland page |
+| Spanish | France (neighbour, unit FXX) | France | France page |
+
+**Display.** An outline above all layers: brand blue on a parchment casing. Fills don't change. A black label chip. No other affordance than the pointer cursor. The CSS is its own partial, `wt-maps-interactive.styl`.
+
+**Costs (prototype, local data).** Places: no extra queries, 0.14–0.30 KB gzipped per map. Neighbours resolved in PHP measured +1 to +5 queries and up to 2.5 KB (French); tagging them in the build removes the queries. Script 2.7 KB gzipped, deferred.
+
+**Out of scope.** Zoom and pan, labels drawn on the map, links to languages, subdivision pages.
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-23 | Links resolve at render through one JSON table per figure; the SVGs stay shared | No per-language SVGs, no rebuild for links |
+| 2026-11-23 | Neighbours clickable, tagged in the build | Discovery by place; covers map units |
+| 2026-11-23 | Contested areas use Natural Earth names and never link | Neutral borders |
+| 2026-11-23 | No extra affordance; on/off in Settings → Maps | Quiet by default; can be turned off without a deploy |
+| 2026-11-23 | Keyboard and screen readers use the links next to the map | No duplicate tab stops |
+| 2026-11-24 | One map style, Light full; the other three, the fog and their files are retired | Organizational buy-in for Light full |
+| 2026-11-24 | Continent maps label and open regions, inside and outside the continent, and draw region borders only | A continent page is about its regions, not its countries |
+| 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 
 ##### Step 1 follow-ups
 
@@ -549,7 +644,7 @@ Two related gaps:
 
 ##### Display
 
-- **Language page:** "Traditionally spoken in" (origin), then "Also spoken in"; "Spoken in" when there is no origin.
+- **Language page:** "Place of origin" or "Places of origin", by count (replaces today's "Territories of origin" in `meta--languages-single.php`), then "Also spoken in"; "Spoken in" when there is no origin.
 - **Map:** for each territory, draw the subdivisions the language lists there, else the whole territory; origins primary. No per-language map setting.
 - **Territory sidebar:** ISO territories with at least one language.
 - **Territory pages:** their subdivisions, each with its languages, then the rest. Subdivisions have no pages or routes of their own.
@@ -599,6 +694,7 @@ Subdivision pages and routes; historical origin as a field; cell-based geography
 | 2026-11-20 | Make sends origins and presence as two lists; the sync writes territories as their union | Rule 2 in one place; absolute state; the archival origin field stays the only source of origins |
 | 2026-11-20 | Maps v1 ships with the origins fallback, documented as temporary; `territories` stays the February copy until presence exists | Nothing new to build now; the February copy holds ~66 real extra places the review hasn't replaced |
 | 2026-11-20 | Origin review approved for 46 languages (186 decisions); retired codes, `apa` and Wikitongues codes set aside | Evidence from Glottolog; one decision per card |
+| 2026-11-23 | The sidebar origin header reads "Place of origin" or "Places of origin", by count | Frederico's request; ships with the WordPress label step |
 
 ### 7. Engineering foundations
 
@@ -662,92 +758,50 @@ Set baselines for the language, territory, region and search pages, and monitor 
 - **Retire the text row `image` / `image_caption` fields.** Images now go in the WYSIWYG; Valbina's profile is the only user, and her photo moved into her text locally on 2026-10-15; make the same edit on staging and production first. Remove them from the ACF JSON *and* trash them in the admin (deleting the JSON alone doesn't), then drop the field branch in `text-layout.php`.
 - **Strip `.main-content` to layout** last. It is still both a layout box and a tag stylesheet (`ul li { float: left }`); the Revitalization application page's list is the last thing that depends on its float rules.
 
-#### 7.9 Typeahead: a search index built from WordPress
+#### 7.10 Secret scanning: act on alerts, close the gaps
 
-*Now, #1. Spec for review. Production release #728 is on hold until this ships.* Search needs to be fast, keep the Airtable search's results, and hold no credential in the browser. The per-keystroke Airtable proxy (#726, on staging) is too slow: 1–3.6 s per search and 3–6 s while typing. WordPress already holds the same data, synced from Airtable: 8,088 languages, with `alternate_names` matching Airtable's names field (Hawaiian: "Hawaiian, ’Olelo Hawai’i, …"). So the server builds one index from WordPress, and the browser searches it locally. The old WordPress mode's results were weaker because it ran a `LIKE` query on post meta for every keystroke, not because of the data. Two repos: `wikitongues/typeahead` (the app) and this one.
+*Now, #1.* Detection already exists. Since February 2026 ([#459](https://github.com/wikitongues/wikitongues.org/pull/459)), this repo has had GitHub secret scanning and push protection, plus a TruffleHog check on every PR to `main`. That check scans only the PR's diff and reports only secrets it can verify are live (`--only-verified`). The typeahead token was flagged the day scanning was turned on, and the alert sat unread until Airtable revoked the token nine months later. What's missing is someone acting on alerts, and coverage for the private repo.
 
 **Entities**
 
 | Term | Meaning |
 |---|---|
-| Typeahead app | The React app in `wikitongues/typeahead`; its build is committed to `wp-content/plugins/typeahead/build` |
-| Search index | `wp-content/uploads/typeahead/index.json`: one row per published language, `{id, label, identifier, resourced}` |
-| Rebuild | Writes the index from WordPress: `wp typeahead rebuild`, and automatically after a language is saved |
-| Placeholder samples | 50 random language names saved by each rebuild and passed to the page by `wp_localize_script` |
+| Alert | A GitHub secret-scanning alert on this repo (Security tab). It covers full history, not just new commits |
+| PR scan | `.github/workflows/security.yml`: TruffleHog on the PR diff |
+| `wikitongues/typeahead` | Private, on GitHub's free plan, so it has no GitHub secret scanning or push protection |
 
 **Rules**
 
-*Data*
-- Source: published `languages` posts. `identifier` is the post slug, which is the language's URL and the Airtable Identifier; 136 languages have no `iso_code`. `label` is `alternate_names`, falling back to `standard_name` and then the title. `resourced` is true when `speakers_recorded` is not empty, and `id` is the post ID.
-- No Airtable call and no token. The Custom Search token can be revoked, and the field removed later.
-- The index is written from scratch each time (absolute state): first to a temporary file, then renamed into place, so a failed run leaves the old index.
-- Rows are sorted by `id`, so two rebuilds of unchanged data produce byte-identical files. `wp typeahead rebuild --dry-run` prints added, removed and changed counts; a second run reports 0.
-- Saving, trashing or publishing a language schedules one rebuild a minute later, so a sync batch causes one rebuild rather than hundreds.
-
-*Search, in the browser*
-- The app downloads the index the first time someone focuses the search box, then filters it locally. That's one request per visit, cached by the browser between visits, with the file's modified time as the cache key.
-- Matching follows the Airtable search: case-insensitive substring of any comma-separated name or the ISO code. Results sort by label, with an exact ISO match first. At most 100 are shown.
-- The placeholder uses the samples in the page, so no request happens on page load.
-- Removed in the same PR: the proxy endpoint `wt/v1/typeahead`, the Airtable mode, and `custom/v1/search`. The shortcodes' `data_source` attribute goes too.
+- **Clear the backlog.** Every open alert is resolved at the provider (revoked or rotated), then closed on GitHub with the reason "revoked". Done when no alerts are open. Details are tracked privately, not in this file.
+- **Alerts reach a person.** Repo admins watch the repo with *Custom → Security alerts* turned on, so a new alert sends an email. Validity checks are on, so each alert shows whether the secret still works.
+- **The PR scan fails on unverifiable secrets too.** Replace `--only-verified` with `--results=verified,unknown`: a revoked or unreachable key also fails the check. Known false positives go in an exclusions file, one reason per entry.
+- **Cover the private repo.** The same TruffleHog workflow runs on every PR in `wikitongues/typeahead`.
+- Public identifiers (Airtable base, table and field IDs, the GA4 measurement ID, publishable keys) are not secrets and must not fail a check.
 
 **Example cases**
 
 | Case | Expected |
 |---|---|
-| Type `haw` | Hawaiian first (exact ISO match), under 50 ms once the index is loaded |
-| Type `be → ben → beng → benga` quickly | No network requests after the first focus |
-| `tahitian`, `cha` | Tahitian; Chamorro among the results |
-| `a"b` | No error, no results |
-| A language without `alternate_names` | Found by its `standard_name` (or title) and its identifier |
-| Rebuild twice with no changes | Second run: 0 changes, identical file |
-| Airtable sync renames a language | New name in the index about a minute after the sync saves the post |
-| Make updates 300 languages in one batch | One rebuild, not 300 |
-| Page load | No typeahead request until the box is focused |
-
-**Display:** no visual change. Search feels instant after the index loads on first focus.
+| A push contains a live Airtable token, even inside built JS | Push protection blocks it; if pushed anyway, the PR check fails |
+| A PR adds a revoked or unverifiable token | PR check fails (today it passes) |
+| A PR adds an Airtable base ID or the GA4 measurement ID | Passes |
+| GitHub flags a secret in an old commit | A repo admin gets an email that day and resolves it |
+| A PR to `wikitongues/typeahead` adds a key | PR check fails |
 
 **Open questions**
-1. **Index size.** The estimate is about 92 bytes per language, roughly 750 KB raw and 250–300 KB compressed. Confirm that production compresses `.json`. If it doesn't, shorten the field names or pre-compress the file.
-2. **Capped results.** The Airtable search returned only its first page of 100 matches. The index finds every match, then shows the top 100 by label. Keep that cap?
-3. **The ~500 languages without `alternate_names`.** They fall back to `standard_name`, then the title (300 have neither name field). Is that a data gap to fix in Airtable?
+1. Who watches the alerts: one named person, or two for cover?
+2. Add a weekly scheduled job that fails while any alert is open? Reading alerts needs a token with secret-scanning access (the default `GITHUB_TOKEN` may not have it), so that's one more credential to manage.
 
-**Out of scope:** better ranking (typo tolerance, popularity), which belongs to [3.3](#33-enhanced-search).
-
-**Decisions**
-- 2026-11-23: rejected the per-keystroke Airtable proxy. Staging measured 1–3.6 s per search and 3–6 s while typing.
-- 2026-11-23: build the index from WordPress, not Airtable. The data is the same, freshness comes for free on save, and no credential or rate limit is involved.
-
-#### 7.10 Secret scanning in CI
-
-*Now, #2.* Catch credentials before they're committed, including in committed build output.
-
-**Rules**
-
-- gitleaks runs on every PR in this repo and in `wikitongues/typeahead`. A finding fails the check. It scans `build/` folders too.
-- At setup, one full-history scan of each repo. Findings are reviewed privately, never in issues.
-- GitHub secret scanning and push protection turned on in both repos, where the plan allows it for the private repo.
-- Allowlist in `.gitleaks.toml`, one reason per entry. Public identifiers (Airtable base, table and field IDs, GA4 measurement ID, publishable keys) are allowed by name.
-
-**Example cases**
-
-| Change | Expected |
-|---|---|
-| A PR whose built JS contains an Airtable `pat…` token | Fails |
-| A PR that adds an Airtable base ID (`app…`) | Passes |
-| A PR that adds a private key or `.env` file | Fails |
-
-**Open question:** does the organization's GitHub plan include push protection on private repos?
-
-**Out of scope:** secrets in the database, and moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)).
+**Out of scope:** secrets in the database; moving `wp-config.php` secrets to `.env` ([7.6](#76-smaller-items)); what visitors download ([7.11](#711-browser-credential-scan)).
 
 #### 7.11 Browser credential scan
 
-*Now, #3.* Check what visitors actually download, which a repo scan can miss.
+*Now, #2.* Check what visitors actually download, which a repo scan can miss.
 
 **Rules**
 
 - A Playwright script loads a fixed page list on a target URL (local or staging): home, archive search, a language, a video, a territory, the giving page, the Language Rights hub.
-- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and checks them against the gitleaks rules from 7.10.
+- It records every response body (HTML, JS, JSON) and the page's `window.*Settings*` objects, and scans them with TruffleHog, the same detectors as the PR scan in 7.10.
 - It reports the URL and the rule that matched, never the matched value.
 - It runs from the deploy workflow against staging; a hit blocks the production deploy. It can also be run by hand.
 - This is the first Layer 4 piece of [7.3](#73-tests).
@@ -757,7 +811,7 @@ Set baselines for the language, territory, region and search pages, and monitor 
 | Target | Expected |
 |---|---|
 | A page loading the old typeahead bundle | Flagged |
-| The site after 7.9 ships | Clean |
+| The site today (search index shipped 2026-11-23) | Clean |
 | A page with the GA4 measurement ID | Clean (allowlisted) |
 
 **Open question:** do third-party scripts (FundraiseUp, GTM) get scanned, or skipped as not ours?

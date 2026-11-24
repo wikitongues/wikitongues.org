@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Typeahead: a search index built from WordPress | 2026-11-23 | [#725], [#726], [#729], [#730], [#733], [#735]; typeahead [#9][ta9], [#10][ta10] | [content-model.md](content-model.md#search) |
 | Maps, step 1: a locator map on every language page (`wt-maps`) | 2026-11-16 – 23 | [#669], [#698]–[#702], [#720] | [maps.md](maps.md) |
 | Shared editorial styles: one set of tokens and mixins for the donate page and the Language Rights report | 2026-11-23 | [#716], [#717], [#718] | [content-styles.md](content-styles.md#editorial-pages-shared-tokens) |
 | Language geography, phase B (maps slice): subdivisions as objects, keyed on record IDs | 2026-11-18 – 19 | [#687], [#690], [#693] | [airtable-sync.md](airtable-sync.md#territories), [content-model.md](content-model.md#territories-and-regions) |
@@ -35,6 +36,41 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-24 (Maps: Light full only)
+
+### One map style; continent maps by region
+**Branch:** `refactor/cc/maps-light-full-only`.
+
+- **Light full is the only style** (organizational buy-in, 2026-11-24). Light focused, Dark full and Dark focused are retired with everything only they used: the style setting and `style` argument, `Renderer::STYLES`, their CSS tokens and rules, the fog (its filter, edge fade and per-map mask), their hatch patterns, the relief `<image>` layer (the relief stays as the places' fill pattern) and the dashed contested-edge copies. All maps were rebuilt without them. The images all stay: Light full uses the hillshade, the sea floor and the relief.
+- **Continent maps by region.** The land round a continent is grouped by sub-region (`regions` in the continent sets), so a continent map draws region borders only, and hovering or clicking any country, inside the continent or out, labels and opens its sub-region.
+
+**The retired styles' look notes**, from maps.md (2026-11-17), for reference:
+
+- **Brand (Dark full):** a deep blue sea, the brand hue at lower chroma (`oklch(0.33 0.11 285)`; the full `$blue()` `#3814a5` was too loud across most of the frame, against OS and Imhof's rule that saturated colour belongs in small areas), land in the site's `$blue(50)`, the language's primary territories in parchment with a deep-blue edge, and secondary territories in a pale blue between the two. Borders and the disputed-area hatch are blues too.
+- **Contested areas** get dark dashes (`#24107a`, 1.4 units wide in the 400-unit frame, 3.6/2.2 dashes) on a parchment casing 2.6 wide, plus dark hatch lines. Not red: OS advises against red for sensitive subjects such as disputed land, and red on the land blue was 1.47:1, below the 3:1 minimum for graphics. The casing keeps the edge at 3:1 or better on sea, land and parchment alike. The hatch background still says how the area relates to the language: parchment when it involves one of the language's territories, the land blue when not. A territory that is itself a contested area (Abkhazia, Somaliland) is drawn solid, with the dashed edge.
+- **Small territories** get a yellow (`$yellow`, `#ffff00`) ring when their largest island is under 150 square units in the 400×300 frame (about 6 px across in the sidebar), with a thin dark halo so it holds on the land blue as well as the sea.
+- **Fog (Dark focused), under trial 2026-11-17.** The Brand map, revealed only around the territory like fog of war in a strategy game. Each SVG carries a mask built from its own highlighted shapes and rings. A shared filter grows them (dilate, blur, a turbulence-roughened edge), with a dimmer outer halo. Past that, the map dissolves into the page: no frame, no rectangle. A 9% edge fade stops a halo from ending in a straight cut where a territory sits near the frame. It costs nothing in bytes (the mask reuses the highlight paths with `<use>`), but it needs one shared `<filter id="fog">` per page, and the edge fade sits inside the SVG mask so the scale bar is not faded. Not yet chosen over Brand.
+- **Fog relief, tried and hidden 2026-11-17.** The Fog composition with Natural Earth's coloured relief (HYP_50M_SR) and every other decision kept: the muted sea and ocean floor, neutral contested edges, rings and the scale bar. The language's territories show the relief at full colour through an SVG pattern (one `<pattern>` per map, so the fog mask still sees an opaque shape), with a parchment edge for primary and a dashed parchment edge for secondary. Context land gets a 62% land-blue wash so the territory leads, and the detailed hillshade sits on top at 75%.
+- **Fog parchment (Light focused), under trial 2026-11-17.** Fog relief on a light world, between Shaded and Fog relief: context land is parchment with the hillshade, the sea a neutral grey (`#e5e5e5`, the same luminance as the lavender `#e8e3ec` it replaced) with faint ocean-floor shading, and the fog dissolves both into the page. The territory keeps its coloured relief, with a dark brand-blue edge (dashed for secondary). Yellow rings are about 1:1 on parchment, so rings are brand blue (`#3814a5`) with a parchment halo; contested edges keep their dark dashes on a parchment casing.
+
+---
+
+## 2026-11-23 (Typeahead search index)
+
+### Header and archive search run on a WordPress-built index in the browser (plan 7.9)
+**PRs:** [#725] and [#729] (spec), [#726] (proxy, superseded), [#730] (index), [#733] (Custom Search removed), [#735] (hidden-box fix); typeahead [#9][ta9] and [#10][ta10]. On staging ([#727], [#731], [#734], [#736]) and production ([#732], [#737]) on 2026-11-23.
+
+- **Why.** The typeahead's Airtable mode called Airtable from the browser, so its token was built into the public bundle. Airtable revoked the token on 2026-11-23, and header and archive search stopped working.
+- **First fix, superseded** ([#726]). A WordPress endpoint ran the same Airtable query on the server. It worked but was too slow: on staging, 1–3.6 s per search and 3–6 s while typing, because every keystroke started WordPress and scanned the Airtable table. It never reached production.
+- **The index** ([#730]). `WT_Typeahead_Index` writes `wp-content/uploads/typeahead/index.json` from published languages: the slug, `alternate_names` → `standard_name` → title, and `speakers_recorded`. Each rebuild writes the whole file atomically, sorted by ID, so unchanged data gives a byte-identical file. A rebuild runs a minute after any language save or delete (one per batch), on first view if the file is missing, or by hand with `wp typeahead rebuild [--execute]`. 8,089 languages; 797 KB, 224 KB gzipped.
+- **The app** (typeahead [#10][ta10]). It downloads the index on first focus and filters it locally, matching the way the Airtable search did. The placeholder uses samples passed in the page, so nothing loads until someone focuses the box. Also removed: the Airtable and REST modes, `reportWebVitals` (its chunk returned 404 on every page), `axios` and `web-vitals`.
+- **Removed:** `wt/v1/typeahead`, `custom/v1/search`, the shortcodes' `data_source`, and the *Custom Search* options page with its *Global: Search* field group ([#733]). The field group and stored options were also deleted by hand on each environment.
+- **Hidden-box fix** ([#735]). A `DOMContentLoaded` hide script raced the app, which now mounts sooner, and left the box hidden on about 1 load in 25. A CSS `:empty` rule replaces the script.
+
+Described in [content-model.md](content-model.md#search). Left open: secret scanning in CI and a browser credential scan (plan 7.10, 7.11).
 
 ---
 
@@ -1132,3 +1168,17 @@ Minor fix to SSH agent action version in deployment workflow.
 [#720]: https://github.com/wikitongues/wikitongues.org/pull/720
 [#721]: https://github.com/wikitongues/wikitongues.org/pull/721
 [#723]: https://github.com/wikitongues/wikitongues.org/pull/723
+[#725]: https://github.com/wikitongues/wikitongues.org/pull/725
+[#726]: https://github.com/wikitongues/wikitongues.org/pull/726
+[#727]: https://github.com/wikitongues/wikitongues.org/pull/727
+[#729]: https://github.com/wikitongues/wikitongues.org/pull/729
+[#730]: https://github.com/wikitongues/wikitongues.org/pull/730
+[#731]: https://github.com/wikitongues/wikitongues.org/pull/731
+[#732]: https://github.com/wikitongues/wikitongues.org/pull/732
+[#733]: https://github.com/wikitongues/wikitongues.org/pull/733
+[#734]: https://github.com/wikitongues/wikitongues.org/pull/734
+[#735]: https://github.com/wikitongues/wikitongues.org/pull/735
+[#736]: https://github.com/wikitongues/wikitongues.org/pull/736
+[#737]: https://github.com/wikitongues/wikitongues.org/pull/737
+[ta9]: https://github.com/wikitongues/typeahead/pull/9
+[ta10]: https://github.com/wikitongues/typeahead/pull/10

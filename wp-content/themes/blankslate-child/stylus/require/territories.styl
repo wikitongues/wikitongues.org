@@ -1,5 +1,10 @@
 .wt_meta--territories-single
-	width calc(100%/5)
+	// Same width as the language sidebar (meta--languages-single.styl), so a
+	// territory's map is the size of a language's.
+
+	// Locator map (wt-maps, plan 3.2): under the title, above the lists.
+	.wt-place-map
+		margin 8px 0 24px
 
 	.metadata
 		width 100%
@@ -32,7 +37,7 @@
 				margin-bottom 4px
 
 .wt_single-territories__content
-	width calc(100% / 5 * 4) !important
+	// Width from single-languages.styl: three quarters, beside the sidebar.
 
 .container
 	width calc(100%/5 * 4)
@@ -57,3 +62,18 @@
 				.custom-gallery
 					.gallery-container
 						margin 0
+
+// Phone: stack the sidebar above the content, as language pages do, so the
+// map gets the full width (the layout had no phone rules before the maps).
+@media all and (max-width:$mobile)
+	.wt_meta--territories-single
+		float none
+		width 100%
+		padding 0 3rem
+		box-sizing border-box
+		margin-bottom 3rem
+
+	.wt_single-territories__content
+		float none !important
+		width 100% !important
+		padding 0 3rem !important

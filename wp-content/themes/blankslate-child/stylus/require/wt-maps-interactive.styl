@@ -1,0 +1,63 @@
+// wt-maps interaction (plan 3.2 step 2a, docs/maps.md): hover labels and links.
+//
+// Kept apart from wt-maps.styl, which holds the map's look. The plugin's
+// script (wt-maps/assets/wt-maps.js) adds the label (.wt-map__tip) and an
+// outline layer (.wt-map__hot) drawn above everything, so a hovered place
+// reads without restyling its fill.
+
+.wt-map--interactive {
+	position: relative;
+	--hot: $blue();
+	--hot-casing: $parchment;
+}
+
+// Only shapes take the pointer: the raster layers, the scale and the globe sit
+// on top of them and would otherwise swallow every hover.
+.wt-map--interactive .world > image,
+.wt-map--interactive .scale,
+.wt-map--interactive .inset { pointer-events: none; }
+// A ring (a small island) answers inside the ring, not only on its stroke.
+.wt-map--interactive .marker { pointer-events: visible; }
+// A continent's island halo (the Caribbean, Polynesia) answers for its region:
+// its unpainted hit path, stroked about as wide as the halo.
+.wt-map--interactive .halo-hit { stroke-width: 13; stroke-linecap: round; stroke-linejoin: round; pointer-events: stroke; }
+.wt-map--interactive .wt-map__svg.is-link { cursor: pointer; }
+
+.wt-map__hot { pointer-events: none; }
+.wt-map__hot-casing, .wt-map__hot-line { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.wt-map__hot-casing { stroke: var(--hot-casing); stroke-width: 3.4; }
+.wt-map__hot-line { stroke: var(--hot); stroke-width: 1.6; }
+.wt-map__hot-casing.is-ring { stroke-width: 4.6; }
+// A group's outline (continent maps) is drawn by a filter: its floods take the same colours.
+.wt-map__hot-casing-flood { flood-color: var(--hot-casing); }
+.wt-map__hot-line-flood { flood-color: var(--hot); }
+.wt-map__hot-line.is-ring { stroke-width: 2.6; }
+
+.wt-map__tip {
+	position: absolute;
+	z-index: 2;
+	max-width: calc(100% - 8px);
+	padding: 5px 9px 6px;
+	border-radius: 3px;
+	background: $black;
+	color: $parchment;
+	font-family: 'Graphik Web', sans-serif;
+	font-size: 13px;
+	line-height: 1.3;
+	pointer-events: none;
+	box-shadow: 0 1px 4px rgba($black, .25);
+}
+.wt-map__tip[hidden] { display: none; }
+.wt-map__tip-name { display: block; font-weight: 600; }
+.wt-map__tip-sub { display: block; font-size: 12px; opacity: .75; }
+.wt-map__tip.has-link { pointer-events: auto; }
+.wt-map .wt-map__tip a.wt-map__tip-link {
+	display: block;
+	margin-top: 4px;
+	color: $yellow;
+	font-size: 12px;
+	text-decoration: underline;
+	// A comfortable tap target without growing the label.
+	padding: 4px 0;
+	margin-bottom: -4px;
+}
