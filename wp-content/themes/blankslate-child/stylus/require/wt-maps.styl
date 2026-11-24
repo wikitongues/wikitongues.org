@@ -51,6 +51,9 @@
 .wt-map-defs .hatch-bg-land { fill: var(--land); }
 .wt-map .shade { display: none; }
 .wt-map--light-full .shade { display: inline; mix-blend-mode: hard-light; }
+/* Light full: the hillshade 60% lighter and half-toned brown, so land outside the places
+   reads as parchment. The places keep their depth: their relief (HYP_50M_SR) has its own shading. */
+.wt-map--light-full .shade { opacity: .4; filter: sepia(.5) saturate(.7); }
 .wt-map--light-full .hl.primary { fill: var(--relief); }
 .wt-map--light-full .hl.secondary { fill: var(--relief); stroke-dasharray: 2.4 1.6; stroke-width: 1; }
 .wt-map--light-full .hl { stroke: var(--primary); stroke-width: .7; }
@@ -114,3 +117,20 @@
 .wt-map--light-full .scale-label { fill: var(--ink-2); stroke: var(--paper); }
 .wt-map--light-focused .scale-bar, .wt-map--dark-focused .scale-bar { stroke: var(--ink-2); }
 .wt-map--light-focused .scale-label, .wt-map--dark-focused .scale-label { fill: var(--ink-2); stroke: none; }
+
+/* Grouped maps (continents, plan 3.2 step 1c): each sub-region drawn as one shape.
+   The borders inside a group are stroked in the group's own fill, so they vanish;
+   the build's filters draw one outline per group (.ge-flood) and a halo round
+   island groups (.gh-fill, .gh-edge); small places are dots. Each style uses its
+   own palette: the light ones deep blue on parchment, the dark ones their
+   primary (parchment) and lavender on the brand blue. */
+.wt-map .grp .hl { stroke-dasharray: none; stroke-width: .6; }
+.wt-map--light-full .grp .hl, .wt-map--light-focused .grp .hl { stroke: var(--relief); }
+.wt-map--dark-full .grp .hl, .wt-map--dark-focused .grp .hl { stroke: var(--brd-primary); }
+.wt-map .ge-flood { flood-color: var(--brd-edge); }
+.wt-map .dot { fill: var(--brd-edge); }
+.wt-map .gh-fill { flood-color: var(--paper); flood-opacity: .55; }
+.wt-map .gh-edge { flood-color: var(--brd-edge); flood-opacity: .55; }
+.wt-map--dark-full .dot, .wt-map--dark-focused .dot { fill: var(--brd-primary); }
+.wt-map--dark-full .gh-fill, .wt-map--dark-focused .gh-fill { flood-color: var(--brd-secondary); flood-opacity: .22; }
+.wt-map--dark-full .gh-edge, .wt-map--dark-focused .gh-edge { flood-color: var(--brd-secondary); flood-opacity: .6; }

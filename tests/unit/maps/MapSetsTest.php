@@ -130,6 +130,60 @@ class MapSetsTest extends TestCase {
 		$this->assertCount( 2, $plan['sets'] );
 	}
 
+	public function test_a_page_can_ask_for_the_locator_globe() {
+		$plan = wt_maps_plan_sets( $this->table(), array() );
+		$plan = wt_maps_add_extra_sets(
+			$this->table(),
+			$plan,
+			array(
+				'Region: Micronesia' => array(
+					'places' => array( self::GUAM, self::NMI ),
+					'globe'  => true,
+					'halo'   => true,
+					'rings'  => 'detached',
+				),
+				'Territory: Guam'    => array( self::GUAM ),
+				'Rights region'      => array( self::NMI, self::GUAM ),
+			)
+		);
+
+		$region = $plan['sets'][ wt_maps_set_key( array( self::GUAM, self::NMI ) ) ];
+		$this->assertTrue( $region['globe'] );
+		$this->assertTrue( $region['halo'] );
+		$this->assertSame( 'detached', $region['rings'] );
+		$this->assertSame( array( 'Region: Micronesia', 'Rights region' ), $region['pages'], 'a shared set keeps the globe' );
+		$this->assertArrayNotHasKey( 'globe', $plan['sets'][ self::GUAM ], 'a list of IDs asks for nothing' );
+		$this->assertArrayNotHasKey( 'rings', $plan['sets'][ self::GUAM ] );
+	}
+
+	public function test_a_view_fixes_the_frame_and_groups_in_its_own_set() {
+		$plan = wt_maps_add_extra_sets(
+			$this->table(),
+			wt_maps_plan_sets( $this->table(), array() ),
+			array(
+				'Continent: Oceania' => array(
+					'places' => array( self::NMI, self::GUAM ),
+					'view'   => 'continent',
+					'frame'  => array(
+						'center' => array( 162, -10 ),
+						'radius' => 30,
+					),
+					'groups' => array(
+						self::NMI  => 1,
+						self::GUAM => 1,
+					),
+				),
+			)
+		);
+
+		$key = wt_maps_set_key( array( self::GUAM, self::NMI ), 'continent' );
+		$this->assertStringEndsWith( '-continent', $key );
+		$this->assertArrayNotHasKey( wt_maps_set_key( array( self::GUAM, self::NMI ) ), $plan['sets'], 'a view never changes the plain set' );
+		$set = $plan['sets'][ $key ];
+		$this->assertSame( 30, $set['frame']['radius'] );
+		$this->assertSame( array( self::NMI, self::GUAM ), array_keys( $set['groups'] ), 'groups are sorted, so the file is stable' );
+	}
+
 	public function test_the_build_report_names_the_pages_of_an_unbuilt_set() {
 		$report = wt_maps_build_report(
 			array(

@@ -41,7 +41,8 @@ const index = readIndex();
 for (const { key, natural_earth: version, ...entry } of framesToBuild()) {
   const svg = fs.readFileSync(path.join(STAGE, `${key}.svg`), 'utf8');
   const paths = ['lands', 'hls', 'disputes', 'claims'].flatMap((g) => {
-    const m = svg.match(new RegExp(`<g class="${g}"[^>]*>(.*?)</g>`));
+    // Up to the next top-level group: `hls` may hold nested groups (continent maps, `groups`).
+    const m = svg.match(new RegExp(`<g class="${g}"[^>]*>(.*?)</g><g class="(?:hls|disputes|claims|dispute-casing)"`));
     return m ? [...m[1].matchAll(/ d="([^"]+)"/g)].map((x) => `<path d="${x[1]}"/>`) : [];
   }).join('');
   const maskSvg = path.join(R, 'mask', `${key}.svg`), mask = path.join(R, 'mask', `${key}.png`);

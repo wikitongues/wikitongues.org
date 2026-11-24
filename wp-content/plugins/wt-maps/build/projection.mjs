@@ -40,8 +40,9 @@ function cornerRadius(proj, center) {
 }
 
 /** Pick and fit a projection for a frame; returns { proj, spec }. */
-export function choose(frame, center) {
-  const az = d3.geoAzimuthalEqualArea().rotate([-center[0], -center[1]]).clipAngle(CLIP_DEG).fitExtent(PAD, frame);
+export function choose(frame, center, roll = 0) {
+  const rotate = roll ? [-center[0], -center[1], roll] : [-center[0], -center[1]];
+  const az = d3.geoAzimuthalEqualArea().rotate(rotate).clipAngle(CLIP_DEG).fitExtent(PAD, frame);
   const r = cornerRadius(az, center);
   let proj = az, spec = { type: 'azimuthal', rotate: az.rotate() };
   if (r > CONIC_ABOVE_DEG) {
