@@ -29,16 +29,7 @@ final class Renderer {
 	/**
 	 * Bumped when decorate() changes its output, so cached maps are rebuilt.
 	 */
-	public const VERSION = '3';
-
-	public const STYLES = array(
-		'light-focused' => 'Light focused',
-		'light-full'    => 'Light full',
-		'dark-full'     => 'Dark full',
-		'dark-focused'  => 'Dark focused',
-	);
-
-	public const DEFAULT_STYLE = 'light-full';
+	public const VERSION = '4';
 
 	/**
 	 * Primary or secondary for each place.

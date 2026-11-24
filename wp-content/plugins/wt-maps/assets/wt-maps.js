@@ -50,9 +50,10 @@
 			+ '<feMerge><feMergeNode in="cf"/><feMergeNode in="lf"/></feMerge></filter>';
 		svg.insertBefore( defs, svg.firstChild );
 
-		// Every shape of a group: its territories and their dots, not the land around.
+		// Every shape of a group: its territories and their dots, or, for a group
+		// outside the continent, its countries on the base map.
 		function groupEls( g ) {
-			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place]' ), function ( el ) {
+			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place], .lands [data-place]' ), function ( el ) {
 				const p = places[ el.dataset.place ];
 				return p && p.g === g;
 			} );

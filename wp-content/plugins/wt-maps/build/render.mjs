@@ -184,8 +184,8 @@ function render(key, placeIds) {
   const hl = placeIds.map((id) => ({ id, refs: refsOf(id), name: input.places[id].name }));
 
   // Contested areas these places claim. They are treated like the place itself:
-  // always inside the frame, and revealed by the fog. Leaving one out (Crimea fogged
-  // on a Ukrainian page) would be a statement. The rule is symmetric: a Russian page
+  // always inside the frame. Leaving one out (Crimea cut off on a Ukrainian page)
+  // would be a statement. The rule is symmetric: a Russian page
   // frames and reveals Crimea too, hatched.
   const isSelf = (d) => hl.some(({ refs }) => refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
   const claimed = disputed.filter((d) => !isSelf(d) && hl.some(({ refs }) => placeClaims(refs, d)));
@@ -258,13 +258,14 @@ function render(key, placeIds) {
   const hlCodes = new Set(hl.flatMap(({ refs }) => refs.map(([, c]) => c)));
   // `data-place` replaces the old `data-a3`, which nothing read.
   const tag = (a3, id) => (id ? ` data-place="${id}"` : '');
-  const land = base.filter((f) => !hlCodes.has(f.properties.ADM0_A3)).map((f) => {
+  const landFeats = base.filter((f) => !hlCodes.has(f.properties.ADM0_A3)).flatMap((f) => {
     const a3 = f.properties.ADM0_A3;
-    if (!splitCountries.has(a3)) return pathEl(f, 'land', tag(a3, placeOfCountry[a3]));
+    if (!splitCountries.has(a3)) return [{ f, a3, id: placeOfCountry[a3] }];
     return ((fine ? unitsByCountry10 : unitsByCountry)[a3] ?? [f])
       .filter((u) => !hlCodes.has(u.properties.GU_A3))
-      .map((u) => pathEl(u, 'land', tag(a3, placeOfUnit[u.properties.GU_A3]))).join('');
-  }).join('');
+      .map((u) => ({ f: u, a3, id: placeOfUnit[u.properties.GU_A3] }));
+  });
+  const land = landFeats.map(({ f, a3, id }) => pathEl(f, 'land', tag(a3, id))).join('');
 
   const markers = [];
   const set = input.sets[key] ?? {};
@@ -349,34 +350,43 @@ function render(key, placeIds) {
       + '<feMerge><feMergeNode in="fill"/><feMergeNode in="edge"/></feMerge></filter>';
     if (outlined) {
       // Borders between groups and the groups' outer edges as lines, at the
-      // weight of any territory border (2026-11-24; replaced a filter outline). Natural Earth neighbours share their border
-      // vertices, so an edge used by two groups is between them, used twice by one
-      // group is inside it (hidden), and used once is a coast or a border with a
-      // country off the map.
+      // weight of any territory border (2026-11-24; replaced a filter outline).
+      // Natural Earth neighbours share their border vertices, so an edge used by
+      // two groups is between them, used twice by one group is inside it (hidden),
+      // and used once is a coast or a border with a country off the map.
+      // With `regions` (continent maps), the land around the continent is grouped
+      // by its sub-region too, so the map draws region borders only, never a
+      // country's: the continent's own in the brand blue, the rest as land borders.
       const k = ([x, y]) => `${x.toFixed(5)},${y.toFixed(5)}`;
       const segKey = (a, b) => { const p = k(a), q = k(b); return p < q ? `${p}|${q}` : `${q}|${p}`; };
       const rings = [], users = new Map();
-      feats.forEach((list, i) => {
-        const n = groups[hl[i].id];
-        for (const { f } of list) {
-          const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
-          for (const poly of polys) for (const ring of poly) {
-            rings.push({ n, ring });
-            for (let j = 1; j < ring.length; j++) { const sk = segKey(ring[j - 1], ring[j]); if (!users.has(sk)) users.set(sk, []); users.get(sk).push(n); }
-          }
+      const add = (n, f) => {
+        const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+        for (const poly of polys) for (const ring of poly) {
+          rings.push({ n, ring });
+          for (let j = 1; j < ring.length; j++) { const sk = segKey(ring[j - 1], ring[j]); if (!users.has(sk)) users.set(sk, []); users.get(sk).push(n); }
         }
-      });
-      const lines = [];
+      };
+      feats.forEach((list, i) => { for (const { f } of list) add(`g${groups[hl[i].id]}`, f); });
+      if (set.regions) for (const { f, a3, id } of landFeats) add(set.regions[id] ? `r:${set.regions[id]}` : `c:${a3}`, f);
+      const own = [], out = [];
       for (const { n, ring } of rings) {
         let run = null;
         for (let j = 1; j < ring.length; j++) {
           const u = users.get(segKey(ring[j - 1], ring[j]));
-          const keep = u.length === 1 || (new Set(u).size > 1 && n === Math.min(...u));
-          if (keep) { if (!run) { run = [ring[j - 1]]; lines.push(run); } run.push(ring[j]); } else run = null;
+          const names = [...new Set(u)].sort();
+          const keep = u.length === 1 || (names.length > 1 && n === names[0]);
+          if (!keep) { run = null; continue; }
+          const into = names.some((x) => x[0] === 'g') ? own : out;
+          // Round the continent only the borders between regions: its coasts
+          // read from the fill, and drawing them would double the bytes.
+          if (into === out && names.length < 2) { run = null; continue; }
+          if (!run || run.into !== into) { run = [ring[j - 1]]; run.into = into; into.push(run); }
+          run.push(ring[j]);
         }
       }
-      const d = path_({ type: 'MultiLineString', coordinates: lines });
-      groupEdges = d ? `<path class="grp-mesh" d="${d}"/>` : '';
+      const line = (lines, cls) => { const d = lines.length ? path_({ type: 'MultiLineString', coordinates: lines }) : ''; return d ? `<path class="${cls}" d="${d}"/>` : ''; };
+      groupEdges = line(out, 'grp-mesh grp-mesh--out') + line(own, 'grp-mesh');
     }
     // An island group gets one halo: its land covers under 15% of the area its
     // places span (the convex hull of their parts' centres). On the 2026-11-24
@@ -412,9 +422,10 @@ function render(key, placeIds) {
     groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}</g>`;
   }
 
-  // The fog never cuts through a contested area: any that comes within the reveal
-  // (about 30 units of a place or a claimed area) is revealed whole, in its own
-  // neutral hatch (the West Bank and Gaza on a Hebrew page).
+  // A contested area within about 30 units of a place or a claimed area goes in
+  // the claims layer, in its own neutral hatch (the West Bank and Gaza on a Hebrew
+  // page), and is listed as `revealed` in index.json for the contested-areas diff.
+  // (It was the reveal of the fog in the focused styles, retired 2026-11-24.)
   const REACH = 30, cell = REACH;
   const grid = new Map();
   const ptsOf = (f) => { const out = []; d3.geoStream(f, proj.stream({ point(x, y) { out.push([x, y]); }, lineStart() {}, lineEnd() {}, polygonStart() {}, polygonEnd() {}, sphere() {} })); return out; };
@@ -428,7 +439,7 @@ function render(key, placeIds) {
     return false;
   });
 
-  const touched = [], edges = [], claims = [];
+  const touched = [], claims = [];
   const disp = disputed.map((d) => {
     let cls, extra = ` data-area="${esc(d.name)}"`;
     if (isSelf(d)) cls = 'edge'; // already filled in the highlight layer; only its dashed edge here
@@ -438,8 +449,6 @@ function render(key, placeIds) {
       if (by.length) extra += ` data-claimants="${by.join(' ')}"`;
     }
     const el = pathEl(d.f, `disputed ${cls}`, extra);
-    const dd = el.match(/ d="([^"]+)"/);
-    if (dd) edges.push(`<path d="${dd[1]}"/>`);
     if (claimedSet.has(d) || (!isSelf(d) && el && nearReveal(d.f))) {
       if (!claimedSet.has(d)) touched.push(d.name);
       claims.push(el); return '';
@@ -521,21 +530,17 @@ function render(key, placeIds) {
   const id = key;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg" data-map="${key}">`
     + `<title id="t-${id}">Map of ${esc(names)}</title><desc id="d-${id}">Map centred on ${esc(names)}.</desc>`
-    // Fog mask: the highlighted shapes (and their rings), grown and blurred by the
-    // page's shared #fog filter. Only the focused styles apply it, through --fog.
-    + `<defs><mask id="fog-${id}" mask-type="alpha" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><g mask="url(#fog-edge)"><g filter="url(#fog)"><use href="#hls-${id}"/><use href="#cl-${id}"/><use href="#mk-${id}"/></g></g></mask>${groupDefs}`
-    // The coloured relief as a fill, for the styles that show it in the places.
+    + `<defs>${groupDefs}`
+    // The coloured relief as the places' fill.
     + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern></defs>`
-    + `<g class="world" style="--fog:url(#fog-${id});--relief:url(#rp-${id})">`
+    + `<g class="world" style="--relief:url(#rp-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
-    + `<image class="relief" href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + groupHalos
-    + `<g class="lands">${land}</g><g class="hls" id="hls-${id}">${highlight}</g><g class="disputes">${disp}</g><g class="claims" id="cl-${id}">${claims.join('')}</g>`
-    + `<g class="dispute-casing">${edges.join('')}</g><g class="dispute-line">${edges.join('')}</g>`
+    + `<g class="lands${set.regions ? ' lands--regions' : ''}">${land}</g><g class="hls">${highlight}</g><g class="disputes">${disp}</g><g class="claims">${claims.join('')}</g>`
     + `<image class="shade" href="shade/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + groupEdges
-    + `<g class="markers" id="mk-${id}">${markers.join('')}</g></g>${scale}${inset}</svg>`;
+    + `<g class="markers">${markers.join('')}</g></g>${scale}${inset}</svg>`;
 
   const round = (v, n = 6) => (Array.isArray(v) ? v.map((x) => round(x, n)) : Number(v.toFixed(n)));
   return {

@@ -123,6 +123,27 @@ class InteractiveTest extends TestCase {
 		);
 	}
 
+	public function test_groups_list_only_the_places_on_the_map() {
+		WP_Mock::userFunction( 'wp_json_encode' )->andReturnUsing( static fn( $v, $f = 0 ) => json_encode( $v, $f ) );
+		$json = wt_maps_interaction_json(
+			array(),
+			array(
+				array(
+					'n'      => 'Western Europe',
+					'u'      => '/w/',
+					'places' => array( self::FRANCE, 'recBELGIUMAAAAAAA' ),
+				),
+				array(
+					'n'      => 'Polynesia',
+					'u'      => '/p/',
+					'places' => array( 'recTAHITIAAAAAAAA' ),
+				),
+			),
+			array( self::FRANCE )
+		);
+		$this->assertSame( '{"places":{"recc6lAeDMPAvqzgM":{"g":1}},"groups":{"1":{"n":"Western Europe","u":"/w/"}}}', $json, 'a group with nothing on the map is left out' );
+	}
+
 	public function test_tagged_places_lists_each_record_once() {
 		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
 			$this->markTestSkipped( 'WordPress HTML API not available (no local install at the repository root).' );
