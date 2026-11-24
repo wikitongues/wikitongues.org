@@ -51,3 +51,27 @@ function wt_rights_press_admin_bar( bool $show ): bool {
 	return wt_rights_is_press_only() ? false : $show;
 }
 add_filter( 'show_admin_bar', 'wt_rights_press_admin_bar' );
+
+/**
+ * The strip that tells a press account it is signed in and lets it log out:
+ * press accounts have no admin bar and no dashboard, where WordPress keeps
+ * the log-out link. Empty for everyone else.
+ */
+function wt_rights_press_bar(): string {
+	if ( ! wt_rights_is_press_only() ) {
+		return '';
+	}
+	$user = wp_get_current_user();
+	return '<div class="wt-rights-press-bar" role="region" aria-label="Press account">'
+		. '<span>Signed in as press: ' . esc_html( $user->display_name ) . '</span>'
+		. '<a href="' . esc_url( wp_logout_url( home_url( '/' . WT_RIGHTS_BASE . '/' ) ) ) . '">Log out</a>'
+		. '</div>';
+}
+
+/**
+ * Prints the press strip at the top of every front-end page.
+ */
+function wt_rights_print_press_bar(): void {
+	echo wt_rights_press_bar(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in wt_rights_press_bar().
+}
+add_action( 'wp_body_open', 'wt_rights_print_press_bar' );

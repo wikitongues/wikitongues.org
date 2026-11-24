@@ -140,6 +140,8 @@ Kristen's existing options stay exactly as they are. Only **Held** is added. The
 
 A report exported with `--preview` stays a draft at every status: only admins can read it.
 
+**Press accounts** are made in Users → Add New, role **Press**. They land on the hub after logging in, never see wp-admin or the admin bar, and get a strip at the top of every page naming the account, with a **Log out** link back to the hub (`wt-rights/includes/press.php`).
+
 The hub shows no global findings before the Complete Edition (decision 2026-11-18; Kristen is asked to confirm it, plan 2.2 open question 5), so no unreleased answer reaches an aggregate. The global synthesis has no status of its own yet: the hub lists it as release 08 with its planned date from the front matter.
 
 ## Editorial contract
