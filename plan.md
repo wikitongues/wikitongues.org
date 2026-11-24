@@ -293,15 +293,56 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 
 ##### Step 2: interactive maps
 
-- **MapLibre GL** with vector tiles that we host ourselves: a Protomaps PMTiles file served from the plugin or from uploads. No API key in the browser and no third-party tile server. The style reuses the Brand colors and the hillshade.
-- **Territory pages:** the territory highlighted, with the languages listed beside the map. Languages don't have coordinates, so link from shaded countries, not language markers, until there's a source for language locations (Glottolog has some, keyed by `glottocode`).
-- **Region pages:** each territory shaded by how many languages it has, linking to its territory page.
-- **A world view**, if one is wanted (homepage, region index): compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
-- **Load only when visible.** Load MapLibre only when the map scrolls into view, and show the static step 1 SVG until then, and as the fallback when JavaScript is off.
-- **Performance:** some territories list hundreds of languages (India: 403). Read raw IDs, as territory pages already do.
-- **Instrument:** `map_interaction` (`territory`, `action`). Step 1 is static and has nothing to track.
-- **Choose the approach first (open, 2026-11-23).** The bullets above assume MapLibre GL. Two explorations on 2026-11-23 built on the static step 1 SVGs instead: hover labels and click-through on the sidebar map (spec approved and parked on branch `claude/maps-interactivity-01b803`), and prebuilt maps on every territory page and the 22 sub-region pages (spec on branch `claude/maps-place-pages-b22447`). The Language Rights region maps (#714) already build a wt-maps set per release region. Settle one approach here before building.
+**Decided 2026-11-24: prebuilt maps plus a small script, not MapLibre.** Every map stays a wt-maps SVG built ahead of time, and one deferred script (about 3 KB gzipped) adds hover labels and clicks to any map on the page. No tile hosting, no second visual style, and without JavaScript each map is the step 1 image. MapLibre (self-hosted PMTiles) comes back only if pan and zoom, or language point markers, become goals.
+
+- **Every map:** hover labels and clicks, per the step 2a spec below.
+- **Territory pages:** the territory's map (step 1b, [#741](https://github.com/wikitongues/wikitongues.org/pull/741)), with its neighbouring countries clickable. Languages have no coordinates, so links go from shapes, not language markers.
+- **Region pages:** each territory on the sub-region map links to its page (step 2a). Shading each territory by how many languages it has is a class PHP adds at render, with no rebuild; it gets its own spec. Some territories list hundreds of languages (India: 403): count raw IDs, as territory pages already do.
+- **A world view**, if one is wanted (homepage, region index): one more prebuilt map. Compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
+- **Instrument:** `map_interaction` (`place`, `action`: `hover` or `click`), sent by the script.
+- **Order:** #741 first; then step 2a (the settings switch, neighbours tagged in the build, a full rebuild, the script and its CSS); then region shading; then instrumentation.
 - **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
+
+##### Step 2a: hover labels and clicks (approved 2026-11-23)
+
+Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF). Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
+
+**Glossary.** *Place:* a territory or subdivision a map highlights (`data-place` = its record ID). *Neighbour:* any other country in the frame. *Contested area:* a Natural Earth disputed area (`data-area`). *Link table:* per figure, record ID → label and URL (`data-wt-map` JSON), built at render.
+
+**Rules**
+- Places and neighbours resolve by record ID, never by title. Neighbours get `data-place` in the build (`render.mjs`, on land shapes), so map units such as France (`units:FXX`) resolve too. That needs a full rebuild.
+- A territory links to its page. A subdivision links to its nation's page and is labelled "Part of" the nation. A place with no published page gets a label and no link.
+- A contested area shows its Natural Earth name and "Contested area", and never links.
+- In the focused styles, what the fog hides takes no pointer.
+- The SVG stays `role="img"` with no tab stops. The place links next to the map are the keyboard and screen reader path; focusing one outlines its place.
+- Mouse: hover labels, click opens. Touch: the first tap labels with an "Open" link, a second tap opens.
+- On/off in Settings → Maps, like the sidebar map.
+
+**Example cases**
+
+| Language | Shape | Label | Click |
+|---|---|---|---|
+| Tahitian | French Polynesia (rings) | French Polynesia | its territory page |
+| Hawaiian | Hawaii (subdivision) | Hawaii · Part of the United States | United States page |
+| French | six places | each name | each page |
+| Ukrainian | Crimea | Crimea · Contested area | none |
+| Ukrainian | Poland (neighbour) | Poland | Poland page |
+| Spanish | France (neighbour, unit FXX) | France | France page |
+
+**Display.** An outline above all layers: blue on parchment in the light styles, yellow on dark blue in the dark styles. Fills don't change. A black label chip. No other affordance than the pointer cursor. The CSS is its own partial, `wt-maps-interactive.styl`.
+
+**Costs (prototype, local data).** Places: no extra queries, 0.14–0.30 KB gzipped per map. Neighbours resolved in PHP measured +1 to +5 queries and up to 2.5 KB (French); tagging them in the build removes the queries. Script 2.7 KB gzipped, deferred.
+
+**Out of scope.** Zoom and pan, labels drawn on the map, links to languages, subdivision pages.
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-23 | Links resolve at render through one JSON table per figure; the SVGs stay shared | No per-language SVGs, no rebuild for links |
+| 2026-11-23 | Neighbours clickable, tagged in the build | Discovery by place; covers map units |
+| 2026-11-23 | Contested areas use Natural Earth names and never link | Neutral borders |
+| 2026-11-23 | No extra affordance; on/off in Settings → Maps | Quiet by default; can be turned off without a deploy |
+| 2026-11-23 | Keyboard and screen readers use the links next to the map | No duplicate tab stops |
+| 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 
 ##### Step 1 follow-ups
 
