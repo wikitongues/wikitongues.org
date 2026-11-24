@@ -11589,6 +11589,46 @@
     "sea": 17582
    }
   },
+  "set-c2f998001d7e": {
+   "places": [
+    "rec2SYysDKkhFMaqY",
+    "recx4k8KCf8MASWlf"
+   ],
+   "names": [
+    "Australia",
+    "New Zealand"
+   ],
+   "spec": {
+    "type": "azimuthal",
+    "rotate": [
+     -135.320062,
+     26.434515,
+     0
+    ],
+    "scale": 314.296,
+    "translate": [
+     164.798,
+     129.11
+    ],
+    "cornerDeg": 55.1
+   },
+   "center": [
+    135.320062,
+    -26.434515
+   ],
+   "fine": false,
+   "stretch": 27.2,
+   "scale_km": null,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 17060,
+   "svg_gzip": 6769,
+   "images": {
+    "relief": 21870,
+    "shade": 10124,
+    "sea": 25912
+   }
+  },
   "set-c367225e62d2": {
    "places": [
     "recWXnCW6MJeZ6bUK",

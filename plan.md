@@ -313,7 +313,7 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 - [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
 - [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
-- [ ] Australia & New Zealand is a top-level `region` term (parent 0), so the site treats it as a sixth continent. UN M49 makes it a sub-region of Oceania. The taxonomy is a one-time import, edited in WordPress (not synced), so the fix is one term edit per environment, setting its parent to Oceania. Territory and region URLs don't change (they use the term slug); it then gets a sub-region map (one new set) and joins Oceania's page.
+- [ ] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done locally. On staging and production, after this PR deploys: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
 
 ##### Step 1c: continent maps (spec, awaiting approval)
 
@@ -344,7 +344,7 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 | Africa | six outlines, no halo; Comoros, Mauritius and Seychelles are too small to see (open question 1) |
 | Europe | four outlines; Russia runs off the east edge |
 | Asia | five outlines, no halo; the Maldives and Singapore are too small to see (open question 1) |
-| Australia & New Zealand | today a continent with no sub-regions, so no map; once moved under Oceania it is an Oceania sub-region and shows in Oceania's map (open question 4) |
+| Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
 
 **Display.** In the sidebar under the title, as on sub-region pages. Light full: the halo parchment at 55%, its edge and the outlines brand deep blue.
 
@@ -352,7 +352,6 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 1. Small territories outside island sub-regions (Comoros, Malta, Singapore) vanish without rings. Accept, or give them dots too?
 2. Sidebar width (as sub-regions) or the main column (about twice as wide)?
 3. Values for the dark styles (round 3: halos too bright, dots lost).
-4. Move Australia & New Zealand under Oceania: one WordPress term edit per environment (recommended, before building).
 
 **Out of scope:** tints, the world view, interactivity (step 2).
 
