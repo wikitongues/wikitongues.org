@@ -80,8 +80,12 @@
 			if ( area && ! area.classList.contains( 'edge' ) && fig.contains( area ) ) {
 				return { key: 'area:' + area.dataset.area, n: area.dataset.area, area: true, els: [ area ] };
 			}
+			const halo = el.closest( '[data-group]' ); // A continent's island halo.
 			const place = el.closest( '[data-place]' );
-			const g = place && places[ place.dataset.place ] ? places[ place.dataset.place ].g : null;
+			let g = place && places[ place.dataset.place ] ? places[ place.dataset.place ].g : null;
+			if ( halo && fig.contains( halo ) ) {
+				g = Number( halo.dataset.group );
+			}
 			if ( g && groups[ g ] ) {
 				return Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] );
 			}

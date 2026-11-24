@@ -419,7 +419,17 @@ function render(key, placeIds) {
       const m = members(n), span = hullArea(m.flatMap(({ id }) => ptsBy[id] ?? []));
       return span > 0 && m.reduce((t, { id }) => t + (areaBy[id] ?? 0), 0) < 0.15 * span;
     });
-    groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}</g>`;
+    // A halo's hit area for the page (plan 3.2, step 2a): a filter's glow takes no
+    // pointer, so each halo also gets an unpainted path through its islands and
+    // corridors, which the page's CSS strokes wide enough to cover the halo. It
+    // sits under the land, so a country still answers for itself.
+    const haloHit = (n) => {
+      const pts = members(n).flatMap(({ id }) => ptsBy[id] ?? []);
+      const lines = [...bridges(n).matchAll(/x1="([^"]+)" y1="([^"]+)" x2="([^"]+)" y2="([^"]+)"/g)].map((m) => `M${m[1]} ${m[2]}L${m[3]} ${m[4]}`);
+      const d = lines.join('') + pts.map(([x, y]) => `M${x.toFixed(1)} ${y.toFixed(1)}h0`).join('');
+      return d ? `<path class="halo-hit" data-group="${n}" d="${d}"/>` : '';
+    };
+    groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}${outlined ? islands.map(haloHit).join('') : ''}</g>`;
   }
 
   // A contested area within about 30 units of a place or a claimed area goes in

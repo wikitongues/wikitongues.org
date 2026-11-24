@@ -18,6 +18,9 @@
 .wt-map--interactive .inset { pointer-events: none; }
 // A ring (a small island) answers inside the ring, not only on its stroke.
 .wt-map--interactive .marker { pointer-events: visible; }
+// A continent's island halo (the Caribbean, Polynesia) answers for its region:
+// its unpainted hit path, stroked about as wide as the halo.
+.wt-map--interactive .halo-hit { stroke-width: 13; stroke-linecap: round; stroke-linejoin: round; pointer-events: stroke; }
 .wt-map--interactive .wt-map__svg.is-link { cursor: pointer; }
 
 .wt-map__hot { pointer-events: none; }
