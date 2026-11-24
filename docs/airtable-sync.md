@@ -394,7 +394,9 @@ The lexicons CPT has the largest gap: as of 2026-03-01, 130 of 152 Airtable lexi
 
 The `integromat-connector` WordPress plugin handled the old Make.com → WordPress write path. It exposed REST endpoints that Make.com called using the `wordpress:createMediaItem` and related modules. These paths were invalidated by the PHP 8.2 upgrade and have been replaced by `wt-airtable-sync`.
 
-The old Make.com scenario instances (v1) were disabled on 2026-03-01, and no sync scenario uses the `integromat-connector` write paths any more.
+The old Make.com scenario instances (v1) were disabled on 2026-03-01, and the sync scenarios no longer use the `integromat-connector` write paths.
+
+**The plugin is still installed and still serves one scenario.** The Make scenario **Import External Resources** (ID 187045, active, runs daily) uses the Make WordPress app, which goes through the plugin. It watches Airtable records whose Identifier matches `^w?[a-z]{3}_\d{8}_\d+$` and whose `moderation_status` is "Approved", searches WordPress for a matching resource post (`wordpress:searchPosts`), then updates it (`updatePost`) or creates it (`createPost`), and posts to Slack. It writes to production through the Make connection "Production | wikitongues.org". Retiring the plugin depends on moving this scenario onto `wt-airtable-sync`.
 
 ### post-object-helpers.php
 
