@@ -8816,23 +8816,23 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -90,
-     -32,
+     -87,
+     -31,
      0
     ],
-    "scale": 159.054,
+    "scale": 203.704,
     "translate": [
      200,
      150
     ],
-    "cornerDeg": 103.61
+    "cornerDeg": 75.71
    },
    "center": [
-    90,
-    32
+    87,
+    31
    ],
    "fine": false,
-   "stretch": 161.5,
+   "stretch": 60.4,
    "scale_km": null,
    "claimed": [
     "Aksai Chin",
@@ -8854,19 +8854,18 @@
    "revealed": [
     "Crimea",
     "Donetsk People's Republic",
-    "Ilemi Triangle",
     "Kosovo",
     "Luhansk People's Republic",
     "Somaliland",
     "Somaliland",
     "Transnistria"
    ],
-   "svg_bytes": 74707,
-   "svg_gzip": 23525,
+   "svg_bytes": 69679,
+   "svg_gzip": 22073,
    "images": {
-    "relief": 30208,
-    "shade": 18778,
-    "sea": 28272
+    "relief": 30408,
+    "shade": 22014,
+    "sea": 29306
    }
   },
   "set-18f1845b5825": {
@@ -9462,19 +9461,19 @@
      -2,
      0
     ],
-    "scale": 175.079,
+    "scale": 231.572,
     "translate": [
      200,
      150
     ],
-    "cornerDeg": 91.12
+    "cornerDeg": 65.34
    },
    "center": [
     18,
     2
    ],
    "fine": false,
-   "stretch": 104,
+   "stretch": 41.1,
    "scale_km": null,
    "claimed": [
     "Abyei",
@@ -9483,17 +9482,16 @@
    ],
    "revealed": [
     "Golan Heights",
-    "Kosovo",
     "N. Cyprus",
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 54141,
-   "svg_gzip": 16760,
+   "svg_bytes": 41603,
+   "svg_gzip": 12996,
    "images": {
-    "relief": 30440,
-    "shade": 12470,
-    "sea": 25540
+    "relief": 30230,
+    "shade": 11272,
+    "sea": 22142
    }
   },
   "set-29699cb355e1": {
@@ -10003,23 +10001,23 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -15,
-     -52,
+     -68.524535,
+     -67.501926,
      0
     ],
-    "scale": 298.728,
+    "scale": 185.703,
     "translate": [
-     200,
-     150
+     208.918,
+     160.608
     ],
-    "cornerDeg": 49.47
+    "cornerDeg": 90.39
    },
    "center": [
-    15,
-    52
+    68.524535,
+    67.501926
    ],
    "fine": false,
-   "stretch": 21.2,
+   "stretch": 101.4,
    "scale_km": null,
    "claimed": [
     "Crimea",
@@ -10030,18 +10028,20 @@
    "revealed": [
     "Abkhazia",
     "Artsakh",
+    "Golan Heights",
     "N. Cyprus",
     "N. Cyprus",
     "South Ossetia",
     "W. Sahara",
-    "W. Sahara"
+    "W. Sahara",
+    "West Bank"
    ],
-   "svg_bytes": 56748,
-   "svg_gzip": 18531,
+   "svg_bytes": 78561,
+   "svg_gzip": 26077,
    "images": {
-    "relief": 26722,
-    "shade": 18196,
-    "sea": 27348
+    "relief": 28672,
+    "shade": 20460,
+    "sea": 29874
    }
   },
   "set-3c6af9f0ddf4": {
@@ -11440,35 +11440,35 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     80,
+     82,
      -12,
      0
     ],
-    "scale": 114,
+    "scale": 125.553,
     "translate": [
      200,
      150
     ],
-    "cornerDeg": 180
+    "cornerDeg": 169.24
    },
    "center": [
-    -80,
+    -82,
     12
    ],
    "fine": false,
-   "stretch": 2520.2,
+   "stretch": 11275.2,
    "scale_km": null,
    "claimed": [
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 48750,
-   "svg_gzip": 16005,
+   "svg_bytes": 47832,
+   "svg_gzip": 15761,
    "images": {
-    "relief": 28990,
-    "shade": 11244,
-    "sea": 28408
+    "relief": 30030,
+    "shade": 11698,
+    "sea": 29898
    }
   },
   "set-9c18efefa001": {
@@ -11974,8 +11974,8 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -168,
-     16,
+     -166,
+     14,
      0
     ],
     "scale": 175.079,
@@ -11986,20 +11986,20 @@
     "cornerDeg": 91.12
    },
    "center": [
-    168,
-    -16
+    166,
+    -14
    ],
    "fine": false,
    "stretch": 104,
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 34583,
-   "svg_gzip": 9725,
+   "svg_bytes": 35328,
+   "svg_gzip": 9986,
    "images": {
-    "relief": 20868,
-    "shade": 9102,
-    "sea": 28176
+    "relief": 21978,
+    "shade": 9594,
+    "sea": 29180
    }
   },
   "set-b76e6ca9a186": {

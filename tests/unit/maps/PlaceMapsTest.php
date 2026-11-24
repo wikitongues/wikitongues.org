@@ -73,7 +73,6 @@ class PlaceMapsTest extends TestCase {
 				'Continent: Europe'      => array(
 					'places' => array( 'rec11', 'rec12' ),
 					'view'   => 'continent',
-					'frame'  => wt_continent_frames()['europe'],
 					'groups' => array(
 						'rec11' => 1,
 						'rec12' => 1,

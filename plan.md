@@ -309,7 +309,7 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 
 - [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
 - [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
-- [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Asia's SVG is over budget (27.2 KB gzipped).
+- [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Over budget: Europe (25.5 KB) and Asia (21.6 KB) gzipped.
 - [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
 - [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
@@ -333,7 +333,7 @@ Maps for the five continent pages.
 - A continent map draws every published territory in its sub-regions, all active.
 - One strong outline per sub-region; country borders inside it are hidden. **No tints**: sub-regions differ by outline only.
 - No rings. Every small territory shows as a dot. An island sub-region also gets one **halo**: a narrow field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge.
-- The frame is fixed per continent, not fitted. The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
+- The frame is fixed per continent, cropped to the land, except Europe's: fitted, so Russia is drawn whole (2026-11-24). The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
 
 **Example cases**
 
@@ -342,7 +342,7 @@ Maps for the five continent pages.
 | Americas | four outlines; the Caribbean is one halo (seen in round 3) |
 | Oceania | Micronesia, Melanesia and Polynesia are one halo each; Polynesia touches Melanesia near Fiji (round 3) |
 | Africa | six outlines, no halo; Comoros, Mauritius and Seychelles as dots |
-| Europe | four outlines; Russia runs off the east edge |
+| Europe | four outlines; Russia whole, so the frame reaches the Pacific |
 | Asia | five outlines, no halo; the Maldives and Singapore as dots |
 | Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
 

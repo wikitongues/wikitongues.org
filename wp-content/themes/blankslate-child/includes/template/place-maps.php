@@ -18,32 +18,31 @@
  */
 
 /**
- * Continent frames: an editorial view per continent, not fitted to its
- * territories (Russia would pull Europe's to the Pacific). Keyed on the term
- * slug; centre is [longitude, latitude], radius in degrees.
+ * Continent frames: an editorial view per continent, cropped to the land
+ * rather than fitted with a margin. Keyed on the term slug; centre is
+ * [longitude, latitude], radius in degrees. An empty frame means fitted to the
+ * territories like any map: Europe, whose Russia is continental in size and is
+ * drawn whole (2026-11-24).
  *
- * @return array<string, array{center: array{0: float, 1: float}, radius: float}>
+ * @return array<string, array{center: array{0: float, 1: float}, radius: float}|array{}>
  */
 function wt_continent_frames(): array {
 	return array(
 		'africa'   => array(
 			'center' => array( 18.0, 2.0 ),
-			'radius' => 38.0,
+			'radius' => 28.5,
 		),
 		'americas' => array(
-			'center' => array( -80.0, 12.0 ),
-			'radius' => 60.0,
+			'center' => array( -82.0, 12.0 ),
+			'radius' => 54.0,
 		),
 		'asia'     => array(
-			'center' => array( 90.0, 32.0 ),
-			'radius' => 42.0,
+			'center' => array( 87.0, 31.0 ),
+			'radius' => 32.5,
 		),
-		'europe'   => array(
-			'center' => array( 15.0, 52.0 ),
-			'radius' => 22.0,
-		),
+		'europe'   => array(),
 		'oceania'  => array(
-			'center' => array( 168.0, -16.0 ),
+			'center' => array( 166.0, -14.0 ),
 			'radius' => 38.0,
 		),
 	);
@@ -68,12 +67,12 @@ function wt_continent_sub_regions( WP_Term $continent ): array {
 }
 
 /**
- * A continent's map set: its sub-regions' territories, the frame, and each
- * place's group (its sub-region's position, from 1). null without a frame or
- * with fewer than two places.
+ * A continent's map set: its sub-regions' territories, its frame (none when
+ * fitted), and each place's group (its sub-region's position, from 1). null
+ * for a region not in wt_continent_frames(), or with fewer than two places.
  *
  * @param WP_Term $continent A top-level `region` term.
- * @return array{places: list<string>, view: string, frame: array{center: array{0: float, 1: float}, radius: float}, groups: array<string, int>}|null
+ * @return array{places: list<string>, view: string, groups: array<string, int>, frame?: array{center: array{0: float, 1: float}, radius: float}}|null
  */
 function wt_continent_set( WP_Term $continent ): ?array {
 	$frame = wt_continent_frames()[ $continent->slug ] ?? null;
@@ -91,12 +90,15 @@ function wt_continent_set( WP_Term $continent ): ?array {
 	if ( count( $places ) < 2 ) {
 		return null;
 	}
-	return array(
+	$set = array(
 		'places' => $places,
 		'view'   => 'continent',
-		'frame'  => $frame,
 		'groups' => $groups,
 	);
+	if ( array() !== $frame ) {
+		$set['frame'] = $frame;
+	}
+	return $set;
 }
 
 /**
