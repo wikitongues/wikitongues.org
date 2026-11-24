@@ -99,6 +99,30 @@ class InteractiveTest extends TestCase {
 		$this->assertSame( '{"places":{"recJdmrV257IxkekS":{"n":"Hawaii"},"recc6lAeDMPAvqzgM":{"n":"France","u":"https://wikitongues.org/territories/western-europe/france/"}}}', $json );
 	}
 
+	public function test_continent_places_lead_to_their_sub_region() {
+		WP_Mock::userFunction( 'wp_json_encode' )->andReturnUsing( static fn( $v, $f = 0 ) => json_encode( $v, $f ) );
+		$json = wt_maps_interaction_json(
+			array( self::FRANCE => array( 'n' => 'France' ) ),
+			array(
+				array(
+					'n'      => 'Eastern Europe',
+					'u'      => 'https://wikitongues.org/territories/eastern-europe/',
+					'places' => array( 'recPOLANDAAAAAAAA' ),
+				),
+				array(
+					'n'      => 'Western Europe',
+					'u'      => 'https://wikitongues.org/territories/western-europe/',
+					'places' => array( self::FRANCE ),
+				),
+			)
+		);
+		$this->assertSame(
+			'{"places":{"recPOLANDAAAAAAAA":{"g":1},"recc6lAeDMPAvqzgM":{"g":2}},"groups":{"1":{"n":"Eastern Europe","u":"https://wikitongues.org/territories/eastern-europe/"},"2":{"n":"Western Europe","u":"https://wikitongues.org/territories/western-europe/"}}}',
+			$json,
+			'no territory links: each place points at its group'
+		);
+	}
+
 	public function test_tagged_places_lists_each_record_once() {
 		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
 			$this->markTestSkipped( 'WordPress HTML API not available (no local install at the repository root).' );

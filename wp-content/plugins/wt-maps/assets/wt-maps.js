@@ -15,6 +15,7 @@
 	'use strict';
 
 	const SVG_NS = 'http://www.w3.org/2000/svg';
+	let count = 0; // Figures on the page, for unique filter IDs.
 
 	function init( fig ) {
 		let data;
@@ -28,11 +29,34 @@
 			return;
 		}
 		const places = data.places || {};
+		const groups = data.groups || {}; // A continent map: places lead to their sub-region.
 
 		const hot = document.createElementNS( SVG_NS, 'g' );
 		hot.setAttribute( 'class', 'wt-map__hot' );
 		hot.setAttribute( 'aria-hidden', 'true' );
 		svg.appendChild( hot );
+
+		// A group is outlined round its edge only, not along the borders inside
+		// it: its shapes are grown and the shapes themselves cut out, by a filter.
+		const filterId = 'wt-hot-' + ( ++count );
+		const defs = document.createElementNS( SVG_NS, 'defs' );
+		defs.innerHTML = '<filter id="' + filterId + '" x="-10%" y="-10%" width="120%" height="120%">'
+			+ '<feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="c"/>'
+			+ '<feMorphology in="SourceAlpha" operator="dilate" radius="1.4" result="l"/>'
+			+ '<feComposite in="c" in2="SourceAlpha" operator="out" result="co"/>'
+			+ '<feComposite in="l" in2="SourceAlpha" operator="out" result="lo"/>'
+			+ '<feFlood class="wt-map__hot-casing-flood"/><feComposite in2="co" operator="in" result="cf"/>'
+			+ '<feFlood class="wt-map__hot-line-flood"/><feComposite in2="lo" operator="in" result="lf"/>'
+			+ '<feMerge><feMergeNode in="cf"/><feMergeNode in="lf"/></feMerge></filter>';
+		svg.insertBefore( defs, svg.firstChild );
+
+		// Every shape of a group: its territories and their dots, not the land around.
+		function groupEls( g ) {
+			return Array.prototype.filter.call( svg.querySelectorAll( '.hls [data-place], .dots [data-place], .markers [data-place]' ), function ( el ) {
+				const p = places[ el.dataset.place ];
+				return p && p.g === g;
+			} );
+		}
 
 		const tip = document.createElement( 'div' );
 		tip.className = 'wt-map__tip';
@@ -56,6 +80,10 @@
 				return { key: 'area:' + area.dataset.area, n: area.dataset.area, area: true, els: [ area ] };
 			}
 			const place = el.closest( '[data-place]' );
+			const g = place && places[ place.dataset.place ] ? places[ place.dataset.place ].g : null;
+			if ( g && groups[ g ] ) {
+				return Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] );
+			}
 			if ( place && places[ place.dataset.place ] ) {
 				const id = place.dataset.place;
 				return Object.assign( { key: id, els: svg.querySelectorAll( '[data-place="' + id + '"]' ) }, places[ id ] );
@@ -93,6 +121,21 @@
 
 		function outline( t ) {
 			hot.textContent = '';
+			if ( t.group ) {
+				const g = document.createElementNS( SVG_NS, 'g' );
+				g.setAttribute( 'filter', 'url(#' + filterId + ')' );
+				t.els.forEach( function ( el ) {
+					const c = el.cloneNode( false );
+					c.removeAttribute( 'id' );
+					c.removeAttribute( 'class' );
+					Object.keys( c.dataset ).forEach( function ( k ) {
+						delete c.dataset[ k ];
+					} );
+					g.appendChild( c );
+				} );
+				hot.appendChild( g );
+				return;
+			}
 			[ 'casing', 'line' ].forEach( function ( layer ) {
 				t.els.forEach( function ( el ) {
 					const c = el.cloneNode( false );
@@ -220,8 +263,9 @@
 		// highlights its place. Matched by URL, which PHP built from record IDs.
 		const byUrl = {};
 		Object.keys( places ).forEach( function ( id ) {
-			if ( places[ id ].u ) {
-				( byUrl[ places[ id ].u ] = byUrl[ places[ id ].u ] || [] ).push( id );
+			const u = places[ id ].u || ( groups[ places[ id ].g ] || {} ).u;
+			if ( u ) {
+				( byUrl[ u ] = byUrl[ u ] || [] ).push( id );
 			}
 		} );
 		const scope = fig.closest( '.metadata' ) || fig.parentElement;
@@ -236,7 +280,10 @@
 			if ( ! els.length ) {
 				return;
 			}
-			const t = Object.assign( { key: 'list:' + ids.join( ',' ), els: els }, places[ ids[ 0 ] ] );
+			const g = places[ ids[ 0 ] ].g;
+			const t = g
+				? Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] )
+				: Object.assign( { key: 'list:' + ids.join( ',' ), els: els }, places[ ids[ 0 ] ] );
 			const on = function () {
 				if ( ! pinned ) {
 					show( t, null, false );

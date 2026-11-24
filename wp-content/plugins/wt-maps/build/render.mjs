@@ -333,16 +333,12 @@ function render(key, placeIds) {
   if (groups) {
     const nums = [...new Set(Object.values(groups))].sort((a, b) => a - b);
     const members = (n) => hl.filter(({ id }) => groups[id] === n);
-    // Each group's shapes in one <g>, so a filter can outline their union and the
-    // borders inside a sub-region can be hidden.
+    // Each group's shapes in one <g>, so the borders inside a sub-region can be
+    // hidden and the page can outline the group on hover.
     highlight = nums.map((n) => `<g${outlined ? ` class="grp grp-${n}"` : ''} id="grp-${n}-${key}">${hl.map(({ id }, i) => (groups[id] === n ? hlParts[i] : '')).join('')}</g>`).join('')
       + hl.map(({ id }, i) => (groups[id] === undefined ? hlParts[i] : '')).join('')
       + `<g class="dots">${nums.map((n) => `<use href="#dots-${n}-${key}"/>`).join('')}</g>`;
     groupDefs = nums.map((n) => `<g id="dots-${n}-${key}">${members(n).map(({ id }) => dotsBy[id] ?? '').join('')}</g>`).join('')
-      // The outline: the group grown a unit, less the group.
-      + `<filter id="ge-${key}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="${W + 20}" height="${H + 20}">`
-      + '<feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="d"/><feComposite in="d" in2="SourceAlpha" operator="out" result="o"/>'
-      + '<feFlood class="ge-flood" result="f"/><feComposite in="f" in2="o" operator="in"/></filter>'
       // The halo: grown, blurred and thresholded to a rounded field, with a thin edge.
       + `<filter id="gh-${key}" filterUnits="userSpaceOnUse" x="-20" y="-20" width="${W + 40}" height="${H + 40}">`
       + '<feMorphology in="SourceAlpha" operator="dilate" radius="5" result="d"/><feGaussianBlur in="d" stdDeviation="3.5" result="b"/>'
@@ -351,7 +347,37 @@ function render(key, placeIds) {
       + '<feFlood class="gh-fill" result="ff"/><feComposite in="ff" in2="s" operator="in" result="fill"/>'
       + '<feFlood class="gh-edge" result="fe"/><feComposite in="fe" in2="o" operator="in" result="edge"/>'
       + '<feMerge><feMergeNode in="fill"/><feMergeNode in="edge"/></feMerge></filter>';
-    if (outlined) groupEdges = `<g class="grp-edges">${nums.map((n) => `<use href="#grp-${n}-${key}" filter="url(#ge-${key})"/>`).join('')}</g>`;
+    if (outlined) {
+      // Borders between groups and the groups' outer edges as lines, at the
+      // weight of any territory border (2026-11-24; replaced a filter outline). Natural Earth neighbours share their border
+      // vertices, so an edge used by two groups is between them, used twice by one
+      // group is inside it (hidden), and used once is a coast or a border with a
+      // country off the map.
+      const k = ([x, y]) => `${x.toFixed(5)},${y.toFixed(5)}`;
+      const segKey = (a, b) => { const p = k(a), q = k(b); return p < q ? `${p}|${q}` : `${q}|${p}`; };
+      const rings = [], users = new Map();
+      feats.forEach((list, i) => {
+        const n = groups[hl[i].id];
+        for (const { f } of list) {
+          const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+          for (const poly of polys) for (const ring of poly) {
+            rings.push({ n, ring });
+            for (let j = 1; j < ring.length; j++) { const sk = segKey(ring[j - 1], ring[j]); if (!users.has(sk)) users.set(sk, []); users.get(sk).push(n); }
+          }
+        }
+      });
+      const lines = [];
+      for (const { n, ring } of rings) {
+        let run = null;
+        for (let j = 1; j < ring.length; j++) {
+          const u = users.get(segKey(ring[j - 1], ring[j]));
+          const keep = u.length === 1 || (new Set(u).size > 1 && n === Math.min(...u));
+          if (keep) { if (!run) { run = [ring[j - 1]]; lines.push(run); } run.push(ring[j]); } else run = null;
+        }
+      }
+      const d = path_({ type: 'MultiLineString', coordinates: lines });
+      groupEdges = d ? `<path class="grp-mesh" d="${d}"/>` : '';
+    }
     // An island group gets one halo: its land covers under 15% of the area its
     // places span (the convex hull of their parts' centres). On the 2026-11-24
     // continents the island groups measured 0–11% (Micronesia, Polynesia,

@@ -37,6 +37,9 @@
 .wt-map__hot-casing { stroke: var(--hot-casing); stroke-width: 3.4; }
 .wt-map__hot-line { stroke: var(--hot); stroke-width: 1.6; }
 .wt-map__hot-casing.is-ring { stroke-width: 4.6; }
+// A group's outline (continent maps) is drawn by a filter: its floods take the same colours.
+.wt-map__hot-casing-flood { flood-color: var(--hot-casing); }
+.wt-map__hot-line-flood { flood-color: var(--hot); }
 .wt-map__hot-line.is-ring { stroke-width: 2.6; }
 
 .wt-map__tip {
