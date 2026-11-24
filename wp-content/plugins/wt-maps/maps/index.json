@@ -10006,19 +10006,19 @@
      -67.501926,
      0
     ],
-    "scale": 206.337,
+    "scale": 167.909,
     "translate": [
-     187.687,
-     161.786
+     222.629,
+     159.591
     ],
-    "cornerDeg": 90.39
+    "cornerDeg": 109.31
    },
    "center": [
     68.524535,
     67.501926
    ],
    "fine": false,
-   "stretch": 71.9,
+   "stretch": 198.8,
    "scale_km": null,
    "claimed": [
     "Crimea",
@@ -10033,14 +10033,16 @@
     "N. Cyprus",
     "N. Cyprus",
     "South Ossetia",
+    "W. Sahara",
+    "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 73085,
-   "svg_gzip": 24525,
+   "svg_bytes": 82147,
+   "svg_gzip": 26882,
    "images": {
-    "relief": 29634,
-    "shade": 21278,
-    "sea": 29750
+    "relief": 30144,
+    "shade": 20008,
+    "sea": 30532
    }
   },
   "set-3c6af9f0ddf4": {

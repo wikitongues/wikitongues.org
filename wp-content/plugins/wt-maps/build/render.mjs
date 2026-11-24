@@ -177,9 +177,12 @@ function render(key, placeIds) {
   // fixes the view's centre ([lon, lat]); `radius` (degrees) frames a circle
   // round it instead of fitting the places, which still fit with equal margins
   // without it; `roll` turns the view (degrees, positive is clockwise); `crop`
-  // ([x0, y0, x1, y1], fractions of the frame) keeps part of the fitted view.
+  // ([x0, y0, x1, y1], fractions of the frame) keeps part of the fitted view;
+  // `include` ([[lon, lat], …]) adds points to the fit, for outlying parts the
+  // frame leaves out (Spain's Canary Islands on Europe's map).
   const opts = input.sets[key] ?? {};
   const fopt = opts.frame ?? {};
+  if (fopt.include) focus.features.push(...fopt.include.map((c) => ({ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: c } })));
   const center = fopt.center ?? d3.geoCentroid(focus);
   let frame = fopt.radius ? d3.geoCircle().center(center).radius(fopt.radius)() : focus;
   // Minimum frame radius ~45 km: small countries zoom until they read as a shape.

@@ -23,9 +23,10 @@
  * `radius` the territories are fitted with equal margins round it; `radius`
  * (degrees) frames a circle instead, for continents too tall for a 4:3 frame;
  * `roll` turns the view (degrees, positive clockwise); `crop` keeps part of the
- * fitted view, [x0, y0, x1, y1] as fractions. Tuned by eye, 2026-11-24.
+ * fitted view, [x0, y0, x1, y1] as fractions; `include` adds [lon, lat] points
+ * to the fit. Tuned by eye, 2026-11-24.
  *
- * @return array<string, array{center?: array{0: float, 1: float}, radius?: float, roll?: float, crop?: array{0: float, 1: float, 2: float, 3: float}}>
+ * @return array<string, array{center?: array{0: float, 1: float}, radius?: float, roll?: float, crop?: array{0: float, 1: float, 2: float, 3: float}, include?: list<array{0: float, 1: float}>}>
  */
 function wt_continent_frames(): array {
 	return array(
@@ -43,9 +44,10 @@ function wt_continent_frames(): array {
 			'center' => array( 87.0, 31.0 ),
 			'roll'   => -10.0,
 		),
-		// Fitted, so Russia is drawn whole; the empty Atlantic is cropped off.
+		// Fitted, so Russia is drawn whole, and out to Spain's Canary Islands,
+		// which the fit (main bodies only) would leave off the west edge.
 		'europe'   => array(
-			'crop' => array( 0.1, 0.05, 1.0, 0.95 ),
+			'include' => array( array( -18.2, 27.6 ) ),
 		),
 		'oceania'  => array(
 			'center' => array( 166.0, -14.0 ),

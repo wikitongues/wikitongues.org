@@ -333,7 +333,7 @@ Maps for the five continent pages.
 - A continent map draws every published territory in its sub-regions, all active.
 - One strong outline per sub-region; country borders inside it are hidden. **No tints**: sub-regions differ by outline only.
 - No rings. Every small territory shows as a dot. An island sub-region also gets one **halo**: a narrow field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge.
-- The frame is set per continent (centre, radius, roll, crop), tuned by eye so margins are even; Europe's is fitted, so Russia is drawn whole (2026-11-24). The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
+- The frame is set per continent (centre, radius, roll, crop, include), tuned by eye so margins are even; Europe's is fitted, so Russia is drawn whole, and includes the Canary Islands (2026-11-24). The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
 
 **Example cases**
 
