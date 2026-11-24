@@ -53,6 +53,30 @@ const idx10 = {
   breakaway: idx.breakaway,
   subunits: byCode(subunits10, 'SU_A3'),
 };
+// Neighbours: the place each country on the base map stands for, so the page can
+// label and link it (plan 3.2, step 2a). sets.json lists every place in the shape
+// table. A place drawn as a whole country (`countries:PER`), or from a map unit
+// that is its own country (`units:GRL`), is that country. A country with a place
+// drawn from one of its map units (France: `units:FXX`) is drawn unit by unit
+// instead, each unit tagged with its own place, so French Guiana leads to French
+// Guiana and not to France.
+const placeOfCountry = {};
+const splitCountries = new Set();
+for (const [id, place] of Object.entries(input.places)) {
+  if (place.shapes.length !== 1) continue;
+  const [l, c] = place.shapes[0].split(':');
+  if (l === 'countries') placeOfCountry[c] = id;
+  else if (l === 'units' && idx.units[c]) {
+    if (idx.countries[c]) placeOfCountry[c] = id;
+    else splitCountries.add(idx.units[c].properties.ADM0_A3);
+  }
+}
+const placeOfUnit = Object.fromEntries(Object.entries(input.places)
+  .filter(([, p]) => p.shapes.length === 1 && p.shapes[0].startsWith('units:'))
+  .map(([id, p]) => [p.shapes[0].slice(6), id]));
+const unitsOf = (fs_) => fs_.reduce((m, f) => ((m[f.properties.ADM0_A3] ??= []).push(f), m), {});
+const unitsByCountry = unitsOf(units), unitsByCountry10 = unitsOf(units10);
+
 // Frames tighter than this radius draw from 1:10m.
 const FINE_BELOW_DEG = 6;
 
@@ -232,8 +256,15 @@ function render(key, placeIds) {
   // Base: every country, de facto. A country that is itself highlighted (Peru, or
   // Greenland drawn from its map unit) is drawn once, in the highlight layer.
   const hlCodes = new Set(hl.flatMap(({ refs }) => refs.map(([, c]) => c)));
-  const land = base.filter((f) => !hlCodes.has(f.properties.ADM0_A3))
-    .map((f) => pathEl(f, 'land', ` data-a3="${f.properties.ADM0_A3}"`)).join('');
+  // `data-place` replaces the old `data-a3`, which nothing read.
+  const tag = (a3, id) => (id ? ` data-place="${id}"` : '');
+  const land = base.filter((f) => !hlCodes.has(f.properties.ADM0_A3)).map((f) => {
+    const a3 = f.properties.ADM0_A3;
+    if (!splitCountries.has(a3)) return pathEl(f, 'land', tag(a3, placeOfCountry[a3]));
+    return ((fine ? unitsByCountry10 : unitsByCountry)[a3] ?? [f])
+      .filter((u) => !hlCodes.has(u.properties.GU_A3))
+      .map((u) => pathEl(u, 'land', tag(a3, placeOfUnit[u.properties.GU_A3]))).join('');
+  }).join('');
 
   const markers = [];
   const set = input.sets[key] ?? {};

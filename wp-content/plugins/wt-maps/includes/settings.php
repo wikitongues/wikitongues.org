@@ -1,6 +1,7 @@
 <?php
 /**
- * Settings → Maps: turn the sidebar map off and pick the style, without a deploy.
+ * Settings → Maps: turn the sidebar map or the map interaction off, and pick
+ * the style, without a deploy.
  *
  * @package WT\Maps
  */
@@ -11,14 +12,15 @@ use WT\Maps\Renderer;
  * Keep only known values.
  *
  * @param mixed $input Submitted option.
- * @return array{sidebar: bool, style: string}
+ * @return array{sidebar: bool, style: string, interactive: bool}
  */
 function wt_maps_sanitize_settings( $input ): array {
 	$input = is_array( $input ) ? $input : array();
 	$style = isset( $input['style'] ) && isset( Renderer::STYLES[ $input['style'] ] ) ? (string) $input['style'] : Renderer::DEFAULT_STYLE;
 	return array(
-		'sidebar' => ! empty( $input['sidebar'] ),
-		'style'   => $style,
+		'sidebar'     => ! empty( $input['sidebar'] ),
+		'style'       => $style,
+		'interactive' => ! empty( $input['interactive'] ),
 	);
 }
 
@@ -32,8 +34,9 @@ add_action(
 				'type'              => 'array',
 				'sanitize_callback' => 'wt_maps_sanitize_settings',
 				'default'           => array(
-					'sidebar' => true,
-					'style'   => Renderer::DEFAULT_STYLE,
+					'sidebar'     => true,
+					'style'       => Renderer::DEFAULT_STYLE,
+					'interactive' => true,
 				),
 			)
 		);
@@ -69,6 +72,16 @@ function wt_maps_settings_page(): void {
 							Show the locator map in the language sidebar
 						</label>
 						<p class="description">Languages show a map only when one has been built for their places.</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Interaction</th>
+					<td>
+						<label>
+							<input type="checkbox" name="wt_maps[interactive]" value="1" <?php checked( $settings['interactive'] ); ?>>
+							Label places on hover and open their pages on click
+						</label>
+						<p class="description">On every map: language, territory and region pages. Off, the maps are still images.</p>
 					</td>
 				</tr>
 				<tr>
