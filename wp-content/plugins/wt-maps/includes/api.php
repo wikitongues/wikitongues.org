@@ -187,8 +187,10 @@ function wt_map( array $args = array() ): string {
  * language, for pages that aren't one (a Language Rights report region or
  * country). '' when the set has no built map.
  *
- * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool} $args
- *     Places and primary places as record IDs; the map's accessible title.
+ * @param array{places: list<string>, primary?: list<string>, title: string, class?: string, style?: string, caption?: bool, inset?: float, view?: string} $args
+ *     Places and primary places as record IDs; the map's accessible title;
+ *     `inset` scales the locator globe (1.2 on territory pages); `view` picks
+ *     another drawing of the places (`continent`), see wt_maps_set_key().
  * @return string
  */
 function wt_map_places( array $args ): string {
@@ -198,7 +200,7 @@ function wt_map_places( array $args ): string {
 	$origins = $args['primary'] ?? array();
 	sort( $places );
 
-	$key  = wt_maps_set_key( $places );
+	$key  = wt_maps_set_key( $places, (string) ( $args['view'] ?? '' ) );
 	$file = dirname( __DIR__ ) . '/maps/' . $key . '.svg';
 	if ( '' === $key || ! is_readable( $file ) ) {
 		return '';
@@ -214,12 +216,13 @@ function wt_map_places( array $args ): string {
 	$cap   = empty( $args['caption'] ) ? '' : Renderer::caption( $roles, $names, $origins );
 	$style = isset( $args['style'] ) && isset( Renderer::STYLES[ $args['style'] ] ) ? $args['style'] : wt_maps_settings()['style'];
 	$class = trim( 'wt-map wt-map--' . $style . ' ' . sanitize_html_class( (string) ( $args['class'] ?? '' ) ) );
+	$inset = (float) ( $args['inset'] ?? 1.0 );
 
-	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, Renderer::VERSION, filemtime( $file ) ) ) );
+	$cache_key = md5( (string) wp_json_encode( array( $key, $roles, $title, $desc, $cap, $class, $inset, Renderer::VERSION, filemtime( $file ) ) ) );
 	$figure    = wp_cache_get( $cache_key, 'wt_maps' );
 	if ( ! is_string( $figure ) ) {
 		$svg    = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local plugin file.
-		$svg    = Renderer::decorate( $svg, $roles, plugins_url( 'maps/', dirname( __DIR__ ) . '/wt-maps.php' ), $title, $desc );
+		$svg    = Renderer::decorate( $svg, $roles, plugins_url( 'maps/', dirname( __DIR__ ) . '/wt-maps.php' ), $title, $desc, $inset );
 		$figure = '<figure class="' . esc_attr( $class ) . '">' . $svg
 			. ( '' !== $cap ? '<figcaption class="wt-map__caption">' . esc_html( ucfirst( $cap ) ) . '</figcaption>' : '' )
 			. '</figure>';

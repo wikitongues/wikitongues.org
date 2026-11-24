@@ -296,12 +296,65 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 **Decided 2026-11-24: prebuilt maps plus a small script, not MapLibre.** Every map stays a wt-maps SVG built ahead of time, and one deferred script (about 3 KB gzipped) adds hover labels and clicks to any map on the page. No tile hosting, no second visual style, and without JavaScript each map is the step 1 image. MapLibre (self-hosted PMTiles) comes back only if pan and zoom, or language point markers, become goals.
 
 - **Every map:** hover labels and clicks, per the step 2a spec below.
-- **Territory pages:** the territory's map (step 1b, [#741](https://github.com/wikitongues/wikitongues.org/pull/741)), with its neighbouring countries clickable. Languages have no coordinates, so links go from shapes, not language markers.
+- **Territory pages:** the territory's map (step 1b, shipped in [#741](https://github.com/wikitongues/wikitongues.org/pull/741)), with its neighbouring countries clickable. Languages have no coordinates, so links go from shapes, not language markers.
 - **Region pages:** each territory on the sub-region map links to its page (step 2a). Shading each territory by how many languages it has is a class PHP adds at render, with no rebuild; it gets its own spec. Some territories list hundreds of languages (India: 403): count raw IDs, as territory pages already do.
 - **A world view**, if one is wanted (homepage, region index): one more prebuilt map. Compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
 - **Instrument:** `map_interaction` (`place`, `action`: `hover` or `click`), sent by the script.
-- **Order:** #741 first; then step 2a (the settings switch, neighbours tagged in the build, a full rebuild, the script and its CSS); then region shading; then instrumentation.
+- **Order:** step 2a (the settings switch, neighbours tagged in the build, a full rebuild, the script and its CSS); then region shading; then instrumentation.
 - **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
+
+##### Step 1b: territory and sub-region pages
+
+Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, continents held). Built on `feature/cc/maps-place-pages`; see [maps.md](docs/maps.md#territory-and-region-pages). Follow-ups:
+
+- [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
+- [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
+- [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Europe's SVG is over budget.
+- [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
+- [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
+- [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
+- [ ] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done locally. On staging and production, after this PR deploys: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
+
+##### Step 1c: continent maps (approved and built 2026-11-24)
+
+Maps for the five continent pages.
+
+**Glossary.** *Continent:* a top-level `region` term. *Sub-region:* its child term. *Small territory:* under the ring threshold in the frame (largest island under 150 square units). *Island sub-region:* its land covers under 15% of the area its territories span (measured 2026-11-24: island groups 0–11%, all others 21% or more).
+
+**Entities**
+
+| Thing | Stored | Source |
+|---|---|---|
+| Continent frame (centre, radius in degrees) | a table in `place-maps.php`, keyed on the term slug | editorial |
+| Group: territory → sub-region | `sets.json`, rebuilt on every export | `region` taxonomy |
+| Halo sub-regions | worked out by the build (`render.mjs`) | the island rule, on the drawn areas |
+
+**Rules**
+- A continent map draws every published territory in its sub-regions, all active.
+- One strong outline per sub-region; country borders inside it are hidden. **No tints**: sub-regions differ by outline only.
+- No rings. Every small territory shows as a dot. An island sub-region also gets one **halo**: a narrow field grown from its islands and joined along a minimum spanning tree, under the land, with a thin edge.
+- The frame is set per continent (centre, radius, roll, crop, include), tuned by eye so margins are even; Europe's is fitted, so Russia is drawn whole, and includes the Canary Islands (2026-11-24). The set key stays the hash of the record IDs; frame, groups and halos travel as set options, like `globe`.
+
+**Example cases**
+
+| Continent | Expected |
+|---|---|
+| Americas | four outlines; the Caribbean is one halo (seen in round 3) |
+| Oceania | Micronesia, Melanesia and Polynesia are one halo each; Polynesia touches Melanesia near Fiji (round 3) |
+| Africa | six outlines, no halo; Comoros, Mauritius and Seychelles as dots |
+| Europe | four outlines; Russia whole, so the frame reaches the Pacific |
+| Asia | five outlines, no halo; the Maldives and Singapore as dots |
+| Australia & New Zealand | a sub-region of Oceania (moved 2026-11-24): outlined in Oceania's map, no halo |
+
+**Display.** In the sidebar under the title, as on sub-region pages. Each style draws outlines, halos and dots in its own palette: the light styles in brand deep blue on parchment, the dark styles in their own primary and edge colours.
+
+**Decisions (2026-11-24)**
+- Small territories outside island sub-regions get dots too.
+- Sidebar, like sub-region maps.
+- The dark styles follow their own palettes, consistent with the rest of each style.
+- Australia & New Zealand is a sub-region of Oceania.
+
+**Out of scope:** tints, the world view, interactivity (step 2).
 
 ##### Step 2a: hover labels and clicks (approved 2026-11-23)
 

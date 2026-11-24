@@ -20,9 +20,17 @@
 	$current_region_name = wt_prefix_the( $current_region->name );
 	?>
 	<h1><?php echo esc_html( get_the_title() ); ?></h1>
+	<?php
+	// Locator map (plan 3.2): the territory alone; '' until its set is built.
+	echo wt_territory_map( $territory_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup built by wt-maps.
+	?>
 	<?php	if ( $territory_query->have_posts() ) : ?>
 	<section class="related-territories metadata">
 		<strong>Other territories in <a href="<?php echo esc_url( get_term_link( $current_region ) ); ?>"><?php echo esc_html( $current_region_name ); ?></a></strong>
+		<?php
+		// The sub-region's map, the whole region active, above its list (plan 3.2).
+		echo wt_territory_region_map( $territory_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup built by wt-maps.
+		?>
 		<ul>
 			<?php
 			while ( $territory_query->have_posts() ) :
