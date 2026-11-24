@@ -120,17 +120,22 @@
 
 /* Grouped maps (continents, plan 3.2 step 1c): each sub-region drawn as one shape.
    The borders inside a group are stroked in the group's own fill, so they vanish;
-   the build's filters draw one outline per group (.ge-flood) and a halo round
-   island groups (.gh-fill, .gh-edge); small places are dots. Each style uses its
+   the build draws the borders between groups and round them as lines (.grp-mesh)
+   and a halo round island groups (.gh-fill, .gh-edge); small places are dots. Each style uses its
    own palette: the light ones deep blue on parchment, the dark ones their
    primary (parchment) and lavender on the brand blue. */
 .wt-map .grp .hl { stroke-dasharray: none; stroke-width: .6; }
 .wt-map--light-full .grp .hl, .wt-map--light-focused .grp .hl { stroke: var(--relief); }
 .wt-map--dark-full .grp .hl, .wt-map--dark-focused .grp .hl { stroke: var(--brd-primary); }
-.wt-map .ge-flood { flood-color: var(--brd-edge); }
 .wt-map .dot { fill: var(--brd-edge); }
 .wt-map .gh-fill { flood-color: var(--paper); flood-opacity: .55; }
 .wt-map .gh-edge { flood-color: var(--brd-edge); flood-opacity: .55; }
 .wt-map--dark-full .dot, .wt-map--dark-focused .dot { fill: var(--brd-primary); }
 .wt-map--dark-full .gh-fill, .wt-map--dark-focused .gh-fill { flood-color: var(--brd-secondary); flood-opacity: .22; }
 .wt-map--dark-full .gh-edge, .wt-map--dark-focused .gh-edge { flood-color: var(--brd-secondary); flood-opacity: .6; }
+/* Continent borders between sub-regions and round them, as lines at the weight
+   of any territory border in that style. */
+.wt-map .grp-mesh { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.wt-map--light-full .grp-mesh { stroke: var(--primary); stroke-width: .7; }
+.wt-map--light-focused .grp-mesh { stroke: var(--brd-edge); stroke-width: .7; }
+.wt-map--dark-full .grp-mesh, .wt-map--dark-focused .grp-mesh { stroke: var(--brd-edge); stroke-width: .5; }
