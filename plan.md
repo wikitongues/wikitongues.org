@@ -83,6 +83,7 @@ The order follows the product roadmap, with two exceptions: secret scanning (#1â
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
 | Language geography cleanup across Airtable, Make and WordPress: origins, subdivisions, "also spoken in" | [6.8](#68-language-geography-across-airtable-make-and-wordpress) |
+| Move the Import External Resources Make scenario onto wt-airtable-sync, then uninstall integromat-connector | [airtable-sync.md](docs/airtable-sync.md#integromat-connector-old-sync-plugin) |
 | GTM: give Native Language AI (live since 2026-11-18) its own `content_type`, and Language Rights when it launches | [2.1](#21-pages-and-navigation) |
 
 ### Blocked on a decision
