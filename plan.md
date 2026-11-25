@@ -509,6 +509,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 | 2026-11-25 | Claims table starts empty; Natural Earth's claims are its first authored layer, our reviews later layers | Every assertion keeps its source, and history can be replayed or rewound; a Natural Earth upgrade replaces one layer |
 | 2026-11-25 | Frederico edits and reviews the claims table, in the repo; he also owns the yearly review | Replaces Kristen as reviewer (2026-11-17); no Airtable table needed |
+| 2026-11-25 | Contested areas appear only when active, with relief under the hatch (lookdev F); hidden when inactive after step 2 | A hatch on a map not about the area reads as noise; hatching alone drops the area out of the place |
 | 2026-11-25 | Claims spec proposed: a reviewed claims table, formal and current claims only, territories drawn as their undisputed part | Natural Earth's points of view frame Taiwan on the Himalayas, and its de facto shapes make hover outlines take sides |
 
 ##### Claims: contested areas (spec for review, 2026-11-25)
@@ -562,23 +563,24 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Abyei; Lawa and Courantyne headwaters | add South Sudan; add Suriname | Claimants Natural Earth misses |
 | Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Frederico decides: claimed or dormant |
 
-**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is its undisputed part and its claimed areas light up; a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **In lookdev (2026-11-25):** inactive contested areas drawn as plain land instead of hatched (Western Sahara on other regions' maps today), and active ones given coloured relief under the hatch instead of hatching alone.
+**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is its undisputed part and its claimed areas light up; a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under the hatch. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
 
 **Steps,** one PR each:
 1. The table and the rule, in two commits: an empty table plus layer 1 (Natural Earth, deduplicated), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map. The build reads the effective claims; `doctor` checks. A prototype patch exists.
 2. Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
 3. Frederico's review layer: the last two rows of the table, Abyei, the Suriname headwaters, Artsakh, and Russia on the 2022 oblasts.
 4. The 2022 oblast shapes from admin-1.
-5. The display changes, after lookdev.
+5. Display: relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
 
 **Open questions**
 1. East Jerusalem: draw it from a published boundary, or leave it out?
-2. Lookdev: inactive contested areas as plain land? Coloured relief under the hatch on active ones?
+2. Hatch visibility: a white outline on the hatch lines (lookdev in progress).
 
 **Answered (2026-11-25)**
 - Editing and review: Frederico, in the repo. No Airtable table or pull command.
 - Ukraine's own map with Russia's 2022 claims: four oblasts and Crimea hatched, as the neutral rule gives.
 - Hover labels don't name claimants.
+- Contested-area display: lookdev F, active only, relief under the hatch.
 
 **Out of scope.** Lines of control, historical claims, maritime claims, Antarctica, per-viewer points of view.
 
