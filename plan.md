@@ -516,9 +516,11 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-25 | Active contested areas hatched in brand red, 1.8 on 5px, for every claimant | Reads clearly over green relief and the blue edge at sidebar size; blue merged with the border and a white outline washed it out |
 | 2026-11-25 | Contested areas appear only when active, with relief under the hatch (lookdev F); hidden when inactive after step 2 | A hatch on a map not about the area reads as noise; hatching alone drops the area out of the place |
 | 2026-11-25 | Claims spec proposed: a reviewed claims table, formal and current claims only, territories drawn as their undisputed part | Natural Earth's points of view frame Taiwan on the Himalayas, and its de facto shapes make hover outlines take sides |
+| 2026-11-25 | Maps with an active contested area carry a one-line disclaimer; the credits page the full note | US and UK government maps carry one; it states the neutral stance where a dispute is drawn |
+| 2026-11-25 | No "administered by / claimed by" labels | Same reason as no claimant names; the audit found US maps use them, but they take a position |
 | 2026-11-25 | Production ships with map interaction off (Settings → Maps, also off on staging) | Hover outlines show contested areas by control until the claims table lands |
 
-##### Claims: contested areas (spec for review, 2026-11-25)
+##### Claims: contested areas (approved 2026-11-25)
 
 **Decision needed:** approve the rule (only reviewed claims count, and a claim is formal and current) and the geometry (a territory is drawn as its undisputed part). Answered 2026-11-25: the table starts empty with Natural Earth as its first authored layer; Frederico edits and reviews; Ukraine's 2022 hatching accepted; hover labels don't name claimants. Together they fix the inconsistency that keeps map interaction switched off: Russia's hover outline takes in Crimea and the Donbas while Ukraine's leaves them out, and Natural Earth gives the ROC's dormant claim to the India–China border areas to Taiwan, which frames Taiwan's map on the Himalayas. **Recommended:** approve both.
 
@@ -562,7 +564,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | West Bank, Gaza | — (Palestine itself) | No change |
 | East Jerusalem | Israel, Palestine | Left out for now: not in Natural Earth |
 | Kuril Islands | Japan, Russia | Leaves Russia's shape |
-| Kashmir, Siachen, Junagadh | India, Pakistan | No change |
+| Kashmir, Siachen, Junagadh | India, Pakistan | No change to claimants. Check names against shapes first: Natural Earth's "Jammu and Kashmir" is only the Indian-administered part, and the Pakistan-administered parts are separate areas |
 | Taiwan | China | No change on China's map; Taiwan drawn as itself |
 | Western Sahara | Morocco, Western Sahara | Two rows become one; the Berm zone shape is dropped, so no line runs through it |
 | Artsakh | ended (2023) | Returns to Azerbaijan's shape |
@@ -571,12 +573,16 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 **Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them; its claimed areas light up: an area already active on the map stays red; any other is hatched in the hover blue while hovered, so red only ever marks the page's places. (prototype: https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P); a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under a brand-red hatch (`$red`, #e52600; 1.8 lines on a 5px spacing), the same for primary and secondary places. The relief is cut to the place's de facto shape today, so the build must also cut the place's tinted relief to the areas it claims. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
 
+**Disclaimer.** A map with an active contested area carries one line under it: "Borders and contested areas are shown for reference and do not imply a position on sovereignty." The credits page carries the fuller note: sources (Natural Earth, our claims table), the claim rule, and how to report an error. Both US federal maps ("boundary representation is not necessarily authoritative") and UK Foreign Office maps carry a disclaimer of this kind.
+
+**Precedent (audit, 2026-11-25).** Neither USGS nor Ordnance Survey has its own policy: US federal maps follow the State Department Geographer's boundary dataset and guidance bulletins, and UK policy covers names (PCGN, with the Foreign Office). Both draw their own government's position (the US shows Western Sahara as Moroccan and Taiwan in China's colour), so neither is copied. Their methods confirm ours: claimed areas get a line type distinct from international boundaries, uncontested stretches stay ordinary borders, Kashmir and Aksai Chin are banded in both claimants' colours, and no country name sits inside a disputed area.
+
 **Steps,** one PR each:
-1. **Built 2026-11-25, in review.** The table and the rule, in two commits: an empty table plus layer 1 (Natural Earth, deduplicated), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map. The build reads the effective claims; `doctor` checks. A prototype patch exists.
+1. **Built 2026-11-25 (#766), in review.** The table and the rule: an empty table plus layer 1 (Natural Earth), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map; then one shape per area (rule 6), which changes 38 maps. The build reads the effective claims; `doctor` checks. Kashmir names checked against shapes: B05 is the Indian-administered part, and Azad Kashmir has no shape (step 3).
 2. Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
 3. Frederico's review layer: the last two rows of the table, Abyei, the Suriname headwaters, Artsakh, Russia on the 2022 oblasts, and Azad Kashmir (Natural Earth has no contested-area shape for it, so India's claim isn't drawn).
 4. The 2022 oblast shapes from admin-1.
-5. Display: relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
+5. Display (with the disclaimer line and the credits-page note): relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
 
 **Answered (2026-11-25)**
 - Editing and review: Frederico, in the repo. No Airtable table or pull command.
@@ -585,6 +591,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 - Contested-area display: lookdev F, active only, relief under the hatch.
 - East Jerusalem: left out for now (not in Natural Earth).
 - Hover outline: solid round the undisputed part, dashed round claims. Outlining the full claim was rejected: it draws each government's own map as fact (Taiwan inside China, Kosovo inside Serbia, Crimea inside Russia).
+- Labels don't say who administers or claims an area. The US labels some areas that way ("administered by Russia, claimed by Japan" on the Kurils); rejected, as with claimant names.
 - Hatch: brand red, heavier. A white outline washed the area out; blue merged with the border line.
 
 **Out of scope.** Lines of control, historical claims, maritime claims, Antarctica, per-viewer points of view.
