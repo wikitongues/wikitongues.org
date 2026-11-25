@@ -22,6 +22,7 @@ import * as d3 from 'd3-geo';
 import { choose, maxStretch, W, H } from './projection.mjs';
 import { CACHE, STAGE, FRAMES, readJson, writeJson, readFrames, onlyKeys } from './common.mjs';
 import { neAreas, isSelf as isSelfFor, contestedAreas } from './contested.mjs';
+import { subtractAreas } from './undisputed.mjs';
 
 const R_EARTH = 6371000;
 const layer = (n, res = '50m') => readJson(path.join(CACHE, 'ne', `ne_${res}_admin_0_${n}.geojson`)).features;
@@ -83,6 +84,23 @@ const FINE_BELOW_DEG = 6;
 // Contested areas: Natural Earth's shapes, with who claims each from the
 // claims table (contested.mjs). `claimants` holds record IDs.
 const disputed = contestedAreas(neAreas(brk, idx.units));
+
+// Undisputed parts (claims spec rule 3): cut the contested areas out of every
+// shape, at both scales, before anything is drawn or framed. A shape keeps an
+// area it stands for: its own code, or a place drawn from it that is the area.
+const placesByRef = {};
+for (const place of Object.values(input.places)) {
+  const refs = place.shapes.map((s) => s.split(':'));
+  for (const [l, c] of refs) (placesByRef[`${l}:${c}`] ??= []).push(refs);
+}
+const standsFor = (layerName, codeKey) => (f, a) => {
+  const p = f.properties;
+  if ([p.ADM0_A3, p.GU_A3, p.SU_A3].includes(a.code)) return true;
+  return (placesByRef[`${layerName}:${p[codeKey]}`] ?? []).some((refs) => isSelfFor(refs, a));
+};
+for (const [fs_, l, k] of [[countries, 'countries', 'ADM0_A3'], [countries10, 'countries', 'ADM0_A3'], [units, 'units', 'GU_A3'], [units10, 'units', 'GU_A3'], [subunits, 'subunits', 'SU_A3'], [subunits10, 'subunits', 'SU_A3']]) {
+  subtractAreas(fs_, disputed, standsFor(l, k));
+}
 
 const refsOf = (placeId) => {
   const place = input.places[placeId];

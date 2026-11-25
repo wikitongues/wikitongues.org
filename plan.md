@@ -579,7 +579,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 **Steps,** one PR each:
 1. **Built 2026-11-25 (#766), in review.** The table and the rule: an empty table plus layer 1 (Natural Earth), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map; then one shape per area (rule 6), which changes 38 maps. The build reads the effective claims; `doctor` checks. Kashmir names checked against shapes: B05 is the Indian-administered part, and Azad Kashmir has no shape (step 3).
-2. Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
+2. **Built 2026-11-25, in review.** Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
 3. Frederico's review layer: the last two rows of the table, Abyei, the Suriname headwaters, Artsakh, Russia on the 2022 oblasts, and Azad Kashmir (Natural Earth has no contested-area shape for it, so India's claim isn't drawn).
 4. The 2022 oblast shapes from admin-1.
 5. Display (with the disclaimer line and the credits-page note): relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.

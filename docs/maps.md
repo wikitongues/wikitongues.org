@@ -2,7 +2,7 @@
 
 Locator maps for language pages (plan 3.2, step 1; shipped 2026-11-23), territory pages and sub-region pages (step 1b, 2026-11-23). This file describes what is built and the decisions behind it ([Design decisions](#design-decisions)). The data model they follow, territories, origins and subdivisions, is [plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress). Step 2, interactive maps on territory and region pages, is still in the plan.
 
-Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table (step 1 of the claims spec, 2026-11-25). Not yet built (plan 3.2): undisputed parts (claims step 2), credits, and the review tooling.
+Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table and undisputed parts (claims spec steps 1 and 2, 2026-11-25). Not yet built (plan 3.2): the contested-area display (claims step 5), credits, and the review tooling.
 
 ## Map sets and the build
 
@@ -240,6 +240,7 @@ Who claims each contested area lives in `data/claims.json`, not in Natural Earth
 - **Statuses.** `claimed` (the default) draws as contested. `ended` draws the area as part of its territory. `duplicate`, with `of`, draws it once, as the area it repeats.
 - **The build** computes the effective claims and never stores them. An area with no row stops it: run `node seed-claims.mjs --write`.
 - **`doctor`** fails on a claimant that is not in the shape table, a change with no reason, or one naming an area layer 1 lacks. It lists changes that change nothing, which is how an override shows it has gone stale after an upgrade.
+- **Undisputed parts** (`build/undisputed.mjs`, rule 3). Before anything is drawn or framed, the build cuts every contested area out of every Natural Earth shape, at both scales, with `polygon-clipping`. Natural Earth's shapes follow control (Russia's takes in Crimea, Morocco's most of Western Sahara), so without this a claimant's outline took sides. A shape keeps an area it stands for: its own code, or a place drawn from it that is the area (Taiwan, Palestine's West Bank and Gaza). An overlap under a fifth of the area is a sliver where 1:10m and 1:50m borders disagree, and is left alone. Natural Earth's W. Sahara country is all contested, so it ends up empty; the area is drawn on top.
 - **Editing.** Frederico Andrade edits and reviews the table, in the repo, and owns the yearly review. A change reaches the site through a build PR.
 
 **Review layer `wikitongues-2026-11-25`:**
