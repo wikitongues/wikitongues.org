@@ -509,6 +509,8 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 | 2026-11-25 | Claims table starts empty; Natural Earth's claims are its first authored layer, our reviews later layers | Every assertion keeps its source, and history can be replayed or rewound; a Natural Earth upgrade replaces one layer |
 | 2026-11-25 | Frederico edits and reviews the claims table, in the repo; he also owns the yearly review | Replaces Kristen as reviewer (2026-11-17); no Airtable table needed |
+| 2026-11-25 | On hover, inactive claimed areas hatch in blue; red stays for the page's places | Red on every hover was too loud (India's claims on Taiwan's map); one meaning per colour |
+| 2026-11-25 | Western Sahara drawn as one shape, the Berm zone dropped | Natural Earth's second shape is the Polisario-held zone, not a duplicate; it drew the Berm through the area |
 | 2026-11-25 | Hover outline: solid round the undisputed part, dashed round claimed areas | Shows every claim, Ukraine's included, without drawing any claim as a settled border |
 | 2026-11-25 | East Jerusalem left out of the claims table for now | Natural Earth has no shape for it; drawing one is a political call to make deliberately |
 | 2026-11-25 | Active contested areas hatched in brand red, 1.8 on 5px, for every claimant | Reads clearly over green relief and the blue edge at sidebar size; blue merged with the border and a white outline washed it out |
@@ -544,7 +546,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 3. Every territory is drawn as its undisputed part: fill, outline, frame and hover area.
 4. A wholly contested place is drawn as itself; the other side's claim is a row, so the place is hatched as claimed on the claimant's map (Taiwan on China's).
 5. Symmetric: every claimant sees an area the same way, framed and hatched in its highlight colour.
-6. One row per area: Natural Earth's duplicate shapes merge (Western Sahara B19 and SAH, Northern Cyprus B20 and CYN, Somaliland B30 and SOL).
+6. One row and one shape per area. Natural Earth's pairs (Western Sahara B19 and SAH, Northern Cyprus B20 and CYN, Somaliland B30 and SOL) are not all duplicates: Western Sahara's second shape is the Polisario-held zone east of the Berm. Keep the whole territory and drop the zone (lines of control are out of scope); check the other two pairs the same way.
 7. Keyed on record IDs, absolute state, a second build is a no-op. A change reaches the site only through a build PR whose contested-areas diff a second reviewer approves.
 8. `doctor` fails when a territory's shape overlaps a contested area or a claimant isn't in the shape table.
 
@@ -561,12 +563,12 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Kuril Islands | Japan, Russia | Leaves Russia's shape |
 | Kashmir, Siachen, Junagadh | India, Pakistan | No change |
 | Taiwan | China | No change on China's map; Taiwan drawn as itself |
-| Western Sahara | Morocco, Western Sahara | Two rows become one |
+| Western Sahara | Morocco, Western Sahara | Two rows become one; the Berm zone shape is dropped, so no line runs through it |
 | Artsakh | ended (2023) | Returns to Azerbaijan's shape |
 | Abyei; Lawa and Courantyne headwaters | add South Sudan; add Suriname | Claimants Natural Earth misses |
 | Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Frederico decides: claimed or dormant |
 
-**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them; its claimed areas light up. (prototype: https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P); a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under a brand-red hatch (`$red`, #e52600; 1.8 lines on a 5px spacing), the same for primary and secondary places. The relief is cut to the place's de facto shape today, so the build must also cut the place's tinted relief to the areas it claims. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
+**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them; its claimed areas light up: an area already active on the map stays red; any other is hatched in the hover blue while hovered, so red only ever marks the page's places. (prototype: https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P); a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under a brand-red hatch (`$red`, #e52600; 1.8 lines on a 5px spacing), the same for primary and secondary places. The relief is cut to the place's de facto shape today, so the build must also cut the place's tinted relief to the areas it claims. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
 
 **Steps,** one PR each:
 1. The table and the rule, in two commits: an empty table plus layer 1 (Natural Earth, deduplicated), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map. The build reads the effective claims; `doctor` checks. A prototype patch exists.
