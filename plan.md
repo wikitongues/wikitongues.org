@@ -282,7 +282,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 
 *Draft 2026-11-24. Not queued; nothing gets built until the spec is approved.*
 
-**Decision needed:** approve the glossary, the rules and the example cases, then open questions 1–3. Display follows once the data is settled.
+**Decision needed:** approve the glossary, the rules and the example cases, then open questions 1–3 and 6. Display follows once the data is settled.
 
 **The idea.** The 8,088 language pages and 217 territory pages are where most search traffic lands. Usually Wikipedia ranks above us, and we can't beat it as an encyclopedia. What Wikipedia can't offer is someone speaking the language on camera, plus an honest account of what's still missing. So a language page leads with a voice. Where there's no voice yet (7,329 languages, 91%), the gap becomes both the story and the ask, and recorded languages from the same place fill the silence. A territory page becomes the map of those voices and gaps for one place. Reference material (codes, alternate names, outbound links) moves to a footer. Lexicons and resources stay hidden ([#665](https://github.com/wikitongues/wikitongues.org/pull/665), [#757](https://github.com/wikitongues/wikitongues.org/pull/757)) until the organization reviews non-oral-history material.
 
@@ -297,6 +297,8 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | **Family** | The language's `linguistic-genealogy` term. The taxonomy is flat (190 terms, no parents), so a family is a fact about the language, not a measure of closeness |
 | **Ledger** | For a territory: how many languages originate there, and how many of them are recorded |
 | **Vitality** | The EGIDS status in plain words, using the language blurb's table |
+| **Being prepared** | *Proposed (question 6):* a language with videos in `speakers_recorded` but none Public yet, such as Kusunda |
+| **Rights block** | On a language page, the released Language Rights report for each of its home countries: the report's verdict and a link |
 
 ##### Rules
 
@@ -313,6 +315,7 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 9 | Every play, ask and donate link sends the page kind and the recorded/gap state to GA4. |
 | 10 | **The gap ask is "Help record *X*."** It links to `/contribute/record?language={slug}` (2.1): who to look for, consent, what to film, how to submit. The guide download goes through the download gateway, which captures an email from someone who wants to record that language, and the language travels with the event. The submit form arrives with the language filled in. |
 | 11 | **Giving copy describes the work, never a designation.** It may name the gap ("Tahitian has never been recorded. Gifts fund the work that records languages like it"). It may not say "sponsor", "adopt" or "fund *X*", promise a recording, show a goal or counter for one language, or send the language to FundraiseUp as a designation. The language goes to GA4 only, for attribution. A line near the button says gifts support all of Wikitongues' work. |
+| 12 | **Rights stay at country level.** A language page shows one rights block row per home country with a released report, sorted by country name: the report's one-sentence verdict (`rating.headline`) and a link. It never shows the five answers, and it always says the report assesses the country for all of its languages. No released report means no block (rule 2). A territory page shows its own report as a full section after "Hear *X*": the verdict, the five answers, both ratings, the story card and the report link. Language-specific rights content is out of scope. |
 
 ##### Example cases
 
@@ -328,23 +331,26 @@ Figures come from the local database on 2026-11-24.
 | No family, no territory (546 languages have no family term) | Name only | Hero, gap ask and footer only; no empty sections |
 | French Polynesia | 7 languages, 0 recorded | Ledger "7 languages originate here; none recorded yet" plus the ask; no voices row |
 | Nigeria | 493 languages, 12 recorded | Ledger "12 of 493 recorded"; a voices row with one video per recorded language; vitality spread; fellows |
-| A territory with a released rights report | Report card | The card stays first, as now |
+| Kusunda | 1 video, still Processing (no YouTube ID); EGIDS 8b; language isolate; home Nepal, which has a report | Hero: "being prepared" if question 6 is accepted, otherwise the gap. No family line (rule 5). Rights block with one row: Nepal |
+| Rajbanshi | Homes: Bangladesh, India, Nepal, all with reports; no standard name stored | Rights block with three rows, A–Z. Today it is the only language with more than one report country (682 have one) |
+| Nepal | 105 languages, 7 recorded (but 109 name Nepal as origin); report in draft | Ledger "7 of 105 recorded"; report section after "Hear Nepal" (rule 12); no fellows section (rule 2) |
 
 ##### Display
 
 *Language page, top to bottom:*
 
 1. **Hero.** Name, endonym set large when it differs, the blurb, chips for family and home, and a recorded or gap mark. **Recorded:** the featured oral history plays here, with the speaker's title. **Gap:** "No one has recorded *X* yet," then "Help record *X*" (rule 10).
-2. **Where it's spoken.** The locator map, home and other territories, and a rights report link when that territory's report is released.
+2. **Where it's spoken.** The locator map, home and other territories.
 3. **Voices nearby.** One video card per language, at most 6.
 4. **Vitality.** A 1–10 EGIDS scale with this language marked and a plain sentence. Hidden for "More data needed".
 5. **Family line** (rule 5), linking to the family's archive filter.
-6. **All oral histories**, when there's more than one.
-7. **People reviving it.** Fellows.
-8. **Give.** "Wikitongues has recorded 759 of 8,088 languages." Monthly first; copy follows rule 11.
-9. **Footer.** Identifiers, alternate names, Wikipedia (and any edition written in the language itself), Glottolog, Ethnologue, OLAC.
+6. **Rights block** (rule 12), after vitality.
+7. **All oral histories**, when there's more than one.
+8. **People reviving it.** Fellows.
+9. **Give.** "Wikitongues has recorded 759 of 8,088 languages." Monthly first; copy follows rule 11.
+10. **Footer.** Identifiers, alternate names, Wikipedia (and any edition written in the language itself), Glottolog, Ethnologue, OLAC.
 
-*Territory page:* hero with map and the territory summary → ledger and ask → "Hear *X*": a row of voices, one per recorded language → languages of origin (recorded first) → vitality spread (one bar) → fellows → rights report card (first when released) → neighbouring territories.
+*Territory page:* hero with map and the territory summary → ledger and ask → "Hear *X*": a row of voices, one per recorded language → rights report section when released (rule 12) → languages of origin (recorded first) → vitality spread (one bar) → fellows → neighbouring territories.
 
 **Measure.** Events: `oral_history_play` (`location`, `state`), `gap_cta_click`, the gateway's existing download events (now with `language`), video submissions from the prefilled form, plus the existing donate `data-cta-location`. Take a 4-week baseline before the change ships. Success means a higher play rate, more pages per session from language and territory pages, and more gateway, email and donation conversions from these pages than the site average.
 
@@ -364,10 +370,11 @@ Figures come from the local database on 2026-11-24.
 3. **Giving copy:** before step 2 ships, whoever owns development or finance reads rule 11's wording. Copy that reads as a restricted gift can create an obligation to honour it.
 4. **Featured oral history:** the newest (rule 3), or picked by an editor? Recommendation: the newest now; an editor override later if wanted.
 5. **Queue:** after search step 2 (3.3), since the hero is its answer card?
+6. **A third state, "being prepared"?** Kusunda has a video in `speakers_recorded`, but it is still Processing, so rule 3 finds nothing to play. Today it counts as recorded, and the territory page would list it under "Hear Nepal" with nothing to play. Options: (a) recorded means a Public video, so Kusunda is a gap; (b) add "being prepared": the hero says the oral history is being prepared, with the ask beside it, and voices rows skip it. Recommendation: (b). It is honest, and it shows the archive growing. Either way, "recorded" must mean one thing in the ledger, the counts and the hero.
 
 ##### Out of scope
 
-Lexicons, resources and captions until the organization's review; speaker populations (no licensed source; Wikidata is a later idea); new Airtable fields; video pages; translations.
+Lexicons, resources and captions until the organization's review; language-specific rights content; speaker populations (no licensed source; Wikidata is a later idea); new Airtable fields; video pages; translations.
 
 ##### Decision log
 
@@ -376,6 +383,7 @@ Lexicons, resources and captions until the organization's review; speaker popula
 | 2026-11-24 | Lexicons and resources hidden from language pages | Pending the organization's review of non-oral-history material |
 | 2026-11-24 | No per-language sponsorship. Giving copy may point to the gap but describes the general work (rule 11) | Wikitongues can't promise a specific recording and doesn't restrict funds by program. Donations do support the work, so saying that is honest |
 | 2026-11-24 | Proposed: the gap ask is "Help record *X*", leading to `/contribute/record` | Builds a contributor community, can close the gap itself, and still captures email through the gated guide |
+| 2026-11-25 | Rights on language pages stay at country level (rule 12) | Reports assess countries. Matching language mentions inside reports would need names or new tagging, and doesn't scale |
 | 2026-11-24 | Draft: voices nearby by place, not by family | The family-based version paired Tahitian with Minangkabau and Basque with Burushaski |
 
 ### 3. Discovery
