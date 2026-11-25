@@ -75,4 +75,34 @@ class PdfAndPressTest extends TestCase {
 
 		$this->assertSame( '/wp-admin/', wt_rights_press_login_redirect( '/wp-admin/', '', $editor ) );
 	}
+
+	public function test_a_press_account_gets_a_log_out_strip() {
+		/** @var WP_User&\Mockery\MockInterface $press */
+		$press               = Mockery::mock( 'WP_User' );
+		$press->roles        = array( 'press' );
+		$press->display_name = 'Ana <Reporter>';
+		$press->shouldReceive( 'exists' )->andReturn( true );
+		WP_Mock::userFunction( 'wp_get_current_user' )->andReturn( $press );
+		WP_Mock::userFunction( 'user_can' )->andReturn( false );
+		WP_Mock::userFunction( 'home_url' )->andReturnUsing( fn( $path ) => 'https://example.org' . $path );
+		WP_Mock::userFunction( 'wp_logout_url' )->andReturnUsing( fn( $to ) => 'https://example.org/wp-login.php?action=logout&redirect_to=' . rawurlencode( $to ) );
+		WP_Mock::userFunction( 'esc_html' )->andReturnUsing( fn( $s ) => htmlspecialchars( $s ) );
+		WP_Mock::userFunction( 'esc_url' )->andReturnUsing( fn( $s ) => htmlspecialchars( $s ) );
+
+		$bar = wt_rights_press_bar();
+		$this->assertStringContainsString( 'Signed in as press: Ana &lt;Reporter&gt;', $bar );
+		$this->assertStringContainsString( 'action=logout', $bar );
+		$this->assertStringContainsString( rawurlencode( 'https://example.org/language-rights/report/' ), $bar );
+	}
+
+	public function test_everyone_else_gets_no_strip() {
+		/** @var WP_User&\Mockery\MockInterface $editor */
+		$editor        = Mockery::mock( 'WP_User' );
+		$editor->roles = array( 'press', 'editor' );
+		$editor->shouldReceive( 'exists' )->andReturn( true );
+		WP_Mock::userFunction( 'wp_get_current_user' )->andReturn( $editor );
+		WP_Mock::userFunction( 'user_can' )->andReturn( true );
+
+		$this->assertSame( '', wt_rights_press_bar() );
+	}
 }

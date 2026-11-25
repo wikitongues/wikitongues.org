@@ -1107,6 +1107,28 @@ rights-link()
 		anchor($blue(), 4px)
 		text--strong($blue())
 
+// Press accounts have no admin bar: this strip names the account and logs it out.
+.wt-rights-press-bar
+	display flex
+	justify-content center
+	align-items center
+	gap $space(2)
+	padding 8px 20px
+	background $black
+	color $parchment
+	font-size $type-small
+
+	a
+		color $parchment
+		text-decoration underline
+		text-underline-offset 3px
+
+		&:hover
+			color $border-color
+
+	@media print
+		display none
+
 // The print view `wp wt rights pdf` renders: the report alone, no site chrome.
 @media print
 	body.wt-rights-print

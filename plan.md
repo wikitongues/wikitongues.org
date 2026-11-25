@@ -67,7 +67,7 @@ Last reviewed 2026-11-23.
 | 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
 | 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
 | 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 10 | Enhanced search | Find languages by name, then faceted results | [3.3](#33-enhanced-search) |
+| 10 | Search results redesign | Answer what was searched, with context; turn the 91% of languages with no recording into the ask | [3.3](#33-enhanced-search) |
 
 The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
 
@@ -83,6 +83,7 @@ The order follows the product roadmap, with two exceptions: secret scanning (#1�
 | Native forms to replace the Airtable iframes, plus "report a problem" | [4.2](#42-native-forms) |
 | Content cleanups after the People and Form 990 changes | [5.1](#51-content-cleanups) |
 | Language geography cleanup across Airtable, Make and WordPress: origins, subdivisions, "also spoken in" | [6.8](#68-language-geography-across-airtable-make-and-wordpress) |
+| Move the Import External Resources Make scenario onto wt-airtable-sync, then uninstall integromat-connector | [airtable-sync.md](docs/airtable-sync.md#integromat-connector-old-sync-plugin) |
 | GTM: give Native Language AI (live since 2026-11-18) its own `content_type`, and Language Rights when it launches | [2.1](#21-pages-and-navigation) |
 
 ### Blocked on a decision
@@ -277,6 +278,114 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
 | 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
+#### 2.3 Language and territory pages
+
+*Draft 2026-11-24. Not queued; nothing gets built until the spec is approved.*
+
+**Decision needed:** approve the glossary, the rules and the example cases, then open questions 1–3 and 6. Display follows once the data is settled.
+
+**The idea.** The 8,088 language pages and 217 territory pages are where most search traffic lands. Usually Wikipedia ranks above us, and we can't beat it as an encyclopedia. What Wikipedia can't offer is someone speaking the language on camera, plus an honest account of what's still missing. So a language page leads with a voice. Where there's no voice yet (7,329 languages, 91%), the gap becomes both the story and the ask, and recorded languages from the same place fill the silence. A territory page becomes the map of those voices and gaps for one place. Reference material (codes, alternate names, outbound links) moves to a footer. Lexicons and resources stay hidden ([#665](https://github.com/wikitongues/wikitongues.org/pull/665), [#757](https://github.com/wikitongues/wikitongues.org/pull/757)) until the organization reviews non-oral-history material.
+
+##### Glossary
+
+| Term | Means |
+|---|---|
+| **Recorded** / **gap** | A language with or without a Public video in `speakers_recorded` (same as 3.3) |
+| **Featured oral history** | The one video a language page plays at the top |
+| **Home** | A language's territories of origin (`wt_language_origins()`); after 6.8, its origin subdivision |
+| **Voices nearby** | Recorded languages from the same home; if there are none, from the same sub-region (`region` child term) |
+| **Family** | The language's `linguistic-genealogy` term. The taxonomy is flat (190 terms, no parents), so a family is a fact about the language, not a measure of closeness |
+| **Ledger** | For a territory: how many languages originate there, and how many of them are recorded |
+| **Vitality** | The EGIDS status in plain words, using the language blurb's table |
+| **Being prepared** | *Proposed (question 6):* a language with videos in `speakers_recorded` but none Public yet, such as Kusunda |
+| **Rights block** | On a language page, the released Language Rights report for each of its home countries: the report's verdict and a link |
+
+##### Rules
+
+| # | Rule |
+|---|---|
+| 1 | Nothing new is stored. Every figure is computed from existing fields at render time, the same way the language blurb is. Cached counts are rebuilt from scratch, never incremented. |
+| 2 | A section with no data doesn't render. No empty galleries (`display_blank` goes). |
+| 3 | The featured oral history is the newest Public video that can play inline (YouTube ID or link, or Dropbox). Every visitor sees the same one; there's no random pick. |
+| 4 | Voices nearby come from place, not family: same home first, then the same sub-region, then none. Family never stands in for kinship. |
+| 5 | The family line ("one of 1,262 Austronesian languages; 88 recorded") is shown only for real families. Isolates, sign languages and "Unclassified" get no line, using the blurb's table of non-family terms. |
+| 6 | A gap page never dead-ends: it always shows the ask, and voices nearby when there are any. |
+| 7 | A territory's ledger and voices count only languages of origin (`wt_origin_gallery_filter()`), so English doesn't count as a voice of the United States. |
+| 8 | The language hero and the 3.3 search answer card are the same component, built once. |
+| 9 | Every play, ask and donate link sends the page kind and the recorded/gap state to GA4. |
+| 10 | **The gap ask is "Help record *X*."** It links to `/contribute/record?language={slug}` (2.1): who to look for, consent, what to film, how to submit. The guide download goes through the download gateway, which captures an email from someone who wants to record that language, and the language travels with the event. The submit form arrives with the language filled in. |
+| 11 | **Giving copy describes the work, never a designation.** It may name the gap ("Tahitian has never been recorded. Gifts fund the work that records languages like it"). It may not say "sponsor", "adopt" or "fund *X*", promise a recording, show a goal or counter for one language, or send the language to FundraiseUp as a designation. The language goes to GA4 only, for attribution. A line near the button says gifts support all of Wikitongues' work. |
+| 12 | **Rights stay at country level.** A language page shows one rights block row per home country with a released report, sorted by country name: the report's one-sentence verdict (`rating.headline`) and a link. It never shows the five answers, and it always says the report assesses the country for all of its languages. No released report means no block (rule 2). A territory page shows its own report as a full section after "Hear *X*": the verdict, the five answers, both ratings, the story card and the report link. Language-specific rights content is out of scope. |
+
+##### Example cases
+
+Figures come from the local database on 2026-11-24.
+
+| Case | Data | Result |
+|---|---|---|
+| Yoruba | 33 videos; Niger-Congo (1,553 languages, 114 recorded) | Recorded. The hero plays the featured video; a row shows 33 oral histories; voices nearby include Igbo |
+| Emilian | 3 videos; EGIDS 9 Dormant; Indo-European | Recorded. Vitality reads "dormant". Voices nearby: Italian |
+| Tahitian | 0 videos; Austronesian (88 of 1,262 recorded); French Polynesia, where 0 of 7 languages are recorded | Gap: "No one has recorded Tahitian yet," then "Help record Tahitian" (rule 10), then giving copy that passes rule 11. Voices nearby fall back to the Polynesia sub-region: Samoan, Tongan, Rarotongan… **Not** Minangkabau, which a family-based rule picks (rule 4) |
+| Basque | 5 videos; "Language isolate" | No family line (rule 5); a family rule would wrongly call Burushaski a relative. Voices nearby come from Spain and France |
+| Hawaiian | 3 videos; territory: United States | Until 6.8: voices nearby are US-origin languages (Cherokee, ASL…), not English (rule 7). After 6.8: Hawaii, then Polynesia |
+| No family, no territory (546 languages have no family term) | Name only | Hero, gap ask and footer only; no empty sections |
+| French Polynesia | 7 languages, 0 recorded | Ledger "7 languages originate here; none recorded yet" plus the ask; no voices row |
+| Nigeria | 493 languages, 12 recorded | Ledger "12 of 493 recorded"; a voices row with one video per recorded language; vitality spread; fellows |
+| Kusunda | 1 video, still Processing (no YouTube ID); EGIDS 8b; language isolate; home Nepal, which has a report | Hero: "being prepared" if question 6 is accepted, otherwise the gap. No family line (rule 5). Rights block with one row: Nepal |
+| Rajbanshi | Homes: Bangladesh, India, Nepal, all with reports; no standard name stored | Rights block with three rows, A–Z. Today it is the only language with more than one report country (682 have one) |
+| Nepal | 105 languages, 7 recorded (but 109 name Nepal as origin); report in draft | Ledger "7 of 105 recorded"; report section after "Hear Nepal" (rule 12); no fellows section (rule 2) |
+
+##### Display
+
+*Language page, top to bottom:*
+
+1. **Hero.** Name, endonym set large when it differs, the blurb, chips for family and home, and a recorded or gap mark. **Recorded:** the featured oral history plays here, with the speaker's title. **Gap:** "No one has recorded *X* yet," then "Help record *X*" (rule 10).
+2. **Where it's spoken.** The locator map, home and other territories.
+3. **Voices nearby.** One video card per language, at most 6.
+4. **Vitality.** A 1–10 EGIDS scale with this language marked and a plain sentence. Hidden for "More data needed".
+5. **Family line** (rule 5), linking to the family's archive filter.
+6. **Rights block** (rule 12), after vitality.
+7. **All oral histories**, when there's more than one.
+8. **People reviving it.** Fellows.
+9. **Give.** "Wikitongues has recorded 759 of 8,088 languages." Monthly first; copy follows rule 11.
+10. **Footer.** Identifiers, alternate names, Wikipedia (and any edition written in the language itself), Glottolog, Ethnologue, OLAC.
+
+*Territory page:* hero with map and the territory summary → ledger and ask → "Hear *X*": a row of voices, one per recorded language → rights report section when released (rule 12) → languages of origin (recorded first) → vitality spread (one bar) → fellows → neighbouring territories.
+
+**Measure.** Events: `oral_history_play` (`location`, `state`), `gap_cta_click`, the gateway's existing download events (now with `language`), video submissions from the prefilled form, plus the existing donate `data-cta-location`. Take a 4-week baseline before the change ships. Success means a higher play rate, more pages per session from language and territory pages, and more gateway, email and donation conversions from these pages than the site average.
+
+##### Steps
+
+| # | PR | Done when |
+|---|---|---|
+| 1 | **Data:** `wt_language_context()` and `wt_territory_context()`, plain arrays unit-tested against the example cases | Every row above resolves as written |
+| 2 | **Language page** for both states, plus events | Example cases render on staging; events show in DebugView |
+| 3 | **Territory page**, plus events | Same |
+| 4 | **Gap ask:** `/contribute/record` takes `?language=`, passes it to the gateway event and the submit form | Needs `/contribute/record` from 2.1; shared with 3.3 step 3 |
+
+##### Open questions
+
+1. **The gap ask:** proposed as "Help record *X*" (rule 10), which builds community and still captures email through the guide download. Confirm, and should 3.3's gap card use the same ask? A notify-me option could come later as a secondary link.
+2. **Wikipedia text.** 8,074 languages already store an extract in `wikipedia_description`, and the sidebar hides it. Recommendation: keep it hidden and link out instead. Copied text adds nothing for search engines, and it puts their voice where ours should be.
+3. **Giving copy:** before step 2 ships, whoever owns development or finance reads rule 11's wording. Copy that reads as a restricted gift can create an obligation to honour it.
+4. **Featured oral history:** the newest (rule 3), or picked by an editor? Recommendation: the newest now; an editor override later if wanted.
+5. **Queue:** after search step 2 (3.3), since the hero is its answer card?
+6. **A third state, "being prepared"?** Kusunda has a video in `speakers_recorded`, but it is still Processing, so rule 3 finds nothing to play. Today it counts as recorded, and the territory page would list it under "Hear Nepal" with nothing to play. Options: (a) recorded means a Public video, so Kusunda is a gap; (b) add "being prepared": the hero says the oral history is being prepared, with the ask beside it, and voices rows skip it. Recommendation: (b). It is honest, and it shows the archive growing. Either way, "recorded" must mean one thing in the ledger, the counts and the hero.
+
+##### Out of scope
+
+Lexicons, resources and captions until the organization's review; language-specific rights content; speaker populations (no licensed source; Wikidata is a later idea); new Airtable fields; video pages; translations.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-24 | Lexicons and resources hidden from language pages | Pending the organization's review of non-oral-history material |
+| 2026-11-24 | No per-language sponsorship. Giving copy may point to the gap but describes the general work (rule 11) | Wikitongues can't promise a specific recording and doesn't restrict funds by program. Donations do support the work, so saying that is honest |
+| 2026-11-24 | Proposed: the gap ask is "Help record *X*", leading to `/contribute/record` | Builds a contributor community, can close the gap itself, and still captures email through the gated guide |
+| 2026-11-25 | Rights on language pages stay at country level (rule 12) | Reports assess countries. Matching language mentions inside reports would need names or new tagging, and doesn't scale |
+| 2026-11-24 | Draft: voices nearby by place, not by family | The family-based version paired Tahitian with Minangkabau and Basque with Burushaski |
+
 ### 3. Discovery
 
 #### 3.1 Dynamic homepage
@@ -412,12 +521,93 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 #### 3.3 Enhanced search
 
-*Now #8.*
+*Now #10. Spec approved 2026-11-24; a clickable mockup is the design reference. Next: step 1.*
 
-1. **Find languages by name (#379).** Full-page `?s=` results miss language pages, because a language's title is its ISO code, and WordPress search matches titles and content, not `standard_name` or `alternate_names`. The typeahead already matches names. Make the main search query match them too (`includes/template/search-filter.php`). In the same pass, fix the missing video thumbnails in results (#58) and the results page title that shows an ISO code.
-2. **A gallery-powered results page** across languages, territories, genealogies, writing systems, videos and fellows. It should be faceted (region, family, content type) and relevance-weighted. Design it together with in-gallery filtering (#378).
+**Decision needed:** the gap CTA (open question 1), before step 3.
 
-- **Instrument:** `search_performed` (`query`, `results_count`) and `search_result_click` (`result_position`, `result_type`). The dimensions are already registered.
+**The idea.** Today `?s=` returns a flat list of languages and videos with an ISO code for a title. Instead, work out *what* the visitor searched for, answer that first with rich context, then show everything around it. 759 of 8,088 languages (9%) have an oral history, so most language searches land on a gap. The gap is the most honest fundraising pitch the site has: "No one has recorded Tahitian yet."
+
+##### Glossary
+
+| Term | Means |
+|---|---|
+| **Kind** | What an entity is: language, territory, region, family (`linguistic-genealogy` term), fellow |
+| **Match** | An entity the query hits, with a strength (below) |
+| **Answer** | The single strongest match, shown first as a rich card |
+| **Recorded** | A language with at least one video in `speakers_recorded` (the typeahead's `resourced`) |
+| **Gap** | A language that isn't recorded |
+
+##### Rules
+
+| # | Rule |
+|---|---|
+| 1 | One **search index** of every public entity of every kind, built from WordPress as absolute state (extends the typeahead index, shipped 2026-11-23; see [content-model.md](docs/content-model.md#search)). The results page and the typeahead read the same index and the same resolver. |
+| 2 | Match strength, strongest first: exact identifier (ISO 639-3, glottocode, slug) → exact name (`standard_name`, territory title, term name, fellow full name) → exact alternate name or autonym/endonym → name prefix → substring. |
+| 3 | Queries and names are compared folded: case, diacritics and apostrophe variants (`’ ' ʻ`) are ignored, so `Maori`, `Māori` and `maori` match alike. |
+| 4 | Ties break by kind (language → territory → family → region → fellow), then recorded before gap, then name. |
+| 5 | **The answer** is the strongest match, but only when it is exact (rule 2, first three levels). A prefix or substring match gets no answer card, only the grouped list. |
+| 6 | Every other exact match of a different kind shows as **"Also"** chips under the answer (`Georgia` the country, `Georgian` the language). |
+| 7 | Results group by kind with counts; videos show inside their language's group, not as a separate kind. |
+| 8 | A search never dead-ends: zero matches shows the closest names (edit distance ≤ 2) and a way to tell us about a missing language. |
+| 9 | Private and non-public types (people, subdivisions, documents, resources) never match. |
+| 10 | Context figures (counts, recorded share) are computed at render from stored fields; nothing new is stored on posts. |
+
+##### Example cases
+
+| Query | Answer | Also / list | Why |
+|---|---|---|---|
+| `haw` | Hawaiian (language) | — | Exact ISO |
+| `hawa1245` | Hawaiian | — | Exact glottocode |
+| `Maori` / `Māori` | Maori (`mri`) | New Zealand (territory) in the list | Folding, rule 3 |
+| `Georgia` | Georgia (territory) | Also: Georgian (`kat`) | Two kinds, rule 6 |
+| `French` | French (`fra`, 39 videos) | French Polynesia in the list (prefix) | Exact name beats prefix |
+| `Tahitian` | Tahitian (`tah`): **gap** | Polynesia, Austronesian | The gap card, rule 5 |
+| `Austronesian` | Austronesian (family, 1,262 languages) | — | Family answer |
+| `Polynesia` | Polynesia (region) | — | Region answer |
+| `Kagiso Malefo` | Kagiso Malefo (fellow, Tshila, 2025) | — | Fellow answer |
+| `Euskara` | Basque (`eus`) | — | Autonym match |
+| `austro` | none | Austronesian, Austroasiatic… | Prefix only: no answer card |
+| `xyzzy` | none | Closest names, "tell us" | Rule 8 |
+
+##### Display
+
+1. **Answer card**, by kind:
+   - *Language:* name and autonym, the summary (`wt_language_blurb()`), the locator map (wt-maps), family and territory chips, and the first video. **Gap:** no video; instead "No one has recorded *Tahitian* yet", the gap CTA, and the nearest recorded relatives.
+   - *Territory:* the territory summary sentence, map, languages of origin with their recorded share, fellows.
+   - *Region / family:* language count, recorded share ("N of 1,262 Austronesian languages are recorded"), top territories, a handful of languages, recorded first.
+   - *Fellow:* headshot, language, cohort, territory, link to the story.
+2. **Also** chips (rule 6).
+3. **Grouped results** with kind tabs and counts; language rows show name, ISO, family, territory and a recorded mark.
+4. **Keep exploring:** one row of neighbours (same family or territory), recorded first.
+5. **Zero results** (rule 8).
+
+**Measure.** Events: `search_performed` (`query`, `results_count`, `answer_kind`, `match_level`), `search_result_click` (`result_position`, `result_type`, `section`), `search_gap_cta`. Success: search sessions reach the gateway, email capture or a donation more often than the site average; zero-result rate falls; answer-card click-through.
+
+##### Steps
+
+| # | PR | Done when |
+|---|---|---|
+| 1 | **Data:** the multi-kind index and a PHP resolver, unit-tested against the example cases | Every row above resolves as written |
+| 2 | **Page:** answer card, Also chips, grouped results, events; server-rendered | Example cases render on staging, events in DebugView |
+| 3 | **Gap and zero-result CTAs** | Open question 1 settled |
+| 4 | **Typeahead** suggests every kind from the same index | Header box shows kinds |
+
+##### Open questions
+
+1. **Gap CTA:** "help record it" (contribute), "notify me when it's recorded" (email capture), or donate? Recommend notify-me as primary, because email capture is the leading indicator, with donate secondary; contribute once `/contribute` exists (2.1).
+2. Should an exact ISO or glottocode jump straight to the language page? Recommend no: the answer card is one click, adds context, and keeps the search measurable.
+3. Include writing systems as a kind? Recommend later; few people search by script.
+4. Subdivisions (Hawaii, Guam's languages) aren't public yet (6.8). Until then, a subdivision name matches nothing of its own.
+5. Queue: this is Now #10, and the 2026-11-23 audit says the order isn't being followed. Keep it there, or move it up?
+
+##### Out of scope
+
+Resources, documents, lexicons and captions; blog and pages; in-gallery filtering on archive pages (#378); semantic or AI search.
+
+##### Decision log
+
+- 2026-11-24: Draft. One index and resolver for the typeahead and the results page; the gap is the fundraising surface.
+- 2026-11-24: Spec approved. Open questions stay open; 1 must be settled before step 3.
 
 ### 4. Email capture & engagement
 
@@ -549,6 +739,15 @@ The sync writes the legacy text fields `writing_systems` and `linguistic_genealo
   video records were bumped on two days in April 2025 — so a timestamp comparison reports ~78%
   of the archive as diverged while the real figure is 0.4%. A presence check does not catch
   this either: the records exist, their values are stale (found 2026-10-04, see 6.3)
+- **video links that point to another record's media.** Found 2026-11-24: Paul's Gallo
+  (`Paul_20160608_wgbc`) and Lau (`Paul_20141028_llu`) records hold each other's YouTube IDs
+  in Airtable, so each page embeds the other video. Dropbox was right. Checks, per video:
+  - the YouTube title (Data API `videos.list`, 50 IDs a call, about 200 calls for the archive)
+    names the record's speaker and language: "Paul speaking Gallo"
+  - the YouTube duration is within a few seconds of the record's `Duration`
+  - no YouTube ID is on more than one record
+  - the Dropbox filename contains the record's speaker, date and ISO code (filenames vary:
+    `Paul_s1_M_20141028_llu`)
 
 #### 6.3 Airtable reconciliation
 

@@ -88,7 +88,7 @@ op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights check --regio
 op run --env-file ~/.config/wikitongues/rights.env -- wp wt rights export --region=south-central-asia --release=2027.1 --out=<releases repo>/rights-2027.1.json --allow-root
 ```
 
-`WT_RIGHTS_AIRTABLE_BASE` picks the base (default `sandbox`; field IDs per base are in `wt-rights/config/airtable.php`). `export` refuses to write inside the WordPress folder.
+`WT_RIGHTS_AIRTABLE_BASE` picks the base: `sandbox` (default) or `production`, the real Language Rights Reports base; field IDs per base are in `wt-rights/config/airtable.php`. Real exports use `production`, with the lent read-only token. `export` refuses to write inside the WordPress folder.
 
 ### When files reach a server
 
@@ -139,6 +139,8 @@ Kristen's existing options stay exactly as they are. Only **Held** is added. The
 | Released | Everything | Everything |
 
 A report exported with `--preview` stays a draft at every status: only admins can read it.
+
+**Press accounts** are made in Users → Add New, role **Press**. They land on the hub after logging in, never see wp-admin or the admin bar, and get a strip at the top of every page naming the account, with a **Log out** link back to the hub (`wt-rights/includes/press.php`).
 
 The hub shows no global findings before the Complete Edition (decision 2026-11-18; Kristen is asked to confirm it, plan 2.2 open question 5), so no unreleased answer reaches an aggregate. The global synthesis has no status of its own yet: the hub lists it as release 08 with its planned date from the front matter.
 

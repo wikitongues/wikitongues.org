@@ -45,7 +45,7 @@ The download gateway's contacts (`wp_gateway_people`) are not content and not pa
 | `languages` | A language profile (8,000+) | `/languages/{iso-code}/` | `single-languages.php` | Yes |
 | `videos` | An oral history (1,800+) | `/videos/{slug}/` | `single-videos.php` | Yes |
 | `captions` | A caption file for a video | None: redirects to its video | — | Yes |
-| `lexicons` | A word list between languages | None: redirects to its source language | — | Yes |
+| `lexicons` | A word list between languages (no longer listed on language pages) | None: redirects to its source language | — | Yes |
 | `resources` | An external resource about a language (no longer listed on language pages) | None: redirects to its language | — | Yes |
 | `territories` | A country or territory | `/territories/{region}/{territory}/` | `single-territories.php` | Yes |
 | `subdivisions` | A part of a nation with no ISO code (Hawaii, Oaxaca) | None yet (nested route planned) | None | No |
@@ -92,7 +92,7 @@ These are the documentation archive. The first four are synced from Airtable; th
 - **Geography.** Two links to territory posts and one list of subdivisions. `nations_of_origin` (post_object, multiple, one-way) holds the countries a language is original to; the Airtable sync fills it from the language's Nation of Origin, sent as Nations record IDs and matched to each territory's stamped `_airtable_record_id` (names still resolve by exact title). `subdivisions` (post_object, multiple) links the parts of a nation the language comes from (Guam, Hawaii), synced from Airtable's Subject [Territories] by record ID: ISO-coded places are `territories` posts, the rest `subdivisions` posts (see below). The raw record IDs are kept in `_subdivision_record_ids`. Nothing displays it yet; its readers will be the territory pages and the maps ([plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress), [maps.md](maps.md)). `territories` (post_object, bidirectional with each territory's `languages`) holds everywhere it is spoken; it came from a one-time import in February 2026 and is not synced. Territories also carry `official_languages`. Read nations of origin through `wt_language_origins()` (`includes/template/language-origins.php`), which also reads not-yet-migrated text. The language page lists both under a "Where it’s spoken" heading, above the map: "Territories of origin", then the other territories as "Also spoken in" (or "Spoken in" when there is no origin).
 - **Classification.** The `writing-system` and `linguistic-genealogy` taxonomies are what templates read. The legacy text fields `writing_systems` and `linguistic_genealogy` are what Airtable still writes.
 - **Related content.** `speakers_recorded` (videos), `lexicon_source` and `lexicon_target` (lexicons), `external_resources` (resources). Counts are cached in `{field}_count` post meta for sorting the admin list.
-- **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows, lexicons and "other languages from" each territory the language is linked to.
+- **Page.** `single-languages.php`: the sidebar, then galleries of videos, fellows and "other languages from" each territory the language is linked to.
 - **Summary.** Under the name, the sidebar shows a summary built from the fields at render time (`includes/template/language-blurb.php`), e.g. "Emilian, original to Italy, is a dormant Indo-European language written with the Latin script." Nothing is stored. `wt_language_facts()` reads the fields into a plain array, and `wt_language_blurb()` turns it into prose and is unit-tested (`tests/unit/LanguageBlurbTest.php`). Each phrase is optional and drops out when its field is empty, and the summary is hidden when only the name is known. Wording that depends on a value is kept in lookup tables in that file:
   - which EGIDS levels are described (6a–10; levels 1–5, "More data needed" and the rest are left out)
   - genealogy terms that aren't families ("Sign language", "Language isolate", and others; "Unclassified" is dropped)
@@ -114,7 +114,7 @@ These are the documentation archive. The first four are synced from Airtable; th
 | Type | Key fields | Notes |
 |---|---|---|
 | `captions` | `source_video`, `source_language`, `creator`, `file_url` (Dropbox) | Downloadable through the gateway. `source_video` is stored serialized, so queries match it with `LIKE '"{id}"'` (#562). |
-| `lexicons` | `source_languages`, `target_languages`, `dropbox_link`, `external_link` | Shown as galleries on language pages. Only 22 of 152 Airtable lexicons had WordPress posts in March 2026; the rest appear as their records are next edited. |
+| `lexicons` | `source_languages`, `target_languages`, `dropbox_link`, `external_link` | Not shown on language pages since Nov 2026. Only 22 of 152 Airtable lexicons had WordPress posts in March 2026; the rest appear as their records are next edited. |
 | `resources` | `resource_title`, `resource_url`, `resource_language`, `resource_description`, `moderation_status` | **Not synced.** WordPress holds about 907 posts against 204 Airtable records; reconcile before syncing (plan: Data quality). |
 
 ---
