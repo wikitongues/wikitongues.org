@@ -516,7 +516,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 ##### Claims: contested areas (spec for review, 2026-11-25)
 
-**Decision needed:** approve the rule (only reviewed claims count, and a claim is formal and current) and the geometry (a territory is drawn as its undisputed part). Answered 2026-11-25: the table starts empty with Natural Earth as its first authored layer; Frederico edits and reviews; Ukraine's 2022 hatching accepted; hover labels don't name claimants. Together they fix the inconsistency that keeps map interaction switched off: Russia's hover outline takes in Crimea and the Donbas while Ukraine's leaves them out, and Natural Earth gives the ROC's dormant claim to the India–China border areas to Taiwan, which frames Taiwan's map on the Himalayas. **Recommended:** approve both; the editing tool (open question 1) can follow.
+**Decision needed:** approve the rule (only reviewed claims count, and a claim is formal and current) and the geometry (a territory is drawn as its undisputed part). Answered 2026-11-25: the table starts empty with Natural Earth as its first authored layer; Frederico edits and reviews; Ukraine's 2022 hatching accepted; hover labels don't name claimants. Together they fix the inconsistency that keeps map interaction switched off: Russia's hover outline takes in Crimea and the Donbas while Ukraine's leaves them out, and Natural Earth gives the ROC's dormant claim to the India–China border areas to Taiwan, which frames Taiwan's map on the Himalayas. **Recommended:** approve both.
 
 **Glossary**
 - *Contested area:* land that two or more places claim, or that a breakaway place holds against a territory. One shape, one row.
@@ -553,7 +553,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 |---|---|---|
 | Arunachal Pradesh, Aksai Chin and five more border areas | China, India | Taiwan's dormant claim dropped: Taiwan's map frames on Taiwan (23 languages) |
 | Crimea | Russia, Ukraine | Leaves Russia's shape; hatched the same on both maps |
-| Donetsk, Luhansk, Zaporizhzhia, Kherson | Russia, Ukraine | Russia added (2022). Natural Earth has only the 2014 areas, so whole-oblast shapes from admin-1 (open question 2) |
+| Donetsk, Luhansk, Zaporizhzhia, Kherson | Russia, Ukraine | Russia added (2022). Natural Earth has only the 2014 areas, so whole-oblast shapes from admin-1 (step 4) |
 | Golan Heights | Israel, Syria | Leaves Israel's shape |
 | West Bank, Gaza | — (Palestine itself) | No change |
 | East Jerusalem | Israel, Palestine | Left out for now: not in Natural Earth |
