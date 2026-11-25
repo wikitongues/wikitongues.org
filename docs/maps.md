@@ -234,7 +234,7 @@ The plugin adds a check that turns this list into a report: `wp wt-maps doctor` 
 
 ## Claims table
 
-Who claims each contested area lives in `data/claims.json`, not in Natural Earth's point-of-view fields. The spec is plan.md 3.2, "Claims: contested areas" (approved 2026-11-25); `build/claims-table.mjs` is the code.
+Who claims each contested area lives in `data/claims.json`, not in Natural Earth's point-of-view fields. **To change it, follow [maps-claims-guide.md](maps-claims-guide.md)**: the pages, buttons, reviewers and how to work with Claude. The spec is plan.md 3.2, "Claims: contested areas" (approved 2026-11-25); `build/claims-table.mjs` is the code.
 
 - **Layers.** The table is an ordered list of layers. Layer 1 is Natural Earth's: one row per contested area (its code, name, and claimants as record IDs), written by `build/seed-claims.mjs` and never edited by hand. A country's claim goes to its place nearest the area (`claims.mjs`), and a place never claims itself. Each later layer is a review: a list of changes (`add` or `drop` claimants, or a `status`), each with a `reason` and a `source`, applied in order. A review never edits layer 1, so a Natural Earth upgrade replaces layer 1 alone.
 - **Statuses.** `claimed` (the default) draws as contested. `ended` draws the area as part of its territory. `duplicate`, with `of`, draws it once, as the area it repeats.
