@@ -399,7 +399,7 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 
 #### 3.2 Maps
 
-*Now #7. Step 1, the locator map on language pages, shipped 2026-11-23 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). Step 2 is next.*
+*Now #7. Step 1, the locator map on language pages, shipped 2026-11-23 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). Steps 1b, 1c and 2a reached production on 2026-11-25 ([#761](https://github.com/wikitongues/wikitongues.org/pull/761)), with map interaction switched off in Settings → Maps until the claims fix below lands.*
 
 ##### Step 2: interactive maps
 
@@ -423,7 +423,7 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 - [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
 - [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
-- [ ] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done locally. On staging and production, after this PR deploys: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
+- [x] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done on local, staging and production (2026-11-25; `doctor` clean on both). Sync to Staging undid it on staging once, because production didn't have it yet. The command used: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
 
 ##### Step 1c: continent maps (approved and built 2026-11-24)
 
@@ -507,10 +507,11 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-24 | One map style, Light full; the other three, the fog and their files are retired | Organizational buy-in for Light full |
 | 2026-11-24 | Continent maps label and open regions, inside and outside the continent, and draw region borders only | A continent page is about its regions, not its countries |
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
+| 2026-11-25 | Production ships with map interaction off (Settings → Maps, also off on staging) | Hover outlines show contested areas by control until the claims table lands |
 
 ##### Step 1 follow-ups
 
-- [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh).
+- [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh). **Blocks turning interaction on** (2026-11-25): hover outlines follow Natural Earth's de facto shapes, so Russia's outline takes in Crimea and the Donbas while Ukraine's leaves them out, and Natural Earth gives the ROC's dormant claim to the India–China border areas to Taiwan, which reframes Taiwan's map. Proposed: only reviewed claims count, and each territory's shape is its undisputed part. Needs a spec, and a decision on where Kristen edits the table.
 - [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
 - [ ] Review tooling: a territory-request issue template, and the contested-areas diff the build writes for each PR.
 - [ ] Put the yearly claims review on Kristen's calendar.
