@@ -509,6 +509,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 | 2026-11-25 | Claims table starts empty; Natural Earth's claims are its first authored layer, our reviews later layers | Every assertion keeps its source, and history can be replayed or rewound; a Natural Earth upgrade replaces one layer |
 | 2026-11-25 | Frederico edits and reviews the claims table, in the repo; he also owns the yearly review | Replaces Kristen as reviewer (2026-11-17); no Airtable table needed |
+| 2026-11-25 | East Jerusalem left out of the claims table for now | Natural Earth has no shape for it; drawing one is a political call to make deliberately |
 | 2026-11-25 | Active contested areas hatched in brand red, 1.8 on 5px, for every claimant | Reads clearly over green relief and the blue edge at sidebar size; blue merged with the border and a white outline washed it out |
 | 2026-11-25 | Contested areas appear only when active, with relief under the hatch (lookdev F); hidden when inactive after step 2 | A hatch on a map not about the area reads as noise; hatching alone drops the area out of the place |
 | 2026-11-25 | Claims spec proposed: a reviewed claims table, formal and current claims only, territories drawn as their undisputed part | Natural Earth's points of view frame Taiwan on the Himalayas, and its de facto shapes make hover outlines take sides |
@@ -555,7 +556,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Donetsk, Luhansk, Zaporizhzhia, Kherson | Russia, Ukraine | Russia added (2022). Natural Earth has only the 2014 areas, so whole-oblast shapes from admin-1 (open question 2) |
 | Golan Heights | Israel, Syria | Leaves Israel's shape |
 | West Bank, Gaza | — (Palestine itself) | No change |
-| East Jerusalem | Israel, Palestine | Not in Natural Earth: needs a shape (open question 3) |
+| East Jerusalem | Israel, Palestine | Left out for now: not in Natural Earth |
 | Kuril Islands | Japan, Russia | Leaves Russia's shape |
 | Kashmir, Siachen, Junagadh | India, Pakistan | No change |
 | Taiwan | China | No change on China's map; Taiwan drawn as itself |
@@ -573,14 +574,12 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 4. The 2022 oblast shapes from admin-1.
 5. Display: relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
 
-**Open questions**
-1. East Jerusalem: draw it from a published boundary, or leave it out?
-
 **Answered (2026-11-25)**
 - Editing and review: Frederico, in the repo. No Airtable table or pull command.
 - Ukraine's own map with Russia's 2022 claims: four oblasts and Crimea hatched, as the neutral rule gives.
 - Hover labels don't name claimants.
 - Contested-area display: lookdev F, active only, relief under the hatch.
+- East Jerusalem: left out for now (not in Natural Earth).
 - Hatch: brand red, heavier. A white outline washed the area out; blue merged with the border line.
 
 **Out of scope.** Lines of control, historical claims, maritime claims, Antarctica, per-viewer points of view.
