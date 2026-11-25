@@ -237,6 +237,70 @@
      "claimants": []
     }
    }
+  },
+  {
+   "id": "wikitongues-2026-11-25",
+   "author": "Wikitongues",
+   "reviewer": "Frederico Andrade",
+   "date": "2026-11-25",
+   "changes": [
+    {
+     "area": "B00",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B01",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B02",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B03",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B04",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B06",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B07",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    }
+   ]
   }
  ]
 }

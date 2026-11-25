@@ -3033,44 +3033,32 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -97.233979,
-     -29.786121,
+     -120.947181,
+     -23.749161,
      0
     ],
-    "scale": 441.67,
+    "scale": 3860.601,
     "translate": [
-     179.631,
-     159.919
+     249.519,
+     139.721
     ],
-    "cornerDeg": 35.91
+    "cornerDeg": 4.4
    },
    "center": [
-    97.233979,
-    29.786121
+    120.947181,
+    23.749161
    ],
-   "fine": false,
-   "stretch": 10.5,
-   "scale_km": null,
-   "claimed": [
-    "Aksai Chin",
-    "Arunachal Pradesh",
-    "Bara Hotii Valleys",
-    "Demchok",
-    "Samdu Valleys",
-    "Shaksam Valley",
-    "Tirpani Valleys"
-   ],
-   "revealed": [
-    "Gilgit-Baltistan",
-    "Jammu and Kashmir",
-    "Siachen Glacier"
-   ],
-   "svg_bytes": 28824,
-   "svg_gzip": 10627,
+   "fine": true,
+   "stretch": 0.1,
+   "scale_km": 100,
+   "claimed": [],
+   "revealed": [],
+   "svg_bytes": 12158,
+   "svg_gzip": 4991,
    "images": {
-    "relief": 30578,
-    "shade": 24324,
-    "sea": 16094
+    "relief": 13812,
+    "shade": 14638,
+    "sea": 11426
    }
   },
   "recguDPgV3cIXLO34": {
