@@ -1,0 +1,242 @@
+{
+ "about": "Who claims each contested area (plan 3.2, claims spec; docs/maps.md). Layer 1 is Natural Earth's, written by build/seed-claims.mjs: never edit it by hand. Each later layer is a review whose changes apply in order, each with a reason and a source.",
+ "layers": [
+  {
+   "id": "natural-earth",
+   "author": "Natural Earth",
+   "source": "Natural Earth 5.1.2, admin-0 point-of-view fields (ADM0_A3 and ADM0_A3_xx), resolved to places by seed-claims.mjs",
+   "rows": {
+    "B00": {
+     "name": "Arunachal Pradesh",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B01": {
+     "name": "Tirpani Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B02": {
+     "name": "Bara Hotii Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B03": {
+     "name": "Demchok",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B04": {
+     "name": "Samdu Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B05": {
+     "name": "Jammu and Kashmir",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B06": {
+     "name": "Shaksam Valley",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B07": {
+     "name": "Aksai Chin",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B08": {
+     "name": "Gilgit-Baltistan",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B13": {
+     "name": "Abyei",
+     "claimants": [
+      "reckVtwkyIZ6ZEiyX"
+     ]
+    },
+    "B14": {
+     "name": "Lawa Headwaters",
+     "claimants": [
+      "recXzD7tp26iWiGoT"
+     ]
+    },
+    "B15": {
+     "name": "Courantyne Headwaters",
+     "claimants": [
+      "rec9PuZGLQ7rzpJc3"
+     ]
+    },
+    "B16": {
+     "name": "Golan Heights",
+     "claimants": [
+      "rec72cKyzlEaLeNv9",
+      "recwDwR74miTv1oiP"
+     ]
+    },
+    "B17": {
+     "name": "Ilemi Triangle",
+     "claimants": [
+      "rec1iI0r31FHStjB1",
+      "recbarjI7aqHnvrY1"
+     ]
+    },
+    "B19": {
+     "name": "W. Sahara",
+     "claimants": [
+      "recHt0cbUUGISJwb8",
+      "recm0Hbjg4DCF5Tv5"
+     ]
+    },
+    "B20": {
+     "name": "N. Cyprus",
+     "claimants": [
+      "rec7nz8fxMlng0hqv"
+     ]
+    },
+    "B29": {
+     "name": "Kuril Is.",
+     "claimants": [
+      "rec69csgIMSP0BDGu",
+      "recWEA0L60oD7gYnF"
+     ]
+    },
+    "B30": {
+     "name": "Somaliland",
+     "claimants": [
+      "rec5W1xkVmT7Vt4U9"
+     ]
+    },
+    "B35": {
+     "name": "Abkhazia",
+     "claimants": [
+      "recthhqk0rgOEwuaw"
+     ]
+    },
+    "B36": {
+     "name": "Transnistria",
+     "claimants": [
+      "recdqBUvrSVil89n7"
+     ]
+    },
+    "B37": {
+     "name": "South Ossetia",
+     "claimants": [
+      "recthhqk0rgOEwuaw"
+     ]
+    },
+    "B38": {
+     "name": "Artsakh",
+     "claimants": [
+      "recRzAeiS1JByblMX"
+     ]
+    },
+    "B45": {
+     "name": "Siachen Glacier",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B89": {
+     "name": "Crimea",
+     "claimants": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C01": {
+     "name": "Junagadh and Manavadar",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "C02": {
+     "name": "Donetsk People's Republic",
+     "claimants": [
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C03": {
+     "name": "Luhansk People's Republic",
+     "claimants": [
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C04": {
+     "name": "North Borneo",
+     "claimants": [
+      "recG1gcLtwu1SpVsk"
+     ]
+    },
+    "CYN": {
+     "name": "N. Cyprus",
+     "claimants": [
+      "rec7nz8fxMlng0hqv"
+     ]
+    },
+    "GAZ": {
+     "name": "Gaza",
+     "claimants": []
+    },
+    "KOS": {
+     "name": "Kosovo",
+     "claimants": [
+      "recbDhMn2Qt5ZS6Ce"
+     ]
+    },
+    "SAH": {
+     "name": "W. Sahara",
+     "claimants": [
+      "recm0Hbjg4DCF5Tv5"
+     ]
+    },
+    "SOL": {
+     "name": "Somaliland",
+     "claimants": [
+      "rec5W1xkVmT7Vt4U9"
+     ]
+    },
+    "TWN": {
+     "name": "Taiwan",
+     "claimants": [
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "WEB": {
+     "name": "West Bank",
+     "claimants": []
+    }
+   }
+  }
+ ]
+}
