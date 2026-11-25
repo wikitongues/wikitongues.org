@@ -132,10 +132,13 @@ function wt_maps_doctor_command(): void {
 		}
 	}
 
-	$report = wt_maps_doctor( $table, $places, $languages );
-	$plan   = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, wt_maps_collect_languages() ), wt_maps_extra_sets() );
-	$built  = array_map( fn( $f ) => basename( $f, '.svg' ), (array) glob( dirname( __DIR__ ) . '/maps/*.svg' ) );
-	$report = array_merge( $report, wt_maps_build_report( $plan['sets'], $built ) );
+	$report      = wt_maps_doctor( $table, $places, $languages );
+	$plan        = wt_maps_add_extra_sets( $table, wt_maps_plan_sets( $table, wt_maps_collect_languages() ), wt_maps_extra_sets() );
+	$built       = array_map( fn( $f ) => basename( $f, '.svg' ), (array) glob( dirname( __DIR__ ) . '/maps/*.svg' ) );
+	$report      = array_merge( $report, wt_maps_build_report( $plan['sets'], $built ) );
+	$claims_file = dirname( __DIR__ ) . '/data/claims.json';
+	$claims      = file_exists( $claims_file ) ? json_decode( (string) file_get_contents( $claims_file ), true ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- a local data file.
+	$report      = array_merge( $report, wt_maps_claims_report( is_array( $claims ) ? $claims : array(), $table ) );
 
 	$headings = array(
 		'table'       => 'Problems in data/shapes.json',
@@ -145,6 +148,8 @@ function wt_maps_doctor_command(): void {
 		'languages'   => 'Focus languages not found',
 		'unbuilt'     => 'Map sets in use with no built map (rerun the build)',
 		'unused'      => 'Built maps no language uses (informational)',
+		'claims'      => 'Problems in data/claims.json',
+		'claims_noop' => 'Claims-table changes that change nothing (informational)',
 	);
 
 	WP_CLI::log( sprintf( 'Shape table: %d places, %d focus languages, Natural Earth %s.', count( $table->place_ids() ), count( $table->focus_language_ids() ), $table->natural_earth_version() ) );
