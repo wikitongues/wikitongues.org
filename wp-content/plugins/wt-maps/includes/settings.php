@@ -1,24 +1,22 @@
 <?php
 /**
- * Settings → Maps: turn the sidebar map off and pick the style, without a deploy.
+ * Settings → Maps: turn the sidebar map or the map interaction off, without a
+ * deploy. The maps have one style, Light full (2026-11-24).
  *
  * @package WT\Maps
  */
-
-use WT\Maps\Renderer;
 
 /**
  * Keep only known values.
  *
  * @param mixed $input Submitted option.
- * @return array{sidebar: bool, style: string}
+ * @return array{sidebar: bool, interactive: bool}
  */
 function wt_maps_sanitize_settings( $input ): array {
 	$input = is_array( $input ) ? $input : array();
-	$style = isset( $input['style'] ) && isset( Renderer::STYLES[ $input['style'] ] ) ? (string) $input['style'] : Renderer::DEFAULT_STYLE;
 	return array(
-		'sidebar' => ! empty( $input['sidebar'] ),
-		'style'   => $style,
+		'sidebar'     => ! empty( $input['sidebar'] ),
+		'interactive' => ! empty( $input['interactive'] ),
 	);
 }
 
@@ -32,8 +30,8 @@ add_action(
 				'type'              => 'array',
 				'sanitize_callback' => 'wt_maps_sanitize_settings',
 				'default'           => array(
-					'sidebar' => true,
-					'style'   => Renderer::DEFAULT_STYLE,
+					'sidebar'     => true,
+					'interactive' => true,
 				),
 			)
 		);
@@ -72,14 +70,13 @@ function wt_maps_settings_page(): void {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="wt-maps-style">Style</label></th>
+					<th scope="row">Interaction</th>
 					<td>
-						<select id="wt-maps-style" name="wt_maps[style]">
-							<?php foreach ( Renderer::STYLES as $value => $label ) : ?>
-								<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $settings['style'], $value ); ?>><?php echo esc_html( $label ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<p class="description">Light or dark world; full frame, or focused on the language's places.</p>
+						<label>
+							<input type="checkbox" name="wt_maps[interactive]" value="1" <?php checked( $settings['interactive'] ); ?>>
+							Label places on hover and open their pages on click
+						</label>
+						<p class="description">On every map: language, territory and region pages. Off, the maps are still images.</p>
 					</td>
 				</tr>
 			</table>

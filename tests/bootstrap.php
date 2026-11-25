@@ -67,6 +67,7 @@ require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/integrat
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/search-filter.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/short-links.php';
 require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/language-origins.php';
+require_once __DIR__ . '/../wp-content/themes/blankslate-child/includes/template/place-maps.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/render_gallery_items.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/queries.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-gallery/includes/helpers.php';
@@ -85,6 +86,7 @@ require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-shape-tabl
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/doctor.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/sets.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/class-renderer.php';
+require_once __DIR__ . '/../wp-content/plugins/wt-maps/includes/interactive.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/structure.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-answers.php';
 require_once __DIR__ . '/../wp-content/plugins/wt-rights/includes/class-docs-adapter.php';

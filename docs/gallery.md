@@ -165,7 +165,7 @@ Other types always get `custom_class = 'full'`. Rows saved before *Order by* exi
 
 About two dozen template call sites (`grep -rn "create_gallery_instance(" wp-content/themes/blankslate-child`), plus every editorial gallery row, which is stored in the database. The main ones:
 
-- **Language pages:** the language's videos, fellows and lexicons, and "other languages from" each of its territories.
+- **Language pages:** the language's videos and fellows, and "other languages from" each of its territories.
 - **Video pages:** other videos of the same language.
 - **Territory and region pages:** fellows, languages and territories, each with a *See all* link to a filtered archive.
 - **Filtered archives:** `archive-languages.php`, `archive-videos.php`, `archive-fellows.php` and `archive-territories.php`.

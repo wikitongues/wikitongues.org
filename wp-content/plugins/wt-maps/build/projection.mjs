@@ -8,12 +8,26 @@ const PAD = [[W * 0.12, H * 0.12], [W * 0.88, H * 0.88]];
 // the centred azimuthal beats an Albers conic every time (Russia worst 12.6%
 // vs 28.8%, Canada 6.4% vs 36.6%). Set CONIC_ABOVE to re-test.
 export const CONIC_ABOVE_DEG = Number(process.env.CONIC_ABOVE ?? Infinity);
+// The azimuthal is clipped this far from its centre, in degrees.
+export const CLIP_DEG = 100;
 
 export function fromSpec(s) {
-  const p = s.type === 'conic'
-    ? d3.geoConicEqualArea().parallels(s.parallels).rotate(s.rotate).center(s.center)
-    : d3.geoAzimuthalEqualArea().rotate(s.rotate).clipAngle(100);
-  return p.scale(s.scale).translate(s.translate);
+  if (s.type === 'conic') {
+    return d3.geoConicEqualArea().parallels(s.parallels).rotate(s.rotate).center(s.center)
+      .scale(s.scale).translate(s.translate);
+  }
+  const p = d3.geoAzimuthalEqualArea().rotate(s.rotate).clipAngle(CLIP_DEG).scale(s.scale).translate(s.translate);
+  // clipAngle stops the SVG shapes at the clip, but invert() still returns
+  // points out to the antipode. The raster steps invert every pixel, so without
+  // this they paint a stretched far hemisphere round the rim of wide frames.
+  // null is what they already treat as off the globe.
+  const centre = [-s.rotate[0], -s.rotate[1]], clip = (CLIP_DEG * Math.PI) / 180;
+  const invert = p.invert;
+  p.invert = (xy) => {
+    const ll = invert(xy);
+    return ll && d3.geoDistance(ll, centre) <= clip ? ll : null;
+  };
+  return p;
 }
 
 function cornerRadius(proj, center) {
@@ -26,8 +40,9 @@ function cornerRadius(proj, center) {
 }
 
 /** Pick and fit a projection for a frame; returns { proj, spec }. */
-export function choose(frame, center) {
-  const az = d3.geoAzimuthalEqualArea().rotate([-center[0], -center[1]]).clipAngle(100).fitExtent(PAD, frame);
+export function choose(frame, center, roll = 0) {
+  const rotate = roll ? [-center[0], -center[1], roll] : [-center[0], -center[1]];
+  const az = d3.geoAzimuthalEqualArea().rotate(rotate).clipAngle(CLIP_DEG).fitExtent(PAD, frame);
   const r = cornerRadius(az, center);
   let proj = az, spec = { type: 'azimuthal', rotate: az.rotate() };
   if (r > CONIC_ABOVE_DEG) {
