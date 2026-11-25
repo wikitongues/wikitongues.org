@@ -509,6 +509,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-24 | Step 2 builds on prebuilt maps, not MapLibre | Reuses step 1's maps and look; about 3 KB of script instead of a map library and hosted tiles |
 | 2026-11-25 | Claims table starts empty; Natural Earth's claims are its first authored layer, our reviews later layers | Every assertion keeps its source, and history can be replayed or rewound; a Natural Earth upgrade replaces one layer |
 | 2026-11-25 | Frederico edits and reviews the claims table, in the repo; he also owns the yearly review | Replaces Kristen as reviewer (2026-11-17); no Airtable table needed |
+| 2026-11-25 | Active contested areas hatched in brand red, 1.8 on 5px, for every claimant | Reads clearly over green relief and the blue edge at sidebar size; blue merged with the border and a white outline washed it out |
 | 2026-11-25 | Contested areas appear only when active, with relief under the hatch (lookdev F); hidden when inactive after step 2 | A hatch on a map not about the area reads as noise; hatching alone drops the area out of the place |
 | 2026-11-25 | Claims spec proposed: a reviewed claims table, formal and current claims only, territories drawn as their undisputed part | Natural Earth's points of view frame Taiwan on the Himalayas, and its de facto shapes make hover outlines take sides |
 
@@ -563,7 +564,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Abyei; Lawa and Courantyne headwaters | add South Sudan; add Suriname | Claimants Natural Earth misses |
 | Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Frederico decides: claimed or dormant |
 
-**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is its undisputed part and its claimed areas light up; a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under the hatch. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
+**Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is its undisputed part and its claimed areas light up; a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under a brand-red hatch (`$red`, #e52600; 1.8 lines on a 5px spacing), the same for primary and secondary places. The relief is cut to the place's de facto shape today, so the build must also cut the place's tinted relief to the areas it claims. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
 
 **Steps,** one PR each:
 1. The table and the rule, in two commits: an empty table plus layer 1 (Natural Earth, deduplicated), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map. The build reads the effective claims; `doctor` checks. A prototype patch exists.
@@ -574,13 +575,13 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 
 **Open questions**
 1. East Jerusalem: draw it from a published boundary, or leave it out?
-2. Hatch visibility: a white outline on the hatch lines (lookdev in progress).
 
 **Answered (2026-11-25)**
 - Editing and review: Frederico, in the repo. No Airtable table or pull command.
 - Ukraine's own map with Russia's 2022 claims: four oblasts and Crimea hatched, as the neutral rule gives.
 - Hover labels don't name claimants.
 - Contested-area display: lookdev F, active only, relief under the hatch.
+- Hatch: brand red, heavier. A white outline washed the area out; blue merged with the border line.
 
 **Out of scope.** Lines of control, historical claims, maritime claims, Antarctica, per-viewer points of view.
 
