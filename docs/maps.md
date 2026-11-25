@@ -251,4 +251,4 @@ Who claims each contested area lives in `data/claims.json`, not in Natural Earth
 | Duplicate of B19 | SAH | Natural Earth's W. Sahara map unit is only the Polisario-held zone east of the Berm. The Western Sahara place is drawn from B19, the whole territory |
 | Duplicate of CYN, of SOL | B20, B30 | Same shapes as the Northern Cyprus and Somaliland map units |
 
-**Known gaps** (claims spec, step 3): Azad Kashmir has no contested-area shape in Natural Earth, so India's claim to it isn't drawn; Natural Earth's "Jammu and Kashmir" (B05) is only the Indian-administered part. Russia's 2022 claims and the end of Nagorno-Karabakh are still to add.
+**Known gaps** (claims spec, step 4): Azad Kashmir has no contested-area shape in Natural Earth, so India's claim to it isn't drawn; Natural Earth's "Jammu and Kashmir" (B05) is only the Indian-administered part. Russia's 2022 claims wait for whole-oblast shapes: today only the 2014 areas (C02, C03) are drawn, claimed by Ukraine alone.

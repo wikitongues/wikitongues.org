@@ -569,7 +569,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Western Sahara | Morocco, Western Sahara | Two rows become one; the Berm zone shape is dropped, so no line runs through it |
 | Artsakh | ended (2023) | Returns to Azerbaijan's shape |
 | Abyei; Lawa and Courantyne headwaters | add South Sudan; add Suriname | Claimants Natural Earth misses |
-| Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Frederico decides: claimed or dormant |
+| Ilemi Triangle; North Borneo | Kenya, South Sudan; Malaysia, Philippines | Both claimed (decided 2026-11-25): Ilemi unchanged; Philippines added |
 
 **Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them; its claimed areas light up: an area already active on the map stays red; any other is hatched in the hover blue while hovered, so red only ever marks the page's places. (prototype: https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P); a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **Contested areas (chosen 2026-11-25, lookdev F):** an area appears only on maps where it is active; there it shows the place's coloured relief under a brand-red hatch (`$red`, #e52600; 1.8 lines on a 5px spacing), the same for primary and secondary places. The relief is cut to the place's de facto shape today, so the build must also cut the place's tinted relief to the areas it claims. Inactive areas are hidden, but only once step 2 draws territories as their undisputed part; until then they are drawn as plain land with a dashed edge and no hatch, since hiding them sooner shows the West Bank in Israel's relief.
 
@@ -580,8 +580,8 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 **Steps,** one PR each:
 1. **Built 2026-11-25 (#766), in review.** The table and the rule: an empty table plus layer 1 (Natural Earth), which changes no map; then a review layer dropping the ROC's claims, which changes only Taiwan's map; then one shape per area (rule 6), which changes 38 maps. The build reads the effective claims; `doctor` checks. Kashmir names checked against shapes: B05 is the Indian-administered part, and Azad Kashmir has no shape (step 3).
 2. **Built 2026-11-25, in review.** Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
-3. Frederico's review layer: the last two rows of the table, Abyei, the Suriname headwaters, Artsakh, Russia on the 2022 oblasts, and Azad Kashmir (Natural Earth has no contested-area shape for it, so India's claim isn't drawn).
-4. The 2022 oblast shapes from admin-1.
+3. **Built 2026-11-25, in review.** Frederico's review layer for the areas Natural Earth already draws: Artsakh ended; South Sudan added to Abyei; Suriname to the Lawa and Courantyne headwaters; the Philippines to North Borneo; Ilemi kept as claimed. Russia's 2022 claims and Azad Kashmir move to step 4, because both need shapes first.
+4. New shapes, with their claims: the four 2022 oblasts from admin-1, claimed by Russia and Ukraine (they replace Natural Earth's 2014 areas C02 and C03), and Azad Kashmir, claimed by India and Pakistan.
 5. Display (with the disclaimer line and the credits-page note): relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
 
 **Answered (2026-11-25)**
