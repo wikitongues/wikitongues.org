@@ -560,7 +560,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | Western Sahara | Morocco, Western Sahara | Two rows become one |
 | Artsakh | ended (2023) | Returns to Azerbaijan's shape |
 | Abyei; Lawa and Courantyne headwaters | add South Sudan; add Suriname | Claimants Natural Earth misses |
-| Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Kristen decides: claimed or dormant |
+| Ilemi Triangle; North Borneo | Kenya, South Sudan?; Malaysia, Philippines? | Frederico decides: claimed or dormant |
 
 **Display.** Language pages keep the step 1 framing rule. With interaction on, a territory's hover outline is its undisputed part and its claimed areas light up; a contested area keeps its step 2a label ("Crimea · Contested area"), with no claimants named. **In lookdev (2026-11-25):** inactive contested areas drawn as plain land instead of hatched (Western Sahara on other regions' maps today), and active ones given coloured relief under the hatch instead of hatching alone.
 
@@ -587,7 +587,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 - [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh).
 - [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
 - [ ] Review tooling: a territory-request issue template, and the contested-areas diff the build writes for each PR.
-- [ ] Put the yearly claims review on Kristen's calendar.
+- [ ] Put the yearly claims review on Frederico's calendar.
 - [ ] Two maps over budget: Tajikistan's hillshade (32.9 KB) and French's six-place set (20.9 KB gzipped SVG).
 - [ ] Run the `decorate()` test in CI; it skips there because WordPress core isn't in the repository.
 - [ ] The deploy's delete pass stops at 100 files, so a rebuild that drops more than about 25 maps fails it. Handle before the subdivision rebuild (6.8, Maps step).
