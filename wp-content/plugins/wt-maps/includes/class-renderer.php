@@ -42,9 +42,11 @@ final class Renderer {
 
 	/**
 	 * Whether a built map shows an active contested area: one a highlighted
-	 * place claims (`hatch-claimed`), or one a highlighted place is (its
-	 * dashed `edge`: Taiwan on its own map). Not `data-claimants`: every
-	 * contested area carries its claimants, active or not (claims on hover).
+	 * place claims (`hatch`: `hatch-claimed` as built, a role class once
+	 * decorated), or one a highlighted place is (its dashed `edge`: Taiwan on
+	 * its own map). Not `data-claimants`: every contested area carries its
+	 * claimants, active or not (claims on hover). Works before and after
+	 * decorate(), which wt_map_places() calls first.
 	 *
 	 * @param string $svg The built SVG.
 	 * @return bool
@@ -52,7 +54,7 @@ final class Renderer {
 	public static function shows_contested( string $svg ): bool {
 		$p = new \WP_HTML_Tag_Processor( $svg );
 		while ( $p->next_tag( array( 'class_name' => 'disputed' ) ) ) {
-			if ( $p->has_class( 'hatch-claimed' ) || $p->has_class( 'edge' ) ) {
+			if ( $p->has_class( 'hatch' ) || $p->has_class( 'edge' ) ) {
 				return true;
 			}
 		}

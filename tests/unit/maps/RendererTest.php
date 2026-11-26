@@ -164,6 +164,7 @@ class RendererTest extends TestCase {
 		$this->assertStringContainsString( 'class="disputed plain" d="M4 4"', $out, 'an inactive area is left as built' );
 		$this->assertStringContainsString( 'class="disputed plain" d="M5 5"', $out, 'claimants alone do not make an area active' );
 		$this->assertStringNotContainsString( 'hatch-claimed', $out );
+		$this->assertTrue( Renderer::shows_contested( $out ), 'the disclaimer check runs on the decorated map' );
 	}
 
 	public function test_a_map_shows_contested_areas_when_a_place_claims_or_is_one() {
