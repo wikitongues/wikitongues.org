@@ -33,6 +33,19 @@
 .wt-map__hot-line-flood { flood-color: var(--hot); }
 .wt-map__hot-line.is-ring { stroke-width: 2.6; }
 
+// Claims on hover (plan 3.2): while a place is shown, a contested area it claims
+// that isn't active is hatched in the hover blue on plain land (#hatch-hover in
+// the shared defs); active ones keep their red. The outline runs dashed round
+// the claimed areas; masks keep it off the borders they share with the place.
+.wt-map-defs .hh-bg { fill: var(--land); }
+.wt-map-defs .hh-line { stroke: var(--primary); stroke-width: 1.8; }
+.wt-map .disputed.is-lit { fill: url(#hatch-hover); }
+.wt-map__claim-casing, .wt-map__claim-line { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.wt-map__claim-casing { stroke: var(--hot-casing); stroke-width: 3.4; }
+.wt-map__claim-line { stroke: var(--hot); stroke-width: 1.6; stroke-dasharray: 3 2.4; }
+// Mask shapes: black hides. Stroked wider than the casing, so the shared border goes.
+.wt-map__mask-out { fill: #000; stroke: #000; stroke-width: 3.6; stroke-linejoin: round; }
+
 .wt-map__tip {
 	position: absolute;
 	z-index: 2;

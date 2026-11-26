@@ -10,6 +10,12 @@
  *
  * Mouse: hover shows the label and outline; click opens the place's page.
  * Touch: the first tap shows the label with a link; a second tap opens it.
+ *
+ * Claims on hover (plan 3.2): each contested area carries every claimant's
+ * record ID (`data-claimants`). While a place is shown, the areas it claims
+ * light up: an active one (already hatched red) stays red, any other is hatched
+ * in the hover blue (`is-lit`). Its outline runs solid round its undisputed part
+ * and dashed round those areas, with no line along the borders between them.
  */
 ( function () {
 	'use strict';
@@ -49,6 +55,12 @@
 			+ '<feFlood class="wt-map__hot-line-flood"/><feComposite in2="lo" operator="in" result="lf"/>'
 			+ '<feMerge><feMergeNode in="cf"/><feMergeNode in="lf"/></feMerge></filter>';
 		svg.insertBefore( defs, svg.firstChild );
+
+		// The claims outline's masks, rebuilt on every hover.
+		const masks = document.createElementNS( SVG_NS, 'defs' );
+		svg.insertBefore( masks, defs.nextSibling );
+		const areas = Array.prototype.slice.call( svg.querySelectorAll( '.disputed[data-claimants]' ) );
+		let maskCount = 0;
 
 		// Every shape of a group: its territories, or, for a group outside the
 		// continent, its countries on the base map; and its dots and halo, which
@@ -102,7 +114,7 @@
 			}
 			if ( place && places[ place.dataset.place ] ) {
 				const id = place.dataset.place;
-				return Object.assign( { key: id, els: svg.querySelectorAll( '[data-place="' + id + '"]' ) }, places[ id ] );
+				return Object.assign( { key: id, ids: [ id ], els: svg.querySelectorAll( '[data-place="' + id + '"]' ) }, places[ id ] );
 			}
 			return null;
 		}
@@ -135,8 +147,63 @@
 			}
 		}
 
+		// A copy of a shape's geometry, with nothing that styles or identifies it.
+		function bare( el ) {
+			const c = el.cloneNode( false );
+			c.removeAttribute( 'id' );
+			c.removeAttribute( 'class' );
+			Object.keys( c.dataset ).forEach( function ( k ) {
+				delete c.dataset[ k ];
+			} );
+			return c;
+		}
+
+		// A mask that hides a line wherever it runs along these shapes: each is
+		// painted out, filled and stroked a little wider than the outline.
+		function maskOut( shapes ) {
+			const id = 'wt-cm-' + filterId + '-' + ( ++maskCount );
+			const m = document.createElementNS( SVG_NS, 'mask' );
+			const r = document.createElementNS( SVG_NS, 'rect' );
+			m.setAttribute( 'id', id );
+			m.setAttribute( 'maskUnits', 'userSpaceOnUse' );
+			[ m, r ].forEach( function ( el ) { // The frame and then some.
+				el.setAttribute( 'x', '-100' );
+				el.setAttribute( 'y', '-100' );
+				el.setAttribute( 'width', '600' );
+				el.setAttribute( 'height', '500' );
+			} );
+			r.setAttribute( 'fill', '#fff' );
+			m.appendChild( r );
+			shapes.forEach( function ( el ) {
+				const c = bare( el );
+				c.setAttribute( 'class', 'wt-map__mask-out' );
+				m.appendChild( c );
+			} );
+			masks.appendChild( m );
+			return 'url(#' + id + ')';
+		}
+
+		// The contested areas these places claim, by record ID.
+		function claimedBy( ids ) {
+			return areas.filter( function ( a ) {
+				const by = a.dataset.claimants.split( ' ' );
+				return ids.some( function ( id ) {
+					return by.indexOf( id ) !== -1;
+				} );
+			} );
+		}
+
+		function clearClaims() {
+			areas.forEach( function ( a ) {
+				a.classList.remove( 'is-lit' );
+			} );
+			masks.textContent = '';
+			maskCount = 0;
+		}
+
 		function outline( t ) {
 			hot.textContent = '';
+			clearClaims();
 			if ( t.group ) {
 				const g = document.createElementNS( SVG_NS, 'g' );
 				g.setAttribute( 'filter', 'url(#' + filterId + ')' );
@@ -152,17 +219,37 @@
 				hot.appendChild( g );
 				return;
 			}
+			const own = Array.prototype.filter.call( t.els, function ( el ) {
+				return ! el.classList.contains( 'halo-hit' ); // A hit area: it places the label, but isn't drawn.
+			} );
+			const lit = t.ids ? claimedBy( t.ids ) : [];
+			// Active areas (`hatch-claimed` before PHP's role classes, or the
+			// place itself) keep their look; any other lights up in the hover blue.
+			lit.forEach( function ( a ) {
+				if ( ! a.matches( '.hatch, .edge' ) ) {
+					a.classList.add( 'is-lit' );
+				}
+			} );
+			const ownMask = lit.length ? maskOut( lit ) : '';
+			// Each area's line leaves out the place and the other lit areas.
+			const litMasks = lit.map( function ( a, i ) {
+				return maskOut( own.concat( lit.filter( function ( b, j ) {
+					return j !== i;
+				} ) ) );
+			} );
 			[ 'casing', 'line' ].forEach( function ( layer ) {
-				t.els.forEach( function ( el ) {
-					if ( el.classList.contains( 'halo-hit' ) ) {
-						return; // A hit area: it places the label, but isn't drawn.
-					}
-					const c = el.cloneNode( false );
-					c.removeAttribute( 'id' );
-					Object.keys( c.dataset ).forEach( function ( k ) {
-						delete c.dataset[ k ];
-					} );
+				own.forEach( function ( el ) {
+					const c = bare( el );
 					c.setAttribute( 'class', 'wt-map__hot-' + layer + ( el.classList.contains( 'marker' ) ? ' is-ring' : '' ) );
+					if ( ownMask ) {
+						c.setAttribute( 'mask', ownMask ); // Not along its claimed areas.
+					}
+					hot.appendChild( c );
+				} );
+				lit.forEach( function ( a, i ) {
+					const c = bare( a );
+					c.setAttribute( 'class', 'wt-map__claim-' + layer );
+					c.setAttribute( 'mask', litMasks[ i ] );
 					hot.appendChild( c );
 				} );
 			} );
@@ -225,6 +312,7 @@
 			pinned = false;
 			tip.hidden = true;
 			hot.textContent = '';
+			clearClaims();
 			svg.classList.remove( 'is-link' );
 			fig.classList.remove( 'is-hot' );
 		}
@@ -306,7 +394,7 @@
 			const g = places[ ids[ 0 ] ].g;
 			const t = g
 				? Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] )
-				: Object.assign( { key: 'list:' + ids.join( ',' ), els: els }, places[ ids[ 0 ] ] );
+				: Object.assign( { key: 'list:' + ids.join( ',' ), ids: ids, els: els }, places[ ids[ 0 ] ] );
 			const on = function () {
 				if ( ! pinned ) {
 					show( t, null, false );
