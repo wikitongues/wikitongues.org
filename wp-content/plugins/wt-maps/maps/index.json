@@ -34,8 +34,8 @@
     "Ilemi Triangle"
    ],
    "revealed": [],
-   "svg_bytes": 11246,
-   "svg_gzip": 3927,
+   "svg_bytes": 11282,
+   "svg_gzip": 3933,
    "images": {
     "relief": 18900,
     "shade": 8046,
@@ -300,8 +300,8 @@
    "scale_km": 20,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 8780,
-   "svg_gzip": 3268,
+   "svg_bytes": 8815,
+   "svg_gzip": 3276,
    "images": {
     "relief": 11022,
     "shade": 31578,
@@ -454,8 +454,8 @@
    "revealed": [
     "Kosovo"
    ],
-   "svg_bytes": 13931,
-   "svg_gzip": 5315,
+   "svg_bytes": 13966,
+   "svg_gzip": 5325,
    "images": {
     "relief": 17970,
     "shade": 28426,
@@ -608,8 +608,8 @@
     "Somaliland"
    ],
    "revealed": [],
-   "svg_bytes": 10038,
-   "svg_gzip": 3615,
+   "svg_bytes": 10091,
+   "svg_gzip": 3624,
    "images": {
     "relief": 23558,
     "shade": 10518,
@@ -657,8 +657,8 @@
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 52158,
-   "svg_gzip": 20109,
+   "svg_bytes": 52830,
+   "svg_gzip": 20234,
    "images": {
     "relief": 28550,
     "shade": 21984,
@@ -813,8 +813,8 @@
    "revealed": [
     "West Bank"
    ],
-   "svg_bytes": 13383,
-   "svg_gzip": 5311,
+   "svg_bytes": 13436,
+   "svg_gzip": 5318,
    "images": {
     "relief": 17468,
     "shade": 12386,
@@ -1007,8 +1007,8 @@
    "revealed": [
     "Ilemi Triangle"
    ],
-   "svg_bytes": 10113,
-   "svg_gzip": 3812,
+   "svg_bytes": 10166,
+   "svg_gzip": 3827,
    "images": {
     "relief": 20308,
     "shade": 12756,
@@ -1085,8 +1085,8 @@
    "revealed": [
     "North Borneo"
    ],
-   "svg_bytes": 21699,
-   "svg_gzip": 8721,
+   "svg_bytes": 21752,
+   "svg_gzip": 8737,
    "images": {
     "relief": 28758,
     "shade": 16160,
@@ -1201,8 +1201,8 @@
     "Courantyne Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 15910,
-   "svg_gzip": 5755,
+   "svg_bytes": 15981,
+   "svg_gzip": 5768,
    "images": {
     "relief": 20964,
     "shade": 10912,
@@ -1433,8 +1433,8 @@
     "Golan Heights",
     "West Bank"
    ],
-   "svg_bytes": 15718,
-   "svg_gzip": 5932,
+   "svg_bytes": 15771,
+   "svg_gzip": 5946,
    "images": {
     "relief": 29218,
     "shade": 13846,
@@ -1509,8 +1509,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 18774,
-   "svg_gzip": 6496,
+   "svg_bytes": 18880,
+   "svg_gzip": 6534,
    "images": {
     "relief": 27810,
     "shade": 16500,
@@ -1587,8 +1587,8 @@
     "Ilemi Triangle"
    ],
    "revealed": [],
-   "svg_bytes": 12762,
-   "svg_gzip": 4701,
+   "svg_bytes": 12780,
+   "svg_gzip": 4705,
    "images": {
     "relief": 23276,
     "shade": 10566,
@@ -1627,8 +1627,8 @@
    "revealed": [
     "Bara Hotii Valleys"
    ],
-   "svg_bytes": 15148,
-   "svg_gzip": 5558,
+   "svg_bytes": 15254,
+   "svg_gzip": 5577,
    "images": {
     "relief": 30304,
     "shade": 28758,
@@ -1665,8 +1665,8 @@
    "scale_km": 20,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 11860,
-   "svg_gzip": 4550,
+   "svg_bytes": 11895,
+   "svg_gzip": 4561,
    "images": {
     "relief": 7784,
     "shade": 8692,
@@ -1743,8 +1743,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12085,
-   "svg_gzip": 4253,
+   "svg_bytes": 12138,
+   "svg_gzip": 4269,
    "images": {
     "relief": 16348,
     "shade": 3768,
@@ -1895,8 +1895,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 26483,
-   "svg_gzip": 9785,
+   "svg_bytes": 26518,
+   "svg_gzip": 9796,
    "images": {
     "relief": 28604,
     "shade": 24444,
@@ -2049,8 +2049,8 @@
    "revealed": [
     "W. Sahara"
    ],
-   "svg_bytes": 10776,
-   "svg_gzip": 4019,
+   "svg_bytes": 10842,
+   "svg_gzip": 4047,
    "images": {
     "relief": 10920,
     "shade": 3682,
@@ -2133,8 +2133,8 @@
    "revealed": [
     "Transnistria"
    ],
-   "svg_bytes": 25259,
-   "svg_gzip": 8993,
+   "svg_bytes": 25454,
+   "svg_gzip": 9017,
    "images": {
     "relief": 23130,
     "shade": 8876,
@@ -2173,8 +2173,8 @@
     "Transnistria"
    ],
    "revealed": [],
-   "svg_bytes": 15462,
-   "svg_gzip": 5834,
+   "svg_bytes": 15515,
+   "svg_gzip": 5858,
    "images": {
     "relief": 16114,
     "shade": 16398,
@@ -2329,8 +2329,8 @@
    "revealed": [
     "Taiwan"
    ],
-   "svg_bytes": 17599,
-   "svg_gzip": 6764,
+   "svg_bytes": 17652,
+   "svg_gzip": 6775,
    "images": {
     "relief": 20648,
     "shade": 12072,
@@ -2405,8 +2405,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 16735,
-   "svg_gzip": 6367,
+   "svg_bytes": 16770,
+   "svg_gzip": 6375,
    "images": {
     "relief": 21874,
     "shade": 21048,
@@ -2519,8 +2519,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 20628,
-   "svg_gzip": 7892,
+   "svg_bytes": 20663,
+   "svg_gzip": 7902,
    "images": {
     "relief": 21812,
     "shade": 25750,
@@ -2557,8 +2557,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 25794,
-   "svg_gzip": 9700,
+   "svg_bytes": 25829,
+   "svg_gzip": 9710,
    "images": {
     "relief": 27530,
     "shade": 25372,
@@ -2671,8 +2671,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12488,
-   "svg_gzip": 4747,
+   "svg_bytes": 12523,
+   "svg_gzip": 4759,
    "images": {
     "relief": 17518,
     "shade": 28784,
@@ -2749,8 +2749,8 @@
     "North Borneo"
    ],
    "revealed": [],
-   "svg_bytes": 20161,
-   "svg_gzip": 8059,
+   "svg_bytes": 20179,
+   "svg_gzip": 8065,
    "images": {
     "relief": 28978,
     "shade": 17858,
@@ -2863,8 +2863,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12314,
-   "svg_gzip": 4818,
+   "svg_bytes": 12349,
+   "svg_gzip": 4843,
    "images": {
     "relief": 22248,
     "shade": 19032,
@@ -3053,8 +3053,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12453,
-   "svg_gzip": 5023,
+   "svg_bytes": 12488,
+   "svg_gzip": 5034,
    "images": {
     "relief": 13756,
     "shade": 14710,
@@ -3246,8 +3246,8 @@
     "Ilemi Triangle",
     "Somaliland"
    ],
-   "svg_bytes": 11991,
-   "svg_gzip": 4312,
+   "svg_bytes": 12079,
+   "svg_gzip": 4330,
    "images": {
     "relief": 30672,
     "shade": 14402,
@@ -3340,32 +3340,34 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     13.194666,
-     -24.637277,
+     11.684283,
+     -25.002496,
      0
     ],
-    "scale": 1902.059,
+    "scale": 1913.266,
     "translate": [
-     193.272,
-     138.457
+     239.516,
+     125.789
     ],
-    "cornerDeg": 7.91
+    "cornerDeg": 8.88
    },
    "center": [
-    -13.194666,
-    24.637277
+    -11.684283,
+    25.002496
    ],
-   "fine": true,
-   "stretch": 0.5,
+   "fine": false,
+   "stretch": 0.6,
    "scale_km": 200,
    "claimed": [],
-   "revealed": [],
-   "svg_bytes": 9805,
-   "svg_gzip": 3624,
+   "revealed": [
+    "W. Sahara"
+   ],
+   "svg_bytes": 10139,
+   "svg_gzip": 3501,
    "images": {
-    "relief": 9684,
-    "shade": 4398,
-    "sea": 6626
+    "relief": 9514,
+    "shade": 4392,
+    "sea": 6434
    }
   },
   "recI0Mr0xfb23bpFj": {
@@ -3400,8 +3402,8 @@
    "revealed": [
     "Arunachal Pradesh"
    ],
-   "svg_bytes": 12808,
-   "svg_gzip": 4819,
+   "svg_bytes": 12861,
+   "svg_gzip": 4836,
    "images": {
     "relief": 19432,
     "shade": 29974,
@@ -3856,8 +3858,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 17136,
-   "svg_gzip": 6275,
+   "svg_bytes": 17189,
+   "svg_gzip": 6290,
    "images": {
     "relief": 27550,
     "shade": 10158,
@@ -3973,8 +3975,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 13628,
-   "svg_gzip": 5200,
+   "svg_bytes": 13664,
+   "svg_gzip": 5209,
    "images": {
     "relief": 14852,
     "shade": 9338,
@@ -4023,8 +4025,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 25260,
-   "svg_gzip": 9274,
+   "svg_bytes": 25476,
+   "svg_gzip": 9293,
    "images": {
     "relief": 28144,
     "shade": 20158,
@@ -4063,8 +4065,8 @@
     "Abyei"
    ],
    "revealed": [],
-   "svg_bytes": 11433,
-   "svg_gzip": 4230,
+   "svg_bytes": 11451,
+   "svg_gzip": 4233,
    "images": {
     "relief": 26220,
     "shade": 9410,
@@ -4139,8 +4141,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 20996,
-   "svg_gzip": 7885,
+   "svg_bytes": 21066,
+   "svg_gzip": 7899,
    "images": {
     "relief": 23206,
     "shade": 17278,
@@ -4255,8 +4257,8 @@
     "W. Sahara"
    ],
    "revealed": [],
-   "svg_bytes": 10546,
-   "svg_gzip": 4043,
+   "svg_bytes": 10577,
+   "svg_gzip": 4062,
    "images": {
     "relief": 17330,
     "shade": 6940,
@@ -4486,8 +4488,8 @@
     "Golan Heights",
     "West Bank"
    ],
-   "svg_bytes": 11452,
-   "svg_gzip": 4497,
+   "svg_bytes": 11505,
+   "svg_gzip": 4511,
    "images": {
     "relief": 12528,
     "shade": 8414,
@@ -4600,8 +4602,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21259,
-   "svg_gzip": 7839,
+   "svg_bytes": 21294,
+   "svg_gzip": 7850,
    "images": {
     "relief": 27802,
     "shade": 20378,
@@ -4716,8 +4718,8 @@
    "revealed": [
     "Kosovo"
    ],
-   "svg_bytes": 17887,
-   "svg_gzip": 7014,
+   "svg_bytes": 17922,
+   "svg_gzip": 7025,
    "images": {
     "relief": 24092,
     "shade": 27828,
@@ -5096,8 +5098,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 12255,
-   "svg_gzip": 4303,
+   "svg_bytes": 12308,
+   "svg_gzip": 4318,
    "images": {
     "relief": 20832,
     "shade": 4458,
@@ -5134,8 +5136,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 13867,
-   "svg_gzip": 5001,
+   "svg_bytes": 13902,
+   "svg_gzip": 5010,
    "images": {
     "relief": 8168,
     "shade": 11494,
@@ -5248,8 +5250,8 @@
    "scale_km": 20,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 8487,
-   "svg_gzip": 3325,
+   "svg_bytes": 8522,
+   "svg_gzip": 3333,
    "images": {
     "relief": 10950,
     "shade": 24944,
@@ -5326,8 +5328,8 @@
    "revealed": [
     "Gilgit-Baltistan"
    ],
-   "svg_bytes": 21769,
-   "svg_gzip": 7924,
+   "svg_bytes": 21875,
+   "svg_gzip": 7967,
    "images": {
     "relief": 27950,
     "shade": 33628,
@@ -5405,8 +5407,8 @@
     "Gaza",
     "West Bank"
    ],
-   "svg_bytes": 10357,
-   "svg_gzip": 3853,
+   "svg_bytes": 10410,
+   "svg_gzip": 3868,
    "images": {
     "relief": 19022,
     "shade": 7888,
@@ -5443,8 +5445,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 17047,
-   "svg_gzip": 6094,
+   "svg_bytes": 17113,
+   "svg_gzip": 6123,
    "images": {
     "relief": 19140,
     "shade": 4900,
@@ -5494,8 +5496,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 32346,
-   "svg_gzip": 12136,
+   "svg_bytes": 32755,
+   "svg_gzip": 12168,
    "images": {
     "relief": 29754,
     "shade": 20226,
@@ -5722,8 +5724,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 15409,
-   "svg_gzip": 5662,
+   "svg_bytes": 15462,
+   "svg_gzip": 5676,
    "images": {
     "relief": 27884,
     "shade": 15952,
@@ -5760,8 +5762,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 9920,
-   "svg_gzip": 3614,
+   "svg_bytes": 9955,
+   "svg_gzip": 3625,
    "images": {
     "relief": 18084,
     "shade": 11188,
@@ -5801,8 +5803,8 @@
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
-   "svg_bytes": 13648,
-   "svg_gzip": 5366,
+   "svg_bytes": 13754,
+   "svg_gzip": 5387,
    "images": {
     "relief": 28860,
     "shade": 9468,
@@ -5839,8 +5841,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 17662,
-   "svg_gzip": 6431,
+   "svg_bytes": 17768,
+   "svg_gzip": 6450,
    "images": {
     "relief": 27804,
     "shade": 11992,
@@ -6032,8 +6034,8 @@
     "Gilgit-Baltistan",
     "Shaksam Valley"
    ],
-   "svg_bytes": 17707,
-   "svg_gzip": 6298,
+   "svg_bytes": 17919,
+   "svg_gzip": 6328,
    "images": {
     "relief": 30324,
     "shade": 25178,
@@ -6070,8 +6072,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 14945,
-   "svg_gzip": 5649,
+   "svg_bytes": 14980,
+   "svg_gzip": 5661,
    "images": {
     "relief": 18700,
     "shade": 22402,
@@ -6488,8 +6490,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21363,
-   "svg_gzip": 8095,
+   "svg_bytes": 21416,
+   "svg_gzip": 8111,
    "images": {
     "relief": 23770,
     "shade": 19758,
@@ -6567,8 +6569,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 28537,
-   "svg_gzip": 10963,
+   "svg_bytes": 28572,
+   "svg_gzip": 10973,
    "images": {
     "relief": 30482,
     "shade": 26266,
@@ -6797,8 +6799,8 @@
    "revealed": [
     "Arunachal Pradesh"
    ],
-   "svg_bytes": 24517,
-   "svg_gzip": 9037,
+   "svg_bytes": 24570,
+   "svg_gzip": 9053,
    "images": {
     "relief": 28962,
     "shade": 21860,
@@ -6877,8 +6879,8 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 24896,
-   "svg_gzip": 9254,
+   "svg_bytes": 25213,
+   "svg_gzip": 9296,
    "images": {
     "relief": 27930,
     "shade": 24144,
@@ -7193,8 +7195,8 @@
     "Shaksam Valley",
     "Tirpani Valleys"
    ],
-   "svg_bytes": 21254,
-   "svg_gzip": 7786,
+   "svg_bytes": 21627,
+   "svg_gzip": 7808,
    "images": {
     "relief": 27958,
     "shade": 21786,
@@ -7345,8 +7347,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 25053,
-   "svg_gzip": 9042,
+   "svg_bytes": 25406,
+   "svg_gzip": 9088,
    "images": {
     "relief": 27226,
     "shade": 14756,
@@ -7423,8 +7425,8 @@
    "revealed": [
     "Golan Heights"
    ],
-   "svg_bytes": 9577,
-   "svg_gzip": 3711,
+   "svg_bytes": 9630,
+   "svg_gzip": 3726,
    "images": {
     "relief": 8188,
     "shade": 10474,
@@ -7542,8 +7544,8 @@
     "Gaza",
     "West Bank"
    ],
-   "svg_bytes": 12714,
-   "svg_gzip": 4968,
+   "svg_bytes": 12732,
+   "svg_gzip": 4972,
    "images": {
     "relief": 12462,
     "shade": 9246,
@@ -7582,8 +7584,8 @@
     "Kuril Is."
    ],
    "revealed": [],
-   "svg_bytes": 15710,
-   "svg_gzip": 6288,
+   "svg_bytes": 15728,
+   "svg_gzip": 6293,
    "images": {
     "relief": 26100,
     "shade": 13148,
@@ -7620,8 +7622,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 11617,
-   "svg_gzip": 4403,
+   "svg_bytes": 11670,
+   "svg_gzip": 4419,
    "images": {
     "relief": 6762,
     "shade": 10146,
@@ -7734,8 +7736,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21617,
-   "svg_gzip": 8192,
+   "svg_bytes": 21705,
+   "svg_gzip": 8211,
    "images": {
     "relief": 27876,
     "shade": 17886,
@@ -7964,8 +7966,8 @@
    "revealed": [
     "W. Sahara"
    ],
-   "svg_bytes": 13893,
-   "svg_gzip": 5239,
+   "svg_bytes": 13959,
+   "svg_gzip": 5267,
    "images": {
     "relief": 25500,
     "shade": 8196,
@@ -8004,8 +8006,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 10386,
-   "svg_gzip": 4027,
+   "svg_bytes": 10404,
+   "svg_gzip": 4033,
    "images": {
     "relief": 10900,
     "shade": 6514,
@@ -8158,8 +8160,8 @@
    "revealed": [
     "Somaliland"
    ],
-   "svg_bytes": 8200,
-   "svg_gzip": 3267,
+   "svg_bytes": 8235,
+   "svg_gzip": 3292,
    "images": {
     "relief": 10548,
     "shade": 11406,
@@ -8274,8 +8276,8 @@
    "revealed": [
     "Kosovo"
    ],
-   "svg_bytes": 11005,
-   "svg_gzip": 4313,
+   "svg_bytes": 11040,
+   "svg_gzip": 4323,
    "images": {
     "relief": 18316,
     "shade": 29928,
@@ -8350,8 +8352,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 7849,
-   "svg_gzip": 3206,
+   "svg_bytes": 7884,
+   "svg_gzip": 3216,
    "images": {
     "relief": 12406,
     "shade": 8246,
@@ -8510,8 +8512,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 43713,
-   "svg_gzip": 16942,
+   "svg_bytes": 43938,
+   "svg_gzip": 17011,
    "images": {
     "relief": 30564,
     "shade": 15310,
@@ -8644,32 +8646,34 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     7.289274,
-     -34.961238,
+     3.50492,
+     -40.351213,
      0
     ],
-    "scale": 579.713,
+    "scale": 590.608,
     "translate": [
-     201.61,
-     125.281
+     235.207,
+     72.225
     ],
-    "cornerDeg": 26.61
+    "cornerDeg": 32.18
    },
    "center": [
-    -7.289274,
-    34.961238
+    -3.50492,
+    40.351213
    ],
    "fine": false,
-   "stretch": 5.6,
+   "stretch": 8.3,
    "scale_km": null,
    "claimed": [],
-   "revealed": [],
-   "svg_bytes": 18219,
-   "svg_gzip": 6851,
+   "revealed": [
+    "W. Sahara"
+   ],
+   "svg_bytes": 13366,
+   "svg_gzip": 5124,
    "images": {
-    "relief": 27522,
-    "shade": 10218,
-    "sea": 16000
+    "relief": 27630,
+    "shade": 10258,
+    "sea": 15746
    }
   },
   "set-171458dd8b41-continent": {
@@ -8832,8 +8836,8 @@
     "Transnistria",
     "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 74793,
-   "svg_gzip": 24299,
+   "svg_bytes": 75427,
+   "svg_gzip": 24454,
    "images": {
     "relief": 29440,
     "shade": 18768,
@@ -8884,8 +8888,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 25080,
-   "svg_gzip": 9259,
+   "svg_bytes": 25296,
+   "svg_gzip": 9279,
    "images": {
     "relief": 28292,
     "shade": 20340,
@@ -8941,8 +8945,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37647,
-   "svg_gzip": 14445,
+   "svg_bytes": 38391,
+   "svg_gzip": 14510,
    "images": {
     "relief": 27828,
     "shade": 20382,
@@ -8988,8 +8992,8 @@
     "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 24181,
-   "svg_gzip": 9062,
+   "svg_bytes": 24304,
+   "svg_gzip": 9078,
    "images": {
     "relief": 30120,
     "shade": 19252,
@@ -9028,8 +9032,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 22399,
-   "svg_gzip": 8392,
+   "svg_bytes": 22434,
+   "svg_gzip": 8402,
    "images": {
     "relief": 28042,
     "shade": 25188,
@@ -9070,8 +9074,8 @@
    "revealed": [
     "North Borneo"
    ],
-   "svg_bytes": 40601,
-   "svg_gzip": 15898,
+   "svg_bytes": 41306,
+   "svg_gzip": 15999,
    "images": {
     "relief": 28260,
     "shade": 15822,
@@ -9173,8 +9177,8 @@
     "Arunachal Pradesh",
     "Taiwan"
    ],
-   "svg_bytes": 33050,
-   "svg_gzip": 12867,
+   "svg_bytes": 33421,
+   "svg_gzip": 12909,
    "images": {
     "relief": 26242,
     "shade": 19062,
@@ -9213,8 +9217,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 36646,
-   "svg_gzip": 14176,
+   "svg_bytes": 36853,
+   "svg_gzip": 14219,
    "images": {
     "relief": 28682,
     "shade": 14000,
@@ -9295,8 +9299,8 @@
     "North Borneo"
    ],
    "revealed": [],
-   "svg_bytes": 22156,
-   "svg_gzip": 8931,
+   "svg_bytes": 22174,
+   "svg_gzip": 8937,
    "images": {
     "relief": 29058,
     "shade": 16108,
@@ -9447,7 +9451,8 @@
    "scale_km": null,
    "claimed": [
     "Abyei",
-    "Ilemi Triangle"
+    "Ilemi Triangle",
+    "W. Sahara"
    ],
    "revealed": [
     "Golan Heights",
@@ -9455,12 +9460,12 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 53647,
-   "svg_gzip": 17624,
+   "svg_bytes": 54987,
+   "svg_gzip": 17768,
    "images": {
-    "relief": 30406,
-    "shade": 12588,
-    "sea": 24996
+    "relief": 30438,
+    "shade": 12582,
+    "sea": 24982
    }
   },
   "set-29699cb355e1": {
@@ -9508,8 +9513,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 35691,
-   "svg_gzip": 13664,
+   "svg_bytes": 36276,
+   "svg_gzip": 13734,
    "images": {
     "relief": 30718,
     "shade": 20112,
@@ -9597,8 +9602,8 @@
     "Somaliland",
     "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 40587,
-   "svg_gzip": 15136,
+   "svg_bytes": 41557,
+   "svg_gzip": 15234,
    "images": {
     "relief": 29566,
     "shade": 20266,
@@ -9654,8 +9659,8 @@
     "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 59603,
-   "svg_gzip": 22621,
+   "svg_bytes": 60674,
+   "svg_gzip": 22864,
    "images": {
     "relief": 28838,
     "shade": 18342,
@@ -9737,8 +9742,8 @@
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
-   "svg_bytes": 18219,
-   "svg_gzip": 7107,
+   "svg_bytes": 18360,
+   "svg_gzip": 7132,
    "images": {
     "relief": 28320,
     "shade": 9466,
@@ -9819,8 +9824,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 22828,
-   "svg_gzip": 8579,
+   "svg_bytes": 22863,
+   "svg_gzip": 8589,
    "images": {
     "relief": 27902,
     "shade": 25050,
@@ -9859,8 +9864,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 26575,
-   "svg_gzip": 9837,
+   "svg_bytes": 26610,
+   "svg_gzip": 9849,
    "images": {
     "relief": 28480,
     "shade": 24320,
@@ -10001,8 +10006,8 @@
     "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 87751,
-   "svg_gzip": 27111,
+   "svg_bytes": 88540,
+   "svg_gzip": 27271,
    "images": {
     "relief": 29168,
     "shade": 20964,
@@ -10043,8 +10048,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 32102,
-   "svg_gzip": 11942,
+   "svg_bytes": 32137,
+   "svg_gzip": 11953,
    "images": {
     "relief": 30430,
     "shade": 22648,
@@ -10177,8 +10182,8 @@
     "Shaksam Valley",
     "Siachen Glacier"
    ],
-   "svg_bytes": 35095,
-   "svg_gzip": 12688,
+   "svg_bytes": 35978,
+   "svg_gzip": 12748,
    "images": {
     "relief": 27890,
     "shade": 19524,
@@ -10272,8 +10277,8 @@
     "Kosovo",
     "Transnistria"
    ],
-   "svg_bytes": 34817,
-   "svg_gzip": 12652,
+   "svg_bytes": 34993,
+   "svg_gzip": 12682,
    "images": {
     "relief": 27246,
     "shade": 16660,
@@ -10316,8 +10321,8 @@
    "revealed": [
     "West Bank"
    ],
-   "svg_bytes": 13591,
-   "svg_gzip": 5354,
+   "svg_bytes": 13644,
+   "svg_gzip": 5361,
    "images": {
     "relief": 17422,
     "shade": 12236,
@@ -10411,8 +10416,8 @@
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 52117,
-   "svg_gzip": 20103,
+   "svg_bytes": 52789,
+   "svg_gzip": 20236,
    "images": {
     "relief": 28098,
     "shade": 21770,
@@ -10453,8 +10458,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 26954,
-   "svg_gzip": 10207,
+   "svg_bytes": 26989,
+   "svg_gzip": 10218,
    "images": {
     "relief": 28118,
     "shade": 27140,
@@ -10501,8 +10506,8 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 34586,
-   "svg_gzip": 12934,
+   "svg_bytes": 35079,
+   "svg_gzip": 12990,
    "images": {
     "relief": 27732,
     "shade": 20166,
@@ -10569,36 +10574,37 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -39.104302,
-     -24.108428,
+     -44.767154,
+     -22.891786,
      0
     ],
-    "scale": 269.229,
+    "scale": 273.018,
     "translate": [
-     280.311,
-     142.387
+     304.069,
+     148.032
     ],
-    "cornerDeg": 73.34
+    "cornerDeg": 77
    },
    "center": [
-    39.104302,
-    24.108428
+    44.767154,
+    22.891786
    ],
    "fine": false,
-   "stretch": 55.4,
+   "stretch": 63.3,
    "scale_km": null,
    "claimed": [],
    "revealed": [
     "Golan Heights",
     "N. Cyprus",
+    "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 43081,
-   "svg_gzip": 16176,
+   "svg_bytes": 43291,
+   "svg_gzip": 16007,
    "images": {
-    "relief": 26602,
-    "shade": 14574,
-    "sea": 22086
+    "relief": 26696,
+    "shade": 14468,
+    "sea": 21914
    }
   },
   "set-5eaefcd31d01": {
@@ -10658,8 +10664,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 25381,
-   "svg_gzip": 9597,
+   "svg_bytes": 25447,
+   "svg_gzip": 9617,
    "images": {
     "relief": 23070,
     "shade": 8326,
@@ -10778,8 +10784,8 @@
     "South Ossetia",
     "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 52514,
-   "svg_gzip": 19965,
+   "svg_bytes": 53379,
+   "svg_gzip": 20145,
    "images": {
     "relief": 30288,
     "shade": 22112,
@@ -10818,8 +10824,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21265,
-   "svg_gzip": 7958,
+   "svg_bytes": 21335,
+   "svg_gzip": 7972,
    "images": {
     "relief": 23254,
     "shade": 17064,
@@ -10869,8 +10875,8 @@
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 51320,
-   "svg_gzip": 19797,
+   "svg_bytes": 52168,
+   "svg_gzip": 19941,
    "images": {
     "relief": 28628,
     "shade": 21824,
@@ -10952,8 +10958,8 @@
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 30440,
-   "svg_gzip": 11400,
+   "svg_bytes": 30880,
+   "svg_gzip": 11454,
    "images": {
     "relief": 28682,
     "shade": 23548,
@@ -11009,8 +11015,8 @@
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 52453,
-   "svg_gzip": 20196,
+   "svg_bytes": 53125,
+   "svg_gzip": 20317,
    "images": {
     "relief": 28262,
     "shade": 21756,
@@ -11051,7 +11057,7 @@
     "South Ossetia"
    ],
    "revealed": [],
-   "svg_bytes": 15161,
+   "svg_bytes": 15196,
    "svg_gzip": 5678,
    "images": {
     "relief": 26610,
@@ -11093,8 +11099,8 @@
    "scale_km": 200,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 26682,
-   "svg_gzip": 9863,
+   "svg_bytes": 26717,
+   "svg_gzip": 9874,
    "images": {
     "relief": 28500,
     "shade": 24442,
@@ -11175,8 +11181,8 @@
    "scale_km": 50,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 13585,
-   "svg_gzip": 5187,
+   "svg_bytes": 13620,
+   "svg_gzip": 5198,
    "images": {
     "relief": 19628,
     "shade": 30274,
@@ -11217,8 +11223,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 20713,
-   "svg_gzip": 7994,
+   "svg_bytes": 20748,
+   "svg_gzip": 8005,
    "images": {
     "relief": 28860,
     "shade": 28356,
@@ -11309,8 +11315,8 @@
    "revealed": [
     "Kosovo"
    ],
-   "svg_bytes": 43554,
-   "svg_gzip": 17041,
+   "svg_bytes": 43708,
+   "svg_gzip": 17106,
    "images": {
     "relief": 26848,
     "shade": 18150,
@@ -11426,8 +11432,8 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 60242,
-   "svg_gzip": 17625,
+   "svg_bytes": 60612,
+   "svg_gzip": 17674,
    "images": {
     "relief": 27528,
     "shade": 10854,
@@ -11495,8 +11501,8 @@
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 61050,
-   "svg_gzip": 23430,
+   "svg_bytes": 61720,
+   "svg_gzip": 23538,
    "images": {
     "relief": 28908,
     "shade": 20984,
@@ -11548,8 +11554,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 32454,
-   "svg_gzip": 12188,
+   "svg_bytes": 32863,
+   "svg_gzip": 12223,
    "images": {
     "relief": 29696,
     "shade": 20228,
@@ -11638,8 +11644,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 25859,
-   "svg_gzip": 9194,
+   "svg_bytes": 25947,
+   "svg_gzip": 9214,
    "images": {
     "relief": 20166,
     "shade": 9696,
@@ -11746,8 +11752,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 38939,
-   "svg_gzip": 14531,
+   "svg_bytes": 38974,
+   "svg_gzip": 14541,
    "images": {
     "relief": 28070,
     "shade": 18014,
@@ -11799,8 +11805,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37484,
-   "svg_gzip": 14404,
+   "svg_bytes": 38122,
+   "svg_gzip": 14471,
    "images": {
     "relief": 30566,
     "shade": 20310,
@@ -11839,8 +11845,8 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 10003,
-   "svg_gzip": 3614,
+   "svg_bytes": 10091,
+   "svg_gzip": 3633,
    "images": {
     "relief": 23556,
     "shade": 10546,
@@ -11882,8 +11888,8 @@
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
-   "svg_bytes": 13970,
-   "svg_gzip": 5501,
+   "svg_bytes": 14076,
+   "svg_gzip": 5521,
    "images": {
     "relief": 28498,
     "shade": 9586,
@@ -11958,8 +11964,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 42940,
-   "svg_gzip": 11880,
+   "svg_bytes": 43081,
+   "svg_gzip": 11907,
    "images": {
     "relief": 20874,
     "shade": 9130,
@@ -12004,8 +12010,8 @@
     "Golan Heights",
     "West Bank"
    ],
-   "svg_bytes": 20022,
-   "svg_gzip": 7287,
+   "svg_bytes": 20216,
+   "svg_gzip": 7318,
    "images": {
     "relief": 27790,
     "shade": 10916,
@@ -12057,8 +12063,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 39181,
-   "svg_gzip": 14813,
+   "svg_bytes": 39747,
+   "svg_gzip": 14862,
    "images": {
     "relief": 29194,
     "shade": 20828,
@@ -12100,8 +12106,8 @@
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
-   "svg_bytes": 15959,
-   "svg_gzip": 6239,
+   "svg_bytes": 16065,
+   "svg_gzip": 6257,
    "images": {
     "relief": 28932,
     "shade": 9238,
@@ -12210,8 +12216,8 @@
    "revealed": [
     "Lawa Headwaters"
    ],
-   "svg_bytes": 14928,
-   "svg_gzip": 5872,
+   "svg_bytes": 14999,
+   "svg_gzip": 5882,
    "images": {
     "relief": 30284,
     "shade": 8916,
@@ -12337,8 +12343,8 @@
     "Courantyne Headwaters",
     "Lawa Headwaters"
    ],
-   "svg_bytes": 17449,
-   "svg_gzip": 6764,
+   "svg_bytes": 17590,
+   "svg_gzip": 6803,
    "images": {
     "relief": 28240,
     "shade": 9530,
@@ -12367,26 +12373,27 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -15.654176,
-     -25.515092,
+     -15.65348,
+     -25.515144,
      0
     ],
-    "scale": 337.033,
+    "scale": 336.997,
     "translate": [
-     224.565,
-     136.379
+     224.574,
+     136.38
     ],
     "cornerDeg": 48.69
    },
    "center": [
-    15.654176,
-    25.515092
+    15.65348,
+    25.515144
    ],
    "fine": false,
    "stretch": 20.5,
    "scale_km": null,
    "claimed": [
-    "Abyei"
+    "Abyei",
+    "W. Sahara"
    ],
    "revealed": [
     "Golan Heights",
@@ -12394,12 +12401,12 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 43111,
-   "svg_gzip": 16103,
+   "svg_bytes": 43479,
+   "svg_gzip": 16172,
    "images": {
-    "relief": 27752,
-    "shade": 15174,
-    "sea": 20382
+    "relief": 27634,
+    "shade": 15130,
+    "sea": 20390
    }
   },
   "set-c6a4bd722cb0": {
@@ -12447,8 +12454,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 32508,
-   "svg_gzip": 12231,
+   "svg_bytes": 32970,
+   "svg_gzip": 12279,
    "images": {
     "relief": 28394,
     "shade": 19624,
@@ -12513,8 +12520,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 39818,
-   "svg_gzip": 15089,
+   "svg_bytes": 40254,
+   "svg_gzip": 15152,
    "images": {
     "relief": 29602,
     "shade": 18508,
@@ -12561,8 +12568,8 @@
     "Luhansk Oblast",
     "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 51586,
-   "svg_gzip": 19789,
+   "svg_bytes": 52887,
+   "svg_gzip": 19996,
    "images": {
     "relief": 28822,
     "shade": 18712,
@@ -12603,8 +12610,8 @@
     "North Borneo"
    ],
    "revealed": [],
-   "svg_bytes": 20193,
-   "svg_gzip": 8082,
+   "svg_bytes": 20211,
+   "svg_gzip": 8087,
    "images": {
     "relief": 29080,
     "shade": 17678,
@@ -12653,8 +12660,8 @@
     "Abkhazia",
     "Transnistria"
    ],
-   "svg_bytes": 52421,
-   "svg_gzip": 20189,
+   "svg_bytes": 53093,
+   "svg_gzip": 20337,
    "images": {
     "relief": 28810,
     "shade": 22076,
@@ -12710,8 +12717,8 @@
     "Ilemi Triangle"
    ],
    "revealed": [],
-   "svg_bytes": 21368,
-   "svg_gzip": 7790,
+   "svg_bytes": 21421,
+   "svg_gzip": 7798,
    "images": {
     "relief": 27266,
     "shade": 10226,
@@ -12756,8 +12763,8 @@
     "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 19374,
-   "svg_gzip": 6920,
+   "svg_bytes": 19585,
+   "svg_gzip": 6971,
    "images": {
     "relief": 29594,
     "shade": 22024,
@@ -12860,8 +12867,8 @@
    "revealed": [
     "W. Sahara"
    ],
-   "svg_bytes": 24337,
-   "svg_gzip": 8959,
+   "svg_bytes": 24456,
+   "svg_gzip": 8999,
    "images": {
     "relief": 26994,
     "shade": 7670,
@@ -12925,8 +12932,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37042,
-   "svg_gzip": 13712,
+   "svg_bytes": 37451,
+   "svg_gzip": 13746,
    "images": {
     "relief": 27628,
     "shade": 19146,
@@ -12981,8 +12988,8 @@
    "revealed": [
     "Abyei"
    ],
-   "svg_bytes": 23708,
-   "svg_gzip": 8661,
+   "svg_bytes": 23814,
+   "svg_gzip": 8683,
    "images": {
     "relief": 27140,
     "shade": 9266,
@@ -13035,8 +13042,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 25363,
-   "svg_gzip": 9284,
+   "svg_bytes": 25579,
+   "svg_gzip": 9303,
    "images": {
     "relief": 28130,
     "shade": 20150,
@@ -13120,8 +13127,8 @@
     "Abkhazia",
     "South Ossetia"
    ],
-   "svg_bytes": 34441,
-   "svg_gzip": 12784,
+   "svg_bytes": 34934,
+   "svg_gzip": 12845,
    "images": {
     "relief": 30184,
     "shade": 23018,
@@ -13176,8 +13183,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 21210,
-   "svg_gzip": 7589,
+   "svg_bytes": 21276,
+   "svg_gzip": 7615,
    "images": {
     "relief": 18880,
     "shade": 5138,
@@ -13238,8 +13245,8 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 34049,
-   "svg_gzip": 12666,
+   "svg_bytes": 34210,
+   "svg_gzip": 12682,
    "images": {
     "relief": 27090,
     "shade": 18050,
@@ -13291,8 +13298,8 @@
    "revealed": [
     "Kosovo"
    ],
-   "svg_bytes": 52907,
-   "svg_gzip": 20319,
+   "svg_bytes": 53579,
+   "svg_gzip": 20444,
    "images": {
     "relief": 28548,
     "shade": 21946,
@@ -13335,8 +13342,8 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 35256,
-   "svg_gzip": 13151,
+   "svg_bytes": 35749,
+   "svg_gzip": 13205,
    "images": {
     "relief": 30264,
     "shade": 23078,
@@ -13377,8 +13384,8 @@
    "revealed": [
     "Arunachal Pradesh"
    ],
-   "svg_bytes": 24678,
-   "svg_gzip": 9151,
+   "svg_bytes": 24784,
+   "svg_gzip": 9169,
    "images": {
     "relief": 29486,
     "shade": 21844,
@@ -13417,8 +13424,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 31426,
-   "svg_gzip": 12308,
+   "svg_bytes": 31532,
+   "svg_gzip": 12329,
    "images": {
     "relief": 28646,
     "shade": 14814,
@@ -13499,8 +13506,8 @@
    "scale_km": 100,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 22831,
-   "svg_gzip": 8673,
+   "svg_bytes": 22866,
+   "svg_gzip": 8683,
    "images": {
     "relief": 25376,
     "shade": 27220,
@@ -13541,8 +13548,8 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 29657,
-   "svg_gzip": 11747,
+   "svg_bytes": 29829,
+   "svg_gzip": 11792,
    "images": {
     "relief": 28334,
     "shade": 13932,
@@ -13561,32 +13568,34 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     9.165911,
-     -29.038468,
+     9.16666,
+     -29.037317,
      0
     ],
-    "scale": 875,
+    "scale": 872.738,
     "translate": [
-     204.349,
-     141.911
+     204.367,
+     141.655
     ],
-    "cornerDeg": 16.98
+    "cornerDeg": 17.04
    },
    "center": [
-    -9.165911,
-    29.038468
+    -9.16666,
+    29.037317
    ],
    "fine": false,
    "stretch": 2.2,
    "scale_km": 500,
-   "claimed": [],
+   "claimed": [
+    "W. Sahara"
+   ],
    "revealed": [],
-   "svg_bytes": 10909,
-   "svg_gzip": 4077,
+   "svg_bytes": 11505,
+   "svg_gzip": 4213,
    "images": {
-    "relief": 17328,
-    "shade": 6932,
-    "sea": 8898
+    "relief": 17508,
+    "shade": 7076,
+    "sea": 8890
    }
   },
   "set-fd98195d9a06": {
@@ -13638,8 +13647,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37472,
-   "svg_gzip": 14355,
+   "svg_bytes": 38163,
+   "svg_gzip": 14420,
    "images": {
     "relief": 27770,
     "shade": 20338,

@@ -67,6 +67,8 @@ function wt_maps_place_names( array $record_ids ): array {
 function wt_maps_defs(): string {
 	return '<svg class="wt-map-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>'
 		. '<pattern id="hatch-claim" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="hc-line" x1="2.5" y1="0" x2="2.5" y2="5"/></pattern>'
+		// Claims on hover: an area the hovered place claims that isn't active, on plain land.
+		. '<pattern id="hatch-hover" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hh-bg" x="-1" y="-1" width="7" height="7"/><line class="hh-line" x1="2.5" y1="0" x2="2.5" y2="5"/></pattern>'
 		. '</defs></svg>';
 }
 /**

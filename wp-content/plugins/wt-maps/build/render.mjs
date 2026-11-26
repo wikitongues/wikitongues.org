@@ -9,8 +9,10 @@
 //
 // One SVG serves every language with that set of places, so it carries no
 // primary/secondary styling. Each highlighted shape has `data-place` (the
-// place's record ID) and each claimed contested area `data-claimants` (the
-// record IDs of the places claiming it); PHP adds the classes per language.
+// place's record ID). Each contested area has `data-claimants`: the record IDs
+// of every place that claims it, on the map or not, so the hover script can
+// light a neighbour's claims. An active one (a highlighted place claims it) also
+// has `hatch-claimed`, which PHP turns into the role classes per language.
 // Image hrefs are relative to maps/ (`shade/<key>.webp`); PHP makes them absolute.
 //
 // Ported from the prototype (docs/maps-prototype/build/render.mjs, PR #669),
@@ -481,11 +483,9 @@ function render(key, placeIds) {
   const disp = disputed.map((d) => {
     let cls, extra = ` data-area="${esc(d.name)}"`;
     if (isSelf(d)) cls = 'edge'; // already filled in the highlight layer; only its dashed edge here
-    else {
-      const by = hl.filter(({ id }) => placeClaims(id, d)).map(({ id }) => id);
-      cls = by.length ? 'hatch hatch-claimed' : 'plain';
-      if (by.length) extra += ` data-claimants="${by.join(' ')}"`;
-    }
+    else cls = hl.some(({ id }) => placeClaims(id, d)) ? 'hatch hatch-claimed' : 'plain';
+    // Every claimant, sorted so a rebuild is byte-identical (claims on hover).
+    if (d.claimants.size) extra += ` data-claimants="${[...d.claimants].sort().join(' ')}"`;
     const el = pathEl(d.f, `disputed ${cls}`, extra);
     if (claimedSet.has(d) || (!isSelf(d) && el && nearReveal(d.f))) {
       if (!claimedSet.has(d)) touched.push(d.name);
