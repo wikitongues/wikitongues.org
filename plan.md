@@ -673,6 +673,7 @@ Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
 | `Maori` / `Māori` | Maori (`mri`) | New Zealand (territory) in the list | Folding, rule 3 |
 | `Georgia` | Georgia (territory) | Also: Georgian (`kat`) | Two kinds, rule 6 |
 | `French` | French (`fra`, 39 videos) | French Polynesia in the list (prefix) | Exact name beats prefix |
+| `Russian` | Russian (`rus`) | Russian Federation (territory, prefix), Russian Sign Language (prefix), then Belarusian, Prussian and Saami (Skolt), via its alternate name “Russian Lapp” (substring) | Exact name beats prefix; a territory match doesn't flood the list with its languages (#379) |
 | `Tahitian` | Tahitian (`tah`): **gap** | Polynesia, Austronesian | The gap card, rule 5 |
 | `Austronesian` | Austronesian (family, 1,262 languages) | — | Family answer |
 | `Polynesia` | Polynesia (region) | — | Region answer |
@@ -699,7 +700,7 @@ Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
 
 | # | PR | Done when |
 |---|---|---|
-| 1 | **Data:** the multi-kind index and a PHP resolver, unit-tested against the example cases | Every row above resolves as written |
+| 1 | **Data:** the multi-kind index and a PHP resolver, unit-tested against the example cases; replaces `searchfilter()`, which closes #379 | Every row above resolves as written |
 | 2 | **Page:** answer card, Also chips, grouped results, events; server-rendered | Example cases render on staging, events in DebugView |
 | 3 | **Gap and zero-result CTAs** | Open question 1 settled |
 | 4 | **Typeahead** suggests every kind from the same index | Header box shows kinds |
@@ -720,6 +721,7 @@ Resources, documents, lexicons and captions; blog and pages; in-gallery filterin
 
 - 2026-11-24: Draft. One index and resolver for the typeahead and the results page; the gap is the fundraising surface.
 - 2026-11-24: Spec approved. Open questions stay open; 1 must be settled before step 3.
+- 2026-11-26: Added `Russian` as an example case. Today's `?s=russian` doesn't show Russian on page 1: `searchfilter()` also matches every language originating in the Russian Federation and sorts by date. Fixed by step 1's resolver, not by patching `searchfilter()` (#379).
 
 ### 4. Email capture & engagement
 
