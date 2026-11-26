@@ -16,9 +16,13 @@
 //   drop:   record IDs whose claim no longer counts (dormant or ended)
 //   status: "claimed" (the default), "ended" (drawn as part of its territory),
 //           or "duplicate" with "of": the area whose shape this one repeats
+//   shape:  adds an area Natural Earth has no contested-area shape for, from
+//           another Natural Earth layer: "admin1:<ISO 3166-2 code>". Needs a
+//           "name"; the area code is the ISO code ("UA-14"). Claimants start empty.
 import fs from 'node:fs';
 
 export const STATUSES = ['claimed', 'ended', 'duplicate'];
+export const SHAPE_LAYERS = ['admin1'];
 
 /** The table on disk, or an empty one. */
 export function readClaims(file) {
@@ -29,7 +33,7 @@ export function readClaims(file) {
 /**
  * Apply the layers in order.
  *
- * @returns {{ areas: Map<string, {name: string, claimants: Set<string>, status: string, of?: string}>, noops: object[] }}
+ * @returns {{ areas: Map<string, {name: string, claimants: Set<string>, status: string, of?: string, shape?: string}>, noops: object[] }}
  *   areas: the effective claims by area code. noops: review changes that change
  *   nothing (a claimant already there or already gone), for `doctor` to list.
  */
@@ -45,10 +49,18 @@ export function effectiveClaims(table) {
     }
     for (const change of layer.changes ?? []) {
       const where = `${layer.id}: ${change.area}`;
-      const a = areas.get(change.area);
-      if (!a) throw new Error(`${where} is not in layer 1`);
       if (!change.reason) throw new Error(`${where} has no reason`);
       let changed = false;
+      if (change.shape !== undefined) {
+        const [shapeLayer, shapeCode] = String(change.shape).split(':');
+        if (!SHAPE_LAYERS.includes(shapeLayer) || !shapeCode) throw new Error(`${where}: shape must be admin1:<ISO 3166-2 code>, not ${change.shape}`);
+        if (!change.name) throw new Error(`${where}: a new area needs a name`);
+        if (areas.has(change.area)) throw new Error(`${where}: area already exists; a shape can only add one`);
+        areas.set(change.area, { name: change.name, claimants: new Set(), status: 'claimed', shape: change.shape });
+        changed = true;
+      }
+      const a = areas.get(change.area);
+      if (!a) throw new Error(`${where} is not in the table: add it with a shape first`);
       for (const id of change.add ?? []) {
         if (!a.claimants.has(id)) { a.claimants.add(id); changed = true; }
       }

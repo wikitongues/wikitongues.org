@@ -359,6 +359,72 @@
      "source": "Philippine Republic Act 5446 (1968), section 2; Department of Foreign Affairs statement, February 2026"
     }
    ]
+  },
+  {
+   "id": "wikitongues-2026-11-26",
+   "author": "Wikitongues",
+   "reviewer": "Frederico Andrade",
+   "date": "2026-11-26",
+   "changes": [
+    {
+     "area": "UA-14",
+     "shape": "admin1:UA-14",
+     "name": "Donetsk Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-09",
+     "shape": "admin1:UA-09",
+     "name": "Luhansk Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-23",
+     "shape": "admin1:UA-23",
+     "name": "Zaporizhzhia Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-65",
+     "shape": "admin1:UA-65",
+     "name": "Kherson Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "C02",
+     "status": "duplicate",
+     "of": "UA-14",
+     "reason": "Natural Earth's Donetsk People's Republic is the 2014 line of control inside Donetsk Oblast. Drawn once, as the oblast; lines of control are out of scope (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: C02 lies inside admin-1 UA-14"
+    },
+    {
+     "area": "C03",
+     "status": "duplicate",
+     "of": "UA-09",
+     "reason": "Natural Earth's Luhansk People's Republic is the 2014 line of control inside Luhansk Oblast. Drawn once, as the oblast; lines of control are out of scope (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: C03 lies inside admin-1 UA-09"
+    }
+   ]
   }
  ]
 }

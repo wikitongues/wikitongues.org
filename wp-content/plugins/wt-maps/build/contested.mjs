@@ -1,7 +1,8 @@
 // Natural Earth's contested areas, and the claims table's say on them.
 //
 // The areas are every NE breakaway area plus the map units that are themselves
-// contested states or areas. Who claims each one comes from the claims table
+// contested states or areas, plus the areas a review adds from another Natural
+// Earth layer (a change with a "shape": the 2022 oblasts). Who claims each one comes from the claims table
 // (claims-table.mjs, data/claims.json), not from Natural Earth directly:
 // Natural Earth's point-of-view fields are only the table's first layer
 // (seed-claims.mjs).
@@ -28,6 +29,29 @@ export function neAreas(brk, unitsByCode) {
     const p = d.f.properties;
     const neClaimants = new Set(pov.map((k) => p[k]).filter((v) => typeof v === 'string' && /^[A-Z]{3}$/.test(v) && !/^[BC]\d\d$/.test(v)));
     return { ...d, defacto: p.ADM0_A3, neClaimants };
+  });
+}
+
+/**
+ * The areas the claims table adds with a shape, each from its Natural Earth
+ * feature. An unknown shape stops the build.
+ *
+ * @param {object} table  The claims table (readClaims).
+ * @param {() => object[]} admin1  Loads ne_10m_admin_1_states_provinces features
+ *   (only called when the table names an admin-1 shape: the file is 40 MB).
+ */
+export function shapedAreas(table, admin1) {
+  const wanted = [];
+  for (const layer of (table.layers ?? []).slice(1)) {
+    for (const change of layer.changes ?? []) if (change.shape) wanted.push(change);
+  }
+  if (!wanted.length) return [];
+  const byIso = Object.fromEntries(admin1().map((f) => [f.properties.iso_3166_2, f]));
+  return wanted.map((change) => {
+    const iso = String(change.shape).split(':')[1];
+    const f = byIso[iso];
+    if (!f) throw new Error(`Claims table: ${change.area} names shape ${change.shape}, which Natural Earth's admin-1 layer doesn't have.`);
+    return { code: change.area, name: change.name, f, defacto: f.properties.adm0_a3, neClaimants: new Set() };
   });
 }
 

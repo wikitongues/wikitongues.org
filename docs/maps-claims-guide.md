@@ -26,10 +26,12 @@ A review is a list of **changes**. Each change names one area and says one thing
 
 | Field | Meaning |
 |---|---|
-| `area` | The contested area's code from layer 1 (`B00`, `C02`, `SAH`…). Find it by searching the file for the area's name. |
+| `area` | The contested area's code (`B00`, `C02`, `SAH`, or `UA-14` for one a review added). Find it by searching the file for the area's name. |
 | `add` | Record IDs of places that now claim the area. |
 | `drop` | Record IDs of places whose claim no longer counts (dormant or ended). |
 | `status` | Leave it out for a normal contested area. `"ended"` draws the area as part of its territory again (Artsakh). `"duplicate"`, with `"of": "<code>"`, draws it once, as another area (rarely needed). |
+| `shape` | Only to add a new area: `"admin1:<ISO 3166-2 code>"`, a province, state or oblast from Natural Earth's admin-1 layer. `area` is then that ISO code, and the change also needs a `name`. |
+| `name` | The new area's name, with `shape`. |
 | `reason` | Required. One sentence a stranger could check. |
 | `source` | Required in practice: a law, treaty, UN document, official map or statement. |
 
@@ -120,5 +122,6 @@ Once a year, and after any news that moves a border:
 | Remove a dormant or ended claim | `"drop": ["rec…"]` |
 | Mark a dispute as over (the area goes back to its territory) | `"status": "ended"` |
 | Undo an earlier change | A new change that does the opposite, with its own reason |
-| Add an area Natural Earth doesn't have (East Jerusalem, Azad Kashmir, the 2022 oblasts) | Not a table edit: it needs a shape first. Ask Claude; it is spec step 4 |
+| Add an area that is a whole province, state or oblast (the 2022 oblasts) | `"shape": "admin1:<ISO 3166-2 code>"`, `"name"`, and `"add"` for its claimants. The area's code is the ISO code (`UA-14`) |
+| Add an area that isn't a whole province (East Jerusalem) | Not a table edit: it needs a shape drawn first. Ask Claude |
 | See what the maps show today for an area | Ask Claude: *"Who claims B89 now, and which maps show it?"* |

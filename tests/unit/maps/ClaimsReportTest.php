@@ -101,7 +101,7 @@ class ClaimsReportTest extends TestCase {
 				'natural-earth: B00: claimant recYYYYYYYYYYYYYY is not in the shape table',
 				'review: B00 has no reason',
 				'review: B00: claimant recZZZZZZZZZZZZZZ is not in the shape table',
-				'review: B99 is not in layer 1',
+				'review: B99 is not in the table: add it with a shape first',
 			),
 			$report['claims']
 		);
@@ -124,6 +124,43 @@ class ClaimsReportTest extends TestCase {
 		);
 		$this->assertSame( array( 'review: B00 changes nothing' ), $report['claims_noop'] );
 		$this->assertFalse( wt_maps_doctor_has_errors( $report ) );
+	}
+
+	public function test_a_change_with_a_shape_adds_an_area() {
+		$report = wt_maps_claims_report(
+			$this->claims(
+				array(
+					array(
+						'area'   => 'IN-AR',
+						'shape'  => 'admin1:IN-AR',
+						'name'   => 'Arunachal Pradesh (admin-1)',
+						'add'    => array( self::CHINA, self::INDIA ),
+						'reason' => 'Test',
+					),
+					array(
+						'area'   => 'B00',
+						'shape'  => 'admin1:IN-AR',
+						'name'   => 'Again',
+						'reason' => 'Test',
+					),
+					array(
+						'area'   => 'XX-1',
+						'shape'  => 'admin0:XXX',
+						'reason' => 'Test',
+					),
+				)
+			),
+			$this->table()
+		);
+		$this->assertSame(
+			array(
+				'review: B00: area already exists; a shape can only add one',
+				'review: XX-1: a new area needs a name',
+				'review: XX-1: shape must be admin1:<ISO 3166-2 code>, not admin0:XXX',
+			),
+			$report['claims']
+		);
+		$this->assertSame( array(), $report['claims_noop'] );
 	}
 
 	public function test_the_committed_table_is_clean() {

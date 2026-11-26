@@ -49,10 +49,28 @@ test('a change that changes nothing is reported, not applied twice', () => {
 });
 
 test('a review must name a known area and give a reason', () => {
-  assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'X99', drop: ['TWN'], reason })] }), /not in layer 1/);
+  assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'X99', drop: ['TWN'], reason })] }), /not in the table/);
   assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'B00', drop: ['TWN'] })] }), /no reason/);
   assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'B00', status: 'paused', reason })] }), /unknown status/);
   assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'SAH', status: 'duplicate', of: 'X99', reason })] }), /unknown area/);
+});
+
+test('a change with a shape adds an area, which later changes can claim or replace', () => {
+  const table = { layers: [layer1, review(
+    { area: 'UA-14', shape: 'admin1:UA-14', name: 'Donetsk Oblast', add: ['RUS', 'UKR'], reason },
+    { area: 'B38', status: 'duplicate', of: 'UA-14', reason },
+  )] };
+  const { areas, noops } = effectiveClaims(table);
+  assert.deepEqual([...areas.get('UA-14').claimants], ['RUS', 'UKR']);
+  assert.equal(areas.get('UA-14').shape, 'admin1:UA-14');
+  assert.equal(areas.get('B38').of, 'UA-14');
+  assert.equal(noops.length, 0);
+});
+
+test('a shape needs a name, an admin-1 code, and a new area code', () => {
+  assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'UA-14', shape: 'admin1:UA-14', reason })] }), /needs a name/);
+  assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'UA-14', shape: 'admin0:UKR', name: 'x', reason })] }), /admin1:/);
+  assert.throws(() => effectiveClaims({ layers: [layer1, review({ area: 'B00', shape: 'admin1:IN-AR', name: 'x', reason })] }), /already exists/);
 });
 
 test('an empty table has no areas', () => {

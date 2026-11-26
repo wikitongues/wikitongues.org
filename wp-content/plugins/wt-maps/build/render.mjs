@@ -21,7 +21,8 @@ import zlib from 'node:zlib';
 import * as d3 from 'd3-geo';
 import { choose, maxStretch, W, H } from './projection.mjs';
 import { CACHE, STAGE, FRAMES, readJson, writeJson, readFrames, onlyKeys } from './common.mjs';
-import { neAreas, isSelf as isSelfFor, contestedAreas } from './contested.mjs';
+import { neAreas, shapedAreas, isSelf as isSelfFor, contestedAreas, CLAIMS_FILE } from './contested.mjs';
+import { readClaims } from './claims-table.mjs';
 import { subtractAreas } from './undisputed.mjs';
 
 const R_EARTH = 6371000;
@@ -82,8 +83,10 @@ const unitsByCountry = unitsOf(units), unitsByCountry10 = unitsOf(units10);
 const FINE_BELOW_DEG = 6;
 
 // Contested areas: Natural Earth's shapes, with who claims each from the
-// claims table (contested.mjs). `claimants` holds record IDs.
-const disputed = contestedAreas(neAreas(brk, idx.units));
+// claims table (contested.mjs). `claimants` holds record IDs. Areas the table
+// adds from admin-1 (the 2022 oblasts) are 1:10m.
+const admin1 = () => readJson(path.join(CACHE, 'ne', 'ne_10m_admin_1_states_provinces.geojson')).features;
+const disputed = contestedAreas([...neAreas(brk, idx.units), ...shapedAreas(readClaims(CLAIMS_FILE), admin1)]);
 
 // Undisputed parts (claims spec rule 3): cut the contested areas out of every
 // shape, at both scales, before anything is drawn or framed. A shape keeps an

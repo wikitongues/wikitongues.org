@@ -19,6 +19,8 @@ fs.mkdirSync(RASTER, { recursive: true });
 const VECTORS = [
   '50m_admin_0_countries', '50m_admin_0_map_units', '50m_admin_0_map_subunits', '50m_admin_0_breakaway_disputed_areas',
   '10m_admin_0_countries', '10m_admin_0_map_units', '10m_admin_0_map_subunits',
+  // Admin-1, for contested areas Natural Earth has no admin-0 shape for (the 2022 oblasts).
+  '10m_admin_1_states_provinces',
   '110m_land',
 ];
 
