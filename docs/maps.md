@@ -2,7 +2,7 @@
 
 Locator maps for language pages (plan 3.2, step 1; shipped 2026-11-23), territory pages and sub-region pages (step 1b, 2026-11-23). This file describes what is built and the decisions behind it ([Design decisions](#design-decisions)). The data model they follow, territories, origins and subdivisions, is [plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress). Step 2, interactive maps on territory and region pages, is still in the plan.
 
-Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table and undisputed parts (claims spec steps 1 and 2, 2026-11-25). Not yet built (plan 3.2): the contested-area display (claims step 5), credits, and the review tooling.
+Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table, undisputed parts and the contested-area display (claims spec, on production 2026-11-26). Not yet built (plan 3.2): claims on hover, credits, and the review tooling.
 
 ## Map sets and the build
 
@@ -234,7 +234,15 @@ The plugin adds a check that turns this list into a report: `wp wt-maps doctor` 
 
 ## Claims table
 
-Who claims each contested area lives in `data/claims.json`, not in Natural Earth's point-of-view fields. **To change it, follow [maps-claims-guide.md](maps-claims-guide.md)**: the pages, buttons, reviewers and how to work with Claude. The spec is plan.md 3.2, "Claims: contested areas" (approved 2026-11-25); `build/claims-table.mjs` is the code.
+Who claims each contested area lives in `data/claims.json`, not in Natural Earth's point-of-view fields. **To change it, follow [maps-claims-guide.md](maps-claims-guide.md)**: the pages, buttons, reviewers and how to work with Claude. The rules below come from the claims spec (approved 2026-11-25; its history and decisions are in the [archive](plan-archive.md)); `build/claims-table.mjs` is the code.
+
+**The rules**
+- A *claim* is a government's formal, current assertion of sovereignty in an official act (law, official map, UN statement). A claim not pressed is *dormant*, one given up or overtaken is *ended*; neither counts, but both stay in the table as the record.
+- Only the claims table says who claims an area, and every assertion in it names its source. *Control* (who administers an area) is not stored and never drawn.
+- Every territory is drawn as its *undisputed part*: its shape minus every contested area. A *wholly contested place* (Taiwan, Kosovo, Western Sahara, Somaliland, Northern Cyprus, Abkhazia, South Ossetia, Transnistria) is drawn as itself, and the other side's claim is a row.
+- Symmetric: every claimant sees an area the same way. On a given map an area is *active* when a place on the map claims it or is it; every other area is *inactive*.
+- One row and one shape per area. Keyed on record IDs; a second build is a no-op.
+- Left out on purpose: East Jerusalem (no Natural Earth shape; drawing one is a political call), lines of control, historical and maritime claims, per-viewer points of view, and labels that name claimants or say who administers an area.
 
 - **Layers.** The table is an ordered list of layers. Layer 1 is Natural Earth's: one row per contested area (its code, name, and claimants as record IDs), written by `build/seed-claims.mjs` and never edited by hand. A country's claim goes to its place nearest the area (`claims.mjs`), and a place never claims itself. Each later layer is a review: a list of changes (`add` or `drop` claimants, or a `status`), each with a `reason` and a `source`, applied in order. A review never edits layer 1, so a Natural Earth upgrade replaces layer 1 alone.
 - **Statuses.** `claimed` (the default) draws as contested. `ended` draws the area as part of its territory. `duplicate`, with `of`, draws it once, as the area it repeats.

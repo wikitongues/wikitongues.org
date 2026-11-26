@@ -10,6 +10,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 
 | Initiative | Shipped | PRs | Described in |
 |---|---|---|---|
+| Maps: contested areas from a reviewed claims table | 2026-11-25 – 26 | [#764]–[#767], [#769]–[#771] | [maps.md](maps.md), [maps-claims-guide.md](maps-claims-guide.md) |
 | Typeahead: a search index built from WordPress | 2026-11-23 | [#725], [#726], [#729], [#730], [#733], [#735]; typeahead [#9][ta9], [#10][ta10] | [content-model.md](content-model.md#search) |
 | Maps, step 1: a locator map on every language page (`wt-maps`) | 2026-11-16 – 23 | [#669], [#698]–[#702], [#720] | [maps.md](maps.md) |
 | Shared editorial styles: one set of tokens and mixins for the donate page and the Language Rights report | 2026-11-23 | [#716], [#717], [#718] | [content-styles.md](content-styles.md#editorial-pages-shared-tokens) |
@@ -36,6 +37,37 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | Bedrock evaluated and declined | 2026-02-28 | — | This log |
 | Tests and static analysis (PHPCS, PHPUnit, PHPStan) | 2026-02-19 | [#428], [#432], [#435], [#438], [#441] | [testing-strategy.md](testing-strategy.md) |
 | CI and deployment pipeline | 2026-02-19 – 03-05 | [#423], [#425], [#503], [#511] | [deployment.md](deployment.md) |
+
+---
+
+## 2026-11-26 (Maps: claims)
+
+### Contested areas drawn from a reviewed claims table (plan 3.2, claims spec)
+**PRs:** [#764] (spec), [#765] (audit), [#766] (claims table), [#767] (undisputed parts), [#769] (review layer), [#770] (admin-1 areas), [#771] (display). On staging ([#768]) and production ([#772]) on 2026-11-26; `doctor` clean on both, and the Ukrainian, Russian, Hebrew, Moroccan Arabic, Amis, Armenian and Western Sahara pages checked.
+
+- **Why.** Natural Earth's points of view decided who claims what. They gave the ROC's dormant claim on the India–China border to Taiwan, which framed Taiwan's map on the Himalayas, and its de facto shapes made Russia's map take in Crimea and the Donbas while Ukraine's left them out. That kept map interaction switched off.
+- **The rule.** Only the claims table says who claims an area, and a claim counts only when it is formal and current (dormant and ended claims stay as the record). Every territory is drawn as its undisputed part. Every claimant sees an area the same way.
+- **The claims table** ([#766]). `wt-maps/data/claims.json`: layer 1 is Natural Earth 5.1.2, generated and never edited; later layers are reviews, each change with a reason, a source, who and when. The build computes the effective claims; `wp wt-maps doctor` checks the table. One shape per area: Western Sahara drawn whole, without the Berm zone.
+- **Undisputed parts** ([#767]). The build subtracts contested areas from every territory shape; full rebuild.
+- **Review layers** ([#769], [#770]). The ROC's dormant claims dropped; Artsakh ended; South Sudan added to Abyei, Suriname to the Lawa and Courantyne headwaters, the Philippines to North Borneo; Ilemi kept. A change can add an area from Natural Earth's admin-1 layer (`"shape": "admin1:<ISO 3166-2>"`), which adds the four oblasts Russia claimed in 2022 (Donetsk, Luhansk, Zaporizhzhia, Kherson), claimed by Russia and Ukraine. Kashmir checked: B08 covers all of Pakistan-administered Kashmir.
+- **Display** ([#771], lookdev F). An active area (one a place on the map claims, or is) shows the places' relief under a brand-red hatch (`$red`, 1.8 lines on 5 units) with a dashed edge, the same for primary and secondary places; inactive areas are plain land with an ordinary border. A one-line disclaimer sits under any map with an active area. No new images: the relief already covers all land.
+- **Left out on purpose.** East Jerusalem (no Natural Earth shape; drawing one is a political call); claimant names and "administered by" labels; lines of control, historical, maritime and per-viewer claims.
+
+**Decisions**
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-25 | Claims table starts empty; Natural Earth's claims are its first authored layer, our reviews later layers | Every assertion keeps its source, and history can be replayed or rewound; a Natural Earth upgrade replaces one layer |
+| 2026-11-25 | Frederico edits and reviews the claims table, in the repo; he also owns the yearly review | Replaces Kristen as reviewer (2026-11-17); no Airtable table needed |
+| 2026-11-25 | Western Sahara drawn as one shape, the Berm zone dropped | Natural Earth's second shape is the Polisario-held zone, not a duplicate; it drew the Berm through the area |
+| 2026-11-25 | East Jerusalem left out of the claims table for now | Natural Earth has no shape for it; drawing one is a political call to make deliberately |
+| 2026-11-25 | Active contested areas hatched in brand red, 1.8 on 5px, for every claimant | Reads clearly over green relief and the blue edge at sidebar size; blue merged with the border and a white outline washed it out |
+| 2026-11-25 | Contested areas appear only when active, with relief under the hatch (lookdev F); hidden when inactive after step 2 | A hatch on a map not about the area reads as noise; hatching alone drops the area out of the place |
+| 2026-11-25 | Claims spec proposed: a reviewed claims table, formal and current claims only, territories drawn as their undisputed part | Natural Earth's points of view frame Taiwan on the Himalayas, and its de facto shapes make hover outlines take sides |
+| 2026-11-25 | Maps with an active contested area carry a one-line disclaimer; the credits page the full note | US and UK government maps carry one; it states the neutral stance where a dispute is drawn |
+| 2026-11-25 | No "administered by / claimed by" labels | Same reason as no claimant names; the audit found US maps use them, but they take a position |
+
+Described in [maps.md](maps.md) and [maps-claims-guide.md](maps-claims-guide.md). Map interaction was switched on everywhere the same day. Left open (plan 3.2): the claims-on-hover display, the credits-page note, the Kashmir (B08) label, review tooling, and the yearly review.
 
 ---
 
@@ -1180,5 +1212,14 @@ Minor fix to SSH agent action version in deployment workflow.
 [#735]: https://github.com/wikitongues/wikitongues.org/pull/735
 [#736]: https://github.com/wikitongues/wikitongues.org/pull/736
 [#737]: https://github.com/wikitongues/wikitongues.org/pull/737
+[#764]: https://github.com/wikitongues/wikitongues.org/pull/764
+[#765]: https://github.com/wikitongues/wikitongues.org/pull/765
+[#766]: https://github.com/wikitongues/wikitongues.org/pull/766
+[#767]: https://github.com/wikitongues/wikitongues.org/pull/767
+[#768]: https://github.com/wikitongues/wikitongues.org/pull/768
+[#769]: https://github.com/wikitongues/wikitongues.org/pull/769
+[#770]: https://github.com/wikitongues/wikitongues.org/pull/770
+[#771]: https://github.com/wikitongues/wikitongues.org/pull/771
+[#772]: https://github.com/wikitongues/wikitongues.org/pull/772
 [ta9]: https://github.com/wikitongues/typeahead/pull/9
 [ta10]: https://github.com/wikitongues/typeahead/pull/10
