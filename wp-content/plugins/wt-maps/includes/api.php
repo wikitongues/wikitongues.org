@@ -57,24 +57,16 @@ function wt_maps_place_names( array $record_ids ): array {
 }
 
 /**
- * The shared SVG definitions every map uses: the contested-area hatches.
- * Printed once per page, before the first map.
+ * The shared SVG definitions every map uses: the red hatch over an active
+ * contested area (1.8 lines on 5 units; claims spec, display). Each map's own
+ * `--claim` pattern draws its relief under it. Printed once per page, before
+ * the first map.
  *
  * @return string
  */
 function wt_maps_defs(): string {
-	$hatch = static function ( string $id, string $line ): string {
-		return sprintf(
-			'<pattern id="%1$s" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg-land" width="4" height="4"/><line class="%2$s" x1="0" y1="0" x2="0" y2="4"/></pattern>',
-			$id,
-			$line
-		);
-	};
-
 	return '<svg class="wt-map-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>'
-		. $hatch( 'hatch-land', 'hl-line' )
-		. $hatch( 'hatch-primary', 'hp-line' )
-		. $hatch( 'hatch-secondary', 'hs-line' )
+		. '<pattern id="hatch-claim" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="hc-line" x1="2.5" y1="0" x2="2.5" y2="5"/></pattern>'
 		. '</defs></svg>';
 }
 /**
@@ -183,6 +175,7 @@ function wt_map_places( array $args ): string {
 		$svg    = Renderer::decorate( $svg, $roles, plugins_url( 'maps/', dirname( __DIR__ ) . '/wt-maps.php' ), $title, $desc, $inset );
 		$figure = '<figure class="' . esc_attr( $class ) . '"' . ( '' !== $data ? ' data-wt-map="' . esc_attr( $data ) . '"' : '' ) . '>' . $svg
 			. ( '' !== $cap ? '<figcaption class="wt-map__caption">' . esc_html( ucfirst( $cap ) ) . '</figcaption>' : '' )
+			. ( Renderer::shows_contested( $svg ) ? '<p class="wt-map__note">' . esc_html( Renderer::DISCLAIMER ) . '</p>' : '' )
 			. '</figure>';
 		wp_cache_set( $cache_key, $figure, 'wt_maps', DAY_IN_SECONDS );
 	}

@@ -132,6 +132,7 @@ bash tool-sync-db-from-prod.sh   # pulls DB + uploads from production
 - `docs/content-styles.md` — the `.wt_prose` module: bare tags only inside it, prose vs layout, type/rhythm/link decisions
 - `docs/gallery.md` — wt-gallery parameters, templates, pagination, editorial gallery rows
 - `docs/maps.md` — wt-maps: the Natural Earth shape table keyed on record IDs, the curated focus list, `wp wt-maps doctor`
+- `docs/maps-claims-guide.md` — how a person manages the claims table (who claims each contested area), and how Claude works on it: draft, rebuild, PR; never merge or decide a political call
 - `docs/language-rights.md` — the Language Rights report: pages, tagged releases (no live sync), statuses, the editorial contract and pre-flight checklist
 - `docs/deployment.md` — release flow, CI checks, what a deploy does, post-deploy steps
 - `docs/staging-sync.md` — how to sync staging ↔ production

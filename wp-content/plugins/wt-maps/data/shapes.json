@@ -1305,9 +1305,9 @@
 		"recHt0cbUUGISJwb8": {
 			"name": "Western Sahara",
 			"shapes": [
-				"units:SAH"
+				"breakaway:B19"
 			],
-			"note": "All of Western Sahara, most of which Morocco administers"
+			"note": "All of Western Sahara (B19). Natural Earth's SAH unit is only the Polisario-held zone east of the Berm"
 		},
 		"recRADHcsZM10ICSg": {
 			"name": "Yemen",

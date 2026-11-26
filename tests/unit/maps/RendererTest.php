@@ -14,7 +14,7 @@ class RendererTest extends TestCase {
 		. '<g class="world"><image class="shade" href="shade/k.webp" width="400" height="300"/><image class="x" href="https://example.org/a.webp"/>'
 		. '<g class="hls"><path class="hl" d="M0 0" data-place="recguDPgV3cIXLO34"/><path class="hl" d="M1 1" data-place="rec8BH6e7SD1A1J5I"/></g>'
 		. '<g class="claims"><path class="disputed hatch hatch-claimed" d="M2 2" data-claimants="rec8BH6e7SD1A1J5I recguDPgV3cIXLO34"/>'
-		. '<path class="disputed hatch hatch-claimed" d="M3 3" data-claimants="recZZZZZZZZZZZZZZ"/><path class="disputed hatch hatch-land" d="M4 4"/></g>'
+		. '<path class="disputed hatch hatch-claimed" d="M3 3" data-claimants="recZZZZZZZZZZZZZZ"/><path class="disputed plain" d="M4 4"/></g>'
 		. '<g class="markers"><circle class="marker" data-place="rec8BH6e7SD1A1J5I" r="7"/></g></g></svg>';
 
 	public function test_origins_are_primary_and_the_rest_secondary() {
@@ -160,7 +160,17 @@ class RendererTest extends TestCase {
 		$this->assertStringContainsString( 'class="marker secondary"', $out );
 		$this->assertStringContainsString( 'class="disputed hatch hatch-primary" d="M2 2"', $out, 'strongest claimant wins' );
 		$this->assertStringContainsString( 'class="disputed hatch hatch-land" d="M3 3"', $out, 'no claimant on the map' );
+		$this->assertStringContainsString( 'class="disputed plain" d="M4 4"', $out, 'an inactive area is left as built' );
 		$this->assertStringNotContainsString( 'hatch-claimed', $out );
+	}
+
+	public function test_a_map_shows_contested_areas_when_a_place_claims_or_is_one() {
+		if ( ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+			$this->markTestSkipped( 'WordPress HTML API not available (no local install at the repository root).' );
+		}
+		$this->assertTrue( Renderer::shows_contested( self::SVG ), 'a claimed area' );
+		$this->assertTrue( Renderer::shows_contested( '<svg><g class="disputes"><path class="disputed edge" d="M0 0"/></g></svg>' ), 'the place is the area (Taiwan)' );
+		$this->assertFalse( Renderer::shows_contested( '<svg><g class="disputes"><path class="disputed plain" d="M0 0"/></g></svg>' ), 'only inactive areas' );
 	}
 
 	public function test_decorate_scales_the_globe_from_its_corner() {

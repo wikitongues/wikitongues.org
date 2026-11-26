@@ -1,0 +1,430 @@
+{
+ "about": "Who claims each contested area (plan 3.2, claims spec; docs/maps.md). Layer 1 is Natural Earth's, written by build/seed-claims.mjs: never edit it by hand. Each later layer is a review whose changes apply in order, each with a reason and a source.",
+ "layers": [
+  {
+   "id": "natural-earth",
+   "author": "Natural Earth",
+   "source": "Natural Earth 5.1.2, admin-0 point-of-view fields (ADM0_A3 and ADM0_A3_xx), resolved to places by seed-claims.mjs",
+   "rows": {
+    "B00": {
+     "name": "Arunachal Pradesh",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B01": {
+     "name": "Tirpani Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B02": {
+     "name": "Bara Hotii Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B03": {
+     "name": "Demchok",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B04": {
+     "name": "Samdu Valleys",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B05": {
+     "name": "Jammu and Kashmir",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B06": {
+     "name": "Shaksam Valley",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B07": {
+     "name": "Aksai Chin",
+     "claimants": [
+      "recgU0oaqvwT3YrW0",
+      "reckMaHEYWWoejWWB",
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "B08": {
+     "name": "Gilgit-Baltistan",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B13": {
+     "name": "Abyei",
+     "claimants": [
+      "reckVtwkyIZ6ZEiyX"
+     ]
+    },
+    "B14": {
+     "name": "Lawa Headwaters",
+     "claimants": [
+      "recXzD7tp26iWiGoT"
+     ]
+    },
+    "B15": {
+     "name": "Courantyne Headwaters",
+     "claimants": [
+      "rec9PuZGLQ7rzpJc3"
+     ]
+    },
+    "B16": {
+     "name": "Golan Heights",
+     "claimants": [
+      "rec72cKyzlEaLeNv9",
+      "recwDwR74miTv1oiP"
+     ]
+    },
+    "B17": {
+     "name": "Ilemi Triangle",
+     "claimants": [
+      "rec1iI0r31FHStjB1",
+      "recbarjI7aqHnvrY1"
+     ]
+    },
+    "B19": {
+     "name": "W. Sahara",
+     "claimants": [
+      "recm0Hbjg4DCF5Tv5"
+     ]
+    },
+    "B20": {
+     "name": "N. Cyprus",
+     "claimants": [
+      "rec7nz8fxMlng0hqv"
+     ]
+    },
+    "B29": {
+     "name": "Kuril Is.",
+     "claimants": [
+      "rec69csgIMSP0BDGu",
+      "recWEA0L60oD7gYnF"
+     ]
+    },
+    "B30": {
+     "name": "Somaliland",
+     "claimants": [
+      "rec5W1xkVmT7Vt4U9"
+     ]
+    },
+    "B35": {
+     "name": "Abkhazia",
+     "claimants": [
+      "recthhqk0rgOEwuaw"
+     ]
+    },
+    "B36": {
+     "name": "Transnistria",
+     "claimants": [
+      "recdqBUvrSVil89n7"
+     ]
+    },
+    "B37": {
+     "name": "South Ossetia",
+     "claimants": [
+      "recthhqk0rgOEwuaw"
+     ]
+    },
+    "B38": {
+     "name": "Artsakh",
+     "claimants": [
+      "recRzAeiS1JByblMX"
+     ]
+    },
+    "B45": {
+     "name": "Siachen Glacier",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "B89": {
+     "name": "Crimea",
+     "claimants": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C01": {
+     "name": "Junagadh and Manavadar",
+     "claimants": [
+      "recV8CplJ64NTneMK",
+      "reckMaHEYWWoejWWB"
+     ]
+    },
+    "C02": {
+     "name": "Donetsk People's Republic",
+     "claimants": [
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C03": {
+     "name": "Luhansk People's Republic",
+     "claimants": [
+      "recdl1SEYvXC9crUd"
+     ]
+    },
+    "C04": {
+     "name": "North Borneo",
+     "claimants": [
+      "recG1gcLtwu1SpVsk"
+     ]
+    },
+    "CYN": {
+     "name": "N. Cyprus",
+     "claimants": [
+      "rec7nz8fxMlng0hqv"
+     ]
+    },
+    "GAZ": {
+     "name": "Gaza",
+     "claimants": []
+    },
+    "KOS": {
+     "name": "Kosovo",
+     "claimants": [
+      "recbDhMn2Qt5ZS6Ce"
+     ]
+    },
+    "SAH": {
+     "name": "W. Sahara",
+     "claimants": [
+      "recm0Hbjg4DCF5Tv5"
+     ]
+    },
+    "SOL": {
+     "name": "Somaliland",
+     "claimants": [
+      "rec5W1xkVmT7Vt4U9"
+     ]
+    },
+    "TWN": {
+     "name": "Taiwan",
+     "claimants": [
+      "recpwmL8YQeWhEyJ1"
+     ]
+    },
+    "WEB": {
+     "name": "West Bank",
+     "claimants": []
+    }
+   }
+  },
+  {
+   "id": "wikitongues-2026-11-25",
+   "author": "Wikitongues",
+   "reviewer": "Frederico Andrade",
+   "date": "2026-11-25",
+   "changes": [
+    {
+     "area": "B00",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B01",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B02",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B03",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B04",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B06",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "B07",
+     "drop": [
+      "recgU0oaqvwT3YrW0"
+     ],
+     "reason": "Dormant claim: Natural Earth's Taiwan view (ADM0_A3_TW) carries the Republic of China's constitutional claim to all of China, which the Taiwan government does not press. Only formal, current claims count (spec rule 2).",
+     "source": "Natural Earth 5.1.2 ADM0_A3_TW field; claims spec, plan.md 3.2 (2026-11-25)"
+    },
+    {
+     "area": "SAH",
+     "status": "duplicate",
+     "of": "B19",
+     "reason": "Natural Earth's SAH map unit is only the Polisario-held zone east of the Berm, inside B19 (the whole territory). Drawn once, as B19; lines of control are out of scope (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: SAH lies wholly inside B19 (91,000 of 269,000 km²)"
+    },
+    {
+     "area": "B20",
+     "status": "duplicate",
+     "of": "CYN",
+     "reason": "Same shape as the Northern Cyprus map unit (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: B20 and CYN coincide"
+    },
+    {
+     "area": "B30",
+     "status": "duplicate",
+     "of": "SOL",
+     "reason": "Same shape as the Somaliland map unit (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: B30 and SOL coincide"
+    },
+    {
+     "area": "B38",
+     "status": "ended",
+     "reason": "Ended: Azerbaijan retook the area in September 2023, the Republic of Artsakh dissolved itself from 1 January 2024, and Armenia recognises Azerbaijan's territorial integrity. No current claim against Azerbaijan remains.",
+     "source": "Republic of Artsakh presidential decree of 28 September 2023; Armenia–Azerbaijan peace agreement initialled in Washington, 8 August 2025"
+    },
+    {
+     "area": "B13",
+     "add": [
+      "rec1iI0r31FHStjB1"
+     ],
+     "reason": "South Sudan claims Abyei as well as Sudan; its final status is undecided under the 2005 Abyei Protocol.",
+     "source": "UN Security Council resolution 2802 (14 November 2025), renewing UNISFA"
+    },
+    {
+     "area": "B15",
+     "add": [
+      "reckeHB2nxgdUdyUo"
+     ],
+     "reason": "Suriname claims the Tigri / New River Triangle, which Guyana administers; it protested Guyana's airstrip plans there in 2024 and restated the claim in 2026.",
+     "source": "Suriname Ministry of Foreign Affairs, summons of Guyana's ambassador (November 2024); Stabroek News, 30 November 2024"
+    },
+    {
+     "area": "B14",
+     "add": [
+      "reckeHB2nxgdUdyUo"
+     ],
+     "reason": "Suriname claims the Lawa headwaters between the Litani and Marouini rivers, which France administers as part of French Guiana.",
+     "source": "Suriname's official maps, which show the area within Suriname"
+    },
+    {
+     "area": "C04",
+     "add": [
+      "recefuh0CXs07rCR9"
+     ],
+     "reason": "The Philippines claims North Borneo (Sabah) in statute and restated the claim in 2026.",
+     "source": "Philippine Republic Act 5446 (1968), section 2; Department of Foreign Affairs statement, February 2026"
+    }
+   ]
+  },
+  {
+   "id": "wikitongues-2026-11-26",
+   "author": "Wikitongues",
+   "reviewer": "Frederico Andrade",
+   "date": "2026-11-26",
+   "changes": [
+    {
+     "area": "UA-14",
+     "shape": "admin1:UA-14",
+     "name": "Donetsk Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-09",
+     "shape": "admin1:UA-09",
+     "name": "Luhansk Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-23",
+     "shape": "admin1:UA-23",
+     "name": "Zaporizhzhia Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "UA-65",
+     "shape": "admin1:UA-65",
+     "name": "Kherson Oblast",
+     "add": [
+      "rec69csgIMSP0BDGu",
+      "recdl1SEYvXC9crUd"
+     ],
+     "reason": "Russia claims the whole oblast by annexation (September 2022); Ukraine claims it as its own territory. Natural Earth has no contested-area shape for it, so the area is the oblast from Natural Earth's admin-1 layer.",
+     "source": "Russian federal constitutional laws admitting the four regions (4 October 2022); UN General Assembly resolution ES-11/4 (12 October 2022), which rejects the annexation"
+    },
+    {
+     "area": "C02",
+     "status": "duplicate",
+     "of": "UA-14",
+     "reason": "Natural Earth's Donetsk People's Republic is the 2014 line of control inside Donetsk Oblast. Drawn once, as the oblast; lines of control are out of scope (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: C02 lies inside admin-1 UA-14"
+    },
+    {
+     "area": "C03",
+     "status": "duplicate",
+     "of": "UA-09",
+     "reason": "Natural Earth's Luhansk People's Republic is the 2014 line of control inside Luhansk Oblast. Drawn once, as the oblast; lines of control are out of scope (spec rule 6).",
+     "source": "Natural Earth 5.1.2 geometry: C03 lies inside admin-1 UA-09"
+    }
+   ]
+  }
+ ]
+}

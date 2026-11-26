@@ -31,7 +31,31 @@ final class Renderer {
 	/**
 	 * Bumped when decorate() changes its output, so cached maps are rebuilt.
 	 */
-	public const VERSION = '5';
+	public const VERSION = '6';
+
+	/**
+	 * The line under a map that shows an active contested area (claims spec,
+	 * Disclaimer).
+	 */
+	public const DISCLAIMER = 'Borders and contested areas are shown for reference and do not imply a position on sovereignty.';
+
+	/**
+	 * Whether a built map shows an active contested area: one a highlighted
+	 * place claims (`data-claimants`), or one a highlighted place is (its
+	 * dashed `edge`: Taiwan on its own map).
+	 *
+	 * @param string $svg The built SVG.
+	 * @return bool
+	 */
+	public static function shows_contested( string $svg ): bool {
+		$p = new \WP_HTML_Tag_Processor( $svg );
+		while ( $p->next_tag( array( 'class_name' => 'disputed' ) ) ) {
+			if ( null !== $p->get_attribute( 'data-claimants' ) || $p->has_class( 'edge' ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Primary or secondary for each place.
