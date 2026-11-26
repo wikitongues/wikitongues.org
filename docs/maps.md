@@ -2,7 +2,7 @@
 
 Locator maps for language pages (plan 3.2, step 1; shipped 2026-11-23), territory pages and sub-region pages (step 1b, 2026-11-23). This file describes what is built and the decisions behind it ([Design decisions](#design-decisions)). The data model they follow, territories, origins and subdivisions, is [plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress). Step 2, interactive maps on territory and region pages, is still in the plan.
 
-Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table, undisputed parts and the contested-area display (claims spec, on production 2026-11-26). Claims on hover (2026-11-26). Not yet built (plan 3.2): credits and the review tooling.
+Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table, undisputed parts and the contested-area display (claims spec, on production 2026-11-26). Claims on hover (2026-11-26). Map analytics events (step 2b). Not yet built (plan 3.2): credits and the review tooling.
 
 ## Map sets and the build
 
@@ -154,6 +154,17 @@ At render, `wt_map_places()` reads the tagged record IDs (`wt_maps_tagged_places
 **Script.** `assets/wt-maps.js` (deferred, enqueued only with a map). Mouse: hover shows the label and an outline drawn above every layer; click opens, Cmd/Ctrl-click opens a new tab. Touch: the first tap shows the label with an "Open" link; a second tap on the same place opens it. A contested area (`data-area`) shows its Natural Earth name and "Contested area", and never links.
 
 **Claims on hover** (plan 3.2, 2026-11-26). While a place is shown (hover, tap, or focus in the list), every contested area on the map whose `data-claimants` include it lights up. An active one keeps its red hatch; any other gets `is-lit`, the hover-blue hatch on plain land (`#hatch-hover` in `wt_maps_defs()`). The outline runs solid round the place's undisputed part and dashed round the lit areas, with nothing along the borders between them: each line is a copy of a shape with an SVG `<mask>` that paints out the shapes it borders (`.wt-map__mask-out`, stroked wider than the casing). Hovering a contested area lights nothing else. Labels never name claimants. Continent (grouped) maps don't show claims. Areas a few pixels wide (Transnistria on the Ukrainian map) barely show the hatch; the dashed line marks them, and that was accepted. The SVG keeps `role="img"` and takes no keyboard focus: the place links next to the map are the keyboard and screen reader path, and hovering or focusing one outlines its place. The label is `aria-hidden`, since it repeats that list.
+
+**Analytics** (plan 3.2, step 2b). The script pushes two events to `window.dataLayer`, as the download gateway does; GTM forwards them to GA4.
+
+| Event | Fires when |
+|---|---|
+| `map_place_show` | A label has stayed up for 1 second (`HOLD`), once per place per page view. A pointer sweeping across the map sends nothing; an open cancels a pending show. |
+| `map_place_open` | Just before the map sends the visitor to a page: a click, Cmd/Ctrl-click, a second tap, or the label's "Open" link. A same-tab open waits for GTM's `eventCallback`, or 400 ms if GTM hasn't loaded. |
+
+Both carry `place_name` (the label), `place_id` (the record ID; empty for contested areas and regions), `place_kind` (`place` for the page's own, `neighbour`, `contested`, `region` on continent maps) and `input` (`mouse`, `touch`, or `list` for the links next to the map). Page type comes from GTM's `content_type`, added by the GA4 tags. Clicks on the place links next to the map are ordinary links and send neither event.
+
+*Setup outside the code:* in GTM, 4 data-layer variables, 2 custom-event triggers and 2 GA4 event tags (each also sending `content_type`); in GA4, `place_name`, `place_kind` and `input` registered as custom dimensions. Check in GTM preview on staging first.
 
 **Styles.** `stylus/require/wt-maps-interactive.styl`, apart from the map's look: raster layers, the scale and the globe take no pointer, and rings answer inside the ring. The outline is brand blue on a parchment casing.
 
