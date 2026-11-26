@@ -16,12 +16,48 @@
  * light up: an active one (already hatched red) stays red, any other is hatched
  * in the hover blue (`is-lit`). Its outline runs solid round its undisputed part
  * and dashed round those areas, with no line along the borders between them.
+ *
+ * Analytics (plan 3.2, step 2b): `map_place_show` when a label has stayed up
+ * for a second, once per place per page view, and `map_place_open` just before
+ * the map sends the visitor to a page. Both go to `window.dataLayer`; GTM
+ * forwards them to GA4.
  */
 ( function () {
 	'use strict';
 
 	const SVG_NS = 'http://www.w3.org/2000/svg';
 	let count = 0; // Figures on the page, for unique filter IDs.
+	const HOLD = 1000; // How long a label stays up before it counts as shown.
+	const shown = {}; // Places already sent as shown on this page view.
+
+	function track( event, t, input, done ) {
+		const payload = {
+			event: event,
+			place_name: t.n,
+			place_id: t.ids ? t.ids[ 0 ] : '',
+			place_kind: t.kind,
+			input: input,
+		};
+		if ( done ) {
+			payload.eventCallback = done; // GTM calls it once its tags have fired.
+		}
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push( payload );
+	}
+
+	// Leaves for a URL once GTM has handled the event, or after a short wait
+	// when it hasn't loaded (blocked, or not on this page).
+	function go( url, t, input ) {
+		let gone = false;
+		const leave = function () {
+			if ( ! gone ) {
+				gone = true;
+				window.location.href = url;
+			}
+		};
+		track( 'map_place_open', t, input, leave );
+		setTimeout( leave, 400 );
+	}
 
 	function init( fig ) {
 		let data;
@@ -93,6 +129,15 @@
 		let current = null; // The target shown now.
 		let pinned = false; // Shown by a tap, waiting for a second tap.
 		let lastPointer = 'mouse';
+		let holdTimer = 0;
+
+		// A place drawn only on the base map is a neighbour; one with a
+		// highlight or a marker is one of the page's places.
+		function kindOf( els ) {
+			return Array.prototype.some.call( els, function ( el ) {
+				return ! el.closest( '.lands' );
+			} ) ? 'place' : 'neighbour';
+		}
 
 		// What a shape on the map stands for, or null.
 		function targetOf( el ) {
@@ -101,7 +146,7 @@
 			}
 			const area = el.closest( '[data-area]' );
 			if ( area && ! area.classList.contains( 'edge' ) && fig.contains( area ) ) {
-				return { key: 'area:' + area.dataset.area, n: area.dataset.area, area: true, els: [ area ] };
+				return { key: 'area:' + area.dataset.area, n: area.dataset.area, area: true, kind: 'contested', els: [ area ] };
 			}
 			const halo = el.closest( '[data-group]' ); // A continent's island halo.
 			const place = el.closest( '[data-place]' );
@@ -110,11 +155,12 @@
 				g = Number( halo.dataset.group );
 			}
 			if ( g && groups[ g ] ) {
-				return Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] );
+				return Object.assign( { key: 'g:' + g, group: true, kind: 'region', els: groupEls( g ) }, groups[ g ] );
 			}
 			if ( place && places[ place.dataset.place ] ) {
 				const id = place.dataset.place;
-				return Object.assign( { key: id, ids: [ id ], els: svg.querySelectorAll( '[data-place="' + id + '"]' ) }, places[ id ] );
+				const els = svg.querySelectorAll( '[data-place="' + id + '"]' );
+				return Object.assign( { key: id, ids: [ id ], kind: kindOf( els ), els: els }, places[ id ] );
 			}
 			return null;
 		}
@@ -289,7 +335,26 @@
 			place( ( Math.max( l, s.left ) + Math.min( r, s.right ) ) / 2 - f.left, Math.max( top, s.top ) - f.top );
 		}
 
-		function show( t, at, withLink ) {
+		// Counts a label as shown once it has stayed up for HOLD.
+		function hold( t, input ) {
+			if ( current && current.key === t.key ) {
+				return;
+			}
+			clearTimeout( holdTimer );
+			const once = t.kind + ':' + ( t.ids ? t.ids[ 0 ] : t.n );
+			if ( shown[ once ] ) {
+				return;
+			}
+			holdTimer = setTimeout( function () {
+				if ( current && current.key === t.key && ! shown[ once ] ) {
+					shown[ once ] = true;
+					track( 'map_place_show', t, input );
+				}
+			}, HOLD );
+		}
+
+		function show( t, at, withLink, input ) {
+			hold( t, input );
 			if ( ! current || current.key !== t.key || withLink !== tip.classList.contains( 'has-link' ) ) {
 				label( t, withLink );
 				outline( t );
@@ -308,6 +373,7 @@
 		}
 
 		function hide() {
+			clearTimeout( holdTimer );
 			current = null;
 			pinned = false;
 			tip.hidden = true;
@@ -327,7 +393,7 @@
 			}
 			const t = targetOf( e.target );
 			if ( t ) {
-				show( t, e, false );
+				show( t, e, false, 'mouse' );
 			} else if ( current ) {
 				hide();
 			}
@@ -343,10 +409,12 @@
 			const t = targetOf( e.target );
 			if ( 'mouse' === lastPointer ) {
 				if ( t && t.u ) {
+					clearTimeout( holdTimer ); // An open is not also a show.
 					if ( e.metaKey || e.ctrlKey ) {
+						track( 'map_place_open', t, 'mouse' );
 						window.open( t.u, '_blank', 'noopener' );
 					} else {
-						window.location.href = t.u;
+						go( t.u, t, 'mouse' );
 					}
 				}
 				return;
@@ -357,11 +425,20 @@
 				return;
 			}
 			if ( pinned && current && current.key === t.key && t.u ) {
-				window.location.href = t.u;
+				clearTimeout( holdTimer );
+				go( t.u, current, 'touch' );
 				return;
 			}
-			show( t, e, true ); // At the finger, not over the whole set.
+			show( t, e, true, 'touch' ); // At the finger, not over the whole set.
 			pinned = true;
+		} );
+
+		// The "Open" link in a tapped label: the browser follows it.
+		tip.addEventListener( 'click', function ( e ) {
+			if ( current && e.target.closest( 'a.wt-map__tip-link' ) ) {
+				clearTimeout( holdTimer );
+				track( 'map_place_open', current, 'touch' );
+			}
 		} );
 
 		document.addEventListener( 'click', function ( e ) {
@@ -393,11 +470,11 @@
 			}
 			const g = places[ ids[ 0 ] ].g;
 			const t = g
-				? Object.assign( { key: 'g:' + g, group: true, els: groupEls( g ) }, groups[ g ] )
-				: Object.assign( { key: 'list:' + ids.join( ',' ), ids: ids, els: els }, places[ ids[ 0 ] ] );
+				? Object.assign( { key: 'g:' + g, group: true, kind: 'region', els: groupEls( g ) }, groups[ g ] )
+				: Object.assign( { key: 'list:' + ids.join( ',' ), ids: ids, kind: kindOf( els ), els: els }, places[ ids[ 0 ] ] );
 			const on = function () {
 				if ( ! pinned ) {
-					show( t, null, false );
+					show( t, null, false, 'list' );
 				}
 			};
 			const off = function () {
