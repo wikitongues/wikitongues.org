@@ -582,7 +582,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 2. **Built 2026-11-25, in review.** Undisputed part: the build subtracts contested areas from every shape; full rebuild. Interaction can then go on, staging first.
 3. **Built 2026-11-25, in review.** Frederico's review layer for the areas Natural Earth already draws: Artsakh ended; South Sudan added to Abyei; Suriname to the Lawa and Courantyne headwaters; the Philippines to North Borneo; Ilemi kept as claimed. Russia's 2022 claims move to step 4, because they need shapes first; Azad Kashmir turned out to be already drawn, inside B08.
 4. **Built 2026-11-26, in review.** New shapes, with their claims: a review change can add an area from Natural Earth's admin-1 layer (`"shape": "admin1:<ISO 3166-2>"`). The four 2022 oblasts are added this way, claimed by Russia and Ukraine; Natural Earth's 2014 areas C02 and C03 become duplicates of Donetsk and Luhansk. Open: B08's label says Gilgit-Baltistan but the area also takes in Azad Kashmir (the Kashmir naming question).
-5. Display (with the disclaimer line and the credits-page note): relief under the hatch on active areas and plain land for inactive ones can ship with step 1; hiding inactive areas ships with step 2.
+5. **Built 2026-11-26, in review.** Display: an active area shows the places' coloured relief under the brand-red hatch (the relief raster already covers all land, so no raster change); inactive areas are drawn as plain land; the disclaimer line sits under any map with an active area, Taiwan's own included. The credits-page note waits for a credits page (Step 1 follow-ups: Credits).
 
 **Answered (2026-11-25)**
 - Editing and review: Frederico, in the repo. No Airtable table or pull command.
@@ -599,7 +599,7 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 ##### Step 1 follow-ups
 
 - [ ] A reviewed claims table that overrides Natural Earth's 2022-era claims (Russia's 2022 claims, the end of Nagorno-Karabakh). **Blocks turning interaction on** (2026-11-25): hover outlines follow Natural Earth's de facto shapes, so Russia's outline takes in Crimea and the Donbas while Ukraine's leaves them out, and Natural Earth gives the ROC's dormant claim to the India–China border areas to Taiwan, which reframes Taiwan's map. Proposed: only reviewed claims count, and each territory's shape is its undisputed part. Needs a spec, and a decision on where Kristen edits the table.
-- [ ] Credits on the site's credits page: Natural Earth, and the Terrain Tiles sources.
+- [ ] Credits on the site's credits page (there is none yet): Natural Earth, the Terrain Tiles sources, and the claims note (claims spec, Disclaimer: sources, the claim rule, how to report an error).
 - [ ] Review tooling: a territory-request issue template, and the contested-areas diff the build writes for each PR.
 - [ ] Put the yearly claims review on Frederico's calendar.
 - [ ] Two maps over budget: Tajikistan's hillshade (32.9 KB) and French's six-place set (20.9 KB gzipped SVG).
