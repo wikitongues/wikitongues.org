@@ -7,8 +7,9 @@
  * expressions):
  *
  *   - `primary` or `secondary` on every shape and ring tagged `data-place`;
- *   - on a contested area tagged `data-claimants`, `hatch-claimed` becomes
- *     `hatch-primary` or `hatch-secondary` after the strongest claimant;
+ *   - on an active contested area (`hatch-claimed`), that class becomes
+ *     `hatch-primary` or `hatch-secondary` after its strongest claimant on the
+ *     map (`data-claimants` holds every claimant, on the map or not);
  *   - relative image hrefs (`shade/<key>.webp`) become absolute;
  *   - the map's accessible name (`aria-label`) and `<desc>` name this language
  *     and its places. The `<title>` is emptied: browsers show an SVG title as a
@@ -41,8 +42,9 @@ final class Renderer {
 
 	/**
 	 * Whether a built map shows an active contested area: one a highlighted
-	 * place claims (`data-claimants`), or one a highlighted place is (its
-	 * dashed `edge`: Taiwan on its own map).
+	 * place claims (`hatch-claimed`), or one a highlighted place is (its
+	 * dashed `edge`: Taiwan on its own map). Not `data-claimants`: every
+	 * contested area carries its claimants, active or not (claims on hover).
 	 *
 	 * @param string $svg The built SVG.
 	 * @return bool
@@ -50,7 +52,7 @@ final class Renderer {
 	public static function shows_contested( string $svg ): bool {
 		$p = new \WP_HTML_Tag_Processor( $svg );
 		while ( $p->next_tag( array( 'class_name' => 'disputed' ) ) ) {
-			if ( null !== $p->get_attribute( 'data-claimants' ) || $p->has_class( 'edge' ) ) {
+			if ( $p->has_class( 'hatch-claimed' ) || $p->has_class( 'edge' ) ) {
 				return true;
 			}
 		}
@@ -212,8 +214,8 @@ final class Renderer {
 				$p->add_class( $roles[ $place ] );
 			}
 
-			$claimants = $p->get_attribute( 'data-claimants' );
-			if ( is_string( $claimants ) ) {
+			if ( $p->has_class( 'hatch-claimed' ) ) {
+				$claimants = (string) $p->get_attribute( 'data-claimants' );
 				$p->remove_class( 'hatch-claimed' );
 				$p->add_class( 'hatch-' . self::strongest( explode( ' ', $claimants ), $roles ) );
 			}
