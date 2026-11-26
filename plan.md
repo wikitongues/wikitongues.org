@@ -451,7 +451,7 @@ Approved 2026-11-23 (spec: territories in the sidebar, sub-regions beside it, co
 - [ ] Eastern Europe: Russia fills the frame and the SVG is 20.1 KB gzipped, just over budget. Accepted for now.
 - [ ] Andorra's (33.4 KB) and South Ossetia's (30.8 KB) hillshades are over the 30 KB image budget, like Tajikistan's.
 - [x] Continent maps: spec below, approved and built 2026-11-24 ([maps.md](docs/maps.md#territory-and-region-pages)). Europe's SVG is over budget.
-- [ ] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Undecided.
+- [x] Territory framed in its region with the territory highlighted: tried 2026-11-23; works for mid-sized countries (Ghana, Brazil), loses small islands to a ring (Guam). Decided 2026-11-26: no change, territory pages keep their own framing.
 - [ ] Build tests: framing, globe and ring triggers, and a check in `doctor` for maps whose claimed areas sit far from their places (would have caught the Lawa Headwaters bug).
 - [ ] Guam, French Polynesia and Martinique list no languages: their languages' origin is the nation (6.8 phase C).
 - [x] **Australia & New Zealand moves under Oceania** (decided 2026-11-24; UN M49). Done on local, staging and production (2026-11-25; `doctor` clean on both). Sync to Staging undid it on staging once, because production didn't have it yet. The command used: `wp term update region $(wp term get region australia-new-zealand --by=slug --field=term_id) --parent=$(wp term get region oceania --by=slug --field=term_id)`. The taxonomy is edited in WordPress, not synced. URLs don't change. Its sub-region map (`set-c2f998001d7e`) is already built; until the edit, `doctor` lists it as left over.
@@ -545,6 +545,7 @@ Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
 | 2026-11-26 | Claims on hover: blue areas sit on plain land, not relief | Relief stays a sign of the page's own places |
 | 2026-11-26 | Small contested areas get no special treatment on hover | The dashed line marks them; a second look isn't worth maintaining |
 | 2026-11-26 | `data-claimants` carries every claimant; active is the `hatch-claimed` class | The script needs neighbours' claims; one meaning for "claimant" across the table and the SVG |
+| 2026-11-26 | Territory pages keep their own framing; no region-framed variant | The current maps work; region framing loses small islands to a ring |
 
 ##### Step 2b: map analytics
 
