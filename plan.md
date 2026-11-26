@@ -542,14 +542,43 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-25 | Hover outline: solid round the undisputed part, dashed round claimed areas | Shows every claim, Ukraine's included, without drawing any claim as a settled border |
 | 2026-11-25 | Production ships with map interaction off (Settings → Maps, also off on staging) | Hover outlines show contested areas by control until the claims table lands |
 | 2026-11-26 | Map interaction switched on everywhere (Settings → Maps), once the claims work reached production | Territories are drawn as their undisputed part, so hover outlines no longer take sides; claims on hover follows as an addition |
+| 2026-11-26 | Claims on hover: blue areas sit on plain land, not relief | Relief stays a sign of the page's own places |
+| 2026-11-26 | Small contested areas get no special treatment on hover | The dashed line marks them; a second look isn't worth maintaining |
+| 2026-11-26 | `data-claimants` carries every claimant; active is the `hatch-claimed` class | The script needs neighbours' claims; one meaning for "claimant" across the table and the SVG |
 
 ##### Claims on hover (what is left of the claims spec)
 
-*The claims table and the contested-area display shipped to production on 2026-11-26 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). What is left is the hover part. Interaction is on (2026-11-26), so this adds to it.*
+*Draft for approval (2026-11-26). The claims table and the contested-area display shipped to production on 2026-11-26 ([archive](docs/plan-archive.md), [maps.md](docs/maps.md)); interaction is on everywhere. This adds the hover part. [Prototype](https://claude.ai/artifact/PGbPfj6rw4Asi7JEFSDyyG) on six real maps.*
 
-- A territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them ([prototype](https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P)).
-- Its claimed areas light up while hovered: an area already active on the map stays red; any other is hatched in the hover blue, so red only ever marks the page's places.
-- A contested area keeps its step 2a label ("Crimea · Contested area"). Labels never name claimants or say who administers an area.
+**Glossary.** *Claimant:* a place the claims table says claims an area (any place, on the map or not). *Active area:* one a place on the map claims or is (already red-hatched, or Taiwan's dashed `edge` on its own map). *Hovered place:* a place or neighbour under the pointer, or focused from the list next to the map.
+
+**Rules**
+- Hovering a place lights every contested area on the map whose claimants include it. Areas out of frame show nothing.
+- A lit area that is active keeps its red hatch. Any other is hatched in the hover blue over plain land. Red only ever marks the page's places.
+- The hover outline is one line: solid round the place's undisputed part, dashed round its lit areas, nothing along the borders between them or between two lit areas.
+- Hovering a contested area outlines that area only and lights nothing else. Its label stays "Crimea · Contested area". Labels never name claimants or who administers an area.
+- Touch: a tap does what hover does; a second tap opens the place's page (step 2a, unchanged).
+- Data: the build writes every claimant's record ID on each contested area as `data-claimants`, the claims table's meaning. Active areas are marked by the `hatch-claimed` class, which `Renderer` reads instead of the attribute. Ship the `Renderer` change first (it works on today's SVGs), then the full rebuild.
+
+**Example cases**
+
+| Map | Hover | Lights | Colour |
+|---|---|---|---|
+| Ukrainian | Russia | Crimea, Donetsk, Luhansk, Zaporizhzhia, Kherson | red (active) |
+| Ukrainian | Moldova | Transnistria | blue (thin: the dashed line carries it) |
+| Russian | Ukraine | the same five areas | red |
+| Russian | Georgia | Abkhazia, South Ossetia | blue |
+| Hebrew | Syria | Golan Heights | red |
+| Amis (Taiwan) | China | Taiwan itself | neither: relief stays, dashed line only |
+| China only | India | border areas / Kashmir, Junagadh | red / blue |
+| India + China | China, then India | each one's border areas | red |
+| Any | Crimea | nothing else | label "Crimea · Contested area" |
+
+**Display.** The dashed line is the hover blue on the parchment casing, round red and blue areas alike. The blue hatch is the red one's pattern in `$blue()`, on `--land`. Small areas get no special case.
+
+**Open questions.** None.
+
+**Out of scope.** Naming claims in labels or the list under the map, claims shown on continent (grouped) maps, a legend for the blue.
 
 ##### Step 1 follow-ups
 
