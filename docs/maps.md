@@ -251,4 +251,6 @@ Who claims each contested area lives in `data/claims.json`, not in Natural Earth
 | Duplicate of B19 | SAH | Natural Earth's W. Sahara map unit is only the Polisario-held zone east of the Berm. The Western Sahara place is drawn from B19, the whole territory |
 | Duplicate of CYN, of SOL | B20, B30 | Same shapes as the Northern Cyprus and Somaliland map units |
 
-**Known gaps** (claims spec, step 4): Azad Kashmir has no contested-area shape in Natural Earth, so India's claim to it isn't drawn; Natural Earth's "Jammu and Kashmir" (B05) is only the Indian-administered part. Russia's 2022 claims wait for whole-oblast shapes: today only the 2014 areas (C02, C03) are drawn, claimed by Ukraine alone.
+**Kashmir names:** Natural Earth's "Jammu and Kashmir" (B05) is only the Indian-administered part, and its "Gilgit-Baltistan" (B08) is all of the Pakistan-administered part, Azad Kashmir included. Both are claimed by India and Pakistan. B08's label is open (plan 3.2, the Kashmir naming question).
+
+**Areas from admin-1:** a review change with `"shape": "admin1:<ISO 3166-2 code>"` and a `"name"` adds a contested area Natural Earth has no admin-0 shape for, from `ne_10m_admin_1_states_provinces` (fetched by `fetch.mjs`; read only when the table names one). The area's code is the ISO code. The 2022 oblasts are added this way (UA-14, UA-09, UA-23, UA-65), and Natural Earth's 2014 areas inside them (C02, C03) are marked duplicates of them.

@@ -146,10 +146,27 @@ function wt_maps_claims_report( array $claims, Shape_Table $table ): array {
 	foreach ( array_slice( $layers, 1 ) as $layer ) {
 		$layer_id = (string) ( $layer['id'] ?? '?' );
 		foreach ( (array) ( $layer['changes'] ?? array() ) as $change ) {
-			$code  = (string) ( $change['area'] ?? '' );
-			$where = $layer_id . ': ' . $code;
+			$code    = (string) ( $change['area'] ?? '' );
+			$where   = $layer_id . ': ' . $code;
+			$created = false;
+			if ( isset( $change['shape'] ) ) {
+				// A change with a shape adds an area Natural Earth has no contested-area shape for.
+				if ( ! preg_match( '/^admin1:[A-Z]{2}-[A-Z0-9]{1,3}$/', (string) $change['shape'] ) ) {
+					$errors[] = sprintf( '%s: shape must be admin1:<ISO 3166-2 code>, not %s', $where, (string) $change['shape'] );
+				}
+				if ( empty( $change['name'] ) ) {
+					$errors[] = $where . ': a new area needs a name';
+				}
+				if ( isset( $areas[ $code ] ) ) {
+					$errors[] = $where . ': area already exists; a shape can only add one';
+					continue;
+				} else {
+					$areas[ $code ] = array();
+					$created        = true;
+				}
+			}
 			if ( ! isset( $areas[ $code ] ) ) {
-				$errors[] = $where . ' is not in layer 1';
+				$errors[] = $where . ' is not in the table: add it with a shape first';
 				continue;
 			}
 			if ( empty( $change['reason'] ) ) {
@@ -159,7 +176,7 @@ function wt_maps_claims_report( array $claims, Shape_Table $table ): array {
 			$drop = array_map( 'strval', (array) ( $change['drop'] ?? array() ) );
 			$check( $where, array_merge( $add, $drop ) );
 
-			$changed = isset( $change['status'] );
+			$changed = $created || isset( $change['status'] );
 			foreach ( $add as $id ) {
 				if ( ! isset( $areas[ $code ][ $id ] ) ) {
 					$areas[ $code ][ $id ] = true;

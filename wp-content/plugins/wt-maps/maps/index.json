@@ -626,41 +626,43 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -95.295598,
-     -65.881016,
+     -94.75911,
+     -65.874332,
      0
     ],
-    "scale": 241.216,
+    "scale": 241.045,
     "translate": [
-     208.775,
-     163.197
+     207.735,
+     163.483
     ],
-    "cornerDeg": 66.64
+    "cornerDeg": 66.51
    },
    "center": [
-    95.295598,
-    65.881016
+    94.75911,
+    65.874332
    ],
    "fine": false,
-   "stretch": 43.2,
+   "stretch": 43,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 51528,
-   "svg_gzip": 19910,
+   "svg_bytes": 52012,
+   "svg_gzip": 20062,
    "images": {
-    "relief": 28514,
-    "shade": 21998,
-    "sea": 29960
+    "relief": 28550,
+    "shade": 21984,
+    "sea": 30034
    }
   },
   "rec6i3yPeD12Y2gn8": {
@@ -2103,38 +2105,40 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -31.465984,
-     -49.023012,
+     -31.4649,
+     -49.023149,
      0
     ],
     "scale": 1471.155,
     "translate": [
-     206.618,
-     133.977
+     206.6,
+     133.974
     ],
     "cornerDeg": 10.34
    },
    "center": [
-    31.465984,
-    49.023012
+    31.4649,
+    49.023149
    ],
    "fine": false,
    "stretch": 0.8,
    "scale_km": 200,
    "claimed": [
     "Crimea",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic"
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Transnistria"
    ],
-   "svg_bytes": 20204,
-   "svg_gzip": 7162,
+   "svg_bytes": 25003,
+   "svg_gzip": 8952,
    "images": {
-    "relief": 22840,
-    "shade": 8758,
-    "sea": 5958
+    "relief": 23130,
+    "shade": 8876,
+    "sea": 6218
    }
   },
   "recdqBUvrSVil89n7": {
@@ -2169,12 +2173,12 @@
     "Transnistria"
    ],
    "revealed": [],
-   "svg_bytes": 14857,
-   "svg_gzip": 5671,
+   "svg_bytes": 15184,
+   "svg_gzip": 5793,
    "images": {
-    "relief": 16084,
-    "shade": 16386,
-    "sea": 4748
+    "relief": 16114,
+    "shade": 16398,
+    "sea": 4782
    }
   },
   "recdui5YjMtq7oAXZ": {
@@ -6873,12 +6877,12 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 24082,
-   "svg_gzip": 8949,
+   "svg_bytes": 24695,
+   "svg_gzip": 9221,
    "images": {
-    "relief": 27936,
-    "shade": 24122,
-    "sea": 15036
+    "relief": 27930,
+    "shade": 24144,
+    "sea": 15108
    }
   },
   "recUkxf17bTf4I3C7": {
@@ -7341,12 +7345,12 @@
    "scale_km": 500,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 24730,
-   "svg_gzip": 8954,
+   "svg_bytes": 24841,
+   "svg_gzip": 9009,
    "images": {
-    "relief": 27200,
-    "shade": 14738,
-    "sea": 4728
+    "relief": 27226,
+    "shade": 14756,
+    "sea": 4758
    }
   },
   "recVPVdaKl62cVS8c": {
@@ -8820,18 +8824,20 @@
    ],
    "revealed": [
     "Crimea",
-    "Donetsk People's Republic",
+    "Donetsk Oblast",
+    "Kherson Oblast",
     "Kosovo",
-    "Luhansk People's Republic",
+    "Luhansk Oblast",
     "Somaliland",
-    "Transnistria"
+    "Transnistria",
+    "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 74291,
-   "svg_gzip": 24182,
+   "svg_bytes": 74587,
+   "svg_gzip": 24258,
    "images": {
-    "relief": 29454,
-    "shade": 18764,
-    "sea": 29022
+    "relief": 29440,
+    "shade": 18768,
+    "sea": 29018
    }
   },
   "set-18f1845b5825": {
@@ -8935,12 +8941,12 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37488,
-   "svg_gzip": 14413,
+   "svg_bytes": 37493,
+   "svg_gzip": 14399,
    "images": {
-    "relief": 27824,
-    "shade": 20384,
-    "sea": 27960
+    "relief": 27828,
+    "shade": 20382,
+    "sea": 27946
    }
   },
   "set-198c07e32564": {
@@ -9449,12 +9455,12 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 53249,
-   "svg_gzip": 17477,
+   "svg_bytes": 53540,
+   "svg_gzip": 17574,
    "images": {
-    "relief": 30412,
+    "relief": 30406,
     "shade": 12588,
-    "sea": 24960
+    "sea": 24996
    }
   },
   "set-29699cb355e1": {
@@ -9585,16 +9591,18 @@
    ],
    "revealed": [
     "Crimea",
-    "Donetsk People's Republic",
+    "Donetsk Oblast",
+    "Kherson Oblast",
     "Kosovo",
-    "Somaliland"
+    "Somaliland",
+    "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 39678,
-   "svg_gzip": 14811,
+   "svg_bytes": 40488,
+   "svg_gzip": 15098,
    "images": {
-    "relief": 29496,
-    "shade": 20232,
-    "sea": 18528
+    "relief": 29566,
+    "shade": 20266,
+    "sea": 18546
    }
   },
   "set-2c01b8461fb0": {
@@ -9646,12 +9654,12 @@
     "South Ossetia",
     "West Bank"
    ],
-   "svg_bytes": 59320,
-   "svg_gzip": 22529,
+   "svg_bytes": 59570,
+   "svg_gzip": 22584,
    "images": {
-    "relief": 28818,
-    "shade": 18322,
-    "sea": 30178
+    "relief": 28838,
+    "shade": 18342,
+    "sea": 30634
    }
   },
   "set-3034b0b1224f": {
@@ -9959,29 +9967,31 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -68.576172,
-     -67.515833,
+     -68.576374,
+     -67.515893,
      0
     ],
     "scale": 201.482,
     "translate": [
-     227.19,
-     161.446
+     227.191,
+     161.445
     ],
     "cornerDeg": 109.3
    },
    "center": [
-    68.576172,
-    67.515833
+    68.576374,
+    67.515893
    ],
    "fine": false,
    "stretch": 91.7,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Donetsk People's Republic",
+    "Donetsk Oblast",
+    "Kherson Oblast",
     "Kuril Is.",
-    "Luhansk People's Republic"
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
@@ -9991,12 +10001,12 @@
     "W. Sahara",
     "West Bank"
    ],
-   "svg_bytes": 87270,
-   "svg_gzip": 27012,
+   "svg_bytes": 87600,
+   "svg_gzip": 27072,
    "images": {
-    "relief": 29222,
-    "shade": 20942,
-    "sea": 30380
+    "relief": 29168,
+    "shade": 20964,
+    "sea": 30456
    }
   },
   "set-3c6af9f0ddf4": {
@@ -10167,12 +10177,12 @@
     "Shaksam Valley",
     "Siachen Glacier"
    ],
-   "svg_bytes": 33955,
-   "svg_gzip": 12246,
+   "svg_bytes": 34996,
+   "svg_gzip": 12658,
    "images": {
-    "relief": 27860,
-    "shade": 19516,
-    "sea": 7168
+    "relief": 27890,
+    "shade": 19524,
+    "sea": 7224
    }
   },
   "set-436ec62a37b9": {
@@ -10262,12 +10272,12 @@
     "Kosovo",
     "Transnistria"
    ],
-   "svg_bytes": 33547,
-   "svg_gzip": 12249,
+   "svg_bytes": 34575,
+   "svg_gzip": 12615,
    "images": {
-    "relief": 27194,
-    "shade": 16648,
-    "sea": 12190
+    "relief": 27246,
+    "shade": 16660,
+    "sea": 12292
    }
   },
   "set-47c1ddc0bdf2": {
@@ -10370,41 +10380,43 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -91.189773,
-     -66.849402,
+     -90.687779,
+     -66.824871,
      0
     ],
-    "scale": 240.259,
+    "scale": 240.225,
     "translate": [
-     200.837,
-     161.448
+     199.876,
+     161.841
     ],
-    "cornerDeg": 64.86
+    "cornerDeg": 64.78
    },
    "center": [
-    91.189773,
-    66.849402
+    90.687779,
+    66.824871
    ],
    "fine": false,
-   "stretch": 40.4,
+   "stretch": 40.2,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 51409,
-   "svg_gzip": 19878,
+   "svg_bytes": 51974,
+   "svg_gzip": 20051,
    "images": {
-    "relief": 28298,
-    "shade": 21432,
-    "sea": 30300
+    "relief": 28098,
+    "shade": 21770,
+    "sea": 28796
    }
   },
   "set-516cf42e4786": {
@@ -10489,12 +10501,12 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 32985,
-   "svg_gzip": 12321,
+   "svg_bytes": 34443,
+   "svg_gzip": 12901,
    "images": {
-    "relief": 27720,
-    "shade": 20112,
-    "sea": 15508
+    "relief": 27732,
+    "shade": 20166,
+    "sea": 15572
    }
   },
   "set-58e0c2d4c192": {
@@ -10581,12 +10593,12 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 42415,
-   "svg_gzip": 15973,
+   "svg_bytes": 42949,
+   "svg_gzip": 16143,
    "images": {
-    "relief": 26612,
-    "shade": 14554,
-    "sea": 22078
+    "relief": 26602,
+    "shade": 14574,
+    "sea": 22086
    }
   },
   "set-5eaefcd31d01": {
@@ -10761,16 +10773,17 @@
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
-    "South Ossetia"
+    "Donetsk Oblast",
+    "Luhansk Oblast",
+    "South Ossetia",
+    "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 52075,
-   "svg_gzip": 19809,
+   "svg_bytes": 52426,
+   "svg_gzip": 19921,
    "images": {
-    "relief": 30406,
-    "shade": 22066,
-    "sea": 28720
+    "relief": 30288,
+    "shade": 22112,
+    "sea": 28598
    }
   },
   "set-655e3b42c52b": {
@@ -10825,41 +10838,43 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -96.397206,
-     -64.236815,
+     -95.930082,
+     -64.242494,
      0
     ],
-    "scale": 241.735,
+    "scale": 241.554,
     "translate": [
-     210.99,
-     153.82
+     210.075,
+     154.202
     ],
-    "cornerDeg": 65.38
+    "cornerDeg": 65.29
    },
    "center": [
-    96.397206,
-    64.236815
+    95.930082,
+    64.242494
    ],
    "fine": false,
-   "stretch": 41.2,
+   "stretch": 41,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 50575,
-   "svg_gzip": 19577,
+   "svg_bytes": 51221,
+   "svg_gzip": 19752,
    "images": {
-    "relief": 28522,
-    "shade": 21802,
-    "sea": 29314
+    "relief": 28628,
+    "shade": 21824,
+    "sea": 29224
    }
   },
   "set-6a403aefefbe": {
@@ -10937,12 +10952,12 @@
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 28541,
-   "svg_gzip": 10723,
+   "svg_bytes": 30275,
+   "svg_gzip": 11366,
    "images": {
-    "relief": 28554,
-    "shade": 23484,
-    "sea": 17430
+    "relief": 28682,
+    "shade": 23548,
+    "sea": 17630
    }
   },
   "set-6c206695aedc": {
@@ -10963,41 +10978,43 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -93.514929,
-     -66.06686,
+     -92.995507,
+     -66.053314,
      0
     ],
-    "scale": 240.702,
+    "scale": 240.596,
     "translate": [
-     205.321,
-     163.333
+     204.317,
+     163.661
     ],
-    "cornerDeg": 66.05
+    "cornerDeg": 65.92
    },
    "center": [
-    93.514929,
-    66.06686
+    92.995507,
+    66.053314
    ],
    "fine": false,
-   "stretch": 42.3,
+   "stretch": 42,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
     "South Ossetia",
     "Transnistria"
    ],
-   "svg_bytes": 51725,
-   "svg_gzip": 20035,
+   "svg_bytes": 52310,
+   "svg_gzip": 20147,
    "images": {
-    "relief": 28414,
-    "shade": 21792,
-    "sea": 30196
+    "relief": 28262,
+    "shade": 21756,
+    "sea": 29866
    }
   },
   "set-7eca5f3831d6": {
@@ -11409,12 +11426,12 @@
     "Lawa Headwaters"
    ],
    "revealed": [],
-   "svg_bytes": 59460,
-   "svg_gzip": 17431,
+   "svg_bytes": 60014,
+   "svg_gzip": 17589,
    "images": {
-    "relief": 27520,
-    "shade": 10848,
-    "sea": 26980
+    "relief": 27528,
+    "shade": 10854,
+    "sea": 27018
    }
   },
   "set-9c18efefa001": {
@@ -11447,41 +11464,43 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -86.751483,
-     -66.22619,
+     -86.751825,
+     -66.226222,
      0
     ],
     "scale": 219.215,
     "translate": [
      206.48,
-     165.293
+     165.292
     ],
     "cornerDeg": 74.21
    },
    "center": [
-    86.751483,
-    66.22619
+    86.751825,
+    66.226222
    ],
    "fine": false,
    "stretch": 57.2,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Donetsk People's Republic",
+    "Donetsk Oblast",
+    "Kherson Oblast",
     "Kuril Is.",
-    "Luhansk People's Republic"
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
     "Kosovo",
     "South Ossetia"
    ],
-   "svg_bytes": 60432,
-   "svg_gzip": 23274,
+   "svg_bytes": 60918,
+   "svg_gzip": 23382,
    "images": {
-    "relief": 28952,
-    "shade": 20874,
-    "sea": 30358
+    "relief": 28908,
+    "shade": 20984,
+    "sea": 30296
    }
   },
   "set-a00a921b606b": {
@@ -11780,8 +11799,8 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37321,
-   "svg_gzip": 14369,
+   "svg_bytes": 37308,
+   "svg_gzip": 14359,
    "images": {
     "relief": 30566,
     "shade": 20310,
@@ -12038,12 +12057,12 @@
     "Tirpani Valleys"
    ],
    "revealed": [],
-   "svg_bytes": 38500,
-   "svg_gzip": 14595,
+   "svg_bytes": 39005,
+   "svg_gzip": 14771,
    "images": {
-    "relief": 29190,
-    "shade": 20806,
-    "sea": 26088
+    "relief": 29194,
+    "shade": 20828,
+    "sea": 26112
    }
   },
   "set-bc3ac8742854": {
@@ -12375,12 +12394,12 @@
     "N. Cyprus",
     "West Bank"
    ],
-   "svg_bytes": 42454,
-   "svg_gzip": 15892,
+   "svg_bytes": 42968,
+   "svg_gzip": 16063,
    "images": {
-    "relief": 27718,
-    "shade": 15196,
-    "sea": 20346
+    "relief": 27752,
+    "shade": 15174,
+    "sea": 20382
    }
   },
   "set-c6a4bd722cb0": {
@@ -12494,12 +12513,12 @@
    "scale_km": null,
    "claimed": [],
    "revealed": [],
-   "svg_bytes": 38018,
-   "svg_gzip": 14359,
+   "svg_bytes": 39620,
+   "svg_gzip": 15055,
    "images": {
-    "relief": 29556,
-    "shade": 18492,
-    "sea": 22642
+    "relief": 29602,
+    "shade": 18508,
+    "sea": 22750
    }
   },
   "set-cca1b5694fac": {
@@ -12536,12 +12555,14 @@
    "revealed": [
     "Abkhazia",
     "Crimea",
-    "Donetsk People's Republic",
+    "Donetsk Oblast",
+    "Kherson Oblast",
     "Kosovo",
-    "Luhansk People's Republic"
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
-   "svg_bytes": 51255,
-   "svg_gzip": 19677,
+   "svg_bytes": 51586,
+   "svg_gzip": 19759,
    "images": {
     "relief": 28822,
     "shade": 18712,
@@ -12602,40 +12623,42 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -95.272889,
-     -65.878639,
+     -94.736702,
+     -65.871892,
      0
     ],
-    "scale": 241.208,
+    "scale": 241.039,
     "translate": [
-     208.731,
-     163.218
+     207.691,
+     163.504
     ],
-    "cornerDeg": 66.63
+    "cornerDeg": 66.5
    },
    "center": [
-    95.272889,
-    65.878639
+    94.736702,
+    65.871892
    ],
    "fine": false,
-   "stretch": 43.2,
+   "stretch": 43,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
     "Abkhazia",
-    "Donetsk People's Republic",
-    "Luhansk People's Republic",
     "Transnistria"
    ],
-   "svg_bytes": 51714,
-   "svg_gzip": 19995,
+   "svg_bytes": 52267,
+   "svg_gzip": 20142,
    "images": {
-    "relief": 28522,
-    "shade": 21960,
-    "sea": 30196
+    "relief": 28810,
+    "shade": 22076,
+    "sea": 30122
    }
   },
   "set-d4a1b8082bf4": {
@@ -13097,12 +13120,12 @@
     "Abkhazia",
     "South Ossetia"
    ],
-   "svg_bytes": 32373,
-   "svg_gzip": 12000,
+   "svg_bytes": 34276,
+   "svg_gzip": 12752,
    "images": {
-    "relief": 30034,
-    "shade": 22946,
-    "sea": 17238
+    "relief": 30184,
+    "shade": 23018,
+    "sea": 17446
    }
   },
   "set-e3e8d055ee38": {
@@ -13239,39 +13262,41 @@
    "spec": {
     "type": "azimuthal",
     "rotate": [
-     -95.212722,
-     -65.875763,
+     -94.677244,
+     -65.868826,
      0
     ],
-    "scale": 241.188,
+    "scale": 241.021,
     "translate": [
-     208.614,
-     163.258
+     207.576,
+     163.546
     ],
-    "cornerDeg": 66.62
+    "cornerDeg": 66.49
    },
    "center": [
-    95.212722,
-    65.875763
+    94.677244,
+    65.868826
    ],
    "fine": false,
-   "stretch": 43.2,
+   "stretch": 43,
    "scale_km": null,
    "claimed": [
     "Crimea",
-    "Kuril Is."
+    "Donetsk Oblast",
+    "Kherson Oblast",
+    "Kuril Is.",
+    "Luhansk Oblast",
+    "Zaporizhzhia Oblast"
    ],
    "revealed": [
-    "Donetsk People's Republic",
-    "Kosovo",
-    "Luhansk People's Republic"
+    "Kosovo"
    ],
-   "svg_bytes": 52067,
-   "svg_gzip": 20085,
+   "svg_bytes": 52731,
+   "svg_gzip": 20270,
    "images": {
-    "relief": 28604,
+    "relief": 28548,
     "shade": 21946,
-    "sea": 30394
+    "sea": 29918
    }
   },
   "set-e7bd59be5203": {
@@ -13310,12 +13335,12 @@
     "N. Cyprus",
     "South Ossetia"
    ],
-   "svg_bytes": 32943,
-   "svg_gzip": 12255,
+   "svg_bytes": 35102,
+   "svg_gzip": 13118,
    "images": {
-    "relief": 30138,
-    "shade": 23050,
-    "sea": 17050
+    "relief": 30264,
+    "shade": 23078,
+    "sea": 17250
    }
   },
   "set-ec477c0ddf4d": {
@@ -13613,12 +13638,12 @@
     "Jammu and Kashmir",
     "Siachen Glacier"
    ],
-   "svg_bytes": 37333,
-   "svg_gzip": 14323,
+   "svg_bytes": 37307,
+   "svg_gzip": 14309,
    "images": {
-    "relief": 27794,
-    "shade": 20344,
-    "sea": 28106
+    "relief": 27770,
+    "shade": 20338,
+    "sea": 28080
    }
   }
  }
