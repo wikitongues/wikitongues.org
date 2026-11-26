@@ -8,8 +8,9 @@
  *   regions[].overview   headline, introduction, findings, evidence cards and
  *                        the region's letter from the director
  *   front_matter         the deck, methodology, the five indicators' notes,
- *                        the answer key, the edition's letter, and the global
- *                        synthesis's planned date
+ *                        the answer key, the edition's letter, the global
+ *                        synthesis's planned date, and the announcement's
+ *                        date and white paper
  *
  * Both are optional, so a release without them still imports. Like the
  * reports, they are written as absolute state: a release without a region's
@@ -27,7 +28,7 @@ namespace WT\Rights;
  * @phpstan-type Link array{url: string, label: string}
  * @phpstan-type Letter array{html: string, name: string, role: string}
  * @phpstan-type Overview array{headline: string, html: string, sources: list<Link>, findings: list<array{title: string, html: string, sources: list<Link>}>, cards: list<array{report_id: string, country: string, title: string, html: string, links: list<Link>}>, letter: ?Letter}
- * @phpstan-type FrontMatter array{summary: string, methodology: array{html: string, sections: list<array{title: string, html: string}>}, indicators: array<string, array{html: string, example: string}>, answer_key: array{html: string, answers: array<string, string>}, letter: ?Letter, synthesis: array{release_date: string}}
+ * @phpstan-type FrontMatter array{summary: string, methodology: array{html: string, sections: list<array{title: string, html: string}>}, indicators: array<string, array{html: string, example: string}>, answer_key: array{html: string, answers: array<string, string>}, letter: ?Letter, synthesis: array{release_date: string}, announcement: array{release_date: string, paper_url: string}}
  */
 final class Editorial {
 
@@ -86,19 +87,23 @@ final class Editorial {
 		$methodology = is_array( $raw['methodology'] ?? null ) ? $raw['methodology'] : array();
 		$answer_key  = is_array( $raw['answer_key'] ?? null ) ? $raw['answer_key'] : array();
 		$out         = array(
-			'summary'     => self::text( $raw['summary'] ?? '' ),
-			'methodology' => array(
+			'summary'      => self::text( $raw['summary'] ?? '' ),
+			'methodology'  => array(
 				'html'     => self::text( $methodology['html'] ?? '' ),
 				'sections' => array(),
 			),
-			'indicators'  => array(),
-			'answer_key'  => array(
+			'indicators'   => array(),
+			'answer_key'   => array(
 				'html'    => self::text( $answer_key['html'] ?? '' ),
 				'answers' => array(),
 			),
-			'letter'      => self::letter( $raw['letter'] ?? null ),
-			'synthesis'   => array(
+			'letter'       => self::letter( $raw['letter'] ?? null ),
+			'synthesis'    => array(
 				'release_date' => self::date( $raw['synthesis']['release_date'] ?? '' ),
+			),
+			'announcement' => array(
+				'release_date' => self::date( $raw['announcement']['release_date'] ?? '' ),
+				'paper_url'    => self::url( $raw['announcement']['paper_url'] ?? '' ),
 			),
 		);
 		foreach ( self::rows( $methodology['sections'] ?? array() ) as $section ) {
@@ -222,6 +227,16 @@ final class Editorial {
 	 */
 	private static function text( $raw ): string {
 		return is_scalar( $raw ) ? trim( (string) $raw ) : '';
+	}
+
+	/**
+	 * An http(s) URL, or ''.
+	 *
+	 * @param mixed $raw From the release.
+	 */
+	private static function url( $raw ): string {
+		$value = self::text( $raw );
+		return preg_match( '#^https?://\S+$#', $value ) ? $value : '';
 	}
 
 	/**

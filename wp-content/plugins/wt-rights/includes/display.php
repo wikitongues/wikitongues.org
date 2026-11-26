@@ -217,6 +217,10 @@ function wt_rights_updates_button( string $region ): string {
 /**
  * The release-updates signup dialog: the site's Mailchimp list, as in the
  * newsletter module. Printed once, in the footer, on report pages.
+ *
+ * rights.js submits it in the page, through Mailchimp's JSONP endpoint; without
+ * scripts it posts to Mailchimp in a new tab. WT_RIGHTS_MAILCHIMP_TAG, when
+ * set to a Mailchimp tag ID, marks the subscriber as a Language Rights signup.
  */
 function wt_rights_updates_dialog(): void {
 	if ( null === wt_rights_page_context() || ! function_exists( 'get_field' ) ) {
@@ -228,6 +232,7 @@ function wt_rights_updates_dialog(): void {
 		return;
 	}
 	$action = 'https://wikitongues.us9.list-manage.com/subscribe/post?u=' . rawurlencode( $user ) . '&id=' . rawurlencode( $id );
+	$tag    = defined( 'WT_RIGHTS_MAILCHIMP_TAG' ) ? (string) constant( 'WT_RIGHTS_MAILCHIMP_TAG' ) : '';
 	?>
 	<dialog class="wt-rights-dialog" id="wt-rights-updates" aria-labelledby="wt-rights-updates-title">
 		<div class="wt-rights-dialog__head">
@@ -241,8 +246,11 @@ function wt_rights_updates_dialog(): void {
 				<input type="email" id="wt-rights-updates-email" name="EMAIL" autocomplete="email" required>
 				<button type="submit" name="subscribe">Sign up</button>
 			</div>
+			<?php if ( '' !== $tag ) : ?>
+				<input type="hidden" name="tags" value="<?php echo esc_attr( $tag ); ?>">
+			<?php endif; ?>
 			<div class="wt-rights-dialog__trap" aria-hidden="true"><input type="text" name="<?php echo esc_attr( 'b_' . $user . '_' . $id ); ?>" tabindex="-1" autocomplete="off"></div>
-			<p class="wt-rights-dialog__note">Mailchimp opens in a new tab to complete signup.</p>
+			<p class="wt-rights-dialog__note" role="status" aria-live="polite">We’ll ask you to confirm by email.</p>
 		</form>
 	</dialog>
 	<?php

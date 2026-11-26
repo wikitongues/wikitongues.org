@@ -9,13 +9,10 @@
 get_header();
 
 $wt_structure  = wt_rights_structure();
-$wt_regions    = wt_rights_regions();
 $wt_front      = wt_rights_front_matter();
 $wt_method     = (array) ( $wt_front['methodology'] ?? array() );
 $wt_key        = (array) ( $wt_front['answer_key'] ?? array() );
 $wt_letter     = $wt_front['letter'] ?? null;
-$wt_synthesis  = (string) ( $wt_front['synthesis']['release_date'] ?? '' );
-$wt_date       = static fn( string $ymd ): string => wp_date( 'F j, Y', (int) strtotime( $ymd . ' 12:00:00' ) );
 $wt_has_method = '' !== (string) ( $wt_method['html'] ?? '' ) || ! empty( $wt_front['indicators'] );
 
 $wt_toc = array(
@@ -43,78 +40,7 @@ if ( is_array( $wt_letter ) ) {
 
 	<?php get_template_part( 'modules/rights/jumpnav', null, array( 'links' => $wt_toc ) ); ?>
 
-	<section id="releases" class="wt-rights__section wt-rights__section--wash">
-		<div class="wt-rights__wrap">
-			<p class="wt-rights__kicker">Publication schedule</p>
-			<h2>Regional releases</h2>
-			<p class="wt-rights__intro">The report will roll out in seven regional installments. Browse the coverage below, or sign up for release announcements. Planned dates may change.</p>
-			<ol class="wt-rights__releases">
-				<?php foreach ( $wt_regions as $wt_region ) : ?>
-					<?php
-					$wt_status   = wt_rights_region_status( $wt_region->term_id );
-					$wt_names    = wt_rights_region_names( $wt_region->term_id );
-					$wt_readable = wt_rights_can_read_region( $wt_region->term_id );
-					$wt_released = \WT\Rights\Release_Status::RELEASED === $wt_status;
-					$wt_order    = (int) get_term_meta( $wt_region->term_id, 'order', true );
-					$wt_reports  = array();
-					foreach ( wt_rights_region_reports( $wt_region->term_id ) as $wt_post ) {
-						$wt_reports[ get_the_title( $wt_post ) ] = get_permalink( $wt_post );
-					}
-					if ( $wt_released ) {
-						$wt_label = 'Released';
-					} elseif ( $wt_readable ) {
-						$wt_label = \WT\Rights\Release_Status::EMBARGOED === $wt_status ? 'Embargoed · preview available' : 'Preview available';
-					} else {
-						$wt_label = 'Upcoming';
-					}
-					?>
-					<li class="wt-rights__release" id="release-<?php echo esc_attr( $wt_region->slug ); ?>">
-						<span class="wt-rights__release-index" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $wt_order ) ); ?></span>
-						<div>
-							<p class="wt-rights__kicker"><?php echo esc_html( $wt_label ); ?></p>
-							<h3><?php echo esc_html( $wt_region->name ); ?></h3>
-							<p><?php echo esc_html( wt_rights_release_line( $wt_region->term_id ) ); ?></p>
-							<div class="wt-rights__release-actions">
-								<?php if ( $wt_readable ) : ?>
-									<a href="<?php echo esc_url( (string) get_term_link( $wt_region ) ); ?>"><?php echo esc_html( $wt_released ? 'Read the regional report →' : 'Open regional preview →' ); ?></a>
-								<?php else : ?>
-									<?php echo wt_rights_updates_button( $wt_region->slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?>
-								<?php endif; ?>
-								<?php if ( $wt_names ) : ?>
-									<details>
-										<summary><?php echo esc_html( sprintf( 'Browse %d %s', count( $wt_names ), 1 === count( $wt_names ) ? 'nation' : 'nations' ) ); ?></summary>
-										<ul>
-											<?php foreach ( $wt_names as $wt_name ) : ?>
-												<li>
-													<?php if ( isset( $wt_reports[ $wt_name ] ) ) : ?>
-														<a href="<?php echo esc_url( (string) $wt_reports[ $wt_name ] ); ?>"><?php echo esc_html( $wt_name ); ?></a>
-													<?php else : ?>
-														<?php echo esc_html( $wt_name ); ?>
-													<?php endif; ?>
-												</li>
-											<?php endforeach; ?>
-										</ul>
-									</details>
-								<?php endif; ?>
-							</div>
-						</div>
-					</li>
-				<?php endforeach; ?>
-				<li class="wt-rights__release" id="release-synthesis">
-					<span class="wt-rights__release-index" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', count( $wt_regions ) + 1 ) ); ?></span>
-					<div>
-						<p class="wt-rights__kicker">Upcoming · Complete edition</p>
-						<h3>Global synthesis</h3>
-						<p><?php echo esc_html( '' !== $wt_synthesis ? 'Planned release ' . $wt_date( $wt_synthesis ) : 'Upcoming' ); ?></p>
-						<p>At launch, this page will include data for all five indicators and a summary of our findings, highlighting progress and concerns around the world.</p>
-						<div class="wt-rights__release-actions">
-							<?php echo wt_rights_updates_button( 'synthesis' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?>
-						</div>
-					</div>
-				</li>
-			</ol>
-		</div>
-	</section>
+	<?php get_template_part( 'modules/rights/schedule', null, array( 'id' => 'releases' ) ); ?>
 
 	<?php echo wt_rights_donate_band( 'rights-hub', true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?>
 

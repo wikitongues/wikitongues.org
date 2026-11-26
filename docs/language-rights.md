@@ -30,7 +30,7 @@ How the *Report on the Global State of Language Rights* reaches wikitongues.org:
 
 | Page | URL | Built from |
 |---|---|---|
-| Project | `/language-rights/` | The existing editorial page (`template-editorial.php`) |
+| Project | `/language-rights/` | The launch page (`template-rights-project.php`): hero with "Get release updates", the page's own content (why it matters, the white paper), the donate band and the [schedule](#the-public-schedule). Its content is edited in WordPress |
 | Report hub, and the global synthesis from the Complete Edition | `/language-rights/report/` | Front-matter Doc and the release schedule; global findings and the synthesis only from the Complete Edition |
 | Region (7) | `/language-rights/report/{region}/`, e.g. `/language-rights/report/south-central-asia/` | Region Doc, plus answer counts computed from its country reports, and a map of its countries |
 | Country report (one per Reports row) | `/language-rights/report/{country}/`, e.g. `/language-rights/report/afghanistan/` | Country Doc and its Airtable row, and its territory's map |
@@ -105,7 +105,7 @@ A region's report text and PDFs are on a server only once that region goes to em
 
 **The Releases screen** (Language Rights Reports → Releases, admins only) shows each region's status, planned date, reports, PDFs staged and published, and its last change. Its buttons run the same code as `wp wt rights status`, after a confirmation that says what the change does; a repeat changes nothing. Every change, from the screen or WP-CLI, is logged on the region (term meta `status_log`, newest first, last 20) with who made it: a user's login, or `WP-CLI`. PDFs still reach the server only from the command line: after embargoing from the screen, run `import <file> --execute --pdfs=<dir>` to stage them; the screen warns when a region has reports without a PDF, and names whom to ask (`WT_RIGHTS_RELEASE_CONTACT` in `admin.php`, or the `wt_rights_release_contact` filter). Nothing is released automatically on the planned date.
 
-**Each environment needs, once:** `WT_RIGHTS_PRIVATE_DIR` in `wp-config.php`, outside `public_html` (staging sits inside production's `public_html`, so neither can use a folder under it); and, in Settings → Download Gateway, the `rights_reports` row Required, with the `documents` follow-up form.
+**Each environment needs, once:** `WT_RIGHTS_MAILCHIMP_TAG` (the Mailchimp tag ID that marks a Language Rights signup) and `WT_RIGHTS_DONATE_URL` (the campaign link for report donations) in `wp-config.php`; without them signups go untagged and donations go to `/donate/`. And `WT_RIGHTS_PRIVATE_DIR` in `wp-config.php`, outside `public_html` (staging sits inside production's `public_html`, so neither can use a folder under it); and, in Settings → Download Gateway, the `rights_reports` row Required, with the `documents` follow-up form.
 
 **PDFs** come from `wp wt rights pdf --out=<dir>`, run locally after importing the release: headless Chrome prints each report's print view (sources open, no site chrome) as `{slug}-v{version}-{hash}.pdf`.
 
@@ -142,7 +142,13 @@ A report exported with `--preview` stays a draft at every status: only admins ca
 
 **Press accounts** are made in Users → Add New, role **Press**. They land on the hub after logging in, never see wp-admin or the admin bar, and get a strip at the top of every page naming the account, with a **Log out** link back to the hub (`wt-rights/includes/press.php`).
 
-The hub shows no global findings before the Complete Edition (decision 2026-11-18; Kristen is asked to confirm it, plan 2.2 open question 5), so no unreleased answer reaches an aggregate. The global synthesis has no status of its own yet: the hub lists it as release 08 with its planned date from the front matter.
+The hub shows no global findings before the Complete Edition (decision 2026-11-18; Kristen is asked to confirm it, plan 2.2 open question 5), so no unreleased answer reaches an aggregate. The global synthesis has no status of its own yet: the schedule lists it as milestone 09 with its planned date from the front matter.
+
+### The public schedule
+
+One component (`modules/rights/schedule.php`) renders the schedule on the project page and the hub. It numbers *milestones*, not releases: the project announcement is 01, each region its release order + 1 (South and Central Asia is 02), the Complete Edition 09; region pages read `02 / 09`. Release numbers (`2027.1`…) are internal and unchanged. The announcement row appears when the release's `front_matter.announcement.release_date` is set, with "Read the white paper" when `paper_url` is. The exporter doesn't write `announcement` yet: until it reads it from the front-matter Doc or the Publishing Docs table, add it to the release file by hand.
+
+**Announcement day (10 December) is a release step** (decision 2026-11-25): import a release with the schedule, front matter and announcement but no report text, so the project page and the hub show the schedule. The white paper is an open PDF in the media library, not a gated download.
 
 ## Editorial contract
 
@@ -325,17 +331,19 @@ The code only pushes to `window.dataLayer`; Google Tag Manager forwards to GA4, 
 
 | Data | Pushed | Where |
 |---|---|---|
-| `rights_page` (hub, region, report), `rights_region`, `rights_country`, `report_version`, `release_status`, `viewer_role` (press, admin or empty) | On report pages, before GTM loads | `wt-rights/includes/analytics.php`, through the `wt_head_before_analytics` action in `modules/page--head.php` |
-| `rights_updates_signup` with `rights_region` (`synthesis` for the Complete Edition card) | "Get release updates" clicked; it then opens the Mailchimp signup dialog | `wt-rights/assets/rights.js` |
-| `donate_cta_click` | Donate links, by `data-cta-location`: `rights-report`, `rights-report-sidebar`, `rights-region`, `rights-hub` | The site's existing donate tracking |
+| `rights_page` (project, hub, region, report), `rights_region`, `rights_country`, `report_version`, `release_status`, `viewer_role` (press, admin or empty) | On report pages, before GTM loads | `wt-rights/includes/analytics.php`, through the `wt_head_before_analytics` action in `modules/page--head.php` |
+| `rights_updates_signup` with `rights_region` (`synthesis` for the Complete Edition card, `project` for the project page hero) | "Get release updates" clicked; it then opens the Mailchimp signup dialog | `wt-rights/assets/rights.js` |
+| `rights_updates_subscribed` | Mailchimp accepted the address (the dialog submits in the page, through Mailchimp's JSONP endpoint) | `wt-rights/assets/rights.js` |
+| `rights_paper_click` with `cta_location` (`project`, `schedule`) | "Read the white paper" clicked | `wt-rights/assets/rights.js` |
+| `donate_cta_click` | Donate links, by `data-cta-location`: `rights-report`, `rights-report-sidebar`, `rights-region`, `rights-hub`, `rights-project`. They go to `WT_RIGHTS_DONATE_URL` when set, else `/donate/` | The site's existing donate tracking |
 | The gateway's four funnel events | PDF downloads, with `post_type=rights_reports` and `download_source=rights-report` | The download gateway |
 
 **To set up in GTM and GA4 (once):**
 
 1. `content_type` RegEx Table: add `^/language-rights/report/` → `language_rights_report`, and `^/language-rights/?$` → `language_rights`. `rights_page` tells hub, region and report apart.
 2. Data-layer variables for the six page details; add them as parameters on the GA4 page_view.
-3. A Custom Event trigger `rights_updates_signup`, and a GA4 event tag with `rights_region`.
-4. Check that the donate trigger fires on the four new `data-cta-location` values.
+3. Custom Event triggers for `rights_updates_signup` (with `rights_region`), `rights_updates_subscribed` and `rights_paper_click` (with `cta_location`), each with a GA4 event tag.
+4. Check that the donate trigger fires on the five new `data-cta-location` values.
 5. Register `rights_page`, `rights_region`, `rights_country`, `report_version`, `release_status` and `viewer_role` as GA4 custom dimensions.
 6. Leave out our own and journalists' views: a comparison or report filter excluding `viewer_role` press and admin.
 7. Publish the container, then check every event in GA4 DebugView on staging.

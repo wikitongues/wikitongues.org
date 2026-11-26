@@ -67,7 +67,7 @@ if ( $wt_readable ) {
 		<div class="wt-rights__wrap wt-rights__hero-grid">
 			<div>
 				<?php echo wt_rights_embargo_notice( $wt_region->term_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the function. ?>
-				<p class="wt-rights__kicker"><a href="<?php echo esc_url( home_url( '/' . WT_RIGHTS_BASE . '/' ) ); ?>"><?php echo esc_html( wt_rights_report_title() ); ?></a><?php echo $wt_order ? esc_html( ' · ' . sprintf( '%02d / %02d', $wt_order, count( $wt_structure['regions'] ) ) ) : ''; ?></p>
+				<p class="wt-rights__kicker"><a href="<?php echo esc_url( home_url( '/' . WT_RIGHTS_BASE . '/' ) ); ?>"><?php echo esc_html( wt_rights_report_title() ); ?></a><?php echo $wt_order ? esc_html( ' · ' . sprintf( '%02d / %02d', wt_rights_milestone_number( $wt_order ), wt_rights_milestone_total( count( $wt_structure['regions'] ) ) ) ) : ''; ?></p>
 				<h1><?php echo esc_html( $wt_region->name ); ?></h1>
 				<?php if ( ! empty( $wt_front['summary'] ) ) : ?>
 					<p class="wt-rights__deck"><?php echo esc_html( (string) $wt_front['summary'] ); ?></p>

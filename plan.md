@@ -161,11 +161,7 @@ From the roadmap (step 6):
 - **CTA copy pass:** first person and action-oriented, with donation and newsletter CTAs moved higher.
 - **Mostly editorial.** Pages compose from the existing editorial layouts; code changes are limited to the header and menus, and any new layout the pages turn out to need.
 - **Instrument:** add the new pages to GTM's `content_type` lookup so they report as their own content type.
-- **On production as a draft.** **Language Rights** (`/language-rights`) is a draft on production, with its nine FAQs published and its banner and block images uploaded; going live is publishing it. While it is a draft, a logged-out visit is guessed by WordPress into one of the FAQs. Before publishing:
-    - Decide whether this is the pre-launch page or the launch page: the banner says "First edition forthcoming", but parts of the body read as if the report is already out.
-    - Identify the delegate in the banner photo, then name them in its alt text and caption.
-    - Confirm Robby Thigpen's permission covers reusing his photo of Hilario Poot Cahun's class beyond the blog post.
-    - Confirm the list of languages the team reads, quoted in "Help us get it right".
+- **On production as a draft.** **Language Rights** (`/language-rights`) is a draft on production, with its nine FAQs published. It becomes the launch page (2.2, launch page spec). Going live on 10 December: set its template to *Language Rights project*, paste the programs copy (why it matters, background and method) into its content, upload the white paper PDF, then publish. The editorial banner and blocks are no longer shown, so the banner-photo questions lapse. While it is a draft, a logged-out visit is guessed by WordPress into one of the FAQs.
 - **GTM `content_type` (open, done in GTM rather than in code).** `content_type` is a RegEx Table variable in GTM that maps `{{Page Path}}` to a content type and goes out on every `page_view`. Pages it doesn't match get no content type of their own, so their traffic can't be separated out in GA4.
   - **Native Language AI:** live since 2026-11-18 and not mapped yet. Match `/revitalization/resources/native-language-ai/`. The `/ai` short link redirects there before the page loads, so it needs no row of its own.
   - **Language Rights:** add `/language-rights` (and its FAQs) when it launches, and `/language-rights/report/` when the first region releases (2.2).
@@ -244,6 +240,38 @@ PRs 1–8 are merged and deployed; production stays dark until a release is impo
 
 **Decided for the build (2026-11-22):** the exporter is PHP WP-CLI in this repo, run locally; reports are posts with HTML content and one JSON meta value (no ACF); region and front-matter Docs are listed in an Airtable "Publishing Docs" table with each region's release date; embargo is WordPress post status; no PDF exists at any public URL until its region is released; region and Complete Edition PDFs, when designed, are ordinary `documents` posts.
 
+##### Launch page (spec, 2026-11-25)
+
+*Approved 2026-11-25.* `/language-rights/` becomes the launch page from the programs prototype (a hero with one action, why it matters, the white paper, donate, the schedule), built from wt-rights parts instead of editorial layouts. Four technical fixes come with it.
+
+**Entities.** *Milestone*: a numbered step in the public schedule: the announcement (01), seven regional releases (02–08), the Complete Edition (09). *Release*: the internal file number (`2027.1`…), unchanged: milestone numbers are display only.
+
+**Rules.**
+
+| # | Rule |
+|---|---|
+| 1 | One schedule component renders the milestones on the project page and the hub; nothing types dates by hand |
+| 2 | Milestone numbers are computed: announcement 01, a region's `order` + 1, the Complete Edition last. The region kicker reads `02 / 09` |
+| 3 | The announcement's date and white paper come from the release file's `front_matter.announcement` (`release_date`, `paper_url`); missing → the milestone is left out |
+| 4 | "Get release updates" signs up in the page, with no new tab; a success pushes `rights_updates_subscribed`. A Mailchimp tag (`WT_RIGHTS_MAILCHIMP_TAG`) marks the subscriber once set; without scripts it falls back to today's form |
+| 5 | Every report donate link goes to one URL (`WT_RIGHTS_DONATE_URL`, default `/donate/`), keeping `data-cta-location` |
+| 6 | The white paper is a fixed PDF in the media library, open (no gateway), not a live Google Doc export |
+
+**Example cases.**
+
+| Case | Result |
+|---|---|
+| 10 December, release with announcement only | Schedule: 01 announcement with "Read the white paper"; 02–08 upcoming; 09 Complete Edition |
+| South and Central Asia released | Its row reads 02, Released, links the region; the region kicker reads `02 / 09` |
+| No `announcement` in the release | Regions number 02–08 anyway; no 01 row |
+| Visitor signs up | `rights_updates_signup` on the click, `rights_updates_subscribed` on success; "Check your inbox to confirm" in the dialog |
+
+**Display.** Project page: hero (kicker, title, deck, Get release updates), jumpnav, why it matters, white paper, donate band, schedule. The page's own content holds the why and white paper copy, so programs edits it in WordPress.
+
+**Out of scope.** Copy changes; volunteering; segmenting existing subscribers.
+
+**Still to do together:** the Mailchimp tag ID and the donate URL, set as constants on each environment before 10 December.
+
 ##### Open questions
 
 1. **Kristen:** approve the editorial contract, the Held status and the Changes table in [docs/language-rights.md](docs/language-rights.md).
@@ -276,6 +304,9 @@ Live sync from Docs or Airtable; editing report text in WordPress; earlier editi
 | 2026-11-23 | Match the latest prototype's look, reusing site styles; region overview, front matter and a per-region director's letter travel in the release file (optional, absolute state); maps come from wt-maps (a region set per release region) | Frederico's browser review; demo on staging with mock content |
 | 2026-11-23 | No automatic release on the planned date; a person releases each region, from the Releases screen or WP-CLI, and every change is logged | Launch day stays a deliberate act |
 | 2026-11-23 | A report a visitor can't read redirects (302) to its region instead of a 404 | Shared and indexed links keep working when a region is pulled back or a report leaves a release; the region shows no report text before release |
+| 2026-11-25 | Announcement day (10 December) is the first release step: a schedule-only release goes to production and the hub goes live with the schedule. Supersedes 2026-11-23's "production stays dark" for the schedule only; report text still waits for its region | The project page renders the schedule from release data, not hand-typed dates |
+| 2026-11-25 | The public schedule numbers milestones 01–09 with the announcement first; internal release numbers are unchanged | The new first milestone; release numbers are deploy IDs |
+| 2026-11-25 | The white paper is an open PDF; signup capture comes from "Get release updates" | Reach matters most on announcement day |
 | 2026-11-22 | Each report has its own version and public changelog: the why in an Airtable Changes table, the what and the number from the exporter, shown in WordPress | Kristen writes one sentence, never touches GitHub; the log can't drift from what shipped |
 
 #### 2.3 Language and territory pages

@@ -107,6 +107,36 @@ class EditorialTest extends TestCase {
 		$this->assertNull( Editorial::front_matter( array() ) );
 	}
 
+	public function test_the_announcement_keeps_only_a_date_and_a_web_link() {
+		$front = Editorial::front_matter(
+			array(
+				'front_matter' => array(
+					'announcement' => array(
+						'release_date' => '2026-12-10',
+						'paper_url'    => ' https://wikitongues.org/wp-content/uploads/2026/12/white-paper.pdf ',
+					),
+				),
+			)
+		);
+		$this->assertSame(
+			array(
+				'release_date' => '2026-12-10',
+				'paper_url'    => 'https://wikitongues.org/wp-content/uploads/2026/12/white-paper.pdf',
+			),
+			$front['announcement']
+		);
+
+		$bad = Editorial::front_matter( array( 'front_matter' => array( 'announcement' => array( 'paper_url' => 'javascript:alert(1)' ) ) ) );
+		$this->assertSame(
+			array(
+				'release_date' => '',
+				'paper_url'    => '',
+			),
+			$bad['announcement'],
+			'no announcement is an empty one, never a script link'
+		);
+	}
+
 	public function test_the_plan_says_create_update_remove_or_nothing() {
 		$release = array(
 			'regions'      => array( $this->region( $this->overview() ) ),

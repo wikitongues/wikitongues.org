@@ -345,7 +345,7 @@ function wt_rights_sources( array $sources, string $summary = 'Sources' ): strin
 }
 
 /**
- * The donate band, linking to /donate/.
+ * The donate band, linking to wt_rights_donate_url().
  *
  * @param string $location data-cta-location for analytics, e.g. rights-report.
  * @param bool   $dark     The dark band (the hub) rather than the light one.
@@ -355,8 +355,37 @@ function wt_rights_donate_band( string $location, bool $dark = false ): string {
 		. '<p class="wt-rights__kicker">Support Wikitongues</p>'
 		. '<h2 id="wt-rights-support-' . esc_attr( $location ) . '">Help sustain language rights research</h2>'
 		. '<p class="wt-rights__intro">Give $25 to support Wikitongues’ work, including researching language rights and making the findings available to the communities and advocates who use them. You can give once or become a monthly supporter.</p>'
-		. '<a class="wt-rights__donate" href="' . esc_url( home_url( '/donate/' ) ) . '" data-cta-location="' . esc_attr( $location ) . '">Donate to Wikitongues</a>'
+		. '<a class="wt-rights__donate" href="' . esc_url( wt_rights_donate_url() ) . '" data-cta-location="' . esc_attr( $location ) . '">Donate to Wikitongues</a>'
 		. '</div></section>';
+}
+
+/**
+ * Where report donate links go: WT_RIGHTS_DONATE_URL when set (a campaign
+ * link), else the site's donate page.
+ */
+function wt_rights_donate_url(): string {
+	$url = defined( 'WT_RIGHTS_DONATE_URL' ) ? (string) constant( 'WT_RIGHTS_DONATE_URL' ) : '';
+	return '' !== $url ? $url : home_url( '/donate/' );
+}
+
+/**
+ * A region's number in the public schedule. The project announcement is
+ * milestone 01, so the first region is 02; release numbers are unaffected.
+ *
+ * @param int $order The region's release order, from 1.
+ */
+function wt_rights_milestone_number( int $order ): int {
+	return $order + 1;
+}
+
+/**
+ * How many milestones the public schedule has: the announcement, the regions
+ * and the Complete Edition.
+ *
+ * @param int $regions How many regions.
+ */
+function wt_rights_milestone_total( int $regions ): int {
+	return $regions + 2;
 }
 
 /**
@@ -365,7 +394,7 @@ function wt_rights_donate_band( string $location, bool $dark = false ): string {
  * @param string $location data-cta-location for analytics.
  */
 function wt_rights_donate_link_compact( string $location ): string {
-	return '<p class="wt-rights__support-compact">This research is funded by donors. <a href="' . esc_url( home_url( '/donate/' ) ) . '" data-cta-location="' . esc_attr( $location ) . '">Support it →</a></p>';
+	return '<p class="wt-rights__support-compact">This research is funded by donors. <a href="' . esc_url( wt_rights_donate_url() ) . '" data-cta-location="' . esc_attr( $location ) . '">Support it →</a></p>';
 }
 
 /**
