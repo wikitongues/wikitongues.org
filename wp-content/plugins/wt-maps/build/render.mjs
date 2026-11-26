@@ -457,10 +457,13 @@ function render(key, placeIds) {
     groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}${hits.join('')}</g>`;
   }
 
-  // A contested area within about 30 units of a place or a claimed area goes in
-  // the claims layer, in its own neutral hatch (the West Bank and Gaza on a Hebrew
-  // page), and is listed as `revealed` in index.json for the contested-areas diff.
-  // (It was the reveal of the fog in the focused styles, retired 2026-11-24.)
+  // Contested areas (claims spec, display, lookdev F). An active area, one a
+  // highlighted place claims, shows the places' coloured relief under the
+  // brand-red hatch (`hatch-claimed`). Every other area is drawn as plain land
+  // (`plain`): territories are their undisputed parts, so the area still has to
+  // be drawn, but as nobody's. One within about 30 units of a place or a claimed
+  // area goes in the claims layer and is listed as `revealed` in index.json, for
+  // the contested-areas diff.
   const REACH = 30, cell = REACH;
   const grid = new Map();
   const ptsOf = (f) => { const out = []; d3.geoStream(f, proj.stream({ point(x, y) { out.push([x, y]); }, lineStart() {}, lineEnd() {}, polygonStart() {}, polygonEnd() {}, sphere() {} })); return out; };
@@ -480,7 +483,7 @@ function render(key, placeIds) {
     if (isSelf(d)) cls = 'edge'; // already filled in the highlight layer; only its dashed edge here
     else {
       const by = hl.filter(({ id }) => placeClaims(id, d)).map(({ id }) => id);
-      cls = by.length ? 'hatch hatch-claimed' : 'hatch hatch-land';
+      cls = by.length ? 'hatch hatch-claimed' : 'plain';
       if (by.length) extra += ` data-claimants="${by.join(' ')}"`;
     }
     const el = pathEl(d.f, `disputed ${cls}`, extra);
@@ -566,9 +569,11 @@ function render(key, placeIds) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg" data-map="${key}">`
     + `<title id="t-${id}">Map of ${esc(names)}</title><desc id="d-${id}">Map centred on ${esc(names)}.</desc>`
     + `<defs>${groupDefs}`
-    // The coloured relief as the places' fill.
-    + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern></defs>`
-    + `<g class="world" style="--relief:url(#rp-${id})">`
+    // The coloured relief as the places' fill, and as an active contested area's,
+    // under the red hatch the page's shared defs carry (#hatch-claim).
+    + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern>`
+    + `<pattern id="cp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/><rect width="${W}" height="${H}" fill="url(#hatch-claim)"/></pattern></defs>`
+    + `<g class="world" style="--relief:url(#rp-${id});--claim:url(#cp-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + groupHalos
