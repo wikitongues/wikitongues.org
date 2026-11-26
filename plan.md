@@ -440,7 +440,7 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 - **Territory pages:** the territory's map (step 1b, shipped in [#741](https://github.com/wikitongues/wikitongues.org/pull/741)), with its neighbouring countries clickable. Languages have no coordinates, so links go from shapes, not language markers.
 - **Region pages:** each territory on the sub-region map links to its page (step 2a). Shading each territory by how many languages it has is a class PHP adds at render, with no rebuild; it gets its own spec. Some territories list hundreds of languages (India: 403): count raw IDs, as territory pages already do.
 - **A world view**, if one is wanted (homepage, region index): one more prebuilt map. Compare a Waterman butterfly with Equal Earth in the Brand style before choosing.
-- **Instrument:** `map_interaction` (`place`, `action`: `hover` or `click`), sent by the script.
+- **Instrument:** two GA4 events sent by the script; see step 2b.
 - **Order:** step 2a (the settings switch, neighbours tagged in the build, a full rebuild, the script and its CSS); then region shading; then instrumentation.
 - **Idea (2026-11-23): two sidebar maps** for a language with more than one territory: an origin map (where it's traditionally spoken) and a range map (everywhere it's spoken), as Wikipedia's language infoboxes do. The range map needs 6.8's "also spoken in" data; until then the two maps would differ only through the February `territories` copy.
 
@@ -499,7 +499,7 @@ Maps for the five continent pages.
 
 ##### Step 2a: hover labels and clicks (approved 2026-11-23)
 
-Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF). Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
+Prototype on branch `claude/maps-interactivity-01b803`, from before option B.
 
 **Glossary.** *Place:* a territory or subdivision a map highlights (`data-place` = its record ID). *Neighbour:* any other country in the frame. *Contested area:* a Natural Earth disputed area (`data-area`). *Link table:* per figure, record ID → label and URL (`data-wt-map` JSON), built at render.
 
@@ -546,9 +546,48 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-26 | Small contested areas get no special treatment on hover | The dashed line marks them; a second look isn't worth maintaining |
 | 2026-11-26 | `data-claimants` carries every claimant; active is the `hatch-claimed` class | The script needs neighbours' claims; one meaning for "claimant" across the table and the SVG |
 
+##### Step 2b: map analytics
+
+*Draft for approval (2026-11-26). The last piece of 3.2; once it ships, 3.2 closes and the remaining ideas move to a new epic.*
+
+**Decision needed:** approve the two events and their parameters below; open questions 1–2 have recommendations.
+
+**Glossary.** *Show:* a place's label stays up on the map (hover, tap, or focus on its link next to the map). *Open:* the map sends the visitor to a page (click, or a second tap). *Kind:* what was shown: the page's own `place`, a `neighbour`, a `contested` area, or a `region` (continent maps).
+
+**Rules**
+- The map script pushes two events to `window.dataLayer`, as the download gateway does; GTM forwards them to GA4. No gtag code.
+- `map_place_show` fires when a label has stayed up for 1 second, once per place per page view. A pointer sweeping across the map sends nothing.
+- `map_place_open` fires on every open from the map, just before the browser leaves (new-tab clicks included). Contested areas never open, so never send it.
+- Parameters, the same on both: `place_name` (the label's name), `place_id` (the record ID; empty for contested areas and regions), `place_kind`, `input` (`mouse`, `touch` or `list`).
+- Page type is not sent by the script: the GA4 tags add GTM's `content_type` variable, so a language page and a territory page report apart.
+- Nothing personal is sent; record IDs and place names only.
+
+**Example cases**
+
+| Page | Visitor does | Event | place_name | place_kind | input |
+|---|---|---|---|---|---|
+| Ukrainian | rests the pointer on Russia | `map_place_show` | Russia | neighbour | mouse |
+| Ukrainian | clicks Poland | `map_place_open` | Poland | neighbour | mouse |
+| Hawaiian | taps Hawaii, then taps again | show, then open (to the United States page) | Hawaii | place | touch |
+| Ukrainian | rests on Crimea | `map_place_show` (no `place_id`) | Crimea | contested | mouse |
+| Europe | clicks Western Europe | `map_place_open` | Western Europe | region | mouse |
+| French | tabs to the Monaco link next to the map | `map_place_show` | Monaco | place | list |
+| Ukrainian | sweeps across six countries in two seconds | nothing | | | |
+| Ukrainian | rests on Russia, leaves, comes back | one show only | | | |
+
+**Display.** None: nothing on the page changes.
+
+**Setup outside the code (GTM and GA4, by hand).** 4 data-layer variables, 2 custom-event triggers, 2 GA4 event tags (with `content_type`); register `place_name`, `place_kind` and `input` as custom dimensions. Check in GTM preview on staging before production.
+
+**Open questions**
+1. Two events, or one `map_interaction` with an `action` parameter (the earlier plan line)? *Recommend two:* matches the gateway's naming, and either can be marked a key event on its own.
+2. Is 1 second the right hold before a show counts? *Recommend 1 second;* change it later without touching GA4.
+
+**Out of scope.** Which claimed areas lit up, maps scrolled into view, clicks on the place links next to the map (ordinary links), GA4 reports and dashboards.
+
 ##### Claims on hover (what is left of the claims spec)
 
-*Draft for approval (2026-11-26). The claims table and the contested-area display shipped to production on 2026-11-26 ([archive](docs/plan-archive.md), [maps.md](docs/maps.md)); interaction is on everywhere. This adds the hover part. [Prototype](https://claude.ai/artifact/PGbPfj6rw4Asi7JEFSDyyG) on six real maps.*
+*Draft for approval (2026-11-26). The claims table and the contested-area display shipped to production on 2026-11-26 ([archive](docs/plan-archive.md), [maps.md](docs/maps.md)); interaction is on everywhere. This adds the hover part.*
 
 **Glossary.** *Claimant:* a place the claims table says claims an area (any place, on the map or not). *Active area:* one a place on the map claims or is (already red-hatched, or Taiwan's dashed `edge` on its own map). *Hovered place:* a place or neighbour under the pointer, or focused from the list next to the map.
 
