@@ -319,6 +319,44 @@
      "of": "SOL",
      "reason": "Same shape as the Somaliland map unit (spec rule 6).",
      "source": "Natural Earth 5.1.2 geometry: B30 and SOL coincide"
+    },
+    {
+     "area": "B38",
+     "status": "ended",
+     "reason": "Ended: Azerbaijan retook the area in September 2023, the Republic of Artsakh dissolved itself from 1 January 2024, and Armenia recognises Azerbaijan's territorial integrity. No current claim against Azerbaijan remains.",
+     "source": "Republic of Artsakh presidential decree of 28 September 2023; Armenia–Azerbaijan peace agreement initialled in Washington, 8 August 2025"
+    },
+    {
+     "area": "B13",
+     "add": [
+      "rec1iI0r31FHStjB1"
+     ],
+     "reason": "South Sudan claims Abyei as well as Sudan; its final status is undecided under the 2005 Abyei Protocol.",
+     "source": "UN Security Council resolution 2802 (14 November 2025), renewing UNISFA"
+    },
+    {
+     "area": "B15",
+     "add": [
+      "reckeHB2nxgdUdyUo"
+     ],
+     "reason": "Suriname claims the Tigri / New River Triangle, which Guyana administers; it protested Guyana's airstrip plans there in 2024 and restated the claim in 2026.",
+     "source": "Suriname Ministry of Foreign Affairs, summons of Guyana's ambassador (November 2024); Stabroek News, 30 November 2024"
+    },
+    {
+     "area": "B14",
+     "add": [
+      "reckeHB2nxgdUdyUo"
+     ],
+     "reason": "Suriname claims the Lawa headwaters between the Litani and Marouini rivers, which France administers as part of French Guiana.",
+     "source": "Suriname's official maps, which show the area within Suriname"
+    },
+    {
+     "area": "C04",
+     "add": [
+      "recefuh0CXs07rCR9"
+     ],
+     "reason": "The Philippines claims North Borneo (Sabah) in statute and restated the claim in 2026.",
+     "source": "Philippine Republic Act 5446 (1968), section 2; Department of Foreign Affairs statement, February 2026"
     }
    ]
   }
