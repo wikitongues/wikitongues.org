@@ -21,7 +21,9 @@ import zlib from 'node:zlib';
 import * as d3 from 'd3-geo';
 import { choose, maxStretch, W, H } from './projection.mjs';
 import { CACHE, STAGE, FRAMES, readJson, writeJson, readFrames, onlyKeys } from './common.mjs';
-import { claimResolver } from './claims.mjs';
+import { neAreas, shapedAreas, isSelf as isSelfFor, contestedAreas, CLAIMS_FILE } from './contested.mjs';
+import { readClaims } from './claims-table.mjs';
+import { subtractAreas } from './undisputed.mjs';
 
 const R_EARTH = 6371000;
 const layer = (n, res = '50m') => readJson(path.join(CACHE, 'ne', `ne_${res}_admin_0_${n}.geojson`)).features;
@@ -80,18 +82,28 @@ const unitsByCountry = unitsOf(units), unitsByCountry10 = unitsOf(units10);
 // Frames tighter than this radius draw from 1:10m.
 const FINE_BELOW_DEG = 6;
 
-// Disputed overlays: every NE breakaway area, plus the map units that are
-// themselves contested states or areas.
-const DISPUTED_UNITS = ['KOS', 'SOL', 'CYN', 'GAZ', 'WEB', 'SAH', 'TWN'];
-const POV_KEYS = Object.keys(brk[0].properties).filter((k) => /^ADM0_A3(_[A-Z]{2})?$/.test(k));
-const disputed = [
-  ...brk.map((f) => ({ code: f.properties.BRK_A3, name: f.properties.BRK_NAME, f })),
-  ...DISPUTED_UNITS.map((c) => ({ code: c, name: idx.units[c].properties.NAME, f: idx.units[c] })),
-].map((d) => {
-  const p = d.f.properties;
-  const claimants = new Set(POV_KEYS.map((k) => p[k]).filter((v) => typeof v === 'string' && /^[A-Z]{3}$/.test(v) && !/^[BC]\d\d$/.test(v)));
-  return { ...d, defacto: p.ADM0_A3, claimants };
-});
+// Contested areas: Natural Earth's shapes, with who claims each from the
+// claims table (contested.mjs). `claimants` holds record IDs. Areas the table
+// adds from admin-1 (the 2022 oblasts) are 1:10m.
+const admin1 = () => readJson(path.join(CACHE, 'ne', 'ne_10m_admin_1_states_provinces.geojson')).features;
+const disputed = contestedAreas([...neAreas(brk, idx.units), ...shapedAreas(readClaims(CLAIMS_FILE), admin1)]);
+
+// Undisputed parts (claims spec rule 3): cut the contested areas out of every
+// shape, at both scales, before anything is drawn or framed. A shape keeps an
+// area it stands for: its own code, or a place drawn from it that is the area.
+const placesByRef = {};
+for (const place of Object.values(input.places)) {
+  const refs = place.shapes.map((s) => s.split(':'));
+  for (const [l, c] of refs) (placesByRef[`${l}:${c}`] ??= []).push(refs);
+}
+const standsFor = (layerName, codeKey) => (f, a) => {
+  const p = f.properties;
+  if ([p.ADM0_A3, p.GU_A3, p.SU_A3].includes(a.code)) return true;
+  return (placesByRef[`${layerName}:${p[codeKey]}`] ?? []).some((refs) => isSelfFor(refs, a));
+};
+for (const [fs_, l, k] of [[countries, 'countries', 'ADM0_A3'], [countries10, 'countries', 'ADM0_A3'], [units, 'units', 'GU_A3'], [units10, 'units', 'GU_A3'], [subunits, 'subunits', 'SU_A3'], [subunits10, 'subunits', 'SU_A3']]) {
+  subtractAreas(fs_, disputed, standsFor(l, k));
+}
 
 const refsOf = (placeId) => {
   const place = input.places[placeId];
@@ -103,9 +115,8 @@ const geomFor = (refs, ix = idx) => refs.map(([l, c]) => {
   if (!f) throw new Error(`Natural Earth has no ${l}:${c}`);
   return f;
 });
-// Whether a highlighted place claims a contested area (claims.mjs): a country's
-// claim belongs to its part nearest the area.
-const placeClaims = claimResolver(subunits);
+// Whether a highlighted place claims a contested area: the table says, by record ID.
+const placeClaims = (id, d) => d.claimants.has(id);
 
 // Split into polygons, keep the main body and anything big or close to it.
 function framingParts(feature) {
@@ -187,8 +198,8 @@ function render(key, placeIds) {
   // always inside the frame. Leaving one out (Crimea cut off on a Ukrainian page)
   // would be a statement. The rule is symmetric: a Russian page
   // frames and reveals Crimea too, hatched.
-  const isSelf = (d) => hl.some(({ refs }) => refs.some(([l, c]) => c === d.code || (l !== 'countries' && c === d.defacto)));
-  const claimed = disputed.filter((d) => !isSelf(d) && hl.some(({ refs }) => placeClaims(refs, d)));
+  const isSelf = (d) => hl.some(({ refs }) => isSelfFor(refs, d));
+  const claimed = disputed.filter((d) => !isSelf(d) && hl.some(({ id }) => placeClaims(id, d)));
   const claimedSet = new Set(claimed);
 
   // Frame on the main body of every highlighted place, plus the areas it claims.
@@ -446,10 +457,13 @@ function render(key, placeIds) {
     groupHalos = `<g class="grp-halos">${islands.map((n) => `<g filter="url(#gh-${key})"><use href="#grp-${n}-${key}"/><use href="#dots-${n}-${key}"/>${bridges(n)}</g>`).join('')}${hits.join('')}</g>`;
   }
 
-  // A contested area within about 30 units of a place or a claimed area goes in
-  // the claims layer, in its own neutral hatch (the West Bank and Gaza on a Hebrew
-  // page), and is listed as `revealed` in index.json for the contested-areas diff.
-  // (It was the reveal of the fog in the focused styles, retired 2026-11-24.)
+  // Contested areas (claims spec, display, lookdev F). An active area, one a
+  // highlighted place claims, shows the places' coloured relief under the
+  // brand-red hatch (`hatch-claimed`). Every other area is drawn as plain land
+  // (`plain`): territories are their undisputed parts, so the area still has to
+  // be drawn, but as nobody's. One within about 30 units of a place or a claimed
+  // area goes in the claims layer and is listed as `revealed` in index.json, for
+  // the contested-areas diff.
   const REACH = 30, cell = REACH;
   const grid = new Map();
   const ptsOf = (f) => { const out = []; d3.geoStream(f, proj.stream({ point(x, y) { out.push([x, y]); }, lineStart() {}, lineEnd() {}, polygonStart() {}, polygonEnd() {}, sphere() {} })); return out; };
@@ -468,8 +482,8 @@ function render(key, placeIds) {
     let cls, extra = ` data-area="${esc(d.name)}"`;
     if (isSelf(d)) cls = 'edge'; // already filled in the highlight layer; only its dashed edge here
     else {
-      const by = hl.filter(({ refs }) => placeClaims(refs, d)).map(({ id }) => id);
-      cls = by.length ? 'hatch hatch-claimed' : 'hatch hatch-land';
+      const by = hl.filter(({ id }) => placeClaims(id, d)).map(({ id }) => id);
+      cls = by.length ? 'hatch hatch-claimed' : 'plain';
       if (by.length) extra += ` data-claimants="${by.join(' ')}"`;
     }
     const el = pathEl(d.f, `disputed ${cls}`, extra);
@@ -555,9 +569,11 @@ function render(key, placeIds) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t-${id} d-${id}" class="wt-map__svg" data-map="${key}">`
     + `<title id="t-${id}">Map of ${esc(names)}</title><desc id="d-${id}">Map centred on ${esc(names)}.</desc>`
     + `<defs>${groupDefs}`
-    // The coloured relief as the places' fill.
-    + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern></defs>`
-    + `<g class="world" style="--relief:url(#rp-${id})">`
+    // The coloured relief as the places' fill, and as an active contested area's,
+    // under the red hatch the page's shared defs carry (#hatch-claim).
+    + `<pattern id="rp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/></pattern>`
+    + `<pattern id="cp-${id}" patternUnits="userSpaceOnUse" width="${W}" height="${H}"><image href="relief/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/><rect width="${W}" height="${H}" fill="url(#hatch-claim)"/></pattern></defs>`
+    + `<g class="world" style="--relief:url(#rp-${id});--claim:url(#cp-${id})">`
     + `<rect class="sea" width="${W}" height="${H}"/>`
     + `<image class="seashade" href="sea/${key}.webp" width="${W}" height="${H}" preserveAspectRatio="none"/>`
     + groupHalos
