@@ -3,11 +3,13 @@
  * Analytics for the report's pages. As everywhere on the site, the code only
  * pushes to the data layer; Google Tag Manager forwards to GA4.
  *
- * - Page details, before GTM loads: rights_page (hub, region, report),
+ * - Page details, before GTM loads: rights_page (project, hub, region, report),
  *   rights_region, rights_country, report_version, release_status, and
  *   viewer_role (press, admin or empty), so GA4 can leave out our own and
  *   journalists' visits.
- * - rights_updates_signup, when "Get release updates" is clicked.
+ * - rights_updates_signup, when "Get release updates" is clicked, and
+ *   rights_updates_subscribed when Mailchimp accepts the address;
+ *   rights_paper_click when the white paper link is clicked.
  * - Donate clicks are the site's existing donate_cta_click, through each
  *   link's data-cta-location; PDF downloads are the download gateway's
  *   funnel events, with post_type rights_reports.
@@ -24,6 +26,8 @@ function wt_rights_page_context(): ?array {
 	$context = null;
 	if ( get_query_var( 'wt_rights_hub' ) ) {
 		$context = array( 'rights_page' => 'hub' );
+	} elseif ( is_page_template( 'template-rights-project.php' ) ) {
+		$context = array( 'rights_page' => 'project' );
 	} elseif ( is_tax( 'rights_region' ) ) {
 		$term    = get_queried_object();
 		$context = array(

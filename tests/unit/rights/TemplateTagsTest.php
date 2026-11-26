@@ -10,6 +10,18 @@ class TemplateTagsTest extends TestCase {
 		return $post;
 	}
 
+	public function test_the_announcement_is_milestone_one_so_regions_start_at_two() {
+		$this->assertSame( 2, wt_rights_milestone_number( 1 ), 'South and Central Asia, release order 1' );
+		$this->assertSame( 8, wt_rights_milestone_number( 7 ) );
+		$this->assertSame( 9, wt_rights_milestone_total( 7 ), 'the Complete Edition is last' );
+	}
+
+	public function test_donate_links_use_the_site_donate_page_until_a_campaign_is_set() {
+		WP_Mock::userFunction( 'home_url' )->with( '/donate/' )->andReturn( 'https://example.org/donate/' );
+
+		$this->assertSame( 'https://example.org/donate/', wt_rights_donate_url() );
+	}
+
 	public function test_the_tally_counts_answers_and_skips_empty_ones() {
 		$answers = array(
 			1 => array(
