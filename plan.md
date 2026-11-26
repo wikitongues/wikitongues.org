@@ -399,7 +399,7 @@ The homepage is static. Surface recent oral histories, the active campaign (from
 
 #### 3.2 Maps
 
-*Now #7. Step 1, the locator map on language pages, shipped 2026-11-23 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). Steps 1b, 1c and 2a reached production on 2026-11-25 ([#761](https://github.com/wikitongues/wikitongues.org/pull/761)), with map interaction switched off in Settings → Maps. The claims work (table, undisputed parts, review layers, contested-area display) reached production on 2026-11-26 ([#772](https://github.com/wikitongues/wikitongues.org/pull/772)); interaction waits on the claims-on-hover display below.*
+*Now #7. Step 1, the locator map on language pages, shipped 2026-11-23 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). Steps 1b, 1c and 2a reached production on 2026-11-25 ([#761](https://github.com/wikitongues/wikitongues.org/pull/761)), with map interaction switched off in Settings → Maps. The claims work (table, undisputed parts, review layers, contested-area display) reached production on 2026-11-26 ([#772](https://github.com/wikitongues/wikitongues.org/pull/772)); map interaction was switched on everywhere the same day. Next: claims on hover, below.*
 
 ##### Step 2: interactive maps
 
@@ -510,11 +510,11 @@ Spec and demo: [review page](https://claude.ai/artifact/BMndVjSeHX2L122bVdmjoF).
 | 2026-11-25 | On hover, inactive claimed areas hatch in blue; red stays for the page's places | Red on every hover was too loud (India's claims on Taiwan's map); one meaning per colour |
 | 2026-11-25 | Hover outline: solid round the undisputed part, dashed round claimed areas | Shows every claim, Ukraine's included, without drawing any claim as a settled border |
 | 2026-11-25 | Production ships with map interaction off (Settings → Maps, also off on staging) | Hover outlines show contested areas by control until the claims table lands |
-| 2026-11-26 | Interaction stays off after the claims work ships | Hover outlines still need the claims-on-hover display above; turn on staging first |
+| 2026-11-26 | Map interaction switched on everywhere (Settings → Maps), once the claims work reached production | Territories are drawn as their undisputed part, so hover outlines no longer take sides; claims on hover follows as an addition |
 
 ##### Claims on hover (what is left of the claims spec)
 
-*The claims table and the contested-area display shipped to production on 2026-11-26 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). What is left is the hover part, built when interaction goes on, staging first.*
+*The claims table and the contested-area display shipped to production on 2026-11-26 (see the [archive](docs/plan-archive.md) and [maps.md](docs/maps.md)). What is left is the hover part. Interaction is on (2026-11-26), so this adds to it.*
 
 - A territory's hover outline is one continuous line: solid round its undisputed part, dashed round the areas it claims, nothing along the border between them ([prototype](https://claude.ai/artifact/HRjZhdcJts8ZaFa2Vweo6P)).
 - Its claimed areas light up while hovered: an area already active on the map stays red; any other is hatched in the hover blue, so red only ever marks the page's places.

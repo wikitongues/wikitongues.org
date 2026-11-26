@@ -2,7 +2,7 @@
 
 Locator maps for language pages (plan 3.2, step 1; shipped 2026-11-23), territory pages and sub-region pages (step 1b, 2026-11-23). This file describes what is built and the decisions behind it ([Design decisions](#design-decisions)). The data model they follow, territories, origins and subdivisions, is [plan 6.8](../plan.md#68-language-geography-across-airtable-make-and-wordpress). Step 2, interactive maps on territory and region pages, is still in the plan.
 
-Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table, undisputed parts and the contested-area display (claims spec, on production 2026-11-26). Not yet built (plan 3.2): claims on hover (with interaction), credits, and the review tooling.
+Built: the shape table, the `doctor` and `export` commands, the build (317 maps: 270 for languages and the Language Rights report, 47 more for territory, sub-region and continent pages), the renderer `wt_map()` with the `[wt_map]` shortcode, the style (Light full only since 2026-11-24), the settings page, and the sidebar map with its caption. The claims table, undisputed parts and the contested-area display (claims spec, on production 2026-11-26). Not yet built (plan 3.2): claims on hover, credits, and the review tooling.
 
 ## Map sets and the build
 

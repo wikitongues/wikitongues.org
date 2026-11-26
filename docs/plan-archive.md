@@ -67,7 +67,7 @@ When something in the plan is done: remove it from `plan.md`, add a log entry he
 | 2026-11-25 | Maps with an active contested area carry a one-line disclaimer; the credits page the full note | US and UK government maps carry one; it states the neutral stance where a dispute is drawn |
 | 2026-11-25 | No "administered by / claimed by" labels | Same reason as no claimant names; the audit found US maps use them, but they take a position |
 
-Described in [maps.md](maps.md) and [maps-claims-guide.md](maps-claims-guide.md). Left open (plan 3.2): the claims-on-hover display and turning interaction on, the credits-page note, the Kashmir (B08) label, review tooling, and the yearly review.
+Described in [maps.md](maps.md) and [maps-claims-guide.md](maps-claims-guide.md). Map interaction was switched on everywhere the same day. Left open (plan 3.2): the claims-on-hover display, the credits-page note, the Kashmir (B08) label, review tooling, and the yearly review.
 
 ---
 
