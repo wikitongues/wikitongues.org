@@ -1,6 +1,6 @@
 # Managing the claims table
 
-How a person keeps the maps' contested areas right: who claims what, where to look, what to press, and who does what. The rules themselves are in plan.md 3.2 ("Claims: contested areas"); how the code works is in [maps.md → Claims table](maps.md#claims-table).
+How a person keeps the maps' contested areas right: who claims what, where to look, what to press, and who does what. The rules themselves, and how the code works, are in [maps.md → Claims table](maps.md#claims-table).
 
 **Owner:** Frederico Andrade edits and reviews the table and owns the yearly review.
 
