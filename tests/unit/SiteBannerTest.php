@@ -299,4 +299,28 @@ class SiteBannerTest extends TestCase {
 		$this->assertIsString( wt_site_banner_validate_id( true, 'Giving Tuesday' ) );
 		$this->assertIsString( wt_site_banner_validate_id( true, 'giving--tuesday' ) );
 	}
+
+	public function test_banner_ids_must_be_unique() {
+		$_POST['acf'] = array(
+			'field_wt_site_banner_rows' => array(
+				'row-0'         => array( 'field_wt_site_banner_id' => 'giving-tuesday-2026' ),
+				'row-1'         => array( 'field_wt_site_banner_id' => 'giving-tuesday-2026' ),
+				'row-2'         => array( 'field_wt_site_banner_id' => 'language-rights-launch' ),
+				'acfcloneindex' => array( 'field_wt_site_banner_id' => 'giving-tuesday-2026' ),
+			),
+		);
+		WP_Mock::passthruFunction( 'wp_unslash' );
+		$this->assertIsString( wt_site_banner_validate_id( true, 'giving-tuesday-2026' ) );
+		$this->assertTrue( wt_site_banner_validate_id( true, 'language-rights-launch' ) );
+		unset( $_POST['acf'] );
+	}
+
+	public function test_id_count_ignores_the_template_row() {
+		$rows = array(
+			'row-0'         => array( 'field_wt_site_banner_id' => 'a' ),
+			'acfcloneindex' => array( 'field_wt_site_banner_id' => 'a' ),
+		);
+		$this->assertSame( 1, wt_site_banner_id_count( $rows, 'a' ) );
+		$this->assertSame( 0, wt_site_banner_id_count( 'not rows', 'a' ) );
+	}
 }

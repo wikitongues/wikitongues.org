@@ -1,6 +1,7 @@
 /**
- * Site banner (plan 1.4). Pushes site_banner_click and site_banner_dismiss to
- * the data layer; GTM forwards them to GA4. Donation-form clicks also carry
+ * Site banner (plan 1.4). Pushes site_banner_view (once per page, when the
+ * banner isn't dismissed), site_banner_click and site_banner_dismiss to the
+ * data layer; GTM forwards them to GA4. Donation-form clicks also carry
  * data-cta-location, so they count in donate_cta_click too.
  *
  * Dismissing stores the banner ID in localStorage (wt_site_banner_dismissed,
@@ -32,6 +33,12 @@
 			banner_id: banner ? banner.getAttribute( 'data-site-banner' ) : '',
 			cta_type: banner ? banner.getAttribute( 'data-site-banner-cta' ) : '',
 		} );
+	}
+
+	// One view per page, only when the visitor can see it.
+	var shown = document.querySelector( '.wt_site-banner' );
+	if ( shown && ! document.documentElement.classList.contains( 'wt-site-banner-dismissed' ) ) {
+		push( 'site_banner_view', shown );
 	}
 
 	document.addEventListener( 'click', function ( event ) {
