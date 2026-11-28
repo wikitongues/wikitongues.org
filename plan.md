@@ -172,8 +172,8 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | 5 | The button is a **link** (any URL) or a **donation form** (a FundraiseUp campaign key, `FUN…`, opened as the modal over the current page with `?form=`). Both open in the same tab. A donation-form banner can't be saved without a key, and the `X…` element codes in `donorsupport.co` links are refused: they look like campaign codes but `?form=` ignores them. |
 | 6 | A banner never shows on its target page. |
 | 7 | The message is plain text, one line, at most 100 characters; the button label at most 24. ACF enforces both. Output is escaped. |
-| 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. Step 1 adds `site_banner_view` and `site_banner_dismiss`. |
-| 9 | *(Step 1)* A dismissed banner stays hidden for that banner ID in that browser (localStorage). A new ID shows again; edited copy under the same ID doesn't. |
+| 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. Dismissing sends `site_banner_dismiss`; step 1 adds `site_banner_view`. |
+| 9 | A dismissed banner stays hidden for that banner ID in that browser (localStorage). A new ID shows again; edited copy under the same ID doesn't. |
 | 10 | Nothing live means no strip, and the masthead takes no space. |
 | 11 | An end before its start can't be saved. |
 
@@ -209,7 +209,7 @@ Where the alert banner sits today: the first child of the sticky `.wt_masthead`,
 | # | PR | Done when |
 |---|---|---|
 | 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
-| 1 | Many rows, Now showing, dismiss, view and dismiss events | By 9 Dec, with the Rights banner scheduled |
+| 1 | Many rows, Now showing, the view event (dismiss shipped early, 2026-11-28) | By 9 Dec, with the Rights banner scheduled |
 | 2 | *Nice to have, after the plan's Now queue ships.* Skeleton state for the admin page: one banner open with its empty fields, and a preview of the strip with plain placeholder blocks (not example text) where the message and button go, filled as the editor types. See *Admin* in [Ideas](#ideas) | An empty page shows the shape of a banner without instructions |
 
 ##### Open questions
@@ -232,6 +232,7 @@ FundraiseUp configuration (1.1); countdowns and progress bars; audience or per-p
 | 2026-11-28 | Times are Eastern | The organization works on Eastern time; the site clock is UTC |
 | 2026-11-28 | A list from step 0, capped at one row | Step 1 lifts the cap without moving data |
 | 2026-11-28 | Copy ships without review beforehand; Kristen reviews it after launch | The dates are close and fixed |
+| 2026-11-28 | Dismiss moves from step 1 to before Giving Tuesday; text before the message's first colon is its bold lead-in | The banner sits in the sticky masthead, so one you can't close costs space on every page |
 | 2026-11-28 | Admin pages show more and tell less: skeleton states, not instructions. A nice-to-have once the plan ships | An editor understands a page from its shape faster than from text about it |
 
 ### 2. Pages & storytelling

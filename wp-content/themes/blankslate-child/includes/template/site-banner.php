@@ -193,6 +193,52 @@ function wt_site_banner(): ?array {
 }
 
 /**
+ * Split a message into its bold lead-in and the rest: the text before the
+ * first colon, when that colon comes within the first 40 characters and
+ * something follows it ("Giving Tuesday:" + " 9 in 10 languages…").
+ *
+ * @param string $message The banner message.
+ * @return array{lead: string, rest: string}
+ */
+function wt_site_banner_message_parts( string $message ): array {
+	$message = trim( $message );
+	$colon   = strpos( $message, ':' );
+	if ( false === $colon || $colon > 40 || '' === trim( substr( $message, $colon + 1 ) ) ) {
+		return array(
+			'lead' => '',
+			'rest' => $message,
+		);
+	}
+	return array(
+		'lead' => substr( $message, 0, $colon + 1 ),
+		'rest' => ' ' . ltrim( substr( $message, $colon + 1 ) ),
+	);
+}
+
+/**
+ * The inline script that hides a dismissed banner before the page paints:
+ * if this banner's ID is in localStorage, <html> gets wt-site-banner-dismissed.
+ *
+ * @param string $banner_id The banner shown on this page.
+ */
+function wt_site_banner_dismiss_check( string $banner_id ): string {
+	return '(function(){try{var l=JSON.parse(localStorage.getItem("wt_site_banner_dismissed")||"[]");'
+		. 'if(Array.isArray(l)&&l.indexOf(' . wp_json_encode( $banner_id ) . ')!==-1){document.documentElement.classList.add("wt-site-banner-dismissed");}}catch(e){}})();';
+}
+
+/**
+ * Print the dismiss check early in <head>, only when a banner shows.
+ */
+function wt_site_banner_head_script(): void {
+	$banner = wt_site_banner();
+	if ( null === $banner || '' === (string) ( $banner['banner_id'] ?? '' ) ) {
+		return;
+	}
+	wp_print_inline_script_tag( wt_site_banner_dismiss_check( (string) $banner['banner_id'] ) );
+}
+add_action( 'wp_head', 'wt_site_banner_head_script', 1 );
+
+/**
  * Admin validation for a banner's end: it can't come before its start
  * (rule 11). The sibling start is read from the same repeater row.
  *

@@ -32,9 +32,13 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 
 ## Display and analytics
 
-`header.php` includes `modules/banners/banner--site.php` as the first child of the sticky `.wt_masthead`; styles are in `stylus/require/banner--site.styl`. When a banner shows, `js/site-banner.js` pushes `site_banner_click` (`banner_id`, `cta_type`) to the data layer. A donation-form button also carries `data-cta-location="site-banner"`, so it counts in `donate_cta_click`.
+`header.php` includes `modules/banners/banner--site.php` as the first child of the sticky `.wt_masthead`; styles are in `stylus/require/banner--site.styl`. About 50px tall on desktop: the message at 16px, with any text before its first colon (within 40 characters) set bold as a lead-in (`wt_site_banner_message_parts()`), and a yellow pill button that doesn't look like the nav. On phones the message wraps beside the button.
 
-*Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), a custom-event trigger on `site_banner_click`, and a GA4 event tag; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
+**Dismiss.** The × stores the banner ID in localStorage (`wt_site_banner_dismissed`, a JSON list of the last 20 IDs) and hides the strip. On later pages, an inline script printed early in `<head>` (`wt_site_banner_head_script()`) adds `wt-site-banner-dismissed` to `<html>` before the body renders, so a dismissed banner never flashes. A new banner ID shows again; edited copy under the same ID stays dismissed. If storage is blocked, the banner hides for that page only.
+
+**Events.** `js/site-banner.js` pushes `site_banner_click` and `site_banner_dismiss` (`banner_id`, `cta_type`) to the data layer. A donation-form button also carries `data-cta-location="site-banner"`, so it counts in `donate_cta_click`.
+
+*Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), custom-event triggers on `site_banner_click` and `site_banner_dismiss`, and a GA4 event tag for each; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
 
 **Schedule status.** On the admin page, `js/site-banner-admin.js` puts a pill on each banner's Schedule heading: Off, Scheduled, Live now, Ended, or End is before start. It applies the same rule as `wt_site_banner_is_live()` to the form as it stands, in Eastern time from the browser's clock, and refreshes every second. It doesn't know about rule 6 (hidden on the target page).
 

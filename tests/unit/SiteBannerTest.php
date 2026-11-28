@@ -253,6 +253,35 @@ class SiteBannerTest extends TestCase {
 		$this->assertSame( 'FUNFLYUUBYT', wt_site_banner_save_campaign( '?form=funflyuubyt' ) );
 	}
 
+	// Display: lead-in and dismiss.
+
+	public function test_text_before_the_first_colon_is_the_lead_in() {
+		$parts = wt_site_banner_message_parts( 'Giving Tuesday: 9 in 10 languages still have no voice in our archive.' );
+		$this->assertSame( 'Giving Tuesday:', $parts['lead'] );
+		$this->assertSame( ' 9 in 10 languages still have no voice in our archive.', $parts['rest'] );
+	}
+
+	public function test_no_lead_in_without_an_early_colon() {
+		$this->assertSame( '', wt_site_banner_message_parts( 'Read the Language Rights report.' )['lead'] );
+		$this->assertSame( '', wt_site_banner_message_parts( 'A very long opening sentence that runs well past forty characters: then more' )['lead'] );
+		$this->assertSame( '', wt_site_banner_message_parts( 'Ends with a colon:' )['lead'] );
+	}
+
+	public function test_dismiss_check_looks_for_this_banner_id() {
+		WP_Mock::userFunction(
+			'wp_json_encode',
+			array(
+				'return' => function ( $value ) {
+					return json_encode( $value ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+				},
+			)
+		);
+		$script = wt_site_banner_dismiss_check( 'giving-tuesday-2026' );
+		$this->assertStringContainsString( 'indexOf("giving-tuesday-2026")', $script );
+		$this->assertStringContainsString( 'wt_site_banner_dismissed', $script );
+		$this->assertStringContainsString( 'catch(e)', $script );
+	}
+
 	// Admin validation.
 
 	public function test_end_before_start_is_refused() {
