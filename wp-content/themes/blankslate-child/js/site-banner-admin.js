@@ -56,14 +56,15 @@
 		if ( start && end && end <= start ) {
 			return { state: 'error', text: 'End is before start' };
 		}
+		// Archived (rule 13) whatever the switch says: the end has passed.
+		if ( end && now >= end ) {
+			return { state: 'archived', text: 'Archived · ended ' + readable( end ) };
+		}
 		if ( ! toggle || ! toggle.checked ) {
 			return { state: 'off', text: 'Off' };
 		}
 		if ( start && now < start ) {
 			return { state: 'scheduled', text: 'Scheduled · starts ' + readable( start ) };
-		}
-		if ( end && now >= end ) {
-			return { state: 'ended', text: 'Ended ' + readable( end ) };
 		}
 		return { state: 'live', text: end ? 'Live now · until ' + readable( end ) : 'Live now' };
 	}
@@ -126,6 +127,41 @@
 		}
 	}
 
+	// Rule 13: archived banners (end passed) are hidden behind a toggle. Decided
+	// once, on load, so a banner never vanishes while it is being edited.
+	function archiveOnLoad() {
+		var list = document.querySelector( '[data-key="field_wt_site_banner_rows"]' );
+		if ( ! list ) {
+			return;
+		}
+		var now = nowEastern();
+		var count = 0;
+		list.querySelectorAll( '.acf-row:not(.acf-clone)' ).forEach( function ( row ) {
+			var end = ( field( row, KEYS.end, 'input.input-alt' ) || {} ).value || '';
+			if ( end && now >= end ) {
+				row.classList.add( 'wt-sb-archived' );
+				count++;
+			}
+		} );
+		if ( ! count ) {
+			return;
+		}
+		var button = document.createElement( 'button' );
+		button.type = 'button';
+		button.className = 'button wt-sb-archive-toggle';
+		var label = function () {
+			button.textContent = ( list.classList.contains( 'wt-sb-show-archived' ) ? 'Hide archived (' : 'Show archived (' ) + count + ')';
+		};
+		label();
+		button.addEventListener( 'click', function () {
+			list.classList.toggle( 'wt-sb-show-archived' );
+			label();
+		} );
+		var input = list.querySelector( '.acf-input' ) || list;
+		input.appendChild( button );
+	}
+
+	archiveOnLoad();
 	refresh();
 	setInterval( refresh, 1000 );
 }() );

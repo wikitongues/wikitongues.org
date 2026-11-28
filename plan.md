@@ -160,6 +160,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | **Banner ID** | A slug the editor sets once (`giving-tuesday-2026`). Analytics and dismissals key on it, never on the message |
 | **Live** | Switched On, and now (Eastern) falls within its start and end |
 | **Target page** | Where the button leads. For a donation-form button, `/donate` |
+| **Archived** | A banner whose end has passed. Worked out from its end date, never stored; moving the end later restores it |
 
 ##### Rules
 
@@ -177,6 +178,8 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | 10 | Nothing live means no strip, and the masthead takes no space. |
 | 11 | An end before its start can't be saved. |
 | 12 | Banner IDs are unique in the list; a duplicate can't be saved. |
+| 13 | Archived banners stay in the list, in place. The admin page hides them behind "Show archived (n)", decided when the page loads, so a banner never vanishes while being edited. Nothing is moved or deleted for them. |
+| 14 | Banner rows are autoloaded, so reading them costs no queries beyond the one WordPress already makes. Saving the page sets autoload on every banner row (absolute state, safe to repeat). |
 
 ##### Example cases
 
@@ -189,6 +192,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | Emergency off | GT switched Off at 14:00 on 1 Dec | Gone on the next request (rules 2, 4) |
 | Visitor dismissed GT | The Rights banner starts on 10 Dec | The Rights banner shows (rule 9) |
 | All Off, or an empty list | — | No strip (rule 10) |
+| Giving Tuesday, a week later | End 2 Dec has passed | Archived: hidden on the admin page behind "Show archived (1)"; its pill reads "Archived · ended 2 Dec". Moving the end to next year brings it back on the next load (rule 13) |
 
 ##### Admin
 
@@ -197,7 +201,7 @@ Its own options page, **Site banner**, in the admin menu, not inside Global Opti
 1. **Now showing:** a read-only line at the top, worked out when the page loads. "Live now: giving-tuesday-2026, until 1 Dec 11:59 pm Eastern" · "Next: language-rights-launch, from 10 Dec 12:00 am Eastern" · "Nothing is showing."
 2. **Banners:** a repeater whose collapsed rows show the ID and the switch. Each row has two parts. *Content:* ID, message, button label, button type, then URL or campaign code. *Schedule:* switch (On/Off), start, end.
 
-3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Live but outranked by a banner above it (rule 1), Ended, or End is before start. It follows the form as edited, before saving, using rule 2.
+3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Live but outranked by a banner above it (rule 1), Archived, or End is before start. It follows the form as edited, before saving, using rule 2.
 
 Step 0 shipped the repeater capped at one row; step 1 removes the cap. Field names don't change, so no data moves.
 
@@ -210,7 +214,7 @@ Where the alert banner sits today: the first child of the sticky `.wt_masthead`,
 | # | PR | Done when |
 |---|---|---|
 | 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
-| 1 | Any number of rows, with unique IDs, Now showing, the view event (dismiss shipped early, 2026-11-28). Built 2026-11-28 | By 9 Dec, with the Rights banner scheduled |
+| 1 | Any number of rows, with unique IDs, archived banners filtered (rule 13), autoloaded rows (rule 14), Now showing, the view event (dismiss shipped early, 2026-11-28). Built 2026-11-28 | By 9 Dec, with the Rights banner scheduled |
 | 2 | *Nice to have, after the plan's Now queue ships.* Skeleton state for the admin page: one banner open with its empty fields, and a preview of the strip with plain placeholder blocks (not example text) where the message and button go, filled as the editor types. See *Admin* in [Ideas](#ideas) | An empty page shows the shape of a banner without instructions |
 
 ##### Open questions
@@ -233,6 +237,7 @@ FundraiseUp configuration (1.1); countdowns and progress bars; audience or per-p
 | 2026-11-28 | Times are Eastern | The organization works on Eastern time; the site clock is UTC |
 | 2026-11-28 | A list from step 0, capped at one row | Step 1 lifts the cap without moving data |
 | 2026-11-28 | Copy ships without review beforehand; Kristen reviews it after launch | The dates are close and fixed |
+| 2026-11-28 | No row limit; ended banners are *archived* by a filter, not moved, and rows are autoloaded | A limit forces clean-up mid-campaign. A filter has no write path to re-run or undo. Unloaded rows cost about 12 queries per page view for one banner |
 | 2026-11-28 | Dismiss moves from step 1 to before Giving Tuesday; text before the message's first colon is its bold lead-in | The banner sits in the sticky masthead, so one you can't close costs space on every page |
 | 2026-11-28 | Admin pages show more and tell less: skeleton states, not instructions. A nice-to-have once the plan ships | An editor understands a page from its shape faster than from text about it |
 

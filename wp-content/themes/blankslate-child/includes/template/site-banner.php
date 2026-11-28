@@ -386,6 +386,10 @@ function wt_site_banner_admin_styles(): void {
 		.wt-site-banner-status[data-state="live"] { background: #edfaef; color: #00701a; }
 		.wt-site-banner-status[data-state="scheduled"] { background: #f0f6fc; color: #2271b1; }
 		.wt-site-banner-status[data-state="error"] { background: #fcf0f1; color: #b32d2e; }
+		.wt-site-banner-status[data-state="archived"] { background: #f0f0f1; color: #646970; }
+		[data-key="field_wt_site_banner_rows"] .acf-row.wt-sb-archived { display: none; }
+		[data-key="field_wt_site_banner_rows"].wt-sb-show-archived .acf-row.wt-sb-archived { display: table-row; opacity: .7; }
+		.wt-sb-archive-toggle { margin-top: 12px; }
 		.wt-site-banner-status[data-state="outranked"] { background: #fcf9e8; color: #8a6100; }
 		[data-key="field_wt_site_banner_intro"] > .acf-input { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 		[data-key="field_wt_site_banner_intro"] > .acf-input p { margin: 0; }
@@ -405,3 +409,31 @@ function wt_site_banner_admin_script(): void {
 	wp_enqueue_script( 'wt-site-banner-admin', get_stylesheet_directory_uri() . '/js/site-banner-admin.js', array(), '1.0.0', true );
 }
 add_action( 'acf/input/admin_enqueue_scripts', 'wt_site_banner_admin_script' );
+
+/**
+ * Rule 14: banner rows are autoloaded. The options page saves new values with
+ * autoload on, but WordPress only changes an existing option's autoload when
+ * its value changes, so after every save this sets it on all banner rows.
+ * Absolute state: safe to run any number of times.
+ *
+ * @param mixed $post_id ACF's post ID; 'options' for options pages.
+ */
+function wt_site_banner_autoload_rows( $post_id ): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- ACF has verified the save.
+	if ( 'options' !== $post_id || ! isset( $_POST['acf']['field_wt_site_banner_rows'] ) ) {
+		return;
+	}
+	global $wpdb;
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- names only, once per save.
+	$names = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+			$wpdb->esc_like( 'options_site_banners' ) . '%',
+			$wpdb->esc_like( '_options_site_banners' ) . '%'
+		)
+	);
+	if ( $names ) {
+		wp_set_option_autoload_values( array_fill_keys( $names, true ) );
+	}
+}
+add_action( 'acf/save_post', 'wt_site_banner_autoload_rows', 20 );

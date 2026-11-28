@@ -40,7 +40,11 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 
 *Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), custom-event triggers on `site_banner_view`, `site_banner_click` and `site_banner_dismiss`, and a GA4 event tag for each; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
 
-**Now showing and schedule status.** On the admin page, `js/site-banner-admin.js` puts a line at the top saying which banner shows now (the first live one in list order) or which starts next, and a pill on each banner's Schedule heading: Off, Scheduled, Live now, Live but outranked by a banner above, Ended, or End is before start. It applies the same rule as `wt_site_banner_is_live()` to the form as it stands, in Eastern time from the browser's clock, and refreshes every second. It doesn't know about rule 6 (hidden on the target page).
+**Now showing and schedule status.** On the admin page, `js/site-banner-admin.js` puts a line at the top saying which banner shows now (the first live one in list order) or which starts next, and a pill on each banner's Schedule heading: Off, Scheduled, Live now, Live but outranked by a banner above, Archived, or End is before start.
+
+**Archived banners.** A banner whose end has passed is *archived*. That's worked out from its end date and never stored. When the admin page loads, archived banners are hidden behind "Show archived (n)". They stay in the list, in place, and moving the end later restores one. Nothing is moved or deleted.
+
+**Autoload.** Banner rows are autoloaded (the options page has `autoload` on), so the front end reads them from the options WordPress already loads, at no extra queries; one banner went from 12 queries per page view to 1. WordPress only changes an existing option's autoload when its value changes, so `wt_site_banner_autoload_rows()` sets autoload on every `options_site_banners*` row after each save of the page. It's safe to repeat, and each environment fixes itself on its next save. It applies the same rule as `wt_site_banner_is_live()` to the form as it stands, in Eastern time from the browser's clock, and refreshes every second. It doesn't know about rule 6 (hidden on the target page).
 
 ## Running a banner
 
