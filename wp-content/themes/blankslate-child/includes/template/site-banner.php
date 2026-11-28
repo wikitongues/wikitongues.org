@@ -233,33 +233,3 @@ function wt_site_banner_enqueue(): void {
 	wp_enqueue_script( 'wt-site-banner', get_stylesheet_directory_uri() . '/js/site-banner.js', array(), '1.0.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'wt_site_banner_enqueue' );
-
-/**
- * The intro at the top of the Site banner admin page. With no banners saved
- * it is the empty state: what a site banner is and how to add one.
- *
- * @param int $count Saved banner rows.
- */
-function wt_site_banner_intro_message( int $count ): string {
-	if ( $count < 1 ) {
-		return '<strong>No site banner yet.</strong> A site banner is one line of text with a button, shown above the header on every page. Use it for a campaign or a launch.'
-			. '<ol>'
-			. '<li>Click <strong>Add banner</strong>, then give it an ID, a message and a button.</li>'
-			. '<li>On its <strong>Schedule</strong> tab, switch it On and set a start and end (Eastern).</li>'
-			. '<li>Save. It appears at the start and disappears at the end on its own.</li>'
-			. '</ol>';
-	}
-	return 'One banner shows at a time, above the header on every page. It\'s live when it\'s switched On and the current time (Eastern) is between its start and end. Switch it Off to take it down at once.';
-}
-
-/**
- * Swap in the intro (or empty state) when the admin page loads.
- *
- * @param array<string, mixed> $field The intro message field.
- * @return array<string, mixed>
- */
-function wt_site_banner_load_intro( $field ) {
-	$field['message'] = wt_site_banner_intro_message( (int) get_option( 'options_site_banners', 0 ) );
-	return $field;
-}
-add_filter( 'acf/load_field/key=field_wt_site_banner_intro', 'wt_site_banner_load_intro' );

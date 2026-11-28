@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_wt_site_banner_intro",
-            "label": "How it works",
+            "label": "",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "One banner shows at a time, above the header on every page. It's live when it's switched On and the current time (Eastern) is between its start and end.",
+            "message": "This strip appears above the header on every page.",
             "new_lines": "wpautop",
             "esc_html": 0
         },
@@ -305,5 +305,5 @@
     "description": "Plan 1.4. Rendered by modules/banners/banner--site.php.",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1795875293
+    "modified": 1795876432
 }
