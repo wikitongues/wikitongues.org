@@ -196,6 +196,8 @@ Its own options page, **Site banner**, in the admin menu, not inside Global Opti
 1. *(Step 1)* **Now showing:** a read-only line at the top, worked out when the page loads. "Live now: giving-tuesday-2026, until 1 Dec 11:59 pm Eastern" · "Next: language-rights-launch, from 10 Dec 12:00 am Eastern" · "Nothing is showing."
 2. **Banners:** a repeater whose collapsed rows show the ID and the switch. Each row has two parts. *Content:* ID, message, button label, button type, then URL or campaign code. *Schedule:* switch (On/Off), start, end.
 
+3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Ended, or End is before start. It follows the form as edited, before saving, using rule 2.
+
 Step 0 ships the repeater capped at one row; step 1 lifts the cap. Field names don't change, so no data moves.
 
 ##### Display
