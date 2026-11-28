@@ -48,7 +48,7 @@ The product roadmap's working thesis is that **engagement drives donations**. Pe
 - **When something ships:** remove it here, add a log entry and index row to [plan-archive.md](docs/plan-archive.md), and make sure the system it built is described in `docs/`.
 - **Security specifics**, such as open findings and credentials, stay out of this public file and are tracked privately.
 
-Last reviewed 2026-11-23.
+Last reviewed 2026-11-28.
 
 ---
 
@@ -60,18 +60,19 @@ Last reviewed 2026-11-23.
 |---|---|---|---|
 | 1 | Secret scanning: act on alerts, close the gaps | Scanning flagged the leaked token in February and nobody saw the alert | [7.10](#710-secret-scanning-act-on-alerts-close-the-gaps) |
 | 2 | Browser credential scan | Check what visitors actually receive, before each production deploy | [7.11](#711-browser-credential-scan) |
-| 3 | FundraiseUp configuration in ACF, and a campaign banner | The year-end campaign has to launch and change without deploys; it needs to be on production by mid-November | [1.1](#11-fundraiseup-configuration-and-campaign-banner) |
+| 3 | Site banner: step 0 for Giving Tuesday, step 1 for the Rights announcement | Dated: Giving Tuesday 1 December, Rights announcement 10 December | [1.4](#14-site-banner) |
 | 4 | Language Rights report: hub, region and country pages, released from Airtable and Google Docs | Dated: announcement 10 December, first regional release 19 February | [2.2](#22-language-rights-report) |
-| 5 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
-| 6 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
-| 7 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
-| 8 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
-| 9 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
-| 10 | Search results redesign | Answer what was searched, with context; turn the 91% of languages with no recording into the ask | [3.3](#33-enhanced-search) |
+| 5 | FundraiseUp configuration in ACF | Campaign and element IDs out of code, for the year-end campaign and the frequency test in 1.2 | [1.1](#11-fundraiseup-configuration) |
+| 6 | Pages and navigation, with minimal copy | Tell the story, and give contributors a way in (`/contribute`) | [2.1](#21-pages-and-navigation) |
+| 7 | Giving page redesign | The page donors land on; bias it toward monthly | [1.2](#12-giving-page-redesign) |
+| 8 | Donor recognition | Social proof for the giving page, built on People | [1.3](#13-donor-recognition) |
+| 9 | Dynamic homepage | The first real test of the engagement thesis | [3.1](#31-dynamic-homepage) |
+| 10 | Maps, step 2: interactive territory and region maps (step 1, the locator map, shipped) | Discovery by place | [3.2](#32-maps) |
+| 11 | Search results redesign | Answer what was searched, with context; turn the 91% of languages with no recording into the ask | [3.3](#33-enhanced-search) |
 
-The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the small FundraiseUp piece goes before the rest because of the year-end campaign. Search's first step (#379) is small and can ship early.
+The order follows the product roadmap, with two exceptions: secret scanning (#1–2) goes first, because a credential shipped in a public build until 2026-11-23 while its alert went unread, and the site banner (#3) goes before the rest because Giving Tuesday and the Rights announcement are dated. Search's first step (#379) is small and can ship early.
 
-**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#4), maps (#9), language geography (6.8) and shared styles. #3 hasn't started, and #5–8 haven't moved since the donate redesign. Either return to the order or re-order the queue.
+**Audit, 2026-11-23:** the work hasn't followed this order. Every PR since 6 November went to the Language Rights report (#4), maps (#10), language geography (6.8) and shared styles. FundraiseUp configuration (#5) hasn't started, and #6–8 haven't moved since the donate redesign. Either return to the order or re-order the queue.
 
 ### Next
 
@@ -98,25 +99,25 @@ The order follows the product roadmap, with two exceptions: secret scanning (#1�
 
 ### 1. Fundraising & donors
 
-#### 1.1 FundraiseUp configuration and campaign banner
+#### 1.1 FundraiseUp configuration
 
-*Now #1. On production by mid-November. **Not started as of 2026-11-23**: the date has passed, and the organization ID is still hardcoded in `modules/page--head.php`.*
+*Now #5, after the Rights announcement. The campaign banner it once included is now the site banner (1.4).*
 
-The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a campaign change needs a deploy. Move all FundraiseUp configuration into an ACF options page ("Fundraising"), and add a campaign banner that editors control.
+The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a campaign change needs a deploy. Move all FundraiseUp configuration into an ACF options page ("Fundraising").
 
 1. **Options page and fields.**
    - *Default campaign:* `fundraiseup_org_id`, `default_element_id`, `default_campaign_id`.
-   - *Active campaign:* `active_campaign_status` (disabled, active or scheduled), `active_campaign_label` (admin only), `active_campaign_id`, `active_campaign_element_id`, `active_campaign_start`, `active_campaign_end`, and an `active_campaign_banner` group.
+   - *Active campaign:* `active_campaign_status` (disabled, active or scheduled), `active_campaign_label` (admin only), `active_campaign_id`, `active_campaign_element_id`, `active_campaign_start` and `active_campaign_end`.
 2. **`wt_active_campaign()`** in `template-helpers.php`. It returns the active campaign when its status is `active`, or when it is `scheduled` and today falls within its dates, and the default campaign otherwise. Every template reads IDs through it, so none are hardcoded.
-3. **Campaign banner.** The `active_campaign_banner` group has `show_banner`, `heading`, `body`, `cta_label`, `variant` (standard or urgent) and `display_scope` (all, home, archive or singles). A new `modules/banners/banner--campaign.php` renders it. `header.php` places it before the existing alert banner (the `banner_alert_*` options), which stays for general announcements.
+3. **Site banner.** A donation-form banner (1.4) stores its own campaign code. Once this lands, a blank code could fall back to `wt_active_campaign()`.
 
 - **Before starting:** find every template and editorial link that opens a FundraiseUp element, so that none stays hardcoded.
 - **Instrument:** `campaign_cta_click` (`campaign_slug`, `cta_type`). Keep `donate_cta_click` with `cta_location` on every donate placement.
-- **Enables:** the year-end campaign, point-in-time drives and banner copy changes, all without a deploy, plus the frequency-default test in 1.2.
+- **Enables:** the year-end campaign and point-in-time drives without a deploy, plus the frequency-default test in 1.2.
 
 #### 1.2 Giving page redesign
 
-*Now #4.*
+*Now #7.*
 
 `/donate` runs `template-donate.php`, which has live stats, the donation links and CTA tracking. The redesign should make the page do the persuading:
 
@@ -129,7 +130,7 @@ The FundraiseUp organization ID is hardcoded in `modules/page--head.php`, and a 
 
 #### 1.3 Donor recognition
 
-*Now #5. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
+*Now #8. Replaces the separate Donors post type in the roadmap (decided 2026-09-13).*
 
 Donors are People: add a **Donor** term to `people-type`, so a board member who donates stays one record ([content-model.md → People](docs/content-model.md#people)).
 
@@ -142,6 +143,93 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 - **Privacy:** People stays locked down (no REST, no search, no archive). Anonymous donors are counted, never rendered.
 - **Instrument:** `donor_story_view` (`surface`).
 - **Follow-on:** donor cards in galleries on campaign pages and the homepage.
+
+#### 1.4 Site banner
+
+*Draft 2026-11-28. Now #3. Step 0 on production by Monday 30 November for Giving Tuesday (1 December); step 1 by 9 December for the Language Rights announcement (10 December). Nothing gets built until the spec is approved.*
+
+**Decision needed:** approve the glossary, the rules, the example cases and the admin layout. Step 0 starts on approval.
+
+**The job.** One strip above the header on every page, set by editors, that points this week's attention at one thing: a gift or a launch. It replaces the alert banner (`banner_alert_*` in Global Options), which has no schedule, no tracking and no dismiss, opens its link in a new tab, and is unused (Off; last copy "Help us make Wikitongues better!").
+
+##### Glossary
+
+| Term | Means |
+|---|---|
+| **Site banner** | The strip at the top of every page, above the header. Code: `site_banner`. Not a **page banner** (`banner--main`, the editorial `banner_layout`, 5.5), which is the hero inside one page |
+| **Banner** | One row in the site banner list: an ID, a message, a button and a schedule |
+| **Banner ID** | A slug the editor sets once (`giving-tuesday-2026`). Analytics and dismissals key on it, never on the message |
+| **Live** | Switched On, and now (Eastern) falls within its start and end |
+| **Target page** | Where the button leads. For a donation-form button, `/donate` |
+
+##### Rules
+
+| # | Rule |
+|---|---|
+| 1 | At most one banner shows: the first live banner in list order. Editors set priority by dragging rows. |
+| 2 | A banner is live when its switch is On and now falls within its window. Start and end are optional: no start means from now, no end means until switched off. Off always wins. |
+| 3 | Times are entered and checked in Eastern (`America/New_York`), whatever the site timezone. Production runs on UTC (`gmt_offset` 0), and changing that would shift post dates. Every time field is labelled "Eastern". |
+| 4 | Liveness is decided on each page request. Production has no page cache (checked 2026-11-28: no cache headers, every request reaches PHP), so a banner appears on the first request after its start. If a page cache is ever added, this check moves client-side first. |
+| 5 | The button is a **link** (any URL) or a **donation form** (a FundraiseUp campaign code, opened as the modal over the current page with `?form=`). Both open in the same tab. A donation-form banner can't be saved without a code. |
+| 6 | A banner never shows on its target page. |
+| 7 | The message is plain text, one line, at most 100 characters; the button label at most 24. ACF enforces both. Output is escaped. |
+| 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. Step 1 adds `site_banner_view` and `site_banner_dismiss`. |
+| 9 | *(Step 1)* A dismissed banner stays hidden for that banner ID in that browser (localStorage). A new ID shows again; edited copy under the same ID doesn't. |
+| 10 | Nothing live means no strip, and the masthead takes no space. |
+| 11 | An end before its start can't be saved. |
+
+##### Example cases
+
+| Case | Data | Result |
+|---|---|---|
+| Giving Tuesday | `giving-tuesday-2026`; On; 1 Dec 00:00 → 23:59 ET; donation form with the GT campaign code; message names the matching gift | Appears at 00:00 ET (05:00 UTC) on every page except `/donate`; gone at midnight with nobody touching it |
+| GT, no campaign code by Monday | Button type donation form, code blank | Can't be saved (rule 5). The editor uses a link to `/donate` instead |
+| Rights announcement | `language-rights-launch`; 10 Dec → 24 Dec 23:59 ET; link to `/language-rights` | Shows everywhere except `/language-rights` |
+| Overlap | `year-end-2026` (26–31 Dec) dragged above an announcement with no end | Year-end shows 26–31 Dec; the announcement comes back on 1 Jan (rule 1) |
+| Emergency off | GT switched Off at 14:00 on 1 Dec | Gone on the next request (rules 2, 4) |
+| Visitor dismissed GT | The Rights banner starts on 10 Dec | The Rights banner shows (rule 9) |
+| All Off, or an empty list | — | No strip (rule 10) |
+
+##### Admin
+
+Its own options page, **Site banner**, in the admin menu, not inside Global Options:
+
+1. *(Step 1)* **Now showing:** a read-only line at the top, worked out when the page loads. "Live now: giving-tuesday-2026, until 1 Dec 11:59 pm Eastern" · "Next: language-rights-launch, from 10 Dec 12:00 am Eastern" · "Nothing is showing."
+2. **Banners:** a repeater whose collapsed rows show the ID and the switch. Each row has two parts. *Content:* ID, message, button label, button type, then URL or campaign code. *Schedule:* switch (On/Off), start, end.
+
+Step 0 ships the repeater capped at one row; step 1 lifts the cap. Field names don't change, so no data moves.
+
+##### Display
+
+Where the alert banner sits today: the first child of the sticky `.wt_masthead`, above the header, in the same blue and parchment. On desktop the message and button share one line; on mobile the button wraps below. *(Step 1)* A close button at the right.
+
+##### Steps
+
+| # | PR | Done when |
+|---|---|---|
+| 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
+| 1 | Many rows, Now showing, dismiss, view and dismiss events | By 9 Dec, with the Rights banner scheduled |
+
+##### Open questions
+
+1. **GT campaign in FundraiseUp:** who creates it, with the matching gift attached, and sends the campaign code before Monday? Without one, the banner links to `/donate` (example case 2).
+2. **Matching-gift wording:** the amount and the terms the copy can state ("Gifts matched up to $X today").
+3. **Rights banner start:** midnight on 10 Dec, or the hour of the announcement?
+
+##### Out of scope
+
+FundraiseUp configuration (1.1); countdowns and progress bars; audience or per-page targeting beyond rule 6; A/B tests; pop-ups; an urgent variant; translations.
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-28 | The site banner is its own entity, apart from FundraiseUp configuration (1.1) | The Rights banner is an announcement, not a campaign, and Giving Tuesday can't wait for the config work |
+| 2026-11-28 | It replaces the alert banner instead of running beside it | One strip, one set of controls; the alert banner was unused |
+| 2026-11-28 | Its own admin page, with a schedule per banner | A clear set of controls that can grow (user's request) |
+| 2026-11-28 | Times are Eastern | The organization works on Eastern time; the site clock is UTC |
+| 2026-11-28 | A list from step 0, capped at one row | Step 1 lifts the cap without moving data |
+| 2026-11-28 | Copy ships without review beforehand; Kristen reviews it after launch | The dates are close and fixed |
 
 ### 2. Pages & storytelling
 
