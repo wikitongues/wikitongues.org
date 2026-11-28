@@ -1,6 +1,6 @@
 # Site banner
 
-The strip above the header on every page, set by editors on **Site banner** in the admin menu. Spec: [plan.md → 1.4](../plan.md#14-site-banner). It replaced the alert banner (`banner_alert_*` in Global Options) in November 2026; that banner's old option rows are still in the database, unused.
+The strip above the header on every page, set by editors on **Site banner**, under Publishing in the admin sidebar, right after Pages (`includes/admin/admin-helpers.php`). Spec: [plan.md → 1.4](../plan.md#14-site-banner). It replaced the alert banner (`banner_alert_*` in Global Options) in November 2026; that banner's old option rows are still in the database, unused.
 
 ## How a banner is chosen
 
@@ -9,7 +9,8 @@ The strip above the header on every page, set by editors on **Site banner** in t
 | One banner shows: the first row that is **On** and whose window contains now. Off always wins | `wt_site_banner_pick()` |
 | Start and end are optional, entered and checked in Eastern (`America/New_York`). The site clock is UTC; don't change it | `WT_SITE_BANNER_TZ` |
 | Live from the start up to, not including, the end | `wt_site_banner_is_live()` |
-| Never on the page its button leads to. A donation form's page is `/donate/` | `wt_site_banner_target_path()` |
+| A start or end that is set but unreadable keeps the banner hidden (fails closed) | `wt_site_banner_is_live()` |
+| Never on the page its button leads to. A donation form's page is `/donate/`. Paths compare without the query string, case or a subdirectory home | `wt_site_banner_target_path()`, `wt_site_banner_site_path()` |
 | A row with no message, or a donation form with no campaign code, never shows | `wt_site_banner_pick()` |
 | Decided on each request. Production has no page cache (checked 2026-11-28). If one is ever added, this check has to move client-side | `wt_site_banner()` |
 
@@ -34,6 +35,8 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 `header.php` includes `modules/banners/banner--site.php` as the first child of the sticky `.wt_masthead`; styles are in `stylus/require/banner--site.styl`. When a banner shows, `js/site-banner.js` pushes `site_banner_click` (`banner_id`, `cta_type`) to the data layer. A donation-form button also carries `data-cta-location="site-banner"`, so it counts in `donate_cta_click`.
 
 *Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), a custom-event trigger on `site_banner_click`, and a GA4 event tag; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
+
+With no banners saved, the intro at the top of the page becomes an empty state: what a site banner is and the three steps to add one (`wt_site_banner_intro_message()`).
 
 ## Running a banner
 

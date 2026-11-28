@@ -179,6 +179,68 @@ class SiteBannerTest extends TestCase {
 		$this->assertNull( $this->pick( $rows, $this->eastern( '2026-12-12 09:00:00' ) ) );
 	}
 
+	// Unreadable dates fail closed.
+
+	public function test_unreadable_start_hides_the_banner() {
+		$rows = array( $this->giving_tuesday( array( 'start' => '1 Dec 2026 12:00 am' ) ) );
+		$this->assertNull( $this->pick( $rows, $this->eastern( '2026-12-01 12:00:00' ) ) );
+	}
+
+	public function test_unreadable_end_hides_the_banner() {
+		$rows = array( $this->giving_tuesday( array( 'end' => 'tomorrow' ) ) );
+		$this->assertNull( $this->pick( $rows, $this->eastern( '2026-12-01 12:00:00' ) ) );
+	}
+
+	public function test_overflowed_date_hides_the_banner() {
+		$rows = array( $this->giving_tuesday( array( 'start' => '2026-11-31 00:00:00' ) ) );
+		$this->assertNull( $this->pick( $rows, $this->eastern( '2026-12-01 12:00:00' ) ) );
+	}
+
+	public function test_null_bounds_are_open() {
+		$rows = array(
+			$this->rights_launch(
+				array(
+					'start' => null,
+					'end'   => null,
+				)
+			),
+		);
+		$this->assertNotNull( $this->pick( $rows, $this->eastern( '2026-12-12 09:00:00' ) ) );
+	}
+
+	// The current page, from the request.
+
+	public function test_request_path_drops_the_query_string() {
+		$this->assertSame( '/donate/', wt_site_banner_site_path( '/donate/?form=FUNTESTCODE&utm_source=x', self::HOME ) );
+	}
+
+	public function test_request_path_strips_a_subdirectory_home() {
+		$home = 'http://localhost:8888/wikitongues/';
+		$this->assertSame( '/language-rights/', wt_site_banner_site_path( '/wikitongues/language-rights', $home ) );
+		$this->assertSame( '/', wt_site_banner_site_path( '/wikitongues/', $home ) );
+	}
+
+	public function test_request_path_for_the_home_page() {
+		$this->assertSame( '/', wt_site_banner_site_path( '/', self::HOME ) );
+		$this->assertSame( '/', wt_site_banner_site_path( '/?s=yoruba', self::HOME ) );
+	}
+
+	public function test_request_path_is_case_and_slash_insensitive() {
+		$this->assertSame( '/donate/', wt_site_banner_site_path( '/Donate', self::HOME ) );
+	}
+
+	// Admin empty state.
+
+	public function test_no_banners_shows_the_empty_state() {
+		$message = wt_site_banner_intro_message( 0 );
+		$this->assertStringContainsString( 'No site banner yet', $message );
+		$this->assertStringContainsString( 'Add banner', $message );
+	}
+
+	public function test_saved_banners_show_how_it_works() {
+		$this->assertStringNotContainsString( 'No site banner yet', wt_site_banner_intro_message( 1 ) );
+	}
+
 	// Admin validation.
 
 	public function test_end_before_start_is_refused() {
