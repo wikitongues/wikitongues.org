@@ -233,3 +233,27 @@ function wt_site_banner_enqueue(): void {
 	wp_enqueue_script( 'wt-site-banner', get_stylesheet_directory_uri() . '/js/site-banner.js', array(), '1.0.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'wt_site_banner_enqueue' );
+
+/**
+ * Admin styles for the Site banner page: Content and Schedule read as
+ * sections of one screen, and "Add banner" disappears once the row limit is
+ * reached (ACF disables it but still shows a "Maximum rows reached" notice
+ * when it is clicked).
+ */
+function wt_site_banner_admin_styles(): void {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || false === strpos( (string) $screen->id, 'site-banner' ) ) {
+		return;
+	}
+	?>
+	<style>
+		[data-key="field_wt_site_banner_rows"] .acf-actions .acf-button.disabled { display: none; }
+		[data-key="field_wt_site_banner_rows"] .acf-repeater:has(> .acf-actions .acf-button.disabled) .acf-row-handle :is([data-event="add-row"], [data-event="duplicate-row"]) { display: none; }
+		.acf-field.wt-site-banner-section { padding-top: 20px; padding-bottom: 0; border-top: 1px solid #dcdcde; }
+		.acf-field.wt-site-banner-section:first-child { border-top: 0; padding-top: 12px; }
+		.acf-field.wt-site-banner-section > .acf-label label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #50575e; }
+		.acf-field.wt-site-banner-section > .acf-input { display: none; }
+	</style>
+	<?php
+}
+add_action( 'acf/input/admin_head', 'wt_site_banner_admin_styles' );
