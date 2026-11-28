@@ -142,15 +142,27 @@ function wt_site_banner_pick( array $rows, DateTimeImmutable $now, string $curre
 }
 
 /**
- * The button's href: the link, or `?form=CODE`, which FundraiseUp opens as
+ * The FundraiseUp campaign key in an editor's input, uppercased, or ''.
+ * Campaign keys start with FUN (FUNFLYUUBYT is the General Fund); a pasted
+ * `?form=FUN…` URL works too. The X… codes in donorsupport.co links are
+ * elements, not campaigns, and `?form=` does nothing with them.
+ *
+ * @param string $input What the editor entered.
+ */
+function wt_site_banner_campaign_key( string $input ): string {
+	return preg_match( '/\bFUN[A-Z0-9]{6,12}\b/i', $input, $m ) ? strtoupper( $m[0] ) : '';
+}
+
+/**
+ * The button's href: the link, or `?form=KEY`, which FundraiseUp opens as
  * a modal over the current page.
  *
  * @param array<string, mixed> $row One `site_banners` row.
  */
 function wt_site_banner_href( array $row ): string {
 	if ( 'form' === ( $row['cta_type'] ?? '' ) ) {
-		$code = trim( (string) ( $row['cta_form'] ?? '' ) );
-		return '' === $code ? '' : '?form=' . rawurlencode( $code );
+		$key = wt_site_banner_campaign_key( (string) ( $row['cta_form'] ?? '' ) );
+		return '' === $key ? '' : '?form=' . rawurlencode( $key );
 	}
 	return trim( (string) ( $row['cta_url'] ?? '' ) );
 }
@@ -222,6 +234,43 @@ function wt_site_banner_validate_id( $valid, $value ) {
 	return preg_match( '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value ) ? $valid : 'Use lowercase letters, numbers and hyphens, like giving-tuesday-2026.';
 }
 add_filter( 'acf/validate_value/key=field_wt_site_banner_id', 'wt_site_banner_validate_id', 10, 2 );
+
+/**
+ * Admin validation for the campaign key: it must contain a FUN… key. An X…
+ * code from a donorsupport.co link gets its own message, since it looks right.
+ *
+ * @param mixed $valid Current validity.
+ * @param mixed $value What the editor entered.
+ * @return mixed
+ */
+function wt_site_banner_validate_campaign( $valid, $value ) {
+	if ( true !== $valid || ! is_string( $value ) || '' === trim( $value ) ) {
+		return $valid;
+	}
+	if ( '' !== wt_site_banner_campaign_key( $value ) ) {
+		return $valid;
+	}
+	if ( preg_match( '/donorsupport|\bX[A-Z]{7}\b/i', $value ) ) {
+		return 'That code is from a donorsupport.co link, which is a link, not a campaign. Use the campaign key, which starts with FUN, like FUNFLYUUBYT.';
+	}
+	return 'Use the campaign key, which starts with FUN, like FUNFLYUUBYT.';
+}
+add_filter( 'acf/validate_value/key=field_wt_site_banner_cta_form', 'wt_site_banner_validate_campaign', 10, 2 );
+
+/**
+ * Save the campaign key on its own, so a pasted URL is stored as FUN….
+ *
+ * @param mixed $value What the editor entered.
+ * @return mixed
+ */
+function wt_site_banner_save_campaign( $value ) {
+	if ( ! is_string( $value ) ) {
+		return $value;
+	}
+	$key = wt_site_banner_campaign_key( $value );
+	return '' === $key ? $value : $key;
+}
+add_filter( 'acf/update_value/key=field_wt_site_banner_cta_form', 'wt_site_banner_save_campaign' );
 
 /**
  * Load the click tracker only when a banner shows.

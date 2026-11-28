@@ -27,7 +27,7 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 | `cta_label` | Up to 24 characters |
 | `cta_type` | `link` or `form` |
 | `cta_url` | For a link. Same tab |
-| `cta_form` | For a form: the FundraiseUp campaign code. The button's href is `?form=CODE`, which FundraiseUp opens as a modal over the current page |
+| `cta_form` | For a form: the FundraiseUp **campaign key**, which starts with `FUN` (the General Fund is `FUNFLYUUBYT`). The button's href is `?form=KEY`, which FundraiseUp opens as a modal over the current page. A pasted `?form=` URL is saved as the bare key. The `X…` code in `donorsupport.co/-/…` links is an *element* (a text link), not a campaign: `?form=` ignores it, so the admin refuses it and a stored one never shows |
 | `enabled`, `start`, `end` | The switch and the window (`Y-m-d H:i:s`, Eastern) |
 
 ## Display and analytics
