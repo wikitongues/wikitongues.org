@@ -229,18 +229,6 @@ class SiteBannerTest extends TestCase {
 		$this->assertSame( '/donate/', wt_site_banner_site_path( '/Donate', self::HOME ) );
 	}
 
-	// Admin empty state.
-
-	public function test_no_banners_shows_the_empty_state() {
-		$message = wt_site_banner_intro_message( 0 );
-		$this->assertStringContainsString( 'No site banner yet', $message );
-		$this->assertStringContainsString( 'Add banner', $message );
-	}
-
-	public function test_saved_banners_show_how_it_works() {
-		$this->assertStringNotContainsString( 'No site banner yet', wt_site_banner_intro_message( 1 ) );
-	}
-
 	// Admin validation.
 
 	public function test_end_before_start_is_refused() {

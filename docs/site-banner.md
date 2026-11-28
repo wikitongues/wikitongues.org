@@ -36,8 +36,6 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 
 *Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), a custom-event trigger on `site_banner_click`, and a GA4 event tag; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
 
-With no banners saved, the intro at the top of the page becomes an empty state: what a site banner is and the three steps to add one (`wt_site_banner_intro_message()`).
-
 ## Running a banner
 
 1. Add the row with its ID, message, button and window, and switch it On. It appears at the start, on its own.
