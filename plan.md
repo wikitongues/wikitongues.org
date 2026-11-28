@@ -146,9 +146,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 
 #### 1.4 Site banner
 
-*Draft 2026-11-28. Now #3. Step 0 on production by Monday 30 November for Giving Tuesday (1 December); step 1 by 9 December for the Language Rights announcement (10 December). Nothing gets built until the spec is approved.*
-
-**Decision needed:** approve the glossary, the rules, the example cases and the admin layout. Step 0 starts on approval.
+*Approved 2026-11-28. Now #3. Step 0 merged (#783); on production by Monday 30 November for Giving Tuesday (1 December). Step 1 by 9 December for the Language Rights announcement (10 December).*
 
 **The job.** One strip above the header on every page, set by editors, that points this week's attention at one thing: a gift or a launch. It replaces the alert banner (`banner_alert_*` in Global Options), which has no schedule, no tracking and no dismiss, opens its link in a new tab, and is unused (Off; last copy "Help us make Wikitongues better!").
 
@@ -209,6 +207,7 @@ Where the alert banner sits today: the first child of the sticky `.wt_masthead`,
 |---|---|---|
 | 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
 | 1 | Many rows, Now showing, dismiss, view and dismiss events | By 9 Dec, with the Rights banner scheduled |
+| 2 | *Nice to have, after the plan's Now queue ships.* Skeleton state for the admin page: one banner open with its empty fields, and a preview of the strip with plain placeholder blocks (not example text) where the message and button go, filled as the editor types. See *Admin* in [Ideas](#ideas) | An empty page shows the shape of a banner without instructions |
 
 ##### Open questions
 
@@ -230,6 +229,7 @@ FundraiseUp configuration (1.1); countdowns and progress bars; audience or per-p
 | 2026-11-28 | Times are Eastern | The organization works on Eastern time; the site clock is UTC |
 | 2026-11-28 | A list from step 0, capped at one row | Step 1 lifts the cap without moving data |
 | 2026-11-28 | Copy ships without review beforehand; Kristen reviews it after launch | The dates are close and fixed |
+| 2026-11-28 | Admin pages show more and tell less: skeleton states, not instructions. A nice-to-have once the plan ships | An editor understands a page from its shape faster than from text about it |
 
 ### 2. Pages & storytelling
 
@@ -1283,6 +1283,8 @@ Unprioritized. An idea moves into a workstream when data or capacity says so. Co
   - an "About" dropdown in the header
   - browser notification opt-in
   - expiry for career posts
+- **Admin:**
+  - *Principle: show more, tell less.* An empty admin page shows the shape of what it will hold, as a skeleton state with plain visual placeholders, instead of instructions or example text. Apply it across the admin once the plan ships; the Site banner page is the first candidate (1.4 step 2)
 - **Fellows and toolkit:**
   - micro-blogging on fellow pages
   - newsletter, language and donate prompts in the Revitalization Toolkit
