@@ -211,11 +211,6 @@ parameters:
 			path: wp-content/themes/blankslate-child/footer.php
 
 		-
-			message: "#^Function get_field not found\\.$#"
-			count: 1
-			path: wp-content/themes/blankslate-child/header.php
-
-		-
 			message: "#^Function the_field not found\\.$#"
 			count: 2
 			path: wp-content/themes/blankslate-child/header.php
@@ -298,11 +293,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$search of function str_replace expects array\\|string, int given\\.$#"
 			count: 1
 			path: wp-content/themes/blankslate-child/includes/template/template-helpers.php
-
-		-
-			message: "#^Function get_field not found\\.$#"
-			count: 3
-			path: wp-content/themes/blankslate-child/modules/banners/banner--alert.php
 
 		-
 			message: "#^Call to function is_array\\(\\) with null will always evaluate to false\\.$#"
