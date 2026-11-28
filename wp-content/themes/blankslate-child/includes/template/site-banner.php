@@ -267,7 +267,31 @@ function wt_site_banner_validate_end( $valid, $value, $field, $input ) {
 add_filter( 'acf/validate_value/key=field_wt_site_banner_end', 'wt_site_banner_validate_end', 10, 4 );
 
 /**
- * Admin validation for a banner ID: lowercase letters, numbers and hyphens.
+ * How many posted banner rows use this ID. ACF posts the repeater as
+ * acf[field_wt_site_banner_rows][row-N][field_wt_site_banner_id].
+ *
+ * @param mixed  $rows The posted repeater rows.
+ * @param string $id   The ID to count.
+ */
+function wt_site_banner_id_count( $rows, string $id ): int {
+	if ( ! is_array( $rows ) ) {
+		return 0;
+	}
+	$count = 0;
+	foreach ( $rows as $key => $row ) {
+		if ( 'acfcloneindex' === $key || ! is_array( $row ) ) {
+			continue;
+		}
+		if ( trim( (string) ( $row['field_wt_site_banner_id'] ?? '' ) ) === $id ) {
+			++$count;
+		}
+	}
+	return $count;
+}
+
+/**
+ * Admin validation for a banner ID: lowercase letters, numbers and hyphens,
+ * and unique in the list, since analytics and dismissals key on it.
  *
  * @param mixed $valid Current validity.
  * @param mixed $value The ID.
@@ -277,7 +301,15 @@ function wt_site_banner_validate_id( $valid, $value ) {
 	if ( true !== $valid || ! is_string( $value ) || '' === $value ) {
 		return $valid;
 	}
-	return preg_match( '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value ) ? $valid : 'Use lowercase letters, numbers and hyphens, like giving-tuesday-2026.';
+	if ( ! preg_match( '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value ) ) {
+		return 'Use lowercase letters, numbers and hyphens, like giving-tuesday-2026.';
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- ACF verifies the nonce; values are only compared.
+	$rows = isset( $_POST['acf']['field_wt_site_banner_rows'] ) ? wp_unslash( $_POST['acf']['field_wt_site_banner_rows'] ) : array();
+	if ( wt_site_banner_id_count( $rows, $value ) > 1 ) {
+		return 'Another banner already uses this ID. Each banner needs its own.';
+	}
+	return $valid;
 }
 add_filter( 'acf/validate_value/key=field_wt_site_banner_id', 'wt_site_banner_validate_id', 10, 2 );
 
@@ -354,6 +386,9 @@ function wt_site_banner_admin_styles(): void {
 		.wt-site-banner-status[data-state="live"] { background: #edfaef; color: #00701a; }
 		.wt-site-banner-status[data-state="scheduled"] { background: #f0f6fc; color: #2271b1; }
 		.wt-site-banner-status[data-state="error"] { background: #fcf0f1; color: #b32d2e; }
+		.wt-site-banner-status[data-state="outranked"] { background: #fcf9e8; color: #8a6100; }
+		[data-key="field_wt_site_banner_intro"] > .acf-input { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+		[data-key="field_wt_site_banner_intro"] > .acf-input p { margin: 0; }
 	</style>
 	<?php
 }

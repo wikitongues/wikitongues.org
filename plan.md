@@ -172,10 +172,11 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | 5 | The button is a **link** (any URL) or a **donation form** (a FundraiseUp campaign key, `FUN…`, opened as the modal over the current page with `?form=`). Both open in the same tab. A donation-form banner can't be saved without a key, and the `X…` element codes in `donorsupport.co` links are refused: they look like campaign codes but `?form=` ignores them. |
 | 6 | A banner never shows on its target page. |
 | 7 | The message is plain text, one line, at most 100 characters; the button label at most 24. ACF enforces both. Output is escaped. |
-| 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. Dismissing sends `site_banner_dismiss`; step 1 adds `site_banner_view`. |
+| 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. A visible banner sends `site_banner_view` once per page; dismissing sends `site_banner_dismiss`. |
 | 9 | A dismissed banner stays hidden for that banner ID in that browser (localStorage). A new ID shows again; edited copy under the same ID doesn't. |
 | 10 | Nothing live means no strip, and the masthead takes no space. |
 | 11 | An end before its start can't be saved. |
+| 12 | Banner IDs are unique in the list; a duplicate can't be saved. |
 
 ##### Example cases
 
@@ -193,12 +194,12 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 
 Its own options page, **Site banner**, in the admin menu, not inside Global Options:
 
-1. *(Step 1)* **Now showing:** a read-only line at the top, worked out when the page loads. "Live now: giving-tuesday-2026, until 1 Dec 11:59 pm Eastern" · "Next: language-rights-launch, from 10 Dec 12:00 am Eastern" · "Nothing is showing."
+1. **Now showing:** a read-only line at the top, worked out when the page loads. "Live now: giving-tuesday-2026, until 1 Dec 11:59 pm Eastern" · "Next: language-rights-launch, from 10 Dec 12:00 am Eastern" · "Nothing is showing."
 2. **Banners:** a repeater whose collapsed rows show the ID and the switch. Each row has two parts. *Content:* ID, message, button label, button type, then URL or campaign code. *Schedule:* switch (On/Off), start, end.
 
-3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Ended, or End is before start. It follows the form as edited, before saving, using rule 2.
+3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Live but outranked by a banner above it (rule 1), Ended, or End is before start. It follows the form as edited, before saving, using rule 2.
 
-Step 0 ships the repeater capped at one row; step 1 lifts the cap. Field names don't change, so no data moves.
+Step 0 shipped the repeater capped at one row; step 1 raises the cap to 10. Field names don't change, so no data moves.
 
 ##### Display
 
@@ -209,7 +210,7 @@ Where the alert banner sits today: the first child of the sticky `.wt_masthead`,
 | # | PR | Done when |
 |---|---|---|
 | 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
-| 1 | Many rows, Now showing, the view event (dismiss shipped early, 2026-11-28) | By 9 Dec, with the Rights banner scheduled |
+| 1 | Many rows (up to 10) with unique IDs, Now showing, the view event (dismiss shipped early, 2026-11-28). Built 2026-11-28 | By 9 Dec, with the Rights banner scheduled |
 | 2 | *Nice to have, after the plan's Now queue ships.* Skeleton state for the admin page: one banner open with its empty fields, and a preview of the strip with plain placeholder blocks (not example text) where the message and button go, filled as the editor types. See *Admin* in [Ideas](#ideas) | An empty page shows the shape of a banner without instructions |
 
 ##### Open questions

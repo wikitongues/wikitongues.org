@@ -1,6 +1,7 @@
 /**
  * Site banner admin (plan 1.4): a status pill beside each banner's Schedule
- * heading, saying whether its switch, start and end would show it right now.
+ * heading, saying whether its switch, start and end would show it right now,
+ * and a Now showing line at the top: the first live banner in list order.
  * Same rule as wt_site_banner_is_live(): On, and start <= now < end, in
  * Eastern time. It reads the form as it is, before saving, and refreshes
  * every second so it changes as the clock passes a start or end.
@@ -67,26 +68,62 @@
 		return { state: 'live', text: end ? 'Live now · until ' + readable( end ) : 'Live now' };
 	}
 
+	function bannerId( row ) {
+		var input = field( row, 'field_wt_site_banner_id', 'input' );
+		return ( input && input.value.trim() ) || 'untitled banner';
+	}
+
+	function pillFor( container ) {
+		var pill = container.querySelector( '.wt-site-banner-status' );
+		if ( ! pill ) {
+			pill = document.createElement( 'span' );
+			pill.className = 'wt-site-banner-status';
+			pill.setAttribute( 'role', 'status' );
+			container.appendChild( pill );
+		}
+		return pill;
+	}
+
+	function show( pill, s ) {
+		if ( pill.textContent !== s.text ) {
+			pill.textContent = s.text;
+		}
+		pill.setAttribute( 'data-state', s.state );
+	}
+
+	// Rule 1: the first live banner in list order shows; later live ones wait.
 	function refresh() {
 		var now = nowEastern();
+		var winner = null;
+		var next = null;
 		document.querySelectorAll( '[data-key="field_wt_site_banner_rows"] .acf-row:not(.acf-clone)' ).forEach( function ( row ) {
-			var label = field( row, KEYS.heading, '.acf-label' );
-			if ( ! label ) {
-				return;
-			}
-			var pill = label.querySelector( '.wt-site-banner-status' );
-			if ( ! pill ) {
-				pill = document.createElement( 'span' );
-				pill.className = 'wt-site-banner-status';
-				pill.setAttribute( 'role', 'status' );
-				label.appendChild( pill );
-			}
 			var s = status( row, now );
-			if ( pill.textContent !== s.text ) {
-				pill.textContent = s.text;
+			var start = ( field( row, KEYS.start, 'input.input-alt' ) || {} ).value || '';
+			if ( 'live' === s.state ) {
+				if ( winner ) {
+					s = { state: 'outranked', text: 'Live, but ' + winner.id + ' shows first' };
+				} else {
+					winner = { id: bannerId( row ), text: s.text };
+				}
+			} else if ( 'scheduled' === s.state && ( ! next || start < next.start ) ) {
+				next = { id: bannerId( row ), start: start };
 			}
-			pill.setAttribute( 'data-state', s.state );
+			var label = field( row, KEYS.heading, '.acf-label' );
+			if ( label ) {
+				show( pillFor( label ), s );
+			}
 		} );
+
+		var intro = document.querySelector( '[data-key="field_wt_site_banner_intro"] .acf-input' );
+		if ( intro ) {
+			var line = { state: 'off', text: 'Nothing showing' };
+			if ( winner ) {
+				line = { state: 'live', text: 'Showing now: ' + winner.id + winner.text.replace( /^Live now/, '' ) };
+			} else if ( next ) {
+				line = { state: 'scheduled', text: 'Nothing showing · next: ' + next.id + ', from ' + readable( next.start ) };
+			}
+			show( pillFor( intro ), line );
+		}
 	}
 
 	refresh();

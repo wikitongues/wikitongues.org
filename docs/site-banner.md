@@ -18,11 +18,11 @@ All of it lives in `includes/template/site-banner.php`, with tests in `tests/uni
 
 ## Fields
 
-Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group_wt_site_banner.json`. The `site_banners` repeater is capped at one row until plan 1.4 step 1.
+Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group_wt_site_banner.json`. The `site_banners` repeater holds up to 10 banners; list order is priority.
 
 | Field | Notes |
 |---|---|
-| `banner_id` | A slug, set once. Analytics (and, from step 1, dismissals) key on it |
+| `banner_id` | A slug, set once, unique in the list. Analytics and dismissals key on it |
 | `message` | Plain text, up to 100 characters |
 | `cta_label` | Up to 24 characters |
 | `cta_type` | `link` or `form` |
@@ -36,11 +36,11 @@ Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group
 
 **Dismiss.** The × stores the banner ID in localStorage (`wt_site_banner_dismissed`, a JSON list of the last 20 IDs) and hides the strip. On later pages, an inline script printed early in `<head>` (`wt_site_banner_head_script()`) adds `wt-site-banner-dismissed` to `<html>` before the body renders, so a dismissed banner never flashes. A new banner ID shows again; edited copy under the same ID stays dismissed. If storage is blocked, the banner hides for that page only.
 
-**Events.** `js/site-banner.js` pushes `site_banner_click` and `site_banner_dismiss` (`banner_id`, `cta_type`) to the data layer. A donation-form button also carries `data-cta-location="site-banner"`, so it counts in `donate_cta_click`.
+**Events.** `js/site-banner.js` pushes `site_banner_view` (once per page, when the banner is visible), `site_banner_click` and `site_banner_dismiss` (`banner_id`, `cta_type`) to the data layer. A donation-form button also carries `data-cta-location="site-banner"`, so it counts in `donate_cta_click`.
 
-*Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), custom-event triggers on `site_banner_click` and `site_banner_dismiss`, and a GA4 event tag for each; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
+*Setup outside the code:* in GTM, two data-layer variables (`banner_id`, `cta_type`), custom-event triggers on `site_banner_view`, `site_banner_click` and `site_banner_dismiss`, and a GA4 event tag for each; in GA4, `banner_id` registered as a custom dimension. Check in GTM preview on staging first.
 
-**Schedule status.** On the admin page, `js/site-banner-admin.js` puts a pill on each banner's Schedule heading: Off, Scheduled, Live now, Ended, or End is before start. It applies the same rule as `wt_site_banner_is_live()` to the form as it stands, in Eastern time from the browser's clock, and refreshes every second. It doesn't know about rule 6 (hidden on the target page).
+**Now showing and schedule status.** On the admin page, `js/site-banner-admin.js` puts a line at the top saying which banner shows now (the first live one in list order) or which starts next, and a pill on each banner's Schedule heading: Off, Scheduled, Live now, Live but outranked by a banner above, Ended, or End is before start. It applies the same rule as `wt_site_banner_is_live()` to the form as it stands, in Eastern time from the browser's clock, and refreshes every second. It doesn't know about rule 6 (hidden on the target page).
 
 ## Running a banner
 
