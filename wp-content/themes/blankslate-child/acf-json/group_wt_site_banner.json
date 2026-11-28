@@ -1,0 +1,309 @@
+{
+    "key": "group_wt_site_banner",
+    "title": "Site banner",
+    "fields": [
+        {
+            "key": "field_wt_site_banner_intro",
+            "label": "How it works",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "One banner shows at a time, above the header on every page. It's live when it's switched On and the current time (Eastern) is between its start and end.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_wt_site_banner_rows",
+            "label": "Banners",
+            "name": "site_banners",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "min": 0,
+            "max": 1,
+            "collapsed": "field_wt_site_banner_id",
+            "button_label": "Add banner",
+            "pagination": 0,
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_wt_site_banner_tab_content",
+                    "label": "Content",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0,
+                    "selected": 0,
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_id",
+                    "label": "Banner ID",
+                    "name": "banner_id",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Set once: lowercase letters, numbers and hyphens. Analytics and dismissals use it, so keep it the same after launch.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "maxlength": 60,
+                    "placeholder": "giving-tuesday-2026",
+                    "default_value": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_message",
+                    "label": "Message",
+                    "name": "message",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "One line of plain text, up to 100 characters.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "maxlength": 100,
+                    "placeholder": "",
+                    "default_value": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_cta_label",
+                    "label": "Button label",
+                    "name": "cta_label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Up to 24 characters.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "maxlength": 24,
+                    "placeholder": "Give today",
+                    "default_value": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_cta_type",
+                    "label": "Button opens",
+                    "name": "cta_type",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "link": "A link",
+                        "form": "A donation form"
+                    },
+                    "default_value": "link",
+                    "return_format": "value",
+                    "layout": "horizontal",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "save_other_choice": 0,
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_cta_url",
+                    "label": "Link",
+                    "name": "cta_url",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "Opens in the same tab. The banner is hidden on the page it links to.",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_wt_site_banner_cta_type",
+                                "operator": "==",
+                                "value": "link"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "https://wikitongues.org/language-rights/",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_cta_form",
+                    "label": "FundraiseUp campaign code",
+                    "name": "cta_form",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "From the campaign in FundraiseUp. The button opens that campaign's donation form over the current page. The banner is hidden on /donate.",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_wt_site_banner_cta_type",
+                                "operator": "==",
+                                "value": "form"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "maxlength": 40,
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_tab_schedule",
+                    "label": "Schedule",
+                    "name": "",
+                    "aria-label": "",
+                    "type": "tab",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placement": "top",
+                    "endpoint": 0,
+                    "selected": 0,
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_enabled",
+                    "label": "Show this banner",
+                    "name": "enabled",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Off always wins. On shows it within the start and end below.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "On",
+                    "ui_off_text": "Off",
+                    "message": "",
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_start",
+                    "label": "Start (Eastern)",
+                    "name": "start",
+                    "aria-label": "",
+                    "type": "date_time_picker",
+                    "instructions": "Optional. Blank means as soon as it's switched On.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "j M Y g:i a",
+                    "return_format": "Y-m-d H:i:s",
+                    "first_day": 0,
+                    "parent_repeater": "field_wt_site_banner_rows"
+                },
+                {
+                    "key": "field_wt_site_banner_end",
+                    "label": "End (Eastern)",
+                    "name": "end",
+                    "aria-label": "",
+                    "type": "date_time_picker",
+                    "instructions": "Optional. Blank means until it's switched Off. The banner disappears at this time.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "j M Y g:i a",
+                    "return_format": "Y-m-d H:i:s",
+                    "first_day": 0,
+                    "parent_repeater": "field_wt_site_banner_rows"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "site-banner"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Plan 1.4. Rendered by modules/banners/banner--site.php.",
+    "show_in_rest": 0,
+    "display_title": "",
+    "modified": 1795875293
+}
