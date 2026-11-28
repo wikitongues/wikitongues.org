@@ -18,7 +18,7 @@ All of it lives in `includes/template/site-banner.php`, with tests in `tests/uni
 
 ## Fields
 
-Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group_wt_site_banner.json`. The `site_banners` repeater holds up to 10 banners; list order is priority.
+Options page `site-banner` (`ui_options_page_wt_site_banner.json`), group `group_wt_site_banner.json`. The `site_banners` repeater has no row limit; list order is priority.
 
 | Field | Notes |
 |---|---|

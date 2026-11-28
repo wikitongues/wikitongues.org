@@ -199,7 +199,7 @@ Its own options page, **Site banner**, in the admin menu, not inside Global Opti
 
 3. **Schedule status:** a pill right-aligned on each banner's Schedule heading: Off, Scheduled (with its start), Live now (with its end), Live but outranked by a banner above it (rule 1), Ended, or End is before start. It follows the form as edited, before saving, using rule 2.
 
-Step 0 shipped the repeater capped at one row; step 1 raises the cap to 10. Field names don't change, so no data moves.
+Step 0 shipped the repeater capped at one row; step 1 removes the cap. Field names don't change, so no data moves.
 
 ##### Display
 
@@ -210,7 +210,7 @@ Where the alert banner sits today: the first child of the sticky `.wt_masthead`,
 | # | PR | Done when |
 |---|---|---|
 | 0 | Options page and fields (one row); `wt_site_banner()` returns the live banner, unit-tested against the example cases; the render module replaces `banner--alert.php`; rules 1–8, 10–11. The `banner_alert_*` fields and module are removed. Nothing migrates: the old option rows stay in the database, unused | On production by Mon 30 Nov. The GT row is saved, and a test row with a window in the next few minutes switches on and off by itself on staging. The click shows in DebugView |
-| 1 | Many rows (up to 10) with unique IDs, Now showing, the view event (dismiss shipped early, 2026-11-28). Built 2026-11-28 | By 9 Dec, with the Rights banner scheduled |
+| 1 | Any number of rows, with unique IDs, Now showing, the view event (dismiss shipped early, 2026-11-28). Built 2026-11-28 | By 9 Dec, with the Rights banner scheduled |
 | 2 | *Nice to have, after the plan's Now queue ships.* Skeleton state for the admin page: one banner open with its empty fields, and a preview of the strip with plain placeholder blocks (not example text) where the message and button go, filled as the editor types. See *Admin* in [Ideas](#ideas) | An empty page shows the shape of a banner without instructions |
 
 ##### Open questions

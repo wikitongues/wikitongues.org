@@ -36,7 +36,7 @@
             },
             "layout": "block",
             "min": 0,
-            "max": 10,
+            "max": 0,
             "collapsed": "field_wt_site_banner_id",
             "button_label": "Add banner",
             "pagination": 0,
@@ -305,5 +305,5 @@
     "description": "Plan 1.4. Rendered by modules/banners/banner--site.php.",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1795880429
+    "modified": 1795880898
 }
