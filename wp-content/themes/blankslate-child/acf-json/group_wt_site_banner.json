@@ -43,22 +43,22 @@
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_wt_site_banner_tab_content",
+                    "key": "field_wt_site_banner_section_content",
                     "label": "Content",
                     "name": "",
                     "aria-label": "",
-                    "type": "tab",
+                    "type": "message",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
-                        "class": "",
+                        "class": "wt-site-banner-section",
                         "id": ""
                     },
-                    "placement": "top",
-                    "endpoint": 0,
-                    "selected": 0,
+                    "message": "",
+                    "new_lines": "",
+                    "esc_html": 0,
                     "parent_repeater": "field_wt_site_banner_rows"
                 },
                 {
@@ -206,22 +206,22 @@
                     "parent_repeater": "field_wt_site_banner_rows"
                 },
                 {
-                    "key": "field_wt_site_banner_tab_schedule",
+                    "key": "field_wt_site_banner_section_schedule",
                     "label": "Schedule",
                     "name": "",
                     "aria-label": "",
-                    "type": "tab",
+                    "type": "message",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
-                        "class": "",
+                        "class": "wt-site-banner-section",
                         "id": ""
                     },
-                    "placement": "top",
-                    "endpoint": 0,
-                    "selected": 0,
+                    "message": "",
+                    "new_lines": "",
+                    "esc_html": 0,
                     "parent_repeater": "field_wt_site_banner_rows"
                 },
                 {
@@ -234,7 +234,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "20",
                         "class": "",
                         "id": ""
                     },
@@ -255,7 +255,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "50",
+                        "width": "40",
                         "class": "",
                         "id": ""
                     },
@@ -274,7 +274,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "50",
+                        "width": "40",
                         "class": "",
                         "id": ""
                     },
@@ -305,5 +305,5 @@
     "description": "Plan 1.4. Rendered by modules/banners/banner--site.php.",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1795876432
+    "modified": 1795877211
 }
