@@ -44,6 +44,7 @@ function custom_reorder_admin_menu( array $menu_order ): array {
 		'edit.php?post_type=partners',        // Partners
 		'wt-section-publishing',              // ── Publishing ───────────────────
 		'edit.php?post_type=page',            // Pages
+		'site-banner',                        // Site banner (plan 1.4)
 		'edit.php?post_type=blog',            // Blog
 		'edit.php?post_type=careers',         // Careers
 		'edit.php?post_type=events',          // Events

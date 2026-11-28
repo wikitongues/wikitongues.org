@@ -1,6 +1,6 @@
 # Site banner
 
-The strip above the header on every page, set by editors on **Site banner** in the admin menu. Spec: [plan.md → 1.4](../plan.md#14-site-banner). It replaced the alert banner (`banner_alert_*` in Global Options) in November 2026; that banner's old option rows are still in the database, unused.
+The strip above the header on every page, set by editors on **Site banner**, under Publishing in the admin sidebar, right after Pages (`includes/admin/admin-helpers.php`). Spec: [plan.md → 1.4](../plan.md#14-site-banner). It replaced the alert banner (`banner_alert_*` in Global Options) in November 2026; that banner's old option rows are still in the database, unused.
 
 ## How a banner is chosen
 

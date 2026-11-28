@@ -9,7 +9,7 @@
     "advanced_configuration": 1,
     "icon_url": "",
     "menu_title": "Site banner",
-    "position": "25",
+    "position": "",
     "redirect": false,
     "description": "The strip above the header on every page.",
     "menu_icon": {
@@ -22,5 +22,5 @@
     "data_storage": "options",
     "post_id": "",
     "autoload": 0,
-    "modified": 1795875293
+    "modified": 1795875933
 }
