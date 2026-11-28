@@ -9,7 +9,8 @@ The strip above the header on every page, set by editors on **Site banner** in t
 | One banner shows: the first row that is **On** and whose window contains now. Off always wins | `wt_site_banner_pick()` |
 | Start and end are optional, entered and checked in Eastern (`America/New_York`). The site clock is UTC; don't change it | `WT_SITE_BANNER_TZ` |
 | Live from the start up to, not including, the end | `wt_site_banner_is_live()` |
-| Never on the page its button leads to. A donation form's page is `/donate/` | `wt_site_banner_target_path()` |
+| A start or end that is set but unreadable keeps the banner hidden (fails closed) | `wt_site_banner_is_live()` |
+| Never on the page its button leads to. A donation form's page is `/donate/`. Paths compare without the query string, case or a subdirectory home | `wt_site_banner_target_path()`, `wt_site_banner_site_path()` |
 | A row with no message, or a donation form with no campaign code, never shows | `wt_site_banner_pick()` |
 | Decided on each request. Production has no page cache (checked 2026-11-28). If one is ever added, this check has to move client-side | `wt_site_banner()` |
 
