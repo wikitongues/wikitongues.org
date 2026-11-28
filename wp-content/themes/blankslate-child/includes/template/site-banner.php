@@ -302,7 +302,25 @@ function wt_site_banner_admin_styles(): void {
 		.acf-field.wt-site-banner-section:first-child { border-top: 0; padding-top: 12px; }
 		.acf-field.wt-site-banner-section > .acf-label label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #50575e; }
 		.acf-field.wt-site-banner-section > .acf-input { display: none; }
+		.acf-field.wt-site-banner-section > .acf-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+		.wt-site-banner-status { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 20px; white-space: nowrap; background: #f0f0f1; color: #50575e; }
+		.wt-site-banner-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: currentColor; vertical-align: 0; }
+		.wt-site-banner-status[data-state="live"] { background: #edfaef; color: #00701a; }
+		.wt-site-banner-status[data-state="scheduled"] { background: #f0f6fc; color: #2271b1; }
+		.wt-site-banner-status[data-state="error"] { background: #fcf0f1; color: #b32d2e; }
 	</style>
 	<?php
 }
 add_action( 'acf/input/admin_head', 'wt_site_banner_admin_styles' );
+
+/**
+ * Load the schedule status pill on the Site banner admin page.
+ */
+function wt_site_banner_admin_script(): void {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || false === strpos( (string) $screen->id, 'site-banner' ) ) {
+		return;
+	}
+	wp_enqueue_script( 'wt-site-banner-admin', get_stylesheet_directory_uri() . '/js/site-banner-admin.js', array(), '1.0.0', true );
+}
+add_action( 'acf/input/admin_enqueue_scripts', 'wt_site_banner_admin_script' );
