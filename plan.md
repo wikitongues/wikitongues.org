@@ -18,6 +18,7 @@ The live plan for wikitongues.org: what comes next, in order, and the spec for e
   - [6. Data quality & Airtable](#6-data-quality--airtable)
   - [7. Engineering foundations](#7-engineering-foundations)
   - [8. Membership (blocked on the board)](#8-membership-blocked-on-the-board)
+  - [9. Design system & brand](#9-design-system--brand)
 - [GitHub issues](#github-issues)
 - [Ideas](#ideas)
 - [Decided against](#decided-against)
@@ -1226,6 +1227,95 @@ What membership means for Wikitongues (its scope, benefits, feel and impact) is 
 - **Language passport:** a member's view of their own engagement: languages explored, territories visited, videos watched, downloads.
 - **Gamification:** stamps for core actions, and an onboarding flow. Write a separate spec first.
 
+### 9. Design system & brand
+
+*Draft 2026-11-28. Not queued; nothing gets built until the spec is approved.*
+
+**Decision needed:** approve the glossary, the rules and the order of steps, then open questions 1 and 2. Display waits for the territory board review.
+
+**The idea.** A few pieces of the site already work: the language and video cards, the video page and the gallery. They share one grammar: a 16:9 leaf-corner frame, a person named on it, a code beside it. Grow that seed into a small set of shared parts, then move pages onto them one at a time. Don't restyle the archive all at once. The direction is film and the editor's pen: frames on a contact sheet, marked by an editor who chose them. Science comes in as method, as in a field notebook, and the stance is exchange and knowledge passed down, never expedition. This workstream builds the parts and the brand reference. Each page's redesign stays in its own spec (2.3, 3.3, 9.2) and uses the parts.
+
+##### Glossary
+
+| Term | Means |
+|---|---|
+| **Frame** | The 16:9 leaf-corner unit. It holds a voice (video still), a place (locator map) or a state. Built once |
+| **Frame card** | A frame plus a name line (name, ISO code) and a state line. Used for languages, videos and territories |
+| **State** | Recorded, Being prepared, Not yet recorded. These are display labels for 2.3's *recorded*, *being prepared* and *gap*: same data, one label each |
+| **Collection** | A grid of frame cards with wt-gallery's grammar: columns, pagination, filters |
+| **Skeleton** | The shape a part keeps when its data is missing or still loading |
+| **Edge code** | The video ID (`Bisola_20210217_yor`) set along a frame, like the printing on a negative |
+| **Provenance** | Speaker, language, where and when it was recorded, who filmed it, and the terms (licence) |
+| **Mark** | An editor's red pen or highlight. It means a person chose something |
+| **Surface** | A template a visitor can land on: 40 page templates in the theme and 9 gallery templates |
+| **Brand reference** | The design system's README: how the work should feel. This plan says what to build next |
+
+##### Rules
+
+| # | Rule |
+|---|---|
+| 1 | **One order of work.** Design steps queue like any other item. No design PR ships unqueued, and no part ships without a page that uses it |
+| 2 | **Parts before pages.** A page uses the shared parts. A new part needs a line in its page's spec saying why the existing ones don't fit |
+| 3 | **Skeletons everywhere: show more, explain less.** A frame with no data keeps its shape and says one line at most, never a paragraph. Loading keeps the layout still |
+| 4 | **Real records only.** Every part is specified and reviewed against the example cases below, never placeholder text |
+| 5 | **Marks mean an editor chose.** Red pen and highlight appear only where a person decided something: featured, corrected, first of its kind. Never as decoration |
+| 6 | **Provenance on every frame that shows a person.** The speaker is named and the terms are stated plainly, including when reuse isn't allowed |
+| 7 | **Motifs come from the archive's own records:** edge codes from IDs, maps from the shape table. No texture or props: no sprocket holes, grain, sepia or compass roses |
+| 8 | **No colonial or extractive words.** The brand reference keeps the list (discover, uncharted, remote, vanishing, collect, specimen, exotic) and what to use instead |
+| 9 | **One token set.** The design system's `tokens.json` is the source; Stylus variables map to it. Drift gets fixed, never added to |
+| 10 | **Nothing ships unmeasured.** Each page takes a 4-week baseline before its redesign ships, and it keeps every GA4 event it had |
+
+##### Example cases
+
+| Case | Data | Result |
+|---|---|---|
+| Yoruba | 33 videos; Olaniyan's is featured | Frame: Olaniyan, captioned "Olaniyan speaks Yoruba". Name line "Yoruba · yor". State "Recorded · 33 oral histories" |
+| Kusunda | 1 video, still Processing | Frame: "Gyani's oral history is being prepared." State "Being prepared". Nothing tries to play |
+| Ghotuo | 0 videos; home Nigeria | Frame holds the locator map. State "Not yet recorded". No paragraph explaining the gap |
+| Any of the 16 languages with no map | No video, no place | Skeleton frame with the name; never a broken image or an empty grey box |
+| Bisola_20210217_yor | Protected copyright; recorded in Dilijan, Armenia | Edge code along the frame. Provenance says it can be watched, not republished |
+| Ayooluwa_20210217_yor-pcm | Two languages | One frame, two codes; the card links both languages |
+| Nigeria | 12 of 493 recorded | Frame holds the map, with a ledger bar. The count says how it was counted (2.3 rule 7) |
+| A gallery's second page | AJAX pagination | Skeleton frames at full size while it loads; nothing shifts |
+
+##### Display
+
+Not settled. The territory board tries seven treatments on these records: contact sheet, instant frame, edge code, field notebook, exchange, lineage card, and words and tropes. What survives review goes into the brand reference (step 0), then into this section.
+
+##### Steps
+
+| # | PR | Done when |
+|---|---|---|
+| 0 | **Brand reference:** the design system README gets the direction, the principles (rules 3, 5–8) and the word list. The site's "Discover new languages…" copy changes with it | Approved; no other "discover" copy left on the site |
+| 1 | **Surface ledger** in a new `docs/design.md`: every surface and its state (old, migrated, no change needed) | All 49 templates listed. The redesign is done when this table is |
+| 2 | **Tokens:** reconcile Stylus with `tokens.json` (the drift table from the analysis) | No visual change; lint clean |
+| 3 | **Frame card**, all three states plus the skeleton, as one PHP template and one Stylus partial; first used by `gallery-languages.php` | Example cases render on staging |
+| 4 | **Collection:** gallery grammar with skeleton pagination | The gallery case holds still |
+| 5 | **Video frame:** edge code and provenance, for 9.2 | Bisola and Ayooluwa render as written |
+
+Pages follow in their own specs, in this order: search (3.3), language and territory (2.3), then video pages (9.2, to be written).
+
+##### Open questions
+
+1. **Skeletons vs 2.3 rule 2** ("a section with no data doesn't render"). Proposal: both hold. A frame keeps its shape (rule 3); a whole section with nothing to show still doesn't render. Confirm.
+2. **Queue position.** The search answer card and the 2.3 hero are the frame card (2.3 rule 8). Proposal: steps 0–3 go into the queue just before 3.3 step 2. The 2026-11-23 audit already says the queue isn't being followed, so this needs an explicit re-order rather than a silent one.
+3. **Video pages:** a new spec, 9.2, written after step 5? 2.3 lists them out of scope.
+4. **Graphik International** for endonyms in non-Latin scripts: load it in step 2, or wait until 2.3 shows endonyms?
+5. **Marks in production:** a small set of drawn SVG marks, or a handwriting font? Recommendation: drawn SVG marks. A font makes every note look the same and reads as a gimmick.
+
+##### Out of scope
+
+A whole-archive restyle; logo and identity rework; print, social and email templates; admin screens; Figma library sync; new Airtable fields (who taught a speaker is an idea, below).
+
+##### Decision log
+
+| Date | Decision | Why |
+|---|---|---|
+| 2026-11-27 | Design work is a workstream in this plan, not a second plan | One order of work; a separate design plan would compete with it |
+| 2026-11-27 | Video pages are in scope; the whole archive isn't, all at once | Focus. The surface ledger (step 1) keeps everything else in view |
+| 2026-11-27 | Direction: film and the editor's pen, science as method, exchange and passed-down knowledge. Not expedition | Expedition imagery is colonial by default; exchange keeps the curiosity without the taking |
+| 2026-11-28 | Skeleton states everywhere: show more, explain less | Rule 3 |
+
 ---
 
 ## GitHub issues
@@ -1256,6 +1346,7 @@ Unprioritized. An idea moves into a workstream when data or capacity says so. Co
   - archive filters, and an interactive taxonomy on language pages
   - a fellowship taxonomy archive
   - search results grouped by type
+  - lineage on a recording: ask the speaker who taught them the language, and show it in the video's provenance (needs an Airtable field; see 9)
 - **Storytelling:**
   - an About page refresh
   - an "Our impact" page with cohort stories
