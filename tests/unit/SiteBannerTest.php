@@ -229,6 +229,30 @@ class SiteBannerTest extends TestCase {
 		$this->assertSame( '/donate/', wt_site_banner_site_path( '/Donate', self::HOME ) );
 	}
 
+	// FundraiseUp campaign keys.
+
+	public function test_element_code_from_a_donorsupport_link_never_shows() {
+		$rows = array( $this->giving_tuesday( array( 'cta_form' => 'XTRAFEBU' ) ) );
+		$this->assertSame( '', wt_site_banner_href( $rows[0] ) );
+		$this->assertNull( $this->pick( $rows, $this->eastern( '2026-12-01 12:00:00' ) ) );
+	}
+
+	public function test_campaign_key_is_found_in_a_pasted_url() {
+		$this->assertSame( 'FUNFLYUUBYT', wt_site_banner_campaign_key( 'https://wikitongues.org/?form=FUNFLYUUBYT' ) );
+		$this->assertSame( 'FUNFLYUUBYT', wt_site_banner_campaign_key( ' funflyuubyt ' ) );
+		$this->assertSame( '', wt_site_banner_campaign_key( 'https://wikitongues.donorsupport.co/-/XTRAFEBU' ) );
+	}
+
+	public function test_campaign_validation_explains_an_element_code() {
+		$this->assertTrue( wt_site_banner_validate_campaign( true, 'FUNFLYUUBYT' ) );
+		$this->assertStringContainsString( 'donorsupport.co', wt_site_banner_validate_campaign( true, 'XTRAFEBU' ) );
+		$this->assertStringContainsString( 'starts with FUN', wt_site_banner_validate_campaign( true, 'general fund' ) );
+	}
+
+	public function test_campaign_is_saved_as_the_bare_key() {
+		$this->assertSame( 'FUNFLYUUBYT', wt_site_banner_save_campaign( '?form=funflyuubyt' ) );
+	}
+
 	// Admin validation.
 
 	public function test_end_before_start_is_refused() {

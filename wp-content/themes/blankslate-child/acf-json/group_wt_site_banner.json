@@ -178,11 +178,11 @@
                 },
                 {
                     "key": "field_wt_site_banner_cta_form",
-                    "label": "FundraiseUp campaign code",
+                    "label": "FundraiseUp campaign key",
                     "name": "cta_form",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "From the campaign in FundraiseUp. The button opens that campaign's donation form over the current page. The banner is hidden on /donate.",
+                    "instructions": "Starts with FUN (the General Fund is FUNFLYUUBYT). The code in donorsupport.co links is not a campaign key. The button opens the campaign's donation form over the current page; the banner is hidden on /donate.",
                     "required": 1,
                     "conditional_logic": [
                         [
@@ -200,7 +200,7 @@
                     },
                     "maxlength": 40,
                     "default_value": "",
-                    "placeholder": "",
+                    "placeholder": "FUN\u2026",
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_wt_site_banner_rows"
@@ -305,5 +305,5 @@
     "description": "Plan 1.4. Rendered by modules/banners/banner--site.php.",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1795877211
+    "modified": 1795878810
 }

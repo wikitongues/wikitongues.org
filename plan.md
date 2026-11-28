@@ -169,7 +169,7 @@ Donors are People: add a **Donor** term to `people-type`, so a board member who 
 | 2 | A banner is live when its switch is On and now falls within its window. Start and end are optional: no start means from now, no end means until switched off. Off always wins. |
 | 3 | Times are entered and checked in Eastern (`America/New_York`), whatever the site timezone. Production runs on UTC (`gmt_offset` 0), and changing that would shift post dates. Every time field is labelled "Eastern". |
 | 4 | Liveness is decided on each page request. Production has no page cache (checked 2026-11-28: no cache headers, every request reaches PHP), so a banner appears on the first request after its start. If a page cache is ever added, this check moves client-side first. |
-| 5 | The button is a **link** (any URL) or a **donation form** (a FundraiseUp campaign code, opened as the modal over the current page with `?form=`). Both open in the same tab. A donation-form banner can't be saved without a code. |
+| 5 | The button is a **link** (any URL) or a **donation form** (a FundraiseUp campaign key, `FUN…`, opened as the modal over the current page with `?form=`). Both open in the same tab. A donation-form banner can't be saved without a key, and the `X…` element codes in `donorsupport.co` links are refused: they look like campaign codes but `?form=` ignores them. |
 | 6 | A banner never shows on its target page. |
 | 7 | The message is plain text, one line, at most 100 characters; the button label at most 24. ACF enforces both. Output is escaped. |
 | 8 | Every click sends `site_banner_click` (`banner_id`, `cta_type`) and carries `data-cta-location="site-banner"`, so donation clicks also count in `donate_cta_click`. Step 1 adds `site_banner_view` and `site_banner_dismiss`. |
